@@ -11,13 +11,21 @@
     "start": "react-scripts-ts start",
     "build": "react-scripts-ts build",
     "test": "react-scripts-ts test --env=jsdom",
-    "eject": "react-scripts-ts eject"
+    "eject": "react-scripts-ts eject",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "devDependencies": {
     "@types/jest": "^22.2.3",
     "@types/node": "^10.0.9",
     "@types/react": "^16.3.14",
     "@types/react-dom": "^16.0.5",
-    "typescript": "^2.8.3"
+    "typescript": "^2.8.3",
+    "@storybook/react": "^3.4.4",
+    "@storybook/addon-actions": "^3.4.4",
+    "@storybook/addon-links": "^3.4.4",
+    "@storybook/addons": "^3.4.4",
+    "babel-core": "^6.26.3",
+    "babel-runtime": "^6.26.0"
   }
 }
