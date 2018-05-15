@@ -5,7 +5,8 @@
   "dependencies": {
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
-    "react-scripts-ts": "2.16.0"
+    "react-scripts-ts": "2.16.0",
+    "styled-components": "^3.2.6"
   },
   "scripts": {
     "start": "react-scripts-ts start",
@@ -37,6 +38,9 @@
     "typescript": "^2.8.3"
   },
   "lint-staged": {
-    "src/**/*.{js,jsx,json,css,ts,tsx}": ["prettier --write", "git add"]
+    "src/**/*.{js,jsx,json,css,ts,tsx}": [
+      "prettier --write",
+      "git add"
+    ]
   }
 }
