@@ -16,16 +16,19 @@
     "build-storybook": "build-storybook"
   },
   "devDependencies": {
+    "@storybook/addon-actions": "^3.4.4",
+    "@storybook/addon-links": "^3.4.4",
+    "@storybook/addon-storyshots": "^3.4.4",
+    "@storybook/addons": "^3.4.4",
+    "@storybook/react": "^3.4.4",
     "@types/jest": "^22.2.3",
     "@types/node": "^10.0.9",
     "@types/react": "^16.3.14",
     "@types/react-dom": "^16.0.5",
-    "typescript": "^2.8.3",
-    "@storybook/react": "^3.4.4",
-    "@storybook/addon-actions": "^3.4.4",
-    "@storybook/addon-links": "^3.4.4",
-    "@storybook/addons": "^3.4.4",
+    "@types/storybook__addon-storyshots": "^3.4.1",
     "babel-core": "^6.26.3",
-    "babel-runtime": "^6.26.0"
+    "babel-runtime": "^6.26.0",
+    "react-test-renderer": "^16.3.2",
+    "typescript": "^2.8.3"
   }
 }
