@@ -2,8 +2,8 @@ import React from 'react'
 
 import { storiesOf } from '@storybook/react'
 
-import Bar from '../src/components/Bar'
-import BarButton from '../src/components/BarButton'
+import { Bar } from '../src/components'
+import { BarButton } from '../src/components'
 
 storiesOf('Bar', module)
   .add('without buttons', () => <Bar height={50} bgColor="rebeccapurple" />)
