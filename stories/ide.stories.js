@@ -2,16 +2,22 @@ import React from 'react'
 
 import { storiesOf } from '@storybook/react'
 
-import { IDE } from '../src/components'
+import {
+  Bar,
+  BarButton,
+  IDELayout,
+  CommandBar,
+  Editor,
+  EditorLayout,
+} from '../src/components'
 
-import { Bar } from '../src/components'
-import { BarButton } from '../src/components'
-
-storiesOf('IDE', module).add('plain', () => (
-  <IDE>
-    <Bar style={{ gridTemplateArea: 'header' }} bgColor="green" />
-    <Bar style={{ gridTemplateArea: 'command-bar' }} bgColor="red" />
-    <Bar style={{ gridTemplateArea: 'editor' }} bgColor="blue" />
-    <Bar style={{ gridTemplateArea: 'footer' }} bgColor="purple" />
-  </IDE>
+storiesOf('IDE', module).add('plain layout', () => (
+  <IDELayout>
+    <Bar style={{ gridArea: 'header' }} bgColor="green" />
+    <EditorLayout>
+      <CommandBar />
+      <Editor />
+    </EditorLayout>
+    <Bar style={{ gridArea: 'footer' }} bgColor="green" />
+  </IDELayout>
 ))
