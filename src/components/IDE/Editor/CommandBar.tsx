@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import { Bar } from '../'
+import { Bar } from '../../'
 
 export default styled(Bar)`
   grid-area: 'command-bar';
