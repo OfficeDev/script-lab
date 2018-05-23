@@ -1,11 +1,11 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import App from './App';
-import './index.css';
-import registerServiceWorker from './registerServiceWorker';
+import * as React from 'react'
+import * as ReactDOM from 'react-dom'
+import App from './App'
 
-ReactDOM.render(
-  <App />,
-  document.getElementById('root') as HTMLElement
-);
-registerServiceWorker();
+import 'normalize.css'
+import './index.css'
+
+import registerServiceWorker from './registerServiceWorker'
+
+ReactDOM.render(<App />, document.getElementById('root') as HTMLElement)
+registerServiceWorker()

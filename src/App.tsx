@@ -1,22 +1,45 @@
-import * as React from 'react';
-import './App.css';
+import * as React from 'react'
+import styled from 'styled-components'
 
-import logo from './logo.svg';
+import { Bar } from './components/'
+
+const AppLayout = styled.div`
+  height: 100vh;
+  display: grid;
+
+  grid-template-columns: auto;
+  grid-template-rows: 44px auto 22px;
+  grid-template-areas: 'header' 'content' 'footer';
+`
+
+const Header = styled(Bar)`
+  grid-area: header;
+
+  background: green;
+`
+
+const Content = styled.div`
+  grid-area: content;
+
+  background: darkgray;
+`
+
+const Footer = styled(Bar)`
+  grid-area: footer;
+
+  background: green;
+`
 
 class App extends React.Component {
-  public render() {
+  render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.tsx</code> and save to reload.
-        </p>
-      </div>
-    );
+      <AppLayout>
+        <Header>Header</Header>
+        <Content>Content</Content>
+        <Footer>Footer</Footer>
+      </AppLayout>
+    )
   }
 }
 
-export default App;
+export default App
