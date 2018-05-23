@@ -1,7 +1,7 @@
 import * as React from 'react'
 import styled from 'styled-components'
 
-import { Bar } from './components/'
+import { Bar, RunGallery, RunGalleryItem } from './components/'
 
 const AppLayout = styled.div`
   height: 100vh;
@@ -21,6 +21,8 @@ const Header = styled(Bar)`
 const Content = styled.div`
   grid-area: content;
 
+  overflow: hidden;
+
   background: darkgray;
 `
 
@@ -32,13 +34,6 @@ const Footer = styled(Bar)`
 
 // =============================
 
-const RunGalleryWrapper = styled.main`
-  overflow-y: auto;
-
-  height: 100%;
-  background-color: red;
-`
-
 // =============================
 
 class App extends React.Component {
@@ -47,7 +42,11 @@ class App extends React.Component {
       <AppLayout>
         <Header>Header</Header>
         <Content>
-          <RunGalleryWrapper />
+          <RunGallery>
+            {Array.from(Array(50).keys()).map(n => (
+              <RunGalleryItem label={`Snippet ${n}`} />
+            ))}
+          </RunGallery>
         </Content>
         <Footer>Footer</Footer>
       </AppLayout>
