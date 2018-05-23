@@ -6,6 +6,14 @@ import 'normalize.css'
 import './index.css'
 
 import registerServiceWorker from './registerServiceWorker'
+const rootEl = document.getElementById('root') as HTMLElement
+ReactDOM.render(<App />, rootEl)
 
-ReactDOM.render(<App />, document.getElementById('root') as HTMLElement)
 registerServiceWorker()
+
+if (module.hot) {
+  module.hot.accept('./App', () => {
+    const NextApp = require('./App').default
+    ReactDOM.render(<NextApp />, rootEl)
+  })
+}
