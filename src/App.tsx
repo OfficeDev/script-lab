@@ -30,12 +30,25 @@ const Footer = styled(Bar)`
   background: green;
 `
 
+// =============================
+
+const RunGalleryWrapper = styled.main`
+  overflow-y: auto;
+
+  height: 100%;
+  background-color: red;
+`
+
+// =============================
+
 class App extends React.Component {
   render() {
     return (
       <AppLayout>
         <Header>Header</Header>
-        <Content>Content</Content>
+        <Content>
+          <RunGalleryWrapper />
+        </Content>
         <Footer>Footer</Footer>
       </AppLayout>
     )
