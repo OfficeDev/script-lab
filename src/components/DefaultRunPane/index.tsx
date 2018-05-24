@@ -10,7 +10,7 @@ const RunButton = styled.a`
   border-color: transparent transparent transparent green;
 `
 
-const FunctionName = styled.h2`
+const FunctionName = styled.h2.attrs({ className: 'ms-font-xl' })`
   line-height: 2rem;
 `
 

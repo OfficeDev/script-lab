@@ -3,12 +3,10 @@ import styled from 'styled-components'
 
 const RunGalleryItemWrapper = styled.div``
 
-const RunGalleryItemLabel = styled.span`
+const RunGalleryItemLabel = styled.span.attrs({ className: 'ms-font-xl' })`
   position: relative;
   left: 0.6rem;
   bottom: 0.3rem;
-
-  font-size: 1.6rem;
 `
 
 const RunGalleryItemContentWrapper = styled.div`

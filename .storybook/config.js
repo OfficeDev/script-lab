@@ -6,4 +6,6 @@ function loadStories() {
   req.keys().forEach(filename => req(filename))
 }
 
+document.getElementsByTagName('body')[0].classList.add('ms-Fabric')
+
 configure(loadStories, module)

@@ -12,8 +12,8 @@ import {
 storiesOf('Run Gallery', module)
   .add('basic', () => (
     <RunGallery>
-      {Array.from(Array(50).keys()).map(n => (
-        <RunGalleryItem label={`Snippet ${n}`} />
+      {Array.from(Array(50).keys()).map(i => (
+        <RunGalleryItem label={`Snippet ${i}`} />
       ))}
     </RunGallery>
   ))
@@ -22,8 +22,8 @@ storiesOf('Run Gallery', module)
       {Array.from(Array(50).keys()).map(n => (
         <RunGalleryItem label={`Snippet ${n}`}>
           <RunPane>
-            {Array.from(Array(50).keys()).map(n => (
-              <Function name={`function${n}`} />
+            {Array.from(Array(50).keys()).map(m => (
+              <Function name={`function${m}`} />
             ))}
           </RunPane>
         </RunGalleryItem>
