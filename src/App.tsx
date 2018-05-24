@@ -44,7 +44,7 @@ class App extends React.Component {
         <Content>
           <RunGallery>
             {Array.from(Array(50).keys()).map(n => (
-              <RunGalleryItem label={`Snippet ${n}`} />
+              <RunGalleryItem label={`Snippet ${n}`}>test</RunGalleryItem>
             ))}
           </RunGallery>
         </Content>

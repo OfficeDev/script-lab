@@ -1,11 +1,16 @@
-html,
-body {
-  height: 100%;
-  box-sizing: border-box;
+*,
+*::before,
+*::after {
+  padding: 0;
+  margin: 0;
+  box-sizing: inherit;
+}
+
+html {
+  font-size: 62.5%;
 }
 
 body {
-  margin: 0;
-  padding: 0;
   font-family: sans-serif;
+  box-sizing: border-box;
 }
