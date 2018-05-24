@@ -12,7 +12,7 @@ const AppLayout = styled.div`
   grid-template-areas: 'header' 'content' 'footer';
 `
 
-const Header = styled.header.attrs({ className: 'ms-font-xl' })`
+const Header = styled.header.attrs({ className: 'ms-font-l' })`
   grid-area: header;
 
   display: flex;
