@@ -1,11 +1,13 @@
 import styled from 'styled-components'
 
-export default styled.button`
+export default styled.a`
   display: flex;
   align-items: center;
   justify-items: center;
 
-  padding: 0em 1em;
+  height: 100%;
+
+  padding: 0em 1rem;
 
   border: 0;
 
@@ -20,9 +22,5 @@ export default styled.button`
   }
   &:active {
     background: rgba(0, 0, 0, 0.4);
-  }
-
-  &:focus {
-    outline: none;
   }
 `

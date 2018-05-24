@@ -1,7 +1,7 @@
 import * as React from 'react'
 import styled from 'styled-components'
 
-import { Bar, RunGallery, RunGalleryItem } from './components/'
+import { BarButton, RunGallery, RunGalleryItem } from './components/'
 
 const AppLayout = styled.div`
   height: 100vh;
@@ -12,8 +12,11 @@ const AppLayout = styled.div`
   grid-template-areas: 'header' 'content' 'footer';
 `
 
-const Header = styled(Bar)`
+const Header = styled.header.attrs({ className: 'ms-font-xl' })`
   grid-area: header;
+
+  display: flex;
+  align-items: center;
 
   background: green;
 `
@@ -26,8 +29,11 @@ const Content = styled.div`
   background: darkgray;
 `
 
-const Footer = styled(Bar)`
+const Footer = styled.footer`
   grid-area: footer;
+
+  display: flex;
+  align-items: center;
 
   background: green;
 `
@@ -40,7 +46,15 @@ class App extends React.Component {
   render() {
     return (
       <AppLayout>
-        <Header>Header</Header>
+        <Header>
+          <BarButton>
+            <i
+              className="ms-Icon ms-Icon--GlobalNavButton"
+              aria-hidden="true"
+            />
+          </BarButton>
+          <BarButton>Snippet Name</BarButton>
+        </Header>
         <Content>
           <RunGallery>
             {Array.from(Array(50).keys()).map(n => (
