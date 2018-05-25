@@ -2,6 +2,7 @@ import * as React from 'react'
 import styled, { ThemeProvider } from 'styled-components'
 
 import { BarButton, Editor } from './components/'
+import UserPresence from './components/UserPresence'
 
 const theme = {
   accent: '#217346',
@@ -62,6 +63,7 @@ class App extends React.Component {
               />
             </BarButton>
             <BarButton>Snippet Name</BarButton>
+            <UserPresence />
           </Header>
           <Content>
             <Editor />
