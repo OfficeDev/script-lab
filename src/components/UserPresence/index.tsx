@@ -5,8 +5,8 @@ interface IProps {
 }
 
 export default styled<IProps, any>('div')`
-  height: ${props => props.size || 36}px;
-  width: ${props => props.size || 36}px;
+  height: ${props => props.size || 32}px;
+  width: ${props => props.size || 32}px;
 
   margin: 1rem;
   margin-left: auto;
