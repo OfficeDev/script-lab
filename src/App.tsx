@@ -1,5 +1,6 @@
 import * as React from 'react'
 import styled, { ThemeProvider } from 'styled-components'
+import { NavLink, Switch, Route } from 'react-router-dom'
 
 import { BarButton, Editor } from './components/'
 import UserPresence from './components/UserPresence'
@@ -46,9 +47,25 @@ const Footer = styled.footer`
   background: ${props => props.theme.accent};
 `
 
+const Blank = styled.div`
+  height: 100%;
+  background: pink;
+`
+
+const StyledIcon = styled.i`
+  height: 100%;
+  color: white;
+`
 // =============================
 
 // =============================
+
+const Main = () => (
+  <Switch>
+    <Route exact={true} path="/" component={Editor} />
+    <Route exact={true} path="/backstage" component={Blank} />
+  </Switch>
+)
 
 class App extends React.Component {
   render() {
@@ -66,7 +83,7 @@ class App extends React.Component {
             <UserPresence />
           </Header>
           <Content>
-            <Editor />
+            <Main />
           </Content>
           <Footer>Footer</Footer>
         </AppLayout>
