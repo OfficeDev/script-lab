@@ -6,6 +6,7 @@
     "@types/storybook__react": "^3.0.7",
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
+    "react-monaco-editor": "0.14.1",
     "react-scripts-ts": "2.16.0",
     "styled-components": "^3.2.6"
   },

@@ -1,7 +1,7 @@
 import * as React from 'react'
 import styled from 'styled-components'
 
-import { BarButton, RunGallery, RunGalleryItem } from './components/'
+import { BarButton, Editor } from './components/'
 
 const AppLayout = styled.div`
   height: 100vh;
@@ -56,11 +56,7 @@ class App extends React.Component {
           <BarButton>Snippet Name</BarButton>
         </Header>
         <Content>
-          <RunGallery>
-            {Array.from(Array(50).keys()).map(n => (
-              <RunGalleryItem label={`Snippet ${n}`}>test</RunGalleryItem>
-            ))}
-          </RunGallery>
+          <Editor />
         </Content>
         <Footer>Footer</Footer>
       </AppLayout>
