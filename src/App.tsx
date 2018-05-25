@@ -1,7 +1,14 @@
 import * as React from 'react'
-import styled from 'styled-components'
+import styled, { ThemeProvider } from 'styled-components'
 
 import { BarButton, Editor } from './components/'
+
+const theme = {
+  accent: '#217346',
+  darkAccent: '#103822',
+  bg: '#1e1e1e',
+  fg: '#eeeeee',
+}
 
 const AppLayout = styled.div`
   height: 100vh;
@@ -18,7 +25,7 @@ const Header = styled.header.attrs({ className: 'ms-font-l' })`
   display: flex;
   align-items: center;
 
-  background: green;
+  background: ${props => props.theme.accent};
 `
 
 const Content = styled.div`
@@ -26,7 +33,7 @@ const Content = styled.div`
 
   overflow: hidden;
 
-  background: darkgray;
+  background: ${props => props.theme.bg};
 `
 
 const Footer = styled.footer`
@@ -35,7 +42,7 @@ const Footer = styled.footer`
   display: flex;
   align-items: center;
 
-  background: green;
+  background: ${props => props.theme.accent};
 `
 
 // =============================
@@ -45,21 +52,23 @@ const Footer = styled.footer`
 class App extends React.Component {
   render() {
     return (
-      <AppLayout>
-        <Header>
-          <BarButton>
-            <i
-              className="ms-Icon ms-Icon--GlobalNavButton"
-              aria-hidden="true"
-            />
-          </BarButton>
-          <BarButton>Snippet Name</BarButton>
-        </Header>
-        <Content>
-          <Editor />
-        </Content>
-        <Footer>Footer</Footer>
-      </AppLayout>
+      <ThemeProvider theme={theme}>
+        <AppLayout>
+          <Header>
+            <BarButton>
+              <i
+                className="ms-Icon ms-Icon--GlobalNavButton"
+                aria-hidden="true"
+              />
+            </BarButton>
+            <BarButton>Snippet Name</BarButton>
+          </Header>
+          <Content>
+            <Editor />
+          </Content>
+          <Footer>Footer</Footer>
+        </AppLayout>
+      </ThemeProvider>
     )
   }
 }

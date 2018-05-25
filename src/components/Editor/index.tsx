@@ -6,6 +6,8 @@ import MonacoEditor from 'react-monaco-editor'
 const EditorWrapper = styled.div`
   height: 100%;
   padding: 1rem 0;
+
+  background-color: ${props => props.theme.bg};
 `
 
 class Editor extends React.Component {
