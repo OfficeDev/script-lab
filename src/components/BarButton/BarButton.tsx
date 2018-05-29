@@ -8,7 +8,7 @@ const BarButton = styled.div`
 
   height: 100%;
 
-  padding: 0em 1.6rem;
+  padding: 0em 1.2rem;
 
   border: 0;
 
