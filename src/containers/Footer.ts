@@ -5,7 +5,7 @@ import { getActiveField } from './utils'
 
 const getLanguage = state => {
   const activeField = getActiveField(state)
-  return activeField ? activeField.meta.language : 'plaintext'
+  return activeField ? activeField.metadata.language : 'plaintext'
 }
 
 const mapStateToProps = state => ({

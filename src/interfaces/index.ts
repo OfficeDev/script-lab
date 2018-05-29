@@ -13,7 +13,7 @@ export interface ISnippetMetadata {
 export interface ISnippetField {
   name: string
   value: string
-  meta: ISnippetFieldMetadata
+  metadata: ISnippetFieldMetadata
 }
 
 export interface ISnippetFieldMetadata {

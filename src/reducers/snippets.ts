@@ -12,7 +12,7 @@ const MockSnippet = {
     Script: {
       name: 'Script',
       value: '// This is my value',
-      meta: {
+      metadata: {
         type: SnippetFieldTypes.Script,
         language: SupportedLanguages.TypeScript,
       },
@@ -20,7 +20,7 @@ const MockSnippet = {
     HTML: {
       name: 'HTML',
       value: '<div></div>',
-      meta: {
+      metadata: {
         type: SnippetFieldTypes.HTML,
         language: SupportedLanguages.HTML,
       },
@@ -28,7 +28,7 @@ const MockSnippet = {
     CSS: {
       name: 'CSS',
       value: '.some-class{\n\tbackground: blue;\n}\n',
-      meta: {
+      metadata: {
         type: SnippetFieldTypes.CSS,
         language: SupportedLanguages.CSS,
       },
@@ -52,10 +52,9 @@ const snippets = (state: IState = initialState, action) => {
   const newState = Object.assign({}, state)
   switch (action.type) {
     case UPDATE_SNIPPET_FIELD:
-      console.log(action)
       const snippet = state.items[action.snippetId]
       if (snippet) {
-        snippet.fields[action.fieldName] = action.value
+        snippet.fields[action.fieldName].value = action.value
         newState.items[action.snippetId] = snippet
       } else {
         console.error("Tried to update a snippet that doesn't exist")

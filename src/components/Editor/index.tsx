@@ -99,7 +99,7 @@ class Editor extends React.Component<IProps> {
         <EditorWrapper>
           <MonacoEditor
             theme="vs-dark"
-            language={activeField.meta.language.toLowerCase()}
+            language={activeField.metadata.language.toLowerCase()}
             value={editorValue}
             options={editorOptions}
             onChange={this.updateValue}
