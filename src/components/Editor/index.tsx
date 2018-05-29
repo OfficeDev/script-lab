@@ -2,7 +2,9 @@ import * as React from 'react'
 import styled from 'styled-components'
 
 import MonacoEditor from 'react-monaco-editor'
+
 import { ISnippet, ISnippetField } from '../../interfaces'
+import { Pivot, PivotBar } from '../common/PivotBar'
 
 const EditorLayout = styled.div`
   display: grid;
@@ -35,6 +37,7 @@ interface IProps {
     activeFieldName: string,
     value: string,
   ) => void
+  changeActiveField: (fieldName: string) => void
   snippet: ISnippet
   activeField: ISnippetField
   editorValue: string
@@ -64,6 +67,11 @@ class Editor extends React.Component<IProps> {
     window.removeEventListener('resize', this.resizeListener)
   }
 
+  onSelect = fieldName => () => {
+    console.log(`selected ${fieldName}`)
+    this.props.changeActiveField(fieldName)
+  }
+
   updateValue = newValue =>
     this.props.updateSnippet(
       this.props.snippet.id,
@@ -72,14 +80,26 @@ class Editor extends React.Component<IProps> {
     )
 
   render() {
-    const { editorValue } = this.props
+    const { editorValue, snippet, activeField } = this.props
     return (
       <EditorLayout>
-        <CommandBar>asdf</CommandBar>
+        <CommandBar>
+          <PivotBar>
+            {Object.keys(snippet.fields).map(fieldName => (
+              <Pivot
+                key={fieldName}
+                isActive={fieldName === activeField.name}
+                onSelect={this.onSelect(fieldName)}
+              >
+                {fieldName}
+              </Pivot>
+            ))}
+          </PivotBar>
+        </CommandBar>
         <EditorWrapper>
           <MonacoEditor
             theme="vs-dark"
-            language="typescript"
+            language={activeField.meta.language.toLowerCase()}
             value={editorValue}
             options={editorOptions}
             onChange={this.updateValue}

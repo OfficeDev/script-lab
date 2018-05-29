@@ -1,5 +1,5 @@
-import { UPDATE_SNIPPET } from '../actions/types'
-import { ISnippet, SnippetFieldTypes } from '../interfaces'
+import { UPDATE_SNIPPET, CHANGE_ACTIVE_FIELD } from '../actions/types'
+import { ISnippet, SnippetFieldTypes, SupportedLanguages } from '../interfaces'
 
 const MockSnippet = {
   id: '123',
@@ -10,6 +10,23 @@ const MockSnippet = {
       value: '// This is my value',
       meta: {
         type: SnippetFieldTypes.Script,
+        language: SupportedLanguages.TypeScript,
+      },
+    },
+    HTML: {
+      name: 'HTML',
+      value: '<div></div>',
+      meta: {
+        type: SnippetFieldTypes.HTML,
+        language: SupportedLanguages.HTML,
+      },
+    },
+    CSS: {
+      name: 'CSS',
+      value: '.some-class{\n\tbackground: blue;\n}\n',
+      meta: {
+        type: SnippetFieldTypes.CSS,
+        language: SupportedLanguages.CSS,
       },
     },
   },
@@ -39,6 +56,9 @@ const snippets = (state: IState = initialState, action) => {
       } else {
         console.error("Tried to update a snippet that doesn't exist")
       }
+      return newState
+    case CHANGE_ACTIVE_FIELD:
+      newState.activeFieldName = action.fieldName
       return newState
 
     default:

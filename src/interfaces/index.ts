@@ -7,12 +7,13 @@ export interface ISnippet {
 export interface ISnippetField {
   name: string
   value: string
-  meta?: ISnippetMetadata
+  meta: ISnippetMetadata
 }
 
 export interface ISnippetMetadata {
   type?: SnippetFieldTypes
   lastModified?: number
+  language: SupportedLanguages
 }
 
 export enum SnippetFieldTypes {
@@ -20,4 +21,11 @@ export enum SnippetFieldTypes {
   Script = 'Script',
   CSS = 'CSS',
   Libraries = 'Libraries',
+}
+
+export enum SupportedLanguages {
+  TypeScript = 'TypeScript',
+  JavaScript = 'JavaScript',
+  HTML = 'HTML',
+  CSS = 'CSS',
 }

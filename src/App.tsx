@@ -4,7 +4,7 @@ import { NavLink, Switch, Route } from 'react-router-dom'
 
 import { BarButton } from './components/'
 
-import { Editor } from './containers'
+import { Editor, Footer } from './containers'
 
 import UserPresence from './components/UserPresence'
 
@@ -39,15 +39,6 @@ const Content = styled.div`
   overflow: hidden;
 
   background: ${props => props.theme.bg};
-`
-
-const Footer = styled.footer`
-  grid-area: footer;
-
-  display: flex;
-  align-items: center;
-
-  background: ${props => props.theme.accent};
 `
 
 const Blank = styled.div`
@@ -88,7 +79,7 @@ class App extends React.Component {
           <Content>
             <Main />
           </Content>
-          <Footer>Footer</Footer>
+          <Footer />
         </AppLayout>
       </ThemeProvider>
     )

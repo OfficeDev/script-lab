@@ -2,14 +2,7 @@ import { connect } from 'react-redux'
 import { updateSnippet, changeActiveField } from '../actions'
 
 import { Editor } from '../components'
-
-const getActiveSnippet = state =>
-  state.snippets.items[state.snippets.activeSnippetId]
-
-const getActiveField = state => {
-  const snippet = getActiveSnippet(state)
-  return snippet ? snippet.fields[state.snippets.activeFieldName] : null
-}
+import { getActiveSnippet, getActiveField } from './utils'
 
 const getEditorValue = state => {
   const activeField = getActiveField(state)
