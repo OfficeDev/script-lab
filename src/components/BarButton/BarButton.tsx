@@ -1,13 +1,14 @@
+import * as React from 'react'
 import styled from 'styled-components'
 
-export default styled.div`
+const BarButton = styled.div`
   display: flex;
   align-items: center;
   justify-items: center;
 
   height: 100%;
 
-  padding: 0em 1rem;
+  padding: 0em 1.6rem;
 
   border: 0;
 
@@ -23,4 +24,14 @@ export default styled.div`
   &:active {
     background: rgba(0, 0, 0, 0.4);
   }
+
+  & > i {
+    margin-right: 0.6rem;
+  }
+
+  & > i:last-child {
+    margin-right: 0;
+  }
 `
+
+export default BarButton

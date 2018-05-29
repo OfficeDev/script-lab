@@ -2,9 +2,7 @@ import * as React from 'react'
 import styled, { ThemeProvider } from 'styled-components'
 import { NavLink, Switch, Route } from 'react-router-dom'
 
-import { BarButton, FabricIcon } from './components/'
-
-import { Editor, Footer } from './containers'
+import { Header, Editor, Footer } from './containers'
 
 import UserPresence from './components/UserPresence'
 
@@ -22,15 +20,6 @@ const AppLayout = styled.div`
   grid-template-columns: auto;
   grid-template-rows: 4.4rem auto 2.2rem;
   grid-template-areas: 'header' 'content' 'footer';
-`
-
-const Header = styled.header.attrs({ className: 'ms-font-l' })`
-  grid-area: header;
-
-  display: flex;
-  align-items: center;
-
-  background: ${props => props.theme.accent};
 `
 
 const Content = styled.div`
@@ -66,13 +55,7 @@ class App extends React.Component {
     return (
       <ThemeProvider theme={theme}>
         <AppLayout>
-          <Header>
-            <BarButton>
-              <FabricIcon name="GlobalNavButton" />
-            </BarButton>
-            <BarButton>Snippet Name</BarButton>
-            <UserPresence />
-          </Header>
+          <Header />
           <Content>
             <Main />
           </Content>
