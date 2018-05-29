@@ -7,9 +7,13 @@
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
     "react-monaco-editor": "0.14.1",
+    "react-redux": "^5.0.7",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
     "react-scripts-ts": "2.16.0",
+    "redux": "^4.0.0",
+    "redux-observable": "^0.18.0",
+    "rxjs": "^6.2.0",
     "styled-components": "^3.2.6"
   },
   "scripts": {
@@ -39,6 +43,7 @@
     "lint-staged": "^7.1.0",
     "prettier": "^1.12.1",
     "react-test-renderer": "^16.3.2",
+    "redux-devtools": "^3.4.1",
     "typescript": "^2.8.3"
   },
   "lint-staged": {
