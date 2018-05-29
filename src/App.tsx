@@ -2,7 +2,7 @@ import * as React from 'react'
 import styled, { ThemeProvider } from 'styled-components'
 import { NavLink, Switch, Route } from 'react-router-dom'
 
-import { BarButton } from './components/'
+import { BarButton, FabricIcon } from './components/'
 
 import { Editor, Footer } from './containers'
 
@@ -68,10 +68,7 @@ class App extends React.Component {
         <AppLayout>
           <Header>
             <BarButton>
-              <i
-                className="ms-Icon ms-Icon--GlobalNavButton"
-                aria-hidden="true"
-              />
+              <FabricIcon name="GlobalNavButton" />
             </BarButton>
             <BarButton>Snippet Name</BarButton>
             <UserPresence />
