@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import { updateSnippet, changeActiveField } from '../actions'
+import { updateSnippetField, changeActiveField } from '../actions'
 
 import { Editor } from '../components'
 import { getActiveSnippet, getActiveField } from './utils'
@@ -17,7 +17,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   updateSnippet: (snippetId: string, fieldName: string, value: string) =>
-    dispatch(updateSnippet(snippetId, fieldName, value)),
+    dispatch(updateSnippetField(snippetId, fieldName, value)),
   changeActiveField: (fieldName: string) =>
     dispatch(changeActiveField(fieldName)),
 })

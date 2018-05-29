@@ -1,9 +1,13 @@
-import { UPDATE_SNIPPET, CHANGE_ACTIVE_FIELD } from '../actions/types'
+import {
+  UPDATE_SNIPPET_METADATA,
+  UPDATE_SNIPPET_FIELD,
+  CHANGE_ACTIVE_FIELD,
+} from '../actions/types'
 import { ISnippet, SnippetFieldTypes, SupportedLanguages } from '../interfaces'
 
 const MockSnippet = {
   id: '123',
-  name: 'Snippet #1',
+  metadata: { name: 'Snippet #1', dateCreated: 123 },
   fields: {
     Script: {
       name: 'Script',
@@ -47,7 +51,7 @@ const initialState: IState = {
 const snippets = (state: IState = initialState, action) => {
   const newState = Object.assign({}, state)
   switch (action.type) {
-    case UPDATE_SNIPPET:
+    case UPDATE_SNIPPET_FIELD:
       console.log(action)
       const snippet = state.items[action.snippetId]
       if (snippet) {
@@ -55,6 +59,13 @@ const snippets = (state: IState = initialState, action) => {
         newState.items[action.snippetId] = snippet
       } else {
         console.error("Tried to update a snippet that doesn't exist")
+      }
+      return newState
+
+    case UPDATE_SNIPPET_METADATA:
+      newState.items[action.snippetId].metadata = {
+        ...newState.items[action.snippetId].metadata,
+        ...action.metadata,
       }
       return newState
     case CHANGE_ACTIVE_FIELD:

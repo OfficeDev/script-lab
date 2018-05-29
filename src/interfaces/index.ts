@@ -1,16 +1,22 @@
 export interface ISnippet {
   id: string
-  name: string
+  metadata: ISnippetMetadata
   fields: { [fieldName: string]: ISnippetField }
+}
+
+export interface ISnippetMetadata {
+  name: string
+  description?: string
+  dateCreated: number
 }
 
 export interface ISnippetField {
   name: string
   value: string
-  meta: ISnippetMetadata
+  meta: ISnippetFieldMetadata
 }
 
-export interface ISnippetMetadata {
+export interface ISnippetFieldMetadata {
   type?: SnippetFieldTypes
   lastModified?: number
   language: SupportedLanguages

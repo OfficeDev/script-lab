@@ -5,6 +5,7 @@
   },
   "rules": {
     "member-access": [true, "no-public"],
+    "member-ordering": false,
     "ordered-imports": false,
     "object-literal-sort-keys": false,
     "no-console": false
