@@ -22,8 +22,7 @@
     "test": "react-scripts-ts test --env=jsdom",
     "eject": "react-scripts-ts eject",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook",
-    "precommit": "lint-staged"
+    "build-storybook": "build-storybook"
   },
   "devDependencies": {
     "@storybook/addon-actions": "^3.4.4",
@@ -38,18 +37,10 @@
     "@types/storybook__addon-storyshots": "^3.4.1",
     "babel-core": "^6.26.3",
     "babel-runtime": "^6.26.0",
-    "husky": "^0.14.3",
     "jest": "^22.4.3",
-    "lint-staged": "^7.1.0",
     "prettier": "^1.12.1",
     "react-test-renderer": "^16.3.2",
     "redux-devtools": "^3.4.1",
     "typescript": "^2.8.3"
-  },
-  "lint-staged": {
-    "src/**/*.{js,jsx,json,css,ts,tsx}": [
-      "prettier --write",
-      "git add"
-    ]
   }
 }

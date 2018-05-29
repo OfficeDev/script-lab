@@ -2,6 +2,7 @@ import * as React from 'react'
 import styled from 'styled-components'
 
 import MonacoEditor from 'react-monaco-editor'
+import { ISnippet, ISnippetField } from '../../interfaces'
 
 const EditorWrapper = styled.div`
   height: 100%;
@@ -10,18 +11,34 @@ const EditorWrapper = styled.div`
   background-color: ${props => props.theme.bg};
 `
 
-class Editor extends React.Component {
-  state = { value: '' }
+interface IProps {
+  // from redux
+  updateSnippet: (
+    snippetId: string,
+    activeFieldName: string,
+    value: string,
+  ) => void
+  snippet: ISnippet
+  activeField: ISnippetField
+  editorValue: string
+}
 
-  updateValue = newValue => this.setState({ value: newValue })
+class Editor extends React.Component<IProps> {
+  updateValue = newValue =>
+    this.props.updateSnippet(
+      this.props.snippet.id,
+      this.props.activeField.name,
+      newValue,
+    )
 
   render() {
+    const { editorValue } = this.props
     return (
       <EditorWrapper>
         <MonacoEditor
           theme="vs-dark"
           language="typescript"
-          value={this.state.value}
+          value={editorValue}
           onChange={this.updateValue}
         />
       </EditorWrapper>

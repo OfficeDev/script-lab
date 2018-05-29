@@ -1,3 +1,5 @@
 import { combineReducers } from 'redux'
 
-export default combineReducers({})
+import snippets from './snippets'
+
+export default combineReducers({ snippets })

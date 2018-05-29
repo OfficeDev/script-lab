@@ -6,6 +6,7 @@
   "rules": {
     "member-access": [true, "no-public"],
     "ordered-imports": false,
-    "object-literal-sort-keys": false
+    "object-literal-sort-keys": false,
+    "no-console": false
   }
 }

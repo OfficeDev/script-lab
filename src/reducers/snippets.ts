@@ -1,20 +1,44 @@
 import { UPDATE_SNIPPET } from '../actions/types'
+import { ISnippet, SnippetFieldTypes } from '../interfaces'
 
-const initialState = {
-  snippets: {},
+const MockSnippet = {
+  id: '123',
+  name: 'Snippet #1',
+  fields: {
+    Script: {
+      name: 'Script',
+      value: '// This is my value',
+      meta: {
+        type: SnippetFieldTypes.Script,
+      },
+    },
+  },
+}
+
+interface IState {
+  items: { [snippetId: string]: ISnippet }
+  activeSnippetId: string
+  activeFieldName: string
+}
+
+const initialState: IState = {
+  items: { '123': MockSnippet },
   activeSnippetId: '123',
   activeFieldName: 'Script',
 }
 
-const snippets = (state = initialState, action) => {
+const snippets = (state: IState = initialState, action) => {
   const newState = Object.assign({}, state)
   switch (action.type) {
     case UPDATE_SNIPPET:
-      const snippet = state.snippets[action.snippetId]
-      snippet[action.fieldName] = action.value
-
-      newState.snippets[action.snippetId] = snippet
-
+      console.log(action)
+      const snippet = state.items[action.snippetId]
+      if (snippet) {
+        snippet.fields[action.fieldName] = action.value
+        newState.items[action.snippetId] = snippet
+      } else {
+        console.error("Tried to update a snippet that doesn't exist")
+      }
       return newState
 
     default:
