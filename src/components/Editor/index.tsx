@@ -12,7 +12,7 @@ const EditorLayout = styled.div`
   background-color: ${props => props.theme.bg};
 
   grid-template-columns: auto;
-  grid-template-rows: 4.4rem auto;
+  grid-template-rows: 4rem auto;
   grid-template-areas: 'command-bar' 'editor';
 `
 
@@ -84,7 +84,7 @@ class Editor extends React.Component<IProps> {
     return (
       <EditorLayout>
         <CommandBar>
-          <PivotBar>
+          {/* <PivotBar>
             {Object.keys(snippet.fields).map(fieldName => (
               <Pivot
                 key={fieldName}
@@ -94,7 +94,7 @@ class Editor extends React.Component<IProps> {
                 {fieldName}
               </Pivot>
             ))}
-          </PivotBar>
+          </PivotBar> */}
         </CommandBar>
         <EditorWrapper>
           <MonacoEditor

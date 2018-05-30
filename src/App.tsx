@@ -18,7 +18,7 @@ const AppLayout = styled.div`
   display: grid;
 
   grid-template-columns: auto;
-  grid-template-rows: 4.4rem auto 2.2rem;
+  grid-template-rows: 4rem auto 2rem;
   grid-template-areas: 'header' 'content' 'footer';
 `
 

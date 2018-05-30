@@ -1,18 +1,41 @@
 import * as React from 'react'
-import styled from 'styled-components'
 
-import { BarButton, FabricIcon, Label, UserPresence } from '../'
-import SnippetSettings from './SnippetSettings'
+import { createTheme } from 'office-ui-fabric-react/lib/Styling'
+import { Customizer } from 'office-ui-fabric-react/lib/Utilities'
+
+import { CommandButton } from 'office-ui-fabric-react/lib/Button'
+import { CommandBar } from 'office-ui-fabric-react/lib/CommandBar'
+
 import { ISnippet, ISnippetMetadata } from '../../interfaces'
 
-const HeaderWrapper = styled.header.attrs({ className: 'ms-font-l' })`
-  grid-area: header;
+import SnippetSettings from './SnippetSettings'
 
-  display: flex;
-  align-items: center;
-
-  background: ${props => props.theme.accent};
-`
+const headerTheme = createTheme({
+  palette: {
+    themePrimary: '#ffffff',
+    themeLighterAlt: '#767676',
+    themeLighter: '#a6a6a6',
+    themeLight: '#c8c8c8',
+    themeTertiary: '#d0d0d0',
+    themeSecondary: '#dadada',
+    themeDarkAlt: '#eaeaea',
+    themeDark: '#f4f4f4',
+    themeDarker: '#f8f8f8',
+    neutralLighterAlt: '#27794c',
+    neutralLighter: '#2c7e51',
+    neutralLight: '#35875a',
+    neutralQuaternaryAlt: '#3b8d60',
+    neutralQuaternary: '#409165',
+    neutralTertiaryAlt: '#58a47a',
+    neutralTertiary: '#c8c8c8',
+    neutralSecondary: '#d0d0d0',
+    neutralPrimaryAlt: '#dadada',
+    neutralPrimary: '#ffffff',
+    neutralDark: '#f4f4f4',
+    black: '#f8f8f8',
+    white: '#217346',
+  },
+})
 
 interface IProps {
   // redux
@@ -32,29 +55,42 @@ class Header extends React.Component<IProps, IState> {
 
   render() {
     const { snippet } = this.props
+
     return (
       <>
-        <HeaderWrapper>
-          <BarButton>
-            <FabricIcon name="GlobalNavButton" />
-          </BarButton>
-          <BarButton onClick={this.openSnippetSettings}>
-            <Label>{snippet.metadata.name}</Label>
-          </BarButton>
-          <BarButton>
-            <FabricIcon name="Play" />
-            <Label>Run</Label>
-          </BarButton>
-          <BarButton>
-            <FabricIcon name="Share" />
-            <Label>Share</Label>
-          </BarButton>
-          <BarButton>
-            <FabricIcon name="Delete" />
-            <Label>Delete</Label>
-          </BarButton>
-          <UserPresence />
-        </HeaderWrapper>
+        <Customizer settings={{ theme: headerTheme }}>
+          <CommandBar
+            items={[
+              {
+                key: 'nav',
+                iconOnly: true,
+                iconProps: { iconName: 'GlobalNavButton' },
+              },
+              {
+                key: 'SnippetName',
+                text: snippet.metadata.name,
+                onClick: this.openSnippetSettings,
+              },
+              {
+                key: 'run',
+                text: 'Run',
+                iconProps: { iconName: 'Play' },
+              },
+              {
+                key: 'share',
+                text: 'Share',
+                iconProps: { iconName: 'Share' },
+              },
+              {
+                key: 'delete',
+                text: 'Delete',
+                iconProps: { iconName: 'Delete' },
+              },
+            ]}
+            style={{ gridArea: 'header' }}
+            styles={{ root: { paddingLeft: 0 } }}
+          />
+        </Customizer>
         <SnippetSettings
           isOpen={this.state.showSnippetSettings}
           closeSnippetSettings={this.closeSnippetSettings}

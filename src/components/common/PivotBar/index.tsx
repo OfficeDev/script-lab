@@ -8,7 +8,7 @@ interface IPivotWrapperProps {
 const PivotWrapper = styled<IPivotWrapperProps, any>('div')`
   height: 100%;
   font-size: 1.6rem;
-  line-height: 4.4rem;
+  line-height: 4rem;
   padding: 0rem 1rem;
 
   /* padding: 1em; */
