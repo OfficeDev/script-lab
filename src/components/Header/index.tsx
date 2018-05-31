@@ -1,10 +1,18 @@
 import * as React from 'react'
+import styled from 'styled-components'
 
 import { createTheme } from 'office-ui-fabric-react/lib/Styling'
 import { Customizer } from 'office-ui-fabric-react/lib/Utilities'
 
 import { CommandButton } from 'office-ui-fabric-react/lib/Button'
 import { CommandBar } from 'office-ui-fabric-react/lib/CommandBar'
+
+import {
+  IPersonaSharedProps,
+  Persona,
+  PersonaSize,
+  PersonaPresence,
+} from 'office-ui-fabric-react/lib/Persona'
 
 import { ISnippet, ISnippetMetadata } from '../../interfaces'
 
@@ -36,6 +44,13 @@ const headerTheme = createTheme({
     white: '#217346',
   },
 })
+
+const HeaderWrapper = styled.header`
+  grid-area: header;
+  background-color: ${props => props.theme.accent};
+  display: flex;
+  align-items: center;
+`
 
 interface IProps {
   // redux
@@ -71,11 +86,7 @@ class Header extends React.Component<IProps, IState> {
                 text: snippet.metadata.name,
                 onClick: this.openSnippetSettings,
               },
-              {
-                key: 'run',
-                text: 'Run',
-                iconProps: { iconName: 'Play' },
-              },
+              { key: 'run', text: 'Run', iconProps: { iconName: 'Play' } },
               {
                 key: 'share',
                 text: 'Share',
@@ -87,8 +98,23 @@ class Header extends React.Component<IProps, IState> {
                 iconProps: { iconName: 'Delete' },
               },
             ]}
-            style={{ gridArea: 'header' }}
-            styles={{ root: { paddingLeft: 0 } }}
+            farItems={[
+              {
+                key: 'user',
+                onRender: () => (
+                  <div style={{ width: '32px' }}>
+                    <Persona
+                      imageUrl="https://lh3.googleusercontent.com/-e2y2T1aiT00/AAAAAAAAAAI/AAAAAAAAAAA/AB6qoq09tgaWz7fRfJi2ZBfVc5Tiup5Elw/s96-c-mo/photo.jpg"
+                      size={PersonaSize.size32}
+                      presence={PersonaPresence.online}
+                    />
+                  </div>
+                ),
+              },
+            ]}
+            styles={{
+              root: { paddingLeft: 0 },
+            }}
           />
         </Customizer>
         <SnippetSettings

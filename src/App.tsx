@@ -4,14 +4,7 @@ import { NavLink, Switch, Route } from 'react-router-dom'
 
 import { Header, Editor, Footer } from './containers'
 
-import UserPresence from './components/UserPresence'
-
-const theme = {
-  accent: '#217346',
-  darkAccent: '#103822',
-  bg: '#1e1e1e',
-  fg: '#eeeeee',
-}
+import theme from './theme'
 
 const AppLayout = styled.div`
   height: 100vh;

@@ -67,6 +67,7 @@ const snippets = (state: IState = initialState, action) => {
         ...action.metadata,
       }
       return newState
+
     case CHANGE_ACTIVE_FIELD:
       newState.activeFieldName = action.fieldName
       return newState

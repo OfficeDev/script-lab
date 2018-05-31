@@ -3,8 +3,9 @@ import styled from 'styled-components'
 
 import MonacoEditor from 'react-monaco-editor'
 
+import CommandBar from './CommandBar'
+
 import { ISnippet, ISnippetField } from '../../interfaces'
-import { Pivot, PivotBar } from '../common/PivotBar'
 
 const EditorLayout = styled.div`
   display: grid;
@@ -23,12 +24,12 @@ const EditorWrapper = styled.div`
   padding: 1rem 0;
 `
 
-const CommandBar = styled.div`
-  grid-area: command-bar;
-  height: 100%;
+// const CommandBar = styled.div`
+//   grid-area: command-bar;
+//   height: 100%;
 
-  background-color: ${props => props.theme.darkAccent};
-`
+//   background-color: ${props => props.theme.darkAccent};
+// `
 
 interface IProps {
   // from redux
@@ -80,22 +81,15 @@ class Editor extends React.Component<IProps> {
     )
 
   render() {
-    const { editorValue, snippet, activeField } = this.props
+    const { editorValue, snippet, activeField, changeActiveField } = this.props
+    console.log(activeField)
     return (
       <EditorLayout>
-        <CommandBar>
-          {/* <PivotBar>
-            {Object.keys(snippet.fields).map(fieldName => (
-              <Pivot
-                key={fieldName}
-                isActive={fieldName === activeField.name}
-                onSelect={this.onSelect(fieldName)}
-              >
-                {fieldName}
-              </Pivot>
-            ))}
-          </PivotBar> */}
-        </CommandBar>
+        <CommandBar
+          fieldNames={Object.keys(snippet.fields)}
+          activeField={activeField.name}
+          changeActiveField={changeActiveField}
+        />
         <EditorWrapper>
           <MonacoEditor
             theme="vs-dark"
