@@ -1,10 +1,10 @@
 import * as React from 'react'
-import styled, { ThemeProvider } from 'styled-components'
+import styled from 'styled-components'
 import { NavLink, Switch, Route } from 'react-router-dom'
 
 import { Header, Editor, Footer } from './containers'
 
-import theme from './theme'
+import { StyledComponentsThemeProvider } from './theme'
 
 const AppLayout = styled.div`
   height: 100vh;
@@ -23,30 +23,17 @@ const Content = styled.div`
   background: ${props => props.theme.bg};
 `
 
-const Blank = styled.div`
-  height: 100%;
-  background: pink;
-`
-
-const StyledIcon = styled.i`
-  height: 100%;
-  color: white;
-`
-// =============================
-
-// =============================
-
 const Main = () => (
   <Switch>
     <Route exact={true} path="/" component={Editor} />
-    <Route exact={true} path="/backstage" component={Blank} />
+    <Route exact={true} path="/backstage" component={Editor} />
   </Switch>
 )
 
 class App extends React.Component {
   render() {
     return (
-      <ThemeProvider theme={theme}>
+      <StyledComponentsThemeProvider>
         <AppLayout>
           <Header />
           <Content>
@@ -54,7 +41,7 @@ class App extends React.Component {
           </Content>
           <Footer />
         </AppLayout>
-      </ThemeProvider>
+      </StyledComponentsThemeProvider>
     )
   }
 }

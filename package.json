@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@types/storybook__react": "^3.0.7",
     "office-ui-fabric-react": "^6.0.0-beta6",
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
@@ -27,6 +26,7 @@
   },
   "devDependencies": {
     "@storybook/addon-actions": "^3.4.4",
+    "@storybook/addon-knobs": "^3.4.6",
     "@storybook/addon-links": "^3.4.4",
     "@storybook/addon-storyshots": "^3.4.4",
     "@storybook/addons": "^3.4.4",
@@ -36,9 +36,11 @@
     "@types/react": "^16.3.14",
     "@types/react-dom": "^16.0.5",
     "@types/storybook__addon-storyshots": "^3.4.1",
+    "@types/storybook__react": "^3.0.7",
     "babel-core": "^6.26.3",
     "babel-runtime": "^6.26.0",
     "jest": "^22.4.3",
+    "monaco-editor-webpack-plugin": "1.2.1",
     "prettier": "^1.12.1",
     "react-test-renderer": "^16.3.2",
     "redux-devtools": "^3.4.1",

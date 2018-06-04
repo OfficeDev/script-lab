@@ -7,6 +7,13 @@ import CommandBar from './CommandBar'
 
 import { ISnippet, ISnippetField } from '../../interfaces'
 
+const EditorWrapper = styled.div`
+  grid-area: editor;
+  height: 100%;
+
+  padding: 1rem 0;
+`
+
 const EditorLayout = styled.div`
   display: grid;
   height: 100%;
@@ -17,13 +24,6 @@ const EditorLayout = styled.div`
   grid-template-areas: 'command-bar' 'editor';
 `
 
-const EditorWrapper = styled.div`
-  grid-area: editor;
-  height: 100%;
-
-  padding: 1rem 0;
-`
-
 // const CommandBar = styled.div`
 //   grid-area: command-bar;
 //   height: 100%;
@@ -31,7 +31,7 @@ const EditorWrapper = styled.div`
 //   background-color: ${props => props.theme.darkAccent};
 // `
 
-interface IProps {
+export interface IEditorProps {
   // from redux
   updateSnippet: (
     snippetId: string,
@@ -49,7 +49,7 @@ const editorOptions = {
   scrollBeyondLastLine: false,
 }
 
-class Editor extends React.Component<IProps> {
+class Editor extends React.Component<IEditorProps> {
   editor
   resizeListener
 
@@ -82,24 +82,27 @@ class Editor extends React.Component<IProps> {
 
   render() {
     const { editorValue, snippet, activeField, changeActiveField } = this.props
-    console.log(activeField)
     return (
       <EditorLayout>
-        <CommandBar
-          fieldNames={Object.keys(snippet.fields)}
-          activeField={activeField.name}
-          changeActiveField={changeActiveField}
-        />
-        <EditorWrapper>
-          <MonacoEditor
-            theme="vs-dark"
-            language={activeField.metadata.language.toLowerCase()}
-            value={editorValue}
-            options={editorOptions}
-            onChange={this.updateValue}
-            editorDidMount={this.handleEditorDidMount}
-          />
-        </EditorWrapper>
+        {snippet !== undefined && (
+          <>
+            <CommandBar
+              fieldNames={Object.keys(snippet.fields)}
+              activeField={activeField.name}
+              changeActiveField={changeActiveField}
+            />
+            <EditorWrapper>
+              <MonacoEditor
+                theme="vs-dark"
+                language={activeField.metadata.language.toLowerCase()}
+                value={editorValue}
+                options={editorOptions}
+                onChange={this.updateValue}
+                editorDidMount={this.handleEditorDidMount}
+              />
+            </EditorWrapper>
+          </>
+        )}
       </EditorLayout>
     )
   }
