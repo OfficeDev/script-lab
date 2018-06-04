@@ -7,7 +7,7 @@ import styled from 'styled-components'
 // } from 'office-ui-fabric-react/lib/Pivot'
 // import theme from '../../theme'
 
-import { PivotBar, Pivot } from '../common/PivotBar'
+import { PivotBar, Pivot } from '../'
 
 const CommandBarWrapper = styled.div`
   grid-area: command-bar;
