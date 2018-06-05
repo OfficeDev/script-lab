@@ -34,6 +34,7 @@ export interface IEditorProps {
 
 class Editor extends Component<IEditorProps> {
   editor: monaco.editor.IStandaloneCodeEditor
+  editorLayoutInterval: any
   monaco: any
 
   constructor(props) {
@@ -52,6 +53,9 @@ class Editor extends Component<IEditorProps> {
 
     createAllModelsForSnippet(this.monaco, this.props.snippet)
     this.changeActiveFile(this.props.activeFile)
+
+    window.addEventListener('resize', this.resizeEditor)
+    this.editorLayoutInterval = setInterval(this.resizeEditor, 3000)
   }
 
   getMonacoOptions = (): monaco.editor.IEditorConstructionOptions => {
@@ -104,6 +108,13 @@ class Editor extends Component<IEditorProps> {
         this.editor.setPosition(cachedModel.cursorPos)
         this.editor.revealPosition(cachedModel.cursorPos)
       }
+    })
+  }
+
+  resizeEditor = () => {
+    console.info('editor resizing!')
+    this.forceUpdate(() => {
+      this.editor.layout()
     })
   }
 
