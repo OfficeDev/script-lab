@@ -111,6 +111,7 @@ class Editor extends Component<IEditorProps> {
     })
   }
 
+  // todo debounce
   resizeEditor = () => {
     console.info('editor resizing!')
     this.forceUpdate(() => {
