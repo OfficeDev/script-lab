@@ -1,0 +1,1 @@
+export { loadMonaco } from './loadMonaco';

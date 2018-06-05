@@ -1,7 +1,7 @@
 import * as React from 'react'
 import styled from 'styled-components'
 
-import MonacoEditor from 'react-monaco-editor'
+import MonacoEditor from './MonacoEditor'
 
 import CommandBar from './CommandBar'
 

@@ -1,10 +1,10 @@
-import * as React from 'react'
-import styled from 'styled-components'
-import { NavLink, Switch, Route } from 'react-router-dom'
+import * as React from 'react';
+import styled from 'styled-components';
+import { NavLink, Switch, Route } from 'react-router-dom';
 
-import { Header, Editor, Footer } from './containers'
+import { Header, Editor, Footer } from './containers';
 
-import { StyledComponentsThemeProvider } from './theme'
+import { StyledComponentsThemeProvider } from './theme';
 
 const AppLayout = styled.div`
   height: 100vh;
@@ -13,7 +13,7 @@ const AppLayout = styled.div`
   grid-template-columns: auto;
   grid-template-rows: 4rem auto 2rem;
   grid-template-areas: 'header' 'content' 'footer';
-`
+`;
 
 const Content = styled.div`
   grid-area: content;
@@ -21,14 +21,14 @@ const Content = styled.div`
   overflow: hidden;
 
   background: ${props => props.theme.bg};
-`
+`;
 
 const Main = () => (
   <Switch>
     <Route exact={true} path="/" component={Editor} />
     <Route exact={true} path="/backstage" component={Editor} />
   </Switch>
-)
+);
 
 class App extends React.Component {
   render() {
@@ -37,13 +37,14 @@ class App extends React.Component {
         <AppLayout>
           <Header />
           <Content>
-            <Main />
+            {/* <Main /> */}
+            <Editor />
           </Content>
           <Footer />
         </AppLayout>
       </StyledComponentsThemeProvider>
-    )
+    );
   }
 }
 
-export default App
+export default App;
