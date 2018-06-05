@@ -8,6 +8,7 @@ import styled from 'styled-components'
 // import theme from '../../theme'
 
 import { PivotBar, Pivot } from '../'
+import { ISnippetField } from '../../interfaces'
 
 const CommandBarWrapper = styled.div`
   grid-area: command-bar;
@@ -15,15 +16,17 @@ const CommandBarWrapper = styled.div`
 `
 
 interface IProps {
-  fieldNames: string[]
-  activeField: string
-  changeActiveField: (fieldName: string) => void
+  fields: ISnippetField[]
+  activeField: ISnippetField
+  changeActiveField: (field: ISnippetField) => void
 }
 
 class CommandBar extends React.Component<IProps> {
   render() {
-    const { fieldNames, activeField, changeActiveField } = this.props
-    console.log(fieldNames)
+    const { fields, activeField, changeActiveField } = this.props
+    console.log(fields)
+    const activeFieldName = activeField ? activeField.name : ''
+
     return (
       // todo make fabric control once proper styles is supported
       // <Pivot
@@ -37,21 +40,21 @@ class CommandBar extends React.Component<IProps> {
       // </Pivot>
       <CommandBarWrapper>
         <PivotBar>
-          {fieldNames.map(fieldName => (
+          {fields.map(field => (
             <Pivot
-              key={fieldName}
-              isActive={fieldName === activeField}
-              onSelect={this.handleLinkClick(fieldName)}
+              key={field.name}
+              isActive={field.name === activeFieldName}
+              onSelect={this.handleLinkClick(field)}
             >
-              {fieldName}
+              {field.name}
             </Pivot>
           ))}
         </PivotBar>
       </CommandBarWrapper>
     )
   }
-  private handleLinkClick = (fieldName: string) => () => {
-    this.props.changeActiveField(fieldName)
+  private handleLinkClick = (field: ISnippetField) => () => {
+    this.props.changeActiveField(field)
   }
   // private getTabId = (itemKey: string): string => {
   //   return `PivotField_${itemKey}`

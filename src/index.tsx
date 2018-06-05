@@ -16,7 +16,7 @@ import App from './App'
 import './index.css'
 
 import registerServiceWorker from './registerServiceWorker'
-import { loadMonaco } from './utils'
+// import { loadMonaco } from './utils'
 
 loadTheme({ palette: fabricTheme })
 initializeIcons()
@@ -25,18 +25,16 @@ const rootEl = document.getElementById('root') as HTMLElement
 
 const store = createStore(rootReducer)
 
-loadMonaco().then(() => {
-  ReactDOM.render(
-    <Provider store={store}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </Provider>,
-    rootEl,
-  )
+ReactDOM.render(
+  <Provider store={store}>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </Provider>,
+  rootEl,
+)
 
-  registerServiceWorker()
-})
+registerServiceWorker()
 
 // for hot reloading
 // if (module.hot) {
