@@ -1,7 +1,9 @@
 export const getActiveSnippet = state =>
   state.snippets.items[state.snippets.activeSnippetId]
 
-export const getActiveField = state => {
+export const getActiveFile = state => {
   const snippet = getActiveSnippet(state)
-  return snippet ? snippet.fields[state.snippets.activeFieldName] : null
+  return snippet
+    ? snippet.files.find(file => file.name === state.snippets.activeFileName)
+    : null
 }

@@ -1,8 +1,4 @@
-import {
-  UPDATE_SNIPPET_METADATA,
-  UPDATE_SNIPPET_FIELD,
-  CHANGE_ACTIVE_FIELD,
-} from './types'
+import { UPDATE_SNIPPET_METADATA, CHANGE_ACTIVE_FILE } from './types'
 import { ISnippetMetadata } from '../interfaces'
 
 export const updateSnippetMetadata = (
@@ -10,13 +6,7 @@ export const updateSnippetMetadata = (
   metadata: Partial<ISnippetMetadata>,
 ) => ({ type: UPDATE_SNIPPET_METADATA, snippetId, metadata })
 
-export const updateSnippetField = (
-  snippetId: string,
-  fieldName: string,
-  value: string,
-) => ({ type: UPDATE_SNIPPET_FIELD, snippetId, fieldName, value })
-
-export const changeActiveField = (fieldName: string) => ({
-  type: CHANGE_ACTIVE_FIELD,
-  fieldName,
+export const changeActiveFile = (fileName: string) => ({
+  type: CHANGE_ACTIVE_FILE,
+  fileName,
 })

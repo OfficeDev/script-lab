@@ -8,7 +8,7 @@ import styled from 'styled-components'
 // import theme from '../../theme'
 
 import { PivotBar, Pivot } from '../'
-import { ISnippetField } from '../../interfaces'
+import { ISnippetFile } from '../../interfaces'
 
 const CommandBarWrapper = styled.div`
   grid-area: command-bar;
@@ -16,9 +16,9 @@ const CommandBarWrapper = styled.div`
 `
 
 interface IProps {
-  fields: ISnippetField[]
-  activeField: ISnippetField
-  changeActiveField: (field: ISnippetField) => void
+  fields: ISnippetFile[]
+  activeField: ISnippetFile
+  changeActiveField: (field: ISnippetFile) => void
 }
 
 class CommandBar extends React.Component<IProps> {
@@ -53,7 +53,7 @@ class CommandBar extends React.Component<IProps> {
       </CommandBarWrapper>
     )
   }
-  private handleLinkClick = (field: ISnippetField) => () => {
+  private handleLinkClick = (field: ISnippetFile) => () => {
     this.props.changeActiveField(field)
   }
   // private getTabId = (itemKey: string): string => {

@@ -1,7 +1,7 @@
 export interface ISnippet {
   id: string
   metadata: ISnippetMetadata
-  fields: { [fieldName: string]: ISnippetField }
+  files: ISnippetFile[]
 }
 
 export interface ISnippetMetadata {
@@ -10,23 +10,11 @@ export interface ISnippetMetadata {
   dateCreated: number
 }
 
-export interface ISnippetField {
+export interface ISnippetFile {
   name: string
   value: string
-  metadata: ISnippetFieldMetadata
-}
-
-export interface ISnippetFieldMetadata {
-  type?: SnippetFieldTypes
-  lastModified?: number
   language: SupportedLanguages
-}
-
-export enum SnippetFieldTypes {
-  HTML = 'HTML',
-  Script = 'Script',
-  CSS = 'CSS',
-  Libraries = 'Libraries',
+  lastModified: number
 }
 
 export enum SupportedLanguages {

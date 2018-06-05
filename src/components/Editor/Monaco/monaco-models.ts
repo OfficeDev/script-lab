@@ -1,4 +1,4 @@
-import { ISnippet, ISnippetField } from '../../../interfaces'
+import { ISnippet, ISnippetFile } from '../../../interfaces'
 
 interface ICachedModel {
   model: monaco.editor.ITextModel
@@ -8,27 +8,23 @@ interface ICachedModel {
 const cache = {}
 
 export function createAllModelsForSnippet(monaco: any, snippet: ISnippet) {
-  Object.keys(snippet.fields)
-    .map(k => snippet.fields[k])
+  Object.keys(snippet.files)
+    .map(k => snippet.files[k])
     .map(field => createModel(monaco, snippet.id, field))
 }
 
 export function createModel(
   monaco: any,
   snippetId: string,
-  field: ISnippetField,
+  field: ISnippetFile,
 ): ICachedModel {
-  const { metadata, value } = field
+  const { language, value } = field
   const modelId = getModelId(snippetId, field)
   const uri = new monaco.Uri().with({
     scheme: 'file',
     path: modelId,
   })
-  const model = monaco.editor.createModel(
-    value,
-    metadata.language.toLowerCase(),
-    uri,
-  )
+  const model = monaco.editor.createModel(value, language.toLowerCase(), uri)
   cache[modelId] = { model }
 
   return cache[modelId]
@@ -37,7 +33,7 @@ export function createModel(
 export function getModel(
   monaco: any,
   snippetId: string,
-  field: ISnippetField,
+  field: ISnippetFile,
 ): ICachedModel {
   const id = getModelId(snippetId, field)
 
@@ -48,6 +44,6 @@ export function getModel(
   }
 }
 
-function getModelId(snippetId: string, field: ISnippetField) {
-  return `${snippetId}/index.${field.metadata.language}`
+function getModelId(snippetId: string, file: ISnippetFile) {
+  return `${snippetId}/index.${file.language}`
 }

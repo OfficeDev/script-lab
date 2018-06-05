@@ -1,11 +1,11 @@
 import { connect } from 'react-redux'
 import { Footer } from '../components'
 
-import { getActiveField } from './utils'
+import { getActiveFile } from './utils'
 
 const getLanguage = state => {
-  const activeField = getActiveField(state)
-  return activeField ? activeField.metadata.language : 'plaintext'
+  const activeFile = getActiveFile(state)
+  return activeFile ? activeFile.language : 'plaintext'
 }
 
 const mapStateToProps = state => ({

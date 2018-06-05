@@ -2,8 +2,7 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import CommandBar from './CommandBar'
 import Monaco from './Monaco'
-import { ISnippet, ISnippetField } from '../../interfaces'
-import { changeActiveField } from '../../actions'
+import { ISnippet, ISnippetFile } from '../../interfaces'
 import { createAllModelsForSnippet, getModel } from './Monaco/monaco-models'
 
 const EditorWrapper = styled.div`
@@ -25,15 +24,10 @@ const EditorLayout = styled.div`
 
 export interface IEditorProps {
   // from redux
-  updateSnippet: (
-    snippetId: string,
-    activeFieldName: string,
-    value: string,
-  ) => void
-  changeActiveField: (fieldName: string) => void
   snippet: ISnippet
-  activeField: ISnippetField
-  editorValue: string
+  activeFile: ISnippetFile
+
+  changeActiveFile: (fileName: string) => void
 
   onChange: (newValue: string) => void
 }
@@ -41,14 +35,9 @@ export interface IEditorProps {
 class Editor extends Component<IEditorProps> {
   editor: monaco.editor.IStandaloneCodeEditor
   monaco: any
-  activeFile: ISnippetField
 
   constructor(props) {
     super(props)
-
-    this.activeFile = Object.keys(this.props.snippet.fields).map(
-      k => this.props.snippet.fields[k],
-    )[0]
   }
 
   setupEditor = (editor: monaco.editor.IStandaloneCodeEditor, monaco: any) => {
@@ -62,7 +51,7 @@ class Editor extends Component<IEditorProps> {
     })
 
     createAllModelsForSnippet(this.monaco, this.props.snippet)
-    this.changeActiveFile(this.activeFile)
+    this.changeActiveFile(this.props.activeFile)
   }
 
   getMonacoOptions = (): monaco.editor.IEditorConstructionOptions => {
@@ -89,7 +78,7 @@ class Editor extends Component<IEditorProps> {
 
   handleChange = () => {
     const newValue = this.editor.getModel().getValue() || ''
-    const oldValue = this.props.activeField.value
+    const oldValue = this.props.activeFile.value
 
     const codeHasChanged =
       newValue.replace(/\r\n/g, '\n') !== oldValue.replace(/\r\n/g, '\n')
@@ -101,9 +90,12 @@ class Editor extends Component<IEditorProps> {
     }
   }
 
-  changeActiveFile = (field: ISnippetField) => {
-    console.log(field)
-    const cachedModel = getModel(this.monaco, this.props.snippet.id, field)
+  changeActiveFile = (file: ISnippetFile) => {
+    console.log(file)
+    this.setState({ activeFile: file })
+
+    this.props.changeActiveFile(file.name)
+    const cachedModel = getModel(this.monaco, this.props.snippet.id, file)
 
     this.editor.setModel(cachedModel.model)
 
@@ -121,10 +113,10 @@ class Editor extends Component<IEditorProps> {
     return (
       <EditorLayout>
         <CommandBar
-          fields={Object.keys(this.props.snippet.fields).map(
-            k => this.props.snippet.fields[k],
+          fields={Object.keys(this.props.snippet.files).map(
+            k => this.props.snippet.files[k],
           )}
-          activeField={this.activeFile}
+          activeField={this.props.activeFile}
           changeActiveField={this.changeActiveFile}
         />
         <EditorWrapper>

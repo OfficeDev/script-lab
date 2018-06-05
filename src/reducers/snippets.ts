@@ -1,66 +1,47 @@
-import {
-  UPDATE_SNIPPET_METADATA,
-  UPDATE_SNIPPET_FIELD,
-  CHANGE_ACTIVE_FIELD,
-} from '../actions/types'
-import { ISnippet, SnippetFieldTypes, SupportedLanguages } from '../interfaces'
+import { UPDATE_SNIPPET_METADATA, CHANGE_ACTIVE_FILE } from '../actions/types'
+
+import { ISnippet, SupportedLanguages } from '../interfaces'
 
 const MockSnippet = {
   id: '123',
   metadata: { name: 'Snippet #1', dateCreated: 123 },
-  fields: {
-    Script: {
+  files: [
+    {
       name: 'Script',
       value: '// This is my value',
-      metadata: {
-        type: SnippetFieldTypes.Script,
-        language: SupportedLanguages.TypeScript,
-      },
+      language: SupportedLanguages.TypeScript,
+      lastModified: 0,
     },
-    HTML: {
+    {
       name: 'HTML',
       value: '<div></div>',
-      metadata: {
-        type: SnippetFieldTypes.HTML,
-        language: SupportedLanguages.HTML,
-      },
+      language: SupportedLanguages.HTML,
+      lastModified: 0,
     },
-    CSS: {
+    {
       name: 'CSS',
       value: '.some-class{\n\tbackground: blue;\n}\n',
-      metadata: {
-        type: SnippetFieldTypes.CSS,
-        language: SupportedLanguages.CSS,
-      },
+      language: SupportedLanguages.CSS,
+      lastModified: 0,
     },
-  },
+  ],
 }
 
 interface IState {
   items: { [snippetId: string]: ISnippet }
   activeSnippetId: string
-  activeFieldName: string
+  activeFileName: string
 }
 
 const initialState: IState = {
   items: { '123': MockSnippet },
   activeSnippetId: '123',
-  activeFieldName: 'Script',
+  activeFileName: 'Script',
 }
 
 const snippets = (state: IState = initialState, action) => {
   const newState = Object.assign({}, state)
   switch (action.type) {
-    case UPDATE_SNIPPET_FIELD:
-      const snippet = state.items[action.snippetId]
-      if (snippet) {
-        snippet.fields[action.fieldName].value = action.value
-        newState.items[action.snippetId] = snippet
-      } else {
-        console.error("Tried to update a snippet that doesn't exist")
-      }
-      return newState
-
     case UPDATE_SNIPPET_METADATA:
       newState.items[action.snippetId].metadata = {
         ...newState.items[action.snippetId].metadata,
@@ -68,8 +49,8 @@ const snippets = (state: IState = initialState, action) => {
       }
       return newState
 
-    case CHANGE_ACTIVE_FIELD:
-      newState.activeFieldName = action.fieldName
+    case CHANGE_ACTIVE_FILE:
+      newState.activeFileName = action.fileName
       return newState
 
     default:
