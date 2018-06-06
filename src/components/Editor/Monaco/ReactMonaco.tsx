@@ -39,31 +39,7 @@ class ReactMonaco extends Component<IReactMonacoProps> {
     this.deinitializeMonaco()
   }
 
-  // editorWillMount = monaco => this.props.editorWillMount(monaco)
-
   editorDidMount = (editor, monaco) => this.props.editorDidMount(editor, monaco)
-
-  // componentDidUpdate(prevProps) {
-  //   const { value, language, theme } = this.props
-
-  //   if (value !== this.value) {
-  //     this.value = value
-
-  //     if (this.editor) {
-  //       this.pauseCallingOnChange = true
-  //       this.editor.setValue(this.value)
-  //       this.pauseCallingOnChange = false
-  //     }
-  //   }
-
-  //   if (language !== prevProps.language) {
-  //     monaco.editor.setModelLanguage(this.editor.getModel(), language)
-  //   }
-
-  //   if (theme !== prevProps.theme) {
-  //     monaco.editor.setTheme(theme)
-  //   }
-  // }
 
   initializeMonaco = () => {
     const { theme, options } = this.props
@@ -86,20 +62,6 @@ class ReactMonaco extends Component<IReactMonacoProps> {
       this.editor.dispose()
     }
   }
-
-  // editorDidMount = (editor, monaco) => {
-  //   this.props.editorDidMount(editor, monaco)
-
-  //   editor.onDidChangeModelContent(event => {
-  //     const currentValue = editor.getValue()
-
-  //     this.value = currentValue
-
-  //     if (!this.pauseCallingOnChange) {
-  //       this.props.onChange(currentValue, event)
-  //     }
-  //   })
-  // }
 
   render() {
     return (
