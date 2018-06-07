@@ -1,16 +1,13 @@
 import { connect } from 'react-redux'
-import { changeActiveFile } from '../actions'
 
 import { Editor } from '../components'
-import { getActiveSnippet, getActiveFile } from './utils'
+
+import { getSolutions } from '../stores/solutions'
 
 const mapStateToProps = state => ({
-  snippet: getActiveSnippet(state),
-  activeFile: getActiveFile(state),
+  solutions: getSolutions(state),
 })
 
-const mapDispatchToProps = dispatch => ({
-  changeActiveFile: (fileName: string) => dispatch(changeActiveFile(fileName)),
-})
+const mapDispatchToProps = dispatch => ({})
 
 export default connect(mapStateToProps, mapDispatchToProps)(Editor)
