@@ -2,11 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { ISnippet, ISnippetMetadata } from '../../interfaces'
 
-import {
-  Dialog,
-  DialogType,
-  DialogFooter,
-} from 'office-ui-fabric-react/lib/Dialog'
+import { Dialog, DialogType, DialogFooter } from 'office-ui-fabric-react/lib/Dialog'
 
 import { TextField } from 'office-ui-fabric-react/lib/TextField'
 
@@ -16,10 +12,6 @@ interface IProps {
   isOpen: boolean
   closeSnippetSettings: () => void
   snippet: ISnippet
-  updateSnippetMetadata: (
-    snippetId: string,
-    metadata: Partial<ISnippetMetadata>,
-  ) => void
 }
 
 interface IState {
@@ -49,11 +41,7 @@ class SnippetSettings extends React.Component<IProps, IState> {
         dialogContentProps={{ type: DialogType.largeHeader, title: 'Info' }}
         modalProps={{ isBlocking: false }}
       >
-        <TextField
-          label="Name"
-          onChanged={this.updateSnippetName}
-          value={name}
-        />
+        <TextField label="Name" onChanged={this.updateSnippetName} value={name} />
         <TextField
           label="Description"
           multiline={true}
@@ -76,15 +64,13 @@ class SnippetSettings extends React.Component<IProps, IState> {
       </Dialog>
     )
   }
-  private updateSnippetName = (newName: string) =>
-    this.setState({ name: newName })
+  private updateSnippetName = (newName: string) => this.setState({ name: newName })
 
   private updateSnippetDescription = (newDesc: string) =>
     this.setState({ description: newDesc })
 
   private updateSnippetMetadata = () => {
     console.log(this.state)
-    this.props.updateSnippetMetadata(this.props.snippet.id, this.state)
     this.props.closeSnippetSettings()
   }
 }

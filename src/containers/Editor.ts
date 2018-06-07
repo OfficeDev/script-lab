@@ -2,10 +2,11 @@ import { connect } from 'react-redux'
 
 import { Editor } from '../components'
 
-import { getSolutions } from '../stores/solutions'
+import { getActiveSolutionsFiles, getActiveFile } from '../stores/selection'
 
 const mapStateToProps = state => ({
-  solutions: getSolutions(state),
+  files: getActiveSolutionsFiles(state),
+  activeFile: getActiveFile(state),
 })
 
 const mapDispatchToProps = dispatch => ({})

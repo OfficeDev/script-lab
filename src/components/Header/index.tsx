@@ -1,22 +1,22 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from 'react';
+import styled from 'styled-components';
 
-import { createTheme } from 'office-ui-fabric-react/lib/Styling'
-import { Customizer } from 'office-ui-fabric-react/lib/Utilities'
+import { createTheme } from 'office-ui-fabric-react/lib/Styling';
+import { Customizer } from 'office-ui-fabric-react/lib/Utilities';
 
-import { CommandButton } from 'office-ui-fabric-react/lib/Button'
-import { CommandBar } from 'office-ui-fabric-react/lib/CommandBar'
+import { CommandButton } from 'office-ui-fabric-react/lib/Button';
+import { CommandBar } from 'office-ui-fabric-react/lib/CommandBar';
 
 import {
   IPersonaSharedProps,
   Persona,
   PersonaSize,
   PersonaPresence,
-} from 'office-ui-fabric-react/lib/Persona'
+} from 'office-ui-fabric-react/lib/Persona';
 
-import { ISnippet, ISnippetMetadata } from '../../interfaces'
+import { ISnippet, ISnippetMetadata } from '../../interfaces';
 
-import SnippetSettings from './SnippetSettings'
+import SnippetSettings from './SnippetSettings';
 
 const headerTheme = createTheme({
   palette: {
@@ -43,33 +43,30 @@ const headerTheme = createTheme({
     black: '#f8f8f8',
     white: '#217346',
   },
-})
+});
 
 const HeaderWrapper = styled.header`
   grid-area: header;
   background-color: ${props => props.theme.accent};
   display: flex;
   align-items: center;
-`
+`;
 
 interface IProps {
   // redux
-  snippet: ISnippet
-  updateSnippetMetadata: (
-    snippetId: string,
-    metadata: Partial<ISnippetMetadata>,
-  ) => void
+  solution: any;
 }
 
 interface IState {
-  showSnippetSettings: boolean
+  showSnippetSettings: boolean;
 }
 
 class Header extends React.Component<IProps, IState> {
-  state = { showSnippetSettings: false }
+  state = { showSnippetSettings: false };
 
   render() {
-    const { snippet } = this.props
+    const { solution } = this.props;
+    const solutionName = solution ? solution.name : 'Solution Name';
 
     return (
       <>
@@ -82,8 +79,8 @@ class Header extends React.Component<IProps, IState> {
                 iconProps: { iconName: 'GlobalNavButton' },
               },
               {
-                key: 'SnippetName',
-                text: snippet.metadata.name,
+                key: solutionName,
+                text: solutionName,
                 onClick: this.openSnippetSettings,
               },
               { key: 'run', text: 'Run', iconProps: { iconName: 'Play' } },
@@ -120,17 +117,14 @@ class Header extends React.Component<IProps, IState> {
         <SnippetSettings
           isOpen={this.state.showSnippetSettings}
           closeSnippetSettings={this.closeSnippetSettings}
-          snippet={snippet}
-          updateSnippetMetadata={this.props.updateSnippetMetadata}
+          snippet={solution}
         />
       </>
-    )
+    );
   }
 
-  private openSnippetSettings = () =>
-    this.setState({ showSnippetSettings: true })
-  private closeSnippetSettings = () =>
-    this.setState({ showSnippetSettings: false })
+  private openSnippetSettings = () => this.setState({ showSnippetSettings: true });
+  private closeSnippetSettings = () => this.setState({ showSnippetSettings: false });
 }
 
-export default Header
+export default Header;

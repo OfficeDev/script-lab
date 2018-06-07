@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
-import CommandBar from './CommandBar'
+import FileSwitcher from './FileSwitcher'
 import Monaco from './Monaco'
 import { ISnippet, ISnippetFile } from '../../interfaces'
 import { createAllModelsForSnippet, getModel } from './Monaco/monaco-models'
@@ -24,11 +24,10 @@ const EditorLayout = styled.div`
 
 export interface IEditorProps {
   // from redux
-  snippet: ISnippet
-  activeFile: ISnippetFile
+  files: any[]
+  activeFile: any
 
-  changeActiveFile: (fileName: string) => void
-
+  changeActiveFile: (fileId: string) => void
   onChange: (newValue: string) => void
 }
 
@@ -51,7 +50,7 @@ class Editor extends Component<IEditorProps> {
       })
     })
 
-    createAllModelsForSnippet(this.monaco, this.props.snippet)
+    // createAllModelsForSnippet(this.monaco, this.props.files)
     this.changeActiveFile(this.props.activeFile)
 
     window.addEventListener('resize', this.resizeEditor)
@@ -65,10 +64,7 @@ class Editor extends Component<IEditorProps> {
       selectOnLineNumbers: true,
       fontSize,
       fontFamily: ['Menlo', 'Source Code Pro', 'monospace']
-        .map(
-          fontName =>
-            fontName.includes(' ') ? JSON.stringify(fontName) : fontName,
-        )
+        .map(fontName => (fontName.includes(' ') ? JSON.stringify(fontName) : fontName))
         .join(', '),
       minimap: { enabled: false },
       formatOnPaste: true,
@@ -94,21 +90,18 @@ class Editor extends Component<IEditorProps> {
     }
   }
 
-  changeActiveFile = (file: ISnippetFile) => {
-    console.log(file)
-    this.setState({ activeFile: file })
-
-    this.props.changeActiveFile(file.name)
-    const cachedModel = getModel(this.monaco, this.props.snippet.id, file)
-
-    this.editor.setModel(cachedModel.model)
-
-    requestAnimationFrame(() => {
-      if (cachedModel.cursorPos) {
-        this.editor.setPosition(cachedModel.cursorPos)
-        this.editor.revealPosition(cachedModel.cursorPos)
-      }
-    })
+  changeActiveFile = (file: any) => {
+    // console.log(file)
+    // this.setState({ activeFile: file })
+    this.props.changeActiveFile(file.id)
+    // const cachedModel = getModel(this.monaco, this.props.files, file)
+    // this.editor.setModel(cachedModel.model)
+    // requestAnimationFrame(() => {
+    //   if (cachedModel.cursorPos) {
+    //     this.editor.setPosition(cachedModel.cursorPos)
+    //     this.editor.revealPosition(cachedModel.cursorPos)
+    //   }
+    // })
   }
 
   // todo debounce
@@ -120,23 +113,18 @@ class Editor extends Component<IEditorProps> {
   }
 
   render() {
+    const { files, activeFile } = this.props
     const options = this.getMonacoOptions()
 
     return (
       <EditorLayout>
-        <CommandBar
-          fields={Object.keys(this.props.snippet.files).map(
-            k => this.props.snippet.files[k],
-          )}
-          activeField={this.props.activeFile}
-          changeActiveField={this.changeActiveFile}
+        <FileSwitcher
+          files={files}
+          activeFile={activeFile}
+          changeActiveFile={this.changeActiveFile}
         />
         <EditorWrapper>
-          <Monaco
-            theme="vs-dark"
-            options={options}
-            editorDidMount={this.setupEditor}
-          />
+          <Monaco theme="vs-dark" options={options} editorDidMount={this.setupEditor} />
         </EditorWrapper>
       </EditorLayout>
     )

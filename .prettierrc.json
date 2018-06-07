@@ -4,7 +4,7 @@
   "bracketSpacing": true,
   "cursorOffset": -1,
   "trailingComma": "all",
-  "semi": false,
+  "semi": true,
   "singleQuote": true,
   "printWidth": 90
 }
