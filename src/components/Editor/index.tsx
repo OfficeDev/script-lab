@@ -1,16 +1,16 @@
-import React, { Component } from 'react'
-import styled from 'styled-components'
-import FileSwitcher from './FileSwitcher'
-import Monaco from './Monaco'
-import { ISnippet, ISnippetFile } from '../../interfaces'
-import { createAllModelsForSnippet, getModel } from './Monaco/monaco-models'
+import React, { Component } from "react";
+import styled from "styled-components";
+import FileSwitcher from "./FileSwitcher";
+import Monaco from "./Monaco";
+import { ISnippet, ISnippetFile } from "../../interfaces";
+import { createAllModelsForSnippet, getModel } from "./Monaco/monaco-models";
 
 const EditorWrapper = styled.div`
   grid-area: editor;
   height: 100%;
 
   padding: 1rem 0;
-`
+`;
 
 const EditorLayout = styled.div`
   display: grid;
@@ -19,81 +19,83 @@ const EditorLayout = styled.div`
 
   grid-template-columns: auto;
   grid-template-rows: 4rem auto;
-  grid-template-areas: 'command-bar' 'editor';
-`
+  grid-template-areas: "command-bar" "editor";
+`;
 
 export interface IEditorProps {
   // from redux
-  files: any[]
-  activeFile: any
+  files: any[];
+  activeFile: any;
 
-  changeActiveFile: (fileId: string) => void
-  onChange: (newValue: string) => void
+  changeActiveFile: (fileId: string) => void;
+  onChange: (newValue: string) => void;
 }
 
 class Editor extends Component<IEditorProps> {
-  editor: monaco.editor.IStandaloneCodeEditor
-  editorLayoutInterval: any
-  monaco: any
+  editor: monaco.editor.IStandaloneCodeEditor;
+  editorLayoutInterval: any;
+  monaco: any;
 
   constructor(props) {
-    super(props)
+    super(props);
   }
 
   setupEditor = (editor: monaco.editor.IStandaloneCodeEditor, monaco: any) => {
-    this.editor = editor
-    this.monaco = monaco
+    this.editor = editor;
+    this.monaco = monaco;
 
     requestAnimationFrame(() => {
       editor.onDidChangeModelContent(event => {
-        this.handleChange()
-      })
-    })
+        this.handleChange();
+      });
+    });
 
     // createAllModelsForSnippet(this.monaco, this.props.files)
-    this.changeActiveFile(this.props.activeFile)
+    this.changeActiveFile(this.props.activeFile);
 
-    window.addEventListener('resize', this.resizeEditor)
-    this.editorLayoutInterval = setInterval(this.resizeEditor, 3000)
-  }
+    window.addEventListener("resize", this.resizeEditor);
+    this.editorLayoutInterval = setInterval(this.resizeEditor, 3000);
+  };
 
   getMonacoOptions = (): monaco.editor.IEditorConstructionOptions => {
-    const fontSize = 16
+    const fontSize = 16;
 
     return {
       selectOnLineNumbers: true,
       fontSize,
-      fontFamily: ['Menlo', 'Source Code Pro', 'monospace']
-        .map(fontName => (fontName.includes(' ') ? JSON.stringify(fontName) : fontName))
-        .join(', '),
+      fontFamily: ["Menlo", "Source Code Pro", "monospace"]
+        .map(fontName => (fontName.includes(" ") ? JSON.stringify(fontName) : fontName))
+        .join(", "),
       minimap: { enabled: false },
       formatOnPaste: true,
       lineHeight: 1.5 * fontSize,
       folding: true,
       glyphMargin: false,
       fixedOverflowWidgets: true,
-      ariaLabel: 'todo',
-    }
-  }
+      ariaLabel: "todo",
+    };
+  };
 
   handleChange = () => {
-    const newValue = this.editor.getModel().getValue() || ''
-    const oldValue = this.props.activeFile.value
+    const newValue = this.editor.getModel().getValue() || "";
+    const oldValue = this.props.activeFile.value;
 
     const codeHasChanged =
-      newValue.replace(/\r\n/g, '\n') !== oldValue.replace(/\r\n/g, '\n')
+      newValue.replace(/\r\n/g, "\n") !== oldValue.replace(/\r\n/g, "\n");
 
     if (codeHasChanged) {
       if (this.props.onChange) {
-        this.props.onChange(newValue)
+        this.props.onChange(newValue);
       }
     }
-  }
+  };
 
   changeActiveFile = (file: any) => {
     // console.log(file)
     // this.setState({ activeFile: file })
-    this.props.changeActiveFile(file.id)
+    if (file) {
+      this.props.changeActiveFile(file.id);
+    }
     // const cachedModel = getModel(this.monaco, this.props.files, file)
     // this.editor.setModel(cachedModel.model)
     // requestAnimationFrame(() => {
@@ -102,19 +104,20 @@ class Editor extends Component<IEditorProps> {
     //     this.editor.revealPosition(cachedModel.cursorPos)
     //   }
     // })
-  }
+  };
 
   // todo debounce
   resizeEditor = () => {
-    console.info('editor resizing!')
+    console.info("editor resizing!");
     this.forceUpdate(() => {
-      this.editor.layout()
-    })
-  }
+      this.editor.layout();
+    });
+  };
 
   render() {
-    const { files, activeFile } = this.props
-    const options = this.getMonacoOptions()
+    console.log(this.props);
+    const { files, activeFile } = this.props;
+    const options = this.getMonacoOptions();
 
     return (
       <EditorLayout>
@@ -127,8 +130,8 @@ class Editor extends Component<IEditorProps> {
           <Monaco theme="vs-dark" options={options} editorDidMount={this.setupEditor} />
         </EditorWrapper>
       </EditorLayout>
-    )
+    );
   }
 }
 
-export default Editor
+export default Editor;

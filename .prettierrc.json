@@ -5,6 +5,6 @@
   "cursorOffset": -1,
   "trailingComma": "all",
   "semi": true,
-  "singleQuote": true,
+  "singleQuote": false,
   "printWidth": 90
 }

@@ -1,5 +1,5 @@
-import { createAction, handleActions } from 'redux-actions';
-import { getInitialSolutions } from '../storage';
+import { createAction, handleActions } from "redux-actions";
+import { getInitialSolutions } from "../storage";
 
 // Types
 interface ISolution {
@@ -11,8 +11,8 @@ interface ISolution {
 }
 
 // Actions
-export const addSolution = createAction('SOLUTION_ADD');
-export const deleteSolution = createAction('SOLUTION_DELETE');
+export const addSolution = createAction("SOLUTION_ADD");
+export const deleteSolution = createAction("SOLUTION_DELETE");
 
 // State
 const initialState = getInitialSolutions();
@@ -27,4 +27,5 @@ export default handleActions(
 );
 
 // Selectors
-export const getSolutions = (state): ISolution[] => Object.values(state.solutions);
+export const getSolutions = ({ solutions }) => Object.values(solutions);
+export const getSolutionsMap = ({ solutions }) => solutions;

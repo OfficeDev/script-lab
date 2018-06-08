@@ -1,5 +1,4 @@
 import { createAction, handleActions } from 'redux-actions';
-import { values } from 'lodash/values';
 import { getInitialFiles } from '../storage';
 
 import { getActiveSolution } from './selection';
@@ -30,5 +29,5 @@ export default handleActions(
 );
 
 // Selectors
-export const getFiles = state => values(state.files);
+export const getFiles = state => Object.values(state.files);
 export const getFilesMap = state => state.files;

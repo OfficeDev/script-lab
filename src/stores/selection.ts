@@ -1,13 +1,13 @@
-import { createAction, handleActions } from 'redux-actions';
-import { createSelector } from 'reselect';
-import { getInitialSelection } from '../storage';
-import { getSolutions } from './solutions';
-import { getFiles, getFilesMap } from './files';
-import { convertExtensionToLanguage } from '../utilities';
+import { createAction, handleActions } from "redux-actions";
+import { createSelector } from "reselect";
+import { getInitialSelection } from "../storage";
+import { getSolutionsMap } from "./solutions";
+import { getFiles, getFilesMap } from "./files";
+import { convertExtensionToLanguage } from "../utilities";
 
 // Actions
-export const changeActiveSolution = createAction('SOLUTION_CHANGE_ACTIVE');
-export const changeActiveFile = createAction('FILE_CHANGE_ACTIVE');
+export const changeActiveSolution = createAction("SOLUTION_CHANGE_ACTIVE");
+export const changeActiveFile = createAction("FILE_CHANGE_ACTIVE");
 
 // State
 interface ISelectionState {
@@ -31,21 +31,28 @@ export default handleActions(
 export const getActiveSolutionId = state => state.selection.solutionId;
 export const getActiveFileId = state => state.selection.fileId;
 
+// export const getActiveSolution = state =>
+//   getSolutionsMap(state)[getActiveSolutionId(state)];
+// export const getActiveSolutionsFiles = state =>
+//   getActiveSolution(state).files.map(fileId => getFilesMap(state)[fileId]);
+
 export const getActiveSolution = createSelector(
-  [getActiveSolutionId, getSolutions],
-  (activeSolutionId, solutions) => solutions[activeSolutionId],
+  [getActiveSolutionId, getSolutionsMap],
+  (activeSolutionId, solutionsMap) =>
+    activeSolutionId ? solutionsMap[activeSolutionId] : null,
 );
 
 export const getActiveSolutionsFiles = createSelector(
   [getActiveSolution, getFilesMap],
-  (activeSolution, filesMap) => activeSolution.files.map(fileId => filesMap[fileId]),
+  (activeSolution, filesMap) =>
+    activeSolution ? activeSolution.files.map(fileId => filesMap[fileId]) : [],
 );
 
 export const getActiveFile = createSelector(
-  [getActiveFileId, getFiles],
-  (activeFileId, files) => files[activeFileId],
+  [getActiveFileId, getFilesMap],
+  (activeFileId, filesMap) => (activeFileId ? filesMap[activeFileId] : null),
 );
 
 export const getActiveFileLanguage = createSelector(getActiveFile, activeFile =>
-  convertExtensionToLanguage(activeFile.name),
+  convertExtensionToLanguage(activeFile),
 );
