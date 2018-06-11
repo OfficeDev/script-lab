@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import FileSwitcher from './FileSwitcher'
 import Monaco from './Monaco'
 import { ISnippet, ISnippetFile } from '../../interfaces'
-import { getModel } from './Monaco/monaco-models'
+import { getModel, setPosForModel } from './Monaco/monaco-models'
 import { IFile } from '../../stores/files'
 
 const EditorWrapper = styled.div`
@@ -36,6 +36,7 @@ class Editor extends Component<IEditorProps> {
   editor: monaco.editor.IStandaloneCodeEditor
   editorLayoutInterval: any
   monaco: any
+  currentMonacoModel: any
 
   constructor(props) {
     super(props)
@@ -94,19 +95,18 @@ class Editor extends Component<IEditorProps> {
   }
 
   changeActiveFile = (file: any) => {
-    // console.log(file)
-    // this.setState({ activeFile: file })
-    if (file) {
-      this.props.changeActiveFile(file.id)
-    }
+    setPosForModel(this.props.activeFile.id, this.editor.getPosition())
     const cachedModel = getModel(this.monaco, file)
     this.editor.setModel(cachedModel.model)
     requestAnimationFrame(() => {
       if (cachedModel.cursorPos) {
         this.editor.setPosition(cachedModel.cursorPos)
         this.editor.revealPosition(cachedModel.cursorPos)
+        this.editor.focus()
       }
     })
+
+    this.props.changeActiveFile(file.id)
   }
 
   // todo debounce

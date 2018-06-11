@@ -29,3 +29,12 @@ export function getModel(monaco: any, file: IFile) {
     return createModel(monaco, file)
   }
 }
+
+export function setPosForModel(fileId: string, pos: monaco.IPosition) {
+  console.log(pos)
+  console.log(cache)
+  if (cache[fileId]) {
+    cache[fileId].cursorPos = pos
+  }
+  console.log(cache)
+}
