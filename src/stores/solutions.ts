@@ -2,7 +2,7 @@ import { createAction, handleActions } from "redux-actions";
 import { getInitialSolutions } from "../storage";
 
 // Types
-interface ISolution {
+export interface ISolution {
   id: string;
   name: string;
   date_created: number;
@@ -20,10 +20,13 @@ const initialState = getInitialSolutions();
 // Reducers
 export default handleActions(
   {
-    SOLUTION_ADD: (state, action) => [...state, action.payload],
-    SOLUTION_DELETE: (state, action) => state.filter(sol => sol.id !== action.payload),
+    SOLUTION_ADD: (state, { payload }) => ({ ...state, [payload.id]: payload }),
+    SOLUTION_DELETE: (state, { payload }) =>
+      Object.keys(state)
+        .filter(solId => solId !== payload)
+        .map(solId => state[solId]),
   },
-  initialState,
+  {},
 );
 
 // Selectors

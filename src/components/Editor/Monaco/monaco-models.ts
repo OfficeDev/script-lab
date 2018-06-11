@@ -1,4 +1,5 @@
-import { ISnippet, ISnippetFile } from '../../../interfaces'
+import { ISolution } from '../../../stores/solutions'
+import { IFile } from '../../../stores/files' // TODO: organize the interfaces to be exported from 1 place
 
 interface ICachedModel {
   model: monaco.editor.ITextModel
@@ -7,43 +8,24 @@ interface ICachedModel {
 
 const cache = {}
 
-export function createAllModelsForSnippet(monaco: any, snippet: ISnippet) {
-  Object.keys(snippet.files)
-    .map(k => snippet.files[k])
-    .map(field => createModel(monaco, snippet.id, field))
-}
-
-export function createModel(
-  monaco: any,
-  snippetId: string,
-  field: ISnippetFile,
-): ICachedModel {
-  const { language, value } = field
-  const modelId = getModelId(snippetId, field)
+export function createModel(monaco: any, file: IFile): ICachedModel {
+  // TODO: move language to a computed property of each file
+  const { language, content, id } = file
   const uri = new monaco.Uri().with({
     scheme: 'file',
-    path: modelId,
+    path: id,
   })
-  const model = monaco.editor.createModel(value, language.toLowerCase(), uri)
-  cache[modelId] = { model }
-
-  return cache[modelId]
+  const model = monaco.editor.createModel(content, language.toLowerCase(), uri)
+  cache[id] = { model }
+  return cache[id]
 }
 
-export function getModel(
-  monaco: any,
-  snippetId: string,
-  field: ISnippetFile,
-): ICachedModel {
-  const id = getModelId(snippetId, field)
+export function getModel(monaco: any, file: IFile) {
+  const id = file.id
 
   if (cache[id]) {
     return cache[id]
   } else {
-    return createModel(monaco, snippetId, field)
+    return createModel(monaco, file)
   }
-}
-
-function getModelId(snippetId: string, file: ISnippetFile) {
-  return `${snippetId}/index.${file.language}`
 }

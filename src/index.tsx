@@ -1,23 +1,23 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import { BrowserRouter } from 'react-router-dom';
+import * as React from 'react'
+import * as ReactDOM from 'react-dom'
+import { BrowserRouter } from 'react-router-dom'
 
 // redux
-import { Provider } from 'react-redux';
-import store from './stores';
+import { Provider } from 'react-redux'
+import store from './stores'
 
 // fabric
-import { fabricTheme } from './theme';
-import { loadTheme } from 'office-ui-fabric-react/lib/Styling';
-import { initializeIcons } from 'office-ui-fabric-react/lib/Icons';
+import { fabricTheme } from './theme'
+import { loadTheme } from 'office-ui-fabric-react/lib/Styling'
+import { initializeIcons } from 'office-ui-fabric-react/lib/Icons'
 
-import App from './App';
-import './index.css';
+import App from './App'
+import './index.css'
 
-import registerServiceWorker from './registerServiceWorker';
+import registerServiceWorker from './registerServiceWorker'
 
-loadTheme({ palette: fabricTheme });
-initializeIcons();
+loadTheme({ palette: fabricTheme })
+initializeIcons()
 
 ReactDOM.render(
   <Provider store={store}>
@@ -26,9 +26,9 @@ ReactDOM.render(
     </BrowserRouter>
   </Provider>,
   document.getElementById('root') as HTMLElement,
-);
+)
 
-registerServiceWorker();
+registerServiceWorker()
 
 // for hot reloading
 // if (module.hot) {

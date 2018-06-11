@@ -8,6 +8,8 @@ import {
   changeActiveFile,
 } from "../stores/selection";
 
+import { IFile, editFile } from "../stores/files";
+
 const mapStateToProps = state => ({
   files: getActiveSolutionsFiles(state),
   activeFile: getActiveFile(state),
@@ -15,6 +17,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   changeActiveFile: (fileId: string) => dispatch(changeActiveFile(fileId)),
+  editFile: (file: IFile) => dispatch(editFile(file)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Editor);

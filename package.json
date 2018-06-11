@@ -1,5 +1,5 @@
 {
-  "name": "ide-ts",
+  "name": "ide",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
