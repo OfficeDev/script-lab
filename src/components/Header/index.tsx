@@ -1,22 +1,20 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from 'react'
+import styled from 'styled-components'
 
-import { createTheme } from 'office-ui-fabric-react/lib/Styling';
-import { Customizer } from 'office-ui-fabric-react/lib/Utilities';
+import { createTheme } from 'office-ui-fabric-react/lib/Styling'
+import { Customizer } from 'office-ui-fabric-react/lib/Utilities'
 
-import { CommandButton } from 'office-ui-fabric-react/lib/Button';
-import { CommandBar } from 'office-ui-fabric-react/lib/CommandBar';
+import { CommandButton } from 'office-ui-fabric-react/lib/Button'
+import { CommandBar } from 'office-ui-fabric-react/lib/CommandBar'
 
 import {
   IPersonaSharedProps,
   Persona,
   PersonaSize,
   PersonaPresence,
-} from 'office-ui-fabric-react/lib/Persona';
+} from 'office-ui-fabric-react/lib/Persona'
 
-import { ISnippet, ISnippetMetadata } from '../../interfaces';
-
-import SnippetSettings from './SnippetSettings';
+import SolutionSettings from './SolutionSettings'
 
 const headerTheme = createTheme({
   palette: {
@@ -43,30 +41,30 @@ const headerTheme = createTheme({
     black: '#f8f8f8',
     white: '#217346',
   },
-});
+})
 
 const HeaderWrapper = styled.header`
   grid-area: header;
   background-color: ${props => props.theme.accent};
   display: flex;
   align-items: center;
-`;
+`
 
 interface IProps {
   // redux
-  solution: any;
+  solution: any
 }
 
 interface IState {
-  showSnippetSettings: boolean;
+  showSolutionSettings: boolean
 }
 
 class Header extends React.Component<IProps, IState> {
-  state = { showSnippetSettings: false };
+  state = { showSolutionSettings: false }
 
   render() {
-    const { solution } = this.props;
-    const solutionName = solution ? solution.name : 'Solution Name';
+    const { solution } = this.props
+    const solutionName = solution ? solution.name : 'Solution Name'
 
     return (
       <>
@@ -77,11 +75,12 @@ class Header extends React.Component<IProps, IState> {
                 key: 'nav',
                 iconOnly: true,
                 iconProps: { iconName: 'GlobalNavButton' },
+                onClick: () => alert('hello'),
               },
               {
                 key: solutionName,
                 text: solutionName,
-                onClick: this.openSnippetSettings,
+                onClick: this.openSolutionSettings,
               },
               { key: 'run', text: 'Run', iconProps: { iconName: 'Play' } },
               {
@@ -114,17 +113,17 @@ class Header extends React.Component<IProps, IState> {
             }}
           />
         </Customizer>
-        <SnippetSettings
-          isOpen={this.state.showSnippetSettings}
-          closeSnippetSettings={this.closeSnippetSettings}
-          snippet={solution}
+        <SolutionSettings
+          isOpen={this.state.showSolutionSettings}
+          closeSolutionSettings={this.closeSolutionSettings}
+          solution={solution}
         />
       </>
-    );
+    )
   }
 
-  private openSnippetSettings = () => this.setState({ showSnippetSettings: true });
-  private closeSnippetSettings = () => this.setState({ showSnippetSettings: false });
+  private openSolutionSettings = () => this.setState({ showSolutionSettings: true })
+  private closeSolutionSettings = () => this.setState({ showSolutionSettings: false })
 }
 
-export default Header;
+export default Header

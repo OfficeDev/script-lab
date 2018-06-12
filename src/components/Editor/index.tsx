@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import FileSwitcher from './FileSwitcher'
 import Monaco from './Monaco'
-import { ISnippet, ISnippetFile } from '../../interfaces'
 import { getModel, setPosForModel } from './Monaco/monaco-models'
 import { IFile } from '../../stores/files'
 
