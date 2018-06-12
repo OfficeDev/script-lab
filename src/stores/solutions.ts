@@ -1,5 +1,4 @@
 import { createAction, handleActions } from 'redux-actions'
-import { getInitialSolutions } from '../storage'
 
 // Types
 export interface ISolution {
@@ -16,7 +15,7 @@ export const addSolution = createAction('SOLUTION_ADD')
 export const deleteSolution = createAction('SOLUTION_DELETE')
 
 // State
-const initialState = getInitialSolutions()
+const initialState = {}
 
 // Reducers
 export default handleActions(
@@ -27,7 +26,7 @@ export default handleActions(
         .filter(solId => solId !== payload)
         .map(solId => state[solId]),
   },
-  {},
+  initialState,
 )
 
 // Selectors

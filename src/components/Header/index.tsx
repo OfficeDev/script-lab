@@ -113,11 +113,13 @@ class Header extends React.Component<IProps, IState> {
             }}
           />
         </Customizer>
-        <SolutionSettings
-          isOpen={this.state.showSolutionSettings}
-          closeSolutionSettings={this.closeSolutionSettings}
-          solution={solution}
-        />
+        {solution && (
+          <SolutionSettings
+            isOpen={this.state.showSolutionSettings}
+            closeSolutionSettings={this.closeSolutionSettings}
+            solution={solution}
+          />
+        )}
       </>
     )
   }

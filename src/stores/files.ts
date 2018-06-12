@@ -1,5 +1,4 @@
 import { createAction, handleActions } from 'redux-actions'
-import { getInitialFiles } from '../storage'
 
 import { getActiveSolution } from './selection'
 
@@ -19,7 +18,7 @@ export const deleteFile = createAction('FILE_DELETE')
 export const editFile = createAction('FILE_EDIT')
 
 // State
-const initialState = getInitialFiles()
+const initialState = {}
 
 // Reducers
 export default handleActions(
@@ -31,7 +30,7 @@ export default handleActions(
         .map(fileId => state[fileId]),
     FILE_EDIT: (state, { payload }) => ({ ...state, [payload.id]: payload }), // hmm maybe add or edit can be removed
   },
-  {},
+  initialState,
 )
 
 // Selectors

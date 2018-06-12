@@ -11,13 +11,13 @@ import { fabricTheme } from './theme'
 import { loadTheme } from 'office-ui-fabric-react/lib/Styling'
 import { initializeIcons } from 'office-ui-fabric-react/lib/Icons'
 
-import App from './App'
+loadTheme({ palette: fabricTheme })
+initializeIcons()
+
+import App from './containers/App'
 import './index.css'
 
 import registerServiceWorker from './registerServiceWorker'
-
-loadTheme({ palette: fabricTheme })
-initializeIcons()
 
 ReactDOM.render(
   <Provider store={store}>
