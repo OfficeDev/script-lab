@@ -6,7 +6,10 @@ import { object } from '@storybook/addon-knobs'
 
 import { Editor, IEditorProps } from '../src/components'
 
-import { Snippet1 } from './sampleData'
+import { entities } from './sampleData'
+
+const fakeChangeFile = file => {}
+const fakeEditFile = file => {}
 
 const Wrapper = styled.div`
   height: 100vh;
@@ -20,8 +23,9 @@ stories.addDecorator(storyFn => <Wrapper>{storyFn()}</Wrapper>)
 
 stories.add('basic', () => (
   <Editor
-    snippet={object('Snippet', Snippet1)}
-    activeField={Snippet1.fields.Script}
-    editorValue={Snippet1.fields.Script.value}
+    files={Object.values(entities.files)}
+    activeFile={Object.values(entities.files)[0]}
+    editFile={fakeEditFile}
+    changeActiveFile={fakeChangeFile}
   />
 ))
