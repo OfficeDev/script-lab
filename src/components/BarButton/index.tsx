@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
+// TODO: refactor out common styles so that they aren't duplicated everywhere
 const BarButton = styled.div`
   display: flex;
   align-items: center;

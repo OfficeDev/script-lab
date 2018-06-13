@@ -1,28 +1,20 @@
-import React from 'react'
-import styled from 'styled-components'
+import React, { Component } from 'react'
+import { BackstageWrapper, NavMenu, NavMenuItem, ContentWrapper } from './styles'
 
-const Backstage = styled.div`
-  display: flex;
-  flex-wrap: no-wrap;
+// TODO: refactor to using Fabric Pivot, but due to styling issues, can't currently do that.
 
-  height: 100vh;
-`
-
-const Menu = styled.ul`
-  display: flex;
-  flex-direction: column;
-
-  height: 100vh;
-
-  background-color: ${props => props.theme.accent};
-  color: ${props => props.theme.fg};
-`
-
-const MenuItem = styled.li`
-  padding: 1.5rem;
-`
-
-const Content = styled.section`
-  padding: 1rem;
-  font-size: 1.6rem;
-`
+export default class Backstage extends Component {
+  render() {
+    return (
+      <BackstageWrapper>
+        <NavMenu>
+          <NavMenuItem>New Snippet</NavMenuItem>
+          <NavMenuItem>My Snippets</NavMenuItem>
+          <NavMenuItem>Samples</NavMenuItem>
+          <NavMenuItem>Import</NavMenuItem>
+        </NavMenu>
+        <ContentWrapper />
+      </BackstageWrapper>
+    )
+  }
+}
