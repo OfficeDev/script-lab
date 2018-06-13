@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { BackstageWrapper, NavMenu, NavMenuItem, ContentWrapper } from './styles'
-
+import MySolutions from './MySolutions'
 // TODO: refactor to using Fabric Pivot, but due to styling issues, can't currently do that.
 
 export default class Backstage extends Component {
@@ -13,7 +13,7 @@ export default class Backstage extends Component {
           <NavMenuItem>Samples</NavMenuItem>
           <NavMenuItem>Import</NavMenuItem>
         </NavMenu>
-        <ContentWrapper />
+        <MySolutions />
       </BackstageWrapper>
     )
   }
