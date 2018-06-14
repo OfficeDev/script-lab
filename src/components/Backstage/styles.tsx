@@ -24,8 +24,18 @@ export const NavMenuItem = styled(PivotItem)`
   display: flex;
   align-items: center;
 
+  border: 0;
+
   height: 7rem;
   padding: 2rem 3rem;
+
+  & > i {
+    margin-right: 0.6rem;
+  }
+
+  & > i:last-child {
+    margin-right: 0;
+  }
 `
 
 export const ContentWrapper = styled.main`
