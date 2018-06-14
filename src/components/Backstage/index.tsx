@@ -4,65 +4,82 @@ import MySolutions from './MySolutions'
 import FabricIcon from '../FabricIcon'
 // TODO: refactor to using Fabric Pivot, but due to styling issues, can't currently do that.
 
-interface IState {
-  selectedLabel: string
-  activeContent?: JSX.Element
+interface IBackstageItem {
+  key: string
+  icon: JSX.Element
+  label?: string
+  onSelect?: () => void
+  content?: JSX.Element
 }
+
+interface IState {
+  selectedKey: string
+  items: IBackstageItem[]
+}
+
 // TODO: figure out how this data will be fetched and piped through
 export default class Backstage extends Component<{}, IState> {
-  state = { selectedLabel: 'My Snippets', activeContent: undefined }
-  menuItems
-
-  constructor(props) {
-    super(props)
-
-    this.menuItems = [
+  state = {
+    selectedKey: 'my-solutions',
+    items: [
       {
+        key: 'back',
         icon: <FabricIcon name="GlobalNavButton" />,
         onSelect: () => alert('closing backstage'),
       },
       {
+        key: 'new',
         icon: <FabricIcon name="Add" />,
         label: 'New Snippet',
         onSelect: () => alert('creating new snippet'),
       },
       {
+        key: 'my-solutions',
         icon: <FabricIcon name="DocumentSet" />,
         label: 'My Snippets',
-        onSelect: () =>
-          this.setState({ selectedLabel: 'My Snippets', activeContent: <MySolutions /> }),
+        content: <MySolutions />,
       },
       {
+        key: 'samples',
         icon: <FabricIcon name="Dictionary" />,
         label: 'Samples',
-        onSelect: () =>
-          this.setState({ selectedLabel: 'Samples', activeContent: <MySolutions /> }),
+        content: <MySolutions />,
       },
       {
+        key: 'import',
         icon: <FabricIcon name="Download" />,
         label: 'Import',
-        onSelect: () =>
-          this.setState({ selectedLabel: 'Import', activeContent: <MySolutions /> }),
+        content: <MySolutions />,
       },
-    ]
+    ].map((item: IBackstageItem) => ({
+      onSelect: () => this.setState({ selectedKey: item.key }),
+      ...item,
+    })),
+  }
+
+  constructor(props) {
+    super(props)
   }
   render() {
-    const { selectedLabel, activeContent } = this.state
+    const { selectedKey, items } = this.state
+    console.log(selectedKey, items)
+    const activeItem = items.find(item => item.key === selectedKey)
+    console.log(activeItem)
     return (
       <BackstageWrapper>
         <NavMenu>
-          {this.menuItems.map(item => (
+          {this.state.items.map(item => (
             <NavMenuItem
-              key={item.label}
+              key={item.key}
               onSelect={item.onSelect}
-              isSelected={selectedLabel === item.label}
+              isSelected={selectedKey === item.key}
             >
               {item.icon}
               {item.label && <span>{item.label}</span>}
             </NavMenuItem>
           ))}
         </NavMenu>
-        {activeContent}
+        {activeItem && activeItem.content}
       </BackstageWrapper>
     )
   }
