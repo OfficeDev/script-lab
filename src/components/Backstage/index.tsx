@@ -19,6 +19,10 @@ export default class Backstage extends Component<{}, IState> {
 
     this.menuItems = [
       {
+        icon: <FabricIcon name="GlobalNavButton" />,
+        onSelect: () => alert('closing backstage'),
+      },
+      {
         icon: <FabricIcon name="Add" />,
         label: 'New Snippet',
         onSelect: () => alert('creating new snippet'),
@@ -55,7 +59,7 @@ export default class Backstage extends Component<{}, IState> {
               isSelected={selectedLabel === item.label}
             >
               {item.icon}
-              <span>{item.label}</span>
+              {item.label && <span>{item.label}</span>}
             </NavMenuItem>
           ))}
         </NavMenu>
