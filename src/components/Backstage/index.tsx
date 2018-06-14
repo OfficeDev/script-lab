@@ -2,14 +2,13 @@ import React, { Component } from 'react'
 import { BackstageWrapper, NavMenu, NavMenuItem, ContentWrapper } from './styles'
 import MySolutions from './MySolutions'
 import FabricIcon from '../FabricIcon'
-import BarButton from '../BarButton'
 // TODO: refactor to using Fabric Pivot, but due to styling issues, can't currently do that.
 
 interface IState {
   selectedLabel: string
   activeContent?: JSX.Element
 }
-
+// TODO: figure out how this data will be fetched and piped through
 export default class Backstage extends Component<{}, IState> {
   state = { selectedLabel: 'My Snippets', activeContent: undefined }
   menuItems
