@@ -1,9 +1,20 @@
 import React, { Component } from 'react'
-import { Wrapper, Title, Description } from './styles'
+import { Wrapper, ActiveWrapper, Title, Description } from './styles'
 
-export default ({ title, description }: { title: string; description?: string }) => (
-  <Wrapper>
-    <Title>{title}</Title>
-    <Description>{description}</Description>
-  </Wrapper>
-)
+export default ({
+  title,
+  description,
+  isActive,
+}: {
+  title: string
+  description?: string
+  isActive?: boolean
+}) => {
+  const ItemWrapper = isActive ? ActiveWrapper : Wrapper
+  return (
+    <ItemWrapper>
+      <Title>{title}</Title>
+      <Description>{description}</Description>
+    </ItemWrapper>
+  )
+}

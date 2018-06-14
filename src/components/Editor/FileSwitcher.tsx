@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { PivotBar, Pivot } from '../'
+import { Pivot, PivotItem } from '../'
 
 const FileSwitcherWrapper = styled.div`
   grid-area: command-bar;
@@ -21,17 +21,17 @@ class FileSwitcher extends React.Component<IFileSwitcherProps> {
 
     return (
       <FileSwitcherWrapper>
-        <PivotBar>
+        <Pivot>
           {files.map(file => (
-            <Pivot
+            <PivotItem
               key={file.id}
-              isActive={file.id === activeFile.id}
+              isSelected={file.id === activeFile.id}
               onSelect={this.handleLinkClick(file)}
             >
               {file.name}
-            </Pivot>
+            </PivotItem>
           ))}
-        </PivotBar>
+        </Pivot>
       </FileSwitcherWrapper>
     )
   }

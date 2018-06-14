@@ -27,6 +27,7 @@
     "webpack",
     "jest",
     "src/setupTests.ts",
-    "public"
+    "public",
+    "**/*.stories.ts"
   ]
 }

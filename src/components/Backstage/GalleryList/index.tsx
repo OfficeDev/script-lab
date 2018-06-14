@@ -7,6 +7,7 @@ import FabricIcon from '../../FabricIcon'
 interface IGalleryListItem {
   title: string
   description?: string
+  isActive?: boolean
 }
 
 // TODO: decide on convention for Props: IComponentProps vs IComponent

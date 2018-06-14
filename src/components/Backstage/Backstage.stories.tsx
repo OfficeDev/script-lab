@@ -14,10 +14,17 @@ stories
   .add('gallery list', () => (
     <GalleryList
       title="Example title"
-      items={Array.from({ length: 3 }, (v, n) => ({
-        title: `Item ${n + 1}`,
-        description: `This is the description for Item ${n + 1}.`,
-      }))}
+      items={[
+        ...Array.from({ length: 3 }, (v, n) => ({
+          title: `Item ${n + 1}`,
+          description: `This is the description for Item ${n + 1}.`,
+        })),
+        {
+          title: 'Selected Item',
+          description: 'My purpose is to show what an active item looks like.',
+          isActive: true,
+        },
+      ]}
     />
   ))
   .add('gallery list item', () => (

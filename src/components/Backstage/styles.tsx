@@ -1,6 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
 
+import { Pivot, PivotItem } from '../Pivot'
+
 export const BackstageWrapper = styled.div`
   display: flex;
   flex-wrap: no-wrap;
@@ -8,37 +10,29 @@ export const BackstageWrapper = styled.div`
   height: 100vh;
 `
 
-export const NavMenu = styled.ul`
+export const NavMenu = Pivot.extend`
   display: flex;
   flex-direction: column;
 
+  background-color: ${props => props.theme.accent};
+
   height: 100vh;
   width: 20rem;
-
-  background-color: ${props => props.theme.accent};
-  color: ${props => props.theme.fg};
 `
 
-export const NavMenuItem = styled.li`
+export const NavMenuItem = styled(PivotItem)`
   display: flex;
   align-items: center;
 
   height: 7rem;
   padding: 2rem 3rem;
-
-  &:hover {
-    cursor: pointer;
-    background: rgba(0, 0, 0, 0.2);
-  }
-  &:active {
-    background: rgba(0, 0, 0, 0.4);
-  }
 `
 
 export const ContentWrapper = styled.main`
   flex: 1;
   padding: 1rem;
   font-size: 1.6rem;
+  overflow-y: auto;
 `
 
 export const ContentTitle = styled.h1.attrs({ className: 'ms-font-xxl' })`
