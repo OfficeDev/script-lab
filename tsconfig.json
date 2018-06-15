@@ -28,6 +28,6 @@
     "jest",
     "src/setupTests.ts",
     "public",
-    "**/*.stories.ts"
+    "**/*.stories.tsx"
   ]
 }
