@@ -8,6 +8,13 @@ const FileSwitcherWrapper = styled.div`
   background-color: ${props => props.theme.darkAccent};
 `
 
+const FILE_NAME_MAP = {
+  'index.ts': 'Script',
+  'index.html': 'HTML',
+  'index.css': 'CSS',
+  'libraries.txt': 'Libraries',
+}
+
 interface IFileSwitcherProps {
   files: any[]
   activeFile: any
@@ -28,7 +35,7 @@ class FileSwitcher extends React.Component<IFileSwitcherProps> {
               isSelected={file.id === activeFile.id}
               onSelect={this.handleLinkClick(file)}
             >
-              {file.name}
+              {FILE_NAME_MAP[file.name] || file.name}
             </PivotItem>
           ))}
         </Pivot>
