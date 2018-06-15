@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 export const GalleryListWrapper = styled.section`
-  margin: 1.5rem 0;
+  margin: 1.2rem 0;
 `
 
 // TODO: decide on convention here: GalleryListWrapper vs Wrapper
@@ -11,6 +11,8 @@ export const TitleBar = styled.div.attrs({ className: 'ms-font-m' })`
   height: 4rem;
   color: #555;
   background-color: lightgray;
+  white-space: nowrap;
+  overflow: hidden;
 `
 
 export const Title = styled.span`

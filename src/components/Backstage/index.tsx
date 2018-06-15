@@ -1,7 +1,10 @@
 import React, { Component } from 'react'
 import { BackstageWrapper, NavMenu, NavMenuItem, ContentWrapper } from './styles'
-import MySolutions from './MySolutions'
 import FabricIcon from '../FabricIcon'
+
+import MySolutions from './MySolutions'
+import Samples from './Samples'
+import ImportSolution from './ImportSolution'
 // TODO: refactor to using Fabric Pivot, but due to styling issues, can't currently do that.
 
 interface IBackstageItem {
@@ -16,6 +19,7 @@ interface IState {
   selectedKey: string
   items: IBackstageItem[]
 }
+const ICON_SIZE = '2rem'
 
 // TODO: figure out how this data will be fetched and piped through
 export default class Backstage extends Component<{}, IState> {
@@ -24,32 +28,32 @@ export default class Backstage extends Component<{}, IState> {
     items: [
       {
         key: 'back',
-        icon: <FabricIcon name="GlobalNavButton" />,
+        icon: <FabricIcon name="GlobalNavButton" size={ICON_SIZE} />,
         onSelect: () => alert('closing backstage'),
       },
       {
         key: 'new',
-        icon: <FabricIcon name="Add" />,
+        icon: <FabricIcon name="Add" size={ICON_SIZE} />,
         label: 'New Snippet',
         onSelect: () => alert('creating new snippet'),
       },
       {
         key: 'my-solutions',
-        icon: <FabricIcon name="DocumentSet" />,
+        icon: <FabricIcon name="DocumentSet" size={ICON_SIZE} />,
         label: 'My Snippets',
         content: <MySolutions />,
       },
       {
         key: 'samples',
-        icon: <FabricIcon name="Dictionary" />,
+        icon: <FabricIcon name="Dictionary" size={ICON_SIZE} />,
         label: 'Samples',
-        content: <MySolutions />,
+        content: <Samples />,
       },
       {
         key: 'import',
-        icon: <FabricIcon name="Download" />,
+        icon: <FabricIcon name="Download" size={ICON_SIZE} />,
         label: 'Import',
-        content: <MySolutions />,
+        content: <ImportSolution />,
       },
     ].map((item: IBackstageItem) => ({
       onSelect: () => this.setState({ selectedKey: item.key }),

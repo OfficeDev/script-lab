@@ -7,7 +7,7 @@ export const PivotItemWrapper = styled.div`
   line-height: 4rem;
   padding: 0rem 1rem;
 
-  transition: all 0.1s ease-in-out;
+  transition: background 0.1s ease-in-out;
 
   &:hover {
     cursor: pointer;

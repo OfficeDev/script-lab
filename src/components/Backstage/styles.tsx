@@ -8,16 +8,27 @@ export const BackstageWrapper = styled.div`
   flex-wrap: no-wrap;
 
   height: 100vh;
+
+  @media (max-width: 500px) {
+    flex-direction: column;
+  }
 `
 
 export const NavMenu = Pivot.extend`
   display: flex;
-  flex-direction: column;
-
   background-color: ${props => props.theme.accent};
+  white-space: nowrap;
+  overflow: hidden;
 
+  flex-direction: column;
   height: 100vh;
   width: 20rem;
+
+  @media (max-width: 500px) {
+    flex-direction: row;
+    height: 4rem;
+    width: 100%;
+  }
 `
 
 export const NavMenuItem = styled(PivotItem)`
@@ -29,8 +40,17 @@ export const NavMenuItem = styled(PivotItem)`
   height: 7rem;
   padding: 2rem 3rem;
 
+  @media (max-width: 500px) {
+    height: 100%;
+    padding: 1rem 1.5rem;
+
+    & > span {
+      display: none;
+    }
+  }
+
   & > i {
-    margin-right: 0.6rem;
+    margin-right: 1rem;
   }
 
   & > i:last-child {
