@@ -27,6 +27,14 @@ import './index.css'
 
 import registerServiceWorker from './registerServiceWorker'
 
+// Temporary: auto-prefill the state
+if (!localStorage.getItem('state')) {
+  localStorage.setItem(
+    'state',
+    '{"files":{"123":{"id":"123","name":"index.ts","language":"typescript","dateLastModified":789,"content":"// hello world"},"456":{"id":"456","name":"index.html","language":"html","dateLastModified":987,"content":"<div>hello world</div>"}},"solutions":{"123456789":{"id":"123456789","name":"Solution Name","author":"AUTHOR_ID","dateCreated":123,"dateLastModified":456,"files":["123","456"]}},"users":{"AUTHOR_ID":{"id":"AUTHOR_ID","name":"Nico Bellante"}}}',
+  )
+}
+
 ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>
