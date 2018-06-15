@@ -15,6 +15,11 @@ interface IBackstageItem {
   content?: JSX.Element
 }
 
+interface IBackstage {
+  hideBackstage: () => void
+  isHidden: boolean
+}
+
 interface IState {
   selectedKey: string
   items: IBackstageItem[]
@@ -22,14 +27,14 @@ interface IState {
 const ICON_SIZE = '2rem'
 
 // TODO: figure out how this data will be fetched and piped through
-export default class Backstage extends Component<{}, IState> {
+export default class Backstage extends Component<IBackstage, IState> {
   state = {
     selectedKey: 'my-solutions',
     items: [
       {
         key: 'back',
         icon: <FabricIcon name="GlobalNavButton" size={ICON_SIZE} />,
-        onSelect: () => alert('closing backstage'),
+        onSelect: this.props.hideBackstage,
       },
       {
         key: 'new',
@@ -70,7 +75,7 @@ export default class Backstage extends Component<{}, IState> {
     const activeItem = items.find(item => item.key === selectedKey)
     console.log(activeItem)
     return (
-      <BackstageWrapper>
+      <BackstageWrapper style={{ display: this.props.isHidden ? 'none' : 'flex' }}>
         <NavMenu>
           {this.state.items.map(item => (
             <NavMenuItem

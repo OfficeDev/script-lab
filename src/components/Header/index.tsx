@@ -51,6 +51,7 @@ const HeaderWrapper = styled.header`
 `
 
 interface IProps {
+  showBackstage: () => void
   // redux
   solution: any
 }
@@ -63,7 +64,7 @@ class Header extends React.Component<IProps, IState> {
   state = { showSolutionSettings: false }
 
   render() {
-    const { solution } = this.props
+    const { solution, showBackstage } = this.props
     const solutionName = solution ? solution.name : 'Solution Name'
 
     return (
@@ -75,7 +76,7 @@ class Header extends React.Component<IProps, IState> {
                 key: 'nav',
                 iconOnly: true,
                 iconProps: { iconName: 'GlobalNavButton' },
-                onClick: () => alert('hello'),
+                onClick: showBackstage,
               },
               {
                 key: solutionName,

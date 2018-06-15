@@ -7,7 +7,13 @@ export const BackstageWrapper = styled.div`
   display: flex;
   flex-wrap: no-wrap;
 
+  position: absolute;
+  top: 0;
+  z-index: 1000;
+  /* TODO: use theme */
+  background-color: white;
   height: 100vh;
+  width: 100%;
 
   @media (max-width: 500px) {
     flex-direction: column;

@@ -9,8 +9,10 @@ import { storiesOf } from '@storybook/react'
 
 const stories = storiesOf('Backstage', module)
 
+const fakeHideBackstage = () => alert('hide backstage')
+
 stories
-  .add('basic', () => <Backstage />)
+  .add('basic', () => <Backstage isHidden={false} hideBackstage={fakeHideBackstage} />)
   .add('gallery list', () => (
     <GalleryList
       title="Example title"

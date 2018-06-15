@@ -6,6 +6,7 @@ import { Header, Editor, Footer } from './containers'
 
 import { StyledComponentsThemeProvider } from './theme'
 import { IFile } from './stores/files'
+import { Backstage } from './components'
 
 const AppLayout = styled.div`
   height: 100vh;
@@ -34,15 +35,28 @@ interface IAppProps {
   activeFile?: IFile
 }
 
-class App extends React.Component<IAppProps> {
+interface IState {
+  isBackstageVisible: boolean
+}
+
+class App extends React.Component<IAppProps, IState> {
+  state = { isBackstageVisible: false }
+
+  showBackstage = () => this.setState({ isBackstageVisible: true })
+  hideBackstage = () => this.setState({ isBackstageVisible: false })
+
   render() {
+    const { isBackstageVisible } = this.state
     return (
       <StyledComponentsThemeProvider>
-        <AppLayout>
-          <Header />
-          <Content>{this.props.activeFile && <Editor />}</Content>
-          <Footer />
-        </AppLayout>
+        <>
+          <AppLayout>
+            <Header showBackstage={this.showBackstage} />
+            <Content>{this.props.activeFile && <Editor />}</Content>
+            <Footer />
+          </AppLayout>
+          <Backstage isHidden={!isBackstageVisible} hideBackstage={this.hideBackstage} />
+        </>
       </StyledComponentsThemeProvider>
     )
   }
