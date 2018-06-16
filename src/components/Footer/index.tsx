@@ -1,25 +1,16 @@
 import React from 'react'
-import styled from 'styled-components'
 
+import { Wrapper } from './styles'
 import { BarButton } from '../'
-
-const FooterWrapper = styled.footer`
-  grid-area: footer;
-
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-
-  font-size: 1.2rem;
-
-  background-color: ${props => props.theme.accent};
-  color: ${props => props.theme.fg};
-`
+import FabricIcon from '../FabricIcon'
 
 const Footer = ({ language }) => (
-  <FooterWrapper>
+  <Wrapper>
     <BarButton>{language}</BarButton>
-  </FooterWrapper>
+    <BarButton>
+      <FabricIcon name="Settings" />
+    </BarButton>
+  </Wrapper>
 )
 
 export default Footer
