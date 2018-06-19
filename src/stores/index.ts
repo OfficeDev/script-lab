@@ -7,7 +7,7 @@ import files from './files'
 import users from './users'
 import ui from './ui'
 
-import createSagas from './sagas'
+import createSagas from '../sagas'
 
 import { loadState, saveState } from './localStorage'
 
