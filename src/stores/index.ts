@@ -1,24 +1,28 @@
-import { createStore, combineReducers } from 'redux'
+import { createStore, combineReducers, applyMiddleware } from 'redux'
+import createSagaMiddleware from 'redux-saga'
 
 import selection from './selection'
 import solutions from './solutions'
 import files from './files'
 import users from './users'
+import ui from './ui'
 
-import { normalize } from 'normalizr'
-import sampleSolution from '../sampleData'
-import { solution } from '../storage/schema'
+import createSagas from './sagas'
+
 import { loadState, saveState } from './localStorage'
 
-const { entities } = normalize(sampleSolution, solution)
-console.log(entities)
-const reducer = combineReducers({ selection, solutions, files, users })
+const sagaMiddleware = createSagaMiddleware()
+const reducer = combineReducers({ selection, solutions, files, users, ui })
 
 const persistedData = loadState()
-const store = createStore(reducer, persistedData)
+const store = createStore(reducer, persistedData, applyMiddleware(sagaMiddleware))
 
 store.subscribe(() => {
+  console.log('store updated!')
+  console.log(store.getState())
   saveState(store.getState())
 })
+
+sagaMiddleware.run(createSagas)
 
 export default store

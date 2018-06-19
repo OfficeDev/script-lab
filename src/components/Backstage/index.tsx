@@ -19,6 +19,10 @@ interface IBackstageItem {
 interface IBackstage {
   hideBackstage: () => void
   isHidden: boolean
+
+  // from redux
+  createNewSolution: () => void
+  importGist: (gistUrl: string) => void
 }
 
 interface IState {
@@ -41,7 +45,10 @@ export default class Backstage extends Component<IBackstage, IState> {
         key: 'new',
         icon: <FabricIcon name="Add" size={ICON_SIZE} />,
         label: 'New Snippet',
-        onSelect: () => alert('creating new snippet'),
+        onSelect: () => {
+          this.props.createNewSolution()
+          this.props.hideBackstage()
+        },
       },
       {
         key: 'my-solutions',
@@ -59,7 +66,7 @@ export default class Backstage extends Component<IBackstage, IState> {
         key: 'import',
         icon: <FabricIcon name="Download" size={ICON_SIZE} />,
         label: 'Import',
-        content: <ImportSolution />,
+        content: <ImportSolution importGist={this.props.importGist} />,
       },
     ].map((item: IBackstageItem) => ({
       onSelect: () => this.setState({ selectedKey: item.key }),

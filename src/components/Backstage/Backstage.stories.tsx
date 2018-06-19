@@ -8,10 +8,20 @@ import { storiesOf } from '@storybook/react'
 
 const stories = storiesOf('Backstage', module)
 
+// TODO: figure out how to properly do this in storybook with knobs
 const fakeHideBackstage = () => alert('hide backstage')
+const fakeCreateNewSolution = () => alert('create new solution')
+const fakeImportGist = (gistUrl: string) => alert(`importing Gist ${gistUrl}`)
 
 stories
-  .add('basic', () => <Backstage isHidden={false} hideBackstage={fakeHideBackstage} />)
+  .add('basic', () => (
+    <Backstage
+      importGist={fakeImportGist}
+      createNewSolution={fakeCreateNewSolution}
+      isHidden={false}
+      hideBackstage={fakeHideBackstage}
+    />
+  ))
   .add('gallery list', () => (
     <GalleryList
       title="Example title"

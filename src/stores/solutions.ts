@@ -5,12 +5,13 @@ export interface ISolution {
   id: string
   name: string
   description?: string
-  date_created: number
-  date_last_modified: number
+  dateCreated: number
+  dateLastModified: number
   files: string[]
 }
 
 // Actions
+export const createNewSolution = createAction('SOLUTION_CREATE_NEW')
 export const addSolution = createAction('SOLUTION_ADD')
 export const deleteSolution = createAction('SOLUTION_DELETE')
 

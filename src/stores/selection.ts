@@ -5,6 +5,7 @@ import { getFiles, getFilesMap } from './files'
 import { convertExtensionToLanguage } from '../utilities'
 
 // Actions
+export const openSolution = createAction('SOLUTION_OPEN')
 export const changeActiveSolution = createAction('SOLUTION_CHANGE_ACTIVE')
 export const changeActiveFile = createAction('FILE_CHANGE_ACTIVE')
 

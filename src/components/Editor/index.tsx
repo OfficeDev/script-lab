@@ -4,23 +4,7 @@ import FileSwitcher from './FileSwitcher'
 import Monaco from './Monaco'
 import { getModel, setPosForModel } from './Monaco/monaco-models'
 import { IFile } from '../../stores/files'
-
-const EditorWrapper = styled.div`
-  grid-area: editor;
-  height: 100%;
-
-  padding: 1rem 0;
-`
-
-const EditorLayout = styled.div`
-  display: grid;
-  height: 100%;
-  background-color: ${props => props.theme.bg};
-
-  grid-template-columns: auto;
-  grid-template-rows: 4rem auto;
-  grid-template-areas: 'command-bar' 'editor';
-`
+import { Wrapper, Layout } from './styles'
 
 export interface IEditorProps {
   // from redux
@@ -41,6 +25,15 @@ class Editor extends Component<IEditorProps> {
     super(props)
   }
 
+  componentDidUpdate(prevProps) {
+    const { activeFile } = this.props
+    // TODO: consolidate logic between here and changeActiveFileFromPivot
+    if (activeFile.id !== prevProps.activeFile.id) {
+      const cachedModel = getModel(this.monaco, activeFile)
+      this.editor.setModel(cachedModel.model)
+    }
+  }
+
   setupEditor = (editor: monaco.editor.IStandaloneCodeEditor, monaco: any) => {
     this.editor = editor
     this.monaco = monaco
@@ -52,10 +45,10 @@ class Editor extends Component<IEditorProps> {
     })
 
     // createAllModelsForSnippet(this.monaco, this.props.files)
-    this.changeActiveFile(this.props.activeFile)
+    this.changeActiveFileFromPivot(this.props.activeFile)
 
     window.addEventListener('resize', this.resizeEditor)
-    this.editorLayoutInterval = setInterval(this.resizeEditor, 3000)
+    // this.editorLayoutInterval = setInterval(this.resizeEditor, 3000)
   }
 
   getMonacoOptions = (): monaco.editor.IEditorConstructionOptions => {
@@ -93,7 +86,7 @@ class Editor extends Component<IEditorProps> {
     // }
   }
 
-  changeActiveFile = (file: any) => {
+  changeActiveFileFromPivot = (file: any) => {
     setPosForModel(this.props.activeFile.id, this.editor.getPosition())
     const cachedModel = getModel(this.monaco, file)
     this.editor.setModel(cachedModel.model)
@@ -122,16 +115,16 @@ class Editor extends Component<IEditorProps> {
     const options = this.getMonacoOptions()
 
     return (
-      <EditorLayout>
+      <Layout>
         <FileSwitcher
           files={files}
           activeFile={activeFile}
-          changeActiveFile={this.changeActiveFile}
+          changeActiveFile={this.changeActiveFileFromPivot}
         />
-        <EditorWrapper>
+        <Wrapper>
           <Monaco theme="vs-dark" options={options} editorDidMount={this.setupEditor} />
-        </EditorWrapper>
-      </EditorLayout>
+        </Wrapper>
+      </Layout>
     )
   }
 }
