@@ -2,11 +2,11 @@ import * as React from 'react'
 import styled from 'styled-components'
 import { NavLink, Switch, Route } from 'react-router-dom'
 
-import { Header, Editor, Footer } from './containers'
+import { Header, Editor, Footer, Backstage } from './containers'
 
 import { StyledComponentsThemeProvider } from './theme'
 import { IFile } from './stores/files'
-import { Backstage } from './components'
+import { getIsBackstageVisible } from './stores/ui'
 
 const AppLayout = styled.div`
   height: 100vh;
@@ -33,29 +33,25 @@ const Content = styled.div`
 // )
 interface IAppProps {
   activeFile?: IFile
-}
 
-interface IState {
+  // from redux
   isBackstageVisible: boolean
+  showBackstage: () => void
+  hideBackstage: () => void
 }
 
-class App extends React.Component<IAppProps, IState> {
-  state = { isBackstageVisible: false }
-
-  showBackstage = () => this.setState({ isBackstageVisible: true })
-  hideBackstage = () => this.setState({ isBackstageVisible: false })
-
+class App extends React.Component<IAppProps> {
   render() {
-    const { isBackstageVisible } = this.state
+    const { isBackstageVisible, showBackstage, hideBackstage } = this.props
     return (
       <StyledComponentsThemeProvider>
         <>
           <AppLayout>
-            <Header showBackstage={this.showBackstage} />
+            <Header showBackstage={showBackstage} />
             <Content>{this.props.activeFile && <Editor />}</Content>
             <Footer />
           </AppLayout>
-          <Backstage isHidden={!isBackstageVisible} hideBackstage={this.hideBackstage} />
+          <Backstage isHidden={!isBackstageVisible} hideBackstage={hideBackstage} />
         </>
       </StyledComponentsThemeProvider>
     )

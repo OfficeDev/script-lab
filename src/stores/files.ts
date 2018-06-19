@@ -7,13 +7,23 @@ export interface IFile {
   id: number
   name: string
   language: string // TODO: refactor to be a computed property
-  date_created: number
-  date_last_modified: number
+  dateCreated: number
+  dateLastModified: number
   content: string
 }
 
+export const defaultScriptLabFiles: Array<Partial<IFile>> = [
+  {
+    name: 'index.ts',
+    language: 'typescript',
+    content: `// hello world ${new Date().toUTCString()}\n`,
+  },
+  { name: 'index.html', language: 'html', content: '<div>hello world</div>\n' },
+  { name: 'index.css', language: 'css', content: 'div {\n\tbackground-color: #333\n}\n' },
+]
+
 // Actions
-export const addFile = createAction('FILE_ADD')
+export const addFiles = createAction('FILES_ADD')
 export const deleteFile = createAction('FILE_DELETE')
 export const editFile = createAction('FILE_EDIT')
 
@@ -23,7 +33,13 @@ const initialState = {}
 // Reducers
 export default handleActions(
   {
-    FILE_ADD: (state, { payload }) => ({ ...state, [payload.id]: payload }),
+    FILES_ADD: (state, { payload }) => ({
+      ...state,
+      ...payload.reduce((obj, file) => {
+        obj[file.id] = file
+        return obj
+      }, {}),
+    }),
     FILE_DELETE: (state, { payload }) =>
       Object.keys(state)
         .filter(fileId => fileId !== payload)
