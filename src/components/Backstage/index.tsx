@@ -29,7 +29,6 @@ interface IBackstage {
 
 interface IState {
   selectedKey: string
-  items: IBackstageItem[]
 }
 const ICON_SIZE = '2rem'
 
@@ -37,7 +36,14 @@ const ICON_SIZE = '2rem'
 export default class Backstage extends Component<IBackstage, IState> {
   state = {
     selectedKey: 'my-solutions',
-    items: [
+  }
+
+  constructor(props) {
+    super(props)
+  }
+
+  render() {
+    const items = [
       {
         key: 'back',
         icon: <FabricIcon name="GlobalNavButton" size={ICON_SIZE} />,
@@ -73,21 +79,13 @@ export default class Backstage extends Component<IBackstage, IState> {
     ].map((item: IBackstageItem) => ({
       onSelect: () => this.setState({ selectedKey: item.key }),
       ...item,
-    })),
-  }
-
-  constructor(props) {
-    super(props)
-  }
-  render() {
-    const { selectedKey, items } = this.state
-    console.log(selectedKey, items)
+    }))
+    const { selectedKey } = this.state
     const activeItem = items.find(item => item.key === selectedKey)
-    console.log(activeItem)
     return (
       <BackstageWrapper style={{ display: this.props.isHidden ? 'none' : 'flex' }}>
         <NavMenu>
-          {this.state.items.map(item => (
+          {items.map(item => (
             <NavMenuItem
               key={item.key}
               onSelect={item.onSelect}
