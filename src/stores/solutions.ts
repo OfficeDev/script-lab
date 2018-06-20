@@ -31,5 +31,5 @@ export default handleActions(
 )
 
 // Selectors
-export const getSolutions = ({ solutions }) => Object.values(solutions)
-export const getSolutionsMap = ({ solutions }) => solutions
+export const getSolutions = state => Object.values(state.solutions)
+export const getSolutionsMap = state => state.solutions

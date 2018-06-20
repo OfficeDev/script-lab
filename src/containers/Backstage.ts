@@ -2,10 +2,12 @@ import { connect } from 'react-redux'
 
 import { Backstage } from '../components'
 
-import { createNewSolution } from '../stores/solutions'
+import { createNewSolution, getSolutions } from '../stores/solutions'
 import { importGist } from '../stores/github'
 
-const mapStateToProps = state => ({})
+const mapStateToProps = state => ({
+  solutions: getSolutions(state),
+})
 
 const mapDispatchToProps = dispatch => ({
   createNewSolution: () => dispatch(createNewSolution()),

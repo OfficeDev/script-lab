@@ -12,10 +12,12 @@ const stories = storiesOf('Backstage', module)
 const fakeHideBackstage = () => alert('hide backstage')
 const fakeCreateNewSolution = () => alert('create new solution')
 const fakeImportGist = (gistUrl: string) => alert(`importing Gist ${gistUrl}`)
+const fakeSolutions = []
 
 stories
   .add('basic', () => (
     <Backstage
+      solutions={fakeSolutions}
       importGist={fakeImportGist}
       createNewSolution={fakeCreateNewSolution}
       isHidden={false}

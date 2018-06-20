@@ -5,6 +5,7 @@ import FabricIcon from '../FabricIcon'
 import MySolutions from './MySolutions'
 import Samples from './Samples'
 import ImportSolution from './ImportSolution'
+import { ISolution } from '../../stores/solutions'
 
 // TODO: refactor to using Fabric Pivot, but due to styling issues, can't currently do that.
 
@@ -21,6 +22,7 @@ interface IBackstage {
   isHidden: boolean
 
   // from redux
+  solutions: ISolution[]
   createNewSolution: () => void
   importGist: (gistUrl: string) => void
 }
@@ -54,7 +56,7 @@ export default class Backstage extends Component<IBackstage, IState> {
         key: 'my-solutions',
         icon: <FabricIcon name="DocumentSet" size={ICON_SIZE} />,
         label: 'My Snippets',
-        content: <MySolutions />,
+        content: <MySolutions solutions={this.props.solutions} />,
       },
       {
         key: 'samples',

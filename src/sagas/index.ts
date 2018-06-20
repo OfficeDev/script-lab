@@ -26,7 +26,7 @@ export function* createSolutionSideEffect() {
 
   const newSolution: ISolution = {
     id: uuidv4(),
-    name: 'Blank Solution',
+    name: `New Snippet @ ${new Date().toISOString()} `,
     dateCreated: Date.now(),
     dateLastModified: Date.now(),
     files: newFiles.map(file => file.id),
