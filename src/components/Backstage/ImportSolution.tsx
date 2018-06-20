@@ -33,10 +33,19 @@ class ImportSolution extends Component<IImportSolution> {
     )
   }
 
-  private updateImportFieldText = (importFieldText: string) =>
+  private updateImportFieldText = (importFieldText: string) => {
+    console.log(importFieldText)
     this.setState({ importFieldText })
+    console.log(this.state.importFieldText)
+  }
 
-  private onImportClick = () => this.props.importGist(this.state.importFieldText)
+  private onImportClick = () => {
+    try {
+      this.props.importGist(this.state.importFieldText)
+    } catch (e) {
+      throw new Error('this is failing')
+    }
+  }
 }
 
 export default ImportSolution

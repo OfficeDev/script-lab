@@ -44,7 +44,7 @@ ReactDOM.render(
   document.getElementById('root') as HTMLElement,
 )
 
-registerServiceWorker()
+// registerServiceWorker()
 
 // for hot reloading
 // if (module.hot) {

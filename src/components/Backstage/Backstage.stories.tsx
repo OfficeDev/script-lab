@@ -11,7 +11,7 @@ const stories = storiesOf('Backstage', module)
 // TODO: figure out how to properly do this in storybook with knobs
 const fakeHideBackstage = () => alert('hide backstage')
 const fakeCreateNewSolution = () => alert('create new solution')
-const fakeImportGist = (gistUrl: string) => alert(`importing Gist ${gistUrl}`)
+const fakeImportGist = (gistUrl: string) => console.log(`importing Gist ${gistUrl}`)
 
 stories
   .add('basic', () => (

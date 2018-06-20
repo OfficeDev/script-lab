@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "axios": "^0.18.0",
     "lodash": "^4.17.10",
     "monaco-editor": "^0.13.1",
     "normalizr": "^3.2.4",

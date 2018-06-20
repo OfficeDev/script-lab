@@ -10,6 +10,7 @@ import {
 import { defaultScriptLabFiles, addFiles } from '../stores/files'
 import { openSolution, changeActiveSolution, changeActiveFile } from '../stores/selection'
 import { importGist } from '../stores/github'
+// import { readRawGist, getGistId, getRawYamlUrl } from '../services/github'
 
 // TODO: Figure out how to organize all this stuff well
 
@@ -46,12 +47,21 @@ export function* openSolutionSideEffect(solutionId: string) {
 }
 
 // TODO: is export needed? (probably not)
-export function* importGistSideEffect(gistUrl: string) {
+export async function* importGistSideEffect(gistUrl: string) {
   try {
     // TODO: @Sophia import code from '../services/github' and create Solution's and files out of the response
-
+    // helpful: actions/snippet.ts from script-lab
     const newSolution = { id: uuidv4() }
     const newFiles = [{ id: uuidv4() }]
+    console.log('lol')
+    // from: importGist in original ImportGist.tsx on branch testing
+    /* const gistId = getGistId(gistUrl)
+    const rawUrl = await getRawYamlUrl(gistId) */
+
+    // create a new solution
+    /* newSolution = await readRawGist(rawUrl)
+    // add solution to files array
+    await newFiles.push(newSolution) */
 
     yield put(addSolution(newSolution))
     yield put(changeActiveSolution(newSolution.id))
