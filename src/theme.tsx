@@ -1,5 +1,7 @@
 import React from 'react'
 import styled, { ThemeProvider } from 'styled-components'
+import { loadTheme } from 'office-ui-fabric-react/lib/Styling'
+import { initializeIcons } from 'office-ui-fabric-react/lib/Icons'
 
 // todo reconcile these two
 export const fabricTheme = {
@@ -40,8 +42,13 @@ const theme = {
   fg: '#eeeeee',
 }
 
+export default theme
+
 export const StyledComponentsThemeProvider = ({ children }) => (
   <ThemeProvider theme={theme}>{children}</ThemeProvider>
 )
 
-export default theme
+export const setupFabricTheme = () => {
+  loadTheme({ palette: fabricTheme })
+  initializeIcons()
+}

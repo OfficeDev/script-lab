@@ -68,6 +68,7 @@ export default class Backstage extends Component<IBackstage, IState> {
           <MySolutions
             solutions={this.props.solutions}
             openSolution={this.props.openSolution}
+            activeSolution={this.props.activeSolution}
           />
         ),
       },

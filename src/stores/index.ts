@@ -10,7 +10,7 @@ import ui from './ui'
 
 import createSagas from '../sagas'
 
-import { loadState, saveState } from './localStorage'
+import { loadState, saveState } from '../localStorage'
 
 const sagaMiddleware = createSagaMiddleware()
 const reducer = combineReducers({ selection, solutions, files, users, ui })

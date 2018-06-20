@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { Wrapper } from './styles'
-import { BarButton } from '../'
+import BarButton from '../BarButton'
 import FabricIcon from '../FabricIcon'
 
 const Footer = ({ language }) => (
