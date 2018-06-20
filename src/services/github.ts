@@ -1,8 +1,9 @@
 // TODO: @Sophia -- add api request logic here for importing gist
-/* import * as jsyaml from 'js-yaml'
+import * as jsyaml from 'js-yaml'
 import { find } from 'lodash'
 import axios from 'axios'
 import { IFile } from '../stores/files'
+import React, { Component } from 'react'
 
 // gets the gist contents and converts to IFile format
 export async function readRawGist(url: string) {
@@ -46,4 +47,4 @@ export async function getRawYamlUrl(gistId: string): Promise<string> {
   }
 
   return yamlFile.raw_url
-} */
+}
