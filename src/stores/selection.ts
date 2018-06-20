@@ -1,13 +1,15 @@
-import { createAction, handleActions } from 'redux-actions'
+import { createActions, handleActions } from 'redux-actions'
 import { createSelector } from 'reselect'
 import { getSolutionsMap } from './solutions'
 import { getFiles, getFilesMap } from './files'
 import { convertExtensionToLanguage } from '../utilities'
 
 // Actions
-export const openSolution = createAction('SOLUTION_OPEN')
-export const changeActiveSolution = createAction('SOLUTION_CHANGE_ACTIVE')
-export const changeActiveFile = createAction('FILE_CHANGE_ACTIVE')
+export const { openSolution, changeActiveSolution, changeActiveFile } = createActions({
+  SOLUTION_OPEN: (solutionId: string) => ({ solutionId }),
+  SOLUTION_CHANGE_ACTIVE: (solutionId: string) => ({ solutionId }),
+  FILE_CHANGE_ACTIVE: (fileId: string) => ({ fileId }),
+})
 
 // State
 interface ISelectionState {
@@ -20,8 +22,18 @@ const initialState: ISelectionState = { solutionId: '123456789', fileId: '456' }
 // Reducers
 export default handleActions(
   {
-    SOLUTION_CHANGE_ACTIVE: (state, { payload }) => ({ ...state, solutionId: payload }),
-    FILE_CHANGE_ACTIVE: (state, { payload }) => ({ ...state, fileId: payload }),
+    SOLUTION_OPEN: (state, { payload: { solutionId } }) => {
+      // TODO: make it so that by changing the active solution, it will set the fileId to undefined, and make the selectors respect that if its undefined, grab the first one
+      return { ...state, solutionId }
+    },
+    SOLUTION_CHANGE_ACTIVE: (state, { payload: { solutionId } }) => ({
+      ...state,
+      solutionId,
+    }),
+    FILE_CHANGE_ACTIVE: (state, { payload: { fileId } }) => ({
+      ...state,
+      fileId,
+    }),
   },
 
   initialState,

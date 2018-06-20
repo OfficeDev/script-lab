@@ -13,6 +13,8 @@ const fakeHideBackstage = () => alert('hide backstage')
 const fakeCreateNewSolution = () => alert('create new solution')
 const fakeImportGist = (gistUrl: string) => alert(`importing Gist ${gistUrl}`)
 const fakeSolutions = []
+const fakeOpenSolution = (solutionId: string) =>
+  alert(`opening solutionId: ${solutionId}`)
 
 stories
   .add('basic', () => (
@@ -22,6 +24,7 @@ stories
       createNewSolution={fakeCreateNewSolution}
       isHidden={false}
       hideBackstage={fakeHideBackstage}
+      openSolution={fakeOpenSolution}
     />
   ))
   .add('gallery list', () => (
@@ -29,10 +32,12 @@ stories
       title="Example title"
       items={[
         ...Array.from({ length: 3 }, (v, n) => ({
+          key: `${n}`,
           title: `Item ${n + 1}`,
           description: `This is the description for Item ${n + 1}.`,
         })),
         {
+          key: 'asdfaqsdf',
           title: 'Selected Item',
           description: 'My purpose is to show what an active item looks like.',
           isActive: true,

@@ -26,7 +26,7 @@ export function* createSolutionSideEffect() {
 
   const newSolution: ISolution = {
     id: uuidv4(),
-    name: `New Snippet @ ${new Date().toISOString()} `,
+    name: `New Snippet @ ${new Date().toISOString()}`,
     dateCreated: Date.now(),
     dateLastModified: Date.now(),
     files: newFiles.map(file => file.id),
@@ -37,13 +37,14 @@ export function* createSolutionSideEffect() {
   yield put(changeActiveFile(newFiles[0].id))
 }
 
-export function* openSolutionSideEffect(solutionId: string) {
-  const solutionsMap = yield select(getSolutionsMap)
-  const { files } = solutionsMap[solutionId]
+// export function* openSolutionSideEffect(action) {
+//   const solutionsMap = yield select(getSolutionsMap)
+//   const solutionId = action.payload.solutionId
+//   const { files } = solutionsMap[solutionId]
 
-  yield put(changeActiveSolution(solutionId))
-  yield put(changeActiveFile(files[0].id)) // TODO: edgecase
-}
+//   yield put(changeActiveSolution(solutionId))
+//   yield put(changeActiveFile(files[0].id)) // TODO: edgecase
+// }
 
 // TODO: is export needed? (probably not)
 export function* importGistSideEffect(gistUrl: string) {
@@ -65,6 +66,6 @@ export function* importGistSideEffect(gistUrl: string) {
 export default function* createSolutionSaga() {
   // TODO: figure out if this is a best practice or antipattern
   yield takeEvery(createNewSolution, createSolutionSideEffect)
-  yield takeEvery(openSolution, openSolutionSideEffect)
+  // yield takeEvery(openSolution, openSolutionSideEffect)
   yield takeEvery(importGist, importGistSideEffect)
 }

@@ -1,14 +1,8 @@
 import React, { Component } from 'react'
 import { GalleryListWrapper, TitleBar, Title, ArrowWrapper } from './styles'
 
-import GalleryListItem from './GalleryListItem'
+import GalleryListItem, { IGalleryListItem } from './GalleryListItem'
 import FabricIcon from '../../FabricIcon'
-
-interface IGalleryListItem {
-  title: string
-  description?: string
-  isActive?: boolean
-}
 
 // TODO: decide on convention for Props: IComponentProps vs IComponent
 export interface IGalleryList {
@@ -36,7 +30,7 @@ export default class GalleryList extends Component<IGalleryList, IGalleryListSta
             <FabricIcon name={isExpanded ? 'ChevronUp' : 'ChevronDown'} />
           </ArrowWrapper>
         </TitleBar>
-        {isExpanded && items.map(item => <GalleryListItem key={item.title} {...item} />)}
+        {isExpanded && items.map(item => <GalleryListItem key={item.key} {...item} />)}
       </GalleryListWrapper>
     )
   }

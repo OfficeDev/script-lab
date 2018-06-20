@@ -23,7 +23,9 @@ interface IBackstage {
 
   // from redux
   solutions: ISolution[]
+  activeSolution?: ISolution
   createNewSolution: () => void
+  openSolution: (solutionId: string) => void
   importGist: (gistUrl: string) => void
 }
 
@@ -62,7 +64,12 @@ export default class Backstage extends Component<IBackstage, IState> {
         key: 'my-solutions',
         icon: <FabricIcon name="DocumentSet" size={ICON_SIZE} />,
         label: 'My Snippets',
-        content: <MySolutions solutions={this.props.solutions} />,
+        content: (
+          <MySolutions
+            solutions={this.props.solutions}
+            openSolution={this.props.openSolution}
+          />
+        ),
       },
       {
         key: 'samples',
