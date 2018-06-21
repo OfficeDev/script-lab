@@ -1,5 +1,6 @@
+import { createStore, applyMiddleware } from 'redux'
+import thunkMiddleware from 'redux-thunk'
 import { loadState, saveState } from './localStorage'
-import { createStore } from 'redux'
 import { throttle } from 'lodash/throttle'
 
 import rootReducer from './reducers'
@@ -21,7 +22,7 @@ const addLoggingToDispatch = store => {
 
 const configureStore = () => {
   const persistedState = loadState()
-  const store = createStore(rootReducer, persistedState)
+  const store = createStore(rootReducer, persistedState, applyMiddleware(thunkMiddleware))
 
   if (process.env.NODE_ENV !== 'production') {
     store.dispatch = addLoggingToDispatch(store)

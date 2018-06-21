@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import { Header } from '../components'
+import Header from '../components/Header'
 
 import { getActiveSolution } from '../stores/selection'
 
