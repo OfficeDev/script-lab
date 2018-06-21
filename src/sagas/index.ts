@@ -55,9 +55,12 @@ export function* importGistSideEffect(gistUrl: string) {
     let newSolution = { id: uuidv4() }
     const newFiles = [{ id: uuidv4() }]
     console.log('lol')
+    const gistUrlString = gistUrl as `string`
+    console.log(gistUrlString)
 
     // from: importGist in original ImportGist.tsx on branch testing
     const gistId = getGistId(gistUrl)
+    console.log(gistId)
     const rawUrl = yield call(getRawYamlUrl, gistId)
 
     // create a new solution

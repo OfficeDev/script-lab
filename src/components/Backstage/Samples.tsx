@@ -1,7 +1,7 @@
 import React from 'react'
 import Content from './Content'
 import GalleryList from './GalleryList'
-
+import Searchbar from './Searchbar'
 // TODO: unhardcode
 
 const samples = [
@@ -1033,7 +1033,9 @@ const samples = [
   },
 ]
 
-const groupedSamples = {}
+// TODO: create a function that clears the samples in the UI when user searches
+
+let groupedSamples = {}
 
 // TODO: make this not Eww..
 samples.forEach(sample => {
@@ -1044,8 +1046,23 @@ samples.forEach(sample => {
 
 console.log(groupedSamples)
 
+const displaySearchedSamples = value => {
+  // TOOD: clear the samples on the page
+  groupedSamples = {}
+  // check if the user has searched anything
+  for (const entry of samples) {
+    if (entry.name.indexOf(value) > 0) {
+      // TODO: display entry
+      const group = groupedSamples[entry.group] || []
+      group.push(entry)
+      groupedSamples[entry.group] = group
+    }
+  }
+}
+
 export default props => (
   <Content title="Samples" description="Choose one of the samples below to get started.">
+    <Searchbar data={samples} searchExecution={displaySearchedSamples} />
     {Object.keys(groupedSamples).map(group => (
       <GalleryList
         title={group}

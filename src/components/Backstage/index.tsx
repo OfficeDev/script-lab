@@ -5,6 +5,7 @@ import FabricIcon from '../FabricIcon'
 import MySolutions from './MySolutions'
 import Samples from './Samples'
 import ImportSolution from './ImportSolution'
+import Searchbar from './Searchbar'
 
 // TODO: refactor to using Fabric Pivot, but due to styling issues, can't currently do that.
 
@@ -40,6 +41,12 @@ export default class Backstage extends Component<IBackstage, IState> {
         key: 'back',
         icon: <FabricIcon name="GlobalNavButton" size={ICON_SIZE} />,
         onSelect: this.props.hideBackstage,
+      },
+      {
+        key: 'search',
+        icon: <FabricIcon name="Search" size={ICON_SIZE} />,
+        label: 'Search Snippet',
+        content: <Searchbar />,
       },
       {
         key: 'new',

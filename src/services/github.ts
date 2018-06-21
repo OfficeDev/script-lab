@@ -22,8 +22,9 @@ export async function readRawGist(url: string) {
 
 // retrieves gistId
 export function getGistId(gistUrl: string) {
+  console.log('hi')
   console.log(gistUrl)
-  console.log(gistUrl.substr(-32))
+  console.log('hello?')
   return gistUrl.substr(-32)
 }
 
