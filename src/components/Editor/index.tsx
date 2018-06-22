@@ -49,7 +49,6 @@ class Editor extends Component<IEditorProps> {
     this.changeActiveFileFromPivot(this.props.activeFile)
 
     window.addEventListener('resize', this.resizeEditor)
-    this.editor.setModel(getModel(this.monaco, this.props.activeFile))
 
     // this.editorLayoutInterval = setInterval(this.resizeEditor, 3000)
   }
