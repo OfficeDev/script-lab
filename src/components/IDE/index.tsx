@@ -15,7 +15,7 @@ interface IIDE {
   activeFile: IFile
 
   openSolution: (solutionId: string) => void
-  openFile: (fileId: string) => void
+  openFile: (solutionId: string, fileId: string) => void
 }
 
 class IDE extends Component<IIDE> {
@@ -25,17 +25,13 @@ class IDE extends Component<IIDE> {
   hideBackstage = () => this.setState({ isBackstageVisible: false })
 
   componentWillReceiveProps(newProps) {
-    if (!newProps.match.params.solutionId) {
-      this.props.openSolution(newProps.activeSolution.id)
-    }
-
     if (!newProps.match.params.fileId) {
-      this.props.openFile(newProps.activeFile.id)
+      this.props.openFile(newProps.activeSolution.id, newProps.activeFile.id)
     }
   }
 
   render() {
-    // TODO: FIX manual passing of params from router
+    // TODO: FIX manual passing of params fro router
     const { isBackstageVisible } = this.state
     const { solutions, activeSolution, files, activeFile } = this.props
     return (

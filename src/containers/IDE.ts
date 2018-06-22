@@ -38,7 +38,8 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = dispatch => ({
   openSolution: (solutionId: string) => dispatch(push(`/${solutionId}`)),
-  openFile: (fileId: string) => dispatch(push(`${fileId}`)),
+  openFile: (solutionId: string, fileId: string) =>
+    dispatch(push(`/${solutionId}/${fileId}`)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(IDE)
