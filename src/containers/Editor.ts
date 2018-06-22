@@ -2,6 +2,7 @@ import { connect } from 'react-redux'
 
 import Editor from '../components/Editor'
 import { selectors } from '../reducers'
+import { push } from 'connected-react-router'
 
 const mapStateToProps = (state, ownProps) => {
   console.log(ownProps)
@@ -17,4 +18,9 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-export default connect(mapStateToProps)(Editor)
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  changeActiveFile: (fileId: string) =>
+    dispatch(push(`/edit/${ownProps.params.solutionId}/${fileId}`)),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Editor)

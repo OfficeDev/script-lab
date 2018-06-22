@@ -25,13 +25,10 @@ class ReactMonaco extends Component<IReactMonacoProps> {
       this.initializeMonaco()
     } else {
       win.require.config({
-        url: 'vs/loader.js',
-        paths: {
-          vs: 'vs',
-        },
+        baseUrl: '/',
       })
 
-      win.require(['../../vs/editor/editor.main'], () => this.initializeMonaco())
+      win.require(['vs/editor/editor.main'], () => this.initializeMonaco())
     }
   }
 
