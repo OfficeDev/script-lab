@@ -3,12 +3,14 @@ import Content from './Content'
 import GalleryList from './GalleryList'
 import Searchbar from './Searchbar'
 import { concatStyleSets } from '@uifabric/styling'
+import Sampledata from './Sampledata'
 // TODO: unhardcode
 
 export default class Samples extends React.Component<any, any> {
   constructor(props) {
     super(props)
-    this.populate = this.populate.bind(this)
+    this.clearVisibility = this.clearVisibility.bind(this)
+    this.populatePage = this.populatePage.bind(this)
     this.displaySearchedSamples = this.displaySearchedSamples.bind(this)
     this.state = {
       groupedSamples: {},
@@ -1051,7 +1053,17 @@ export default class Samples extends React.Component<any, any> {
     }
   }
 
-  populate() {
+  clearVisibility() {
+    const copySamples = Object.assign([], this.state.samples)
+    console.log(copySamples)
+    copySamples.forEach(sample => {
+      sample.visibility = 0
+    })
+    this.setState({ samples: copySamples })
+    console.log(this.state.samples)
+  }
+
+  populatePage() {
     const newGroupedSamples = {}
     const visibles = this.state.visible
     visibles.forEach(sample => {
@@ -1059,15 +1071,17 @@ export default class Samples extends React.Component<any, any> {
       group.push(sample)
       newGroupedSamples[sample.group] = group
     })
-    console.log(newGroupedSamples)
     this.setState({ groupedSamples: newGroupedSamples })
-    console.log(this)
+    console.log(this.state.groupedSamples)
   }
 
   displaySearchedSamples(value) {
+    this.clearVisibility()
     // Clear the samples on the page when user presses enter
+
     const clearedArray = []
     this.setState({ visible: clearedArray })
+    this.setState({ groupedSamples: {} })
     // check every entry for a match with search value
     for (const entry of this.state.samples) {
       const entryName = entry.name.toLowerCase()
@@ -1077,13 +1091,12 @@ export default class Samples extends React.Component<any, any> {
         const newVisibleArray = this.state.visible
         // add the entry to the state
         newVisibleArray.push(entry)
-        console.log(newVisibleArray)
         // TODO: add to visible
         this.setState({ visible: newVisibleArray })
       }
     }
     console.log(this.state.visible)
-    this.populate()
+    this.populatePage()
   }
 
   render() {
