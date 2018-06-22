@@ -8,11 +8,11 @@ import { concatStyleSets } from '@uifabric/styling'
 export default class Samples extends React.Component<any, any> {
   constructor(props) {
     super(props)
-
+    this.populate = this.populate.bind(this)
     this.displaySearchedSamples = this.displaySearchedSamples.bind(this)
     this.state = {
       groupedSamples: {},
-      visible: {},
+      visible: [],
       samples: [
         {
           id: 'excel-basic-api-call',
@@ -1051,26 +1051,38 @@ export default class Samples extends React.Component<any, any> {
     }
   }
 
-  private updateVisibleSamples = sample => {
-    console.log('ANYTHING???')
-
-    const group = this.state.visibleSamples[sample.group] || []
-    group.push(sample)
-    this.state.visibleSamples[sample.group] = group
+  populate() {
+    const newGroupedSamples = {}
+    const visibles = this.state.visible
+    visibles.forEach(sample => {
+      const group = newGroupedSamples[sample.group] || []
+      group.push(sample)
+      newGroupedSamples[sample.group] = group
+    })
+    console.log(newGroupedSamples)
+    this.setState({ groupedSamples: newGroupedSamples })
   }
 
-  displaySearchedSamples = value => {
-    // check if the user has searched anything
+  displaySearchedSamples(value) {
+    // Clear the samples on the page when user presses enter
+    const clearedArray = []
+    this.setState({ visible: clearedArray })
+    // check every entry for a match with search value
     for (const entry of this.state.samples) {
-      if (entry.name.indexOf(value) > 0) {
-        // TOOD: clear the samples on the page
-        this.setState({ visibleSamples: {} })
+      const entryName = entry.name.toLowerCase()
+      // if match
+      if (entryName.indexOf(value.toLowerCase()) !== -1) {
+        // create new copy of visible state
+        const newVisibleArray = this.state.visible
+        // add the entry to the state
+        newVisibleArray.push(entry)
+        console.log(newVisibleArray)
         // TODO: add to visible
-        this.updateVisibleSamples(entry)
-        console.log(this.state.visible)
+        this.setState({ visible: newVisibleArray })
       }
     }
-    console.log(this.state.visibleSamples)
+    console.log(this.state.visible)
+    this.populate()
   }
 
   render() {
@@ -1083,7 +1095,7 @@ export default class Samples extends React.Component<any, any> {
           data={this.state.samples}
           searchExecution={this.displaySearchedSamples}
         />
-        {Object.keys(this.state.groupedSamples).map(group => (
+        {/* Object.keys(this.state.groupedSamples).map(group => (
           <GalleryList
             title={group}
             items={this.state.groupedSamples[group].map(
@@ -1093,7 +1105,7 @@ export default class Samples extends React.Component<any, any> {
               }),
             )}
           />
-        ))}
+        ))*/}
       </Content>
     )
   }
