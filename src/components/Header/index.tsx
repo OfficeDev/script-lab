@@ -50,17 +50,21 @@ const HeaderWrapper = styled.header`
   align-items: center;
 `
 
-interface IProps {
+interface IHeader {
   showBackstage: () => void
   // redux
   solution: any
+  editSolution: (
+    solutionId: string,
+    solution: Partial<IEditableSolutionProperties>,
+  ) => void
 }
 
 interface IState {
   showSolutionSettings: boolean
 }
 
-class Header extends React.Component<IProps, IState> {
+class Header extends React.Component<IHeader, IState> {
   state = { showSolutionSettings: false }
 
   render() {
@@ -119,6 +123,7 @@ class Header extends React.Component<IProps, IState> {
             isOpen={this.state.showSolutionSettings}
             closeSolutionSettings={this.closeSolutionSettings}
             solution={solution}
+            editSolutionMetadata={this.props.editSolution}
           />
         )}
       </>

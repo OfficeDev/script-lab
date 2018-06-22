@@ -9,7 +9,7 @@ const normalizeSolutionName = (state, sol: ISolution): ISolution => {
 
   let { name } = sol
   if (allNames.includes(name)) {
-    name = name.replace(/\(\d+\)$/gm, '')
+    name = name.replace(/\(\d+\)$/gm, '').trim()
     let suffix = 1
     while (allNames.includes(`${name} (${suffix})`)) {
       suffix++

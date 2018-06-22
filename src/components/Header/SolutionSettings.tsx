@@ -6,10 +6,14 @@ import { TextField } from 'office-ui-fabric-react/lib/TextField'
 
 import { PrimaryButton, DefaultButton } from 'office-ui-fabric-react/lib/Button'
 
-interface IProps {
+interface ISolutionSettings {
   isOpen: boolean
   closeSolutionSettings: () => void
   solution: ISolution
+  editSolutionMetadata: (
+    solutionId: string,
+    solution: Partial<IEditableSolutionProperties>,
+  ) => void
 }
 
 interface IState {
@@ -17,17 +21,22 @@ interface IState {
   description: string
 }
 
-class SolutionSettings extends React.Component<IProps, IState> {
-  constructor(props) {
-    super(props)
-    this.state = { name: '', description: '' }
-  }
+class SolutionSettings extends React.Component<ISolutionSettings, IState> {
+  state = { name: '', description: '' }
 
-  componentWillMount() {
+  setupForm = () => {
     const { solution } = this.props
     const { name } = solution
     const description = solution.description || ''
     this.setState({ name, description })
+  }
+
+  componentWillMount() {
+    this.setupForm()
+  }
+
+  componentWillReceiveProps() {
+    this.setupForm()
   }
 
   render() {
@@ -69,7 +78,7 @@ class SolutionSettings extends React.Component<IProps, IState> {
     this.setState({ description: newDesc })
 
   private updateSolutionMetadata = () => {
-    console.log(this.state)
+    this.props.editSolutionMetadata(this.props.solution.id, this.state)
     this.props.closeSolutionSettings()
   }
 }
