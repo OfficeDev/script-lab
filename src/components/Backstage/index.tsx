@@ -44,6 +44,11 @@ export default class Backstage extends Component<IBackstage, IState> {
     super(props)
   }
 
+  openSolution = (solutionId: string) => {
+    this.props.openSolution(solutionId)
+    this.props.hideBackstage()
+  }
+
   render() {
     const items = [
       {
@@ -67,7 +72,7 @@ export default class Backstage extends Component<IBackstage, IState> {
         content: (
           <MySolutions
             solutions={this.props.solutions}
-            openSolution={this.props.openSolution}
+            openSolution={this.openSolution}
             activeSolution={this.props.activeSolution}
           />
         ),
