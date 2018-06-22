@@ -1061,6 +1061,7 @@ export default class Samples extends React.Component<any, any> {
     })
     console.log(newGroupedSamples)
     this.setState({ groupedSamples: newGroupedSamples })
+    console.log(this)
   }
 
   displaySearchedSamples(value) {
@@ -1095,7 +1096,7 @@ export default class Samples extends React.Component<any, any> {
           data={this.state.samples}
           searchExecution={this.displaySearchedSamples}
         />
-        {/* Object.keys(this.state.groupedSamples).map(group => (
+        {Object.keys(this.state.groupedSamples).map(group => (
           <GalleryList
             title={group}
             items={this.state.groupedSamples[group].map(
@@ -1105,7 +1106,7 @@ export default class Samples extends React.Component<any, any> {
               }),
             )}
           />
-        ))*/}
+        ))}
       </Content>
     )
   }
