@@ -4,7 +4,7 @@ import IDE from '../IDE'
 
 const App = () => (
   <main>
-    <Route exact path="/solution/:solutionId/file/:fileId" component={IDE} />
+    <Route exact path="/edit/:solutionId/:fileId?" component={IDE} />
   </main>
 )
 
