@@ -17,11 +17,10 @@ class Searchbar extends React.Component<any, any> {
   }
 
   PrintText(value) {
-    console.log(value)
+    console.log(`${value} typed in`)
   }
 
   displayOption(value) {
-    console.log('why')
     this.props.searchExecution(value)
   }
 
