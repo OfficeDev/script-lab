@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 
 import Header from '../../containers/Header'
 import Editor from '../../containers/Editor'
-import Footer from '../Footer'
+import Footer from '../../containers/Footer'
 
 import Backstage from '../../containers/Backstage'
 
@@ -30,7 +30,7 @@ class IDE extends Component<IIDE> {
           <ContentWrapper>
             <Editor params={params} />
           </ContentWrapper>
-          <Footer language="TODO" />
+          <Footer params={params} />
         </Layout>
         <Backstage
           params={params}
