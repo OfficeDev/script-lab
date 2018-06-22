@@ -1,6 +1,7 @@
 import { connect } from 'react-redux'
 import IDE from '../components/IDE'
 import { selectors } from '../reducers'
+import { push } from 'connected-react-router'
 
 const mapStateToProps = (state, ownProps) => {
   let { solutionId } = ownProps.match.params
@@ -35,4 +36,9 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-export default connect(mapStateToProps)(IDE)
+const mapDispatchToProps = dispatch => ({
+  openSolution: (solutionId: string) => dispatch(push(`/${solutionId}`)),
+  openFile: (fileId: string) => dispatch(push(`${fileId}`)),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(IDE)
