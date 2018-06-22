@@ -9,7 +9,13 @@ import Backstage from '../../containers/Backstage'
 import { Layout, ContentWrapper } from './styles'
 
 interface IIDE {
-  match: any // TODO: what is it's type?
+  solutions: ISolution[]
+  activeSolution: ISolution
+  files: IFile[]
+  activeFile: IFile
+
+  openSolution: (solutionId: string) => void
+  openFile: (fileId: string) => void
 }
 
 class IDE extends Component<IIDE> {
@@ -18,22 +24,36 @@ class IDE extends Component<IIDE> {
   showBackstage = () => this.setState({ isBackstageVisible: true })
   hideBackstage = () => this.setState({ isBackstageVisible: false })
 
+  componentWillReceiveProps(newProps) {
+    if (!newProps.match.params.solutionId) {
+      this.props.openSolution(newProps.activeSolution.id)
+    }
+
+    if (!newProps.match.params.fileId) {
+      this.props.openFile(newProps.activeFile.id)
+    }
+  }
+
   render() {
     // TODO: FIX manual passing of params from router
     const { isBackstageVisible } = this.state
-
-    const params = this.props.match.params
+    const { solutions, activeSolution, files, activeFile } = this.props
     return (
       <>
         <Layout>
-          <Header params={params} showBackstage={this.showBackstage} />
+          <Header solution={activeSolution} showBackstage={this.showBackstage} />
           <ContentWrapper>
-            <Editor params={params} />
+            <Editor
+              activeSolution={activeSolution}
+              files={files}
+              activeFile={activeFile}
+            />
           </ContentWrapper>
-          <Footer params={params} />
+          <Footer activeFile={activeFile} />
         </Layout>
         <Backstage
-          params={params}
+          solutions={solutions}
+          activeSolution={activeSolution}
           isHidden={!isBackstageVisible}
           hideBackstage={this.hideBackstage}
         />

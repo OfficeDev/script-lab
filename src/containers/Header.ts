@@ -3,9 +3,7 @@ import { selectors } from '../reducers'
 import { solutions } from '../actions'
 import Header from '../components/Header'
 
-const mapStateToProps = (state, ownProps) => ({
-  solution: selectors.solutions.get(state, ownProps.params.solutionId),
-})
+const mapStateToProps = (state, ownProps) => ({})
 
 const mapDispatchToProps = dispatch => ({
   editSolution: (solutionId: string, solution: Partial<IEditableSolutionProperties>) =>

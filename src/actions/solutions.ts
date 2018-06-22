@@ -23,5 +23,5 @@ export const create = () => dispatch => {
 
   dispatch(addFiles(files))
   dispatch(add(solution))
-  dispatch(push(`/edit/${solution.id}`))
+  dispatch(push(`/${solution.id}`))
 }

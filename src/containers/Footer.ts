@@ -17,7 +17,7 @@ const getLanguage = (state, fileId: string | undefined): string => {
 }
 
 const mapStateToProps = (state, ownProps) => ({
-  language: getLanguage(state, ownProps.params.fileId),
+  language: getLanguage(state, ownProps.activeFile.id),
 })
 
 export default connect(mapStateToProps)(Footer)

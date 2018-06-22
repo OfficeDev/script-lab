@@ -4,6 +4,7 @@ import { connectRouter, routerMiddleware } from 'connected-react-router'
 import createHistory from 'history/createBrowserHistory'
 import { loadState, saveState } from './localStorage'
 import { throttle } from 'lodash/throttle'
+import { composeWithDevTools } from 'redux-devtools-extension'
 
 import rootReducer from './reducers'
 
@@ -30,7 +31,7 @@ const configureStore = () => {
   const store = createStore(
     connectRouter(history)(rootReducer),
     persistedState,
-    applyMiddleware(thunkMiddleware, routerMiddleware(history)),
+    composeWithDevTools(applyMiddleware(thunkMiddleware, routerMiddleware(history))),
   )
 
   if (process.env.NODE_ENV !== 'production') {

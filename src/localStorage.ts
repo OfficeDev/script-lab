@@ -14,7 +14,10 @@ export const loadState = () => {
           allIds: [solution.id],
         },
         files: {
-          byId: files.reduce((byIdFiles, file) => ({ ...byIdFiles, [file.id]: file })),
+          byId: files.reduce(
+            (byIdFiles, file) => ({ ...byIdFiles, [file.id]: file }),
+            {},
+          ),
           allIds: files.map(file => file.id),
         },
       }
