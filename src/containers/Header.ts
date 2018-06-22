@@ -1,10 +1,9 @@
 import { connect } from 'react-redux'
+import { selectors } from '../reducers'
 import Header from '../components/Header'
 
-import { getActiveSolution } from '../stores/selection'
+const mapStateToProps = (state, ownProps) => ({
+  solution: selectors.solutions.get(state, ownProps.params.solutionId),
+})
 
-const mapStateToProps = state => ({ solution: getActiveSolution(state) })
-
-const mapDispatchToProps = dispatch => ({})
-
-export default connect(mapStateToProps, mapDispatchToProps)(Header)
+export default connect(mapStateToProps)(Header)

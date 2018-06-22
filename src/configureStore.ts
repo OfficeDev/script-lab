@@ -1,5 +1,7 @@
 import { createStore, applyMiddleware } from 'redux'
 import thunkMiddleware from 'redux-thunk'
+import { connectRouter, routerMiddleware } from 'connected-react-router'
+import createHistory from 'history/createBrowserHistory'
 import { loadState, saveState } from './localStorage'
 import { throttle } from 'lodash/throttle'
 
@@ -21,18 +23,26 @@ const addLoggingToDispatch = store => {
 }
 
 const configureStore = () => {
+  const history = createHistory()
+
   const persistedState = loadState()
-  const store = createStore(rootReducer, persistedState, applyMiddleware(thunkMiddleware))
+  const store = createStore(
+    connectRouter(history)(rootReducer),
+    persistedState,
+    applyMiddleware(thunkMiddleware, routerMiddleware(history)),
+  )
 
   if (process.env.NODE_ENV !== 'production') {
     store.dispatch = addLoggingToDispatch(store)
   }
 
   store.subscribe(
-    throttle(() => {
-      saveState(store.getState())
-    }, 1000),
+    // throttle(() => {
+    () => saveState(store.getState()),
+    // }, 1000),
   )
+
+  return { store, history }
 }
 
 export default configureStore

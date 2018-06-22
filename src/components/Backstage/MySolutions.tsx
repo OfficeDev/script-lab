@@ -1,7 +1,6 @@
 import React from 'react'
 import Content from './Content'
 import GalleryList from './GalleryList'
-import { ISolution } from '../../stores/solutions'
 
 // TODO: incorp. localization
 // TODO: use real data

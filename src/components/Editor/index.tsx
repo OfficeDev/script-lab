@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import FileSwitcher from './FileSwitcher'
 import Monaco from './Monaco'
 import { getModel, setPosForModel } from './Monaco/monaco-models'
-import { IFile } from '../../stores/files'
 import { Wrapper, Layout } from './styles'
 
 export interface IEditorProps {

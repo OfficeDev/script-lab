@@ -1,12 +1,10 @@
 import React from 'react'
-import styled from 'styled-components'
 
 import { Dialog, DialogType, DialogFooter } from 'office-ui-fabric-react/lib/Dialog'
 
 import { TextField } from 'office-ui-fabric-react/lib/TextField'
 
 import { PrimaryButton, DefaultButton } from 'office-ui-fabric-react/lib/Button'
-import { ISolution } from '../../stores/solutions'
 
 interface IProps {
   isOpen: boolean

@@ -9,8 +9,10 @@ import Root from './components/Root'
 
 setupFabricTheme()
 
-const store = configureStore()
+const { store, history } = configureStore()
 
-ReactDOM.render(<Root store={store} />, document.getElementById('root') as HTMLElement)
+ReactDOM.render(<Root store={store} history={history} />, document.getElementById(
+  'root',
+) as HTMLElement)
 
 registerServiceWorker()

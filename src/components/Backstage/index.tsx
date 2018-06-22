@@ -5,7 +5,6 @@ import FabricIcon from '../FabricIcon'
 import MySolutions from './MySolutions'
 import Samples from './Samples'
 import ImportSolution from './ImportSolution'
-import { ISolution } from '../../stores/solutions'
 
 // TODO: refactor to using Fabric Pivot, but due to styling issues, can't currently do that.
 

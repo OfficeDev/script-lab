@@ -1,5 +1,4 @@
 import { createAction } from 'typesafe-actions'
-import { IEditableSolutionProperties, ISolution } from '../interfaces'
 
 export const add = createAction('SOLUTIONS_ADD', resolve => {
   return (solution: ISolution) => resolve(solution)

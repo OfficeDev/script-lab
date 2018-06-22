@@ -1,7 +1,6 @@
 import { combineReducers } from 'redux'
 import { getType } from 'typesafe-actions'
 import { files, IFilesAction } from '../actions'
-import { IFile } from '../interfaces'
 
 const file = (state: IFile, action: IFilesAction) => {
   switch (action.type) {
@@ -63,3 +62,4 @@ export default combineReducers({
 })
 
 // selectors
+export const get = (state, id: string): IFile => state.byId[id]

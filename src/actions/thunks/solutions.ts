@@ -1,4 +1,3 @@
-import { ISolution } from '../../interfaces'
 import uuidv4 from 'uuid'
 import { add as addFiles } from '../files'
 import { add as addSolution } from '../solutions'
@@ -9,14 +8,17 @@ export const create = () => dispatch => {
   const files = [
     {
       name: 'index.ts',
+      language: 'TypeScript',
       content: `// hello world ${new Date().toUTCString()}\n`,
     },
     {
       name: 'index.html',
+      language: 'HTML',
       content: '<div>hello world</div>\n',
     },
     {
       name: 'index.css',
+      language: 'CSS',
       content: 'div {\n\tbackground-color: #333\n}\n',
     },
   ].map(file => ({

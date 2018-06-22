@@ -1,19 +1,11 @@
 import React from 'react'
-
-import Header from '../../containers/Header'
-import Editor from '../../containers/Editor'
-import Footer from '../../containers/Footer'
-
-import { Layout, ContentWrapper } from './styles'
+import { Route, Link, Switch } from 'react-router-dom'
+import IDE from '../IDE'
 
 const App = () => (
-  <Layout>
-    <Header />
-    <ContentWrapper>
-      <Editor />
-    </ContentWrapper>
-    <Footer />
-  </Layout>
+  <main>
+    <Route exact path="/solution/:solutionId/file/:fileId" component={IDE} />
+  </main>
 )
 
 export default App

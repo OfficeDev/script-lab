@@ -1,8 +1,0 @@
-export const FILES_ADD = 'FILES_ADD'
-export const FILES_EDIT = 'FILES_EDIT'
-export const FILES_REMOVE = 'FILES_REMOVE'
-
-export const SOLUTION_ADD = 'SOLUTION_ADD'
-export const SOLUTION_CREATE = 'SOLUTION_CREATE'
-export const SOLUTION_EDIT = 'SOLUTION_EDIT'
-export const SOLUTION_REMOVE = 'SOLUTION_REMOVE'

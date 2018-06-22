@@ -1,5 +1,4 @@
 import { createAction } from 'typesafe-actions'
-import { IEditableFileProperties, IFile } from '../interfaces'
 
 export const add = createAction('FILES_ADD', resolve => {
   return (files: IFile[]) => resolve(files)

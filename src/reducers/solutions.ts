@@ -1,7 +1,6 @@
 import { combineReducers } from 'redux'
 import { getType } from 'typesafe-actions'
 import { solutions, ISolutionsAction } from '../actions'
-import { ISolution } from '../interfaces'
 
 const solution = (state: ISolution, action: ISolutionsAction) => {
   switch (action.type) {
@@ -48,3 +47,7 @@ export default combineReducers({
 })
 
 // selectors
+export const selectors = {
+  get: (state, id: string): ISolution | undefined => state.byId[id],
+  getAll: (state): ISolution[] => Object.values(state.byId),
+}

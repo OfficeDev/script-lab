@@ -1,23 +1,20 @@
 import { connect } from 'react-redux'
 
 import Editor from '../components/Editor'
+import { selectors } from '../reducers'
 
-import {
-  getActiveSolutionsFiles,
-  getActiveFile,
-  changeActiveFile,
-} from '../stores/selection'
+const mapStateToProps = (state, ownProps) => {
+  console.log(ownProps)
+  const solutionFileIds = selectors.solutions.get(state, ownProps.params.solutionId).files
+  const urlFileId = ownProps.params.fileId
+  const activeFileId = solutionFileIds.includes(urlFileId)
+    ? urlFileId
+    : solutionFileIds[0]
 
-import { IFile, editFile } from '../stores/files'
+  return {
+    files: solutionFileIds.map(fileId => selectors.files.get(state, fileId)),
+    activeFile: selectors.files.get(state, activeFileId),
+  }
+}
 
-const mapStateToProps = state => ({
-  files: getActiveSolutionsFiles(state),
-  activeFile: getActiveFile(state),
-})
-
-const mapDispatchToProps = dispatch => ({
-  changeActiveFile: (fileId: string) => dispatch(changeActiveFile(fileId)),
-  editFile: (file: IFile) => dispatch(editFile(file)),
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(Editor)
+export default connect(mapStateToProps)(Editor)

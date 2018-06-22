@@ -1,14 +1,16 @@
 import React from 'react'
 import { Provider } from 'react-redux'
+import { ConnectedRouter } from 'connected-react-router'
+
 import App from '../App'
 import { StyledComponentsThemeProvider } from '../../theme'
 
-const Root = ({ store }) => (
+export default ({ store, history }) => (
   <Provider store={store}>
-    <StyledComponentsThemeProvider>
-      <App />
-    </StyledComponentsThemeProvider>
+    <ConnectedRouter history={history}>
+      <StyledComponentsThemeProvider>
+        <App />
+      </StyledComponentsThemeProvider>
+    </ConnectedRouter>
   </Provider>
 )
-
-export default Root
