@@ -1,11 +1,11 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { Route, Link, Switch } from 'react-router-dom'
 import IDE from '../IDE'
 
 const App = () => (
-  <main>
+  <div>
     <Route exact path="/edit/:solutionId/:fileId?" component={IDE} />
-  </main>
+  </div>
 )
 
 export default App

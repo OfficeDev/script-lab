@@ -16,13 +16,14 @@ interface IBackstageItem {
   content?: JSX.Element
 }
 
-interface IBackstage {
-  hideBackstage: () => void
+export interface IBackstage {
   isHidden: boolean
+  hideBackstage: () => void
 
   // from redux
   solutions: ISolution[]
   activeSolution?: ISolution
+
   createNewSolution: () => void
   openSolution: (solutionId: string) => void
   importGist: (gistUrl: string) => void

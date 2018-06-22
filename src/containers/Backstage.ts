@@ -18,3 +18,26 @@
 // })
 
 // export default connect(mapStateToProps, mapDispatchToProps)(Backstage)
+import { connect } from 'react-redux'
+import Backstage, { IBackstage } from '../components/Backstage'
+import { selectors } from '../reducers'
+import { push } from 'connected-react-router'
+
+const mapStateToProps = (state, ownProps): Partial<IBackstage> => ({
+  solutions: selectors.solutions.getAll(state),
+  activeSolution: selectors.solutions.get(state, ownProps.params.solutionId),
+})
+
+const mapDispatchToProps = (dispatch): Partial<IBackstage> => ({
+  createNewSolution: () => {
+    console.log('createNewSolution')
+  },
+  openSolution: (solutionId: string) => {
+    console.log('opening  solution')
+  },
+  importGist: (gistUrl: string) => {
+    console.log('importing gist url')
+  },
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Backstage)
