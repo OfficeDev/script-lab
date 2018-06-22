@@ -5,7 +5,6 @@ import { selectors } from '../reducers'
 import { push } from 'connected-react-router'
 
 const mapStateToProps = (state, ownProps) => {
-  console.log(ownProps)
   const solutionFileIds = selectors.solutions.get(state, ownProps.params.solutionId).files
   const urlFileId = ownProps.params.fileId
   const activeFileId = solutionFileIds.includes(urlFileId)

@@ -26,8 +26,7 @@ class Editor extends Component<IEditorProps> {
 
   componentDidUpdate(prevProps) {
     const { activeFile } = this.props
-    console.log('EDITOR DID UPDATE: ')
-    console.log(`PrevId: ${prevProps.activeFile.id}, NewId: ${activeFile.id}`)
+
     // TODO: consolidate logic between here and changeActiveFileFromPivot
     if (activeFile.id !== prevProps.activeFile.id) {
       const cachedModel = getModel(this.monaco, activeFile)

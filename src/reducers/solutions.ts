@@ -2,6 +2,24 @@ import { combineReducers } from 'redux'
 import { getType } from 'typesafe-actions'
 import { solutions, ISolutionsAction } from '../actions'
 
+const normalizeSolutionName = (state, sol: ISolution): ISolution => {
+  const allNames = Object.values(state)
+    .filter((s: ISolution) => s.id !== sol.id)
+    .map((s: ISolution) => s.name)
+
+  let { name } = sol
+  if (allNames.includes(name)) {
+    name = name.replace(/\(\d+\)$/gm, '')
+    let suffix = 1
+    while (allNames.includes(`${name} (${suffix})`)) {
+      suffix++
+    }
+    name = `${name} (${suffix})`
+  }
+
+  return { ...sol, name }
+}
+
 const solution = (state: ISolution, action: ISolutionsAction) => {
   switch (action.type) {
     case getType(solutions.edit):
@@ -14,10 +32,19 @@ const solution = (state: ISolution, action: ISolutionsAction) => {
 const byId = (state: { [id: string]: ISolution } = {}, action: ISolutionsAction) => {
   switch (action.type) {
     case getType(solutions.add):
-      return { ...state, [action.payload.id]: action.payload }
+      return {
+        ...state,
+        [action.payload.id]: normalizeSolutionName(state, action.payload),
+      }
 
     case getType(solutions.edit):
-      return { ...state, [action.payload.id]: solution(state[action.payload.id], action) }
+      return {
+        ...state,
+        [action.payload.id]: normalizeSolutionName(
+          state,
+          solution(state[action.payload.id], action),
+        ),
+      }
 
     case getType(solutions.remove):
       const { [action.payload]: omit, ...rest } = state
