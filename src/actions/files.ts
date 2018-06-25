@@ -5,7 +5,8 @@ export const add = createAction('FILES_ADD', resolve => {
 })
 
 export const edit = createAction('FILE_EDIT', resolve => {
-  return (id: string, file: Partial<IEditableFileProperties>) => resolve({ id, file })
+  return (solutionId: string, fileId: string, file: Partial<IEditableFileProperties>) =>
+    resolve({ solutionId, fileId, file })
 })
 
 export const remove = createAction('FILES_REMOVE', resolve => {

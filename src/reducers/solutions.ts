@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux'
 import { getType } from 'typesafe-actions'
-import { solutions, ISolutionsAction } from '../actions'
+import { solutions, ISolutionsAction, files, IFilesAction } from '../actions'
 
 const normalizeSolutionName = (state, sol: ISolution): ISolution => {
   const allNames = Object.values(state)
@@ -20,10 +20,12 @@ const normalizeSolutionName = (state, sol: ISolution): ISolution => {
   return { ...sol, name }
 }
 
-const solution = (state: ISolution, action: ISolutionsAction) => {
+const solution = (state: ISolution, action: ISolutionsAction | IFilesAction) => {
   switch (action.type) {
     case getType(solutions.edit):
-      return { ...state, ...action.payload.solution }
+      return { ...state, ...action.payload.solution, dateLastModified: Date.now() }
+    case getType(files.edit):
+      return { ...state, dateLastModified: Date.now() }
     default:
       return state
   }
@@ -33,7 +35,7 @@ interface IByIdState {
   [id: string]: ISolution
 }
 
-const byId = (state: IByIdState = {}, action: ISolutionsAction) => {
+const byId = (state: IByIdState = {}, action: ISolutionsAction | IFilesAction) => {
   switch (action.type) {
     case getType(solutions.add):
       return {
@@ -48,6 +50,12 @@ const byId = (state: IByIdState = {}, action: ISolutionsAction) => {
           state,
           solution(state[action.payload.id], action),
         ),
+      }
+
+    case getType(files.edit):
+      return {
+        ...state,
+        [action.payload.solutionId]: solution(state[action.payload.solutionId], action),
       }
 
     case getType(solutions.remove):
@@ -91,7 +99,7 @@ const getAll = (state: ISolutionsState): ISolution[] => Object.values(state.byId
 const getAllIds = (state: ISolutionsState): string[] => state.allIds
 
 const getInLastModifiedOrder = (state: ISolutionsState): ISolution[] =>
-  Object.values(state.byId).sort((a, b) => a.dateLastModified - b.dateLastModified)
+  Object.values(state.byId).sort((a, b) => b.dateLastModified - a.dateLastModified)
 
 export const selectors = {
   get,

@@ -29,7 +29,7 @@ const byId = (state: IByIdState = {}, action: IFilesAction) => {
     case getType(files.edit):
       return {
         ...state,
-        [action.payload.id]: file(state[action.payload.id], action),
+        [action.payload.fileId]: file(state[action.payload.fileId], action),
       }
 
     case getType(files.remove):
