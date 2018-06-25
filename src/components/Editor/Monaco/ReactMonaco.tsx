@@ -25,10 +25,7 @@ class ReactMonaco extends Component<IReactMonacoProps> {
       this.initializeMonaco()
     } else {
       win.require.config({
-        url: 'vs/loader.js',
-        paths: {
-          vs: 'vs',
-        },
+        baseUrl: '/',
       })
 
       win.require(['vs/editor/editor.main'], () => this.initializeMonaco())
@@ -64,9 +61,7 @@ class ReactMonaco extends Component<IReactMonacoProps> {
   }
 
   render() {
-    return (
-      <div ref={this.container} style={{ width: '100%', height: '100%' }} />
-    )
+    return <div ref={this.container} style={{ width: '100%', height: '100%' }} />
   }
 }
 

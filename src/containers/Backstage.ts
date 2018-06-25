@@ -1,15 +1,17 @@
 import { connect } from 'react-redux'
+import Backstage, { IBackstage } from '../components/Backstage'
+import { selectors } from '../reducers'
+import { solutions } from '../actions'
+import { push } from 'connected-react-router'
 
-import { Backstage } from '../components'
+const mapStateToProps = (state, ownProps): Partial<IBackstage> => ({})
 
-import { createNewSolution } from '../stores/solutions'
-import { importGist } from '../stores/github'
-
-const mapStateToProps = state => ({})
-
-const mapDispatchToProps = dispatch => ({
-  createNewSolution: () => dispatch(createNewSolution()),
-  importGist: () => dispatch(importGist()),
+const mapDispatchToProps = (dispatch): Partial<IBackstage> => ({
+  createNewSolution: () => dispatch(solutions.create()),
+  openSolution: (solutionId: string) => dispatch(push(`/${solutionId}/`)),
+  importGist: (gistUrl: string) => {
+    console.log('importing gist url')
+  },
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Backstage)

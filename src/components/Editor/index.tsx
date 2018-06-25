@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import FileSwitcher from './FileSwitcher'
 import Monaco from './Monaco'
 import { getModel, setPosForModel } from './Monaco/monaco-models'
-import { IFile } from '../../stores/files'
 import { Wrapper, Layout } from './styles'
 
 export interface IEditorProps {
@@ -27,6 +26,7 @@ class Editor extends Component<IEditorProps> {
 
   componentDidUpdate(prevProps) {
     const { activeFile } = this.props
+
     // TODO: consolidate logic between here and changeActiveFileFromPivot
     if (activeFile.id !== prevProps.activeFile.id) {
       const cachedModel = getModel(this.monaco, activeFile)
@@ -48,6 +48,7 @@ class Editor extends Component<IEditorProps> {
     this.changeActiveFileFromPivot(this.props.activeFile)
 
     window.addEventListener('resize', this.resizeEditor)
+
     // this.editorLayoutInterval = setInterval(this.resizeEditor, 3000)
   }
 

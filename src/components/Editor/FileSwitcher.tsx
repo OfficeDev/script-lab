@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { Pivot, PivotItem } from '../'
+import { Pivot, PivotItem } from '../Pivot'
 
 const FileSwitcherWrapper = styled.div`
   grid-area: command-bar;

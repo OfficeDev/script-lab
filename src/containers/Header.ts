@@ -1,10 +1,13 @@
 import { connect } from 'react-redux'
-import { Header } from '../components'
+import { selectors } from '../reducers'
+import { solutions } from '../actions'
+import Header from '../components/Header'
 
-import { getActiveSolution } from '../stores/selection'
+const mapStateToProps = (state, ownProps) => ({})
 
-const mapStateToProps = state => ({ solution: getActiveSolution(state) })
-
-const mapDispatchToProps = dispatch => ({})
+const mapDispatchToProps = dispatch => ({
+  editSolution: (solutionId: string, solution: Partial<IEditableSolutionProperties>) =>
+    dispatch(solutions.edit(solutionId, solution)),
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header)

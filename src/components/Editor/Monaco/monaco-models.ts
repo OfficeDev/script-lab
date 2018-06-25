@@ -1,6 +1,3 @@
-import { ISolution } from '../../../stores/solutions'
-import { IFile } from '../../../stores/files' // TODO: organize the interfaces to be exported from 1 place
-
 interface ICachedModel {
   model: monaco.editor.ITextModel
   cursorPos?: monaco.IPosition

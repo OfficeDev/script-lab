@@ -1,23 +1,16 @@
 import { connect } from 'react-redux'
+import { files } from '../actions'
+import Editor from '../components/Editor'
+import { selectors } from '../reducers'
+import { push } from 'connected-react-router'
 
-import { Editor } from '../components'
+const mapStateToProps = (state, ownProps) => ({})
 
-import {
-  getActiveSolutionsFiles,
-  getActiveFile,
-  changeActiveFile,
-} from '../stores/selection'
-
-import { IFile, editFile } from '../stores/files'
-
-const mapStateToProps = state => ({
-  files: getActiveSolutionsFiles(state),
-  activeFile: getActiveFile(state),
-})
-
-const mapDispatchToProps = dispatch => ({
-  changeActiveFile: (fileId: string) => dispatch(changeActiveFile(fileId)),
-  editFile: (file: IFile) => dispatch(editFile(file)),
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  changeActiveFile: (fileId: string) =>
+    dispatch(push(`/${ownProps.activeSolution.id}/${fileId}`)),
+  editFile: (fileId: string, file: Partial<IEditableFileProperties>) =>
+    dispatch(files.edit(fileId, file)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Editor)

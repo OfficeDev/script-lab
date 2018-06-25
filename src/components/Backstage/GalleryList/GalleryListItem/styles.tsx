@@ -3,6 +3,7 @@ import styled from 'styled-components'
 
 export const Wrapper = styled.article.attrs({ className: 'ms-font-m' })`
   padding: 1rem 1.5rem;
+  user-select: none;
 
   &:hover {
     background-color: ${props => props.theme.accent};

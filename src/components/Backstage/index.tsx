@@ -16,18 +16,21 @@ interface IBackstageItem {
   content?: JSX.Element
 }
 
-interface IBackstage {
-  hideBackstage: () => void
+export interface IBackstage {
   isHidden: boolean
+  hideBackstage: () => void
 
   // from redux
+  solutions: ISolution[]
+  activeSolution?: ISolution
+
   createNewSolution: () => void
+  openSolution: (solutionId: string) => void
   importGist: (gistUrl: string) => void
 }
 
 interface IState {
   selectedKey: string
-  items: IBackstageItem[]
 }
 const ICON_SIZE = '2rem'
 
@@ -35,7 +38,19 @@ const ICON_SIZE = '2rem'
 export default class Backstage extends Component<IBackstage, IState> {
   state = {
     selectedKey: 'my-solutions',
-    items: [
+  }
+
+  constructor(props) {
+    super(props)
+  }
+
+  openSolution = (solutionId: string) => {
+    this.props.openSolution(solutionId)
+    this.props.hideBackstage()
+  }
+
+  render() {
+    const items = [
       {
         key: 'back',
         icon: <FabricIcon name="GlobalNavButton" size={ICON_SIZE} />,
@@ -54,7 +69,13 @@ export default class Backstage extends Component<IBackstage, IState> {
         key: 'my-solutions',
         icon: <FabricIcon name="DocumentSet" size={ICON_SIZE} />,
         label: 'My Snippets',
-        content: <MySolutions />,
+        content: (
+          <MySolutions
+            solutions={this.props.solutions}
+            openSolution={this.openSolution}
+            activeSolution={this.props.activeSolution}
+          />
+        ),
       },
       {
         key: 'samples',
@@ -71,21 +92,13 @@ export default class Backstage extends Component<IBackstage, IState> {
     ].map((item: IBackstageItem) => ({
       onSelect: () => this.setState({ selectedKey: item.key }),
       ...item,
-    })),
-  }
-
-  constructor(props) {
-    super(props)
-  }
-  render() {
-    const { selectedKey, items } = this.state
-    console.log(selectedKey, items)
+    }))
+    const { selectedKey } = this.state
     const activeItem = items.find(item => item.key === selectedKey)
-    console.log(activeItem)
     return (
       <BackstageWrapper style={{ display: this.props.isHidden ? 'none' : 'flex' }}>
         <NavMenu>
-          {this.state.items.map(item => (
+          {items.map(item => (
             <NavMenuItem
               key={item.key}
               onSelect={item.onSelect}

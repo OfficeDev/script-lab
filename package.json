@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "connected-react-router": "^4.3.0",
     "lodash": "^4.17.10",
     "monaco-editor": "^0.13.1",
     "normalizr": "^3.2.4",
@@ -14,15 +15,16 @@
     "react-router-dom": "^4.2.2",
     "react-scripts-ts": "2.16.0",
     "redux": "^4.0.0",
-    "redux-actions": "^2.4.0",
-    "redux-saga": "^0.16.0",
+    "redux-devtools-extension": "^2.13.5",
+    "redux-thunk": "^2.3.0",
     "reselect": "^3.0.1",
     "styled-components": "^3.2.6",
+    "typesafe-actions": "^2.0.4",
     "uuid": "^3.2.1"
   },
   "scripts": {
     "copy-monaco": "node scripts/copy-monaco.js",
-    "start": "npm run copy-monaco && react-scripts-ts start",
+    "start": "react-scripts-ts start",
     "build": "react-scripts-ts build",
     "test": "react-scripts-ts test --env=jsdom",
     "eject": "react-scripts-ts eject",
@@ -49,6 +51,7 @@
     "prettier": "^1.12.1",
     "react-test-renderer": "^16.3.2",
     "redux-devtools": "^3.4.1",
+    "ts-jest": "^22.4.6",
     "typescript": "^2.8.3"
   }
 }
