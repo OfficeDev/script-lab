@@ -28,7 +28,7 @@ const headerTheme = createTheme({
     themeDark: '#f4f4f4',
     themeDarker: '#f8f8f8',
     neutralLighterAlt: '#27794c',
-    neutralLighter: '#2c7e51',
+    neutralLighter: '#217346' /*'#2c7e51',*/,
     neutralLight: '#35875a',
     neutralQuaternaryAlt: '#3b8d60',
     neutralQuaternary: '#409165',
@@ -48,6 +48,7 @@ const HeaderWrapper = styled.header`
   background-color: ${props => props.theme.accent};
   display: flex;
   align-items: center;
+  justify-content: space-between;
 `
 
 interface IHeader {
@@ -74,50 +75,49 @@ class Header extends React.Component<IHeader, IState> {
     return (
       <>
         <Customizer settings={{ theme: headerTheme }}>
-          <CommandBar
-            items={[
-              {
-                key: 'nav',
-                iconOnly: true,
-                iconProps: { iconName: 'GlobalNavButton' },
-                onClick: showBackstage,
-              },
-              {
-                key: solutionName,
-                text: solutionName,
-                onClick: this.openSolutionSettings,
-              },
-              { key: 'run', text: 'Run', iconProps: { iconName: 'Play' } },
-              {
-                key: 'share',
-                text: 'Share',
-                iconProps: { iconName: 'Share' },
-              },
-              {
-                key: 'delete',
-                text: 'Delete',
-                iconProps: { iconName: 'Delete' },
-              },
-            ]}
-            farItems={[
-              {
-                key: 'user',
-                onRender: () => (
-                  <div style={{ width: '32px' }}>
-                    <Persona
-                      imageUrl="https://lh3.googleusercontent.com/-e2y2T1aiT00/AAAAAAAAAAI/AAAAAAAAAAA/AB6qoq09tgaWz7fRfJi2ZBfVc5Tiup5Elw/s96-c-mo/photo.jpg"
-                      size={PersonaSize.size32}
-                      presence={PersonaPresence.online}
-                    />
-                  </div>
-                ),
-              },
-            ]}
-            styles={{
-              root: { paddingLeft: 0 },
-            }}
-          />
+          <HeaderWrapper>
+            <CommandBar
+              items={[
+                {
+                  key: 'nav',
+                  iconOnly: true,
+                  iconProps: { iconName: 'GlobalNavButton' },
+                  onClick: showBackstage,
+                },
+                {
+                  key: solutionName,
+                  text: solutionName,
+                  onClick: this.openSolutionSettings,
+                },
+                { key: 'run', text: 'Run', iconProps: { iconName: 'Play' } },
+                {
+                  key: 'share',
+                  text: 'Share',
+                  iconProps: { iconName: 'Share' },
+                },
+                {
+                  key: 'delete',
+                  text: 'Delete',
+                  iconProps: { iconName: 'Delete' },
+                },
+              ]}
+              styles={{
+                root: { paddingLeft: 0, flexGrow: 1 },
+              }}
+            />
+            <button
+              style={{ width: '42px', padding: '6px', paddingRight: '10px' }}
+              className="ms-Button ms-Button--commandBar ms-CommandBarItem-link root-73"
+            >
+              <Persona
+                imageUrl="https://lh3.googleusercontent.com/-e2y2T1aiT00/AAAAAAAAAAI/AAAAAAAAAAA/AB6qoq09tgaWz7fRfJi2ZBfVc5Tiup5Elw/s96-c-mo/photo.jpg"
+                size={PersonaSize.size28}
+                presence={PersonaPresence.online}
+              />
+            </button>
+          </HeaderWrapper>
         </Customizer>
+
         {solution && (
           <SolutionSettings
             isOpen={this.state.showSolutionSettings}
