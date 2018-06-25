@@ -5,13 +5,17 @@ import { files, IFilesAction } from '../actions'
 const file = (state: IFile, action: IFilesAction) => {
   switch (action.type) {
     case getType(files.edit):
-      return { ...state, ...action.payload.file }
+      return { ...state, ...action.payload.file, dateLastModified: Date.now() }
     default:
       return state
   }
 }
 
-const byId = (state: { [id: string]: IFile } = {}, action: IFilesAction) => {
+interface IByIdState {
+  [id: string]: IFile
+}
+
+const byId = (state: IByIdState = {}, action: IFilesAction) => {
   switch (action.type) {
     case getType(files.add):
       return {
@@ -25,7 +29,7 @@ const byId = (state: { [id: string]: IFile } = {}, action: IFilesAction) => {
     case getType(files.edit):
       return {
         ...state,
-        [action.payload.id]: file(state[action.payload.id], action),
+        [action.payload.fileId]: file(state[action.payload.fileId], action),
       }
 
     case getType(files.remove):
@@ -56,10 +60,19 @@ const allIds = (state: string[] = [], action: IFilesAction) => {
   }
 }
 
+export interface IFilesState {
+  byId: IByIdState
+  allIds: string[]
+}
+
 export default combineReducers({
   byId,
   allIds,
 })
 
+const get = (state: IFilesState, id: string): IFile => state.byId[id]
+
 // selectors
-export const get = (state, id: string): IFile => state.byId[id]
+export const selectors = {
+  get,
+}

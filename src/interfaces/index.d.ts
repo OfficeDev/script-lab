@@ -10,7 +10,7 @@ interface IEditableSolutionProperties {
 
 interface ISolution extends IEditableSolutionProperties, ITimestamps {
   id: string
-  files: string[] // IFile id's
+  files: string[]
 }
 
 interface IEditableFileProperties {

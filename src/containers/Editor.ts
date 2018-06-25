@@ -9,8 +9,11 @@ const mapStateToProps = (state, ownProps) => ({})
 const mapDispatchToProps = (dispatch, ownProps) => ({
   changeActiveFile: (fileId: string) =>
     dispatch(push(`/${ownProps.activeSolution.id}/${fileId}`)),
-  editFile: (fileId: string, file: Partial<IEditableFileProperties>) =>
-    dispatch(files.edit(fileId, file)),
+  editFile: (
+    solutionId: string,
+    fileId: string,
+    file: Partial<IEditableFileProperties>,
+  ) => dispatch(files.edit(solutionId, fileId, file)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Editor)

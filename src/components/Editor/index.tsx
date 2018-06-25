@@ -6,12 +6,16 @@ import { getModel, setPosForModel } from './Monaco/monaco-models'
 import { Wrapper, Layout } from './styles'
 
 export interface IEditorProps {
-  // from redux
-  files: any[]
-  activeFile: any
+  activeSolution: ISolution
+  files: IFile[]
+  activeFile: IFile
 
   changeActiveFile: (fileId: string) => void
-  editFile: (file: IFile) => void
+  editFile: (
+    solutionId: string,
+    fileId: string,
+    file: Partial<IEditableFileProperties>,
+  ) => void
 }
 
 class Editor extends Component<IEditorProps> {
@@ -73,7 +77,7 @@ class Editor extends Component<IEditorProps> {
 
   handleChange = () => {
     const newValue = this.editor.getModel().getValue() || ''
-    const oldValue = this.props.activeFile.value
+    const oldValue = this.props.activeFile.content
 
     const copy = this.props.activeFile
     copy.content = newValue
@@ -81,7 +85,7 @@ class Editor extends Component<IEditorProps> {
     // const codeHasChanged =
     // newValue.replace(/\r\n/g, "\n") !== oldValue.replace(/\r\n/g, "\n");
 
-    this.props.editFile(copy)
+    this.props.editFile(this.props.activeSolution.id, this.props.activeFile.id, copy)
     // if (codeHasChanged) {
 
     // }

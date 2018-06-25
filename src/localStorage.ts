@@ -2,10 +2,11 @@ import { getBoilerplateSolution, getBoilerplateFiles } from './newSolutionData'
 
 export const loadState = () => {
   try {
-    const serializedState = localStorage.getItem('state')
-    if (serializedState === null) {
-      const files = getBoilerplateFiles()
-      const solution = getBoilerplateSolution(files)
+    const serializedSolutions = localStorage.getItem('solutions')
+    const serializedFiles = localStorage.getItem('files')
+    if (serializedSolutions === null || serializedFiles === null) {
+      const bpFiles = getBoilerplateFiles()
+      const solution = getBoilerplateSolution(bpFiles)
       return {
         solutions: {
           byId: {
@@ -14,24 +15,29 @@ export const loadState = () => {
           allIds: [solution.id],
         },
         files: {
-          byId: files.reduce(
+          byId: bpFiles.reduce(
             (byIdFiles, file) => ({ ...byIdFiles, [file.id]: file }),
             {},
           ),
-          allIds: files.map(file => file.id),
+          allIds: bpFiles.map(file => file.id),
         },
       }
     }
-    return JSON.parse(serializedState)
+    const solutions = JSON.parse(serializedSolutions)
+    const files = JSON.parse(serializedFiles)
+    return { solutions, files }
   } catch (err) {
-    return undefined
+    return { solutions: { byId: {}, allIds: [] }, files: { byId: {}, allIds: [] } }
   }
 }
 
 export const saveState = state => {
   try {
-    const serializedState = JSON.stringify(state)
-    localStorage.setItem('state', serializedState)
+    const { solutions, files } = state
+    const serializedSolutions = JSON.stringify(solutions)
+    const serializedFiles = JSON.stringify(files)
+    localStorage.setItem('solutions', serializedSolutions)
+    localStorage.setItem('files', serializedFiles)
   } catch (err) {
     // TODO
   }
