@@ -29,7 +29,11 @@ const solution = (state: ISolution, action: ISolutionsAction) => {
   }
 }
 
-const byId = (state: { [id: string]: ISolution } = {}, action: ISolutionsAction) => {
+interface IByIdState {
+  [id: string]: ISolution
+}
+
+const byId = (state: IByIdState = {}, action: ISolutionsAction) => {
   switch (action.type) {
     case getType(solutions.add):
       return {
@@ -68,13 +72,30 @@ const allIds = (state: string[] = [], action: ISolutionsAction) => {
   }
 }
 
+export interface ISolutionsState {
+  byId: IByIdState
+  allIds: string[]
+}
+
 export default combineReducers({
   byId,
   allIds,
 })
 
 // selectors
+
+const get = (state: ISolutionsState, id: string): ISolution | undefined => state.byId[id]
+
+const getAll = (state: ISolutionsState): ISolution[] => Object.values(state.byId)
+
+const getAllIds = (state: ISolutionsState): string[] => state.allIds
+
+const getInLastModifiedOrder = (state: ISolutionsState): ISolution[] =>
+  Object.values(state.byId).sort((a, b) => a.dateLastModified - b.dateLastModified)
+
 export const selectors = {
-  get: (state, id: string): ISolution | undefined => state.byId[id],
-  getAll: (state): ISolution[] => Object.values(state.byId),
+  get,
+  getAll,
+  getAllIds,
+  getInLastModifiedOrder,
 }

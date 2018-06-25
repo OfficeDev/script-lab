@@ -1,13 +1,21 @@
 import { combineReducers } from 'redux'
+import { RouterState } from 'connected-react-router'
+import pathToRegexp from 'path-to-regexp'
 
 // reducers + selectors
-import solutions, { selectors as solutionSelectors } from './solutions'
-import files, * as fileSelectors from './files'
+import solutions, { selectors as solutionSelectors, ISolutionsState } from './solutions'
+import files, { selectors as fileSelectors, IFilesState } from './files'
 
 const root = combineReducers({
   solutions,
   files,
 })
+
+export interface IState {
+  solutions: ISolutionsState
+  files: IFilesState
+  router: RouterState
+}
 
 export default root
 
@@ -23,10 +31,41 @@ const globalizeSelectors = (localSelectors, selectorType) =>
     localSelectors,
   )
 
+const solutionPathRegex = pathToRegexp('/:solutionId?/:fileId?')
+
+const getActiveSolution = (state: IState): ISolution => {
+  const [path, pathSolutionId, pathFileId] = solutionPathRegex.exec(
+    state.router.location.pathname,
+  )
+  const allSolutions = solutionSelectors.getInLastModifiedOrder(state.solutions)
+  const allSolutionIds = allSolutions.map(sol => sol.id)
+  return pathSolutionId && allSolutionIds.includes(pathSolutionId)
+    ? solutionSelectors.get(state.solutions, pathSolutionId)!
+    : allSolutions[0]
+}
+
 export const selectors = {
   solutions: globalizeSelectors(solutionSelectors, 'solutions'),
   files: globalizeSelectors(fileSelectors, 'files'),
+  active: {
+    solution: getActiveSolution,
+    files: (state: IState) =>
+      getActiveSolution(state).files.map(fileId =>
+        fileSelectors.get(state.files, fileId),
+      ),
+    file: (state: IState) => {
+      const [path, pathSolutionId, pathFileId] = solutionPathRegex.exec(
+        state.router.location.pathname,
+      )
+
+      const solution = getActiveSolution(state)
+      return pathFileId && solution.files.includes(pathFileId)
+        ? fileSelectors.get(state.files, pathFileId)
+        : fileSelectors.get(state.files, solution.files[0])
+    },
+  },
 }
+
 // TODO: figure out if there's a way to incorp. typings, else use bottom implementation
 
 // export const selectors = {

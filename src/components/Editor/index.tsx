@@ -6,9 +6,9 @@ import { getModel, setPosForModel } from './Monaco/monaco-models'
 import { Wrapper, Layout } from './styles'
 
 export interface IEditorProps {
-  // from redux
-  files: any[]
-  activeFile: any
+  activeSolution: ISolution
+  files: IFile[]
+  activeFile: IFile
 
   changeActiveFile: (fileId: string) => void
   editFile: (file: IFile) => void
