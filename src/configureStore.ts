@@ -1,5 +1,6 @@
 import { createStore, applyMiddleware } from 'redux'
-import thunkMiddleware from 'redux-thunk'
+import createSagaMiddleware from 'redux-saga'
+import rootSaga from './sagas'
 import { connectRouter, routerMiddleware } from 'connected-react-router'
 import createHistory from 'history/createBrowserHistory'
 import { loadState, saveState } from './localStorage'
@@ -26,13 +27,15 @@ const addLoggingToDispatch = store => {
 
 const configureStore = () => {
   const history = createHistory()
+  const sagaMiddleware = createSagaMiddleware()
 
   const persistedState = loadState()
   const store = createStore(
     connectRouter(history)(rootReducer),
     persistedState,
-    composeWithDevTools(applyMiddleware(thunkMiddleware, routerMiddleware(history))),
+    composeWithDevTools(applyMiddleware(sagaMiddleware, routerMiddleware(history))),
   )
+  sagaMiddleware.run(rootSaga)
 
   if (process.env.NODE_ENV !== 'production') {
     store.dispatch = addLoggingToDispatch(store)

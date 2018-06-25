@@ -56,8 +56,9 @@ const createFile = (name, { content, language }): IFile => ({
   dateLastModified: Date.now(),
 })
 
-const convertSnippetToSolution = (
+export const convertSnippetToSolution = (
   snippet: ISnippet,
+  fileIds: string[],
 ): { solution: ISolution; files: IFile[] } => {
   const { id, name, description, script, template, style, libraries } = snippet
 
