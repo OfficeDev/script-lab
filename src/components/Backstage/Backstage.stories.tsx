@@ -5,6 +5,10 @@ import GalleryList from './GalleryList'
 import GalleryListItem from './GalleryList/GalleryListItem'
 
 import { storiesOf } from '@storybook/react'
+import { withNotes } from '@storybook/addon-notes'
+import { checkA11y } from '@storybook/addon-a11y'
+import { action } from '@storybook/addon-actions'
+import Searchbar from './Searchbar'
 
 const stories = storiesOf('Backstage', module)
 
@@ -13,7 +17,11 @@ const fakeHideBackstage = () => alert('hide backstage')
 const fakeCreateNewSolution = () => alert('create new solution')
 const fakeImportGist = (gistUrl: string) => console.log(`importing Gist ${gistUrl}`)
 
+const fakeDisplaySearched = () => alert('you searched for something')
+const fakeData = [1, 2, 3, 4, 5]
+
 stories
+  .addDecorator(checkA11y)
   .add('basic', () => (
     <Backstage
       importGist={fakeImportGist}
@@ -43,4 +51,12 @@ stories
       title="Test Title"
       description="Test Description Test Description Test Description Test DescriptionTest Description Test Description"
     />
+  ))
+  .add('search bar', () => (
+    <Searchbar data={fakeData} searchExecution={fakeDisplaySearched} />
+  ))
+  .add('Inaccessible', () => (
+    <button style={{ backgroundColor: 'red', color: 'darkRed' }}>
+      Inaccessible button
+    </button>
   ))

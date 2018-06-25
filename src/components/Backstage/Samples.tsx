@@ -10,6 +10,7 @@ export default class Samples extends React.Component<any, any> {
   constructor(props) {
     super(props)
     this.clearVisibility = this.clearVisibility.bind(this)
+    this.setVisible = this.setVisible.bind(this)
     this.populatePage = this.populatePage.bind(this)
     this.displaySearchedSamples = this.displaySearchedSamples.bind(this)
     this.state = {
@@ -1063,6 +1064,16 @@ export default class Samples extends React.Component<any, any> {
     console.log(this.state.samples)
   }
 
+  setVisible() {
+    const copySamples = Object.assign([], this.state.samples)
+    console.log(copySamples)
+    copySamples.forEach(sample => {
+      sample.visibility = 1
+    })
+    this.setState({ samples: copySamples })
+    console.log(this.state.samples)
+  }
+
   populatePage() {
     const newGroupedSamples = {}
     const visibles = this.state.visible
@@ -1078,7 +1089,6 @@ export default class Samples extends React.Component<any, any> {
   displaySearchedSamples(value) {
     this.clearVisibility()
     // Clear the samples on the page when user presses enter
-
     const clearedArray = []
     this.setState({ visible: clearedArray })
     this.setState({ groupedSamples: {} })
