@@ -4,9 +4,16 @@ import { Wrapper } from './styles'
 import BarButton from '../BarButton'
 import FabricIcon from '../FabricIcon'
 
-const Footer = ({ language }) => (
+const languageMap = {
+  typescript: 'TypeScript',
+  javascript: 'JavaScript',
+  css: 'CSS',
+  html: 'HTML',
+}
+
+const Footer = ({ language }: { language: string }) => (
   <Wrapper>
-    <BarButton>{language}</BarButton>
+    <BarButton>{languageMap[language.toLowerCase()] || language}</BarButton>
     <BarButton>
       <FabricIcon name="Settings" />
     </BarButton>
