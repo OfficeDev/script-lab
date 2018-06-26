@@ -4,6 +4,7 @@ import configureStore from './configureStore'
 import { setupFabricTheme } from './theme'
 import registerServiceWorker from './registerServiceWorker'
 import { samples } from './actions'
+
 import './index.css'
 import Root from './components/Root'
 
