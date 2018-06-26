@@ -55,11 +55,12 @@ export function* importGistSideEffect(gistUrl: string) {
     let newSolution = { id: uuidv4() }
     const newFiles = [{ id: uuidv4() }]
     console.log('lol')
-    const gistUrlString = gistUrl as `string`
-    console.log(gistUrlString)
+
+    console.log(gistUrl)
 
     // from: importGist in original ImportGist.tsx on branch testing
     const gistId = getGistId(gistUrl)
+    // not executing because gistUrl is not type string??
     console.log(gistId)
     const rawUrl = yield call(getRawYamlUrl, gistId)
 
