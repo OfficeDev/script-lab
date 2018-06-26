@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
-
+import officeDts from './office'
 interface IReactMonacoProps {
   theme: string
   options: monaco.editor.IEditorConstructionOptions
@@ -42,6 +42,10 @@ class ReactMonaco extends Component<IReactMonacoProps> {
     const { theme, options } = this.props
     const win = window as any
     if (this.container.current && win.monaco !== undefined) {
+      monaco.languages.typescript.typescriptDefaults.addExtraLib(
+        officeDts,
+        '/office.d.ts',
+      )
       this.editor = monaco.editor.create(this.container.current, {
         ...options,
       })
