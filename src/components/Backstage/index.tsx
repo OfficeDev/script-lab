@@ -54,6 +54,7 @@ export default class Backstage extends Component<IBackstage, IState> {
   openSample = (rawUrl: string) => {
     this.props.openSample(rawUrl)
     this.props.hideBackstage()
+    this.setState({ selectedKey: 'my-solutions' })
   }
 
   render() {
