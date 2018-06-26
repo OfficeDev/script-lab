@@ -5,15 +5,18 @@ import pathToRegexp from 'path-to-regexp'
 // reducers + selectors
 import solutions, { selectors as solutionSelectors, ISolutionsState } from './solutions'
 import files, { selectors as fileSelectors, IFilesState } from './files'
+import samples, { selectors as sampleSelectors } from './samples'
 
 const root = combineReducers({
   solutions,
   files,
+  samples,
 })
 
 export interface IState {
   solutions: ISolutionsState
   files: IFilesState
+  samples: any
   router: RouterState
 }
 
@@ -47,6 +50,7 @@ const getActiveSolution = (state: IState): ISolution => {
 export const selectors = {
   solutions: globalizeSelectors(solutionSelectors, 'solutions'),
   files: globalizeSelectors(fileSelectors, 'files'),
+  samples: globalizeSelectors(sampleSelectors, 'samples'),
   active: {
     solution: getActiveSolution,
     files: (state: IState) =>

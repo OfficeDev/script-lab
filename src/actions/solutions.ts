@@ -13,4 +13,4 @@ export const remove = createAction('SOLUTIONS_REMOVE', resolve => {
   return (id: string) => resolve(id)
 })
 
-export const create = createAction('SOLUTIONS_CREATE')
+export const create = createAction('SOLUTIONS_CREATE_NEW')

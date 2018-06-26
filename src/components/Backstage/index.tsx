@@ -19,13 +19,15 @@ interface IBackstageItem {
 export interface IBackstage {
   isHidden: boolean
   hideBackstage: () => void
-
-  // from redux
   solutions: ISolution[]
   activeSolution?: ISolution
 
+  samplesMetadataByGroup: ISampleMetadata[]
+
+  // from redux
   createNewSolution: () => void
   openSolution: (solutionId: string) => void
+  openSample: (rawUrl: string) => void
   importGist: (gistUrl: string) => void
 }
 
@@ -46,6 +48,11 @@ export default class Backstage extends Component<IBackstage, IState> {
 
   openSolution = (solutionId: string) => {
     this.props.openSolution(solutionId)
+    this.props.hideBackstage()
+  }
+
+  openSample = (rawUrl: string) => {
+    this.props.openSample(rawUrl)
     this.props.hideBackstage()
   }
 
@@ -81,7 +88,12 @@ export default class Backstage extends Component<IBackstage, IState> {
         key: 'samples',
         icon: <FabricIcon name="Dictionary" size={ICON_SIZE} />,
         label: 'Samples',
-        content: <Samples />,
+        content: (
+          <Samples
+            samplesMetadataByGroup={this.props.samplesMetadataByGroup}
+            openSample={this.openSample}
+          />
+        ),
       },
       {
         key: 'import',

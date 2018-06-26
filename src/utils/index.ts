@@ -40,6 +40,7 @@ interface ISnippet {
   platform: string
   created_at: number
   modified_at: number
+  order?: number
 
   script: IContentLanguagePair
   template: IContentLanguagePair
@@ -58,9 +59,8 @@ const createFile = (name, { content, language }): IFile => ({
 
 export const convertSnippetToSolution = (
   snippet: ISnippet,
-  fileIds: string[],
 ): { solution: ISolution; files: IFile[] } => {
-  const { id, name, description, script, template, style, libraries } = snippet
+  const { name, description, script, template, style, libraries } = snippet
 
   const files = [
     createFile('index.ts', script),
@@ -69,7 +69,7 @@ export const convertSnippetToSolution = (
   ]
 
   const solution = {
-    id,
+    id: uuidv4(),
     name,
     description,
     files: files.map(file => file.id),
