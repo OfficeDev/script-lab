@@ -31,3 +31,10 @@ export const getBoilerplateSolution = (files: IFile[]): ISolution => ({
   dateLastModified: Date.now(),
   files: files.map(file => file.id),
 })
+
+export const getBoilerplate = (): { solution: ISolution; files: IFile[] } => {
+  const files = getBoilerplateFiles()
+  const solution = getBoilerplateSolution(files)
+
+  return { solution, files }
+}

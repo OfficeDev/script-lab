@@ -1,17 +1,21 @@
-import { put, takeEvery, all } from 'redux-saga/effects'
+import { put, takeEvery, all, call } from 'redux-saga/effects'
 import { push } from 'connected-react-router'
 import actions from '../actions'
-import { getBoilerplateFiles, getBoilerplateSolution } from '../newSolutionData'
 
-function* createSolution() {
-  const files = getBoilerplateFiles()
-  const solution = getBoilerplateSolution(files)
+import { getBoilerplate } from '../newSolutionData'
+import { getType } from 'typesafe-actions'
 
+export function* createSolution(solution: ISolution, files: IFile[]) {
   yield put(actions.files.add(files))
   yield put(actions.solutions.add(solution))
   yield put(push(`/${solution.id}`))
 }
 
+function* createNewSolution() {
+  const { solution, files } = getBoilerplate()
+  yield call(createSolution, solution, files)
+}
+
 export function* watchCreateSolution() {
-  yield takeEvery('SOLUTIONS_CREATE', createSolution)
+  yield takeEvery(getType(actions.solutions.create), createNewSolution)
 }

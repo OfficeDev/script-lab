@@ -22,3 +22,13 @@ interface IEditableFileProperties {
 interface IFile extends IEditableFileProperties, ITimestamps {
   id: string
 }
+
+interface ISampleMetadata {
+  id: string
+  name: string
+  fileName: string
+  description: string
+  rawUrl: string
+  group: string
+  api_set: any
+}
