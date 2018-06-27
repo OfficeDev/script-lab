@@ -22,14 +22,14 @@ const fakeData = [1, 2, 3, 4, 5]
 
 stories
   .addDecorator(checkA11y)
-  .add('basic', () => (
+  /* .add('basic', () => (
     <Backstage
       importGist={fakeImportGist}
       createNewSolution={fakeCreateNewSolution}
       isHidden={false}
       hideBackstage={fakeHideBackstage}
     />
-  ))
+  )) */
   .add('gallery list', () => (
     <GalleryList
       title="Example title"
