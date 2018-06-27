@@ -5,7 +5,7 @@ import GalleryList from './GalleryList'
 import GalleryListItem from './GalleryList/GalleryListItem'
 
 import { storiesOf } from '@storybook/react'
-import { withNotes } from '@storybook/addon-notes'
+
 import { checkA11y } from '@storybook/addon-a11y'
 import { action } from '@storybook/addon-actions'
 import Searchbar from './Searchbar'
