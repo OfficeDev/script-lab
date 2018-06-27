@@ -19,7 +19,7 @@ const fakeOpenSolution = (solutionId: string) =>
 
 stories
   .addDecorator(checkA11y)
-  .add('basic', () => (
+  /* .add('basic', () => (
     <Backstage
       solutions={fakeSolutions}
       importGist={fakeImportGist}
@@ -28,7 +28,7 @@ stories
       hideBackstage={fakeHideBackstage}
       openSolution={fakeOpenSolution}
     />
-  ))
+  )) */
   .add('gallery list', () => (
     <GalleryList
       title="Example title"
@@ -47,9 +47,9 @@ stories
       ]}
     />
   ))
-  .add('gallery list item', () => (
+  /* .add('gallery list item', () => (
     <GalleryListItem
       title="Test Title"
       description="Test Description Test Description Test Description Test DescriptionTest Description Test Description"
     />
-  ))
+  )) */ 
