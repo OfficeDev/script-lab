@@ -4,7 +4,6 @@ import Backstage from '../Backstage/index'
 import WelcomePanel from './Welcome'
 
 import { storiesOf } from '@storybook/react'
-import { withNotes } from '@storybook/addon-notes'
 import { checkA11y } from '@storybook/addon-a11y'
 import { action } from '@storybook/addon-actions'
 
