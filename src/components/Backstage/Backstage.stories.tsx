@@ -4,6 +4,7 @@ import Backstage from './index'
 import GalleryList from './GalleryList'
 import GalleryListItem from './GalleryList/GalleryListItem'
 
+import { checkA11y } from '@storybook/addon-a11y';
 import { storiesOf } from '@storybook/react'
 
 const stories = storiesOf('Backstage', module)
@@ -17,6 +18,7 @@ const fakeOpenSolution = (solutionId: string) =>
   alert(`opening solutionId: ${solutionId}`)
 
 stories
+  .addDecorator(checkA11y)
   .add('basic', () => (
     <Backstage
       solutions={fakeSolutions}
