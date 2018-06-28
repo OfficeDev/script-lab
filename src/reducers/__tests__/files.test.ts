@@ -27,7 +27,6 @@ export const getStateWith = (indicies: number[]) =>
   )
 
 describe('files reducer', () => {
-  // TODO: add more tests
   test('add single file to empty state', () => {
     expect(filesReducer(getStateWith([]), filesActions.add([getExampleFile(3)]))).toEqual(
       getStateWith([3]),
