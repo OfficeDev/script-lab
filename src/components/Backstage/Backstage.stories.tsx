@@ -4,6 +4,7 @@ import Backstage from './index'
 import GalleryList from './GalleryList'
 import GalleryListItem from './GalleryList/GalleryListItem'
 
+import { checkA11y } from '@storybook/addon-a11y'
 import { storiesOf } from '@storybook/react'
 
 const stories = storiesOf('Backstage', module)
@@ -12,14 +13,17 @@ const stories = storiesOf('Backstage', module)
 const fakeHideBackstage = () => alert('hide backstage')
 const fakeCreateNewSolution = () => alert('create new solution')
 const fakeImportGist = (gistUrl: string) => alert(`importing Gist ${gistUrl}`)
-const fakeSolutions = []
 const fakeOpenSolution = (solutionId: string) =>
   alert(`opening solutionId: ${solutionId}`)
+const fakeOpenSample = (rawUrl: string) => alert(`opening sample: ${rawUrl}`)
 
 stories
+  .addDecorator(checkA11y)
   .add('basic', () => (
     <Backstage
-      solutions={fakeSolutions}
+      samplesMetadataByGroup={[]}
+      openSample={fakeOpenSample}
+      solutions={[]}
       importGist={fakeImportGist}
       createNewSolution={fakeCreateNewSolution}
       isHidden={false}
@@ -47,6 +51,7 @@ stories
   ))
   .add('gallery list item', () => (
     <GalleryListItem
+      key="test-key"
       title="Test Title"
       description="Test Description Test Description Test Description Test DescriptionTest Description Test Description"
     />

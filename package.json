@@ -34,6 +34,7 @@
     "build-storybook": "build-storybook"
   },
   "devDependencies": {
+    "@storybook/addon-a11y": "^3.4.8",
     "@storybook/addon-actions": "^3.4.4",
     "@storybook/addon-knobs": "^3.4.6",
     "@storybook/addon-links": "^3.4.4",
