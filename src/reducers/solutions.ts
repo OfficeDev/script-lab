@@ -23,9 +23,13 @@ const normalizeSolutionName = (state, sol: ISolution): ISolution => {
 const solution = (state: ISolution, action: ISolutionsAction | IFilesAction) => {
   switch (action.type) {
     case getType(solutions.edit):
-      return { ...state, ...action.payload.solution, dateLastModified: Date.now() }
+      return {
+        ...state,
+        ...action.payload.solution,
+        dateLastModified: action.payload.timestamp,
+      }
     case getType(files.edit):
-      return { ...state, dateLastModified: Date.now() }
+      return { ...state, dateLastModified: action.payload.timestamp }
     default:
       return state
   }

@@ -42,4 +42,17 @@ describe('files reducer', () => {
       ),
     ).toEqual(getStateWith([3, 6, 7]))
   })
+
+  test('edit a file', () => {
+    const newContent = '// hello world, how are you?'
+    const actionToDispatch = filesActions.edit('fake solution id', getExampleFile(1).id, {
+      content: newContent,
+    })
+    const { timestamp } = actionToDispatch.payload
+
+    const expectedState = getStateWith([1, 2])
+    expectedState.byId[getExampleFile(1).id].content = newContent
+    expectedState.byId[getExampleFile(1).id].dateLastModified = timestamp
+    expect(filesReducer(getStateWith([1, 2]), actionToDispatch)).toEqual(expectedState)
+  })
 })

@@ -5,7 +5,11 @@ import { files, IFilesAction } from '../actions'
 const file = (state: IFile, action: IFilesAction) => {
   switch (action.type) {
     case getType(files.edit):
-      return { ...state, ...action.payload.file, dateLastModified: Date.now() }
+      return {
+        ...state,
+        ...action.payload.file,
+        dateLastModified: action.payload.timestamp,
+      }
     default:
       return state
   }

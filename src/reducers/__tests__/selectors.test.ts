@@ -14,8 +14,6 @@ const state = {
   files: getFilesStateWith(fileIds),
 }
 
-console.log(JSON.stringify(state))
-
 describe('selectors', () => {
   it('should be able to get a solution', () => {
     const id = 10

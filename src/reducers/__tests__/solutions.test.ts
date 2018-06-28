@@ -49,13 +49,16 @@ describe('solutions reducer', () => {
 
   test('edit solution', () => {
     const newName = 'My New Name'
+    const actionToDispatch = solutionsActions.edit(getExampleSolution(1).id, {
+      name: newName,
+    })
+    const { timestamp } = actionToDispatch.payload
+
     const expectedState = getStateWith([1, 2])
     expectedState.byId[getExampleSolution(1).id].name = newName
-    expect(
-      solutionsReducer(
-        getStateWith([1, 2]),
-        solutionsActions.edit(getExampleSolution(1).id, { name: newName }),
-      ),
-    ).toEqual(expectedState)
+    expectedState.byId[getExampleSolution(1).id].dateLastModified = timestamp
+    expect(solutionsReducer(getStateWith([1, 2]), actionToDispatch)).toEqual(
+      expectedState,
+    )
   })
 })
