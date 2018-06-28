@@ -4,7 +4,6 @@ import { GalleryListWrapper, TitleBar, Title, ArrowWrapper } from './styles'
 import GalleryListItem, { IGalleryListItem } from './GalleryListItem'
 import FabricIcon from '../../FabricIcon'
 
-// TODO: decide on convention for Props: IComponentProps vs IComponent
 export interface IGalleryList {
   title: string
   items: IGalleryListItem[]
