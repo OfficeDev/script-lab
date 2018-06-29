@@ -6,7 +6,7 @@ export const add = createAction('SOLUTIONS_ADD', resolve => {
 
 export const edit = createAction('SOLUTIONS_EDIT', resolve => {
   return (id: string, solution: Partial<IEditableSolutionProperties>) =>
-    resolve({ id, solution })
+    resolve({ id, solution, timestamp: Date.now() })
 })
 
 export const remove = createAction('SOLUTIONS_REMOVE', resolve => {

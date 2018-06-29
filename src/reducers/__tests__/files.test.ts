@@ -27,7 +27,6 @@ export const getStateWith = (indicies: number[]) =>
   )
 
 describe('files reducer', () => {
-  // TODO: add more tests
   test('add single file to empty state', () => {
     expect(filesReducer(getStateWith([]), filesActions.add([getExampleFile(3)]))).toEqual(
       getStateWith([3]),
@@ -41,5 +40,18 @@ describe('files reducer', () => {
         filesActions.remove([getExampleFile(4).id, getExampleFile(1).id]),
       ),
     ).toEqual(getStateWith([3, 6, 7]))
+  })
+
+  test('edit a file', () => {
+    const newContent = '// hello world, how are you?'
+    const actionToDispatch = filesActions.edit('fake solution id', getExampleFile(1).id, {
+      content: newContent,
+    })
+    const { timestamp } = actionToDispatch.payload
+
+    const expectedState = getStateWith([1, 2])
+    expectedState.byId[getExampleFile(1).id].content = newContent
+    expectedState.byId[getExampleFile(1).id].dateLastModified = timestamp
+    expect(filesReducer(getStateWith([1, 2]), actionToDispatch)).toEqual(expectedState)
   })
 })
