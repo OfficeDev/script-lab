@@ -110,7 +110,7 @@ export default class Backstage extends Component<IBackstage, IState> {
     const activeItem = items.find(item => item.key === selectedKey)
     return (
       <BackstageWrapper style={{ display: this.props.isHidden ? 'none' : 'flex' }}>
-        <NavMenu>
+        {/* <NavMenu>
           {items.map(item => (
             <NavMenuItem
               key={item.key}
@@ -121,7 +121,7 @@ export default class Backstage extends Component<IBackstage, IState> {
               {item.label && <span>{item.label}</span>}
             </NavMenuItem>
           ))}
-        </NavMenu>
+        </NavMenu> */}
         {activeItem && activeItem.content}
       </BackstageWrapper>
     )

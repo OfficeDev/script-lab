@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { Pivot, PivotItem } from '../Pivot'
+// import { Pivot, PivotItem } from '../Pivot'
 
 export const BackstageWrapper = styled.div`
   display: flex;
@@ -20,7 +20,8 @@ export const BackstageWrapper = styled.div`
   }
 `
 
-export const NavMenu = Pivot.extend`
+// export const NavMenu = Pivot.extend`
+export const NavMenu = styled.div`
   display: flex;
   background-color: ${props => props.theme.accent};
   white-space: nowrap;
@@ -37,7 +38,8 @@ export const NavMenu = Pivot.extend`
   }
 `
 
-export const NavMenuItem = styled(PivotItem)`
+// export const NavMenuItem = styled(PivotItem)`
+export const NavMenuItem = styled('div')`
   display: flex;
   align-items: center;
 

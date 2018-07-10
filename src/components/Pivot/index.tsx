@@ -1,20 +1,31 @@
-import React from 'react'
-import { PivotItemWrapper, SelectedPivotItemWrapper, Pivot } from './styles'
+// import React from 'react'
+// import {
+//   Pivot,
+//   PivotItem,
+//   PivotLinkFormat,
+//   PivotLinkSize,
+// } from 'office-ui-fabric-react/lib/Pivot'
 
-interface IPivotItem {
-  isSelected: boolean
-  onSelect: () => void
-  children: any
-  className?: string
-}
+// class MyPivot extends React.Component<any, any> {
+//   render(): JSX.Element {
+//     return (
+//       <div>
+//         <Pivot
+//           linkSize={PivotLinkSize.large}
+//           linkFormat={PivotLinkFormat.tabs}
+//           onLinkClick={this.onLinkClick}
+//         >
+//           <PivotItem key={1} linkText="Foo" />
+//           <PivotItem key={2} linkText="Bar" />
+//           <PivotItem key={3} linkText="Smhoo" />
+//         </Pivot>
+//       </div>
+//     )
+//   }
 
-export const PivotItem = ({ isSelected, onSelect, children, className }: IPivotItem) => {
-  const Wrapper = isSelected ? SelectedPivotItemWrapper : PivotItemWrapper
-  return (
-    <Wrapper className={className} onClick={onSelect}>
-      {children}
-    </Wrapper>
-  )
-}
+//   onLinkClick(item: PivotItem): void {
+//     alert(item.props.linkText)
+//   }
+// }
 
-export { Pivot }
+// export default MyPivot
