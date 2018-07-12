@@ -46,9 +46,6 @@ const headerTheme = createTheme({
 const HeaderWrapper = styled.header`
   grid-area: header;
   background-color: ${props => props.theme.accent};
-  /* display: flex;
-  align-items: center; */
-  /* justify-content: space-between; */
 `
 
 interface IHeader {
