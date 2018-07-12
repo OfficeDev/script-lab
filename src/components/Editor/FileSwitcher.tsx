@@ -57,51 +57,32 @@ interface IFileSwitcherProps {
 
 class FileSwitcher extends React.Component<IFileSwitcherProps> {
   render() {
-    const { files, activeFile, changeActiveFile } = this.props
+    const { files, activeFile } = this.props
     const activeFileName = activeFile ? activeFile.name : ''
 
     return (
       <FileSwitcherWrapper>
-        <div>
-          <Customizer settings={{ theme: pivotTheme }}>
-            <Pivot
-              linkSize={PivotLinkSize.normal}
-              linkFormat={PivotLinkFormat.tabs}
-              onLinkClick={this.onLinkClick}
-            >
-              {files.map(file => (
-                <PivotItem
-                  key={file.id}
-                  itemKey={file.id}
-                  linkText={FILE_NAME_MAP[file.name] || file.name}
-                />
-              ))}
-              {/* <PivotItem itemKey="1" linkText="Foo" />
-            <PivotItem itemKey="2" linkText="Bar" />
-            <PivotItem key={3} linkText="Smhoo" /> */}
-            </Pivot>
-          </Customizer>
-        </div>
-        {/* <Pivot>
-          {files.map(file => (
-            <PivotItem
-              key={file.id}
-              isSelected={file.id === activeFile.id}
-              onSelect={this.handleLinkClick(file)}
-            >
-              {FILE_NAME_MAP[file.name] || file.name}
-            </PivotItem>
-          ))}
-        </Pivot> */}
+        <Customizer settings={{ theme: pivotTheme }}>
+          <Pivot
+            linkSize={PivotLinkSize.normal}
+            linkFormat={PivotLinkFormat.tabs}
+            onLinkClick={this.onLinkClick}
+            selectedKey={activeFile.id}
+          >
+            {files.map(file => (
+              <PivotItem
+                key={file.id}
+                itemKey={file.id}
+                linkText={FILE_NAME_MAP[file.name] || file.name}
+              />
+            ))}
+          </Pivot>
+        </Customizer>
       </FileSwitcherWrapper>
     )
   }
-  private handleLinkClick = (file: any) => () => {
-    this.props.changeActiveFile(file)
-  }
 
   onLinkClick = (item: PivotItem): void =>
-    // alert(`${item.props.linkText} ${item.props.itemKey}`)
     this.props.changeActiveFile(
       this.props.files.find(file => file.id === item.props.itemKey),
     )
