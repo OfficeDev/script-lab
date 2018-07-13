@@ -6,6 +6,7 @@ interface ITimestamps {
 interface IEditableSolutionProperties {
   name: string
   description?: string
+  libraries: string[]
 }
 
 interface ISolution extends IEditableSolutionProperties, ITimestamps {

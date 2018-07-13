@@ -73,6 +73,7 @@ export const convertSnippetToSolution = (
     name,
     description,
     files: files.map(file => file.id),
+    libraries: libraries.split('\n'),
     dateCreated: Date.now(),
     dateLastModified: Date.now(),
   }

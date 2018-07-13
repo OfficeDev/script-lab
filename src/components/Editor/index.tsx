@@ -116,7 +116,7 @@ class Editor extends Component<IEditorProps> {
 
   render() {
     console.log(this.props)
-    const { files, activeFile } = this.props
+    const { files, activeFile, activeSolution } = this.props
     const options = this.getMonacoOptions()
 
     return (
@@ -127,7 +127,12 @@ class Editor extends Component<IEditorProps> {
           changeActiveFile={this.changeActiveFileFromPivot}
         />
         <Wrapper>
-          <Monaco theme="vs-dark" options={options} editorDidMount={this.setupEditor} />
+          <Monaco
+            theme="vs-dark"
+            options={options}
+            editorDidMount={this.setupEditor}
+            libraries={activeSolution.libraries}
+          />
         </Wrapper>
       </Layout>
     )

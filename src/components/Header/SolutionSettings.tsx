@@ -19,16 +19,17 @@ interface ISolutionSettings {
 interface IState {
   name: string
   description: string
+  libraries: string
 }
 
 class SolutionSettings extends React.Component<ISolutionSettings, IState> {
-  state = { name: '', description: '' }
+  state = { name: '', description: '', libraries: '' }
 
   setupForm = () => {
     const { solution } = this.props
-    const { name } = solution
+    const { name, libraries } = solution
     const description = solution.description || ''
-    this.setState({ name, description })
+    this.setState({ name, description, libraries: libraries.join('\n') })
   }
 
   componentWillMount() {
@@ -41,7 +42,7 @@ class SolutionSettings extends React.Component<ISolutionSettings, IState> {
 
   render() {
     const { isOpen, closeSolutionSettings } = this.props
-    const { name, description } = this.state
+    const { name, description, libraries } = this.state
     return (
       <Dialog
         hidden={!isOpen}
@@ -56,6 +57,13 @@ class SolutionSettings extends React.Component<ISolutionSettings, IState> {
           rows={4}
           onChanged={this.updateSolutionDescription}
           value={description}
+        />
+        <TextField
+          label="Libraries"
+          multiline={true}
+          rows={6}
+          onChanged={this.updateSolutionLibraries}
+          value={libraries}
         />
         <DialogFooter>
           <DefaultButton
@@ -77,8 +85,14 @@ class SolutionSettings extends React.Component<ISolutionSettings, IState> {
   private updateSolutionDescription = (newDesc: string) =>
     this.setState({ description: newDesc })
 
+  private updateSolutionLibraries = (newLibs: string) =>
+    this.setState({ libraries: newLibs })
+
   private updateSolutionMetadata = () => {
-    this.props.editSolutionMetadata(this.props.solution.id, this.state)
+    this.props.editSolutionMetadata(this.props.solution.id, {
+      ...this.state,
+      libraries: this.state.libraries.split('\n').filter(lib => lib),
+    })
     this.props.closeSolutionSettings()
   }
 }
