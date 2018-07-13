@@ -43,19 +43,20 @@
     -->
 
   <script>
-    var snippet = JSON.parse(localStorage.getItem('activeSnippet'))
+    var snippet = JSON.parse(localStorage.getItem('activeSnippet'));
 
     const state = {
       snippet: snippet,
       displayLanguage: 'en-us',
       isInsideOfficeApp: false,
-      returnUrl: 'http://localhost:3000',
+      returnUrl: window.location.origin + '/',
+      refreshUrl: window.location.origin + '/run.html'
     };
 
     const data = JSON.stringify(state);
     const params = { data: data, isTrustedSnippet: true }
 
-    var path = 'https://bornholm-runner-edge.azurewebsites.net/compile/page'
+    var path = 'https://localhost:3200/compile/page'
     let form = document.createElement('form');
     form.setAttribute('method', 'post');
     form.setAttribute('action', path);
