@@ -4,7 +4,7 @@ import rootSaga from './sagas'
 import { connectRouter, routerMiddleware } from 'connected-react-router'
 import createHistory from 'history/createBrowserHistory'
 import { loadState, saveState } from './localStorage'
-import { throttle } from 'lodash/throttle'
+import throttle from 'lodash/throttle'
 import { composeWithDevTools } from 'redux-devtools-extension'
 
 import rootReducer from './reducers'
@@ -42,9 +42,9 @@ const configureStore = () => {
   }
 
   store.subscribe(
-    // throttle(() => {
-    () => saveState(store.getState()),
-    // }, 1000),
+    throttle(() => {
+      saveState(store.getState())
+    }, 1000),
   )
 
   return { store, history }

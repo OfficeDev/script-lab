@@ -1,4 +1,6 @@
 import { getBoilerplateSolution, getBoilerplateFiles } from './newSolutionData'
+import { selectors } from './reducers'
+import { convertSolutionToSnippet } from './utils'
 
 export const loadState = () => {
   try {
@@ -38,6 +40,18 @@ export const saveState = state => {
     const serializedFiles = JSON.stringify(files)
     localStorage.setItem('solutions', serializedSolutions)
     localStorage.setItem('files', serializedFiles)
+
+    // saving active solution for runner
+    // const activeSolution = { ...selectors.active.solution(state) }
+    // activeSolution.files = activeSolution.files.map(fileId =>
+    //   selectors.files.get(state, fileId),
+    // )
+    // localStorage.setItem('activeSolution', JSON.stringify(activeSolution))
+    const activeSolution = selectors.active.solution(state)
+    const activeFiles = selectors.active.files(state)
+    const activeSnippet = convertSolutionToSnippet(activeSolution, activeFiles)
+
+    localStorage.setItem('activeSnippet', JSON.stringify(activeSnippet))
   } catch (err) {
     // TODO
   }

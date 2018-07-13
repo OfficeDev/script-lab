@@ -80,3 +80,37 @@ export const convertSnippetToSolution = (
 
   return { solution, files }
 }
+
+export const convertSolutionToSnippet = (
+  solution: ISolution,
+  files: IFile[],
+): ISnippet => {
+  const { id, name, description, libraries, dateCreated, dateLastModified } = solution
+
+  const script: IFile = files.find(file => file.name === 'index.ts')!
+  const template: IFile = files.find(file => file.name === 'index.html')!
+  const style: IFile = files.find(file => file.name === 'index.css')!
+
+  return {
+    id,
+    name,
+    description,
+    created_at: dateCreated,
+    modified_at: dateLastModified,
+    host: 'WEB',
+    platform: 'WEB',
+    script: {
+      content: script.content,
+      language: script.language,
+    },
+    template: {
+      content: template.content,
+      language: template.language,
+    },
+    style: {
+      content: style.content,
+      language: style.language,
+    },
+    libraries: libraries.join('\n'),
+  }
+}
