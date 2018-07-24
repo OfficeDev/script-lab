@@ -37,7 +37,8 @@ export const fabricTheme = {
 
 const theme = {
   accent: '#217346',
-  darkAccent: '#103822',
+  // darkAccent: '#103822',
+  darkAccent: '#0D4027',
   bg: '#1e1e1e',
   fg: '#eeeeee',
 }
