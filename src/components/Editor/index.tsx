@@ -103,7 +103,7 @@ class Editor extends Component<IEditorProps> {
       if (cachedModel.cursorPos) {
         this.editor.setPosition(cachedModel.cursorPos)
         this.editor.revealPosition(cachedModel.cursorPos)
-        this.editor.focus()
+        // this.editor.focus()
       }
     })
 

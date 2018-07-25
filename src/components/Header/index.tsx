@@ -46,9 +46,6 @@ const headerTheme = createTheme({
 const HeaderWrapper = styled.header`
   grid-area: header;
   background-color: ${props => props.theme.accent};
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
 `
 
 interface IHeader {
@@ -107,19 +104,24 @@ class Header extends React.Component<IHeader, IState> {
                 },
               ]}
               styles={{
-                root: { paddingLeft: 0, flexGrow: 1 },
+                root: { paddingLeft: 0, paddingRight: 0 },
               }}
+              farItems={[
+                {
+                  key: 'account',
+                  onRenderIcon: () => (
+                    <div style={{ width: '28px', overflow: 'hidden' }}>
+                      <Persona
+                        imageUrl="https://lh3.googleusercontent.com/-e2y2T1aiT00/AAAAAAAAAAI/AAAAAAAAAAA/AB6qoq09tgaWz7fRfJi2ZBfVc5Tiup5Elw/s96-c-mo/photo.jpg"
+                        size={PersonaSize.size28}
+                        presence={PersonaPresence.online}
+                      />
+                    </div>
+                  ),
+                  iconOnly: true,
+                },
+              ]}
             />
-            <button
-              style={{ width: '42px', padding: '6px', paddingRight: '10px' }}
-              className="ms-Button ms-Button--commandBar ms-CommandBarItem-link root-73"
-            >
-              <Persona
-                imageUrl="https://lh3.googleusercontent.com/-e2y2T1aiT00/AAAAAAAAAAI/AAAAAAAAAAA/AB6qoq09tgaWz7fRfJi2ZBfVc5Tiup5Elw/s96-c-mo/photo.jpg"
-                size={PersonaSize.size28}
-                presence={PersonaPresence.online}
-              />
-            </button>
           </HeaderWrapper>
         </Customizer>
 
