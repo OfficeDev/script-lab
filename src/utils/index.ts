@@ -60,7 +60,7 @@ const createFile = (name, { content, language }): IFile => ({
 export const convertSnippetToSolution = (
   snippet: ISnippet,
 ): { solution: ISolution; files: IFile[] } => {
-  const { name, description, script, template, style, libraries } = snippet
+  const { name, description, script, template, style, libraries, host } = snippet
 
   const files = [
     createFile('index.ts', script),
@@ -71,11 +71,55 @@ export const convertSnippetToSolution = (
   const solution = {
     id: uuidv4(),
     name,
+    host,
     description,
     files: files.map(file => file.id),
+    libraries: libraries.split('\n'),
     dateCreated: Date.now(),
     dateLastModified: Date.now(),
   }
 
   return { solution, files }
+}
+
+export const convertSolutionToSnippet = (
+  solution: ISolution,
+  files: IFile[],
+): ISnippet => {
+  const {
+    id,
+    name,
+    description,
+    libraries,
+    dateCreated,
+    dateLastModified,
+    host,
+  } = solution
+
+  const script: IFile = files.find(file => file.name === 'index.ts')!
+  const template: IFile = files.find(file => file.name === 'index.html')!
+  const style: IFile = files.find(file => file.name === 'index.css')!
+
+  return {
+    id,
+    name,
+    description,
+    created_at: dateCreated,
+    modified_at: dateLastModified,
+    host,
+    platform: host,
+    script: {
+      content: script.content,
+      language: script.language,
+    },
+    template: {
+      content: template.content,
+      language: template.language,
+    },
+    style: {
+      content: style.content,
+      language: style.language,
+    },
+    libraries: libraries.join('\n'),
+  }
 }

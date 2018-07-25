@@ -1,40 +1,87 @@
 import uuidv4 from 'uuid'
 
-export const getBoilerplateFiles = (): IFile[] =>
+export const getBoilerplateFiles = (timestamp: number): IFile[] =>
   [
     {
       name: 'index.ts',
       language: 'TypeScript',
-      content: `// hello world ${new Date().toUTCString()}\n`,
+      content: `$("#run").click(() => tryCatch(run));
+
+async function run() {
+    await Excel.run(async (context) => {
+        const range = context.workbook.getSelectedRange();
+        range.format.fill.color = "yellow";
+        range.load("address");
+
+        await context.sync()
+
+        console.log(\`The range address was "\${range.address}".\`);
+    });
+}
+
+/** Default helper for invoking an action and handling errors. */
+async function tryCatch(callback) {
+    try {
+        await callback();
+    }
+    catch (error) {
+        OfficeHelpers.UI.notify(error);
+        OfficeHelpers.Utilities.log(error);
+    }
+}
+`,
     },
     {
       name: 'index.html',
       language: 'HTML',
-      content: '<div>hello world</div>\n',
+      content: `<p class="ms-font-m">Executes a simple code snippet.</p>
+<button id="run" class="ms-Button">
+    <span class="ms-Button-label">Run code</span>
+</button>
+`,
     },
     {
       name: 'index.css',
       language: 'CSS',
-      content: 'div {\n\tbackground-color: #333\n}\n',
+      content: '',
     },
   ].map(file => ({
     ...file,
     id: uuidv4(),
-    dateCreated: Date.now(),
-    dateLastModified: Date.now(),
+    dateCreated: timestamp,
+    dateLastModified: timestamp,
   }))
 
-export const getBoilerplateSolution = (files: IFile[]): ISolution => ({
+export const getBoilerplateSolution = (files: IFile[], timestamp: number): ISolution => ({
   id: uuidv4(),
   name: `Blank Snippet`,
-  dateCreated: Date.now(),
-  dateLastModified: Date.now(),
+  host: 'EXCEL',
+  dateCreated: timestamp,
+  dateLastModified: timestamp,
   files: files.map(file => file.id),
+  libraries: [
+    'https://appsforoffice.microsoft.com/lib/1/hosted/office.js',
+    'https://appsforoffice.microsoft.com/lib/1/hosted/office.d.ts',
+
+    'office-ui-fabric-js@1.4.0/dist/css/fabric.min.css',
+    'office-ui-fabric-js@1.4.0/dist/css/fabric.components.min.css',
+
+    'core-js@2.4.1/client/core.min.js',
+    '@types/core-js',
+
+    '@microsoft/office-js-helpers@0.7.4/dist/office.helpers.min.js',
+    '@microsoft/office-js-helpers@0.7.4/dist/office.helpers.d.ts',
+
+    'jquery@3.1.1',
+    '@types/jquery',
+  ],
 })
 
 export const getBoilerplate = (): { solution: ISolution; files: IFile[] } => {
-  const files = getBoilerplateFiles()
-  const solution = getBoilerplateSolution(files)
+  const timestamp = Date.now()
+
+  const files = getBoilerplateFiles(timestamp)
+  const solution = getBoilerplateSolution(files, timestamp)
 
   return { solution, files }
 }

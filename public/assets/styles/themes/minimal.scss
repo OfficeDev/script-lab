@@ -1,0 +1,50 @@
+@import 'vars';
+@import 'mixins';
+
+@mixin theme-min($accent-background-primary) {
+    $accent-foreground-primary: lighten($accent-background-primary, 60%);
+
+    .command {
+        &__bar {
+            background: $accent-background-primary;
+        }
+
+        &__title {
+            color: $accent-foreground-primary;
+        }
+
+        &__icon {
+            color: $accent-foreground-primary;
+
+            @include focus-states($accent-background-primary, $accent-foreground-primary);
+
+            &:hover {
+                background: darken($accent-background-primary, 10%) ;
+                color: $accent-foreground-primary ;
+            }
+
+            &:active,
+            &:focus {
+                background: darken($accent-background-primary, 15%) ;
+                color: $accent-foreground-primary ;
+            }
+        }
+    }
+
+    .host-colored-button {
+        background: $accent-background-primary;
+
+        .ms-Button-label {
+            color: white;
+        }
+
+        &:hover {
+            background: darken($accent-background-primary, 10%);
+        }
+
+        &:active,
+        &:focus {
+            background: darken($accent-background-primary, 15%);
+        }
+    }
+}

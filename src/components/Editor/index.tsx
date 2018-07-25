@@ -62,12 +62,16 @@ class Editor extends Component<IEditorProps> {
     return {
       selectOnLineNumbers: true,
       fontSize,
-      fontFamily: ['Menlo', 'Source Code Pro', 'monospace']
+      fontFamily: ['Menlo', 'Source Code Pro', 'Consolas', 'Courier New', 'monospace']
         .map(fontName => (fontName.includes(' ') ? JSON.stringify(fontName) : fontName))
         .join(', '),
       minimap: { enabled: false },
+      scrollbar: {
+        vertical: 'visible',
+        arrowSize: 15,
+      },
       formatOnPaste: true,
-      lineHeight: 1.5 * fontSize,
+      lineHeight: 1.3 * fontSize,
       folding: true,
       glyphMargin: false,
       fixedOverflowWidgets: true,
@@ -116,7 +120,7 @@ class Editor extends Component<IEditorProps> {
 
   render() {
     console.log(this.props)
-    const { files, activeFile } = this.props
+    const { files, activeFile, activeSolution } = this.props
     const options = this.getMonacoOptions()
 
     return (
@@ -127,7 +131,12 @@ class Editor extends Component<IEditorProps> {
           changeActiveFile={this.changeActiveFileFromPivot}
         />
         <Wrapper>
-          <Monaco theme="vs-dark" options={options} editorDidMount={this.setupEditor} />
+          <Monaco
+            theme="vs-dark"
+            options={options}
+            editorDidMount={this.setupEditor}
+            libraries={activeSolution.libraries}
+          />
         </Wrapper>
       </Layout>
     )

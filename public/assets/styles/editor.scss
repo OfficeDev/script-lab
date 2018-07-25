@@ -1,0 +1,101 @@
+﻿@import 'vars';
+@import 'mixins';
+@import 'fabric';
+@import 'components';
+@import 'containers';
+@import 'theme';
+
+.app {
+    view-mode-error {
+        > div {
+            margin: 0;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+    }
+
+    view-mode {
+        .excel {
+            @include theme($excel);
+        }
+
+        .word {
+            @include theme($word);
+        }
+
+        .powerpoint {
+            @include theme($powerpoint);
+        }
+
+        .onenote {
+            @include theme($onenote);
+        }
+
+        .project {
+            @include theme($project);
+        }
+
+        .teams {
+            @include theme($teams);
+        }
+
+        .web {
+            @include theme($web);
+        }
+    }
+
+    editor-mode, view-mode {
+         home, dialog, editor {
+            flex: 1 1 100%;
+            @include flex();
+            height: 100%;
+        }
+
+        dialog {
+            height: auto;
+            background: transparent;
+            border: none;
+        }
+
+        main {
+            @include flex();
+            height: 100vh;
+            width: 100%;
+        }
+
+        editor-view {
+            flex-direction: row;
+        }
+
+        monaco-editor {
+            overflow: hidden;
+        }
+
+        tab {
+            display: none;
+            height: 100% !important;
+        }
+
+        .collapse {
+            &__info {
+                background: rgba(#FFF100, 0.6);
+                padding: $default-spacing;
+
+                & .ms-Button {
+                    margin-top: $default-spacing/2;
+                }
+            }
+        }
+    }
+}
+
+.perf-decorator {
+    width: 4px !important;
+    right: 8px !important;
+    left: auto !important;
+    top: 2px !important;
+    background: #c70039 !important;
+}
+

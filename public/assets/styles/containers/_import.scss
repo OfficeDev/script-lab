@@ -1,0 +1,127 @@
+@import '../mixins';
+@import '../vars';
+
+import {
+    .gallery__tabs .ms-Icon {
+        display: none;
+
+        &.ms-Icon--GlobalNavButton {
+            font-size: 14pt;
+        }
+    }    
+
+    .gallery__tab--icon .ms-Icon {
+        display: inline-block;
+        padding: 0 4px;
+    }
+
+    .gallery__tab--icon span {
+        display: none;
+    }
+
+    .ms-MessageBar {
+        width: calc(100% - 16px);
+        margin-bottom: 20px;
+
+        &-icon {
+            font-size: 2.5em;
+            padding-right: 10px;
+        }
+
+        &-text {
+            font-size: 11pt;
+        }
+        
+        &-link {
+            font-size: 9pt;
+        }        
+    }
+}
+
+.import {
+    &__examples-list {
+        padding: $default-spacing;
+        opacity: 0.6;
+    }
+
+    &-tab__section {
+        padding: 15px;
+
+        > collapse {
+            -webkit-box-flex: 0;
+            -ms-flex: none;
+            flex: none;
+        }
+    }
+
+    &__title {
+        margin-bottom: $default-spacing/2;
+    }
+
+    &__subtitle {
+        margin-top: $default-spacing;
+        margin-bottom: 2*$default-spacing;
+    }
+
+    &__field {
+        margin-bottom: 2*$default-spacing;
+        flex: 1 1 auto;
+        display: flex;
+        flex-direction: column;
+
+        .ms-Label {
+            text-transform: uppercase;
+        }
+
+        textarea {
+            min-height: 300px !important;
+            flex: 1 1 auto;
+        }
+    }
+}
+
+@media (min-width: 550px) {
+    import {
+        .gallery__section:first-child {
+            flex-direction: row;
+        }
+
+        .gallery-list__group-header,
+        .gallery-list__message {
+            padding: $default-spacing/2 0px;
+        }
+
+        .gallery-list__group {
+            padding-bottom: 10px;
+        }
+
+        .gallery__tabs {
+            flex: 0 0 200px;
+            flex-direction: column;
+            height: 100vh !important;
+
+            .ms-Icon {
+                display: inline-block;
+                margin-right: 10px;
+                font-size: 15pt;
+                padding: 0;
+            }
+
+            .gallery__tab--icon span {
+                display: block;
+            }
+        }
+
+        .ms-Pivot.ms-Pivot--tabs .ms-Pivot-link {
+            padding: 15px 30px;
+            text-align: left;
+            display: flex;
+        }
+    }
+
+    .import {
+        &__title {
+            margin-bottom: 20px;
+        }
+    }
+}

@@ -86,7 +86,12 @@ class Header extends React.Component<IHeader, IState> {
                   text: solutionName,
                   onClick: this.openSolutionSettings,
                 },
-                { key: 'run', text: 'Run', iconProps: { iconName: 'Play' } },
+                {
+                  key: 'run',
+                  text: 'Run',
+                  iconProps: { iconName: 'Play' },
+                  href: '/run.html',
+                },
                 {
                   key: 'share',
                   text: 'Share',

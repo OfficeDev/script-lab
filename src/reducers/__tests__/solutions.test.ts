@@ -4,9 +4,11 @@ import { solutions as solutionsActions } from '../../actions'
 export const getExampleSolution = (i: number): ISolution => ({
   id: `${i}`,
   name: `Example Solution ${i}`,
+  host: 'WEB',
   dateCreated: i,
   dateLastModified: 2 * i,
   files: [`${i}${i}${i}`, `${i + 1}${i + 1}${i + 1}`, `${i + 2}${i + 2}${i + 2}`],
+  libraries: [],
 })
 
 export const getStateWith = (indicies: number[]) =>

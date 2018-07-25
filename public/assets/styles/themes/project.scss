@@ -1,0 +1,6 @@
+/* Project Theme */
+
+@import '../vars';
+@import '../theme';
+
+@include theme($project);
