@@ -2,7 +2,9 @@ import { createStore, applyMiddleware } from 'redux'
 import createSagaMiddleware from 'redux-saga'
 import rootSaga from './sagas'
 import { connectRouter, routerMiddleware } from 'connected-react-router'
-import createHistory from 'history/createBrowserHistory'
+import { supportsHistory } from 'history/es/DOMUtils'
+import createBrowserHistory from 'history/createBrowserHistory'
+import createHashHistory from 'history/createHashHistory'
 import { loadState, saveState } from './localStorage'
 import throttle from 'lodash/throttle'
 import { composeWithDevTools } from 'redux-devtools-extension'
@@ -26,7 +28,9 @@ const addLoggingToDispatch = store => {
 }
 
 const configureStore = () => {
-  const history = createHistory()
+  // TODO: (nicobell) find out why supportsHistory() says true for the agave window or use another condition
+  // const history = supportsHistory() ? createBrowserHistory() : createHashHistory()
+  const history = createHashHistory()
   const sagaMiddleware = createSagaMiddleware()
 
   const persistedState = loadState()

@@ -3,7 +3,8 @@ import { getType } from 'typesafe-actions'
 import { solutions, ISolutionsAction, files, IFilesAction } from '../actions'
 
 const normalizeSolutionName = (state, sol: ISolution): ISolution => {
-  const allNames = Object.values(state)
+  const allNames = Object.keys(state)
+    .map(k => state[k])
     .filter((s: ISolution) => s.id !== sol.id)
     .map((s: ISolution) => s.name)
 
@@ -98,12 +99,15 @@ export default combineReducers({
 
 const get = (state: ISolutionsState, id: string): ISolution | undefined => state.byId[id]
 
-const getAll = (state: ISolutionsState): ISolution[] => Object.values(state.byId)
+const getAll = (state: ISolutionsState): ISolution[] =>
+  Object.keys(state.byId).map(k => state.byId[k])
 
 const getAllIds = (state: ISolutionsState): string[] => state.allIds
 
 const getInLastModifiedOrder = (state: ISolutionsState): ISolution[] =>
-  Object.values(state.byId).sort((a, b) => b.dateLastModified - a.dateLastModified)
+  Object.keys(state.byId)
+    .map(k => state.byId[k])
+    .sort((a, b) => b.dateLastModified - a.dateLastModified)
 
 export const selectors = {
   get,

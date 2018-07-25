@@ -37,14 +37,16 @@ const byId = (state: IByIdState = {}, action: IFilesAction) => {
       }
 
     case getType(files.remove):
-      return Object.values(state).reduce((newState, f) => {
-        if (action.payload.includes(f.id)) {
-          return newState
-        } else {
-          newState[f.id] = f
-          return newState
-        }
-      }, {})
+      return Object.keys(state)
+        .map(k => state[k])
+        .reduce((newState, f) => {
+          if (action.payload.includes(f.id)) {
+            return newState
+          } else {
+            newState[f.id] = f
+            return newState
+          }
+        }, {})
 
     default:
       return state
