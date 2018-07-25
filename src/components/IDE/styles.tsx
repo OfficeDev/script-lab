@@ -3,15 +3,13 @@ import styled from 'styled-components'
 
 export const Layout = styled.div`
   height: 100vh;
-  display: grid;
-
-  grid-template-columns: auto;
-  grid-template-rows: 4rem auto 2rem;
-  grid-template-areas: 'header' 'content' 'footer';
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 `
 
 export const ContentWrapper = styled.div`
-  grid-area: content;
+  flex: 1;
 
   overflow: hidden;
 
