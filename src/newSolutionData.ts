@@ -1,17 +1,13 @@
 import uuidv4 from 'uuid'
 
-export const getBoilerplateFiles = (): IFile[] =>
+export const getBoilerplateFiles = (timestamp: number): IFile[] =>
   [
     {
       name: 'index.ts',
       language: 'TypeScript',
       content: `// hello world ${new Date().toUTCString()}\n`,
     },
-    {
-      name: 'index.html',
-      language: 'HTML',
-      content: '<div>hello world</div>\n',
-    },
+    { name: 'index.html', language: 'HTML', content: '<div>hello world</div>\n' },
     {
       name: 'index.css',
       language: 'CSS',
@@ -20,23 +16,25 @@ export const getBoilerplateFiles = (): IFile[] =>
   ].map(file => ({
     ...file,
     id: uuidv4(),
-    dateCreated: Date.now(),
-    dateLastModified: Date.now(),
+    dateCreated: timestamp,
+    dateLastModified: timestamp,
   }))
 
-export const getBoilerplateSolution = (files: IFile[]): ISolution => ({
+export const getBoilerplateSolution = (files: IFile[], timestamp: number): ISolution => ({
   id: uuidv4(),
   name: `Blank Snippet`,
   host: 'WEB',
-  dateCreated: Date.now(),
-  dateLastModified: Date.now(),
+  dateCreated: timestamp,
+  dateLastModified: timestamp,
   files: files.map(file => file.id),
   libraries: [],
 })
 
 export const getBoilerplate = (): { solution: ISolution; files: IFile[] } => {
-  const files = getBoilerplateFiles()
-  const solution = getBoilerplateSolution(files)
+  const timestamp = Date.now()
+
+  const files = getBoilerplateFiles(timestamp)
+  const solution = getBoilerplateSolution(files, timestamp)
 
   return { solution, files }
 }

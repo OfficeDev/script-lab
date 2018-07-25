@@ -1,4 +1,4 @@
-import { getBoilerplateSolution, getBoilerplateFiles } from './newSolutionData'
+import { getBoilerplate } from './newSolutionData'
 import { selectors } from './reducers'
 import { convertSolutionToSnippet } from './utils'
 
@@ -7,27 +7,23 @@ export const loadState = () => {
     const serializedSolutions = localStorage.getItem('solutions')
     const serializedFiles = localStorage.getItem('files')
     if (serializedSolutions === null || serializedFiles === null) {
-      const bpFiles = getBoilerplateFiles()
-      const solution = getBoilerplateSolution(bpFiles)
+      const { solution, files } = getBoilerplate()
+
       return {
-        solutions: {
-          byId: {
-            [solution.id]: solution,
-          },
-          allIds: [solution.id],
-        },
+        solutions: { byId: { [solution.id]: solution }, allIds: [solution.id] },
         files: {
-          byId: bpFiles.reduce(
+          byId: files.reduce(
             (byIdFiles, file) => ({ ...byIdFiles, [file.id]: file }),
             {},
           ),
-          allIds: bpFiles.map(file => file.id),
+          allIds: files.map(file => file.id),
         },
       }
+    } else {
+      const solutions = JSON.parse(serializedSolutions)
+      const files = JSON.parse(serializedFiles)
+      return { solutions, files }
     }
-    const solutions = JSON.parse(serializedSolutions)
-    const files = JSON.parse(serializedFiles)
-    return { solutions, files }
   } catch (err) {
     return { solutions: { byId: {}, allIds: [] }, files: { byId: {}, allIds: [] } }
   }
