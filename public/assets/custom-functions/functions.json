@@ -1,0 +1,5 @@
+{
+  "$schema":
+    "https://developer.microsoft.com/en-us/json-schemas/office-js/custom-functions.schema.json",
+  "functions": []
+}

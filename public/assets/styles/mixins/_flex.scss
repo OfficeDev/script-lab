@@ -1,0 +1,33 @@
+﻿@mixin flex($direction: column, $wrap: nowrap, $horizontal-alignment: null, $vertical-alignment: null) {
+    display: flex;
+    flex-direction: $direction;
+    flex-wrap: $wrap;
+
+    @if $horizontal-alignment {
+        justify-content: $horizontal-alignment;
+    }
+
+    @if $vertical-alignment {
+        align-items: $vertical-alignment;
+    }
+}
+
+@mixin inline-flex($horizontal-alignment: null, $vertical-alignment: null) {
+    display: inline-flex;
+
+    @if $horizontal-alignment {
+        justify-content: $horizontal-alignment;
+    }
+
+    @if $vertical-alignment {
+        align-items: $vertical-alignment;
+    }
+}
+
+@mixin center-flex() {
+    @include flex(column, nowrap, center, center);
+}
+
+@mixin stretch-flex() {
+    @include flex(column, nowrap, stretch, stretch);
+}

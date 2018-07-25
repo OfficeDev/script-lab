@@ -1,0 +1,6 @@
+/* OneNote Theme */
+
+@import '../vars';
+@import '../theme';
+
+@include theme($onenote);

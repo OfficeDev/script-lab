@@ -1,0 +1,147 @@
+@import '../mixins';
+@import '../vars';
+
+.gallery {
+    @include flex();
+    flex: 1 1 100%;
+    height: 100%;
+
+    &__header {
+        padding: $default-spacing/2 $default-spacing;
+        color: white;
+    }
+
+    &__tabs {
+        overflow: hidden;
+        flex: 0 0 40px;
+        display: flex;
+    }
+
+    &__tabs-container {
+        @include flex();
+        flex: 1 1 100%;
+        width: 100%;
+        @include vScroll();
+    }
+
+    &__action {
+        width: 100%;
+        max-width: none;
+        display: block !important;
+        background-color: $background-lightest;
+        color: #333;
+        margin: 0;
+        padding: $default-spacing;
+        border: none;
+        border-top: solid 1px #E4E4E4;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+
+        &:hover,
+        &:focus {
+            border: none;
+        }
+
+        .ms-Button-description,
+        .ms-Button-label {
+            color: #333;
+        }
+
+        .ms-Button-label > .ms-Icon {
+            margin-right: $default-spacing/2;
+        }
+    }
+
+    &__section {
+        &:first-child {
+            flex: 1 1 100%;
+            @include flex();
+        }
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+
+        &--separator {
+            height: 0;
+            border: none;
+            outline: none;
+            border-bottom: solid 1px #E4E4E4;
+        }
+    }
+
+    &__section-title {
+        padding: $default-spacing !important;
+        display: table-cell;
+        box-sizing: border-box;
+    }
+
+    &-list {
+        flex: 1 1 100%;
+
+        &__group-header {
+            font-weight: bold;
+            padding: $default-spacing/2 $default-spacing;
+        }
+
+        &__item {
+            @include inline-flex();
+            width: 100%;
+
+            &__local {
+                span {
+                    padding: 12.5px 15px;
+                    align-self: flex-start;
+                    @include ellipsis();
+                    flex: 1 1 100%;
+                }
+
+                i {
+                    padding: 12.5px 15px;
+                    font-size: 12pt;
+                }
+            }
+
+            &--template {
+                padding: $default-spacing*2/3 $default-spacing;
+                align-self: flex-start;
+                @include flex();
+                flex: 1 1 100%;
+                width: calc(100% - 30px);
+
+                .description {
+                    white-space: normal;
+                    opacity: 0.6;
+                }
+            }
+        }
+
+        &__item:hover, &__item:active {
+            color: white;
+            cursor: pointer;
+            cursor: hand;
+        }
+
+        &__message {
+            padding: $default-spacing/2 $default-spacing;
+        }
+
+        &__loading {
+            padding: 15px 15px 15px 30px;
+            color: gray;
+        }
+
+        &__action {
+            padding: $default-spacing + 2px;
+            font-size: 15px;
+            align-self: flex-end;
+        }
+
+        &__template-error {
+            color: #999;
+            padding: 15px;
+        }
+    }
+}

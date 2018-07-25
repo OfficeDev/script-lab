@@ -1,0 +1,48 @@
+﻿@mixin focus-states($background: null, $foreground: null, $scale: true) {
+    transition: background ease-in-out 0.2s, color ease-in-out 0.2s;
+
+    &:active, &:hover {
+        @if $background != null {
+            background: $background;
+        }
+        @else {
+            background: rgba(0,0,0,0.1);
+        }
+
+        @if $foreground != null {
+            color: $foreground;
+        }
+
+        cursor: pointer;
+        cursor: hand;
+    }
+
+    &:active {
+        @if $background != null {
+            background: $background;
+        }
+        @else {
+            background: rgba(0,0,0,0.2);
+        }
+
+        @if($scale) {
+            transform: scale3d(0.98, 0.98, 1);
+        }
+    }
+
+    &--disabled {
+        opacity: 0.6;
+        pointer-events: none;
+        cursor: not-allowed;
+
+        &:active, &:hover {
+            background: transparent;
+        }
+
+        @if($scale) {
+            &:active {
+                transform: none;
+            }
+        }
+    }
+}
