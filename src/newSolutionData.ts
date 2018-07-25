@@ -27,6 +27,7 @@ export const getBoilerplateFiles = (): IFile[] =>
 export const getBoilerplateSolution = (files: IFile[]): ISolution => ({
   id: uuidv4(),
   name: `Blank Snippet`,
+  host: 'WEB',
   dateCreated: Date.now(),
   dateLastModified: Date.now(),
   files: files.map(file => file.id),

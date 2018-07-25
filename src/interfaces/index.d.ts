@@ -11,6 +11,7 @@ interface IEditableSolutionProperties {
 
 interface ISolution extends IEditableSolutionProperties, ITimestamps {
   id: string
+  host: string
   files: string[]
 }
 
