@@ -110,14 +110,7 @@ class ReactMonaco extends Component<IReactMonaco, IReactMonacoState> {
       ) {
         const oldIntellisenseFiles = this.state.intellisenseFiles
         const newIntellisenseFiles = parse(newLibs)
-        console.log(this.state)
-        console.log(prevState)
-        console.log(newIntellisenseFiles)
-        console.log(
-          newIntellisenseFiles.filter(
-            url => !oldIntellisenseFiles.find(file => file.url === url),
-          ),
-        )
+
         newIntellisenseFiles
           .filter(url => !oldIntellisenseFiles.find(file => file.url === url))
           .forEach(url => {

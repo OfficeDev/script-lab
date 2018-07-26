@@ -26,7 +26,7 @@ export interface IBackstage {
   createNewSolution: () => void
   openSolution: (solutionId: string) => void
   openSample: (rawUrl: string) => void
-  importGist: (gistUrl: string) => void
+  importGist: (gistId?: string, gist?: string) => void
 }
 
 interface IState {
@@ -97,7 +97,12 @@ export default class Backstage extends Component<IBackstage, IState> {
         key: 'import',
         label: 'Import',
         iconName: 'Download',
-        content: <ImportSolution importGist={this.props.importGist} />,
+        content: (
+          <ImportSolution
+            importGist={this.props.importGist}
+            hideBackstage={this.props.hideBackstage}
+          />
+        ),
       },
     ].map((item: IBackstageItem) => ({
       onSelect: () => this.setState({ selectedKey: item.key }),

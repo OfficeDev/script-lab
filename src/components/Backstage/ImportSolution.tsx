@@ -5,7 +5,8 @@ import { TextField } from 'office-ui-fabric-react/lib/TextField'
 import { PrimaryButton } from 'office-ui-fabric-react/lib/Button'
 
 interface IImportSolution {
-  importGist: (gistUrl: string) => void
+  importGist: (gistId?: string, gist?: string) => void
+  hideBackstage: () => void
 }
 
 // TODO: incorp. localization
@@ -36,7 +37,22 @@ class ImportSolution extends Component<IImportSolution> {
   private updateImportFieldText = (importFieldText: string) =>
     this.setState({ importFieldText })
 
-  private onImportClick = () => this.props.importGist(this.state.importFieldText)
+  private onImportClick = () => {
+    const input = this.state.importFieldText.trim()
+    let gistId
+    let gist
+
+    if (input.startsWith('https://gist.github.com/')) {
+      gistId = input.split('/').pop()
+    } else {
+      gist = input
+    }
+
+    this.props.importGist(gistId, gist)
+    this.setState({ importFieldText: '' })
+
+    this.props.hideBackstage()
+  }
 }
 
 export default ImportSolution

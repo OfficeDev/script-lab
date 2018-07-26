@@ -1,5 +1,6 @@
 import YAML from 'yamljs'
 
+// TODO: error handling
 const fetchYaml = (url: string): {} => {
   return fetch(url)
     .then(resp => resp.text())
@@ -19,4 +20,14 @@ export const getSample = (rawUrl: string) => {
   url = url.replace('<BRANCH>', 'master')
 
   return fetchYaml(url)
+}
+
+export const getGist = (gistId: string) => {
+  return fetch(`https://api.github.com/gists/${gistId}`)
+    .then(resp => resp.text())
+    .then(value => {
+      const { files } = JSON.parse(value)
+      const { content } = files[Object.keys(files)[0]]
+      return YAML.parse(content)
+    })
 }
