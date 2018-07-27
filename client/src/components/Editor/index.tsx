@@ -119,7 +119,6 @@ class Editor extends Component<IEditorProps> {
   }
 
   render() {
-    console.log(this.props)
     const { files, activeFile, activeSolution } = this.props
     const options = this.getMonacoOptions()
 

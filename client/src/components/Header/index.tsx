@@ -49,8 +49,9 @@ const HeaderWrapper = styled.header`
 
 interface IHeader {
   showBackstage: () => void
+  solution: ISolution
   // redux
-  solution: any
+  profilePic?: string
   editSolution: (
     solutionId: string,
     solution: Partial<IEditableSolutionProperties>,
@@ -68,7 +69,6 @@ class Header extends React.Component<IHeader, IState> {
   render() {
     const { solution, showBackstage } = this.props
     const solutionName = solution ? solution.name : 'Solution Name'
-
     return (
       <>
         <Customizer settings={{ theme: headerTheme }}>
@@ -112,9 +112,8 @@ class Header extends React.Component<IHeader, IState> {
                   onRenderIcon: () => (
                     <div style={{ width: '28px', overflow: 'hidden' }}>
                       <Persona
-                        imageUrl="https://lh3.googleusercontent.com/-e2y2T1aiT00/AAAAAAAAAAI/AAAAAAAAAAA/AB6qoq09tgaWz7fRfJi2ZBfVc5Tiup5Elw/s96-c-mo/photo.jpg"
+                        imageUrl={this.props.profilePic}
                         size={PersonaSize.size28}
-                        presence={PersonaPresence.online}
                       />
                     </div>
                   ),

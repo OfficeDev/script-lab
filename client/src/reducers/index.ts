@@ -6,11 +6,13 @@ import pathToRegexp from 'path-to-regexp'
 import solutions, { selectors as solutionSelectors, ISolutionsState } from './solutions'
 import files, { selectors as fileSelectors, IFilesState } from './files'
 import samples, { selectors as sampleSelectors } from './samples'
+import github, { selectors as githubSelectors } from './github'
 
 const root = combineReducers({
   solutions,
   files,
   samples,
+  github,
 })
 
 export interface IState {
@@ -51,6 +53,7 @@ export const selectors = {
   solutions: globalizeSelectors(solutionSelectors, 'solutions'),
   files: globalizeSelectors(fileSelectors, 'files'),
   samples: globalizeSelectors(sampleSelectors, 'samples'),
+  github: globalizeSelectors(githubSelectors, 'github'),
   active: {
     solution: getActiveSolution,
     files: (state: IState) =>

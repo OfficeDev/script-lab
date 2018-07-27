@@ -5,6 +5,8 @@
     "start": "nodemon server.ts"
   },
   "dependencies": {
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.4",
     "express": "^4.16.2",
     "request": "^2.87.0"
   },

@@ -7,7 +7,9 @@ import { createSolution } from './solutions'
 import YAML from 'yamljs'
 
 function* githubLoginFlow(action) {
-  login()
+  const profile = yield call(login)
+
+  yield put(github.login.success(profile))
 }
 
 // TODO: theres gotta be a better way to do this ... maybe not

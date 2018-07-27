@@ -6,7 +6,6 @@ import { createTheme } from 'office-ui-fabric-react/lib/Styling'
 // TODO: make it so that the outline for keyboard nav has higher contrast
 export class Menu extends React.Component<any, any> {
   render(): JSX.Element {
-    console.log(this.props.items)
     return (
       <Nav
         theme={createTheme({

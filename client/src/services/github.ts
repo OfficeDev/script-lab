@@ -1,4 +1,5 @@
 import YAML from 'yamljs'
+import { Authenticator, IToken } from '@microsoft/office-js-helpers'
 
 // TODO: error handling
 const fetchYaml = (url: string): {} => {
@@ -32,9 +33,31 @@ export const getGist = (gistId: string) => {
     })
 }
 
-export const login = () => {
-  const clientId = '210a167954d9ef04b501'
-  window.open(
-    `https://github.com/login/oauth/authorize?scope=gists&client_id=${clientId}`,
-  )
+export const login = async () => {
+  const auth = new Authenticator()
+  console.log('trying to login')
+
+  auth.endpoints.add('GitHub', {
+    clientId: '210a167954d9ef04b501',
+    baseUrl: 'https://github.com/login',
+    authorizeUrl: '/oauth/authorize',
+    scope: 'gist',
+    state: true,
+    tokenUrl: 'http://localhost:5000/auth',
+  })
+
+  const token = await auth.authenticate('GitHub')
+  const profilePic = await getProfilePic(token.access_token!)
+
+  return { token: token.access_token, profilePic }
+}
+
+const getProfilePic = async (token: string) => {
+  const headers = new Headers()
+  headers.append('Authorization', `Bearer ${token}`)
+  const request = new Request('https://api.github.com/user', { method: 'GET', headers })
+  const response = await fetch(request)
+  const json = await response.json()
+
+  return json.avatar_url
 }

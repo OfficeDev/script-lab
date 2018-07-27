@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@microsoft/office-js-helpers": "0.7.4",
     "connected-react-router": "^4.3.0",
     "lodash": "^4.17.10",
-    "@microsoft/office-js-helpers": "0.7.4",
     "monaco-editor": "^0.13.1",
     "normalizr": "^3.2.4",
     "office-ui-fabric-react": "^6.30.0",
