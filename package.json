@@ -5,6 +5,7 @@
   "dependencies": {
     "connected-react-router": "^4.3.0",
     "lodash": "^4.17.10",
+    "@microsoft/office-js-helpers": "0.7.4",
     "monaco-editor": "^0.13.1",
     "normalizr": "^3.2.4",
     "office-ui-fabric-react": "^6.30.0",
@@ -43,6 +44,7 @@
     "@storybook/react": "^3.4.4",
     "@types/jest": "^22.2.3",
     "@types/node": "^10.0.9",
+    "@types/office-js": "^0.0.87",
     "@types/react": "^16.3.14",
     "@types/react-dom": "^16.0.5",
     "@types/storybook__addon-storyshots": "^3.4.1",

@@ -31,3 +31,10 @@ export const getGist = (gistId: string) => {
       return YAML.parse(content)
     })
 }
+
+export const login = () => {
+  const clientId = '210a167954d9ef04b501'
+  window.open(
+    `https://github.com/login/oauth/authorize?scope=gists&client_id=${clientId}`,
+  )
+}

@@ -4,7 +4,6 @@ import styled from 'styled-components'
 import { createTheme } from 'office-ui-fabric-react/lib/Styling'
 import { Customizer } from 'office-ui-fabric-react/lib/Utilities'
 
-import { CommandButton } from 'office-ui-fabric-react/lib/Button'
 import { CommandBar } from 'office-ui-fabric-react/lib/CommandBar'
 
 import {
@@ -56,6 +55,7 @@ interface IHeader {
     solutionId: string,
     solution: Partial<IEditableSolutionProperties>,
   ) => void
+  login: () => void
 }
 
 interface IState {
@@ -119,6 +119,7 @@ class Header extends React.Component<IHeader, IState> {
                     </div>
                   ),
                   iconOnly: true,
+                  onClick: this.props.login,
                 },
               ]}
             />
