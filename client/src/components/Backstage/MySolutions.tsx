@@ -29,15 +29,17 @@ const MySolutions = ({
         isActive: activeSolution && activeSolution.id === sol.id,
       }))}
     />
-    <GalleryList
-      title="My shared gists on GitHub"
-      items={gistMetadata.map(gist => ({
-        key: gist.id,
-        title: gist.title,
-        description: gist.description,
-        onClick: () => openGist(gist),
-      }))}
-    />
+    {gistMetadata.length > 0 && (
+      <GalleryList
+        title="My shared gists on GitHub"
+        items={gistMetadata.map(gist => ({
+          key: gist.id,
+          title: gist.title,
+          description: gist.description,
+          onClick: () => openGist(gist),
+        }))}
+      />
+    )}
   </Content>
 )
 
