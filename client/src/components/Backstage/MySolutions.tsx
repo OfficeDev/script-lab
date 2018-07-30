@@ -8,8 +8,16 @@ interface IMySolutions {
   solutions: ISolution[]
   openSolution: (solutionId: string) => void
   activeSolution?: ISolution
+  gistMetadata: ISharedGistMetadata[]
+  openGist: (gistMetadata: ISharedGistMetadata) => void
 }
-const MySolutions = ({ solutions, openSolution, activeSolution }: IMySolutions) => (
+const MySolutions = ({
+  solutions,
+  openSolution,
+  activeSolution,
+  gistMetadata,
+  openGist,
+}: IMySolutions) => (
   <Content title="My Snippets" description="Choose a snippet that you have saved">
     <GalleryList
       title="My snippets on this computer"
@@ -23,28 +31,12 @@ const MySolutions = ({ solutions, openSolution, activeSolution }: IMySolutions) 
     />
     <GalleryList
       title="My shared gists on GitHub"
-      items={[
-        {
-          key: 'shared1',
-          title: 'Snippet Name 1',
-          description: 'Shared with Script Lab',
-        },
-        {
-          key: 'shared2',
-          title: 'Snippet Name 2',
-          description: 'Shared with Script Lab',
-        },
-        {
-          key: 'shared3',
-          title: 'Snippet Name 3',
-          description: 'Shared with Script Lab',
-        },
-        {
-          key: 'shared4',
-          title: 'Snippet Name 4',
-          description: 'Shared with Script Lab',
-        },
-      ]}
+      items={gistMetadata.map(gist => ({
+        key: gist.id,
+        title: gist.title,
+        description: gist.description,
+        onClick: () => openGist(gist),
+      }))}
     />
   </Content>
 )

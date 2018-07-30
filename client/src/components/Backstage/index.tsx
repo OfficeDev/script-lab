@@ -6,6 +6,8 @@ import MySolutions from './MySolutions'
 import Samples from './Samples'
 import ImportSolution from './ImportSolution'
 
+import GistConflictDialog from './GistConflictDialog'
+
 interface IBackstageItem {
   key: string
   iconName: string
@@ -20,23 +22,28 @@ export interface IBackstage {
   solutions: ISolution[]
   activeSolution?: ISolution
 
-  samplesMetadataByGroup: ISampleMetadata[]
-
   // from redux
+  samplesMetadataByGroup: ISampleMetadata[]
+  sharedGistMetadata: ISharedGistMetadata[]
+
   createNewSolution: () => void
   openSolution: (solutionId: string) => void
   openSample: (rawUrl: string) => void
+  openGist: (rawUrl: string, gistId: string, conflictResolution?: any) => void
   importGist: (gistId?: string, gist?: string) => void
 }
 
 interface IState {
   selectedKey: string
+  conflictingGist: ISharedGistMetadata | null
+  existingSolutionConflicting: ISolution | null
 }
 
-// TODO: figure out how this data will be fetched and piped through
 export default class Backstage extends Component<IBackstage, IState> {
   state = {
     selectedKey: 'my-solutions',
+    conflictingGist: null,
+    existingSolutionConflicting: null,
   }
 
   constructor(props) {
@@ -54,7 +61,28 @@ export default class Backstage extends Component<IBackstage, IState> {
     this.setState({ selectedKey: 'my-solutions' })
   }
 
+  openSharedGist = (gistMeta: ISharedGistMetadata) => {
+    const { solutions, openGist, hideBackstage } = this.props
+    const { id, url } = gistMeta
+    const existingSolution = solutions.find(s => s.gistId === id)
+    if (existingSolution) {
+      // version of this gist already exists locally in solutions
+      this.showGistConflictDialog(gistMeta, existingSolution)
+    } else {
+      openGist(url, id)
+      hideBackstage()
+    }
+  }
+
+  showGistConflictDialog = (
+    conflictingGist: ISharedGistMetadata,
+    existingSolutionConflicting: ISolution,
+  ) => this.setState({ conflictingGist, existingSolutionConflicting })
+  hideGistConflictDialog = () =>
+    this.setState({ conflictingGist: null, existingSolutionConflicting: null })
+
   render() {
+    console.log(this.props.sharedGistMetadata)
     const items = [
       {
         key: 'back',
@@ -79,6 +107,8 @@ export default class Backstage extends Component<IBackstage, IState> {
             solutions={this.props.solutions}
             openSolution={this.openSolution}
             activeSolution={this.props.activeSolution}
+            gistMetadata={this.props.sharedGistMetadata}
+            openGist={this.openSharedGist}
           />
         ),
       },
@@ -108,7 +138,7 @@ export default class Backstage extends Component<IBackstage, IState> {
       onSelect: () => this.setState({ selectedKey: item.key }),
       ...item,
     }))
-    const { selectedKey } = this.state
+    const { selectedKey, conflictingGist, existingSolutionConflicting } = this.state
     const activeItem = items.find(item => item.key === selectedKey)
     return (
       <BackstageWrapper style={{ display: this.props.isHidden ? 'none' : 'flex' }}>
@@ -122,6 +152,16 @@ export default class Backstage extends Component<IBackstage, IState> {
           }))}
         />
         {activeItem && activeItem.content}
+        {conflictingGist &&
+          existingSolutionConflicting && (
+            <GistConflictDialog
+              conflictingGist={conflictingGist}
+              existingSolution={existingSolutionConflicting}
+              closeDialog={this.hideGistConflictDialog}
+              hideBackstage={this.props.hideBackstage}
+              openGist={this.props.openGist}
+            />
+          )}
       </BackstageWrapper>
     )
   }

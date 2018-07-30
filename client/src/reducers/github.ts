@@ -1,4 +1,5 @@
-import { github, IGithubAction } from '../actions'
+import { combineReducers } from 'redux'
+import { github, IGithubAction, gists, IGistsAction } from '../actions'
 import { getType } from 'typesafe-actions'
 
 const profile = (state = {}, action: IGithubAction) => {
@@ -10,13 +11,28 @@ const profile = (state = {}, action: IGithubAction) => {
   }
 }
 
-export default profile
+const gistMetadata = (state = {}, action: IGistsAction) => {
+  switch (action.type) {
+    case getType(gists.fetchMetadata.success):
+      return action.payload
+    default:
+      return state
+  }
+}
+
+export default combineReducers({
+  profile,
+  gistMetadata,
+})
 
 // selectors
-const getToken = state => state.token
-const getProfilePic = state => state.profilePic
+const getToken = state => state.profile.token
+const getProfilePic = state => state.profile.profilePic
+
+const getGistMetadata = (state): ISharedGistMetadata => state.gistMetadata
 
 export const selectors = {
   getToken,
   getProfilePic,
+  getGistMetadata,
 }

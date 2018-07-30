@@ -4,16 +4,19 @@ import { selectors } from '../reducers'
 import { solutions, samples, gists } from '../actions'
 import { push } from 'connected-react-router'
 
-const mapStateToProps = (state, ownProps): Partial<IBackstage> => ({
+const mapStateToProps = (state): Partial<IBackstage> => ({
   samplesMetadataByGroup: selectors.samples.getByGroup(state),
+  sharedGistMetadata: selectors.github.getGistMetadata(state),
 })
 
 const mapDispatchToProps = (dispatch): Partial<IBackstage> => ({
   createNewSolution: () => dispatch(solutions.create()),
   openSolution: (solutionId: string) => dispatch(push(`/${solutionId}/`)),
   openSample: (rawUrl: string) => dispatch(samples.get(rawUrl)),
+  openGist: (rawUrl: string, gistId: string, conflictResolution?: any) =>
+    dispatch(gists.get.request({ rawUrl, gistId, conflictResolution })),
   importGist: (gistId?: string, gist?: string) =>
-    dispatch(gists.get.request({ gistId, gist })),
+    dispatch(gists.importPublic.request({ gistId, gist })),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Backstage)

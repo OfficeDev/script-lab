@@ -49,6 +49,17 @@ const getActiveSolution = (state: IState): ISolution => {
     : allSolutions[0]
 }
 
+const getActiveFile = (state: IState): IFile => {
+  const [path, pathSolutionId, pathFileId] = solutionPathRegex.exec(
+    state.router.location.pathname,
+  )
+
+  const solution = getActiveSolution(state)
+  return pathFileId && solution.files.includes(pathFileId)
+    ? fileSelectors.get(state.files, pathFileId)
+    : fileSelectors.get(state.files, solution.files[0])
+}
+
 export const selectors = {
   solutions: globalizeSelectors(solutionSelectors, 'solutions'),
   files: globalizeSelectors(fileSelectors, 'files'),
@@ -60,16 +71,7 @@ export const selectors = {
       getActiveSolution(state).files.map(fileId =>
         fileSelectors.get(state.files, fileId),
       ),
-    file: (state: IState) => {
-      const [path, pathSolutionId, pathFileId] = solutionPathRegex.exec(
-        state.router.location.pathname,
-      )
-
-      const solution = getActiveSolution(state)
-      return pathFileId && solution.files.includes(pathFileId)
-        ? fileSelectors.get(state.files, pathFileId)
-        : fileSelectors.get(state.files, solution.files[0])
-    },
+    file: getActiveFile,
   },
 }
 

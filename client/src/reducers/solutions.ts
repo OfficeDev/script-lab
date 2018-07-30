@@ -43,9 +43,19 @@ interface IByIdState {
 const byId = (state: IByIdState = {}, action: ISolutionsAction | IFilesAction) => {
   switch (action.type) {
     case getType(solutions.add):
-      return {
-        ...state,
-        [action.payload.id]: normalizeSolutionName(state, action.payload),
+      if (Array.isArray(action.payload)) {
+        return {
+          ...state,
+          ...action.payload.reduce((solutionsMap, s) => {
+            solutionsMap[s.id] = s
+            return solutionsMap
+          }, {}),
+        }
+      } else {
+        return {
+          ...state,
+          [action.payload.id]: normalizeSolutionName(state, action.payload),
+        }
       }
 
     case getType(solutions.edit):
@@ -75,7 +85,11 @@ const byId = (state: IByIdState = {}, action: ISolutionsAction | IFilesAction) =
 const allIds = (state: string[] = [], action: ISolutionsAction) => {
   switch (action.type) {
     case getType(solutions.add):
-      return [...state, action.payload.id]
+      if (Array.isArray(action.payload)) {
+        return [...state, ...action.payload.map(s => s.id)]
+      } else {
+        return [...state, action.payload.id]
+      }
 
     case getType(solutions.remove):
       return state.filter(id => id !== action.payload)
@@ -102,16 +116,20 @@ const get = (state: ISolutionsState, id: string): ISolution | undefined => state
 const getAll = (state: ISolutionsState): ISolution[] =>
   Object.keys(state.byId).map(k => state.byId[k])
 
+const getGists = (state: ISolutionsState): ISolution[] =>
+  Object.keys(state.byId)
+    .map(k => state.byId[k])
+    .filter(sol => sol.gistId)
+
 const getAllIds = (state: ISolutionsState): string[] => state.allIds
 
 const getInLastModifiedOrder = (state: ISolutionsState): ISolution[] =>
-  Object.keys(state.byId)
-    .map(k => state.byId[k])
-    .sort((a, b) => b.dateLastModified - a.dateLastModified)
+  getAll(state).sort((a, b) => b.dateLastModified - a.dateLastModified)
 
 export const selectors = {
   get,
   getAll,
+  getGists,
   getAllIds,
   getInLastModifiedOrder,
 }

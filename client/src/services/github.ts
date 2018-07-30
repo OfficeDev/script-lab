@@ -1,5 +1,6 @@
 import YAML from 'yamljs'
 import { Authenticator, IToken } from '@microsoft/office-js-helpers'
+import GitHub from 'github-api'
 
 // TODO: error handling
 const fetchYaml = (url: string): {} => {
@@ -23,22 +24,47 @@ export const getSample = (rawUrl: string) => {
   return fetchYaml(url)
 }
 
-export const getGist = (gistId: string) => {
+export const importGist = (gistId: string) => {
   return fetch(`https://api.github.com/gists/${gistId}`)
-    .then(resp => resp.text())
+    .then(resp => resp.json())
     .then(value => {
-      const { files } = JSON.parse(value)
-      const { content } = files[Object.keys(files)[0]]
-      return YAML.parse(content)
+      const files = value.files
+      return YAML.parse(files[Object.keys(files)[0]].content)
     })
 }
+
+export const getAllGistMetadata = async (token: string): Promise<ISharedGistMetadata> => {
+  const gh = new GitHub({ token })
+  const gists = await gh.getUser().listGists()
+
+  return gists.data.map(gist => {
+    const { files, id, description, updated_at, created_at } = gist
+    const file = files[Object.keys(files)[0]]
+    const title = file.filename.split('.')[0]
+    const url = file.raw_url
+
+    return {
+      url,
+      id,
+      description,
+      title,
+      dateCreated: created_at,
+      dateLastModified: updated_at,
+    }
+  })
+}
+
+export const getGist = (rawUrl: string) =>
+  fetch(rawUrl)
+    .then(resp => resp.text())
+    .then(text => YAML.parse(text))
 
 export const login = async () => {
   const auth = new Authenticator()
   console.log('trying to login')
 
   auth.endpoints.add('GitHub', {
-    clientId: '210a167954d9ef04b501',
+    clientId: '210a167954d9ef04b501', // TODO: un-hardcode clientId
     baseUrl: 'https://github.com/login',
     authorizeUrl: '/oauth/authorize',
     scope: 'gist',

@@ -1,7 +1,7 @@
 import { createAction, createStandardAction } from 'typesafe-actions'
 
 export const add = createAction('SOLUTIONS_ADD', resolve => {
-  return (solution: ISolution) => resolve(solution)
+  return (solution: ISolution | ISolution[]) => resolve(solution)
 })
 
 export const edit = createAction('SOLUTIONS_EDIT', resolve => {

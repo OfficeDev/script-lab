@@ -10,6 +10,7 @@
     "ordered-imports": false,
     "object-literal-sort-keys": false,
     "no-console": false,
-    "jsx-boolean-value": false
+    "jsx-boolean-value": false,
+    "no-shadowed-variable": false
   }
 }

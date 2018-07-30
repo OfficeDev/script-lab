@@ -5,7 +5,7 @@ import { Authenticator } from '@microsoft/office-js-helpers'
 import configureStore from './configureStore'
 import { setupFabricTheme } from './theme'
 import registerServiceWorker from './registerServiceWorker'
-import { samples } from './actions'
+import { samples, gists } from './actions'
 
 import './index.css'
 import Root from './components/Root'
@@ -21,6 +21,7 @@ Office.onReady(async () => {
 
   // inital actions
   store.dispatch(samples.fetchMetadata.request())
+  store.dispatch(gists.fetchMetadata.request())
 
   ReactDOM.render(<Root store={store} history={history} />, document.getElementById(
     'root',

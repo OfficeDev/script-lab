@@ -6,7 +6,7 @@
       "type": "chrome",
       "request": "launch",
       "url": "https://localhost:3000",
-      "webRoot": "${workspaceRoot}/src",
+      "webRoot": "${workspaceRoot}/client/src",
       "userDataDir": "${workspaceRoot}/.vscode/chrome",
       "sourceMapPathOverrides": {
         "webpack:///src/*": "${webRoot}/*"

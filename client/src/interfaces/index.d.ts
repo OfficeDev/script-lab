@@ -11,6 +11,7 @@ interface IEditableSolutionProperties {
 
 interface ISolution extends IEditableSolutionProperties, ITimestamps {
   id: string
+  gistId?: string
   host: string
   files: string[]
 }
@@ -33,4 +34,12 @@ interface ISampleMetadata {
   rawUrl: string
   group: string
   api_set: any
+}
+
+interface ISharedGistMetadata extends ITimestamps {
+  id: string
+  url: string
+  title: string
+  description: string
+  isPublic: boolean
 }
