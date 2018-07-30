@@ -82,7 +82,6 @@ export default class Backstage extends Component<IBackstage, IState> {
     this.setState({ conflictingGist: null, existingSolutionConflicting: null })
 
   render() {
-    console.log(this.props.sharedGistMetadata)
     const items = [
       {
         key: 'back',

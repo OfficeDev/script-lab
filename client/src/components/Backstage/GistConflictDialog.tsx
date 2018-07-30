@@ -47,7 +47,7 @@ class GistConflictDialog extends Component<IGistConflictDialog> {
         onDismiss={this.closeDialog}
         dialogContentProps={{
           type: DialogType.largeHeader,
-          title: 'Gist Conflict',
+          title: 'Update Existing?',
           subText:
             'You already have a version of this gist locally. Would you like to open the existing snippet, overwrite it, or create a new copy of the gist?',
         }}

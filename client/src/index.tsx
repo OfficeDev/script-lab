@@ -19,7 +19,7 @@ Office.onReady(async () => {
 
   const { store, history } = configureStore()
 
-  // inital actions
+  // initial actions
   store.dispatch(samples.fetchMetadata.request())
   store.dispatch(gists.fetchMetadata.request())
 

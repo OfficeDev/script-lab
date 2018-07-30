@@ -11,6 +11,7 @@ import {
   Persona,
   PersonaSize,
   PersonaPresence,
+  PersonaCoin,
 } from 'office-ui-fabric-react/lib/Persona'
 
 import SolutionSettings from './SolutionSettings'
@@ -111,9 +112,17 @@ class Header extends React.Component<IHeader, IState> {
                   key: 'account',
                   onRenderIcon: () => (
                     <div style={{ width: '28px', overflow: 'hidden' }}>
-                      <Persona
+                      <PersonaCoin
                         imageUrl={this.props.profilePic}
                         size={PersonaSize.size28}
+                        styles={{
+                          coin: { backgroundColor: 'brick' },
+                          image: { backgroundColor: 'white' },
+                          initials: {
+                            backgroundColor: '#000',
+                            color: 'green',
+                          },
+                        }}
                       />
                     </div>
                   ),
