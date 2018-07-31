@@ -1,12 +1,20 @@
 import React, { Component } from 'react'
 
 import Header from '../../containers/Header'
+import PivotBar from '../PivotBar'
 import Editor from '../../containers/Editor'
 import Footer from '../../containers/Footer'
 
 import Backstage from '../../containers/Backstage'
 
 import { Layout, ContentWrapper } from './styles'
+
+const FILE_NAME_MAP = {
+  'index.ts': 'Script',
+  'index.html': 'HTML',
+  'index.css': 'CSS',
+  'libraries.txt': 'Libraries',
+}
 
 interface IIDE {
   solutions: ISolution[]
@@ -30,14 +38,24 @@ class IDE extends Component<IIDE> {
     }
   }
 
+  changeActiveFile = (fileId: string) =>
+    this.props.openFile(this.props.activeSolution.id, fileId)
+
   render() {
-    // TODO: FIX manual passing of params fro router
     const { isBackstageVisible } = this.state
     const { solutions, activeSolution, files, activeFile } = this.props
     return (
       <>
         <Layout>
           <Header solution={activeSolution} showBackstage={this.showBackstage} />
+          <PivotBar
+            items={files.map(file => ({
+              key: file.id,
+              text: FILE_NAME_MAP[file.name] || file.name,
+            }))}
+            selectedKey={activeFile.id}
+            onSelect={this.changeActiveFile}
+          />
           <ContentWrapper>
             <Editor
               activeSolution={activeSolution}

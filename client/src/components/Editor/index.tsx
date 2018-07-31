@@ -1,9 +1,7 @@
 import React, { Component } from 'react'
-import styled from 'styled-components'
-import FileSwitcher from './FileSwitcher'
 import Monaco from './Monaco'
 import { getModel, setPosForModel } from './Monaco/monaco-models'
-import { Wrapper, Layout } from './styles'
+import { Layout } from './styles'
 
 export interface IEditorProps {
   activeSolution: ISolution
@@ -29,12 +27,23 @@ class Editor extends Component<IEditorProps> {
   }
 
   componentDidUpdate(prevProps) {
-    const { activeFile } = this.props
+    this.changeActiveFile(prevProps.activeFile, this.props.activeFile)
+  }
 
-    // TODO: consolidate logic between here and changeActiveFileFromPivot
-    if (activeFile.id !== prevProps.activeFile.id) {
-      const cachedModel = getModel(this.monaco, activeFile)
+  changeActiveFile = (oldFile: IFile | null, newFile: IFile) => {
+    if (this.editor && newFile) {
+      if (oldFile) {
+        setPosForModel(oldFile.id, this.editor.getPosition())
+      }
+
+      const cachedModel = getModel(this.monaco, newFile)
       this.editor.setModel(cachedModel.model)
+      requestAnimationFrame(() => {
+        if (cachedModel.cursorPos) {
+          this.editor.setPosition(cachedModel.cursorPos)
+          this.editor.revealPosition(cachedModel.cursorPos)
+        }
+      })
     }
   }
 
@@ -48,8 +57,7 @@ class Editor extends Component<IEditorProps> {
       })
     })
 
-    // createAllModelsForSnippet(this.monaco, this.props.files)
-    this.changeActiveFileFromPivot(this.props.activeFile)
+    this.changeActiveFile(null, this.props.activeFile)
 
     window.addEventListener('resize', this.resizeEditor)
 
@@ -95,21 +103,6 @@ class Editor extends Component<IEditorProps> {
     // }
   }
 
-  changeActiveFileFromPivot = (file: any) => {
-    setPosForModel(this.props.activeFile.id, this.editor.getPosition())
-    const cachedModel = getModel(this.monaco, file)
-    this.editor.setModel(cachedModel.model)
-    requestAnimationFrame(() => {
-      if (cachedModel.cursorPos) {
-        this.editor.setPosition(cachedModel.cursorPos)
-        this.editor.revealPosition(cachedModel.cursorPos)
-        // this.editor.focus()
-      }
-    })
-
-    this.props.changeActiveFile(file.id)
-  }
-
   // todo debounce
   resizeEditor = () => {
     console.info('editor resizing!')
@@ -124,19 +117,12 @@ class Editor extends Component<IEditorProps> {
 
     return (
       <Layout>
-        <FileSwitcher
-          files={files}
-          activeFile={activeFile}
-          changeActiveFile={this.changeActiveFileFromPivot}
+        <Monaco
+          theme="vs-dark"
+          options={options}
+          editorDidMount={this.setupEditor}
+          libraries={activeSolution.libraries}
         />
-        <Wrapper>
-          <Monaco
-            theme="vs-dark"
-            options={options}
-            editorDidMount={this.setupEditor}
-            libraries={activeSolution.libraries}
-          />
-        </Wrapper>
       </Layout>
     )
   }

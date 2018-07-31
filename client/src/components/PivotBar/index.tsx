@@ -37,55 +37,49 @@ const pivotTheme = createTheme({
   },
 })
 
-const FileSwitcherWrapper = styled.div`
-  grid-area: command-bar;
+const PivotBarWrapper = styled.div`
   background-color: ${props => props.theme.darkAccent};
 `
 
-const FILE_NAME_MAP = {
-  'index.ts': 'Script',
-  'index.html': 'HTML',
-  'index.css': 'CSS',
-  'libraries.txt': 'Libraries',
+export interface IPivotBarItem {
+  key: string
+  text: string
 }
 
-interface IFileSwitcherProps {
-  files: any[]
-  activeFile: any
-  changeActiveFile: (file: any) => void
+export interface IPivotBar {
+  items: IPivotBarItem[]
+  selectedKey: string | null
+  onSelect: (selectedKey: string) => void
 }
 
-class FileSwitcher extends React.Component<IFileSwitcherProps> {
+class PivotBar extends React.Component<IPivotBar> {
   render() {
-    const { files, activeFile } = this.props
-    const activeFileName = activeFile ? activeFile.name : ''
+    const { items, selectedKey } = this.props
 
     return (
-      <FileSwitcherWrapper>
+      <PivotBarWrapper>
         <Customizer settings={{ theme: pivotTheme }}>
           <Pivot
             linkSize={PivotLinkSize.normal}
             linkFormat={PivotLinkFormat.tabs}
             onLinkClick={this.onLinkClick}
-            selectedKey={activeFile.id}
+            selectedKey={selectedKey || undefined}
           >
-            {files.map(file => (
-              <PivotItem
-                key={file.id}
-                itemKey={file.id}
-                linkText={FILE_NAME_MAP[file.name] || file.name}
-              />
+            {items.map(item => (
+              <PivotItem key={item.key} itemKey={item.key} linkText={item.text} />
             ))}
           </Pivot>
         </Customizer>
-      </FileSwitcherWrapper>
+      </PivotBarWrapper>
     )
   }
 
-  onLinkClick = (item: PivotItem): void =>
-    this.props.changeActiveFile(
-      this.props.files.find(file => file.id === item.props.itemKey),
-    )
+  onLinkClick = (item: PivotItem): void => {
+    const key = item.props.itemKey
+    if (key) {
+      this.props.onSelect(key)
+    }
+  }
 }
 
-export default FileSwitcher
+export default PivotBar
