@@ -7,7 +7,7 @@ import { convertSnippetToSolution } from '../utils'
 import { createSolution, openSolution, deleteSolution } from './solutions'
 import YAML from 'yamljs'
 import { push } from 'connected-react-router'
-import { GistConflictResolutionOptions } from '../interfaces/enums'
+import { ConflictResolutionOptions } from '../interfaces/enums'
 
 function* importGistFlow(action) {
   let snippet
@@ -41,13 +41,13 @@ function* getGistFlow(action) {
     ? action.payload.conflictResolution.type
     : ''
   switch (conflictResolutionType) {
-    case GistConflictResolutionOptions.Open:
+    case ConflictResolutionOptions.Open:
       yield call(openSolution, action.payload.conflictResolution.existingSolution)
       break
-    case GistConflictResolutionOptions.Overwrite:
+    case ConflictResolutionOptions.Overwrite:
       // delete the existing solution and files
       yield call(deleteSolution, action.payload.conflictResolution.existingSolution)
-    case GistConflictResolutionOptions.CreateCopy:
+    case ConflictResolutionOptions.CreateCopy:
     default:
       const snippet = yield call(getGist, action.payload.rawUrl)
       const { solution, files } = convertSnippetToSolution(snippet)

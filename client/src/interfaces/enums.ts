@@ -1,4 +1,4 @@
-export enum GistConflictResolutionOptions {
+export enum ConflictResolutionOptions {
   Open = 'OPEN',
   Overwrite = 'OVERWRITE',
   CreateCopy = 'CREATE_COPY',

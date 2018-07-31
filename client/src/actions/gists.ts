@@ -1,5 +1,5 @@
 import { createAsyncAction } from 'typesafe-actions'
-import { GistConflictResolutionOptions } from '../interfaces/enums'
+import { ConflictResolutionOptions } from '../interfaces/enums'
 
 // used for import
 export const importPublic = createAsyncAction(
@@ -35,7 +35,7 @@ export const get = createAsyncAction(
     gistId: string
     rawUrl: string
     conflictResolution?: {
-      type: GistConflictResolutionOptions
+      type: ConflictResolutionOptions
       existingSolution: ISolution
     }
   },

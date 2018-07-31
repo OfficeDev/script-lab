@@ -6,7 +6,7 @@ import MySolutions from './MySolutions'
 import Samples from './Samples'
 import ImportSolution from './ImportSolution'
 
-import GistConflictDialog from './GistConflictDialog'
+import ConflictResolutionDialog from './ConflictResolutionDialog'
 
 interface IBackstageItem {
   key: string
@@ -36,14 +36,14 @@ export interface IBackstage {
 interface IState {
   selectedKey: string
   conflictingGist: ISharedGistMetadata | null
-  existingSolutionConflicting: ISolution | null
+  existingSolutionsConflicting: ISolution[] | null
 }
 
 export default class Backstage extends Component<IBackstage, IState> {
   state = {
     selectedKey: 'my-solutions',
     conflictingGist: null,
-    existingSolutionConflicting: null,
+    existingSolutionsConflicting: null,
   }
 
   constructor(props) {
@@ -64,10 +64,10 @@ export default class Backstage extends Component<IBackstage, IState> {
   openSharedGist = (gistMeta: ISharedGistMetadata) => {
     const { solutions, openGist, hideBackstage } = this.props
     const { id, url } = gistMeta
-    const existingSolution = solutions.find(s => s.gistId === id)
-    if (existingSolution) {
+    const existingSolutions = solutions.filter(s => s.gistId === id)
+    if (existingSolutions) {
       // version of this gist already exists locally in solutions
-      this.showGistConflictDialog(gistMeta, existingSolution)
+      this.showGistConflictDialog(gistMeta, existingSolutions)
     } else {
       openGist(url, id)
       hideBackstage()
@@ -76,10 +76,11 @@ export default class Backstage extends Component<IBackstage, IState> {
 
   showGistConflictDialog = (
     conflictingGist: ISharedGistMetadata,
-    existingSolutionConflicting: ISolution,
-  ) => this.setState({ conflictingGist, existingSolutionConflicting })
+    existingSolutionsConflicting: ISolution[],
+  ) => this.setState({ conflictingGist, existingSolutionsConflicting })
+
   hideGistConflictDialog = () =>
-    this.setState({ conflictingGist: null, existingSolutionConflicting: null })
+    this.setState({ conflictingGist: null, existingSolutionsConflicting: null })
 
   render() {
     const items = [
@@ -137,7 +138,7 @@ export default class Backstage extends Component<IBackstage, IState> {
       onSelect: () => this.setState({ selectedKey: item.key }),
       ...item,
     }))
-    const { selectedKey, conflictingGist, existingSolutionConflicting } = this.state
+    const { selectedKey, conflictingGist, existingSolutionsConflicting } = this.state
     const activeItem = items.find(item => item.key === selectedKey)
     return (
       <BackstageWrapper style={{ display: this.props.isHidden ? 'none' : 'flex' }}>
@@ -152,10 +153,10 @@ export default class Backstage extends Component<IBackstage, IState> {
         />
         {activeItem && activeItem.content}
         {conflictingGist &&
-          existingSolutionConflicting && (
-            <GistConflictDialog
+          existingSolutionsConflicting && (
+            <ConflictResolutionDialog
               conflictingGist={conflictingGist}
-              existingSolution={existingSolutionConflicting}
+              existingSolutions={existingSolutionsConflicting}
               closeDialog={this.hideGistConflictDialog}
               hideBackstage={this.props.hideBackstage}
               openGist={this.props.openGist}
