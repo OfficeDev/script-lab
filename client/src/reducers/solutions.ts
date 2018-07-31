@@ -119,7 +119,7 @@ const getAll = (state: ISolutionsState): ISolution[] =>
 const getGists = (state: ISolutionsState): ISolution[] =>
   Object.keys(state.byId)
     .map(k => state.byId[k])
-    .filter(sol => sol.gistId)
+    .filter(sol => sol.source && sol.source.origin === 'gist')
 
 const getAllIds = (state: ISolutionsState): string[] => state.allIds
 

@@ -57,7 +57,10 @@ function* getGistFlow(action) {
     default:
       const snippet = yield call(getGist, action.payload.rawUrl)
       const { solution, files } = convertSnippetToSolution(snippet)
-      solution.gistId = action.payload.gistId
+      solution.source = {
+        id: action.payload.gistId,
+        origin: 'gist',
+      }
 
       yield put(gists.get.success({ solution, files }))
   }

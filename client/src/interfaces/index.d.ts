@@ -8,10 +8,14 @@ interface IEditableSolutionProperties {
   description?: string
   libraries: string[]
 }
+interface ISourceInformation {
+  id: string
+  origin: 'gist'
+}
 
 interface ISolution extends IEditableSolutionProperties, ITimestamps {
   id: string
-  gistId?: string
+  source?: ISourceInformation
   host: string
   files: string[]
 }

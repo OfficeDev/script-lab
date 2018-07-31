@@ -89,12 +89,12 @@ export const createGist = async (
 
 export const updateGist = async (token: string, solution: ISolution, files: IFile[]) => {
   // TODO: updateGist and createGist could probably be refactored to share more code
-  const { gistId } = solution
+  const { source } = solution
   const snippetJSON = convertSolutionToSnippet(solution, files)
   const snippet = YAML.stringify(snippetJSON)
 
   const gh = new GitHub({ token })
-  const gist = gh.gitGist(gistId)
+  const gist = gh.gitGist(source!.id)
 
   const data = {
     description: `${solution.description} - Shared with Script Lab`,

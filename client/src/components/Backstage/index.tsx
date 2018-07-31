@@ -64,7 +64,9 @@ export default class Backstage extends Component<IBackstage, IState> {
   openSharedGist = (gistMeta: ISharedGistMetadata) => {
     const { solutions, openGist, hideBackstage } = this.props
     const { id, url } = gistMeta
-    const existingSolutions = solutions.filter(s => s.gistId === id)
+    const existingSolutions = solutions.filter(
+      s => s.source && s.source.origin === 'gist' && s.source.id === id,
+    )
     if (existingSolutions) {
       // version of this gist already exists locally in solutions
       this.showGistConflictDialog(gistMeta, existingSolutions)
