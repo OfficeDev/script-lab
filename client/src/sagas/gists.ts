@@ -1,7 +1,7 @@
 import { put, takeEvery, call, select } from 'redux-saga/effects'
 import { getType } from 'typesafe-actions'
-import { gists } from '../actions'
-import { importGist, getGist, getAllGistMetadata } from '../services/github'
+import { gists, solutions } from '../actions'
+import { importGist, getGist, getAllGistMetadata, createGist } from '../services/github'
 import { selectors } from '../reducers'
 import { convertSnippetToSolution } from '../utils'
 import { createSolution, openSolution, deleteSolution } from './solutions'
@@ -61,6 +61,29 @@ function* handleGetGistSuccess(action) {
   yield call(createSolution, action.payload.solution, action.payload.files)
 }
 
+function* createGistFlow(action) {
+  const state = yield select()
+  const token = selectors.github.getToken(state)
+  const solution = selectors.solutions.get(state, action.payload.solutionId)
+  const files = solution.files.map(fileId => selectors.files.get(state, fileId))
+
+  const createdGist = yield call(
+    createGist,
+    token,
+    solution,
+    files,
+    action.payload.isPublic,
+  )
+
+  yield put(gists.create.success({ gist: createdGist, solution }))
+}
+
+function* handleCreateGistSuccess(action) {
+  const { solution } = action.payload
+  solution.gistId = action.payload.gist.id
+  yield put(solutions.edit(solution.id, solution))
+}
+
 // TODO: theres gotta be a better way to do this ... maybe not
 export function* gistWatcher() {
   yield takeEvery(getType(gists.importPublic.request), importGistFlow)
@@ -70,4 +93,7 @@ export function* gistWatcher() {
 
   yield takeEvery(getType(gists.get.request), getGistFlow)
   yield takeEvery(getType(gists.get.success), handleGetGistSuccess)
+
+  yield takeEvery(getType(gists.create.request), createGistFlow)
+  yield takeEvery(getType(gists.create.success), handleCreateGistSuccess)
 }

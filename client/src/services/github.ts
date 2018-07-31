@@ -1,6 +1,7 @@
 import YAML from 'yamljs'
 import { Authenticator, IToken } from '@microsoft/office-js-helpers'
 import GitHub from 'github-api'
+import { convertSolutionToSnippet } from '../utils'
 
 // TODO: error handling
 const fetchYaml = (url: string): {} => {
@@ -58,6 +59,33 @@ export const getGist = (rawUrl: string) =>
   fetch(rawUrl)
     .then(resp => resp.text())
     .then(text => YAML.parse(text))
+
+export const createGist = async (
+  token: string,
+  solution: ISolution,
+  files: IFile[],
+  isPublic: boolean,
+) => {
+  const snippetJSON = convertSolutionToSnippet(solution, files)
+  const snippet = YAML.stringify(snippetJSON)
+
+  const gh = new GitHub({ token })
+  const gist = gh.getGist()
+
+  const data = {
+    public: isPublic,
+    description: `${solution.description} - Shared with Script Lab`,
+    files: {
+      [`${solution.name}.yaml`]: {
+        content: snippet,
+      },
+    },
+  }
+
+  const response = await gist.create(data)
+
+  return response.data
+}
 
 export const login = async () => {
   const auth = new Authenticator()

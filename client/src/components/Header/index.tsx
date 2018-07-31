@@ -58,6 +58,8 @@ interface IHeader {
     solution: Partial<IEditableSolutionProperties>,
   ) => void
   login: () => void
+  createPublicGist: () => void
+  createSecretGist: () => void
 }
 
 interface IState {
@@ -97,6 +99,16 @@ class Header extends React.Component<IHeader, IState> {
                   key: 'share',
                   text: 'Share',
                   iconProps: { iconName: 'Share' },
+                  subMenuProps: {
+                    items: [
+                      {
+                        key: 'new-public-gist',
+                        text: 'New public gist',
+                        onClick: this.props.createPublicGist,
+                      },
+                      { key: 'B', text: 'B' },
+                    ],
+                  },
                 },
                 {
                   key: 'delete',
