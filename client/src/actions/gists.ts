@@ -13,7 +13,6 @@ export const create = createAsyncAction(
   'CREATE_GIST_SUCCESS',
   'CREATE_GIST_FAILURE',
 )<{ solutionId: string; isPublic: boolean }, { gist: any; solution: ISolution }, Error>()
-// where any above is the github gist format
 
 export const update = createAsyncAction(
   'UPDATE_GIST_REQUEST',
