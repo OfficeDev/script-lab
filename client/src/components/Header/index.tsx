@@ -39,7 +39,7 @@ const headerTheme = createTheme({
     neutralPrimary: '#ffffff',
     neutralDark: '#f4f4f4',
     black: '#f8f8f8',
-    white: '#217346',
+    white: '#0D4027', // '#217346',
   },
 })
 
@@ -60,6 +60,7 @@ interface IHeader {
   login: () => void
   createPublicGist: () => void
   createSecretGist: () => void
+  updateGist: () => void
 }
 
 interface IState {
@@ -72,6 +73,33 @@ class Header extends React.Component<IHeader, IState> {
   render() {
     const { solution, showBackstage } = this.props
     const solutionName = solution ? solution.name : 'Solution Name'
+
+    const shareOptions = [
+      {
+        hidden: !solution.gistId,
+        key: 'update-gist',
+        text: 'Update existing gist',
+        iconProps: { iconName: 'Save' },
+        onClick: this.props.updateGist,
+      },
+      {
+        key: 'new-public-gist',
+        text: 'New public gist',
+        iconProps: { iconName: 'PageCheckedIn' },
+        onClick: this.props.createPublicGist,
+      },
+      {
+        key: 'new-secret-gist',
+        text: 'New secret gist',
+        iconProps: { iconName: 'ProtectedDocument' },
+        onClick: this.props.createSecretGist,
+      },
+    ]
+      .filter(option => !option.hidden)
+      .map(option => {
+        const { hidden, ...rest } = option
+        return rest
+      })
     return (
       <>
         <Customizer settings={{ theme: headerTheme }}>
@@ -100,14 +128,7 @@ class Header extends React.Component<IHeader, IState> {
                   text: 'Share',
                   iconProps: { iconName: 'Share' },
                   subMenuProps: {
-                    items: [
-                      {
-                        key: 'new-public-gist',
-                        text: 'New public gist',
-                        onClick: this.props.createPublicGist,
-                      },
-                      { key: 'B', text: 'B' },
-                    ],
+                    items: shareOptions,
                   },
                 },
                 {

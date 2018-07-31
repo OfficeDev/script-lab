@@ -1,7 +1,13 @@
 import { put, takeEvery, call, select } from 'redux-saga/effects'
 import { getType } from 'typesafe-actions'
 import { gists, solutions } from '../actions'
-import { importGist, getGist, getAllGistMetadata, createGist } from '../services/github'
+import {
+  importGist,
+  getGist,
+  getAllGistMetadata,
+  createGist,
+  updateGist,
+} from '../services/github'
 import { selectors } from '../reducers'
 import { convertSnippetToSolution } from '../utils'
 import { createSolution, openSolution, deleteSolution } from './solutions'
@@ -61,11 +67,20 @@ function* handleGetGistSuccess(action) {
   yield call(createSolution, action.payload.solution, action.payload.files)
 }
 
+function createAndUpdateHelper(state, solutionId) {
+  const token = selectors.github.getToken(state)
+  const solution = selectors.solutions.get(state, solutionId)
+  const files = solution.files.map(fileId => selectors.files.get(state, fileId))
+
+  return { token, solution, files }
+}
+
 function* createGistFlow(action) {
   const state = yield select()
-  const token = selectors.github.getToken(state)
-  const solution = selectors.solutions.get(state, action.payload.solutionId)
-  const files = solution.files.map(fileId => selectors.files.get(state, fileId))
+  const { token, solution, files } = createAndUpdateHelper(
+    state,
+    action.payload.solutionId,
+  )
 
   const createdGist = yield call(
     createGist,
@@ -84,6 +99,18 @@ function* handleCreateGistSuccess(action) {
   yield put(solutions.edit(solution.id, solution))
 }
 
+function* updateGistFlow(action) {
+  const state = yield select()
+  const { token, solution, files } = createAndUpdateHelper(
+    state,
+    action.payload.solutionId,
+  )
+
+  const updatedGist = yield call(updateGist, token, solution, files)
+
+  yield put(gists.update.success({ gist: updatedGist }))
+}
+
 // TODO: theres gotta be a better way to do this ... maybe not
 export function* gistWatcher() {
   yield takeEvery(getType(gists.importPublic.request), importGistFlow)
@@ -96,4 +123,6 @@ export function* gistWatcher() {
 
   yield takeEvery(getType(gists.create.request), createGistFlow)
   yield takeEvery(getType(gists.create.success), handleCreateGistSuccess)
+
+  yield takeEvery(getType(gists.update.request), updateGistFlow)
 }

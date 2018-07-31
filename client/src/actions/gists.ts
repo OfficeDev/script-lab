@@ -19,7 +19,7 @@ export const update = createAsyncAction(
   'UPDATE_GIST_REQUEST',
   'UPDATE_GIST_SUCCESS',
   'UPDATE_GIST_FAILURE',
-)<void, void, Error>()
+)<{ solutionId: string }, { gist: any }, Error>()
 
 export const fetchMetadata = createAsyncAction(
   'FETCH_GIST_METADATA_REQUEST',

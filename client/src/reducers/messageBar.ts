@@ -1,11 +1,12 @@
 import { combineReducers } from 'redux'
-import { github, IGithubAction, gists, IGistsAction, messageBar } from '../actions'
+import { gists, messageBar } from '../actions'
 import { getType } from 'typesafe-actions'
 import { MessageBarType } from 'office-ui-fabric-react/lib/MessageBar'
 
 const isVisible = (state = false, action) => {
   switch (action.type) {
     case getType(gists.create.success):
+    case getType(gists.update.success):
       return true
     case getType(messageBar.dismiss):
       return false
@@ -17,6 +18,7 @@ const isVisible = (state = false, action) => {
 const style = (state = MessageBarType.info, action) => {
   switch (action.type) {
     case getType(gists.create.success):
+    case getType(gists.update.success):
       return MessageBarType.success
     default:
       return state
@@ -29,6 +31,10 @@ const text = (state = '', action) => {
       return `Your gist has been published at https://gist.github.com/${
         action.payload.gist.id
       }.`
+    case getType(gists.update.success):
+      return `Your gist has been updated at https://gist.github.com/${
+        action.payload.gist.id
+      }.`
     default:
       return state
   }
@@ -37,6 +43,7 @@ const text = (state = '', action) => {
 const link = (state = null, action) => {
   switch (action.type) {
     case getType(gists.create.success):
+    case getType(gists.update.success):
       return {
         text: 'View on GitHub',
         url: `https://gist.github.com/${action.payload.gist.id}`,

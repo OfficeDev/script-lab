@@ -15,6 +15,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     dispatch(gists.create.request({ solutionId: ownProps.solution.id, isPublic: true })),
   createSecretGist: () =>
     dispatch(gists.create.request({ solutionId: ownProps.solution.id, isPublic: false })),
+  updateGist: () => dispatch(gists.update.request({ solutionId: ownProps.solution.id })),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header)

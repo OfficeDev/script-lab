@@ -87,6 +87,29 @@ export const createGist = async (
   return response.data
 }
 
+export const updateGist = async (token: string, solution: ISolution, files: IFile[]) => {
+  // TODO: updateGist and createGist could probably be refactored to share more code
+  const { gistId } = solution
+  const snippetJSON = convertSolutionToSnippet(solution, files)
+  const snippet = YAML.stringify(snippetJSON)
+
+  const gh = new GitHub({ token })
+  const gist = gh.gitGist(gistId)
+
+  const data = {
+    description: `${solution.description} - Shared with Script Lab`,
+    files: {
+      [`${solution.name}.yaml`]: {
+        content: snippet,
+      },
+    },
+  }
+
+  const response = await gist.update(data)
+
+  return response.data
+}
+
 export const login = async () => {
   const auth = new Authenticator()
   console.log('trying to login')
