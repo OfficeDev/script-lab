@@ -43,3 +43,10 @@ interface ISharedGistMetadata extends ITimestamps {
   description: string
   isPublic: boolean
 }
+
+interface IMessageBar {
+  isVisible: boolean
+  text: string
+  style: any // MessageBarType from fabric
+  link: { text: string; url: string } | null
+}
