@@ -112,7 +112,6 @@ export const updateGist = async (token: string, solution: ISolution, files: IFil
 
 export const login = async () => {
   const auth = new Authenticator()
-  console.log('trying to login')
 
   auth.endpoints.add('GitHub', {
     clientId: '210a167954d9ef04b501', // TODO: un-hardcode clientId
