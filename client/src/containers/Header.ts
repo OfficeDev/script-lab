@@ -11,6 +11,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   editSolution: (solutionId: string, solution: Partial<IEditableSolutionProperties>) =>
     dispatch(solutions.edit(solutionId, solution)),
   login: () => dispatch(github.login.request()),
+  deleteSolution: () => dispatch(solutions.remove(ownProps.solution)),
   createPublicGist: () =>
     dispatch(gists.create.request({ solutionId: ownProps.solution.id, isPublic: true })),
   createSecretGist: () =>

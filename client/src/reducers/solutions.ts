@@ -74,7 +74,7 @@ const byId = (state: IByIdState = {}, action: ISolutionsAction | IFilesAction) =
       }
 
     case getType(solutions.remove):
-      const { [action.payload]: omit, ...rest } = state
+      const { [action.payload.id]: omit, ...rest } = state
       return rest
 
     default:
@@ -92,7 +92,7 @@ const allIds = (state: string[] = [], action: ISolutionsAction) => {
       }
 
     case getType(solutions.remove):
-      return state.filter(id => id !== action.payload)
+      return state.filter(id => id !== action.payload.id)
 
     default:
       return state

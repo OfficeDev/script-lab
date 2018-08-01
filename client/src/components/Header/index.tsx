@@ -58,6 +58,7 @@ interface IHeader {
     solution: Partial<IEditableSolutionProperties>,
   ) => void
   login: () => void
+  deleteSolution: () => void
   createPublicGist: () => void
   createSecretGist: () => void
   updateGist: () => void
@@ -135,6 +136,7 @@ class Header extends React.Component<IHeader, IState> {
                   key: 'delete',
                   text: 'Delete',
                   iconProps: { iconName: 'Delete' },
+                  onClick: this.props.deleteSolution,
                 },
               ]}
               styles={{

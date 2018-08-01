@@ -44,7 +44,7 @@ describe('solutions reducer', () => {
     expect(
       solutionsReducer(
         getStateWith([1, 2]),
-        solutionsActions.remove(getExampleSolution(2).id),
+        solutionsActions.remove(getExampleSolution(2)),
       ),
     ).toEqual(getStateWith([1]))
   })
