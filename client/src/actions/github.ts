@@ -1,4 +1,4 @@
-import { createAsyncAction } from 'typesafe-actions'
+import { createAction, createAsyncAction } from 'typesafe-actions'
 
 export const login = createAsyncAction(
   'GITHUB_LOGIN_REQUEST',
@@ -6,8 +6,4 @@ export const login = createAsyncAction(
   'GITHUB_LOGIN_FAILURE',
 )<void, { token: string; profilePic: string }, Error>()
 
-export const logout = createAsyncAction(
-  'GITHUB_LOGOUT_REQUEST',
-  'GITHUB_LOGOUT_SUCCESS',
-  'GITHUB_LOGOUT_FAILURE',
-)<void, void, Error>()
+export const logout = createAction('GITHUB_LOGOUT')

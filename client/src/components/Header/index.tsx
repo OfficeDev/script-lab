@@ -57,7 +57,9 @@ interface IHeader {
     solutionId: string,
     solution: Partial<IEditableSolutionProperties>,
   ) => void
+  isLoggedIn: boolean
   login: () => void
+  logout: () => void
   deleteSolution: () => void
   createPublicGist: () => void
   createSecretGist: () => void
@@ -101,6 +103,40 @@ class Header extends React.Component<IHeader, IState> {
         const { hidden, ...rest } = option
         return rest
       })
+
+    const profilePic = {
+      key: 'account',
+      onRenderIcon: () => (
+        <div style={{ width: '28px', overflow: 'hidden' }}>
+          <PersonaCoin
+            imageUrl={this.props.profilePic}
+            size={PersonaSize.size28}
+            styles={{
+              coin: { backgroundColor: 'brick' },
+              image: { backgroundColor: 'white' },
+              initials: {
+                backgroundColor: '#000',
+                color: 'green',
+              },
+            }}
+          />
+        </div>
+      ),
+      subMenuProps: this.props.isLoggedIn
+        ? {
+            items: [
+              {
+                key: 'logout',
+                text: 'Logout',
+                onClick: this.props.logout,
+              },
+            ],
+          }
+        : undefined,
+      iconOnly: true,
+      onClick: this.props.login,
+    }
+
     return (
       <>
         <Customizer settings={{ theme: headerTheme }}>
@@ -142,29 +178,7 @@ class Header extends React.Component<IHeader, IState> {
               styles={{
                 root: { paddingLeft: 0, paddingRight: 0 },
               }}
-              farItems={[
-                {
-                  key: 'account',
-                  onRenderIcon: () => (
-                    <div style={{ width: '28px', overflow: 'hidden' }}>
-                      <PersonaCoin
-                        imageUrl={this.props.profilePic}
-                        size={PersonaSize.size28}
-                        styles={{
-                          coin: { backgroundColor: 'brick' },
-                          image: { backgroundColor: 'white' },
-                          initials: {
-                            backgroundColor: '#000',
-                            color: 'green',
-                          },
-                        }}
-                      />
-                    </div>
-                  ),
-                  iconOnly: true,
-                  onClick: this.props.login,
-                },
-              ]}
+              farItems={[profilePic]}
             />
           </HeaderWrapper>
         </Customizer>

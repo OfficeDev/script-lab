@@ -6,15 +6,19 @@ const profile = (state = {}, action: IGithubAction) => {
   switch (action.type) {
     case getType(github.login.success):
       return action.payload
+    case getType(github.logout):
+      return {}
     default:
       return state
   }
 }
 
-const gistMetadata = (state = {}, action: IGistsAction) => {
+const gistMetadata = (state = {}, action: IGistsAction | IGithubAction) => {
   switch (action.type) {
     case getType(gists.fetchMetadata.success):
       return action.payload
+    case getType(github.logout):
+      return {}
     default:
       return state
   }
