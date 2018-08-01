@@ -30,7 +30,7 @@ const headerTheme = createTheme({
     neutralLighterAlt: '#27794c',
     neutralLighter: '#217346' /*'#2c7e51',*/,
     neutralLight: '#35875a',
-    neutralQuaternaryAlt: '#3b8d60',
+    neutralQuaternaryAlt: '#3b8d60', // active context menu color for button
     neutralQuaternary: '#409165',
     neutralTertiaryAlt: '#58a47a',
     neutralTertiary: '#c8c8c8',
@@ -39,7 +39,7 @@ const headerTheme = createTheme({
     neutralPrimary: '#ffffff',
     neutralDark: '#f4f4f4',
     black: '#f8f8f8',
-    white: '#0D4027', // '#217346',
+    white: '#515151', // '#217346',
   },
 })
 
