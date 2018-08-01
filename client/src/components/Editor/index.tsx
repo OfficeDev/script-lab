@@ -114,6 +114,7 @@ class Editor extends Component<IEditorProps> {
   render() {
     const { files, activeFile, activeSolution } = this.props
     const options = this.getMonacoOptions()
+    const libraries = files.find(file => file.name === 'libraries.txt')
 
     return (
       <Layout>
@@ -121,7 +122,7 @@ class Editor extends Component<IEditorProps> {
           theme="vs-dark"
           options={options}
           editorDidMount={this.setupEditor}
-          libraries={activeSolution.libraries}
+          libraries={libraries && libraries.content}
         />
       </Layout>
     )

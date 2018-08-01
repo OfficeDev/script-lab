@@ -45,6 +45,24 @@ async function tryCatch(callback) {
       language: 'CSS',
       content: '',
     },
+    {
+      name: 'libraries.txt',
+      language: 'TEXT',
+      content: `https://appsforoffice.microsoft.com/lib/1/hosted/office.js
+https://appsforoffice.microsoft.com/lib/1/hosted/office.d.ts
+
+office-ui-fabric-js@1.4.0/dist/css/fabric.min.css
+office-ui-fabric-js@1.4.0/dist/css/fabric.components.min.css
+
+core-js@2.4.1/client/core.min.js
+@types/core-js
+
+@microsoft/office-js-helpers@0.7.4/dist/office.helpers.min.js
+@microsoft/office-js-helpers@0.7.4/dist/office.helpers.d.ts
+
+jquery@3.1.1
+@types/jquery`,
+    },
   ].map(file => ({
     ...file,
     id: uuidv4(),
@@ -59,22 +77,6 @@ export const getBoilerplateSolution = (files: IFile[], timestamp: number): ISolu
   dateCreated: timestamp,
   dateLastModified: timestamp,
   files: files.map(file => file.id),
-  libraries: [
-    'https://appsforoffice.microsoft.com/lib/1/hosted/office.js',
-    'https://appsforoffice.microsoft.com/lib/1/hosted/office.d.ts',
-
-    'office-ui-fabric-js@1.4.0/dist/css/fabric.min.css',
-    'office-ui-fabric-js@1.4.0/dist/css/fabric.components.min.css',
-
-    'core-js@2.4.1/client/core.min.js',
-    '@types/core-js',
-
-    '@microsoft/office-js-helpers@0.7.4/dist/office.helpers.min.js',
-    '@microsoft/office-js-helpers@0.7.4/dist/office.helpers.d.ts',
-
-    'jquery@3.1.1',
-    '@types/jquery',
-  ],
 })
 
 export const getBoilerplate = (): { solution: ISolution; files: IFile[] } => {

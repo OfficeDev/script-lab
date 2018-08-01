@@ -5,8 +5,9 @@ interface IDisposableFile {
   url: string
   disposable: monaco.IDisposable
 }
-function parse(libraries: string[]): string[] {
+function parse(libraries: string): string[] {
   return libraries
+    .split('\n')
     .map(library => {
       library = library.trim()
 
@@ -33,7 +34,7 @@ interface IReactMonaco {
   theme: string
   options: monaco.editor.IEditorConstructionOptions
   editorDidMount: (editor, monaco) => void
-  libraries: string[]
+  libraries?: string
 }
 
 interface IReactMonacoState {
@@ -106,6 +107,7 @@ class ReactMonaco extends Component<IReactMonaco, IReactMonacoState> {
       const newLibs = this.props.libraries
 
       if (
+        newLibs &&
         !(oldLibs.length === newLibs.length && oldLibs.every((v, i) => v === newLibs[i]))
       ) {
         const oldIntellisenseFiles = this.state.intellisenseFiles
