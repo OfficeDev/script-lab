@@ -47,7 +47,7 @@ async function tryCatch(callback) {
     },
     {
       name: 'libraries.txt',
-      language: 'TEXT',
+      language: 'libraries',
       content: `https://appsforoffice.microsoft.com/lib/1/hosted/office.js
 https://appsforoffice.microsoft.com/lib/1/hosted/office.d.ts
 

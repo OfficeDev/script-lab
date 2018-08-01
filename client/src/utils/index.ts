@@ -66,7 +66,7 @@ export const convertSnippetToSolution = (
     createFile('index.ts', script),
     createFile('index.html', template),
     createFile('index.css', style),
-    createFile('libraries.txt', { content: libraries, language: 'txt' }),
+    createFile('libraries.txt', { content: libraries, language: 'libraries' }),
   ]
 
   const solution = {
