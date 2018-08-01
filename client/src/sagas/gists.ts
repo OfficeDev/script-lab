@@ -10,7 +10,7 @@ import {
 } from '../services/github'
 import { selectors } from '../reducers'
 import { convertSnippetToSolution } from '../utils'
-import { createSolution, openSolution, deleteSolution } from './solutions'
+import { createSolution, openSolution } from './solutions'
 import YAML from 'yamljs'
 import { push } from 'connected-react-router'
 import { ConflictResolutionOptions } from '../interfaces/enums'
@@ -52,7 +52,7 @@ function* getGistFlow(action) {
       break
     case ConflictResolutionOptions.Overwrite:
       // delete the existing solution and files
-      yield call(deleteSolution, action.payload.conflictResolution.existingSolution)
+      yield put(solutions.remove(action.payload.conflictResolution.existingSolution))
     case ConflictResolutionOptions.CreateCopy:
     default:
       const snippet = yield call(getGist, action.payload.rawUrl)

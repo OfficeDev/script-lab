@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux'
 import { getType } from 'typesafe-actions'
-import { files, IFilesAction } from '../actions'
+import { files, IFilesAction, solutions, ISolutionsAction } from '../actions'
+import { solution } from '../storage/schema'
 
 const file = (state: IFile, action: IFilesAction) => {
   switch (action.type) {
@@ -19,7 +20,20 @@ interface IByIdState {
   [id: string]: IFile
 }
 
-const byId = (state: IByIdState = {}, action: IFilesAction) => {
+function removeFiles(state, fileIds) {
+  return Object.keys(state)
+    .map(k => state[k])
+    .reduce((newState, f) => {
+      if (fileIds.includes(f.id)) {
+        return newState
+      } else {
+        newState[f.id] = f
+        return newState
+      }
+    }, {})
+}
+
+const byId = (state: IByIdState = {}, action: IFilesAction | ISolutionsAction) => {
   switch (action.type) {
     case getType(files.add):
       return {
@@ -36,17 +50,11 @@ const byId = (state: IByIdState = {}, action: IFilesAction) => {
         [action.payload.fileId]: file(state[action.payload.fileId], action),
       }
 
+    case getType(solutions.remove):
+      return removeFiles(state, action.payload.files)
+
     case getType(files.remove):
-      return Object.keys(state)
-        .map(k => state[k])
-        .reduce((newState, f) => {
-          if (action.payload.includes(f.id)) {
-            return newState
-          } else {
-            newState[f.id] = f
-            return newState
-          }
-        }, {})
+      return removeFiles(state, action.payload)
 
     default:
       return state
