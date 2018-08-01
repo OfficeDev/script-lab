@@ -4,7 +4,7 @@ import GitHub from 'github-api'
 import { convertSolutionToSnippet } from '../utils'
 
 // TODO: error handling
-const fetchYaml = (url: string): {} => {
+const fetchYaml = (url: string) => {
   return fetch(url)
     .then(resp => resp.text())
     .then(value => YAML.parse(value))
