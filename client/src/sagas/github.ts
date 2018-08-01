@@ -4,6 +4,7 @@ import { github } from '../actions'
 import { login } from '../services/github'
 import { convertSnippetToSolution } from '../utils'
 import { createSolution } from './solutions'
+import { fetchGistMetadataFlow } from './gists'
 import YAML from 'yamljs'
 
 function* githubLoginFlow(action) {
@@ -15,4 +16,5 @@ function* githubLoginFlow(action) {
 // TODO: theres gotta be a better way to do this ... maybe not
 export function* githubWatcher() {
   yield takeEvery(getType(github.login.request), githubLoginFlow)
+  yield takeEvery(getType(github.login.success), fetchGistMetadataFlow)
 }

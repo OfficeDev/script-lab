@@ -33,7 +33,7 @@ function* handleImportGistSuccess(action) {
   yield call(createSolution, action.payload.solution, action.payload.files)
 }
 
-function* fetchGistMetadataFlow(action) {
+export function* fetchGistMetadataFlow(action) {
   const state = yield select()
   const token = selectors.github.getToken(state)
   if (token) {
