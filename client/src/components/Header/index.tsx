@@ -79,7 +79,7 @@ class Header extends React.Component<IHeader, IState> {
 
     const shareOptions = [
       {
-        hidden: solution.source && solution.source.origin === 'gist',
+        hidden: !(solution.source && solution.source.origin === 'gist'),
         key: 'update-gist',
         text: 'Update existing gist',
         iconProps: { iconName: 'Save' },
