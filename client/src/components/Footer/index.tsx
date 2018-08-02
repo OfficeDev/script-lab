@@ -13,7 +13,9 @@ const languageMap = {
 
 const Footer = ({ language }: { language: string }) => (
   <Wrapper>
-    <BarButton>{languageMap[language.toLowerCase()] || language}</BarButton>
+    {languageMap[language.toLowerCase()] && (
+      <BarButton>{languageMap[language.toLowerCase()]}</BarButton>
+    )}
     <BarButton>
       <FabricIcon name="Settings" />
     </BarButton>
