@@ -1,12 +1,23 @@
 import React, { Component } from 'react'
 import officeDts from './office'
+import librariesIntellisenseJSON from './libraryIntellisense'
 
 interface IDisposableFile {
   url: string
   disposable: monaco.IDisposable
 }
-function parse(libraries: string[]): string[] {
+
+const Regex = {
+  STARTS_WITH_TYPINGS: /^.types\/.+|^dt~.+/i,
+  STARTS_WITH_COMMENT: /^#.*|^\/\/.*|^\/\*.*|.*\*\/$.*/im,
+  ENDS_WITH_CSS: /.*\.css$/i,
+  ENDS_WITH_DTS: /.*\.d\.ts$/i,
+  GLOBAL: /^.*/i,
+}
+
+function parse(libraries: string): string[] {
   return libraries
+    .split('\n')
     .map(library => {
       library = library.trim()
 
@@ -33,7 +44,7 @@ interface IReactMonaco {
   theme: string
   options: monaco.editor.IEditorConstructionOptions
   editorDidMount: (editor, monaco) => void
-  libraries: string[]
+  libraries?: string
 }
 
 interface IReactMonacoState {
@@ -46,6 +57,7 @@ class ReactMonaco extends Component<IReactMonaco, IReactMonacoState> {
   editor: monaco.editor.IStandaloneCodeEditor
   value: string
   pauseCallingOnChange: boolean
+  cachedLibraries: any
 
   constructor(props) {
     super(props)
@@ -88,6 +100,41 @@ class ReactMonaco extends Component<IReactMonaco, IReactMonacoState> {
         monaco.editor.setTheme(theme)
       }
 
+      monaco.languages.register({ id: 'libraries' })
+      monaco.languages.setMonarchTokensProvider('libraries', {
+        tokenizer: {
+          root: [
+            { regex: Regex.STARTS_WITH_COMMENT, action: { token: 'comment' } },
+            { regex: Regex.ENDS_WITH_CSS, action: { token: 'number' } },
+            { regex: Regex.STARTS_WITH_TYPINGS, action: { token: 'string' } },
+            { regex: Regex.ENDS_WITH_DTS, action: { token: 'string' } },
+            { regex: Regex.GLOBAL, action: { token: 'keyword' } },
+          ],
+        },
+        tokenPostfix: '',
+      })
+
+      monaco.languages.registerCompletionItemProvider('libraries', {
+        provideCompletionItems: (model, position) => {
+          const currentLine = model.getValueInRange({
+            startLineNumber: position.lineNumber,
+            endLineNumber: position.lineNumber,
+            startColumn: 1,
+            endColumn: position.column,
+          })
+
+          if (Regex.STARTS_WITH_COMMENT.test(currentLine)) {
+            return []
+          }
+
+          if (Regex.GLOBAL.test(currentLine)) {
+            return this.libraries
+          }
+
+          return Promise.resolve([])
+        },
+      })
+
       this.editorDidMount(this.editor, monaco)
     }
   }
@@ -106,6 +153,7 @@ class ReactMonaco extends Component<IReactMonaco, IReactMonacoState> {
       const newLibs = this.props.libraries
 
       if (
+        newLibs &&
         !(oldLibs.length === newLibs.length && oldLibs.every((v, i) => v === newLibs[i]))
       ) {
         const oldIntellisenseFiles = this.state.intellisenseFiles
@@ -142,6 +190,41 @@ class ReactMonaco extends Component<IReactMonaco, IReactMonacoState> {
 
       // TODO: add logic to remove intellisense
     }
+  }
+
+  get libraries() {
+    if (!this.cachedLibraries) {
+      this.cachedLibraries = this.loadLibrariesIntellisense()
+    }
+
+    return this.cachedLibraries
+  }
+
+  loadLibrariesIntellisense = () => {
+    return librariesIntellisenseJSON.map(library => {
+      let insertText = ''
+
+      if (Array.isArray(library.value)) {
+        insertText += library.value.join('\n')
+      } else {
+        insertText += library.value || ''
+        insertText += '\n'
+      }
+
+      if (Array.isArray(library.typings)) {
+        insertText += (library.typings as string[]).join('\n')
+      } else {
+        insertText += library.typings || ''
+        insertText += '\n'
+      }
+
+      return {
+        label: library.label,
+        documentation: library.description,
+        kind: monaco.languages.CompletionItemKind.Module,
+        insertText,
+      }
+    })
   }
 
   render() {

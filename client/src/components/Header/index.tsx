@@ -30,7 +30,7 @@ const headerTheme = createTheme({
     neutralLighterAlt: '#27794c',
     neutralLighter: '#217346' /*'#2c7e51',*/,
     neutralLight: '#35875a',
-    neutralQuaternaryAlt: '#3b8d60',
+    neutralQuaternaryAlt: '#3b8d60', // active context menu color for button
     neutralQuaternary: '#409165',
     neutralTertiaryAlt: '#58a47a',
     neutralTertiary: '#c8c8c8',
@@ -39,7 +39,7 @@ const headerTheme = createTheme({
     neutralPrimary: '#ffffff',
     neutralDark: '#f4f4f4',
     black: '#f8f8f8',
-    white: '#0D4027', // '#217346',
+    white: '#515151', // '#217346',
   },
 })
 
@@ -57,7 +57,9 @@ interface IHeader {
     solutionId: string,
     solution: Partial<IEditableSolutionProperties>,
   ) => void
+  isLoggedIn: boolean
   login: () => void
+  logout: () => void
   deleteSolution: () => void
   createPublicGist: () => void
   createSecretGist: () => void
@@ -101,6 +103,40 @@ class Header extends React.Component<IHeader, IState> {
         const { hidden, ...rest } = option
         return rest
       })
+
+    const profilePic = {
+      key: 'account',
+      onRenderIcon: () => (
+        <div style={{ width: '28px', overflow: 'hidden' }}>
+          <PersonaCoin
+            imageUrl={this.props.profilePic}
+            size={PersonaSize.size28}
+            styles={{
+              coin: { backgroundColor: 'brick' },
+              image: { backgroundColor: 'white' },
+              initials: {
+                backgroundColor: '#000',
+                color: 'green',
+              },
+            }}
+          />
+        </div>
+      ),
+      subMenuProps: this.props.isLoggedIn
+        ? {
+            items: [
+              {
+                key: 'logout',
+                text: 'Logout',
+                onClick: this.props.logout,
+              },
+            ],
+          }
+        : undefined,
+      iconOnly: true,
+      onClick: this.props.login,
+    }
+
     return (
       <>
         <Customizer settings={{ theme: headerTheme }}>
@@ -142,29 +178,7 @@ class Header extends React.Component<IHeader, IState> {
               styles={{
                 root: { paddingLeft: 0, paddingRight: 0 },
               }}
-              farItems={[
-                {
-                  key: 'account',
-                  onRenderIcon: () => (
-                    <div style={{ width: '28px', overflow: 'hidden' }}>
-                      <PersonaCoin
-                        imageUrl={this.props.profilePic}
-                        size={PersonaSize.size28}
-                        styles={{
-                          coin: { backgroundColor: 'brick' },
-                          image: { backgroundColor: 'white' },
-                          initials: {
-                            backgroundColor: '#000',
-                            color: 'green',
-                          },
-                        }}
-                      />
-                    </div>
-                  ),
-                  iconOnly: true,
-                  onClick: this.props.login,
-                },
-              ]}
+              farItems={[profilePic]}
             />
           </HeaderWrapper>
         </Customizer>

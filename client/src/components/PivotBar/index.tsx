@@ -64,6 +64,14 @@ class PivotBar extends React.Component<IPivotBar> {
             linkFormat={PivotLinkFormat.tabs}
             onLinkClick={this.onLinkClick}
             selectedKey={selectedKey || undefined}
+            styles={{
+              root: { backgroundColor: '#0D4027' },
+              link: { backgroundColor: '#0D4027' },
+              linkIsSelected: {
+                borderBottom: '1px solid white',
+              },
+              linkContent: { color: 'white', fontWeight: '400' },
+            }}
           >
             {items.map(item => (
               <PivotItem key={item.key} itemKey={item.key} linkText={item.text} />

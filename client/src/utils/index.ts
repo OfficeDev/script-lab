@@ -66,6 +66,7 @@ export const convertSnippetToSolution = (
     createFile('index.ts', script),
     createFile('index.html', template),
     createFile('index.css', style),
+    createFile('libraries.txt', { content: libraries, language: 'libraries' }),
   ]
 
   const solution = {
@@ -74,7 +75,6 @@ export const convertSnippetToSolution = (
     host,
     description,
     files: files.map(file => file.id),
-    libraries: libraries.split('\n'),
     dateCreated: Date.now(),
     dateLastModified: Date.now(),
   }
@@ -86,19 +86,12 @@ export const convertSolutionToSnippet = (
   solution: ISolution,
   files: IFile[],
 ): ISnippet => {
-  const {
-    id,
-    name,
-    description,
-    libraries,
-    dateCreated,
-    dateLastModified,
-    host,
-  } = solution
+  const { id, name, description, dateCreated, dateLastModified, host } = solution
 
   const script: IFile = files.find(file => file.name === 'index.ts')!
   const template: IFile = files.find(file => file.name === 'index.html')!
   const style: IFile = files.find(file => file.name === 'index.css')!
+  const libraries: IFile = files.find(file => file.name === 'libraries.txt')!
 
   return {
     id,
@@ -120,6 +113,6 @@ export const convertSolutionToSnippet = (
       content: style.content,
       language: style.language,
     },
-    libraries: libraries.join('\n'),
+    libraries: libraries.content,
   }
 }

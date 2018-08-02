@@ -34,6 +34,10 @@ class Editor extends Component<IEditorProps> {
     if (this.editor && newFile) {
       if (oldFile) {
         setPosForModel(oldFile.id, this.editor.getPosition())
+
+        if (oldFile.id === newFile.id) {
+          return
+        }
       }
 
       const cachedModel = getModel(this.monaco, newFile)
@@ -42,6 +46,10 @@ class Editor extends Component<IEditorProps> {
         if (cachedModel.cursorPos) {
           this.editor.setPosition(cachedModel.cursorPos)
           this.editor.revealPosition(cachedModel.cursorPos)
+
+          // this.editor.focus() cant include this here because
+          // it would break keyboard accessibility, or at least
+          // make it a pain to use
         }
       })
     }
@@ -114,6 +122,7 @@ class Editor extends Component<IEditorProps> {
   render() {
     const { files, activeFile, activeSolution } = this.props
     const options = this.getMonacoOptions()
+    const libraries = files.find(file => file.name === 'libraries.txt')
 
     return (
       <Layout>
@@ -121,7 +130,7 @@ class Editor extends Component<IEditorProps> {
           theme="vs-dark"
           options={options}
           editorDidMount={this.setupEditor}
-          libraries={activeSolution.libraries}
+          libraries={libraries && libraries.content}
         />
       </Layout>
     )

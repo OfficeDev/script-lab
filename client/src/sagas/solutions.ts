@@ -21,11 +21,6 @@ export function* openSolution(solution: ISolution) {
   }
 }
 
-export function* deleteSolution(solution: ISolution) {
-  yield put(actions.files.remove(solution.files))
-  yield put(actions.solutions.remove(solution))
-}
-
 function* createNewSolution() {
   const { solution, files } = getBoilerplate()
   yield call(createSolution, solution, files)

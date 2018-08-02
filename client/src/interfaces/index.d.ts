@@ -6,8 +6,8 @@ interface ITimestamps {
 interface IEditableSolutionProperties {
   name: string
   description?: string
-  libraries: string[]
 }
+
 interface ISourceInformation {
   id: string
   origin: 'gist'
