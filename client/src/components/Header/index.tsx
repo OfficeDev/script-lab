@@ -33,7 +33,7 @@ const headerTheme = createTheme({
     neutralQuaternary: '#409165',
     neutralTertiaryAlt: '#58a47a',
     neutralTertiary: '#c8c8c8',
-    neutralSecondary: '#d0d0d0',
+    neutralSecondary: 'white',
     neutralPrimaryAlt: '#dadada',
     neutralPrimary: '#ffffff',
     neutralDark: '#f4f4f4',
