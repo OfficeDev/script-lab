@@ -5,7 +5,6 @@ import { solutions, samples, gists } from '../actions'
 import { push } from 'connected-react-router'
 
 const mapStateToProps = (state): Partial<IBackstage> => ({
-  samplesMetadataByGroup: selectors.samples.getByGroup(state),
   sharedGistMetadata: selectors.github.getGistMetadata(state),
 })
 

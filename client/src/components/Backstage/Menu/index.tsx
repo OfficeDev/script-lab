@@ -35,7 +35,12 @@ export class Menu extends React.Component<any, any> {
         ]}
         styles={{
           root: { width: '22rem', height: '100vh', background: '#217346' },
-          link: { color: 'white !important', height: '7rem', paddingLeft: '2rem' },
+          link: {
+            color: 'white !important',
+            height: '7rem',
+            paddingLeft: '2rem',
+            '&:focus': { outlineColor: 'white' },
+          },
         }}
       />
     )

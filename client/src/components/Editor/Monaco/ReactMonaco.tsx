@@ -136,6 +136,7 @@ class ReactMonaco extends Component<IReactMonaco, IReactMonacoState> {
       })
 
       this.editorDidMount(this.editor, monaco)
+      this.updateIntellisense()
     }
   }
 
@@ -146,19 +147,20 @@ class ReactMonaco extends Component<IReactMonaco, IReactMonacoState> {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const win = window as any
+    this.updateIntellisense()
+  }
 
+  updateIntellisense() {
+    const win = window as any
     if (this.container.current && win.monaco !== undefined) {
       const oldLibs = this.state.intellisenseFiles.map(file => file.url)
       const newLibs = this.props.libraries
-
       if (
         newLibs &&
         !(oldLibs.length === newLibs.length && oldLibs.every((v, i) => v === newLibs[i]))
       ) {
         const oldIntellisenseFiles = this.state.intellisenseFiles
         const newIntellisenseFiles = parse(newLibs)
-
         newIntellisenseFiles
           .filter(url => !oldIntellisenseFiles.find(file => file.url === url))
           .forEach(url => {
@@ -187,7 +189,6 @@ class ReactMonaco extends Component<IReactMonaco, IReactMonacoState> {
               })
           })
       }
-
       // TODO: add logic to remove intellisense
     }
   }

@@ -21,7 +21,8 @@ stories
   .addDecorator(checkA11y)
   .add('basic', () => (
     <Backstage
-      samplesMetadataByGroup={[]}
+      openGist={fakeOpenSample}
+      sharedGistMetadata={[]}
       openSample={fakeOpenSample}
       solutions={[]}
       importGist={fakeImportGist}
@@ -47,12 +48,5 @@ stories
           isActive: true,
         },
       ]}
-    />
-  ))
-  .add('gallery list item', () => (
-    <GalleryListItem
-      key="test-key"
-      title="Test Title"
-      description="Test Description Test Description Test Description Test DescriptionTest Description Test Description"
     />
   ))

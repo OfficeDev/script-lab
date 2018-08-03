@@ -3,6 +3,10 @@ import styled from 'styled-components'
 
 export const GalleryListWrapper = styled.section`
   margin: 1.2rem 0;
+
+  &:focus {
+    outline-color: ${props => props.theme.accent};
+  }
 `
 
 // TODO: decide on convention here: GalleryListWrapper vs Wrapper
@@ -24,7 +28,7 @@ export const Title = styled.span`
 export const ArrowWrapper = styled.div`
   padding: 1.2rem;
 
-  &:hover {
+  &:hover, &:focus {
     background-color: ${props => props.theme.accent}
     color: ${props => props.theme.fg}
     cursor: pointer;

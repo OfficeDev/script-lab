@@ -7,8 +7,4 @@ const mapStateToProps = state => ({
   samplesByGroup: selectors.samples.getByGroup(state),
 })
 
-const mapDispatchToProps = {
-  openSample: samples.get,
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Samples)
+export default connect(mapStateToProps)(Samples)

@@ -13,8 +13,8 @@ const GalleryListItem = ({ title, description, isActive, onClick }: IGalleryList
   const ItemWrapper = isActive ? ActiveWrapper : Wrapper
   return (
     <ItemWrapper onClick={onClick}>
-      <Title>{title}</Title>
-      <Description>{description}</Description>
+      <Title tabIndex={-1}>{title}</Title>
+      <Description tabIndex={-1}>{description}</Description>
     </ItemWrapper>
   )
 }

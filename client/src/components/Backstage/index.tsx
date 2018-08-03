@@ -3,7 +3,7 @@ import { BackstageWrapper } from './styles'
 
 import Menu from './Menu'
 import MySolutions from './MySolutions'
-import Samples from './Samples'
+import Samples from '../../containers/Samples'
 import ImportSolution from './ImportSolution'
 
 import ConflictResolutionDialog from './ConflictResolutionDialog'
@@ -23,7 +23,6 @@ export interface IBackstage {
   activeSolution?: ISolution
 
   // from redux
-  samplesMetadataByGroup: ISampleMetadata[]
   sharedGistMetadata: ISharedGistMetadata[]
 
   createNewSolution: () => void
@@ -118,12 +117,7 @@ export default class Backstage extends Component<IBackstage, IState> {
         key: 'samples',
         label: 'Samples',
         iconName: 'Dictionary',
-        content: (
-          <Samples
-            samplesMetadataByGroup={this.props.samplesMetadataByGroup}
-            openSample={this.openSample}
-          />
-        ),
+        content: <Samples openSample={this.openSample} />,
       },
       {
         key: 'import',
