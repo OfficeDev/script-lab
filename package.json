@@ -2,6 +2,7 @@
   "name": "script-lab",
   "version": "2.0.0",
   "scripts": {
+    "installAll": "yarn install && cd client && yarn install && cd ../server && yarn install",
     "client": "cd client && yarn start",
     "server": "cd server && yarn start",
     "start": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
