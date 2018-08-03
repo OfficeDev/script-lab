@@ -13,7 +13,6 @@ import {
   PersonaPresence,
   PersonaCoin,
 } from 'office-ui-fabric-react/lib/Persona'
-
 import SolutionSettings from './SolutionSettings'
 
 const headerTheme = createTheme({
