@@ -2,7 +2,12 @@ import {
   SETTINGS_SOLUTION_ID,
   SETTINGS_FILE_ID,
   SETTINGS_JSON_LANGUAGE,
+  ABOUT_FILE_ID,
 } from './constants'
+
+export const defaultSettings: ISettings = {
+  theme: 'dark',
+}
 
 const getSettingsFiles = (timestamp: number): IFile[] => [
   {
@@ -11,10 +16,15 @@ const getSettingsFiles = (timestamp: number): IFile[] => [
     dateCreated: timestamp,
     dateLastModified: timestamp,
     language: SETTINGS_JSON_LANGUAGE,
-    content: `{
-    "theme": "dark"
-}
-`,
+    content: JSON.stringify(defaultSettings),
+  },
+  {
+    id: ABOUT_FILE_ID,
+    name: 'About',
+    dateCreated: timestamp,
+    dateLastModified: timestamp,
+    language: 'plaintext',
+    content: `Version 2.0.0`,
   },
 ]
 

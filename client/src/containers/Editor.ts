@@ -4,7 +4,10 @@ import Editor from '../components/Editor'
 import { selectors } from '../reducers'
 import { push } from 'connected-react-router'
 
-const mapStateToProps = (state, ownProps) => ({})
+const mapStateToProps = (state, ownProps) => ({
+  monacoTheme: selectors.settings.getMonacoTheme(state),
+  backgroundColor: selectors.settings.getBackgroundColor(state),
+})
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   changeActiveFile: (fileId: string) =>

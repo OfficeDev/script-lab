@@ -8,6 +8,8 @@ export interface IEditorProps {
   files: IFile[]
   activeFile: IFile
 
+  backgroundColor: string
+  monacoTheme: string
   changeActiveFile: (fileId: string) => void
   editFile: (
     solutionId: string,
@@ -120,14 +122,14 @@ class Editor extends Component<IEditorProps> {
   }
 
   render() {
-    const { files, activeFile, activeSolution } = this.props
+    const { files, backgroundColor } = this.props
     const options = this.getMonacoOptions()
     const libraries = files.find(file => file.name === 'libraries.txt')
 
     return (
-      <Layout>
+      <Layout style={{ backgroundColor }}>
         <Monaco
-          theme="vs-dark"
+          theme={this.props.monacoTheme}
           options={options}
           editorDidMount={this.setupEditor}
           libraries={libraries && libraries.content}

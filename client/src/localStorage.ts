@@ -1,8 +1,9 @@
 import { getBoilerplate } from './newSolutionData'
 import { selectors } from './reducers'
 import { convertSolutionToSnippet } from './utils'
-import { SETTINGS_SOLUTION_ID } from './constants'
-import { getSettingsSolutionAndFiles } from './defaultSettings'
+import { SETTINGS_SOLUTION_ID, SETTINGS_FILE_ID } from './constants'
+import { getSettingsSolutionAndFiles, defaultSettings } from './defaultSettings'
+import { parseSettings } from './reducers/settings'
 
 const statifySolution = ({ solution, files }) => ({
   solutions: { byId: { [solution.id]: solution }, allIds: [solution.id] },
@@ -21,6 +22,7 @@ export const loadState = () => {
     const serializedSolutions = localStorage.getItem('solutions')
     const serializedFiles = localStorage.getItem('files')
     const serializedGithub = localStorage.getItem('github')
+    const serializedValidSettings = localStorage.getItem('validSettings')
 
     if (serializedSolutions === null || serializedFiles === null) {
       const state = statifySolution(getBoilerplate())
@@ -47,9 +49,17 @@ export const loadState = () => {
       }
     }
 
+    // get initial settings
+    const settingsFile = files.byId[SETTINGS_FILE_ID]
+    const presetSettings =
+      serializedValidSettings === null
+        ? defaultSettings
+        : JSON.parse(serializedValidSettings)
+    const settings = parseSettings(presetSettings, settingsFile.content)
+
     github = serializedGithub === null ? {} : JSON.parse(serializedGithub)
 
-    return { solutions, files, github }
+    return { solutions, files, github, settings }
   } catch (err) {
     return {
       ...statifySolution(getSettingsSolutionAndFiles()),
@@ -60,14 +70,16 @@ export const loadState = () => {
 
 export const saveState = state => {
   try {
-    const { solutions, files, github } = state
+    const { solutions, files, github, settings } = state
     const serializedSolutions = JSON.stringify(solutions)
     const serializedFiles = JSON.stringify(files)
     const serializedGithub = JSON.stringify(github)
+    const serializedValidSettings = JSON.stringify(settings)
 
     localStorage.setItem('solutions', serializedSolutions)
     localStorage.setItem('files', serializedFiles)
     localStorage.setItem('github', serializedGithub)
+    localStorage.setItem('validSettings', serializedValidSettings)
 
     const activeSolution = selectors.active.solution(state)
     if (activeSolution.id !== SETTINGS_SOLUTION_ID) {

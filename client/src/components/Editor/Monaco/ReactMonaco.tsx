@@ -148,6 +148,10 @@ class ReactMonaco extends Component<IReactMonaco, IReactMonacoState> {
 
   componentDidUpdate(prevProps, prevState) {
     this.updateIntellisense()
+    const win = window as any
+    if (win.monaco && prevProps.theme !== this.props.theme) {
+      monaco.editor.setTheme(this.props.theme)
+    }
   }
 
   updateIntellisense() {
