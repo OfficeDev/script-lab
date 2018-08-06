@@ -18,7 +18,6 @@ const FILE_NAME_MAP = {
 }
 
 interface IIDE {
-  solutions: ISolution[]
   activeSolution: ISolution
   files: IFile[]
   activeFile: IFile
@@ -44,7 +43,7 @@ class IDE extends Component<IIDE> {
 
   render() {
     const { isBackstageVisible } = this.state
-    const { solutions, activeSolution, files, activeFile } = this.props
+    const { activeSolution, files, activeFile } = this.props
     return (
       <>
         <Layout style={{ display: isBackstageVisible ? 'none' : 'flex' }}>
@@ -68,7 +67,6 @@ class IDE extends Component<IIDE> {
           <Footer activeFile={activeFile} />
         </Layout>
         <Backstage
-          solutions={solutions}
           activeSolution={activeSolution}
           isHidden={!isBackstageVisible}
           hideBackstage={this.hideBackstage}

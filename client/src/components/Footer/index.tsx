@@ -9,14 +9,21 @@ const languageMap = {
   javascript: 'JavaScript',
   css: 'CSS',
   html: 'HTML',
+  json: 'JSON',
 }
 
-const Footer = ({ language }: { language: string }) => (
+const Footer = ({
+  language,
+  onSettingsIconClick,
+}: {
+  language: string
+  onSettingsIconClick: () => void
+}) => (
   <Wrapper>
     {languageMap[language.toLowerCase()] && (
       <BarButton>{languageMap[language.toLowerCase()]}</BarButton>
     )}
-    <BarButton>
+    <BarButton onClick={onSettingsIconClick}>
       <FabricIcon name="Settings" />
     </BarButton>
   </Wrapper>

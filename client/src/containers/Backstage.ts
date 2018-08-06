@@ -6,6 +6,7 @@ import { push } from 'connected-react-router'
 
 const mapStateToProps = (state): Partial<IBackstage> => ({
   sharedGistMetadata: selectors.github.getGistMetadata(state),
+  solutions: selectors.solutions.getAllExceptSettings(state),
 })
 
 const mapDispatchToProps = (dispatch): Partial<IBackstage> => ({

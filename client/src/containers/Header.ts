@@ -1,10 +1,12 @@
 import { connect } from 'react-redux'
 import { solutions, github, gists } from '../actions'
 import { selectors } from '../reducers'
-import Header from '../components/Header'
+import Header, { IHeader } from '../components/Header'
+import { SETTINGS_SOLUTION_ID } from '../constants'
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state, ownProps: IHeader) => ({
   isLoggedIn: !!selectors.github.getToken(state),
+  isSettingsSolution: ownProps.solution.id === SETTINGS_SOLUTION_ID,
   profilePic: selectors.github.getProfilePic(state),
 })
 

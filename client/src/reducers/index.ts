@@ -47,7 +47,7 @@ const getActiveSolution = (state: IState): ISolution => {
     state.router.location.pathname,
   )
   const allSolutions = solutionSelectors.getInLastModifiedOrder(state.solutions)
-  const allSolutionIds = allSolutions.map(sol => sol.id)
+  const allSolutionIds = solutionSelectors.getAllIds(state.solutions)
   return pathSolutionId && allSolutionIds.includes(pathSolutionId)
     ? solutionSelectors.get(state.solutions, pathSolutionId)!
     : allSolutions[0]
