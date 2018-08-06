@@ -11,6 +11,7 @@ const languageMap = {
   html: 'HTML',
   json: 'JSON',
 }
+
 interface IFooter {
   language: string
   onSettingsIconClick: () => void
