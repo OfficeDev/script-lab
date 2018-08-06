@@ -122,14 +122,14 @@ class Editor extends Component<IEditorProps> {
   }
 
   render() {
-    const { files, backgroundColor } = this.props
+    const { files, backgroundColor, monacoTheme } = this.props
     const options = this.getMonacoOptions()
     const libraries = files.find(file => file.name === 'libraries.txt')
 
     return (
       <Layout style={{ backgroundColor }}>
         <Monaco
-          theme={this.props.monacoTheme}
+          theme={monacoTheme}
           options={options}
           editorDidMount={this.setupEditor}
           libraries={libraries && libraries.content}

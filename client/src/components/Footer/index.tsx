@@ -11,14 +11,12 @@ const languageMap = {
   html: 'HTML',
   json: 'JSON',
 }
-
-const Footer = ({
-  language,
-  onSettingsIconClick,
-}: {
+interface IFooter {
   language: string
   onSettingsIconClick: () => void
-}) => (
+}
+
+const Footer = ({ language, onSettingsIconClick }: IFooter) => (
   <Wrapper>
     {languageMap[language.toLowerCase()] && (
       <BarButton>{languageMap[language.toLowerCase()]}</BarButton>
