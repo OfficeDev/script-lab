@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import officeDts from './office'
 import librariesIntellisenseJSON from './libraryIntellisense'
 
 interface IDisposableFile {
@@ -88,10 +87,6 @@ class ReactMonaco extends Component<IReactMonaco, IReactMonacoState> {
     const { theme, options } = this.props
     const win = window as any
     if (this.container.current && win.monaco !== undefined) {
-      monaco.languages.typescript.typescriptDefaults.addExtraLib(
-        officeDts,
-        '/office.d.ts',
-      )
       this.editor = monaco.editor.create(this.container.current, {
         ...options,
       })
