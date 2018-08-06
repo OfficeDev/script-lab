@@ -10,6 +10,12 @@ import { samples, gists } from './actions'
 import './index.css'
 import Root from './components/Root'
 
+window.addEventListener('keydown', e => {
+  if (e.ctrlKey || e.metaKey) {
+    e.preventDefault()
+  }
+})
+
 Office.onReady(async () => {
   if (Authenticator.isAuthDialog()) {
     return
