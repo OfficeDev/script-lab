@@ -1,0 +1,19 @@
+{
+  "name": "script-lab-server",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "nodemon server.ts"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.4",
+    "express": "^4.16.2",
+    "request": "^2.87.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.16.0",
+    "@types/node": "^10.5.3",
+    "nodemon": "^1.18.3",
+    "typescript": "^2.9.2"
+  }
+}
