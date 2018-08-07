@@ -142,7 +142,9 @@ class ReactMonaco extends Component<IReactMonaco, IReactMonacoState> {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    this.updateIntellisense()
+    if (prevProps.libraries !== this.props.libraries) {
+      this.updateIntellisense()
+    }
     const win = window as any
     if (win.monaco && prevProps.theme !== this.props.theme) {
       monaco.editor.setTheme(this.props.theme)
@@ -159,36 +161,33 @@ class ReactMonaco extends Component<IReactMonaco, IReactMonacoState> {
         !(oldLibs.length === newLibs.length && oldLibs.every((v, i) => v === newLibs[i]))
       ) {
         const oldIntellisenseFiles = this.state.intellisenseFiles
-        const newIntellisenseFiles = parse(newLibs)
-        newIntellisenseFiles
+        const newIntellisenseUrls = parse(newLibs)
+        const newIntellisensePromises: Array<
+          Promise<IDisposableFile>
+        > = newIntellisenseUrls
           .filter(url => !oldIntellisenseFiles.find(file => file.url === url))
-          .forEach(url => {
-            console.log(`going to fetch ${url}`)
+          .map(url =>
             fetch(url)
-              .then(resp => resp.text())
+              .then(response => response.text())
               .then(content => {
-                if (!this.state.intellisenseFiles.find(file => file.url === url)) {
-                  // TODO: figure out if there's a better way to do this
-                  // NOTE: I had to add this extra check here because this page would receive multiple updates for routing reasons,
-                  // and that would cause the fetch to occur multiple times since it hadn't been added yet. This check ensures that it won't get added twice
-                  // but there's probably a better way
-                  console.log(`actually adding ${url}!!`)
-                  console.log({ content })
-                  const disposable = monaco.languages.typescript.typescriptDefaults.addExtraLib(
-                    content,
-                    url,
-                  )
-                  this.setState({
-                    intellisenseFiles: [
-                      ...this.state.intellisenseFiles,
-                      { url, disposable },
-                    ],
-                  })
-                }
-              })
-          })
+                const disposable = monaco.languages.typescript.typescriptDefaults.addExtraLib(
+                  content,
+                  url,
+                )
+                return { url, disposable }
+              }),
+          )
+        Promise.all(newIntellisensePromises).then(newFiles => {
+          const newIntellisenseFiles = this.state.intellisenseFiles
+            .filter(({ url }) => newIntellisenseUrls.includes(url))
+            .concat(newFiles)
+          const filesToDispose = this.state.intellisenseFiles.filter(
+            ({ url }) => !newIntellisenseUrls.includes(url),
+          )
+          filesToDispose.forEach(({ disposable }) => disposable.dispose())
+          this.setState({ intellisenseFiles: newIntellisenseFiles })
+        })
       }
-      // TODO: add logic to remove intellisense
     }
   }
 
