@@ -35,7 +35,11 @@ export const loadState = () => {
 
     // inject settings if doesn't exist
     if (!solutions.allIds.includes(SETTINGS_SOLUTION_ID)) {
-      const settings = getSettingsSolutionAndFiles()
+      const presetSettings =
+        serializedValidSettings !== null
+          ? JSON.parse(serializedValidSettings)
+          : defaultSettings
+      const settings = getSettingsSolutionAndFiles(presetSettings)
       solutions = {
         byId: { ...solutions.byId, [settings.solution.id]: settings.solution },
         allIds: [...solutions.byId, settings.solution.id],

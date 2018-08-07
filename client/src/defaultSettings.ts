@@ -9,14 +9,14 @@ export const defaultSettings: ISettings = {
   theme: 'dark',
 }
 
-const getSettingsFiles = (timestamp: number): IFile[] => [
+const getSettingsFiles = (timestamp: number, settings?: ISettings): IFile[] => [
   {
     id: SETTINGS_FILE_ID,
     name: 'Settings',
     dateCreated: timestamp,
     dateLastModified: timestamp,
     language: SETTINGS_JSON_LANGUAGE,
-    content: JSON.stringify(defaultSettings),
+    content: JSON.stringify(settings !== undefined ? settings : defaultSettings, null, 4),
   },
   {
     id: ABOUT_FILE_ID,
@@ -37,12 +37,14 @@ const getSettingsSolution = (files: IFile[], timestamp: number): ISolution => ({
   files: files.map(f => f.id),
 })
 
-export const getSettingsSolutionAndFiles = (): {
+export const getSettingsSolutionAndFiles = (
+  settings?: ISettings,
+): {
   solution: ISolution
   files: IFile[]
 } => {
   const now = Date.now()
-  const files = getSettingsFiles(now)
+  const files = getSettingsFiles(now, settings)
   const solution = getSettingsSolution(files, now)
   return { solution, files }
 }
