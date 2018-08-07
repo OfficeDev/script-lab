@@ -10,11 +10,18 @@ import { samples, gists } from './actions'
 import './index.css'
 import Root from './components/Root'
 
-window.addEventListener('keydown', e => {
-  if (e.ctrlKey || e.metaKey) {
-    e.preventDefault()
-  }
-})
+document.addEventListener(
+  'keydown',
+  e => {
+    if (
+      e.keyCode === 83 /*s key*/ &&
+      (navigator.platform.match('Mac') ? e.metaKey : e.ctrlKey)
+    ) {
+      e.preventDefault()
+    }
+  },
+  false,
+)
 
 Office.onReady(async () => {
   if (Authenticator.isAuthDialog()) {
