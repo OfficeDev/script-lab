@@ -2,18 +2,10 @@ import React from 'react'
 import styled from 'styled-components'
 
 import { Customizer } from 'office-ui-fabric-react/lib/Utilities'
-
 import { CommandBar, ICommandBarItemProps } from 'office-ui-fabric-react/lib/CommandBar'
+import { PersonaSize, PersonaCoin } from 'office-ui-fabric-react/lib/Persona'
 
-import {
-  IPersonaSharedProps,
-  Persona,
-  PersonaSize,
-  PersonaPresence,
-  PersonaCoin,
-} from 'office-ui-fabric-react/lib/Persona'
 import SolutionSettings from './SolutionSettings'
-
 import { headerTheme } from '../../theme'
 
 const HeaderWrapper = styled.header`
@@ -21,16 +13,13 @@ const HeaderWrapper = styled.header`
   background-color: ${props => props.theme.accent};
 `
 
-export interface IHeader {
-  showBackstage: () => void
-  solution: ISolution
-  // redux
-  profilePic?: string
+export interface IHeaderFromRedux {
+  profilePicUrl?: string
   editSolution: (
     solutionId: string,
     solution: Partial<IEditableSolutionProperties>,
   ) => void
-  isSettingsSolution: boolean
+  isSettingsView: boolean
   isLoggedIn: boolean
   login: () => void
   logout: () => void
@@ -38,6 +27,11 @@ export interface IHeader {
   createPublicGist: () => void
   createSecretGist: () => void
   updateGist: () => void
+}
+
+export interface IHeader extends IHeaderFromRedux {
+  showBackstage: () => void
+  solution: ISolution
 }
 
 interface IState {
@@ -48,8 +42,21 @@ class Header extends React.Component<IHeader, IState> {
   state = { showSolutionSettings: false }
 
   render() {
-    // TODO: clean up all of this imperative code
-    const { solution, showBackstage, isSettingsSolution } = this.props
+    const {
+      solution,
+      showBackstage,
+      editSolution,
+      deleteSolution,
+      isSettingsView,
+      profilePicUrl,
+      isLoggedIn,
+      logout,
+      login,
+      updateGist,
+      createPublicGist,
+      createSecretGist,
+    } = this.props
+
     const solutionName = solution ? solution.name : 'Solution Name'
 
     const shareOptions = [
@@ -58,19 +65,19 @@ class Header extends React.Component<IHeader, IState> {
         key: 'update-gist',
         text: 'Update existing gist',
         iconProps: { iconName: 'Save' },
-        onClick: this.props.updateGist,
+        onClick: updateGist,
       },
       {
         key: 'new-public-gist',
         text: 'New public gist',
         iconProps: { iconName: 'PageCheckedIn' },
-        onClick: this.props.createPublicGist,
+        onClick: createPublicGist,
       },
       {
         key: 'new-secret-gist',
         text: 'New secret gist',
         iconProps: { iconName: 'ProtectedDocument' },
-        onClick: this.props.createSecretGist,
+        onClick: createSecretGist,
       },
     ]
       .filter(option => !option.hidden)
@@ -79,40 +86,7 @@ class Header extends React.Component<IHeader, IState> {
         return rest
       })
 
-    const profilePic = {
-      key: 'account',
-      onRenderIcon: () => (
-        <div style={{ width: '28px', overflow: 'hidden' }}>
-          <PersonaCoin
-            imageUrl={this.props.profilePic}
-            size={PersonaSize.size28}
-            styles={{
-              coin: { backgroundColor: 'brick' },
-              image: { backgroundColor: 'white' },
-              initials: {
-                backgroundColor: '#000',
-                color: 'green',
-              },
-            }}
-          />
-        </div>
-      ),
-      subMenuProps: this.props.isLoggedIn
-        ? {
-            items: [
-              {
-                key: 'logout',
-                text: 'Logout',
-                onClick: this.props.logout,
-              },
-            ],
-          }
-        : undefined,
-      iconOnly: true,
-      onClick: this.props.login,
-    }
-
-    const nonSettingsButtons = [
+    const nonSettingsButtons: ICommandBarItemProps[] = [
       {
         key: 'run',
         text: 'Run',
@@ -131,11 +105,11 @@ class Header extends React.Component<IHeader, IState> {
         key: 'delete',
         text: 'Delete',
         iconProps: { iconName: 'Delete' },
-        onClick: this.props.deleteSolution,
+        onClick: deleteSolution,
       },
     ]
 
-    let items: ICommandBarItemProps[] = [
+    const commonItems: ICommandBarItemProps[] = [
       {
         key: 'nav',
         iconOnly: true,
@@ -145,12 +119,46 @@ class Header extends React.Component<IHeader, IState> {
       {
         key: solutionName,
         text: solutionName,
-        onClick: isSettingsSolution ? undefined : this.openSolutionSettings,
+        onClick: isSettingsView ? undefined : this.openSolutionSettings,
       },
     ]
 
-    if (!isSettingsSolution) {
-      items = [...items, ...nonSettingsButtons]
+    const items: ICommandBarItemProps[] = [
+      ...commonItems,
+      ...(isSettingsView ? [] : nonSettingsButtons),
+    ].filter(item => item !== null)
+
+    const profilePic = {
+      key: 'account',
+      onRenderIcon: () => (
+        <div style={{ width: '28px', overflow: 'hidden' }}>
+          <PersonaCoin
+            imageUrl={profilePicUrl}
+            size={PersonaSize.size28}
+            styles={{
+              coin: { backgroundColor: 'brick' },
+              image: { backgroundColor: 'white' },
+              initials: {
+                backgroundColor: '#000',
+                color: 'green',
+              },
+            }}
+          />
+        </div>
+      ),
+      subMenuProps: isLoggedIn
+        ? {
+            items: [
+              {
+                key: 'logout',
+                text: 'Logout',
+                onClick: logout,
+              },
+            ],
+          }
+        : undefined,
+      iconOnly: true,
+      onClick: login,
     }
 
     return (
@@ -172,7 +180,7 @@ class Header extends React.Component<IHeader, IState> {
             isOpen={this.state.showSolutionSettings}
             closeSolutionSettings={this.closeSolutionSettings}
             solution={solution}
-            editSolutionMetadata={this.props.editSolution}
+            editSolutionMetadata={editSolution}
           />
         )}
       </>
