@@ -136,7 +136,6 @@ class Editor extends Component<IEditorProps> {
   }
 
   resizeEditor = () => {
-    console.info('editor resizing!')
     this.forceUpdate(() => {
       this.editor.layout()
     })
@@ -147,27 +146,17 @@ class Editor extends Component<IEditorProps> {
     const options = this.getMonacoOptions()
     const libraries = files.find(file => file.name === 'libraries.txt')
 
-    return (
-      <Layout style={{ backgroundColor }}>
-        {/* <div
-          style={{
-            // backgroundColor: 'orange',
-            display: 'flex',
-            // justifyContent: 'flex-end',
-            marginBottom: '1.2rem',
-          }}
-        >
-          <DefaultButton text="Apply" primary={true} style={{ marginLeft: '1rem' }} />
-          <DefaultButton text="Cancel" style={{ marginLeft: '1rem' }} />
+    return <Layout style={{ backgroundColor }}>
+        {/* <div style={{ // backgroundColor: '#555',
+            padding: '.5rem', display: 'flex', justifyContent: 'space-between', marginBottom: '1.2rem' }}>
+          <DefaultButton text="Restore Defaults" style={{ marginLeft: '1rem', float: 'left' }} styles={{ root: { backgroundColor: '#B33A3A', color: 'white'} }} />
+          <div>
+            <DefaultButton text="Apply" primary={true} style={{ marginLeft: '1rem' }} />
+            <DefaultButton text="Cancel" style={{ marginLeft: '1rem' }} />
+          </div>
         </div> */}
-        <Monaco
-          theme={monacoTheme}
-          options={options}
-          editorDidMount={this.setupEditor}
-          libraries={libraries && libraries.content}
-        />
+        <Monaco theme={monacoTheme} options={options} editorDidMount={this.setupEditor} libraries={libraries && libraries.content} />
       </Layout>
-    )
   }
 }
 
