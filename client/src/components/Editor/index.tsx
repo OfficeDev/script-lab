@@ -149,7 +149,7 @@ class Editor extends Component<IEditorProps> {
 
     return (
       <Layout style={{ backgroundColor }}>
-        <div
+        {/* <div
           style={{
             // backgroundColor: 'orange',
             display: 'flex',
@@ -159,7 +159,7 @@ class Editor extends Component<IEditorProps> {
         >
           <DefaultButton text="Apply" primary={true} style={{ marginLeft: '1rem' }} />
           <DefaultButton text="Cancel" style={{ marginLeft: '1rem' }} />
-        </div>
+        </div> */}
         <Monaco
           theme={monacoTheme}
           options={options}
