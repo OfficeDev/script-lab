@@ -1,7 +1,11 @@
 import React, { Component } from 'react'
+import prettier from 'prettier/standalone'
+import prettierTypeScript from 'prettier/parser-typescript'
+import { DefaultButton, IButtonProps } from 'office-ui-fabric-react/lib/Button'
 import Monaco from './Monaco'
 import { getModel, setPosForModel } from './Monaco/monaco-models'
 import { Layout } from './styles'
+import debounce from 'lodash/debounce'
 
 export interface IEditorProps {
   activeSolution: ISolution
@@ -20,16 +24,36 @@ export interface IEditorProps {
 
 class Editor extends Component<IEditorProps> {
   editor: monaco.editor.IStandaloneCodeEditor
-  editorLayoutInterval: any
+  formatBinding: any
   monaco: any
-  currentMonacoModel: any
 
   constructor(props) {
     super(props)
   }
 
+  componentWillUnmount() {
+    this.formatBinding.dispose()
+  }
+
   componentDidUpdate(prevProps) {
     this.changeActiveFile(prevProps.activeFile, this.props.activeFile)
+  }
+
+  prettifyCode = () => {
+    console.log('prettify called')
+    const model = this.editor.getModel()
+    const unformatted = model.getValue()
+    if (unformatted) {
+      const formatted = prettier.format(unformatted, {
+        parser: 'typescript',
+        plugins: [prettierTypeScript],
+      })
+
+      if (formatted !== unformatted) {
+        console.log('setting model')
+        model.setValue(formatted)
+      }
+    }
   }
 
   changeActiveFile = (oldFile: IFile | null, newFile: IFile) => {
@@ -67,11 +91,15 @@ class Editor extends Component<IEditorProps> {
       })
     })
 
+    this.formatBinding = editor.addCommand(
+      monaco.KeyMod.CtrlCmd | monaco.KeyMod.Shift | monaco.KeyCode.KEY_F,
+      this.prettifyCode,
+      '',
+    )
+
     this.changeActiveFile(null, this.props.activeFile)
 
-    window.addEventListener('resize', this.resizeEditor)
-
-    // this.editorLayoutInterval = setInterval(this.resizeEditor, 3000)
+    window.addEventListener('resize', debounce(this.resizeEditor, 500))
   }
 
   getMonacoOptions = (): monaco.editor.IEditorConstructionOptions => {
@@ -104,16 +132,9 @@ class Editor extends Component<IEditorProps> {
     const copy = this.props.activeFile
     copy.content = newValue
 
-    // const codeHasChanged =
-    // newValue.replace(/\r\n/g, "\n") !== oldValue.replace(/\r\n/g, "\n");
-
     this.props.editFile(this.props.activeSolution.id, this.props.activeFile.id, copy)
-    // if (codeHasChanged) {
-
-    // }
   }
 
-  // todo debounce
   resizeEditor = () => {
     console.info('editor resizing!')
     this.forceUpdate(() => {
@@ -128,6 +149,17 @@ class Editor extends Component<IEditorProps> {
 
     return (
       <Layout style={{ backgroundColor }}>
+        <div
+          style={{
+            // backgroundColor: 'orange',
+            display: 'flex',
+            // justifyContent: 'flex-end',
+            marginBottom: '1.2rem',
+          }}
+        >
+          <DefaultButton text="Apply" primary={true} style={{ marginLeft: '1rem' }} />
+          <DefaultButton text="Cancel" style={{ marginLeft: '1rem' }} />
+        </div>
         <Monaco
           theme={monacoTheme}
           options={options}

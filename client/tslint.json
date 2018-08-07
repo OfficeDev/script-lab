@@ -12,6 +12,7 @@
     "no-console": false,
     "jsx-boolean-value": false,
     "jsx-no-string-ref": false,
-    "no-shadowed-variable": false
+    "no-shadowed-variable": false,
+    "no-bitwise": false
   }
 }
