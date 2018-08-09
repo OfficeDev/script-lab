@@ -60,7 +60,7 @@ class IDE extends Component<IIDE> {
           <ContentWrapper>
             <Editor
               activeSolution={activeSolution}
-              files={files}
+              activeFiles={files}
               activeFile={activeFile}
             />
           </ContentWrapper>

@@ -1,21 +1,32 @@
 import React, { Component } from 'react'
+
+import debounce from 'lodash/debounce'
 import prettier from 'prettier/standalone'
 import prettierTypeScript from 'prettier/parser-typescript'
-import { DefaultButton, IButtonProps } from 'office-ui-fabric-react/lib/Button'
+
 import { MessageBar, MessageBarType } from 'office-ui-fabric-react/lib/MessageBar'
+import { Dialog, DialogType, DialogFooter } from 'office-ui-fabric-react/lib/Dialog'
+import { PrimaryButton, DefaultButton } from 'office-ui-fabric-react/lib/Button'
+
+import { SETTINGS_FILE_ID, SETTINGS_SOLUTION_ID } from '../../constants'
+
 import Monaco from './Monaco'
-import { getModel, setPosForModel } from './Monaco/monaco-models'
-import { Layout } from './styles'
-import debounce from 'lodash/debounce'
 import Only from '../Only'
+import { Layout } from './styles'
+
+import { getModel, setPosForModel, getModelByIdIfExists } from './Monaco/monaco-models'
+
 export interface IEditor {
   activeSolution: ISolution
-  files: IFile[]
+  activeFiles: IFile[]
   activeFile: IFile
+  settingsFile: IFile
 
   isSettingsView: boolean
   backgroundColor: string
   monacoTheme: string
+
+  openSettings: () => void
   changeActiveFile: (fileId: string) => void
   editFile: (
     solutionId: string,
@@ -24,42 +35,34 @@ export interface IEditor {
   ) => void
 }
 
-class Editor extends Component<IEditor> {
+interface IState {
+  isSaveSettingsDialogVisible: boolean
+}
+
+class Editor extends Component<IEditor, IState> {
   editor: monaco.editor.IStandaloneCodeEditor
-  formatBinding: any
   monaco: any
+  state = { isSaveSettingsDialogVisible: false }
 
   constructor(props) {
     super(props)
   }
 
-  componentWillUnmount() {
-    this.formatBinding.dispose()
-  }
-
   componentDidUpdate(prevProps) {
-    this.changeActiveFile(prevProps.activeFile, this.props.activeFile)
-  }
-
-  prettifyCode = () => {
-    console.log('prettify called')
-    const model = this.editor.getModel()
-    const unformatted = model.getValue()
-    if (unformatted) {
-      const formatted = prettier.format(unformatted, {
-        parser: 'typescript',
-        plugins: [prettierTypeScript],
-      })
-
-      if (formatted !== unformatted) {
-        console.log('setting model')
-        model.setValue(formatted)
-      }
+    if (prevProps.activeFile.id !== this.props.activeFile.id) {
+      this.changeActiveFile(prevProps.activeFile, this.props.activeFile)
     }
   }
 
   changeActiveFile = (oldFile: IFile | null, newFile: IFile) => {
+    console.log('active file changed')
     if (this.editor && newFile) {
+      if (oldFile && oldFile.id === SETTINGS_FILE_ID && this.checkIfUnsaved(oldFile)) {
+        // Open the save settings dialog if the user tries to
+        // navigate away from the settings page with unsaved changes
+        this.openSaveSettingsDialog()
+      }
+
       if (oldFile) {
         setPosForModel(oldFile.id, this.editor.getPosition())
 
@@ -93,15 +96,21 @@ class Editor extends Component<IEditor> {
       })
     })
 
-    this.formatBinding = editor.addCommand(
+    editor.addCommand(
       monaco.KeyMod.CtrlCmd | monaco.KeyMod.Shift | monaco.KeyCode.KEY_F,
       this.prettifyCode,
       '',
     )
 
+    editor.addCommand(
+      monaco.KeyMod.CtrlCmd | monaco.KeyCode.US_COMMA,
+      this.props.openSettings,
+      '',
+    )
+
     this.changeActiveFile(null, this.props.activeFile)
 
-    window.addEventListener('resize', debounce(this.resizeEditor, 500))
+    window.addEventListener('resize', debounce(this.resizeEditor, 100))
   }
 
   getMonacoOptions = (): monaco.editor.IEditorConstructionOptions => {
@@ -128,14 +137,20 @@ class Editor extends Component<IEditor> {
   }
 
   handleChange = () => {
+    if (this.props.isSettingsView) {
+      this.forceUpdate()
+    } else {
+      this.editFile()
+    }
+  }
+
+  editFile = debounce(() => {
     const newValue = this.editor.getModel().getValue() || ''
     const oldValue = this.props.activeFile.content
-
     const copy = this.props.activeFile
     copy.content = newValue
-
     this.props.editFile(this.props.activeSolution.id, this.props.activeFile.id, copy)
-  }
+  }, 250)
 
   resizeEditor = () => {
     this.forceUpdate(() => {
@@ -143,21 +158,71 @@ class Editor extends Component<IEditor> {
     })
   }
 
+  prettifyCode = () => {
+    console.log('prettify called')
+    const model = this.editor.getModel()
+    const unformatted = model.getValue()
+    if (unformatted) {
+      const formatted = prettier.format(unformatted, {
+        parser: 'typescript',
+        plugins: [prettierTypeScript],
+      })
+
+      if (formatted !== unformatted) {
+        console.log('setting model')
+        model.setValue(formatted)
+      }
+    }
+  }
+
+  // settings related methods
+  openSettings = () => {
+    this.props.changeActiveFile(SETTINGS_FILE_ID)
+    this.closeSaveSettingsDialog()
+  }
+
+  openSaveSettingsDialog = () => this.setState({ isSaveSettingsDialogVisible: true })
+  closeSaveSettingsDialog = () => this.setState({ isSaveSettingsDialogVisible: false })
+
+  applySettingsUpdate = () => {
+    const copy = this.props.settingsFile
+    copy.content = getModel(this.monaco, copy).model.getValue()
+    this.props.editFile(SETTINGS_SOLUTION_ID, SETTINGS_FILE_ID, copy)
+    this.closeSaveSettingsDialog()
+  }
+
+  cancelSettingsUpdate = () => {
+    getModel(this.monaco, this.props.settingsFile).model.setValue(
+      this.props.settingsFile.content,
+    )
+    this.closeSaveSettingsDialog()
+  }
+
+  checkIfUnsaved = (file: IFile) => {
+    if (this.monaco) {
+      return file.content !== getModel(this.monaco, file).model.getValue()
+    }
+    return false
+  }
+
   render() {
-    const { files, backgroundColor, monacoTheme } = this.props
+    const { activeFiles, backgroundColor, monacoTheme, isSettingsView } = this.props
     const options = this.getMonacoOptions()
-    const libraries = files.find(file => file.name === 'libraries.txt')
+    const libraries = activeFiles.find(file => file.name === 'libraries.txt')
 
     return (
       <>
-        <Only when={true}>
-          <MessageBar // messageBarType={MessageBarType.info}
+        <Only when={isSettingsView && this.checkIfUnsaved(this.props.activeFile)}>
+          <MessageBar
+            messageBarType={MessageBarType.info}
             actions={
               <div>
                 {/* TODO: (nicobell) Figure out why MessageBarButtons didn't work (get
                 styled properly) and if they have advantages regular buttons miss */}
-                <DefaultButton primary={true}>Apply</DefaultButton>
-                <DefaultButton>Cancel</DefaultButton>
+                <DefaultButton primary={true} onClick={this.applySettingsUpdate}>
+                  Apply
+                </DefaultButton>
+                <DefaultButton onClick={this.cancelSettingsUpdate}>Cancel</DefaultButton>
                 <DefaultButton>Restore</DefaultButton>
               </div>
             }
@@ -168,16 +233,29 @@ class Editor extends Component<IEditor> {
             changes or you may restore back to default settings with Restore.
           </MessageBar>
         </Only>
-        <Layout style={{ backgroundColor }}>
-          {/* <div style={{ // backgroundColor: '#555',
-            padding: '.5rem', display: 'flex', justifyContent: 'space-between', marginBottom: '1.2rem' }}>
-          <DefaultButton text="Restore Defaults" style={{ marginLeft: '1rem', float: 'left' }} styles={{ root: { backgroundColor: '#B33A3A', color: 'white'} }} />
-          <div>
-            <DefaultButton text="Apply" primary={true} style={{ marginLeft: '1rem' }} />
-            <DefaultButton text="Cancel" style={{ marginLeft: '1rem' }} />
-          </div>
-        </div> */}
 
+        <Dialog
+          hidden={!this.state.isSaveSettingsDialogVisible}
+          onDismiss={this.closeSaveSettingsDialog}
+          dialogContentProps={{
+            type: DialogType.largeHeader,
+            title: 'Ut Oh!',
+            subText:
+              "It looks like you made an edit to your settings that you didn't apply.Would you like to apply these changes ?",
+          }}
+          modalProps={{ isBlocking: true }}
+        >
+          {getModelByIdIfExists(this.monaco, SETTINGS_FILE_ID)
+            ? getModelByIdIfExists(this.monaco, SETTINGS_FILE_ID)!.model.getValue()
+            : 'no model ;('}
+          <DialogFooter>
+            <PrimaryButton text="Apply" onClick={this.applySettingsUpdate} />
+            <DefaultButton text="Cancel" onClick={this.cancelSettingsUpdate} />
+            <DefaultButton text="Open" onClick={this.openSettings} />
+          </DialogFooter>
+        </Dialog>
+
+        <Layout style={{ backgroundColor }}>
           <Monaco
             theme={monacoTheme}
             options={options}

@@ -17,6 +17,10 @@ export function createModel(monaco: any, file: IFile): ICachedModel {
   return cache[id]
 }
 
+export function getModelByIdIfExists(monaco: any, fileId: string): ICachedModel | null {
+  return cache[fileId]
+}
+
 export function getModel(monaco: any, file: IFile) {
   const id = file.id
 
@@ -30,5 +34,12 @@ export function getModel(monaco: any, file: IFile) {
 export function setPosForModel(fileId: string, pos: monaco.IPosition) {
   if (cache[fileId]) {
     cache[fileId].cursorPos = pos
+  }
+}
+
+export function removeModelFromCache(fileId: string) {
+  if (cache[fileId]) {
+    cache[fileId].model.dispose()
+    delete cache[fileId]
   }
 }
