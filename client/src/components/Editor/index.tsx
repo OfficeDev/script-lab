@@ -2,16 +2,18 @@ import React, { Component } from 'react'
 import prettier from 'prettier/standalone'
 import prettierTypeScript from 'prettier/parser-typescript'
 import { DefaultButton, IButtonProps } from 'office-ui-fabric-react/lib/Button'
+import { MessageBar, MessageBarType } from 'office-ui-fabric-react/lib/MessageBar'
 import Monaco from './Monaco'
 import { getModel, setPosForModel } from './Monaco/monaco-models'
 import { Layout } from './styles'
 import debounce from 'lodash/debounce'
-
-export interface IEditorProps {
+import Only from '../Only'
+export interface IEditor {
   activeSolution: ISolution
   files: IFile[]
   activeFile: IFile
 
+  isSettingsView: boolean
   backgroundColor: string
   monacoTheme: string
   changeActiveFile: (fileId: string) => void
@@ -22,7 +24,7 @@ export interface IEditorProps {
   ) => void
 }
 
-class Editor extends Component<IEditorProps> {
+class Editor extends Component<IEditor> {
   editor: monaco.editor.IStandaloneCodeEditor
   formatBinding: any
   monaco: any
@@ -146,8 +148,28 @@ class Editor extends Component<IEditorProps> {
     const options = this.getMonacoOptions()
     const libraries = files.find(file => file.name === 'libraries.txt')
 
-    return <Layout style={{ backgroundColor }}>
-        {/* <div style={{ // backgroundColor: '#555',
+    return (
+      <>
+        <Only when={true}>
+          <MessageBar // messageBarType={MessageBarType.info}
+            actions={
+              <div>
+                {/* TODO: (nicobell) Figure out why MessageBarButtons didn't work (get
+                styled properly) and if they have advantages regular buttons miss */}
+                <DefaultButton primary={true}>Apply</DefaultButton>
+                <DefaultButton>Cancel</DefaultButton>
+                <DefaultButton>Restore</DefaultButton>
+              </div>
+            }
+            isMultiline={false}
+            styles={{ root: { backgroundColor: '#333333', color: 'white' } }}
+          >
+            There are changes that have affected your settings. Click Apply to accept the
+            changes or you may restore back to default settings with Restore.
+          </MessageBar>
+        </Only>
+        <Layout style={{ backgroundColor }}>
+          {/* <div style={{ // backgroundColor: '#555',
             padding: '.5rem', display: 'flex', justifyContent: 'space-between', marginBottom: '1.2rem' }}>
           <DefaultButton text="Restore Defaults" style={{ marginLeft: '1rem', float: 'left' }} styles={{ root: { backgroundColor: '#B33A3A', color: 'white'} }} />
           <div>
@@ -155,8 +177,16 @@ class Editor extends Component<IEditorProps> {
             <DefaultButton text="Cancel" style={{ marginLeft: '1rem' }} />
           </div>
         </div> */}
-        <Monaco theme={monacoTheme} options={options} editorDidMount={this.setupEditor} libraries={libraries && libraries.content} />
-      </Layout>
+
+          <Monaco
+            theme={monacoTheme}
+            options={options}
+            editorDidMount={this.setupEditor}
+            libraries={libraries && libraries.content}
+          />
+        </Layout>
+      </>
+    )
   }
 }
 
