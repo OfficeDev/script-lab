@@ -6,7 +6,17 @@ import {
 } from './constants'
 
 export const defaultSettings: ISettings = {
-  theme: 'dark',
+  editor: {
+    theme: 'dark',
+    font: { family: 'Menlo', size: 18, lineHeight: 24 },
+    minimap: false,
+    tabSize: 2,
+    prettier: true,
+    folding: true,
+    linter: { mode: 'warning' },
+  },
+  hostSpecific: { officeOnline: { openEditorInNewTab: 'prompt' } },
+  defaultActions: { applySettings: 'prompt', gistImport: 'prompt' },
 }
 
 const getSettingsFiles = (timestamp: number, settings?: ISettings): IFile[] => [
@@ -16,7 +26,8 @@ const getSettingsFiles = (timestamp: number, settings?: ISettings): IFile[] => [
     dateCreated: timestamp,
     dateLastModified: timestamp,
     language: SETTINGS_JSON_LANGUAGE,
-    content: JSON.stringify(settings !== undefined ? settings : defaultSettings, null, 4),
+    content:
+      JSON.stringify(settings !== undefined ? settings : defaultSettings, null, 4) + '\n',
   },
   {
     id: ABOUT_FILE_ID,

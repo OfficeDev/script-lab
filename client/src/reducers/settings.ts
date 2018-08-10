@@ -4,8 +4,22 @@ import { files, IFilesAction } from '../actions'
 import { SETTINGS_FILE_ID } from '../constants'
 import theme from '../theme'
 
-const allowedSettingOptions = {
-  theme: ['light', 'dark', 'high-contrast'],
+import { allowedSettings } from '../SettingsJSONSchema'
+
+export const merge = (valid, parsed, allowed) => {
+  return Object.keys(valid)
+    .filter(setting => parsed[setting] !== undefined)
+    .map(setting => {
+      if (valid[setting] instanceof Object) {
+        return merge(valid[setting], parsed[setting], allowed[setting])
+      } else {
+        if (allowed !== undefined && allowed[setting].includes(parsed[setting])) {
+          return parsed[setting]
+        } else {
+          return valid[setting]
+        }
+      }
+    })
 }
 
 export const parseSettings = (
@@ -13,17 +27,18 @@ export const parseSettings = (
   settingsJSON: string,
 ): ISettings => {
   try {
-    const availableSettings = Object.keys(currentSettings)
-    const parsedSettings = JSON.parse(settingsJSON)
-    const filteredSettings = Object.keys(parsedSettings)
-      .filter(setting => availableSettings.includes(setting))
-      .filter(setting => allowedSettingOptions[setting].includes(parsedSettings[setting]))
-      .reduce(
-        (all, setting) => ((all[setting] = parsedSettings[setting]), all),
-        currentSettings,
-      )
+    const current = Object.keys(currentSettings)
+    const parsed = JSON.parse(settingsJSON)
 
-    return filteredSettings
+    // const filteredSettings = Object.keys(parsedSettings)
+    //   .filter(setting => availableSettings.includes(setting))
+    //   .filter(setting => allowedSettingOptions[setting].includes(parsedSettings[setting]))
+    //   .reduce(
+    //     (all, setting) => ((all[setting] = parsedSettings[setting]), all),
+    //     currentSettings,
+    //   )
+    return currentSettings
+    // return filteredSettings
   } catch (e) {
     return currentSettings
   }

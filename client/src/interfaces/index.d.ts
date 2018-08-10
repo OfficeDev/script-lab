@@ -55,6 +55,37 @@ interface IMessageBar {
   link: { text: string; url: string } | null
 }
 
+// settings
+// Note: this must be kept in sync with the src/SettingsJSONSchema.ts
+interface IEditorSettings {
+  theme: string
+  font: {
+    family: string
+    size: number
+    lineHeight: number
+  }
+  minimap: boolean
+  tabSize: 2 | 4
+  prettier: boolean
+  folding: boolean
+  linter: {
+    mode: string
+  }
+}
+
+interface IHostSpecificSettings {
+  officeOnline: {
+    openEditorInNewTab: string
+  }
+}
+
+interface IDefaultActions {
+  applySettings: string
+  gistImport: string
+}
+
 interface ISettings {
-  theme: 'dark' | 'light' | 'high-contrast'
+  editor: IEditorSettings
+  hostSpecific: IHostSpecificSettings
+  defaultActions: IDefaultActions
 }

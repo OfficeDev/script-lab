@@ -18,8 +18,7 @@
     "suppressImplicitAnyIndexErrors": true,
     "noUnusedLocals": false,
     "allowSyntheticDefaultImports": true,
-    "typeRoots": ["node_modules/@types", "src/interfaces"],
-    "downlevelIteration": true
+    "typeRoots": ["node_modules/@types", "src/interfaces"]
   },
   "exclude": [
     "node_modules",

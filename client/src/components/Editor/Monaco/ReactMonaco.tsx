@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import librariesIntellisenseJSON from './libraryIntellisense'
+import SettingsSchema from '../../../SettingsJSONSchema'
+import { SETTINGS_FILE_ID } from '../../../constants'
 
 interface IDisposableFile {
   url: string
@@ -128,6 +130,24 @@ class ReactMonaco extends Component<IReactMonaco, IReactMonacoState> {
 
           return Promise.resolve([])
         },
+      })
+
+      monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
+        validate: true,
+        schemas: [
+          {
+            uri: SettingsSchema.$id,
+            fileMatch: [
+              new monaco.Uri()
+                .with({
+                  scheme: 'file',
+                  path: SETTINGS_FILE_ID,
+                })
+                .toString(),
+            ],
+            schema: SettingsSchema,
+          },
+        ],
       })
 
       this.editorDidMount(this.editor, monaco)

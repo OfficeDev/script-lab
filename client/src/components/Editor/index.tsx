@@ -223,7 +223,7 @@ class Editor extends Component<IEditor, IState> {
                   Apply
                 </DefaultButton>
                 <DefaultButton onClick={this.cancelSettingsUpdate}>Cancel</DefaultButton>
-                <DefaultButton>Restore</DefaultButton>
+                <DefaultButton>Reset</DefaultButton>
               </div>
             }
             isMultiline={false}
@@ -235,6 +235,7 @@ class Editor extends Component<IEditor, IState> {
         </Only>
 
         <Dialog
+          isDarkOverlay={true}
           hidden={!this.state.isSaveSettingsDialogVisible}
           onDismiss={this.closeSaveSettingsDialog}
           dialogContentProps={{
