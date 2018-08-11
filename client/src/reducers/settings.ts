@@ -7,19 +7,24 @@ import theme from '../theme'
 import { allowedSettings } from '../SettingsJSONSchema'
 
 export const merge = (valid, parsed, allowed) => {
+  console.log({ valid, parsed, allowed })
   return Object.keys(valid)
-    .filter(setting => parsed[setting] !== undefined)
     .map(setting => {
-      if (valid[setting] instanceof Object) {
-        return merge(valid[setting], parsed[setting], allowed[setting])
-      } else {
-        if (allowed !== undefined && allowed[setting].includes(parsed[setting])) {
-          return parsed[setting]
-        } else {
-          return valid[setting]
+      if (parsed !== undefined && parsed[setting] !== undefined) {
+        if (valid[setting] instanceof Object) {
+          return [setting, merge(valid[setting], parsed[setting], allowed[setting])]
+        } else if (
+          allowed !== undefined &&
+          allowed[setting] &&
+          allowed[setting].includes(parsed[setting])
+        ) {
+          return [setting, parsed[setting]]
         }
       }
+
+      return [setting, valid[setting]]
     })
+    .reduce((acc, [key, value]) => ((acc[key] = value), acc), {})
 }
 
 export const parseSettings = (
@@ -27,18 +32,9 @@ export const parseSettings = (
   settingsJSON: string,
 ): ISettings => {
   try {
-    const current = Object.keys(currentSettings)
     const parsed = JSON.parse(settingsJSON)
 
-    // const filteredSettings = Object.keys(parsedSettings)
-    //   .filter(setting => availableSettings.includes(setting))
-    //   .filter(setting => allowedSettingOptions[setting].includes(parsedSettings[setting]))
-    //   .reduce(
-    //     (all, setting) => ((all[setting] = parsedSettings[setting]), all),
-    //     currentSettings,
-    //   )
-    return currentSettings
-    // return filteredSettings
+    return merge(currentSettings, parsed, allowedSettings)
   } catch (e) {
     return currentSettings
   }
@@ -63,7 +59,7 @@ export const getMonacoTheme = (state): 'vs' | 'vs-dark' | 'hc-black' => {
     light: 'vs',
     dark: 'vs-dark',
     'high-contrast': 'hc-black',
-  }[state.theme]
+  }[state.editor.theme]
 }
 
 export const getBackgroundColor = (state): string => {
@@ -71,7 +67,7 @@ export const getBackgroundColor = (state): string => {
     light: theme.fg,
     dark: theme.bg,
     'high-contrast': 'black',
-  }[state.theme]
+  }[state.editor.theme]
 }
 // ----------------------
 
