@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux'
-import { gists, messageBar, solutions } from '../actions'
+import { gists, messageBar, solutions, settings } from '../actions'
 import { getType } from 'typesafe-actions'
 import { MessageBarType } from 'office-ui-fabric-react/lib/MessageBar'
 
@@ -8,6 +8,8 @@ const isVisible = (state = false, action) => {
     case getType(gists.create.success):
     case getType(gists.update.success):
     case getType(solutions.remove):
+    case getType(settings.edit.success):
+    case getType(settings.edit.failure):
       return true
     case getType(messageBar.dismiss):
       return false
@@ -20,9 +22,12 @@ const style = (state = MessageBarType.info, action) => {
   switch (action.type) {
     case getType(gists.create.success):
     case getType(gists.update.success):
+    case getType(settings.edit.success):
       return MessageBarType.success
     case getType(solutions.remove):
       return MessageBarType.info
+    case getType(settings.edit.failure):
+      return MessageBarType.error
     default:
       return state
   }
@@ -40,6 +45,10 @@ const text = (state = '', action) => {
       }.`
     case getType(solutions.remove):
       return `The snippet '${action.payload.name}' has been deleted.`
+    case getType(settings.edit.success):
+      return 'Settings successfully applied.'
+    case getType(settings.edit.failure):
+      return `Error in settings. ${action.payload}`
     default:
       return state
   }

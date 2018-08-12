@@ -8,8 +8,17 @@ import { SETTINGS_SOLUTION_ID, SETTINGS_FILE_ID } from '../constants'
 const mapStateToProps = (state, ownProps: IEditor): Partial<IEditor> => ({
   settingsFile: selectors.files.get(state, SETTINGS_FILE_ID),
   isSettingsView: ownProps.activeSolution.id === SETTINGS_SOLUTION_ID,
-  monacoTheme: selectors.settings.getMonacoTheme(state),
-  backgroundColor: selectors.settings.getBackgroundColor(state),
+
+  editorSettings: {
+    monacoTheme: selectors.settings.getMonacoTheme(state),
+    backgroundColor: selectors.settings.getBackgroundColor(state),
+    fontFamily: selectors.settings.getFontFamily(state),
+    fontSize: selectors.settings.getFontSize(state),
+    lineHeight: selectors.settings.getLineHeight(state),
+    isMinimapEnabled: selectors.settings.getIsMinimapEnabled(state),
+    isFoldingEnabled: selectors.settings.getIsFoldingEnabled(state),
+    isPrettierEnabled: selectors.settings.getIsPrettierEnabled(state),
+  },
 })
 
 const mapDispatchToProps = (dispatch, ownProps: IEditor) => ({
@@ -23,7 +32,4 @@ const mapDispatchToProps = (dispatch, ownProps: IEditor) => ({
   openSettings: () => dispatch(push(`/${SETTINGS_SOLUTION_ID}/${SETTINGS_FILE_ID}`)),
 })
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(Editor)
+export default connect(mapStateToProps, mapDispatchToProps)(Editor)

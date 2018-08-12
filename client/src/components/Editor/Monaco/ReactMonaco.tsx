@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import librariesIntellisenseJSON from './libraryIntellisense'
 import SettingsSchema from '../../../SettingsJSONSchema'
 import { SETTINGS_FILE_ID } from '../../../constants'
-
+import isEqual from 'lodash/isEqual'
 interface IDisposableFile {
   url: string
   disposable: monaco.IDisposable
@@ -83,6 +83,22 @@ class ReactMonaco extends Component<IReactMonaco, IReactMonacoState> {
     this.deinitializeMonaco()
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.libraries !== this.props.libraries) {
+      this.updateIntellisense()
+    }
+
+    const win = window as any
+    if (win.monaco && prevProps.theme !== this.props.theme) {
+      monaco.editor.setTheme(this.props.theme)
+    }
+
+    if (!isEqual(prevProps.options, this.props.options)) {
+      this.deinitializeMonaco()
+      this.initializeMonaco()
+    }
+  }
+
   editorDidMount = (editor, monaco) => this.props.editorDidMount(editor, monaco)
 
   initializeMonaco = () => {
@@ -159,16 +175,7 @@ class ReactMonaco extends Component<IReactMonaco, IReactMonacoState> {
     if (this.editor !== undefined) {
       this.editor.dispose()
     }
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (prevProps.libraries !== this.props.libraries) {
-      this.updateIntellisense()
-    }
-    const win = window as any
-    if (win.monaco && prevProps.theme !== this.props.theme) {
-      monaco.editor.setTheme(this.props.theme)
-    }
+    this.setState({ intellisenseFiles: [] })
   }
 
   updateIntellisense() {

@@ -16,6 +16,17 @@ import { Layout } from './styles'
 
 import { getModel, setPosForModel, getModelByIdIfExists } from './Monaco/monaco-models'
 
+export interface IEditorSettings {
+  monacoTheme: string
+  backgroundColor: string
+  fontFamily: string
+  fontSize: number
+  lineHeight: number
+  isMinimapEnabled: boolean
+  isFoldingEnabled: boolean
+  isPrettierEnabled: boolean
+}
+
 export interface IEditor {
   activeSolution: ISolution
   activeFiles: IFile[]
@@ -23,8 +34,8 @@ export interface IEditor {
   settingsFile: IFile
 
   isSettingsView: boolean
-  backgroundColor: string
-  monacoTheme: string
+
+  editorSettings: IEditorSettings
 
   openSettings: () => void
   changeActiveFile: (fileId: string) => void
@@ -114,22 +125,38 @@ class Editor extends Component<IEditor, IState> {
   }
 
   getMonacoOptions = (): monaco.editor.IEditorConstructionOptions => {
-    const fontSize = 16
+    const { editorSettings } = this.props
+    const {
+      fontFamily,
+      fontSize,
+      lineHeight,
+      isMinimapEnabled,
+      isFoldingEnabled,
+    } = editorSettings
+
+    console.log('getting monaco options')
 
     return {
       selectOnLineNumbers: true,
       fontSize,
-      fontFamily: ['Menlo', 'Source Code Pro', 'Consolas', 'Courier New', 'monospace']
+      fontFamily: [
+        fontFamily,
+        'Menlo',
+        'Source Code Pro',
+        'Consolas',
+        'Courier New',
+        'monospace',
+      ]
         .map(fontName => (fontName.includes(' ') ? JSON.stringify(fontName) : fontName))
         .join(', '),
-      minimap: { enabled: false },
+      minimap: { enabled: isMinimapEnabled },
       scrollbar: {
         vertical: 'visible',
         arrowSize: 15,
       },
       formatOnPaste: true,
-      lineHeight: 1.3 * fontSize,
-      folding: true,
+      lineHeight,
+      folding: isFoldingEnabled,
       glyphMargin: false,
       fixedOverflowWidgets: true,
       ariaLabel: 'todo',
@@ -206,7 +233,8 @@ class Editor extends Component<IEditor, IState> {
   }
 
   render() {
-    const { activeFiles, backgroundColor, monacoTheme, isSettingsView } = this.props
+    const { activeFiles, editorSettings, isSettingsView } = this.props
+    const { backgroundColor, monacoTheme } = editorSettings
     const options = this.getMonacoOptions()
     const libraries = activeFiles.find(file => file.name === 'libraries.txt')
 

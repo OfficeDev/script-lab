@@ -1,51 +1,13 @@
 import { getType } from 'typesafe-actions'
 import { defaultSettings } from '../defaultSettings'
-import { files, IFilesAction } from '../actions'
+import { settings as settingsActions, ISettingsAction } from '../actions'
 import { SETTINGS_FILE_ID } from '../constants'
 import theme from '../theme'
 
-import { allowedSettings } from '../SettingsJSONSchema'
-
-export const merge = (valid, parsed, allowed) => {
-  console.log({ valid, parsed, allowed })
-  return Object.keys(valid)
-    .map(setting => {
-      if (parsed !== undefined && parsed[setting] !== undefined) {
-        if (valid[setting] instanceof Object) {
-          return [setting, merge(valid[setting], parsed[setting], allowed[setting])]
-        } else if (
-          allowed !== undefined &&
-          allowed[setting] &&
-          allowed[setting].includes(parsed[setting])
-        ) {
-          return [setting, parsed[setting]]
-        }
-      }
-
-      return [setting, valid[setting]]
-    })
-    .reduce((acc, [key, value]) => ((acc[key] = value), acc), {})
-}
-
-export const parseSettings = (
-  currentSettings: ISettings,
-  settingsJSON: string,
-): ISettings => {
-  try {
-    const parsed = JSON.parse(settingsJSON)
-
-    return merge(currentSettings, parsed, allowedSettings)
-  } catch (e) {
-    return currentSettings
-  }
-}
-
-const settings = (state: ISettings = defaultSettings, action: IFilesAction) => {
+const settings = (state: ISettings = defaultSettings, action: ISettingsAction) => {
   switch (action.type) {
-    case getType(files.edit):
-      if (action.payload.fileId === SETTINGS_FILE_ID && action.payload.file.content) {
-        return parseSettings(state, action.payload.file.content)
-      }
+    case getType(settingsActions.edit.success):
+      return action.payload.settings
     default:
       return state
   }
@@ -54,7 +16,7 @@ const settings = (state: ISettings = defaultSettings, action: IFilesAction) => {
 export default settings
 
 // theme
-export const getMonacoTheme = (state): 'vs' | 'vs-dark' | 'hc-black' => {
+export const getMonacoTheme = (state: ISettings): 'vs' | 'vs-dark' | 'hc-black' => {
   return {
     light: 'vs',
     dark: 'vs-dark',
@@ -62,16 +24,37 @@ export const getMonacoTheme = (state): 'vs' | 'vs-dark' | 'hc-black' => {
   }[state.editor.theme]
 }
 
-export const getBackgroundColor = (state): string => {
+export const getBackgroundColor = (state: ISettings): string => {
   return {
     light: theme.fg,
     dark: theme.bg,
     'high-contrast': 'black',
   }[state.editor.theme]
 }
+
+// font
+export const getFontSize = (state: ISettings): number => state.editor.font.size
+export const getFontFamily = (state: ISettings): string => state.editor.font.family
+export const getLineHeight = (state: ISettings): number => state.editor.font.lineHeight
+
+export const getIsMinimapEnabled = (state: ISettings): boolean => state.editor.minimap
+export const getIsFoldingEnabled = (state: ISettings): boolean => state.editor.folding
+export const getIsPrettierEnabled = (state: ISettings): boolean => state.editor.prettier
+
+export const getTabSize = (state: ISettings): number => state.editor.tabSize
+
+// TODO: linter
+
 // ----------------------
 
 export const selectors = {
   getMonacoTheme,
   getBackgroundColor,
+  getFontSize,
+  getFontFamily,
+  getLineHeight,
+  getIsMinimapEnabled,
+  getIsFoldingEnabled,
+  getIsPrettierEnabled,
+  getTabSize,
 }

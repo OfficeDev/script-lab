@@ -3,7 +3,8 @@ import { selectors } from './reducers'
 import { convertSolutionToSnippet } from './utils'
 import { SETTINGS_SOLUTION_ID, SETTINGS_FILE_ID } from './constants'
 import { getSettingsSolutionAndFiles, defaultSettings } from './defaultSettings'
-import { parseSettings } from './reducers/settings'
+import { merge } from './sagas/settings'
+import { allowedSettings } from './SettingsJSONSchema'
 
 const statifySolution = ({ solution, files }) => ({
   solutions: { byId: { [solution.id]: solution }, allIds: [solution.id] },
@@ -59,7 +60,13 @@ export const loadState = () => {
       serializedValidSettings === null
         ? defaultSettings
         : JSON.parse(serializedValidSettings)
-    const settings = parseSettings(presetSettings, settingsFile.content)
+
+    let settings
+    try {
+      settings = merge(presetSettings, JSON.parse(settingsFile.content), allowedSettings)
+    } catch (e) {
+      settings = presetSettings
+    }
 
     github = serializedGithub === null ? {} : JSON.parse(serializedGithub)
 
