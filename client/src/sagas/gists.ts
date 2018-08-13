@@ -98,7 +98,7 @@ function* createGistFlow(action) {
 
 function* handleCreateGistSuccess(action) {
   const { solution } = action.payload
-  solution.gistId = action.payload.gist.id
+  solution.source = { id: action.payload.gist.id, origin: 'gist' }
   yield put(solutions.edit(solution.id, solution))
 }
 

@@ -12,14 +12,19 @@ function* fetchSampleMetadataFlow() {
 }
 
 function* openSampleFlow(action) {
-  const sampleJson = yield call(getSample, action.payload)
+  const sampleJson = yield call(getSample, action.payload.rawUrl)
 
   const { solution, files } = convertSnippetToSolution(sampleJson)
-  yield call(createSolution, solution, files)
+  yield put(samples.get.success({ solution, files }))
+}
+
+function* handleOpenSampleSuccess(action) {
+  yield call(createSolution, action.payload.solution, action.payload.files)
 }
 
 // TODO: theres gotta be a better way to do this
 export function* sampleWatcher() {
   yield takeEvery(getType(samples.fetchMetadata.request), fetchSampleMetadataFlow)
-  yield takeEvery(getType(samples.get), openSampleFlow)
+  yield takeEvery(getType(samples.get.request), openSampleFlow)
+  yield takeEvery(getType(samples.get.success), handleOpenSampleSuccess)
 }

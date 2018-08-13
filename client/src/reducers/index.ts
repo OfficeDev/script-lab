@@ -8,6 +8,7 @@ import files, { selectors as fileSelectors, IFilesState } from './files'
 import samples, { selectors as sampleSelectors } from './samples'
 import github, { selectors as githubSelectors } from './github'
 import messageBar, { selectors as messageBarSelectors } from './messageBar'
+import settings, { selectors as settingsSelectors } from './settings'
 
 const root = combineReducers({
   solutions,
@@ -15,6 +16,7 @@ const root = combineReducers({
   samples,
   github,
   messageBar,
+  settings,
 })
 
 export interface IState {
@@ -24,6 +26,7 @@ export interface IState {
   github: any
   messageBar: any
   router: RouterState
+  settings: ISettings
 }
 
 export default root
@@ -47,7 +50,7 @@ const getActiveSolution = (state: IState): ISolution => {
     state.router.location.pathname,
   )
   const allSolutions = solutionSelectors.getInLastModifiedOrder(state.solutions)
-  const allSolutionIds = allSolutions.map(sol => sol.id)
+  const allSolutionIds = solutionSelectors.getAllIds(state.solutions)
   return pathSolutionId && allSolutionIds.includes(pathSolutionId)
     ? solutionSelectors.get(state.solutions, pathSolutionId)!
     : allSolutions[0]
@@ -70,6 +73,7 @@ export const selectors = {
   samples: globalizeSelectors(sampleSelectors, 'samples'),
   github: globalizeSelectors(githubSelectors, 'github'),
   messageBar: globalizeSelectors(messageBarSelectors, 'messageBar'),
+  settings: globalizeSelectors(settingsSelectors, 'settings'),
   active: {
     solution: getActiveSolution,
     files: (state: IState) =>

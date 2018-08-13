@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-import officeDts from './office'
 import librariesIntellisenseJSON from './libraryIntellisense'
-
+import SettingsSchema from '../../../SettingsJSONSchema'
+import { SETTINGS_FILE_ID } from '../../../constants'
+import isEqual from 'lodash/isEqual'
 interface IDisposableFile {
   url: string
   disposable: monaco.IDisposable
@@ -82,16 +83,28 @@ class ReactMonaco extends Component<IReactMonaco, IReactMonacoState> {
     this.deinitializeMonaco()
   }
 
+  async componentDidUpdate(prevProps, prevState) {
+    if (prevProps.libraries !== this.props.libraries) {
+      this.updateIntellisense()
+    }
+
+    const win = window as any
+    if (win.monaco && prevProps.theme !== this.props.theme) {
+      monaco.editor.setTheme(this.props.theme)
+    }
+
+    if (!isEqual(prevProps.options, this.props.options)) {
+      await this.deinitializeMonaco()
+      this.initializeMonaco()
+    }
+  }
+
   editorDidMount = (editor, monaco) => this.props.editorDidMount(editor, monaco)
 
   initializeMonaco = () => {
     const { theme, options } = this.props
     const win = window as any
     if (this.container.current && win.monaco !== undefined) {
-      monaco.languages.typescript.typescriptDefaults.addExtraLib(
-        officeDts,
-        '/office.d.ts',
-      )
       this.editor = monaco.editor.create(this.container.current, {
         ...options,
       })
@@ -135,24 +148,46 @@ class ReactMonaco extends Component<IReactMonaco, IReactMonacoState> {
         },
       })
 
+      monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
+        validate: true,
+        schemas: [
+          {
+            uri: SettingsSchema.$id,
+            fileMatch: [
+              new monaco.Uri()
+                .with({
+                  scheme: 'file',
+                  path: SETTINGS_FILE_ID,
+                })
+                .toString(),
+            ],
+            schema: SettingsSchema,
+          },
+        ],
+      })
+
       this.editorDidMount(this.editor, monaco)
       this.updateIntellisense()
     }
   }
 
-  deinitializeMonaco = () => {
-    if (this.editor !== undefined) {
-      this.editor.dispose()
-    }
-  }
+  deinitializeMonaco = async () => {
+    this.state.intellisenseFiles.forEach(({ disposable }) => disposable.dispose())
 
-  componentDidUpdate(prevProps, prevState) {
-    this.updateIntellisense()
+    if (this.editor) {
+      const disposePromise = new Promise(resolve =>
+        this.editor.onDidDispose(() => resolve()),
+      )
+      this.editor.dispose()
+      await disposePromise
+    }
+
+    this.setState({ intellisenseFiles: [] })
   }
 
   updateIntellisense() {
     const win = window as any
-    if (this.container.current && win.monaco !== undefined) {
+    if (this.container.current && win.monaco) {
       const oldLibs = this.state.intellisenseFiles.map(file => file.url)
       const newLibs = this.props.libraries
       if (
@@ -160,36 +195,36 @@ class ReactMonaco extends Component<IReactMonaco, IReactMonacoState> {
         !(oldLibs.length === newLibs.length && oldLibs.every((v, i) => v === newLibs[i]))
       ) {
         const oldIntellisenseFiles = this.state.intellisenseFiles
-        const newIntellisenseFiles = parse(newLibs)
-        newIntellisenseFiles
+        const newIntellisenseUrls = parse(newLibs)
+
+        const filesToDispose = this.state.intellisenseFiles.filter(
+          ({ url }) => !newIntellisenseUrls.includes(url),
+        )
+        filesToDispose.forEach(({ disposable }) => disposable.dispose())
+
+        const newIntellisensePromises: Array<
+          Promise<IDisposableFile>
+        > = newIntellisenseUrls
           .filter(url => !oldIntellisenseFiles.find(file => file.url === url))
-          .forEach(url => {
-            console.log(`going to fetch ${url}`)
+          .map(url =>
             fetch(url)
-              .then(resp => resp.text())
+              .then(response => response.text())
               .then(content => {
-                if (!this.state.intellisenseFiles.find(file => file.url === url)) {
-                  // TODO: figure out if there's a better way to do this
-                  // NOTE: I had to add this extra check here because this page would receive multiple updates for routing reasons,
-                  // and that would cause the fetch to occur multiple times since it hadn't been added yet. This check ensures that it won't get added twice
-                  // but there's probably a better way
-                  console.log(`actually adding ${url}!!`)
-                  console.log({ content })
-                  const disposable = monaco.languages.typescript.typescriptDefaults.addExtraLib(
-                    content,
-                    url,
-                  )
-                  this.setState({
-                    intellisenseFiles: [
-                      ...this.state.intellisenseFiles,
-                      { url, disposable },
-                    ],
-                  })
-                }
-              })
-          })
+                const disposable = monaco.languages.typescript.typescriptDefaults.addExtraLib(
+                  content,
+                  url,
+                )
+                return { url, disposable }
+              }),
+          )
+        Promise.all(newIntellisensePromises).then(newFiles => {
+          const newIntellisenseFiles = this.state.intellisenseFiles
+            .filter(({ url }) => newIntellisenseUrls.includes(url))
+            .concat(newFiles)
+
+          this.setState({ intellisenseFiles: newIntellisenseFiles })
+        })
       }
-      // TODO: add logic to remove intellisense
     }
   }
 

@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux'
 import { getType } from 'typesafe-actions'
 import { solutions, ISolutionsAction, files, IFilesAction } from '../actions'
+import { SETTINGS_SOLUTION_ID } from '../constants'
 
 const normalizeSolutionName = (state, sol: ISolution): ISolution => {
   const allNames = Object.keys(state)
@@ -116,6 +117,11 @@ const get = (state: ISolutionsState, id: string): ISolution | undefined => state
 const getAll = (state: ISolutionsState): ISolution[] =>
   Object.keys(state.byId).map(k => state.byId[k])
 
+const getAllExceptSettings = (state: ISolutionsState): ISolution[] =>
+  Object.keys(state.byId)
+    .filter(k => k !== SETTINGS_SOLUTION_ID)
+    .map(k => state.byId[k])
+
 const getGists = (state: ISolutionsState): ISolution[] =>
   Object.keys(state.byId)
     .map(k => state.byId[k])
@@ -124,11 +130,12 @@ const getGists = (state: ISolutionsState): ISolution[] =>
 const getAllIds = (state: ISolutionsState): string[] => state.allIds
 
 const getInLastModifiedOrder = (state: ISolutionsState): ISolution[] =>
-  getAll(state).sort((a, b) => b.dateLastModified - a.dateLastModified)
+  getAllExceptSettings(state).sort((a, b) => b.dateLastModified - a.dateLastModified)
 
 export const selectors = {
   get,
   getAll,
+  getAllExceptSettings,
   getGists,
   getAllIds,
   getInLastModifiedOrder,

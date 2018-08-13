@@ -2,13 +2,8 @@ import YAML from 'yamljs'
 import { Authenticator, IToken } from '@microsoft/office-js-helpers'
 import GitHub from 'github-api'
 import { convertSolutionToSnippet } from '../utils'
-
+import { fetchYaml } from './general'
 // TODO: error handling
-const fetchYaml = (url: string) => {
-  return fetch(url)
-    .then(resp => resp.text())
-    .then(value => YAML.parse(value))
-}
 
 export const getSampleMetadata = (platform: string = 'excel') => {
   return fetchYaml(

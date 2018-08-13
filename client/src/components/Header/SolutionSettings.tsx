@@ -1,9 +1,7 @@
 import React from 'react'
 
 import { Dialog, DialogType, DialogFooter } from 'office-ui-fabric-react/lib/Dialog'
-
 import { TextField } from 'office-ui-fabric-react/lib/TextField'
-
 import { PrimaryButton, DefaultButton } from 'office-ui-fabric-react/lib/Button'
 
 interface ISolutionSettings {

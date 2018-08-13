@@ -28,7 +28,8 @@
   },
   "scripts": {
     "copy-monaco": "node scripts/copy-monaco.js",
-    "start": "set HTTPS=true&&react-scripts-ts start",
+    "startHTTPS": "set HTTPS=true&&react-scripts-ts start",
+    "start": "set HTTPS=false&&react-scripts-ts start",
     "build": "react-scripts-ts build",
     "test": "react-scripts-ts test --env=jsdom",
     "eject": "react-scripts-ts eject",
@@ -54,7 +55,7 @@
     "babel-runtime": "^6.26.0",
     "fs-extra": "^6.0.1",
     "jest": "^22.4.3",
-    "prettier": "^1.12.1",
+    "prettier": "^1.14.0",
     "react-test-renderer": "^16.3.2",
     "redux-devtools": "^3.4.1",
     "ts-jest": "^22.4.6",

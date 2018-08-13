@@ -2,6 +2,8 @@ import { connect } from 'react-redux'
 import { selectors } from '../reducers'
 import { solutions } from '../actions'
 import Footer from '../components/Footer'
+import { push } from 'connected-react-router'
+import { SETTINGS_SOLUTION_ID, SETTINGS_FILE_ID } from '../constants'
 
 const getLanguage = (state, fileId: string | undefined): string => {
   if (!fileId) {
@@ -19,5 +21,8 @@ const getLanguage = (state, fileId: string | undefined): string => {
 const mapStateToProps = (state, ownProps) => ({
   language: getLanguage(state, ownProps.activeFile.id),
 })
-
-export default connect(mapStateToProps)(Footer)
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  onSettingsIconClick: () =>
+    dispatch(push(`/${SETTINGS_SOLUTION_ID}/${SETTINGS_FILE_ID}`)),
+})
+export default connect(mapStateToProps, mapDispatchToProps)(Footer)
