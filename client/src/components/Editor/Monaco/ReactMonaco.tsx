@@ -83,7 +83,7 @@ class ReactMonaco extends Component<IReactMonaco, IReactMonacoState> {
     this.deinitializeMonaco()
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  async componentDidUpdate(prevProps, prevState) {
     if (prevProps.libraries !== this.props.libraries) {
       this.updateIntellisense()
     }
@@ -94,7 +94,7 @@ class ReactMonaco extends Component<IReactMonaco, IReactMonacoState> {
     }
 
     if (!isEqual(prevProps.options, this.props.options)) {
-      this.deinitializeMonaco()
+      await this.deinitializeMonaco()
       this.initializeMonaco()
     }
   }
@@ -171,10 +171,17 @@ class ReactMonaco extends Component<IReactMonaco, IReactMonacoState> {
     }
   }
 
-  deinitializeMonaco = () => {
+  deinitializeMonaco = async () => {
+    this.state.intellisenseFiles.forEach(({ disposable }) => disposable.dispose())
+
     if (this.editor !== undefined) {
+      const disposePromise = new Promise(resolve =>
+        this.editor.onDidDispose(() => resolve()),
+      )
       this.editor.dispose()
+      await disposePromise
     }
+
     this.setState({ intellisenseFiles: [] })
   }
 
@@ -189,6 +196,12 @@ class ReactMonaco extends Component<IReactMonaco, IReactMonacoState> {
       ) {
         const oldIntellisenseFiles = this.state.intellisenseFiles
         const newIntellisenseUrls = parse(newLibs)
+
+        const filesToDispose = this.state.intellisenseFiles.filter(
+          ({ url }) => !newIntellisenseUrls.includes(url),
+        )
+        filesToDispose.forEach(({ disposable }) => disposable.dispose())
+
         const newIntellisensePromises: Array<
           Promise<IDisposableFile>
         > = newIntellisenseUrls
@@ -208,10 +221,7 @@ class ReactMonaco extends Component<IReactMonaco, IReactMonacoState> {
           const newIntellisenseFiles = this.state.intellisenseFiles
             .filter(({ url }) => newIntellisenseUrls.includes(url))
             .concat(newFiles)
-          const filesToDispose = this.state.intellisenseFiles.filter(
-            ({ url }) => !newIntellisenseUrls.includes(url),
-          )
-          filesToDispose.forEach(({ disposable }) => disposable.dispose())
+
           this.setState({ intellisenseFiles: newIntellisenseFiles })
         })
       }

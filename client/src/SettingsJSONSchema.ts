@@ -136,5 +136,17 @@ export default {
         },
       },
     },
+    developer: {
+      $id: '/properties/developer',
+      type: 'object',
+      properties: {
+        verbose: {
+          $id: 'properties/developer/properties/verbose',
+          type: 'boolean',
+          default: false,
+          examples: [true, false],
+        },
+      },
+    },
   },
 }
