@@ -56,10 +56,9 @@ export const loadState = () => {
 
     // get initial settings
     const settingsFile = files.byId[SETTINGS_FILE_ID]
-    const presetSettings =
-      serializedValidSettings === null
-        ? defaultSettings
-        : JSON.parse(serializedValidSettings)
+    const presetSettings = serializedValidSettings
+      ? JSON.parse(serializedValidSettings)
+      : defaultSettings
 
     let settings
     try {

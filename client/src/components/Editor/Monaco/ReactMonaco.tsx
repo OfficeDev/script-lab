@@ -174,7 +174,7 @@ class ReactMonaco extends Component<IReactMonaco, IReactMonacoState> {
   deinitializeMonaco = async () => {
     this.state.intellisenseFiles.forEach(({ disposable }) => disposable.dispose())
 
-    if (this.editor !== undefined) {
+    if (this.editor) {
       const disposePromise = new Promise(resolve =>
         this.editor.onDidDispose(() => resolve()),
       )
@@ -187,7 +187,7 @@ class ReactMonaco extends Component<IReactMonaco, IReactMonacoState> {
 
   updateIntellisense() {
     const win = window as any
-    if (this.container.current && win.monaco !== undefined) {
+    if (this.container.current && win.monaco) {
       const oldLibs = this.state.intellisenseFiles.map(file => file.url)
       const newLibs = this.props.libraries
       if (
