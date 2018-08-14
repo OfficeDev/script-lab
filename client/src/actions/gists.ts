@@ -2,7 +2,7 @@ import { createAsyncAction } from 'typesafe-actions'
 import { ConflictResolutionOptions } from '../interfaces/enums'
 
 // used for import
-export const importPublic = createAsyncAction(
+export const importSnippet = createAsyncAction(
   'IMPORT_GIST_REQUEST',
   'IMPORT_GIST_SUCCESS',
   'IMPORT_GIST_FAILURE',
@@ -24,7 +24,7 @@ export const fetchMetadata = createAsyncAction(
   'FETCH_GIST_METADATA_REQUEST',
   'FETCH_GIST_METADATA_SUCCESS',
   'FETCH_GIST_METADATA_FAILURE',
-)<void, Array<{ gistId: string; url: string }>, Error>()
+)<void, ISharedGistMetadata[], Error>()
 
 export const get = createAsyncAction(
   'GET_GIST_REQUEST',

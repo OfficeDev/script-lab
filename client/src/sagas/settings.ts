@@ -27,7 +27,7 @@ export const merge = (valid, parsed, allowed) =>
     })
     .reduce((acc, [key, value]) => ((acc[key] = value), acc), {})
 
-function* editSettingsCheck(action) {
+function* editSettingsCheckSaga(action) {
   if (action.payload.file.id === SETTINGS_FILE_ID) {
     const state = yield select()
     const { settings } = state
@@ -43,7 +43,6 @@ function* editSettingsCheck(action) {
   }
 }
 
-// TODO: theres gotta be a better way to do this
 export function* settingsWatcher() {
-  yield takeEvery(getType(files.edit), editSettingsCheck)
+  yield takeEvery(getType(files.edit), editSettingsCheckSaga)
 }
