@@ -2,23 +2,22 @@ import { put, takeEvery, call, select } from 'redux-saga/effects'
 import { getType } from 'typesafe-actions'
 import { gists, solutions } from '../actions'
 import {
-  importGist,
-  getGist,
+  getSnippetFromGistId,
   getAllGistMetadata,
   createGist,
   updateGist,
+  getSnippetFromRawUrl,
 } from '../services/github'
 import { selectors } from '../reducers'
 import { convertSnippetToSolution } from '../utils'
 import { createSolution, openSolution } from './solutions'
 import YAML from 'yamljs'
-import { push } from 'connected-react-router'
 import { ConflictResolutionOptions } from '../interfaces/enums'
 
 function* importGistFlow(action) {
   let snippet
   if (action.payload.gistId) {
-    snippet = yield call(importGist, action.payload.gistId)
+    snippet = yield call(getSnippetFromGistId, action.payload.gistId)
   } else if (action.payload.gist) {
     snippet = YAML.parse(action.payload.gist)
   } else {
@@ -46,16 +45,19 @@ function* getGistFlow(action) {
   const conflictResolutionType = action.payload.conflictResolution
     ? action.payload.conflictResolution.type
     : ''
+
   switch (conflictResolutionType) {
     case ConflictResolutionOptions.Open:
       yield call(openSolution, action.payload.conflictResolution.existingSolution)
       break
+
     case ConflictResolutionOptions.Overwrite:
       // delete the existing solution and files
       yield put(solutions.remove(action.payload.conflictResolution.existingSolution))
+
     case ConflictResolutionOptions.CreateCopy:
     default:
-      const snippet = yield call(getGist, action.payload.rawUrl)
+      const snippet = yield call(getSnippetFromRawUrl, action.payload.rawUrl)
       const { solution, files } = convertSnippetToSolution(snippet)
       solution.source = {
         id: action.payload.gistId,
@@ -85,15 +87,9 @@ function* createGistFlow(action) {
     action.payload.solutionId,
   )
 
-  const createdGist = yield call(
-    createGist,
-    token,
-    solution,
-    files,
-    action.payload.isPublic,
-  )
+  const response = yield call(createGist, token, solution, files, action.payload.isPublic)
 
-  yield put(gists.create.success({ gist: createdGist, solution }))
+  yield put(gists.create.success({ gist: response, solution }))
 }
 
 function* handleCreateGistSuccess(action) {
@@ -109,12 +105,13 @@ function* updateGistFlow(action) {
     action.payload.solutionId,
   )
 
-  const updatedGist = yield call(updateGist, token, solution, files)
+  const gistId = solution.source.id
 
-  yield put(gists.update.success({ gist: updatedGist }))
+  const response = yield call(updateGist, token, solution, files, gistId)
+
+  yield put(gists.update.success({ gist: response }))
 }
 
-// TODO: theres gotta be a better way to do this ... maybe not
 export function* gistWatcher() {
   yield takeEvery(getType(gists.importPublic.request), importGistFlow)
   yield takeEvery(getType(gists.importPublic.success), handleImportGistSuccess)

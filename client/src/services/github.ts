@@ -3,30 +3,13 @@ import { Authenticator, IToken } from '@microsoft/office-js-helpers'
 import GitHub from 'github-api'
 import { convertSolutionToSnippet } from '../utils'
 import { fetchYaml } from './general'
-// TODO: error handling
+
+const baseApiUrl = 'https://api.github.com'
 
 export const getSampleMetadata = (platform: string = 'excel') => {
   return fetchYaml(
     `https://raw.githubusercontent.com/OfficeDev/office-js-snippets/master/playlists/${platform}.yaml`,
   )
-}
-
-export const getSample = (rawUrl: string) => {
-  let url = rawUrl
-  url = url.replace('<ACCOUNT>', 'OfficeDev')
-  url = url.replace('<REPO>', 'office-js-snippets')
-  url = url.replace('<BRANCH>', 'master')
-
-  return fetchYaml(url)
-}
-
-export const importGist = (gistId: string) => {
-  return fetch(`https://api.github.com/gists/${gistId}`)
-    .then(resp => resp.json())
-    .then(value => {
-      const files = value.files
-      return YAML.parse(files[Object.keys(files)[0]].content)
-    })
 }
 
 export const getAllGistMetadata = async (token: string): Promise<ISharedGistMetadata> => {
@@ -50,60 +33,68 @@ export const getAllGistMetadata = async (token: string): Promise<ISharedGistMeta
   })
 }
 
-export const getGist = (rawUrl: string) =>
-  fetch(rawUrl)
-    .then(resp => resp.text())
-    .then(text => YAML.parse(text))
+export const getSnippetFromRawUrl = (rawUrl: string): Promise<object> => fetchYaml(rawUrl)
 
-export const createGist = async (
+export const getSnippetFromGistId = (gistId: string): Promise<object> =>
+  fetch(`${baseApiUrl}/gists/${gistId}`)
+    .then(resp => resp.json())
+    .then(value => {
+      const files = value.files
+      return YAML.parse(files[Object.keys(files)[0]].content)
+    })
+
+const updateOrCreateGist = (
   token: string,
   solution: ISolution,
   files: IFile[],
-  isPublic: boolean,
-) => {
+  gistId?: string,
+  isPublic?: boolean,
+): Promise<object | Error> => {
   const snippetJSON = convertSolutionToSnippet(solution, files)
   const snippet = YAML.stringify(snippetJSON)
 
-  const gh = new GitHub({ token })
-  const gist = gh.getGist()
+  const url = gistId ? `${baseApiUrl}/gists/${gistId}` : `${baseApiUrl}/gists`
+  const method = gistId ? 'PATCH' : 'POST'
 
-  const data = {
-    public: isPublic,
-    description: `${solution.description} - Shared with Script Lab`,
-    files: {
-      [`${solution.name}.yaml`]: {
-        content: snippet,
-      },
+  return fetch(url, {
+    method,
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+      Authorization: `Bearer ${token}`,
     },
-  }
-
-  const response = await gist.create(data)
-
-  return response.data
+    body: JSON.stringify({
+      description: `${solution.description}`,
+      files: {
+        [`${solution.name}.yaml`]: {
+          content: snippet,
+        },
+      },
+      ...(gistId ? { public: isPublic } : {}),
+    }),
+  })
+    .then((resp: Response) => {
+      if (resp.ok) {
+        return Promise.resolve(resp)
+      } else {
+        return Promise.reject(resp)
+      }
+    })
+    .then((resp: Response) => resp.json())
+    .catch(error => Promise.reject(error))
 }
 
-export const updateGist = async (token: string, solution: ISolution, files: IFile[]) => {
-  // TODO: updateGist and createGist could probably be refactored to share more code
-  const { source } = solution
-  const snippetJSON = convertSolutionToSnippet(solution, files)
-  const snippet = YAML.stringify(snippetJSON)
+export const updateGist = (
+  token: string,
+  solution: ISolution,
+  files: IFile[],
+  gistId: string,
+): Promise<object | Error> => updateOrCreateGist(token, solution, files, gistId)
 
-  const gh = new GitHub({ token })
-  const gist = gh.gitGist(source!.id)
-
-  const data = {
-    description: `${solution.description} - Shared with Script Lab`,
-    files: {
-      [`${solution.name}.yaml`]: {
-        content: snippet,
-      },
-    },
-  }
-
-  const response = await gist.update(data)
-
-  return response.data
-}
+export const createGist = (
+  token: string,
+  solution: ISolution,
+  files: IFile[],
+): Promise<object | Error> => updateOrCreateGist(token, solution, files)
 
 export const login = async () => {
   const auth = new Authenticator()
