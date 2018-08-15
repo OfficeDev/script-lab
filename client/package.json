@@ -36,6 +36,11 @@
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },
+  "jest": {
+    "moduleNameMapper": {
+      "office-ui-fabric-react/lib/": "office-ui-fabric-react/lib-commonjs/"
+    }
+  },
   "devDependencies": {
     "@storybook/addon-a11y": "^3.4.8",
     "@storybook/addon-actions": "^3.4.4",
