@@ -10,8 +10,6 @@ import Backstage from '../../containers/Backstage'
 
 import { Layout, ContentWrapper } from './styles'
 
-import config from '../../config'
-
 const FILE_NAME_MAP = {
   'index.ts': 'Script',
   'index.html': 'HTML',
@@ -53,7 +51,6 @@ class IDE extends Component<IIDE, IState> {
     this.props.openFile(this.props.activeSolution.id, fileId)
 
   render() {
-    console.log(config.host)
     const { isBackstageVisible } = this.state
     const { activeSolution, files, activeFile, theme } = this.props
     return (
