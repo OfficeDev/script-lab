@@ -1,10 +1,10 @@
-import { getBoilerplate } from './newSolutionData'
-import { selectors } from './reducers'
-import { convertSolutionToSnippet } from './utils'
-import { SETTINGS_SOLUTION_ID, SETTINGS_FILE_ID } from './constants'
-import { getSettingsSolutionAndFiles, defaultSettings } from './defaultSettings'
-import { merge } from './sagas/settings'
-import { allowedSettings } from './SettingsJSONSchema'
+import { getBoilerplate } from '../newSolutionData'
+import { selectors } from '../reducers'
+import { convertSolutionToSnippet } from '../utils'
+import { SETTINGS_SOLUTION_ID, SETTINGS_FILE_ID } from '../constants'
+import { getSettingsSolutionAndFiles, defaultSettings } from '../defaultSettings'
+import { merge } from '../sagas/settings'
+import { allowedSettings } from '../SettingsJSONSchema'
 
 const statifySolution = ({ solution, files }) => ({
   solutions: { byId: { [solution.id]: solution }, allIds: [solution.id] },

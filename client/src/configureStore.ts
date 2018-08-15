@@ -5,7 +5,7 @@ import { connectRouter, routerMiddleware } from 'connected-react-router'
 import { supportsHistory } from 'history/es/DOMUtils'
 import createBrowserHistory from 'history/createBrowserHistory'
 import createHashHistory from 'history/createHashHistory'
-import { loadState, saveState } from './localStorage'
+import { loadState, saveState } from './storage/localStorage'
 import throttle from 'lodash/throttle'
 import { composeWithDevTools } from 'redux-devtools-extension'
 
