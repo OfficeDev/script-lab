@@ -5,6 +5,10 @@ import { Customizer } from 'office-ui-fabric-react/lib/Utilities'
 import { CommandBar, ICommandBarItemProps } from 'office-ui-fabric-react/lib/CommandBar'
 import { PersonaSize, PersonaCoin } from 'office-ui-fabric-react/lib/Persona'
 
+import Clipboard from 'clipboard'
+import { convertSolutionToSnippet } from '../../utils'
+import YAML from 'yamljs'
+
 import SolutionSettings from './SolutionSettings'
 import { headerTheme } from '../../theme'
 
@@ -27,11 +31,14 @@ export interface IHeaderFromRedux {
   createPublicGist: () => void
   createSecretGist: () => void
   updateGist: () => void
+  notifyClipboardCopySuccess: () => void
+  notifyClipboardCopyFailure: () => void
 }
 
 export interface IHeader extends IHeaderFromRedux {
   showBackstage: () => void
   solution: ISolution
+  files: IFile[]
 }
 
 interface IState {
@@ -40,6 +47,22 @@ interface IState {
 
 class Header extends React.Component<IHeader, IState> {
   state = { showSolutionSettings: false }
+  clipboard
+
+  constructor(props: IHeader) {
+    super(props)
+    this.clipboard = new Clipboard('.export-to-clipboard', { text: this.getSnippetYaml })
+    this.clipboard.on('success', props.notifyClipboardCopySuccess)
+    this.clipboard.on('error', props.notifyClipboardCopyFailure)
+  }
+
+  getSnippetYaml = (): string => {
+    const { solution, files } = this.props
+    console.log('converting snippet!')
+    const value = YAML.stringify(convertSolutionToSnippet(solution, files))
+    console.log('done converting!')
+    return value
+  }
 
   render() {
     const {
@@ -78,6 +101,14 @@ class Header extends React.Component<IHeader, IState> {
         text: 'New secret gist',
         iconProps: { iconName: 'ProtectedDocument' },
         onClick: createSecretGist,
+      },
+      {
+        key: 'export-to-clipboard',
+        text: 'Copy to clipboard',
+        iconProps: {
+          iconName: 'ClipboardSolid',
+        },
+        className: 'export-to-clipboard',
       },
     ]
       .filter(option => !option.hidden)

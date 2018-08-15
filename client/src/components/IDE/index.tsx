@@ -47,7 +47,11 @@ class IDE extends Component<IIDE> {
     return (
       <>
         <Layout style={{ display: isBackstageVisible ? 'none' : 'flex' }}>
-          <Header solution={activeSolution} showBackstage={this.showBackstage} />
+          <Header
+            solution={activeSolution}
+            files={files}
+            showBackstage={this.showBackstage}
+          />
           <PivotBar
             items={files.map(file => ({
               key: file.id,

@@ -10,6 +10,7 @@ const isVisible = (state = false, action) => {
     case getType(solutions.remove):
     case getType(settings.edit.success):
     case getType(settings.edit.failure):
+    case getType(messageBar.show):
       return true
     case getType(messageBar.dismiss):
       return false
@@ -18,7 +19,8 @@ const isVisible = (state = false, action) => {
   }
 }
 
-const style = (state = MessageBarType.info, action) => {
+const initialStyle = MessageBarType.info
+const style = (state = initialStyle, action) => {
   switch (action.type) {
     case getType(gists.create.success):
     case getType(gists.update.success):
@@ -28,12 +30,17 @@ const style = (state = MessageBarType.info, action) => {
       return MessageBarType.info
     case getType(settings.edit.failure):
       return MessageBarType.error
+    case getType(messageBar.show):
+      return action.payload.style
+    case getType(messageBar.dismiss):
+      return initialStyle
     default:
       return state
   }
 }
 
-const text = (state = '', action) => {
+const initialText = ''
+const text = (state = initialText, action) => {
   switch (action.type) {
     case getType(gists.create.success):
       return `Your gist has been published at https://gist.github.com/${
@@ -49,12 +56,17 @@ const text = (state = '', action) => {
       return 'Settings successfully applied.'
     case getType(settings.edit.failure):
       return `Error in settings. ${action.payload}`
+    case getType(messageBar.show):
+      return action.payload.text
+    case getType(messageBar.dismiss):
+      return initialText
     default:
       return state
   }
 }
 
-const link = (state = null, action) => {
+const initialLink = null
+const link = (state = initialLink, action) => {
   switch (action.type) {
     case getType(gists.create.success):
     case getType(gists.update.success):
@@ -62,6 +74,12 @@ const link = (state = null, action) => {
         text: 'View on GitHub',
         url: `https://gist.github.com/${action.payload.gist.id}`,
       }
+    case getType(solutions.remove):
+    case getType(settings.edit.success):
+    case getType(settings.edit.failure):
+    case getType(messageBar.show):
+    case getType(messageBar.dismiss):
+      return initialLink
     default:
       return state
   }
