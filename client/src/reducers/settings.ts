@@ -1,7 +1,6 @@
 import { getType } from 'typesafe-actions'
 import { defaultSettings } from '../defaultSettings'
 import { settings as settingsActions, ISettingsAction } from '../actions'
-import { SETTINGS_FILE_ID } from '../constants'
 import theme from '../theme'
 
 const settings = (state: ISettings = defaultSettings, action: ISettingsAction) => {
