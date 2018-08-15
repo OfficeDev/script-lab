@@ -5,19 +5,18 @@ import { GalleryListWrapper, TitleBar, Title, ArrowWrapper } from './styles'
 import GalleryListItem, { IGalleryListItem } from './GalleryListItem'
 import FabricIcon from '../../FabricIcon'
 
-import theme from '../../../theme'
-
 export interface IGalleryList {
   title: string
   items: any
+  theme: ITheme
 }
 
-interface IGalleryListState {
+interface IState {
   isExpanded: boolean
   focusedItemIndex: number | null
 }
 
-export default class GalleryList extends Component<IGalleryList, IGalleryListState> {
+export default class GalleryList extends Component<IGalleryList, IState> {
   state = { isExpanded: true, focusedItemIndex: null }
 
   constructor(props) {
@@ -47,8 +46,6 @@ export default class GalleryList extends Component<IGalleryList, IGalleryListSta
     this.forceUpdate()
   }
 
-  focusRef = ref => console.log(ref)
-
   componentDidUpdate() {
     const ref = ReactDOM.findDOMNode(this.refs.thisDiv) as any
     if (ref) {
@@ -57,7 +54,7 @@ export default class GalleryList extends Component<IGalleryList, IGalleryListSta
   }
 
   render() {
-    const { title, items } = this.props
+    const { title, items, theme } = this.props
     const { isExpanded } = this.state
     return (
       <GalleryListWrapper tabIndex={0} onKeyDown={this.onKeyDown}>
@@ -74,7 +71,7 @@ export default class GalleryList extends Component<IGalleryList, IGalleryListSta
                 ref="thisDiv"
                 tabIndex={0}
                 key={item.key}
-                style={{ color: 'white', backgroundColor: theme.accent }}
+                style={{ color: theme.white, backgroundColor: theme.primary }}
               >
                 <GalleryListItem {...item} />
               </div>

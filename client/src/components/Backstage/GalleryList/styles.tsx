@@ -5,7 +5,7 @@ export const GalleryListWrapper = styled.section`
   margin: 1.2rem 0;
 
   &:focus {
-    outline-color: ${props => props.theme.accent};
+    outline-color: ${props => props.theme.primary};
   }
 `
 
@@ -13,8 +13,8 @@ export const GalleryListWrapper = styled.section`
 export const TitleBar = styled.div.attrs({ className: 'ms-font-m' })`
   display: flex;
   height: 4rem;
-  color: #555;
-  background-color: lightgray;
+  color: ${props => props.theme.neutralPrimary};
+  background-color: ${props => props.theme.neutralSecondary};
   white-space: nowrap;
   overflow: hidden;
 `
@@ -29,8 +29,8 @@ export const ArrowWrapper = styled.div`
   padding: 1.2rem;
 
   &:hover, &:focus {
-    background-color: ${props => props.theme.accent}
-    color: ${props => props.theme.fg}
+    background-color: ${props => props.theme.primary}
+    color: ${props => props.theme.white}
     cursor: pointer;
   }
 `

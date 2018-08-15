@@ -1,7 +1,7 @@
 import { getType } from 'typesafe-actions'
 import { defaultSettings } from '../defaultSettings'
 import { settings as settingsActions, ISettingsAction } from '../actions'
-import theme from '../theme'
+import { defaultTheme } from '../theme'
 
 const settings = (state: ISettings = defaultSettings, action: ISettingsAction) => {
   switch (action.type) {
@@ -23,10 +23,11 @@ export const getMonacoTheme = (state: ISettings): 'vs' | 'vs-dark' | 'hc-black' 
   }[state.editor.theme]
 }
 
+// TODO(nicobell): figure out how to properly handle this case
 export const getBackgroundColor = (state: ISettings): string => {
   return {
-    light: theme.fg,
-    dark: theme.bg,
+    light: defaultTheme.fg,
+    dark: defaultTheme.bg,
     'high-contrast': 'black',
   }[state.editor.theme]
 }

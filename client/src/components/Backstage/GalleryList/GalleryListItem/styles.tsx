@@ -7,15 +7,15 @@ export const Wrapper = styled.article.attrs({ className: 'ms-font-m' })`
 
   &:hover,
   &:focus {
-    background-color: ${props => props.theme.accent};
-    color: ${props => props.theme.fg};
+    background-color: ${props => props.theme.primary};
+    color: ${props => props.theme.white};
     cursor: pointer;
   }
 `
 
 export const ActiveWrapper = Wrapper.extend`
-  background-color: ${props => props.theme.darkAccent};
-  color: ${props => props.theme.fg};
+  background-color: ${props => props.theme.primaryDarker};
+  color: ${props => props.theme.white};
 `
 
 // TODO: refactor css into theme

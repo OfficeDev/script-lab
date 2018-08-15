@@ -8,6 +8,6 @@ export const Wrapper = styled.footer`
   height: 2rem;
   font-size: 1.2rem;
 
-  background-color: ${props => props.theme.accent};
-  color: ${props => props.theme.fg};
+  background-color: ${props => props.theme.primary};
+  color: ${props => props.theme.white};
 `

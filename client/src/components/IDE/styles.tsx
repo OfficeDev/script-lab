@@ -13,5 +13,5 @@ export const ContentWrapper = styled.div`
 
   overflow: hidden;
 
-  background: ${props => props.theme.bg};
+  background: ${props => props.theme.neutralDark};
 `

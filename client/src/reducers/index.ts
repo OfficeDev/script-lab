@@ -9,7 +9,7 @@ import samples, { selectors as sampleSelectors } from './samples'
 import github, { selectors as githubSelectors } from './github'
 import messageBar, { selectors as messageBarSelectors } from './messageBar'
 import settings, { selectors as settingsSelectors } from './settings'
-import config, { selectors as configSelectors } from './settings'
+import config, { selectors as configSelectors } from './config'
 
 const root = combineReducers({
   solutions,

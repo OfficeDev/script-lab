@@ -19,16 +19,25 @@ const FILE_NAME_MAP = {
   'libraries.txt': 'Libraries',
 }
 
-interface IIDE {
+export interface IIDEPropsFromRedux {
   activeSolution: ISolution
   files: IFile[]
   activeFile: IFile
+  theme: ITheme
+}
 
+export interface IIDEActionsFromRedux {
   openSolution: (solutionId: string) => void
   openFile: (solutionId: string, fileId: string) => void
 }
 
-class IDE extends Component<IIDE> {
+export interface IIDE extends IIDEPropsFromRedux, IIDEActionsFromRedux {}
+
+interface IState {
+  isBackstageVisible: boolean
+}
+
+class IDE extends Component<IIDE, IState> {
   state = { isBackstageVisible: false }
 
   showBackstage = () => this.setState({ isBackstageVisible: true })
@@ -46,12 +55,13 @@ class IDE extends Component<IIDE> {
   render() {
     console.log(config.host)
     const { isBackstageVisible } = this.state
-    const { activeSolution, files, activeFile } = this.props
+    const { activeSolution, files, activeFile, theme } = this.props
     return (
       <>
         <Layout style={{ display: isBackstageVisible ? 'none' : 'flex' }}>
           <Header solution={activeSolution} showBackstage={this.showBackstage} />
           <PivotBar
+            theme={theme}
             items={files.map(file => ({
               key: file.id,
               text: FILE_NAME_MAP[file.name] || file.name,

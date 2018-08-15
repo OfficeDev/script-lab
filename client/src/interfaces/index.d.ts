@@ -90,9 +90,22 @@ interface ISettings {
   defaultActions: IDefaultActions
 }
 
-interface ITheme {
-  accent: string
-  darkAccent: string
-  fg: string
-  bg: string
+interface IThemePrimaryColors {
+  primaryDarker: string
+  primaryDark: string
+  primary: string
+  primaryLight: string
+  primaryLighter: string
 }
+
+interface IThemeNeutralColors {
+  black: string
+  neutralDark: string
+  neutralPrimary: string
+  neutralSecondary: string
+  neutralLight: string
+  neutralLighter: string
+  white: string
+}
+
+interface ITheme extends IThemePrimaryColors, IThemeNeutralColors {}

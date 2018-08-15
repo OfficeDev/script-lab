@@ -1,7 +1,6 @@
 import { getType } from 'typesafe-actions'
 import { combineReducers } from 'redux'
 import { Utilities, HostType } from '@microsoft/office-js-helpers'
-import theme from '../theme'
 
 const host = (state: string = Utilities.host, action) => {
   switch (action.type) {

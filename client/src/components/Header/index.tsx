@@ -10,7 +10,7 @@ import { headerTheme } from '../../theme'
 
 const HeaderWrapper = styled.header`
   grid-area: header;
-  background-color: ${props => props.theme.accent};
+  background-color: ${props => props.theme.primary};
 `
 
 export interface IHeaderFromRedux {
