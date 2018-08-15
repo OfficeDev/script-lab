@@ -5,6 +5,8 @@ import { GalleryListWrapper, TitleBar, Title, ArrowWrapper } from './styles'
 import GalleryListItem, { IGalleryListItem } from './GalleryListItem'
 import FabricIcon from '../../FabricIcon'
 
+import theme from '../../../theme'
+
 export interface IGalleryList {
   title: string
   items: any
@@ -72,7 +74,7 @@ export default class GalleryList extends Component<IGalleryList, IGalleryListSta
                 ref="thisDiv"
                 tabIndex={0}
                 key={item.key}
-                style={{ color: 'white', backgroundColor: '#217346' }}
+                style={{ color: 'white', backgroundColor: theme.accent }}
               >
                 <GalleryListItem {...item} />
               </div>

@@ -7,35 +7,9 @@ import {
   PivotLinkSize,
 } from 'office-ui-fabric-react/lib/Pivot'
 
-import { createTheme } from 'office-ui-fabric-react/lib/Styling'
 import { Customizer } from 'office-ui-fabric-react/lib/Utilities'
 
-const pivotTheme = createTheme({
-  palette: {
-    themePrimary: '#0a331f',
-    themeLighterAlt: '#f2f9f5',
-    themeLighter: '#cee9da',
-    themeLight: '#a8d5bc',
-    themeTertiary: '#62ab83',
-    themeSecondary: '#318456',
-    themeDarkAlt: '#1e673f',
-    themeDark: '#195735',
-    themeDarker: '#134027',
-    neutralLighterAlt: '#f8f8f8',
-    neutralLighter: '#134027',
-    neutralLight: '#eaeaea',
-    neutralQuaternaryAlt: '#dadada',
-    neutralQuaternary: '#d0d0d0',
-    neutralTertiaryAlt: '#c8c8c8',
-    neutralTertiary: '#c2c2c2',
-    neutralSecondary: '#858585',
-    neutralPrimaryAlt: '#4b4b4b',
-    neutralPrimary: '#fff',
-    neutralDark: '#272727',
-    black: '#fff',
-    white: '#fff',
-  },
-})
+import theme, { pivotBarTheme } from '../../theme'
 
 const PivotBarWrapper = styled.div`
   background-color: ${props => props.theme.darkAccent};
@@ -58,19 +32,19 @@ class PivotBar extends React.Component<IPivotBar> {
 
     return (
       <PivotBarWrapper>
-        <Customizer settings={{ theme: pivotTheme }}>
+        <Customizer settings={{ theme: pivotBarTheme }}>
           <Pivot
             linkSize={PivotLinkSize.normal}
             linkFormat={PivotLinkFormat.tabs}
             onLinkClick={this.onLinkClick}
             selectedKey={selectedKey || undefined}
             styles={{
-              root: { backgroundColor: '#0D4027' },
-              link: { backgroundColor: '#0D4027' },
+              root: { backgroundColor: theme.darkAccent },
+              link: { backgroundColor: theme.darkAccent },
               linkIsSelected: {
-                borderBottom: '1px solid white',
+                borderBottom: `1px solid ${theme.fg}`,
               },
-              linkContent: { color: 'white', fontWeight: '400' },
+              linkContent: { color: theme.fg, fontWeight: '400' },
             }}
           >
             {items.map(item => (

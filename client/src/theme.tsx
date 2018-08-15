@@ -3,6 +3,16 @@ import styled, { ThemeProvider } from 'styled-components'
 import { loadTheme, createTheme } from 'office-ui-fabric-react/lib/Styling'
 import { initializeIcons } from 'office-ui-fabric-react/lib/Icons'
 
+const theme = {
+  accent: '#217346',
+  // darkAccent: '#103822',
+  darkAccent: '#0D4027',
+  bg: '#1e1e1e',
+  fg: '#eeeeee',
+}
+
+export default theme
+
 // todo reconcile these two
 export const fabricTheme = {
   themePrimary: '#217346',
@@ -62,15 +72,42 @@ export const headerTheme = createTheme({
   },
 })
 
-const theme = {
-  accent: '#217346',
-  // darkAccent: '#103822',
-  darkAccent: '#0D4027',
-  bg: '#1e1e1e',
-  fg: '#eeeeee',
-}
+export const backstageMenuTheme = createTheme({
+  palette: {
+    themePrimary: 'white',
+    neutralLighterAlt: 'rgba(0, 0, 0, 0.4)',
+    neutralLighter: 'rgba(0, 0, 0, 0.2)',
+    neutralPrimary: 'rgba(255, 255, 255, 0.8)',
+    white: '#217346',
+  },
+})
 
-export default theme
+export const pivotBarTheme = createTheme({
+  palette: {
+    themePrimary: '#0a331f',
+    themeLighterAlt: '#f2f9f5',
+    themeLighter: '#cee9da',
+    themeLight: '#a8d5bc',
+    themeTertiary: '#62ab83',
+    themeSecondary: '#318456',
+    themeDarkAlt: '#1e673f',
+    themeDark: '#195735',
+    themeDarker: '#134027',
+    neutralLighterAlt: '#f8f8f8',
+    neutralLighter: '#134027',
+    neutralLight: '#eaeaea',
+    neutralQuaternaryAlt: '#dadada',
+    neutralQuaternary: '#d0d0d0',
+    neutralTertiaryAlt: '#c8c8c8',
+    neutralTertiary: '#c2c2c2',
+    neutralSecondary: '#858585',
+    neutralPrimaryAlt: '#4b4b4b',
+    neutralPrimary: '#fff',
+    neutralDark: '#272727',
+    black: '#fff',
+    white: '#fff',
+  },
+})
 
 export const StyledComponentsThemeProvider = ({ children }) => (
   <ThemeProvider theme={theme}>{children}</ThemeProvider>
