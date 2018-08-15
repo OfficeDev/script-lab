@@ -1,11 +1,77 @@
 import React from 'react'
+import {HostType} from '@microsoft/office-js-helpers'
 import styled, { ThemeProvider } from 'styled-components'
 import { loadTheme, createTheme } from 'office-ui-fabric-react/lib/Styling'
 import { initializeIcons } from 'office-ui-fabric-react/lib/Icons'
 
+
+export const getTheme = (host: string): ITheme => {
+  return defaultTheme
+}
+
+const defaultTheme = {
+  accent: '#217346',
+  darkAccent: '#0D4027',
+  bg: '#1e1e1e',
+  fg: '#eeeeee',
+}
+
+
+const themes: {[key: string]: ITheme} = {
+  [HostType.WEB]: {
+    accent: '#0078d4',
+    darkAccent: '#004578',
+    bg: defaultTheme.bg,
+    fg: defaultTheme.fg,
+  },
+  [HostType.ACCESS]: {
+    accent: '#B7472A',
+    darkAccent: '#7B0E00',
+    bg: defaultTheme.bg,
+    fg: defaultTheme.fg,
+  },
+  [HostType.EXCEL]: {
+    accent: '#217346',
+    darkAccent: '#0D4027',
+    bg: defaultTheme.bg,
+    fg: defaultTheme.fg,
+  },
+  [HostType.ONENOTE]: {
+    accent: '#B76CB0'
+    darkAccent: '#80397B',
+    bg: defaultTheme.bg,
+    fg: defaultTheme.fg,
+  },
+  [HostType.OUTLOOK]: {
+    accent: '#0173C7',
+    darkAccent: '#004490',
+    bg: defaultTheme.bg,
+    fg: defaultTheme.fg,
+  },
+  [HostType.POWERPOINT]: {
+    accent: '#B7472A',
+    darkAccent: '#7B0E00',
+    bg: defaultTheme.bg,
+    fg: defaultTheme.fg,
+  },
+  [HostType.PROJECT]: {
+    accent: '#217346',
+    darkAccent: '#0D4027',
+    bg: defaultTheme.bg,
+    fg: defaultTheme.fg,
+  },
+  [HostType.WORD]: {
+    accent: '#2B579A',
+    darkAccent: '#002B66',
+    bg: defaultTheme.bg,
+    fg: defaultTheme.fg,
+  },
+
+}
+
+
 const theme = {
   accent: '#217346',
-  // darkAccent: '#103822',
   darkAccent: '#0D4027',
   bg: '#1e1e1e',
   fg: '#eeeeee',

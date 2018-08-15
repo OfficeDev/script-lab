@@ -89,3 +89,10 @@ interface ISettings {
   hostSpecific: IHostSpecificSettings
   defaultActions: IDefaultActions
 }
+
+interface ITheme {
+  accent: string
+  darkAccent: string
+  fg: string
+  bg: string
+}
