@@ -56,13 +56,8 @@ class Header extends React.Component<IHeader, IState> {
     this.clipboard.on('error', props.notifyClipboardCopyFailure)
   }
 
-  getSnippetYaml = (): string => {
-    const { solution, files } = this.props
-    console.log('converting snippet!')
-    const value = YAML.stringify(convertSolutionToSnippet(solution, files))
-    console.log('done converting!')
-    return value
-  }
+  getSnippetYaml = (): string =>
+    YAML.stringify(convertSolutionToSnippet(this.props.solution, this.props.files))
 
   render() {
     const {
