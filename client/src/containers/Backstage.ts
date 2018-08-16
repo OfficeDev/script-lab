@@ -8,13 +8,12 @@ import { selectors } from '../reducers'
 import { solutions, samples, gists } from '../actions'
 import { push } from 'connected-react-router'
 
-import { getTheme, backstageMenuTheme } from '../theme'
+import { getTheme } from '../theme'
 
 const mapStateToProps = (state): IBackstagePropsFromRedux => ({
   sharedGistMetadata: selectors.github.getGistMetadata(state),
   solutions: selectors.solutions.getAllExceptSettings(state),
   theme: getTheme(selectors.config.getHost(state)),
-  menuFabricTheme: backstageMenuTheme,
 })
 
 const mapDispatchToProps = (dispatch): IBackstageActionsFromRedux => ({

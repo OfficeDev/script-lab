@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
 import { BackstageWrapper } from './styles'
 
-import { ITheme as IFabricTheme } from 'office-ui-fabric-react/lib/Styling'
-
 import Menu from './Menu'
 import MySolutions from './MySolutions'
 import Samples from '../../containers/Samples'
@@ -23,7 +21,6 @@ export interface IBackstagePropsFromRedux {
   sharedGistMetadata: ISharedGistMetadata[]
 
   theme: ITheme
-  menuFabricTheme: IFabricTheme
 }
 
 export interface IBackstageActionsFromRedux {
@@ -51,10 +48,6 @@ export default class Backstage extends Component<IBackstage, IState> {
     selectedKey: 'my-solutions',
     conflictingGist: null,
     existingSolutionsConflicting: null,
-  }
-
-  constructor(props) {
-    super(props)
   }
 
   openSolution = (solutionId: string) => {
@@ -149,7 +142,6 @@ export default class Backstage extends Component<IBackstage, IState> {
       <BackstageWrapper style={{ display: this.props.isHidden ? 'none' : 'flex' }}>
         <Menu
           theme={this.props.theme}
-          fabricTheme={this.props.menuFabricTheme}
           selectedKey={this.state.selectedKey}
           items={items.map(item => ({
             key: item.key,

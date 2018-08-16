@@ -109,16 +109,6 @@ export const headerTheme = createTheme({
   },
 })
 
-export const backstageMenuTheme = createTheme({
-  palette: {
-    themePrimary: 'white',
-    neutralLighterAlt: 'rgba(0, 0, 0, 0.4)',
-    neutralLighter: 'rgba(0, 0, 0, 0.2)',
-    neutralPrimary: 'rgba(255, 255, 255, 0.8)',
-    white: '#217346',
-  },
-})
-
 export const setupFabricTheme = () => {
   loadTheme({ palette: fabricTheme })
   initializeIcons()
