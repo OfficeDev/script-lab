@@ -13,6 +13,7 @@
     "jsx-boolean-value": false,
     "jsx-no-string-ref": false,
     "no-shadowed-variable": false,
-    "no-bitwise": false
+    "no-bitwise": false,
+    "no-empty": false
   }
 }

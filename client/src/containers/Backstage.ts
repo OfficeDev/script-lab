@@ -1,15 +1,23 @@
 import { connect } from 'react-redux'
-import Backstage, { IBackstage } from '../components/Backstage'
+import Backstage, {
+  IBackstage,
+  IBackstagePropsFromRedux,
+  IBackstageActionsFromRedux,
+} from '../components/Backstage'
 import { selectors } from '../reducers'
 import { solutions, samples, gists } from '../actions'
 import { push } from 'connected-react-router'
 
-const mapStateToProps = (state): Partial<IBackstage> => ({
+import { getTheme, backstageMenuTheme } from '../theme'
+
+const mapStateToProps = (state): IBackstagePropsFromRedux => ({
   sharedGistMetadata: selectors.github.getGistMetadata(state),
   solutions: selectors.solutions.getAllExceptSettings(state),
+  theme: getTheme(selectors.config.getHost(state)),
+  menuFabricTheme: backstageMenuTheme,
 })
 
-const mapDispatchToProps = (dispatch): Partial<IBackstage> => ({
+const mapDispatchToProps = (dispatch): IBackstageActionsFromRedux => ({
   createNewSolution: () => dispatch(solutions.create()),
   openSolution: (solutionId: string) => dispatch(push(`/${solutionId}/`)),
   openSample: (rawUrl: string) => dispatch(samples.get.request({ rawUrl })),

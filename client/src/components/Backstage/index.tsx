@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { BackstageWrapper } from './styles'
 
+import { ITheme as IFabricTheme } from 'office-ui-fabric-react/lib/Styling'
+
 import Menu from './Menu'
 import MySolutions from './MySolutions'
 import Samples from '../../containers/Samples'
@@ -17,15 +19,15 @@ interface IBackstageItem {
   content?: JSX.Element
 }
 
-export interface IBackstage {
-  isHidden: boolean
-  hideBackstage: () => void
+export interface IBackstagePropsFromRedux {
   solutions: ISolution[]
-  activeSolution?: ISolution
-
-  // from redux
   sharedGistMetadata: ISharedGistMetadata[]
 
+  theme: ITheme
+  menuFabricTheme: IFabricTheme
+}
+
+export interface IBackstageActionsFromRedux {
   createNewSolution: () => void
   openSolution: (solutionId: string) => void
   openSample: (rawUrl: string) => void
@@ -35,6 +37,12 @@ export interface IBackstage {
     conflictResolution?: { type: ConflictResolutionOptions; existingSolution: ISolution },
   ) => void
   importGist: (gistId?: string, gist?: string) => void
+}
+
+export interface IBackstage extends IBackstagePropsFromRedux, IBackstageActionsFromRedux {
+  isHidden: boolean
+  hideBackstage: () => void
+  activeSolution?: ISolution
 }
 
 interface IState {
@@ -112,6 +120,7 @@ export default class Backstage extends Component<IBackstage, IState> {
         iconName: 'DocumentSet',
         content: (
           <MySolutions
+            theme={this.props.theme}
             solutions={this.props.solutions}
             openSolution={this.openSolution}
             activeSolution={this.props.activeSolution}
@@ -124,7 +133,7 @@ export default class Backstage extends Component<IBackstage, IState> {
         key: 'samples',
         label: 'Samples',
         iconName: 'Dictionary',
-        content: <Samples openSample={this.openSample} />,
+        content: <Samples theme={this.props.theme} openSample={this.openSample} />,
       },
       {
         key: 'import',
@@ -146,6 +155,8 @@ export default class Backstage extends Component<IBackstage, IState> {
     return (
       <BackstageWrapper style={{ display: this.props.isHidden ? 'none' : 'flex' }}>
         <Menu
+          theme={this.props.theme}
+          fabricTheme={this.props.menuFabricTheme}
           selectedKey={this.state.selectedKey}
           items={items.map(item => ({
             key: item.key,

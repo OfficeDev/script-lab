@@ -36,8 +36,8 @@
 //   padding: 1.2rem;
 
 //   &:hover {
-//     background-color: ${props => props.theme.accent}
-//     color: ${props => props.theme.fg}
+//     background-color: ${props => props.theme.primary}
+//     color: ${props => props.theme.white}
 //     cursor: pointer;
 //   }
 // `
@@ -47,8 +47,8 @@
 //   user-select: none;
 
 //   &:hover {
-//     background-color: ${props => props.theme.accent};
-//     color: ${props => props.theme.fg};
+//     background-color: ${props => props.theme.primary};
+//     color: ${props => props.theme.white};
 //     cursor: pointer;
 //   }
 // `
@@ -135,10 +135,11 @@ import React from 'react'
 import Content from './Content'
 import GalleryList from './GalleryList'
 
-export default ({ samplesByGroup, openSample }) => (
+export default ({ samplesByGroup, openSample, theme }) => (
   <Content title="Samples" description="Choose one of the samples below to get started.">
     {Object.keys(samplesByGroup).map(group => (
       <GalleryList
+        theme={theme}
         key={group}
         title={group}
         items={samplesByGroup[group].map(({ id, name, description, rawUrl }) => ({
