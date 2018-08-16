@@ -19,7 +19,7 @@ const host = (state: string = Utilities.host, action: IConfigAction) => {
 export default combineReducers({ host })
 
 export const getHost = (state): string => state.host
-export const getIsWeb = (state): boolean => Utilities.host === HostType.WEB
+export const getIsWeb = (): boolean => Utilities.host === HostType.WEB
 
 export const selectors = {
   getHost,

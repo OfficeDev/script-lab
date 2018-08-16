@@ -13,8 +13,8 @@ export const GalleryListWrapper = styled.section`
 export const TitleBar = styled.div.attrs({ className: 'ms-font-m' })`
   display: flex;
   height: 4rem;
-  color: ${props => props.theme.neutralPrimary};
-  background-color: ${props => props.theme.neutralSecondary};
+  color: ${props => props.theme.neutralDark};
+  background-color: ${props => props.theme.neutralLight};
   white-space: nowrap;
   overflow: hidden;
 `
