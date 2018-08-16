@@ -1,96 +1,90 @@
-import { combineReducers } from 'redux'
 import { gists, messageBar, solutions, settings } from '../actions'
 import { getType } from 'typesafe-actions'
 import { MessageBarType } from 'office-ui-fabric-react/lib/MessageBar'
 
-const isVisible = (state = false, action) => {
-  switch (action.type) {
-    case getType(gists.create.success):
-    case getType(gists.update.success):
-    case getType(solutions.remove):
-    case getType(settings.edit.success):
-    case getType(settings.edit.failure):
-    case getType(messageBar.show):
-      return true
-    case getType(messageBar.dismiss):
-      return false
-    default:
-      return state
-  }
+export interface IMessageBarState {
+  isVisible: boolean
+  style: MessageBarType
+  text: string
+  link: {
+    url: string
+    text: string
+  } | null
 }
 
-const initialStyle = MessageBarType.info
-const style = (state = initialStyle, action) => {
-  switch (action.type) {
-    case getType(gists.create.success):
-    case getType(gists.update.success):
-    case getType(settings.edit.success):
-      return MessageBarType.success
-    case getType(solutions.remove):
-      return MessageBarType.info
-    case getType(settings.edit.failure):
-      return MessageBarType.error
-    case getType(messageBar.show):
-      return action.payload.style
-    case getType(messageBar.dismiss):
-      return initialStyle
-    default:
-      return state
-  }
+const defaultState: IMessageBarState = {
+  isVisible: false,
+  style: MessageBarType.info,
+  text: '',
+  link: null,
 }
 
-const initialText = ''
-const text = (state = initialText, action) => {
+const messageBarReducer = (state: IMessageBarState = defaultState, action) => {
   switch (action.type) {
     case getType(gists.create.success):
-      return `Your gist has been published at https://gist.github.com/${
-        action.payload.gist.id
-      }.`
-    case getType(gists.update.success):
-      return `Your gist has been updated at https://gist.github.com/${
-        action.payload.gist.id
-      }.`
-    case getType(solutions.remove):
-      return `The snippet '${action.payload.name}' has been deleted.`
-    case getType(settings.edit.success):
-      return 'Settings successfully applied.'
-    case getType(settings.edit.failure):
-      return `Error in settings. ${action.payload}`
-    case getType(messageBar.show):
-      return action.payload.text
-    case getType(messageBar.dismiss):
-      return initialText
-    default:
-      return state
-  }
-}
-
-const initialLink = null
-const link = (state = initialLink, action) => {
-  switch (action.type) {
-    case getType(gists.create.success):
+      return {
+        isVisible: true,
+        style: MessageBarType.success,
+        text: `Your gist has been published at https://gist.github.com/${
+          action.payload.gist.id
+        }.`,
+        link: {
+          text: 'View on GitHub',
+          url: `https://gist.github.com/${action.payload.gist.id}`,
+        },
+      }
     case getType(gists.update.success):
       return {
-        text: 'View on GitHub',
-        url: `https://gist.github.com/${action.payload.gist.id}`,
+        isVisible: true,
+        style: MessageBarType.success,
+        text: `Your gist has been updated at https://gist.github.com/${
+          action.payload.gist.id
+        }.`,
+        link: {
+          text: 'View on GitHub',
+          url: `https://gist.github.com/${action.payload.gist.id}`,
+        },
       }
     case getType(solutions.remove):
+      return {
+        isVisible: true,
+        style: MessageBarType.info,
+        text: `The snippet '${action.payload.name}' has been deleted.`,
+        link: null,
+      }
     case getType(settings.edit.success):
+      return {
+        isVisible: true,
+        style: MessageBarType.info,
+        text: 'Settings successfully applied.',
+        link: null,
+      }
+
     case getType(settings.edit.failure):
+      return {
+        isVisible: true,
+        style: MessageBarType.error,
+        text: `Error in settings. ${action.payload}`,
+        link: null,
+      }
+
     case getType(messageBar.show):
+      return {
+        isVisible: true,
+        style: action.payload.style,
+        text: action.payload.text,
+        link: null,
+      }
+
     case getType(messageBar.dismiss):
-      return initialLink
+      return defaultState
+
     default:
       return state
   }
 }
 
-export default combineReducers({
-  isVisible,
-  style,
-  text,
-  link,
-})
+export default messageBarReducer
 
 // TODO: maybe remove
 // selectors

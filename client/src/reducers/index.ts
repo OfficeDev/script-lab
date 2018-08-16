@@ -7,7 +7,10 @@ import solutions, { selectors as solutionSelectors, ISolutionsState } from './so
 import files, { selectors as fileSelectors, IFilesState } from './files'
 import samples, { selectors as sampleSelectors } from './samples'
 import github, { selectors as githubSelectors } from './github'
-import messageBar, { selectors as messageBarSelectors } from './messageBar'
+import messageBar, {
+  selectors as messageBarSelectors,
+  IMessageBarState,
+} from './messageBar'
 import settings, { selectors as settingsSelectors } from './settings'
 
 const root = combineReducers({
@@ -24,7 +27,7 @@ export interface IState {
   files: IFilesState
   samples: any
   github: any
-  messageBar: any
+  messageBar: IMessageBarState
   router: RouterState
   settings: ISettings
 }
