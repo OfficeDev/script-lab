@@ -57,6 +57,8 @@ class ConflictResolutionDialog extends Component<IGistConflictDialog, IState> {
         ? existingSolutions[this.dropdownRef.state.selectedIndices[0]]
         : existingSolutions[0]
 
+    console.log(existingSolution)
+
     openGist(conflictingGist.url, conflictingGist.id, {
       type: this.state.selectedChoiceOption,
       existingSolution,

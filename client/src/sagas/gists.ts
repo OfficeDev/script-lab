@@ -46,23 +46,23 @@ export function* fetchAllGistMetadataSaga(action) {
 
 function* getGistSaga(action) {
   if (action.payload.conflictResolution) {
-    switch (action.payload.conflictResolution) {
+    switch (action.payload.conflictResolution.type) {
       case ConflictResolutionOptions.Open:
         yield call(openSolutionSaga, action.payload.conflictResolution.existingSolution)
-        break
+        return
 
       case ConflictResolutionOptions.Overwrite:
         // delete the existing solution and files
         yield put(solutions.remove(action.payload.conflictResolution.existingSolution))
         yield call(openGistHelper, action.payload.rawUrl, action.payload.gistId)
-        break
+        return
 
       case ConflictResolutionOptions.CreateCopy:
         yield call(openGistHelper, action.payload.rawUrl, action.payload.gistId)
-        break
+        return
 
       default:
-        throw new Error(`Unknown option ${action.payload.conflictResolution}`)
+        throw new Error(`Unknown option ${action.payload.conflictResolution.type}`)
     }
   } else {
     yield call(openGistHelper, action.payload.rawUrl, action.payload.gistId)

@@ -1,4 +1,13 @@
-import { gists, messageBar, solutions, settings } from '../actions'
+import {
+  gists,
+  messageBar,
+  solutions,
+  settings,
+  IGistsAction,
+  IMessageBarAction,
+  ISolutionsAction,
+  ISettingsAction,
+} from '../actions'
 import { getType } from 'typesafe-actions'
 import { MessageBarType } from 'office-ui-fabric-react/lib/MessageBar'
 
@@ -19,7 +28,10 @@ const defaultState: IMessageBarState = {
   link: null,
 }
 
-const messageBarReducer = (state: IMessageBarState = defaultState, action) => {
+const messageBarReducer = (
+  state: IMessageBarState = defaultState,
+  action: IGistsAction | IMessageBarAction | ISolutionsAction | ISettingsAction,
+): IMessageBarState => {
   switch (action.type) {
     case getType(gists.create.success):
       return {

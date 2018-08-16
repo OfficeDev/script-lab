@@ -89,3 +89,7 @@ interface ISettings {
   hostSpecific: IHostSpecificSettings
   defaultActions: IDefaultActions
 }
+
+interface IGithubGistPayload {
+  id: string
+}

@@ -12,13 +12,17 @@ export const create = createAsyncAction(
   'CREATE_GIST_REQUEST',
   'CREATE_GIST_SUCCESS',
   'CREATE_GIST_FAILURE',
-)<{ solutionId: string; isPublic: boolean }, { gist: any; solution: ISolution }, Error>()
+)<
+  { solutionId: string; isPublic: boolean },
+  { gist: IGithubGistPayload; solution: ISolution },
+  Error
+>()
 
 export const update = createAsyncAction(
   'UPDATE_GIST_REQUEST',
   'UPDATE_GIST_SUCCESS',
   'UPDATE_GIST_FAILURE',
-)<{ solutionId: string }, { gist: any }, Error>()
+)<{ solutionId: string }, { gist: IGithubGistPayload }, Error>()
 
 export const fetchMetadata = createAsyncAction(
   'FETCH_GIST_METADATA_REQUEST',
