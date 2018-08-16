@@ -32,7 +32,8 @@
     "start": "set HTTPS=false&&react-scripts-ts start",
     "build": "react-scripts-ts build",
     "test": "react-scripts-ts test --env=jsdom",
-    "test-coverage": "yarn test -- --coverage && coverage\\lcov-report\\index.html",
+    "test-coverage": "yarn test -- --coverage",
+    "show-coverage": "yarn test-coverage && coverage\\lcov-report\\index.html",
     "eject": "react-scripts-ts eject",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
@@ -42,8 +43,9 @@
       "office-ui-fabric-react/lib/": "office-ui-fabric-react/lib-commonjs/"
     },
     "collectCoverageFrom": [
-      "src/**/*.(?<!d.)ts",
-      "src/**/*.tsx"
+      "src/**/*.ts",
+      "src/**/*.tsx",
+      "!src/**/*.d.ts"
     ], 
     "coverageReporters": [
       "json",
