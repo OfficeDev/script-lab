@@ -79,19 +79,21 @@ class Header extends React.Component<IHeader, IState> {
 
     const shareOptions = [
       {
-        hidden: !(solution.source && solution.source.origin === 'gist'),
+        hidden: !(solution.source && solution.source.origin === 'gist' && isLoggedIn),
         key: 'update-gist',
         text: 'Update existing gist',
         iconProps: { iconName: 'Save' },
         onClick: updateGist,
       },
       {
+        hidden: !isLoggedIn,
         key: 'new-public-gist',
         text: 'New public gist',
         iconProps: { iconName: 'PageCheckedIn' },
         onClick: createPublicGist,
       },
       {
+        hidden: !isLoggedIn,
         key: 'new-secret-gist',
         text: 'New secret gist',
         iconProps: { iconName: 'ProtectedDocument' },
