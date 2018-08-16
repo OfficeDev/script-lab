@@ -9,6 +9,7 @@ import samples, { selectors as sampleSelectors } from './samples'
 import github, { selectors as githubSelectors } from './github'
 import messageBar, { selectors as messageBarSelectors } from './messageBar'
 import settings, { selectors as settingsSelectors } from './settings'
+import config, { selectors as configSelectors } from './config'
 
 const root = combineReducers({
   solutions,
@@ -17,6 +18,7 @@ const root = combineReducers({
   github,
   messageBar,
   settings,
+  config,
 })
 
 export interface IState {
@@ -27,6 +29,7 @@ export interface IState {
   messageBar: any
   router: RouterState
   settings: ISettings
+  config: any
 }
 
 export default root
@@ -74,6 +77,7 @@ export const selectors = {
   github: globalizeSelectors(githubSelectors, 'github'),
   messageBar: globalizeSelectors(messageBarSelectors, 'messageBar'),
   settings: globalizeSelectors(settingsSelectors, 'settings'),
+  config: globalizeSelectors(configSelectors, 'config'),
   active: {
     solution: getActiveSolution,
     files: (state: IState) =>

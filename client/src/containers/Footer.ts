@@ -1,28 +1,26 @@
 import { connect } from 'react-redux'
 import { selectors } from '../reducers'
-import { solutions } from '../actions'
-import Footer from '../components/Footer'
+import { config } from '../actions'
+import Footer, {
+  IFooter,
+  IFooterPropsFromRedux,
+  IFooterActionsFromRedux,
+} from '../components/Footer'
 import { push } from 'connected-react-router'
 import { SETTINGS_SOLUTION_ID, SETTINGS_FILE_ID } from '../constants'
 
-const getLanguage = (state, fileId: string | undefined): string => {
-  if (!fileId) {
-    return ''
-  }
-
-  const file = selectors.files.get(state, fileId)
-  if (!file) {
-    return ''
-  }
-
-  return file.language
-}
-
-const mapStateToProps = (state, ownProps) => ({
-  language: getLanguage(state, ownProps.activeFile.id),
+const mapStateToProps = (state, ownProps: IFooter): IFooterPropsFromRedux => ({
+  language: ownProps.activeFile.language,
+  currentHost: selectors.config.getHost(state),
+  isWeb: selectors.config.getIsWeb(state),
 })
-const mapDispatchToProps = (dispatch, ownProps) => ({
+
+const mapDispatchToProps = (dispatch): IFooterActionsFromRedux => ({
   onSettingsIconClick: () =>
     dispatch(push(`/${SETTINGS_SOLUTION_ID}/${SETTINGS_FILE_ID}`)),
+  changeHost: (host: string) => dispatch(config.changeHost(host)),
 })
-export default connect(mapStateToProps, mapDispatchToProps)(Footer)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Footer)

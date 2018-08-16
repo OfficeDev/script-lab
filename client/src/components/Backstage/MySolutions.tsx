@@ -3,13 +3,13 @@ import Content from './Content'
 import GalleryList from './GalleryList'
 
 // TODO: incorp. localization
-// TODO: use real data
 interface IMySolutions {
   solutions: ISolution[]
   openSolution: (solutionId: string) => void
   activeSolution?: ISolution
   gistMetadata: ISharedGistMetadata[]
   openGist: (gistMetadata: ISharedGistMetadata) => void
+  theme: ITheme
 }
 const MySolutions = ({
   solutions,
@@ -17,9 +17,11 @@ const MySolutions = ({
   activeSolution,
   gistMetadata,
   openGist,
+  theme,
 }: IMySolutions) => (
   <Content title="My Snippets" description="Choose a snippet that you have saved">
     <GalleryList
+      theme={theme}
       title="My snippets on this computer"
       items={solutions.map(sol => ({
         key: sol.id,
@@ -31,6 +33,7 @@ const MySolutions = ({
     />
     {gistMetadata.length > 0 && (
       <GalleryList
+        theme={theme}
         title="My shared gists on GitHub"
         items={gistMetadata.map(gist => ({
           key: gist.id,

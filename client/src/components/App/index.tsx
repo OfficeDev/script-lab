@@ -1,11 +1,13 @@
-import React, { Component } from 'react'
-import { Route, Link, Switch } from 'react-router-dom'
+import React from 'react'
+import { Route } from 'react-router-dom'
+import { ThemeProvider } from 'styled-components'
+
 import IDE from '../../containers/IDE'
 
-const App = () => (
-  <div>
+const App = ({ theme }) => (
+  <ThemeProvider theme={theme}>
     <Route exact path="/:solutionId?/:fileId?" component={IDE} />
-  </div>
+  </ThemeProvider>
 )
 
 export default App

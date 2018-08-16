@@ -1,36 +1,37 @@
 import React from 'react'
 import { Nav } from 'office-ui-fabric-react/lib/Nav'
 import {
-  createTheme,
   getFocusStyle,
   mergeStyles,
+  ITheme as IFabricTheme,
 } from 'office-ui-fabric-react/lib/Styling'
 
-const theme = createTheme({
-  palette: {
-    themePrimary: 'white',
-    neutralLighterAlt: 'rgba(0, 0, 0, 0.4)',
-    neutralLighter: 'rgba(0, 0, 0, 0.2)',
-    neutralPrimary: 'rgba(255, 255, 255, 0.8)',
-    white: '#217346',
-  },
-})
 // TODO: make it so that I don't cry when I look at this styling..
-export class Menu extends React.Component<any, any> {
+export interface IMenu {
+  theme: ITheme
+  fabricTheme: IFabricTheme
+  items: any[]
+  selectedKey: string
+}
+
+export class Menu extends React.Component<IMenu> {
   render(): JSX.Element {
+    const { theme, fabricTheme, items, selectedKey } = this.props
     return (
       <Nav
-        theme={theme}
-        selectedKey={this.props.selectedKey}
+        theme={fabricTheme}
+        selectedKey={selectedKey}
         groups={[
           {
-            links: this.props.items.map(item => ({
+            links: items.map(item => ({
               name: item.label,
               key: item.key,
               icon: item.icon,
               iconProps: {
                 iconName: item.icon,
-                styles: { root: { color: 'white !important', marginRight: '1rem' } },
+                styles: {
+                  root: { color: `${theme.white} !important`, marginRight: '1rem' },
+                },
               },
               onClick: item.onClick,
               url: '',
@@ -38,13 +39,26 @@ export class Menu extends React.Component<any, any> {
           },
         ]}
         styles={{
-          root: { width: '22rem', height: '100vh', background: '#217346' },
+          root: { width: '22rem', height: '100vh', background: theme.primary },
           link: mergeStyles(
-            getFocusStyle(theme, undefined, undefined, undefined, 'white', undefined),
+            getFocusStyle(
+              fabricTheme,
+              undefined,
+              undefined,
+              undefined,
+              theme.white,
+              undefined,
+            ),
             {
-              color: 'white !important',
+              backgroundColor: theme.primary,
+              color: `${theme.white} !important`,
               height: '7rem',
               paddingLeft: '2rem',
+              selectors: {
+                '.ms-Nav-compositeLink:hover &': {
+                  backgroundColor: theme.primaryDark,
+                },
+              },
             },
           ),
         }}

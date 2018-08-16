@@ -7,6 +7,7 @@ import * as gists from './gists'
 import * as github from './github'
 import * as messageBar from './messageBar'
 import * as settings from './settings'
+import * as config from './config'
 
 export { solutions }
 export { files }
@@ -15,6 +16,7 @@ export { gists }
 export { github }
 export { messageBar }
 export { settings }
+export { config }
 
 export default {
   solutions,
@@ -24,6 +26,7 @@ export default {
   github,
   messageBar,
   settings,
+  config,
 }
 
 export type ISolutionsAction = ActionType<typeof solutions>
@@ -33,3 +36,4 @@ export type IGistsAction = ActionType<typeof gists>
 export type IGithubAction = ActionType<typeof github>
 export type IMessageBarAction = ActionType<typeof messageBar>
 export type ISettingsAction = ActionType<typeof settings>
+export type IConfigAction = ActionType<typeof config>
