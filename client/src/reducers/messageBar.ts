@@ -45,6 +45,7 @@ const messageBarReducer = (
           url: `https://gist.github.com/${action.payload.gist.id}`,
         },
       }
+
     case getType(gists.update.success):
       return {
         isVisible: true,
@@ -57,6 +58,7 @@ const messageBarReducer = (
           url: `https://gist.github.com/${action.payload.gist.id}`,
         },
       }
+
     case getType(solutions.remove):
       return {
         isVisible: true,
@@ -64,6 +66,7 @@ const messageBarReducer = (
         text: `The snippet '${action.payload.name}' has been deleted.`,
         link: null,
       }
+
     case getType(settings.edit.success):
       return {
         isVisible: true,
