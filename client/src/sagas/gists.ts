@@ -45,32 +45,41 @@ export function* fetchAllGistMetadataSaga(action) {
 }
 
 function* getGistSaga(action) {
-  const conflictResolutionType = action.payload.conflictResolution
-    ? action.payload.conflictResolution.type
-    : ''
+  if (action.payload.conflictResolution) {
+    switch (action.payload.conflictResolution) {
+      case ConflictResolutionOptions.Open:
+        yield call(openSolutionSaga, action.payload.conflictResolution.existingSolution)
+        break
 
-  switch (conflictResolutionType) {
-    case ConflictResolutionOptions.Open:
-      yield call(openSolutionSaga, action.payload.conflictResolution.existingSolution)
-      break
+      case ConflictResolutionOptions.Overwrite:
+        // delete the existing solution and files
+        yield put(solutions.remove(action.payload.conflictResolution.existingSolution))
+        yield call(openGistHelper, action.payload.rawUrl, action.payload.gistId)
+        break
 
-    case ConflictResolutionOptions.Overwrite:
-      // delete the existing solution and files
-      yield put(solutions.remove(action.payload.conflictResolution.existingSolution))
+      case ConflictResolutionOptions.CreateCopy:
+        yield call(openGistHelper, action.payload.rawUrl, action.payload.gistId)
+        break
 
-    case ConflictResolutionOptions.CreateCopy:
-    default:
-      const { content, error } = yield call(fetchYaml, action.payload.rawUrl)
-      if (content) {
-        const { solution, files } = convertSnippetToSolution(content)
-        solution.source = {
-          id: action.payload.gistId,
-          origin: 'gist',
-        }
-        yield put(gists.get.success({ solution, files }))
-      } else {
-        yield put(gists.get.failure(error))
-      }
+      default:
+        throw new Error(`Unknown option ${action.payload.conflictResolution}`)
+    }
+  } else {
+    yield call(openGistHelper, action.payload.rawUrl, action.payload.gistId)
+  }
+}
+
+function* openGistHelper(rawUrl: string, gistId: string) {
+  const { content, error } = yield call(fetchYaml, rawUrl)
+  if (content) {
+    const { solution, files } = convertSnippetToSolution(content)
+    solution.source = {
+      id: gistId,
+      origin: 'gist',
+    }
+    yield put(gists.get.success({ solution, files }))
+  } else {
+    yield put(gists.get.failure(error))
   }
 }
 
