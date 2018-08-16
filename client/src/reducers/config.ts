@@ -16,17 +16,10 @@ const host = (state: string = Utilities.host, action: IConfigAction) => {
   }
 }
 
-const isWeb = (state: boolean = Utilities.host === HostType.WEB, action) => {
-  switch (action.type) {
-    default:
-      return state
-  }
-}
-
-export default combineReducers({ host, isWeb })
+export default combineReducers({ host })
 
 export const getHost = (state): string => state.host
-export const getIsWeb = (state): boolean => state.isWeb
+export const getIsWeb = (state): boolean => Utilities.host === HostType.WEB
 
 export const selectors = {
   getHost,
