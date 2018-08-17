@@ -9,7 +9,6 @@ import ImportSolution from './ImportSolution'
 import ConflictResolutionDialog from './ConflictResolutionDialog'
 
 interface IBackstageItem {
-  hidden?: boolean
   key: string
   iconName: string
   label?: string
@@ -50,15 +49,6 @@ export default class Backstage extends Component<IBackstage, IState> {
     selectedKey: 'my-solutions',
     conflictingGist: null,
     existingSolutionsConflicting: null,
-  }
-
-  componentDidUpdate(prevProps) {
-    if (
-      this.state.selectedKey === 'samples' &&
-      Object.keys(this.props.samplesByGroup).length === 0
-    ) {
-      this.setState({ selectedKey: 'my-solutions' })
-    }
   }
 
   openSolution = (solutionId: string) => {
@@ -127,7 +117,6 @@ export default class Backstage extends Component<IBackstage, IState> {
         ),
       },
       {
-        hidden: Object.keys(this.props.samplesByGroup).length === 0,
         key: 'samples',
         label: 'Samples',
         iconName: 'Dictionary',
@@ -150,12 +139,10 @@ export default class Backstage extends Component<IBackstage, IState> {
           />
         ),
       },
-    ]
-      .filter(({ hidden }: IBackstageItem) => !hidden)
-      .map((item: IBackstageItem) => ({
-        onSelect: () => this.setState({ selectedKey: item.key }),
-        ...item,
-      }))
+    ].map((item: IBackstageItem) => ({
+      onSelect: () => this.setState({ selectedKey: item.key }),
+      ...item,
+    }))
     const { selectedKey, conflictingGist, existingSolutionsConflicting } = this.state
     const activeItem = items.find(item => item.key === selectedKey)
     return (
