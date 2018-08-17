@@ -3,12 +3,13 @@ import { BackstageWrapper } from './styles'
 
 import Menu from './Menu'
 import MySolutions from './MySolutions'
-import Samples from '../../containers/Samples'
+import Samples from './Samples'
 import ImportSolution from './ImportSolution'
 
 import ConflictResolutionDialog from './ConflictResolutionDialog'
 
 interface IBackstageItem {
+  hidden?: boolean
   key: string
   iconName: string
   label?: string
@@ -19,6 +20,7 @@ interface IBackstageItem {
 export interface IBackstagePropsFromRedux {
   solutions: ISolution[]
   sharedGistMetadata: ISharedGistMetadata[]
+  samplesByGroup: { [group: string]: ISampleMetadata[] }
 
   theme: ITheme
 }
@@ -116,10 +118,17 @@ export default class Backstage extends Component<IBackstage, IState> {
         ),
       },
       {
+        hidden: Object.keys(this.props.samplesByGroup).length === 0,
         key: 'samples',
         label: 'Samples',
         iconName: 'Dictionary',
-        content: <Samples theme={this.props.theme} openSample={this.openSample} />,
+        content: (
+          <Samples
+            theme={this.props.theme}
+            openSample={this.openSample}
+            samplesByGroup={this.props.samplesByGroup}
+          />
+        ),
       },
       {
         key: 'import',
@@ -132,10 +141,12 @@ export default class Backstage extends Component<IBackstage, IState> {
           />
         ),
       },
-    ].map((item: IBackstageItem) => ({
-      onSelect: () => this.setState({ selectedKey: item.key }),
-      ...item,
-    }))
+    ]
+      .filter(({ hidden }: IBackstageItem) => !hidden)
+      .map((item: IBackstageItem) => ({
+        onSelect: () => this.setState({ selectedKey: item.key }),
+        ...item,
+      }))
     const { selectedKey, conflictingGist, existingSolutionsConflicting } = this.state
     const activeItem = items.find(item => item.key === selectedKey)
     return (

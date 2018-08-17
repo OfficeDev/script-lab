@@ -13,6 +13,7 @@ import { getTheme } from '../theme'
 const mapStateToProps = (state): IBackstagePropsFromRedux => ({
   sharedGistMetadata: selectors.github.getGistMetadata(state),
   solutions: selectors.solutions.getAllExceptSettings(state),
+  samplesByGroup: selectors.samples.getByGroup(state),
   theme: getTheme(selectors.config.getHost(state)),
 })
 

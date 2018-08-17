@@ -1,10 +1,13 @@
 import { samples, ISamplesAction } from '../actions'
 import { getType } from 'typesafe-actions'
 
-const metadata = (state = [], action: ISamplesAction) => {
+const initialMetadata = []
+const metadata = (state = initialMetadata, action: ISamplesAction) => {
   switch (action.type) {
     case getType(samples.fetchMetadata.success):
       return action.payload
+    case getType(samples.fetchMetadata.failure):
+      return initialMetadata
     default:
       return state
   }
