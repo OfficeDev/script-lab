@@ -1,5 +1,5 @@
 import { put, takeEvery, call } from 'redux-saga/effects'
-import { getType } from 'typesafe-actions'
+import { getType, ActionType } from 'typesafe-actions'
 
 import { samples } from '../actions'
 import { fetchYaml } from '../services/general'
@@ -19,7 +19,7 @@ function* fetchSampleMetadataSaga() {
   }
 }
 
-function* openSampleSaga(action) {
+function* openSampleSaga(action: ActionType<typeof samples.get.request>) {
   let url = action.payload.rawUrl
   url = url.replace('<ACCOUNT>', 'OfficeDev')
   url = url.replace('<REPO>', 'office-js-snippets')
@@ -34,7 +34,7 @@ function* openSampleSaga(action) {
   }
 }
 
-function* handleOpenSampleSuccessSaga(action) {
+function* handleOpenSampleSuccessSaga(action: ActionType<typeof samples.get.success>) {
   yield call(createSolutionSaga, action.payload.solution, action.payload.files)
 }
 

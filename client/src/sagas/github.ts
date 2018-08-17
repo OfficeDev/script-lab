@@ -1,11 +1,11 @@
 import { put, takeEvery, call } from 'redux-saga/effects'
-import { getType } from 'typesafe-actions'
+import { getType, ActionType } from 'typesafe-actions'
 
 import { github } from '../actions'
 import { login } from '../services/github'
 import { fetchAllGistMetadataSaga } from './gists'
 
-function* gitHubLoginSaga(action) {
+function* gitHubLoginSaga(action: ActionType<typeof github.login.request>) {
   const profile = yield call(login)
 
   yield put(github.login.success(profile))

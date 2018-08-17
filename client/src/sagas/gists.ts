@@ -1,5 +1,5 @@
 import { put, takeEvery, call, select } from 'redux-saga/effects'
-import { getType } from 'typesafe-actions'
+import { getType, ActionType } from 'typesafe-actions'
 import YAML from 'yamljs'
 
 import * as github from '../services/github'
@@ -12,7 +12,7 @@ import { ConflictResolutionOptions } from '../interfaces/enums'
 
 import { createSolutionSaga, openSolutionSaga } from './solutions'
 
-export function* fetchAllGistMetadataSaga(action) {
+export function* fetchAllGistMetadataSaga() {
   const token = yield select(selectors.github.getToken)
   if (token) {
     const { response, error } = yield call(github.request, {
@@ -44,7 +44,7 @@ export function* fetchAllGistMetadataSaga(action) {
   }
 }
 
-function* getGistSaga(action) {
+function* getGistSaga(action: ActionType<typeof gists.get.request>) {
   if (action.payload.conflictResolution) {
     switch (action.payload.conflictResolution.type) {
       case ConflictResolutionOptions.Open:
@@ -83,15 +83,18 @@ function* openGistHelper(rawUrl: string, gistId: string) {
   }
 }
 
-function* handleGetGistSuccessSaga(action) {
+function* handleGetGistSuccessSaga(action: ActionType<typeof gists.get.success>) {
   yield call(createSolutionSaga, action.payload.solution, action.payload.files)
 }
 
-function* createGistSaga(action) {
+function* createGistSaga(action: ActionType<typeof gists.create.request>) {
   const token = yield select(selectors.github.getToken)
   if (token) {
-    const solution = yield select(selectors.solutions.get, action.payload.solutionId)
-    const files = yield select(selectors.files.getMany, solution.files)
+    const solution: ISolution = yield select(
+      selectors.solutions.get,
+      action.payload.solutionId,
+    )
+    const files: IFile[] = yield select(selectors.files.getMany, solution.files)
 
     const snippet = YAML.stringify(convertSolutionToSnippet(solution, files))
 
@@ -118,13 +121,13 @@ function* createGistSaga(action) {
   }
 }
 
-function* handleCreateGistSuccessSaga(action) {
+function* handleCreateGistSuccessSaga(action: ActionType<typeof gists.create.success>) {
   const { solution } = action.payload
   solution.source = { id: action.payload.gist.id, origin: 'gist' }
   yield put(solutions.edit(solution.id, solution))
 }
 
-function* updateGistSaga(action) {
+function* updateGistSaga(action: ActionType<typeof gists.update.request>) {
   const token = yield select(selectors.github.getToken)
   if (token) {
     const solution = yield select(selectors.solutions.get, action.payload.solutionId)
@@ -159,7 +162,7 @@ function* updateGistSaga(action) {
   }
 }
 
-function* importSnippetSaga(action) {
+function* importSnippetSaga(action: ActionType<typeof gists.importSnippet.request>) {
   try {
     if (action.payload.gistId) {
       const { response, error } = yield call(github.request, {
@@ -186,7 +189,9 @@ function* importSnippetSaga(action) {
   }
 }
 
-function* handleImportSnippetSuccessSaga(action) {
+function* handleImportSnippetSuccessSaga(
+  action: ActionType<typeof gists.importSnippet.success>,
+) {
   yield call(createSolutionSaga, action.payload.solution, action.payload.files)
 }
 
