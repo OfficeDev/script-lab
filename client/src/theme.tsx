@@ -35,7 +35,7 @@ export const getTheme = (host: string): ITheme => {
   const primary = primaryColors[host] || primaryColors[HostType.WEB]
   const primaryColor = Color(primary)
   return {
-    primaryDarkest: primaryColor.darken(0.75).hex(),
+    primaryDarkest: primaryColor.darken(0.6).hex(),
     primaryDarker: primaryColor.darken(0.5).hex(),
     primaryDark: primaryColor.darken(0.3).hex(),
     primary: primaryColor.hex(),
