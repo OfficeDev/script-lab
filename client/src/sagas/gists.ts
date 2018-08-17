@@ -14,33 +14,35 @@ import { createSolutionSaga, openSolutionSaga } from './solutions'
 
 export function* fetchAllGistMetadataSaga() {
   const token = yield select(selectors.github.getToken)
-  if (token) {
-    const { response, error } = yield call(github.request, {
-      method: 'GET',
-      path: 'gists',
-      token,
+  if (!token) {
+    return
+  }
+
+  const { response, error } = yield call(github.request, {
+    method: 'GET',
+    path: 'gists',
+    token,
+  })
+
+  if (response) {
+    const gistsMetadata = response.map(gist => {
+      const { files, id, description, updated_at, created_at } = gist
+      const file = files[Object.keys(files)[0]]
+      const title = file.filename.split('.')[0]
+      const url = file.raw_url
+
+      return {
+        url,
+        id,
+        description,
+        title,
+        dateCreated: created_at,
+        dateLastModified: updated_at,
+      }
     })
-
-    if (response) {
-      const gistsMetadata = response.map(gist => {
-        const { files, id, description, updated_at, created_at } = gist
-        const file = files[Object.keys(files)[0]]
-        const title = file.filename.split('.')[0]
-        const url = file.raw_url
-
-        return {
-          url,
-          id,
-          description,
-          title,
-          dateCreated: created_at,
-          dateLastModified: updated_at,
-        }
-      })
-      yield put(gists.fetchMetadata.success(gistsMetadata))
-    } else {
-      yield put(gists.fetchMetadata.failure(error))
-    }
+    yield put(gists.fetchMetadata.success(gistsMetadata))
+  } else {
+    yield put(gists.fetchMetadata.failure(error))
   }
 }
 
@@ -89,35 +91,37 @@ function* handleGetGistSuccessSaga(action: ActionType<typeof gists.get.success>)
 
 function* createGistSaga(action: ActionType<typeof gists.create.request>) {
   const token = yield select(selectors.github.getToken)
-  if (token) {
-    const solution: ISolution = yield select(
-      selectors.solutions.get,
-      action.payload.solutionId,
-    )
-    const files: IFile[] = yield select(selectors.files.getMany, solution.files)
+  if (!token) {
+    return
+  }
 
-    const snippet = YAML.stringify(convertSolutionToSnippet(solution, files))
+  const solution: ISolution = yield select(
+    selectors.solutions.get,
+    action.payload.solutionId,
+  )
+  const files: IFile[] = yield select(selectors.files.getMany, solution.files)
 
-    const { response, error } = yield call(github.request, {
-      method: 'POST',
-      path: 'gists',
-      token,
-      jsonPayload: JSON.stringify({
-        public: action.payload.isPublic,
-        description: `${solution.description}`,
-        files: {
-          [`${solution.name}.yaml`]: {
-            content: snippet,
-          },
+  const snippet = YAML.stringify(convertSolutionToSnippet(solution, files))
+
+  const { response, error } = yield call(github.request, {
+    method: 'POST',
+    path: 'gists',
+    token,
+    jsonPayload: JSON.stringify({
+      public: action.payload.isPublic,
+      description: `${solution.description}`,
+      files: {
+        [`${solution.name}.yaml`]: {
+          content: snippet,
         },
-      }),
-    })
+      },
+    }),
+  })
 
-    if (response) {
-      yield put(gists.create.success({ gist: response, solution }))
-    } else {
-      yield put(gists.create.failure(error))
-    }
+  if (response) {
+    yield put(gists.create.success({ gist: response, solution }))
+  } else {
+    yield put(gists.create.failure(error))
   }
 }
 
@@ -129,35 +133,37 @@ function* handleCreateGistSuccessSaga(action: ActionType<typeof gists.create.suc
 
 function* updateGistSaga(action: ActionType<typeof gists.update.request>) {
   const token = yield select(selectors.github.getToken)
-  if (token) {
-    const solution = yield select(selectors.solutions.get, action.payload.solutionId)
-    const files = yield select(selectors.files.getMany, solution.files)
+  if (!token) {
+    return
+  }
 
-    const snippet = YAML.stringify(convertSolutionToSnippet(solution, files))
-    const gistId = solution.source.id
+  const solution = yield select(selectors.solutions.get, action.payload.solutionId)
+  const files = yield select(selectors.files.getMany, solution.files)
 
-    if (!gistId) {
-      yield put(gists.update.failure(new Error('No gistId for this solution.')))
-    } else {
-      const { response, error } = yield call(github.request, {
-        method: 'PATCH',
-        path: `gists/${gistId}`,
-        token,
-        jsonPayload: JSON.stringify({
-          description: `${solution.description}`,
-          files: {
-            [`${solution.name}.yaml`]: {
-              content: snippet,
-            },
+  const snippet = YAML.stringify(convertSolutionToSnippet(solution, files))
+  const gistId = solution.source.id
+
+  if (!gistId) {
+    yield put(gists.update.failure(new Error('No gistId for this solution.')))
+  } else {
+    const { response, error } = yield call(github.request, {
+      method: 'PATCH',
+      path: `gists/${gistId}`,
+      token,
+      jsonPayload: JSON.stringify({
+        description: `${solution.description}`,
+        files: {
+          [`${solution.name}.yaml`]: {
+            content: snippet,
           },
-        }),
-      })
+        },
+      }),
+    })
 
-      if (response) {
-        yield put(gists.update.success({ gist: response }))
-      } else {
-        yield put(gists.update.failure(error))
-      }
+    if (response) {
+      yield put(gists.update.success({ gist: response }))
+    } else {
+      yield put(gists.update.failure(error))
     }
   }
 }
