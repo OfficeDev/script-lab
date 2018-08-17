@@ -1,4 +1,5 @@
 import { connect } from 'react-redux'
+import { withTheme } from 'styled-components'
 import { files } from '../actions'
 import Editor, { IEditor } from '../components/Editor'
 import { selectors } from '../reducers'
@@ -11,7 +12,6 @@ const mapStateToProps = (state, ownProps: IEditor): Partial<IEditor> => ({
 
   editorSettings: {
     monacoTheme: selectors.settings.getMonacoTheme(state),
-    backgroundColor: selectors.settings.getBackgroundColor(state),
     fontFamily: selectors.settings.getFontFamily(state),
     fontSize: selectors.settings.getFontSize(state),
     lineHeight: selectors.settings.getLineHeight(state),
@@ -32,4 +32,7 @@ const mapDispatchToProps = (dispatch, ownProps: IEditor) => ({
   openSettings: () => dispatch(push(`/${SETTINGS_SOLUTION_ID}/${SETTINGS_FILE_ID}`)),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Editor)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(withTheme(Editor))

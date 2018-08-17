@@ -1,7 +1,6 @@
 import { getType } from 'typesafe-actions'
 import { defaultSettings } from '../defaultSettings'
 import { settings as settingsActions, ISettingsAction } from '../actions'
-import { defaultTheme } from '../theme'
 
 const settings = (state: ISettings = defaultSettings, action: ISettingsAction) => {
   switch (action.type) {
@@ -23,15 +22,6 @@ export const getMonacoTheme = (state: ISettings): 'vs' | 'vs-dark' | 'hc-black' 
   }[state.editor.theme]
 }
 
-// TODO(nicobell): figure out how to properly handle this case
-export const getBackgroundColor = (state: ISettings): string => {
-  return {
-    light: defaultTheme.fg,
-    dark: defaultTheme.bg,
-    'high-contrast': 'black',
-  }[state.editor.theme]
-}
-
 // font
 export const getFontSize = (state: ISettings): number => state.editor.font.size
 export const getFontFamily = (state: ISettings): string => state.editor.font.family
@@ -49,7 +39,6 @@ export const getTabSize = (state: ISettings): number => state.editor.tabSize
 
 export const selectors = {
   getMonacoTheme,
-  getBackgroundColor,
   getFontSize,
   getFontFamily,
   getLineHeight,

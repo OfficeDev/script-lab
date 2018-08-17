@@ -6,9 +6,11 @@ import configureStore from './configureStore'
 import { setupFabricTheme } from './theme'
 import registerServiceWorker from './registerServiceWorker'
 import { samples, gists } from './actions'
+import { selectors } from './reducers'
 
 import './index.css'
 import Root from './components/Root'
+import { getHost } from './reducers/config'
 
 document.addEventListener(
   'keydown',
@@ -28,9 +30,9 @@ Office.onReady(async () => {
     return
   }
 
-  setupFabricTheme()
-
   const { store, history } = configureStore()
+
+  setupFabricTheme(selectors.config.getHost(store.getState()))
 
   // initial actions
   store.dispatch(samples.fetchMetadata.request())

@@ -18,7 +18,6 @@ import { getModel, setPosForModel, getModelByIdIfExists } from './Monaco/monaco-
 
 export interface IEditorSettings {
   monacoTheme: string
-  backgroundColor: string
   fontFamily: string
   fontSize: number
   lineHeight: number
@@ -44,6 +43,7 @@ export interface IEditor {
     fileId: string,
     file: Partial<IEditableFileProperties>,
   ) => void
+  theme: any
 }
 
 interface IState {
@@ -233,8 +233,8 @@ class Editor extends Component<IEditor, IState> {
   }
 
   render() {
-    const { activeFiles, editorSettings, isSettingsView } = this.props
-    const { backgroundColor, monacoTheme } = editorSettings
+    const { activeFiles, editorSettings, isSettingsView, theme } = this.props
+    const { monacoTheme } = editorSettings
     const options = this.getMonacoOptions()
     const libraries = activeFiles.find(file => file.name === 'libraries.txt')
 
@@ -284,7 +284,7 @@ class Editor extends Component<IEditor, IState> {
           </DialogFooter>
         </Dialog>
 
-        <Layout style={{ backgroundColor }}>
+        <Layout style={{ backgroundColor: theme.neutralDark }}>
           <Monaco
             theme={monacoTheme}
             options={options}
