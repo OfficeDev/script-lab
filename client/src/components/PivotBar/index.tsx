@@ -35,13 +35,13 @@ class PivotBar extends React.Component<IPivotBar> {
           onLinkClick={this.onLinkClick}
           selectedKey={selectedKey || undefined}
           styles={{
-            root: { backgroundColor: theme.primaryDark },
+            root: { backgroundColor: theme.primaryDarker },
             link: {
-              backgroundColor: theme.primaryDark,
-              selectors: { ':active': { backgroundColor: theme.primaryDarker } },
+              backgroundColor: theme.primaryDarker,
+              selectors: { ':active': { backgroundColor: theme.primaryDarkest } },
             },
             linkIsSelected: {
-              backgroundColor: theme.primaryDarker,
+              backgroundColor: theme.primaryDarkest,
               selectors: {
                 ':before': {
                   borderBottom: `2px solid ${theme.white}`,

@@ -13,15 +13,15 @@ const neutralColors: IThemeNeutralColors = {
   white: '#ffffff',
 }
 
-// TODO(nicobell): incorp. into header
-export const getHeaderFabricTheme = (theme: ITheme) => {
+export const getHeaderFabricTheme = (host: string) => {
+  const theme = getTheme(host)
   return createTheme({
     palette: {
       themePrimary: theme.white, // color used for icons in context menu
-      themeDarkAlt: '#eaeaea', // used for icon colors
-      neutralLighter: '#217346', // bar background color
-      neutralLight: '#35875a', // bar hover color
-      neutralQuaternaryAlt: '#3b8d60', // active context menu color for button
+      themeDarkAlt: theme.neutralLighter, // used for icon colors
+      neutralLighter: theme.primary, // bar background color
+      neutralLight: theme.primaryDark, // bar hover color
+      neutralQuaternaryAlt: theme.primaryLight, // active context menu color for button
       neutralSecondary: theme.white, // color of chevron for context menu
       neutralPrimary: theme.white, // normal text color
       neutralDark: theme.neutralLighter, // color of text on hover
@@ -35,20 +35,14 @@ export const getTheme = (host: string): ITheme => {
   const primary = primaryColors[host] || primaryColors[HostType.WEB]
   const primaryColor = Color(primary)
   return {
+    primaryDarkest: primaryColor.darken(0.75).hex(),
     primaryDarker: primaryColor.darken(0.5).hex(),
-    primaryDark: primaryColor.darken(0.25).hex(),
+    primaryDark: primaryColor.darken(0.3).hex(),
     primary: primaryColor.hex(),
-    primaryLight: primaryColor.lighten(0.25).hex(),
+    primaryLight: primaryColor.lighten(0.35).hex(),
     primaryLighter: primaryColor.lighten(0.5).hex(),
     ...neutralColors,
   }
-}
-
-export const defaultTheme = {
-  accent: '#217346',
-  darkAccent: '#0D4027',
-  bg: '#1e1e1e',
-  fg: '#eeeeee',
 }
 
 const primaryColors: { [key: string]: string } = {
@@ -93,21 +87,6 @@ export const fabricTheme = {
   disabledBackground: '#f4f4f4',
   disabledText: '#c8c8c8',
 }
-
-export const headerTheme = createTheme({
-  palette: {
-    themePrimary: '#ffffff', // color used for icons in context menu
-    themeDarkAlt: '#eaeaea', // used for icon colors
-    neutralLighter: '#217346', // bar background color
-    neutralLight: '#35875a', // bar hover color
-    neutralQuaternaryAlt: '#3b8d60', // active context menu color for button
-    neutralSecondary: '#ffffff', // color of chevron for context menu
-    neutralPrimary: '#ffffff', // normal text color
-    neutralDark: '#f4f4f4', // color of text on hover
-    black: '#f8f8f8', // color of text on hover
-    white: '#515151', // color of context menu background
-  },
-})
 
 export const setupFabricTheme = () => {
   loadTheme({ palette: fabricTheme })

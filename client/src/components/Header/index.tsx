@@ -6,32 +6,38 @@ import { CommandBar, ICommandBarItemProps } from 'office-ui-fabric-react/lib/Com
 import { PersonaSize, PersonaCoin } from 'office-ui-fabric-react/lib/Persona'
 
 import SolutionSettings from './SolutionSettings'
-import { headerTheme } from '../../theme'
+import { ITheme as IFabricTheme } from 'office-ui-fabric-react/lib/Styling'
 
 const HeaderWrapper = styled.header`
   grid-area: header;
   background-color: ${props => props.theme.primary};
 `
 
-export interface IHeaderFromRedux {
+export interface IHeaderPropsFromRedux {
   profilePicUrl?: string
+  isSettingsView: boolean
+  isLoggedIn: boolean
+  headerFabricTheme: IFabricTheme
+}
+
+export interface IHeaderActionsFromRedux {
+  login: () => void
+  logout: () => void
+
   editSolution: (
     solutionId: string,
     solution: Partial<IEditableSolutionProperties>,
   ) => void
-  isSettingsView: boolean
-  isLoggedIn: boolean
-  login: () => void
-  logout: () => void
   deleteSolution: () => void
+
   createPublicGist: () => void
   createSecretGist: () => void
   updateGist: () => void
 }
 
-export interface IHeader extends IHeaderFromRedux {
-  showBackstage: () => void
+export interface IHeader extends IHeaderPropsFromRedux, IHeaderActionsFromRedux {
   solution: ISolution
+  showBackstage: () => void
 }
 
 interface IState {
@@ -50,6 +56,7 @@ class Header extends React.Component<IHeader, IState> {
       isSettingsView,
       profilePicUrl,
       isLoggedIn,
+      headerFabricTheme,
       logout,
       login,
       updateGist,
@@ -163,7 +170,7 @@ class Header extends React.Component<IHeader, IState> {
 
     return (
       <>
-        <Customizer settings={{ theme: headerTheme }}>
+        <Customizer settings={{ theme: headerFabricTheme }}>
           <HeaderWrapper>
             <CommandBar
               items={items}

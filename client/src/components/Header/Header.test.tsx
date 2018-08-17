@@ -3,6 +3,7 @@ import { mount } from 'enzyme'
 
 import Header, { IHeader } from './index'
 import { getBoilerplate } from '../../newSolutionData'
+import { ITheme as IFabricTheme } from '../../../node_modules/@uifabric/styling'
 
 const normalExample = getBoilerplate()
 
@@ -28,6 +29,7 @@ describe('Header should render properly', () => {
       isLoggedIn: true,
       isSettingsView: false,
       profilePicUrl: undefined,
+      headerFabricTheme: {} as IFabricTheme,
       ...actionProps,
     }
     const header = mount(<Header {...headerProps} />)

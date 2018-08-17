@@ -91,6 +91,7 @@ interface ISettings {
 }
 
 interface IThemePrimaryColors {
+  primaryDarkest: string
   primaryDarker: string
   primaryDark: string
   primary: string
