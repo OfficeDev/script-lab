@@ -19,6 +19,8 @@ const actionProps = {
   createPublicGist: () => {},
   createSecretGist: () => {},
   updateGist: () => {},
+  notifyClipboardCopySuccess: () => {},
+  notifyClipboardCopyFailure: () => {},
 }
 
 describe('Header should render properly', () => {
@@ -26,6 +28,7 @@ describe('Header should render properly', () => {
     const { solution, files } = normalExample
     const headerProps: IHeader = {
       solution,
+      files,
       isLoggedIn: true,
       isSettingsView: false,
       profilePicUrl: undefined,
