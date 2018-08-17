@@ -41,6 +41,7 @@ export class Menu extends React.Component<IMenu> {
           },
         },
         isSelected && {
+          backgroundColor: theme.primaryDark,
           selectors: {
             '&:after': {
               borderLeft: `2px solid ${theme.white}`,

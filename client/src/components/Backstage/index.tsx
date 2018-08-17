@@ -52,6 +52,15 @@ export default class Backstage extends Component<IBackstage, IState> {
     existingSolutionsConflicting: null,
   }
 
+  componentDidUpdate(prevProps) {
+    if (
+      this.state.selectedKey === 'samples' &&
+      Object.keys(this.props.samplesByGroup).length === 0
+    ) {
+      this.setState({ selectedKey: 'my-solutions' })
+    }
+  }
+
   openSolution = (solutionId: string) => {
     this.props.openSolution(solutionId)
     this.props.hideBackstage()
