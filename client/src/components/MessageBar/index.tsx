@@ -1,8 +1,12 @@
 import React from 'react'
 import { MessageBar } from 'office-ui-fabric-react/lib/MessageBar'
 import { Link } from 'office-ui-fabric-react/lib/Link'
-
-export default ({ messageBarProps, dismiss }) =>
+import { IMessageBarState } from '../../reducers/messageBar'
+interface IMessageBar {
+  messageBarProps: IMessageBarState
+  dismiss: () => void
+}
+export default ({ messageBarProps, dismiss }: IMessageBar) =>
   messageBarProps.isVisible ? (
     <MessageBar
       dismissButtonAriaLabel="Close"

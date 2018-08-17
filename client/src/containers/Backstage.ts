@@ -24,7 +24,7 @@ const mapDispatchToProps = (dispatch): IBackstageActionsFromRedux => ({
   openGist: (rawUrl: string, gistId: string, conflictResolution?: any) =>
     dispatch(gists.get.request({ rawUrl, gistId, conflictResolution })),
   importGist: (gistId?: string, gist?: string) =>
-    dispatch(gists.importPublic.request({ gistId, gist })),
+    dispatch(gists.importSnippet.request({ gistId, gist })),
 })
 
 export default connect(

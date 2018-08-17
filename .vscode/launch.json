@@ -5,7 +5,7 @@
       "name": "Chrome",
       "type": "chrome",
       "request": "launch",
-      "url": "http://localhost:3000",
+      "url": "https://localhost:3000",
       "webRoot": "${workspaceRoot}/client/src",
       "userDataDir": "${workspaceRoot}/.vscode/chrome",
       "sourceMapPathOverrides": {

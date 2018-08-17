@@ -1,8 +1,9 @@
 import { connect } from 'react-redux'
-import { solutions, github, gists } from '../actions'
+import { solutions, github, gists, messageBar } from '../actions'
 import { selectors } from '../reducers'
 import Header, { IHeader, IHeaderFromRedux } from '../components/Header'
 import { SETTINGS_SOLUTION_ID } from '../constants'
+import { MessageBarType } from '../../node_modules/office-ui-fabric-react/lib/MessageBar'
 
 const mapStateToProps = (state, ownProps: IHeader): Partial<IHeaderFromRedux> => ({
   isSettingsView: ownProps.solution.id === SETTINGS_SOLUTION_ID,
@@ -23,6 +24,15 @@ const mapDispatchToProps = (dispatch, ownProps: IHeader): Partial<IHeaderFromRed
   createSecretGist: () =>
     dispatch(gists.create.request({ solutionId: ownProps.solution.id, isPublic: false })),
   updateGist: () => dispatch(gists.update.request({ solutionId: ownProps.solution.id })),
+  notifyClipboardCopySuccess: () =>
+    dispatch(messageBar.show('Snippet copied to clipboard.')),
+  notifyClipboardCopyFailure: () =>
+    dispatch(
+      messageBar.show('Snippet failed to copy to clipboard.', MessageBarType.error),
+    ),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Header)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Header)
