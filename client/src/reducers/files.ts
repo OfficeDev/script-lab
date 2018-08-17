@@ -84,8 +84,13 @@ export default combineReducers({
 })
 
 const get = (state: IFilesState, id: string): IFile => state.byId[id]
+const getMany = (state: IFilesState, ids: string[]): IFile[] =>
+  Object.keys(state.byId)
+    .filter(id => ids.includes(id))
+    .map(id => state.byId[id])
 
 // selectors
 export const selectors = {
   get,
+  getMany,
 }

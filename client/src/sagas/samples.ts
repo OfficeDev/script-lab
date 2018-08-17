@@ -1,16 +1,19 @@
-import { put, takeEvery, call, select } from 'redux-saga/effects'
-import { getType } from 'typesafe-actions'
+import { put, takeEvery, call } from 'redux-saga/effects'
+import { getType, ActionType } from 'typesafe-actions'
 
 import { samples, config } from '../actions'
-import { getSampleMetadata, getSample } from '../services/github'
+import { fetchYaml } from '../services/general'
 import { convertSnippetToSolution } from '../utils'
-import { createSolution } from './solutions'
-import { selectors } from '../reducers'
+import { createSolutionSaga } from './solutions'
 
-function* fetchSampleMetadataFlow() {
-  const host = yield select(selectors.config.getHost)
-  const { content, error } = yield call(getSampleMetadata, host)
-  console.log({ content, error })
+function* fetchDefaultSampleMetadataSaga() {}
+
+function* fetchSampleMetadataSaga() {
+  const platform = 'excel'
+  const { content, error } = yield call(
+    fetchYaml,
+    `https://raw.githubusercontent.com/OfficeDev/office-js-snippets/master/playlists/${platform}.yaml`,
+  )
   if (content) {
     yield put(samples.fetchMetadata.success(content))
   } else {
@@ -18,21 +21,29 @@ function* fetchSampleMetadataFlow() {
   }
 }
 
-function* openSampleFlow(action) {
-  const sampleJson = yield call(getSample, action.payload.rawUrl)
+function* openSampleSaga(action: ActionType<typeof samples.get.request>) {
+  let url = action.payload.rawUrl
+  url = url.replace('<ACCOUNT>', 'OfficeDev')
+  url = url.replace('<REPO>', 'office-js-snippets')
+  url = url.replace('<BRANCH>', 'master')
 
-  const { solution, files } = convertSnippetToSolution(sampleJson)
-  yield put(samples.get.success({ solution, files }))
+  const { content, error } = yield call(fetchYaml, url)
+  if (content) {
+    const { solution, files } = convertSnippetToSolution(content)
+    yield put(samples.get.success({ solution, files }))
+  } else {
+    yield put(samples.get.failure(error))
+  }
 }
 
-function* handleOpenSampleSuccess(action) {
-  yield call(createSolution, action.payload.solution, action.payload.files)
+function* handleOpenSampleSuccessSaga(action: ActionType<typeof samples.get.success>) {
+  yield call(createSolutionSaga, action.payload.solution, action.payload.files)
 }
 
-// TODO: theres gotta be a better way to do this
 export function* sampleWatcher() {
-  yield takeEvery(getType(samples.fetchMetadata.request), fetchSampleMetadataFlow)
-  yield takeEvery(getType(config.changeHost), fetchSampleMetadataFlow)
-  yield takeEvery(getType(samples.get.request), openSampleFlow)
-  yield takeEvery(getType(samples.get.success), handleOpenSampleSuccess)
+  yield takeEvery(getType(samples.fetchMetadata.request), fetchSampleMetadataSaga)
+  yield takeEvery(getType(config.changeHost), fetchSampleMetadataSaga)
+
+  yield takeEvery(getType(samples.get.request), openSampleSaga)
+  yield takeEvery(getType(samples.get.success), handleOpenSampleSuccessSaga)
 }

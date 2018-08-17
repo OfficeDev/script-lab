@@ -4,9 +4,9 @@
   "private": true,
   "dependencies": {
     "@microsoft/office-js-helpers": "0.7.4",
+    "clipboard": "^2.0.1",
     "color": "^3.0.0",
     "connected-react-router": "^4.3.0",
-    "github-api": "^3.0.0",
     "lodash": "^4.17.10",
     "monaco-editor": "^0.13.1",
     "normalizr": "^3.2.4",
@@ -22,25 +22,34 @@
     "redux-devtools-extension": "^2.13.5",
     "redux-saga": "^0.16.0",
     "reselect": "^3.0.1",
-    "styled-components": "^3.2.6",
+    "styled-components": "^3.4.2",
     "typesafe-actions": "^2.0.4",
     "uuid": "^3.2.1",
     "yamljs": "^0.3.0"
   },
   "scripts": {
     "copy-monaco": "node scripts/copy-monaco.js",
-    "startHTTPS": "set HTTPS=true&&react-scripts-ts start",
-    "start": "set HTTPS=false&&react-scripts-ts start",
+    "start": "set HTTPS=true && react-scripts-ts start",
     "build": "react-scripts-ts build",
     "test": "react-scripts-ts test --env=jsdom",
-    "eject": "react-scripts-ts eject",
+    "test-coverage": "yarn test -- --coverage",
+    "show-coverage": "yarn test-coverage && coverage\\lcov-report\\index.html",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },
   "jest": {
     "moduleNameMapper": {
       "office-ui-fabric-react/lib/": "office-ui-fabric-react/lib-commonjs/"
-    }
+    },
+    "collectCoverageFrom": [
+      "src/**/*.ts",
+      "src/**/*.tsx",
+      "!src/**/*.d.ts"
+    ], 
+    "coverageReporters": [
+      "json",
+      "lcov"
+    ]
   },
   "devDependencies": {
     "@storybook/addon-a11y": "^3.4.8",
@@ -68,6 +77,6 @@
     "react-test-renderer": "^16.3.2",
     "redux-devtools": "^3.4.1",
     "ts-jest": "^22.4.6",
-    "typescript": "^2.8.3"
+    "typescript": "^3.0.1"
   }
 }

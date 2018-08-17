@@ -5,6 +5,10 @@ import { Customizer } from 'office-ui-fabric-react/lib/Utilities'
 import { CommandBar, ICommandBarItemProps } from 'office-ui-fabric-react/lib/CommandBar'
 import { PersonaSize, PersonaCoin } from 'office-ui-fabric-react/lib/Persona'
 
+import Clipboard from 'clipboard'
+import { convertSolutionToSnippet } from '../../utils'
+import YAML from 'yamljs'
+
 import SolutionSettings from './SolutionSettings'
 import { ITheme as IFabricTheme } from 'office-ui-fabric-react/lib/Styling'
 
@@ -33,11 +37,14 @@ export interface IHeaderActionsFromRedux {
   createPublicGist: () => void
   createSecretGist: () => void
   updateGist: () => void
+  notifyClipboardCopySuccess: () => void
+  notifyClipboardCopyFailure: () => void
 }
 
 export interface IHeader extends IHeaderPropsFromRedux, IHeaderActionsFromRedux {
   solution: ISolution
   showBackstage: () => void
+  files: IFile[]
 }
 
 interface IState {
@@ -46,6 +53,17 @@ interface IState {
 
 class Header extends React.Component<IHeader, IState> {
   state = { showSolutionSettings: false }
+  clipboard
+
+  constructor(props: IHeader) {
+    super(props)
+    this.clipboard = new Clipboard('.export-to-clipboard', { text: this.getSnippetYaml })
+    this.clipboard.on('success', props.notifyClipboardCopySuccess)
+    this.clipboard.on('error', props.notifyClipboardCopyFailure)
+  }
+
+  getSnippetYaml = (): string =>
+    YAML.stringify(convertSolutionToSnippet(this.props.solution, this.props.files))
 
   render() {
     const {
@@ -68,23 +86,33 @@ class Header extends React.Component<IHeader, IState> {
 
     const shareOptions = [
       {
-        hidden: !(solution.source && solution.source.origin === 'gist'),
+        hidden: !(solution.source && solution.source.origin === 'gist' && isLoggedIn),
         key: 'update-gist',
         text: 'Update existing gist',
         iconProps: { iconName: 'Save' },
         onClick: updateGist,
       },
       {
+        hidden: !isLoggedIn,
         key: 'new-public-gist',
         text: 'New public gist',
         iconProps: { iconName: 'PageCheckedIn' },
         onClick: createPublicGist,
       },
       {
+        hidden: !isLoggedIn,
         key: 'new-secret-gist',
         text: 'New secret gist',
         iconProps: { iconName: 'ProtectedDocument' },
         onClick: createSecretGist,
+      },
+      {
+        key: 'export-to-clipboard',
+        text: 'Copy to clipboard',
+        iconProps: {
+          iconName: 'ClipboardSolid',
+        },
+        className: 'export-to-clipboard',
       },
     ]
       .filter(option => !option.hidden)

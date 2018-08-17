@@ -7,6 +7,7 @@ import Samples from './Samples'
 import ImportSolution from './ImportSolution'
 
 import ConflictResolutionDialog from './ConflictResolutionDialog'
+import { ConflictResolutionOptions } from '../../interfaces/enums'
 
 interface IBackstageItem {
   key: string
@@ -28,7 +29,11 @@ export interface IBackstageActionsFromRedux {
   createNewSolution: () => void
   openSolution: (solutionId: string) => void
   openSample: (rawUrl: string) => void
-  openGist: (rawUrl: string, gistId: string, conflictResolution?: any) => void
+  openGist: (
+    rawUrl: string,
+    gistId: string,
+    conflictResolution?: { type: ConflictResolutionOptions; existingSolution: ISolution },
+  ) => void
   importGist: (gistId?: string, gist?: string) => void
 }
 
@@ -68,7 +73,9 @@ export default class Backstage extends Component<IBackstage, IState> {
     const existingSolutions = solutions.filter(
       s => s.source && s.source.origin === 'gist' && s.source.id === id,
     )
-    if (existingSolutions) {
+
+    console.log({ existingSolutions })
+    if (existingSolutions.length > 0) {
       // version of this gist already exists locally in solutions
       this.showGistConflictDialog(gistMeta, existingSolutions)
     } else {

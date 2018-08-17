@@ -90,6 +90,10 @@ interface ISettings {
   defaultActions: IDefaultActions
 }
 
+interface IGithubGistPayload {
+  id: string
+}
+
 interface IThemePrimaryColors {
   primaryDarkest: string
   primaryDarker: string
