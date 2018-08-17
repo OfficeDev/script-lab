@@ -13,6 +13,14 @@ export const getSampleMetadata = (platform: string = 'excel') => {
     .catch(error => ({ error }))
 }
 
+export const getDefaultSample = (platform: string) => {
+  return fetchYaml(
+    `https://github.com/OfficeDev/office-js-snippets/blob/master/samples/${platform.toLowerCase()}/default.yaml`,
+  )
+    .then(yaml => ({ content: yaml }))
+    .catch(error => ({ error }))
+}
+
 export const getSample = (rawUrl: string) => {
   let url = rawUrl
   url = url.replace('<ACCOUNT>', 'OfficeDev')
