@@ -7,8 +7,10 @@ import { fetchYaml } from './general'
 
 export const getSampleMetadata = (platform: string = 'excel') => {
   return fetchYaml(
-    `https://raw.githubusercontent.com/OfficeDev/office-js-snippets/master/playlists/${platform}.yaml`,
+    `https://raw.githubusercontent.com/OfficeDev/office-js-snippets/master/playlists/${platform.toLowerCase()}.yaml`,
   )
+    .then(yaml => ({ content: yaml }))
+    .catch(error => ({ error }))
 }
 
 export const getSample = (rawUrl: string) => {
