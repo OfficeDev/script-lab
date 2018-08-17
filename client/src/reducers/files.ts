@@ -1,7 +1,6 @@
 import { combineReducers } from 'redux'
 import { getType } from 'typesafe-actions'
 import { files, IFilesAction, solutions, ISolutionsAction } from '../actions'
-import { solution } from '../storage/schema'
 
 const file = (state: IFile, action: IFilesAction) => {
   switch (action.type) {
