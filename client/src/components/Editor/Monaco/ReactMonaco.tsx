@@ -55,7 +55,7 @@ interface IReactMonacoState {
 class ReactMonaco extends Component<IReactMonaco, IReactMonacoState> {
   state = { intellisenseFiles: [] as IDisposableFile[] }
   container: React.RefObject<HTMLDivElement>
-  editor: monaco.editor.IStandaloneCodeEditor
+  editor: monaco.editor.IEditor
   value: string
   pauseCallingOnChange: boolean
   cachedLibraries: any
@@ -79,11 +79,11 @@ class ReactMonaco extends Component<IReactMonaco, IReactMonacoState> {
     }
   }
 
-  componentWillUnmount() {
-    this.deinitializeMonaco()
+  async componentWillUnmount() {
+    await this.deinitializeMonaco()
   }
 
-  async componentDidUpdate(prevProps, prevState) {
+  async componentDidUpdate(prevProps: IReactMonaco, prevState) {
     if (prevProps.libraries !== this.props.libraries) {
       this.updateIntellisense()
     }
@@ -93,9 +93,8 @@ class ReactMonaco extends Component<IReactMonaco, IReactMonacoState> {
       monaco.editor.setTheme(this.props.theme)
     }
 
-    if (!isEqual(prevProps.options, this.props.options)) {
-      await this.deinitializeMonaco()
-      this.initializeMonaco()
+    if (this.editor && !isEqual(prevProps.options, this.props.options)) {
+      this.editor.updateOptions(this.props.options)
     }
   }
 
