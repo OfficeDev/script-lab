@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import { messageBar } from '../actions'
+import { messageBar } from '../store/actions'
 import MessageBar from '../components/MessageBar'
 
 const mapStateToProps = state => ({
@@ -10,4 +10,7 @@ const mapDispatchToProps = dispatch => ({
   dismiss: () => dispatch(messageBar.dismiss()),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(MessageBar)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(MessageBar)

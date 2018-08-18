@@ -1,13 +1,13 @@
 import { connect } from 'react-redux'
 import { withTheme } from 'styled-components'
-import { files } from '../actions'
+import { solutions } from '../store/actions'
 import Editor, { IEditor } from '../components/Editor'
-import { selectors } from '../reducers'
+import selectors from '../store/selectors'
 import { push } from 'connected-react-router'
 import { SETTINGS_SOLUTION_ID, SETTINGS_FILE_ID } from '../constants'
 
 const mapStateToProps = (state, ownProps: IEditor): Partial<IEditor> => ({
-  settingsFile: selectors.files.get(state, SETTINGS_FILE_ID),
+  settingsFile: selectors.solutions.getFile(state, SETTINGS_FILE_ID),
   isSettingsView: ownProps.activeSolution.id === SETTINGS_SOLUTION_ID,
 
   editorSettings: {
@@ -28,7 +28,7 @@ const mapDispatchToProps = (dispatch, ownProps: IEditor) => ({
     solutionId: string,
     fileId: string,
     file: Partial<IEditableFileProperties>,
-  ) => dispatch(files.edit(solutionId, fileId, file)),
+  ) => dispatch(solutions.edit({ id: solutionId, fileId, file })),
   openSettings: () => dispatch(push(`/${SETTINGS_SOLUTION_ID}/${SETTINGS_FILE_ID}`)),
 })
 

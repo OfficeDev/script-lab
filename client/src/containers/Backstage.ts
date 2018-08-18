@@ -4,17 +4,17 @@ import Backstage, {
   IBackstagePropsFromRedux,
   IBackstageActionsFromRedux,
 } from '../components/Backstage'
-import { selectors } from '../reducers'
-import { solutions, samples, gists } from '../actions'
+import selectors from '../store/selectors'
+import { solutions, samples, gists } from '../store/actions'
 import { push } from 'connected-react-router'
 
 import { getTheme } from '../theme'
 
 const mapStateToProps = (state): IBackstagePropsFromRedux => ({
-  sharedGistMetadata: selectors.github.getGistMetadata(state),
-  solutions: selectors.solutions.getAllExceptSettings(state),
-  samplesByGroup: selectors.samples.getByGroup(state),
-  theme: getTheme(selectors.config.getHost(state)),
+  sharedGistMetadata: selectors.gists.getGistMetadata(state),
+  solutions: selectors.solutions.getAll(state),
+  samplesByGroup: selectors.samples.getMetadataByGroup(state),
+  theme: getTheme(selectors.host.get(state)),
 })
 
 const mapDispatchToProps = (dispatch): IBackstageActionsFromRedux => ({

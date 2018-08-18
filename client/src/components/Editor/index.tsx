@@ -8,7 +8,7 @@ import { MessageBar, MessageBarType } from 'office-ui-fabric-react/lib/MessageBa
 import { Dialog, DialogType, DialogFooter } from 'office-ui-fabric-react/lib/Dialog'
 import { PrimaryButton, DefaultButton } from 'office-ui-fabric-react/lib/Button'
 
-import { SETTINGS_FILE_ID, SETTINGS_SOLUTION_ID } from '../../constants'
+import { SETTINGS_FILE_ID, SETTINGS_SOLUTION_ID, NULL_SOLUTION_ID } from '../../constants'
 
 import Monaco from './Monaco'
 import Only from '../Only'
@@ -160,6 +160,7 @@ class Editor extends Component<IEditor, IState> {
       glyphMargin: false,
       fixedOverflowWidgets: true,
       ariaLabel: 'todo',
+      readOnly: this.props.activeSolution.id === NULL_SOLUTION_ID,
     }
   }
 

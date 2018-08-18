@@ -39,7 +39,10 @@ const getSettingsFiles = (timestamp: number, settings?: ISettings): IFile[] => [
   },
 ]
 
-const getSettingsSolution = (files: IFile[], timestamp: number): ISolution => ({
+const getSettingsSolution = (
+  files: IFile[],
+  timestamp: number,
+): ISolutionWithFileIds => ({
   id: SETTINGS_SOLUTION_ID,
   name: 'User Settings',
   dateCreated: timestamp,
@@ -51,7 +54,7 @@ const getSettingsSolution = (files: IFile[], timestamp: number): ISolution => ({
 export const getSettingsSolutionAndFiles = (
   settings?: ISettings,
 ): {
-  solution: ISolution
+  solution: ISolutionWithFileIds
   files: IFile[]
 } => {
   const now = Date.now()

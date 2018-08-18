@@ -9,6 +9,8 @@ import Footer from '../../containers/Footer'
 import Backstage from '../../containers/Backstage'
 
 import { Layout, ContentWrapper } from './styles'
+import { NULL_SOLUTION, NULL_FILE, NULL_FILE_ID, NULL_SOLUTION_ID } from '../../constants'
+import Only from '../Only'
 
 const FILE_NAME_MAP = {
   'index.ts': 'Script',
@@ -19,7 +21,6 @@ const FILE_NAME_MAP = {
 
 export interface IIDEPropsFromRedux {
   activeSolution: ISolution
-  files: IFile[]
   activeFile: IFile
   theme: ITheme
 }
@@ -38,11 +39,16 @@ interface IState {
 class IDE extends Component<IIDE, IState> {
   state = { isBackstageVisible: false }
 
+  static defaultProps: Partial<IIDE> = {
+    activeSolution: NULL_SOLUTION,
+    activeFile: NULL_FILE,
+  }
+
   showBackstage = () => this.setState({ isBackstageVisible: true })
   hideBackstage = () => this.setState({ isBackstageVisible: false })
 
   componentWillReceiveProps(newProps) {
-    if (!newProps.match.params.fileId) {
+    if (!newProps.match.params.fileId && newProps.activeFile.id !== NULL_FILE_ID) {
       this.props.openFile(newProps.activeSolution.id, newProps.activeFile.id)
     }
   }
@@ -52,18 +58,14 @@ class IDE extends Component<IIDE, IState> {
 
   render() {
     const { isBackstageVisible } = this.state
-    const { activeSolution, files, activeFile, theme } = this.props
+    const { activeSolution, activeFile, theme } = this.props
     return (
       <>
         <Layout style={{ display: isBackstageVisible ? 'none' : 'flex' }}>
-          <Header
-            solution={activeSolution}
-            files={files}
-            showBackstage={this.showBackstage}
-          />
+          <Header solution={activeSolution} showBackstage={this.showBackstage} />
           <PivotBar
             theme={theme}
-            items={files.map(file => ({
+            items={activeSolution.files.map(file => ({
               key: file.id,
               text: FILE_NAME_MAP[file.name] || file.name,
             }))}
@@ -74,7 +76,7 @@ class IDE extends Component<IIDE, IState> {
           <ContentWrapper>
             <Editor
               activeSolution={activeSolution}
-              activeFiles={files}
+              activeFiles={activeSolution.files}
               activeFile={activeFile}
             />
           </ContentWrapper>

@@ -8,15 +8,7 @@ export const getBoilerplateFiles = (timestamp: number): IFile[] =>
       content: `$("#run").click(() => tryCatch(run));
 
 async function run() {
-    await Excel.run(async (context) => {
-        const range = context.workbook.getSelectedRange();
-        range.format.fill.color = "yellow";
-        range.load("address");
-
-        await context.sync()
-
-        console.log(\`The range address was "\${range.address}".\`);
-    });
+  console.log('I have been run')
 }
 
 /** Default helper for invoking an action and handling errors. */
@@ -70,20 +62,24 @@ jquery@3.1.1
     dateLastModified: timestamp,
   }))
 
-export const getBoilerplateSolution = (files: IFile[], timestamp: number): ISolution => ({
+export const getBoilerplateSolution = (
+  host: string,
+  files: IFile[],
+  timestamp: number,
+): ISolution => ({
   id: uuidv4(),
   name: `Blank Snippet`,
-  host: 'EXCEL',
+  host,
   dateCreated: timestamp,
   dateLastModified: timestamp,
-  files: files.map(file => file.id),
+  files,
 })
 
-export const getBoilerplate = (): { solution: ISolution; files: IFile[] } => {
+export const getBoilerplate = (host: string): ISolution => {
   const timestamp = Date.now()
 
   const files = getBoilerplateFiles(timestamp)
-  const solution = getBoilerplateSolution(files, timestamp)
+  const solution = getBoilerplateSolution(host, files, timestamp)
 
-  return { solution, files }
+  return solution
 }

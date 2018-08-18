@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
-import { solutions, github, gists, messageBar } from '../actions'
-import { selectors } from '../reducers'
+import { solutions, github, gists, messageBar } from '../store/actions'
+import selectors from '../store/selectors'
 import Header, {
   IHeader,
   IHeaderPropsFromRedux,
@@ -8,13 +8,14 @@ import Header, {
 } from '../components/Header'
 import { SETTINGS_SOLUTION_ID } from '../constants'
 import { getHeaderFabricTheme, getTheme } from '../theme'
-import { MessageBarType } from '../../node_modules/office-ui-fabric-react/lib/MessageBar'
+import { MessageBarType } from 'office-ui-fabric-react/lib/MessageBar'
 
 const mapStateToProps = (state, ownProps: IHeader): IHeaderPropsFromRedux => ({
   isSettingsView: ownProps.solution.id === SETTINGS_SOLUTION_ID,
   isLoggedIn: !!selectors.github.getToken(state),
-  profilePicUrl: selectors.github.getProfilePic(state),
-  headerFabricTheme: getHeaderFabricTheme(selectors.config.getHost(state)),
+  isWeb: selectors.host.getIsWeb(state),
+  profilePicUrl: selectors.github.getProfilePicUrl(state),
+  headerFabricTheme: getHeaderFabricTheme(selectors.host.get(state)),
 })
 
 const mapDispatchToProps = (dispatch, ownProps: IHeader): IHeaderActionsFromRedux => ({
@@ -22,7 +23,7 @@ const mapDispatchToProps = (dispatch, ownProps: IHeader): IHeaderActionsFromRedu
   logout: () => dispatch(github.logout()),
 
   editSolution: (solutionId: string, solution: Partial<IEditableSolutionProperties>) =>
-    dispatch(solutions.edit(solutionId, solution)),
+    dispatch(solutions.edit({ id: solutionId, solution })),
   deleteSolution: () => dispatch(solutions.remove(ownProps.solution)),
 
   createPublicGist: () =>

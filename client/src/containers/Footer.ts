@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
-import { selectors } from '../reducers'
-import { config } from '../actions'
+import selectors from '../store/selectors'
+import { host as hostActions } from '../store/actions'
 import Footer, {
   IFooter,
   IFooterPropsFromRedux,
@@ -11,14 +11,14 @@ import { SETTINGS_SOLUTION_ID, SETTINGS_FILE_ID } from '../constants'
 
 const mapStateToProps = (state, ownProps: IFooter): IFooterPropsFromRedux => ({
   language: ownProps.activeFile.language,
-  currentHost: selectors.config.getHost(state),
-  isWeb: selectors.config.getIsWeb(state),
+  currentHost: selectors.host.get(state),
+  isWeb: selectors.host.getIsWeb(state),
 })
 
 const mapDispatchToProps = (dispatch): IFooterActionsFromRedux => ({
   onSettingsIconClick: () =>
     dispatch(push(`/${SETTINGS_SOLUTION_ID}/${SETTINGS_FILE_ID}`)),
-  changeHost: (host: string) => dispatch(config.changeHost(host)),
+  changeHost: (host: string) => dispatch(hostActions.change(host)),
 })
 export default connect(
   mapStateToProps,

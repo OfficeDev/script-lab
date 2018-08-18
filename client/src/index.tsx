@@ -2,15 +2,14 @@ import './polyfills'
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { Authenticator } from '@microsoft/office-js-helpers'
-import configureStore from './configureStore'
+import configureStore from './store/configureStore'
 import { setupFabricTheme } from './theme'
 import registerServiceWorker from './registerServiceWorker'
-import { samples, gists } from './actions'
-import { selectors } from './reducers'
+import { samples, gists } from './store/actions'
+import selectors from './store/selectors'
 
 import './index.css'
 import Root from './components/Root'
-import { getHost } from './reducers/config'
 
 document.addEventListener(
   'keydown',
@@ -32,7 +31,7 @@ Office.onReady(async () => {
 
   const { store, history } = configureStore()
 
-  setupFabricTheme(selectors.config.getHost(store.getState()))
+  setupFabricTheme(selectors.host.get(store.getState()))
 
   // initial actions
   store.dispatch(samples.fetchMetadata.request())

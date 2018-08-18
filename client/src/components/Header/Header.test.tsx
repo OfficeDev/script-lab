@@ -1,11 +1,11 @@
 import React from 'react'
 import { mount } from 'enzyme'
 
-import Header, { IHeader } from './index'
+import Header, { IHeader } from '.'
 import { getBoilerplate } from '../../newSolutionData'
-import { ITheme as IFabricTheme } from '../../../node_modules/@uifabric/styling'
+import { ITheme as IFabricTheme } from '@uifabric/styling'
 
-const normalExample = getBoilerplate()
+const normalExample = getBoilerplate('EXCEL')
 
 const actionProps = {
   showBackstage: () => {},
@@ -25,11 +25,11 @@ const actionProps = {
 
 describe('Header should render properly', () => {
   it('most basic', () => {
-    const { solution, files } = normalExample
+    const solution = normalExample
     const headerProps: IHeader = {
       solution,
-      files,
       isLoggedIn: true,
+      isWeb: false,
       isSettingsView: false,
       profilePicUrl: undefined,
       headerFabricTheme: {} as IFabricTheme,

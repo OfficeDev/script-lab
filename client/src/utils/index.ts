@@ -1,5 +1,8 @@
 import uuidv4 from 'uuid'
 
+export const getObjectValues = (dict: object): any[] =>
+  Object.keys(dict).map(key => dict[key])
+
 const EXT_TO_LANG_MAP = {
   js: 'JavaScript',
   ts: 'TypeScript',
@@ -19,35 +22,6 @@ export function convertExtensionToLanguage(file): string {
   return ''
 }
 
-interface IContentLanguagePair {
-  content: string
-  language: string
-}
-
-interface ISnippet {
-  id: string
-  gist?: string
-  gistOwnerId?: string
-  name: string
-  description?: string
-  /** author: export-only */
-  author?: string
-  host: string
-  /** api_set: export-only (+ check at first level of import) */
-  api_set?: {
-    [index: string]: number
-  }
-  platform: string
-  created_at: number
-  modified_at: number
-  order?: number
-
-  script: IContentLanguagePair
-  template: IContentLanguagePair
-  style: IContentLanguagePair
-  libraries: string
-}
-
 const createFile = (name, { content, language }): IFile => ({
   id: uuidv4(),
   name,
@@ -57,9 +31,7 @@ const createFile = (name, { content, language }): IFile => ({
   dateLastModified: Date.now(),
 })
 
-export const convertSnippetToSolution = (
-  snippet: ISnippet,
-): { solution: ISolution; files: IFile[] } => {
+export const convertSnippetToSolution = (snippet: ISnippet): ISolution => {
   const { name, description, script, template, style, libraries, host } = snippet
 
   const files = [
@@ -74,19 +46,16 @@ export const convertSnippetToSolution = (
     name,
     host,
     description,
-    files: files.map(file => file.id),
+    files,
     dateCreated: Date.now(),
     dateLastModified: Date.now(),
   }
 
-  return { solution, files }
+  return solution
 }
 
-export const convertSolutionToSnippet = (
-  solution: ISolution,
-  files: IFile[],
-): ISnippet => {
-  const { id, name, description, dateCreated, dateLastModified, host } = solution
+export const convertSolutionToSnippet = (solution: ISolution): ISnippet => {
+  const { id, name, description, dateCreated, dateLastModified, host, files } = solution
 
   const script: IFile = files.find(file => file.name === 'index.ts')!
   const template: IFile = files.find(file => file.name === 'index.html')!

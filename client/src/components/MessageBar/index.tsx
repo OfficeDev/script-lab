@@ -1,7 +1,7 @@
 import React from 'react'
 import { MessageBar } from 'office-ui-fabric-react/lib/MessageBar'
 import { Link } from 'office-ui-fabric-react/lib/Link'
-import { IMessageBarState } from '../../reducers/messageBar'
+import { IState as IMessageBarState } from '../../store/messageBar/reducer'
 interface IMessageBar {
   messageBarProps: IMessageBarState
   dismiss: () => void

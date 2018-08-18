@@ -11,6 +11,7 @@ import YAML from 'yamljs'
 
 import SolutionSettings from './SolutionSettings'
 import { ITheme as IFabricTheme } from 'office-ui-fabric-react/lib/Styling'
+import { NULL_SOLUTION_ID } from '../../constants'
 
 const HeaderWrapper = styled.header`
   grid-area: header;
@@ -19,6 +20,7 @@ const HeaderWrapper = styled.header`
 
 export interface IHeaderPropsFromRedux {
   profilePicUrl?: string
+  isWeb: boolean
   isSettingsView: boolean
   isLoggedIn: boolean
   headerFabricTheme: IFabricTheme
@@ -44,7 +46,6 @@ export interface IHeaderActionsFromRedux {
 export interface IHeader extends IHeaderPropsFromRedux, IHeaderActionsFromRedux {
   solution: ISolution
   showBackstage: () => void
-  files: IFile[]
 }
 
 interface IState {
@@ -63,7 +64,7 @@ class Header extends React.Component<IHeader, IState> {
   }
 
   getSnippetYaml = (): string =>
-    YAML.stringify(convertSolutionToSnippet(this.props.solution, this.props.files))
+    YAML.stringify(convertSolutionToSnippet(this.props.solution))
 
   render() {
     const {
@@ -73,6 +74,7 @@ class Header extends React.Component<IHeader, IState> {
       deleteSolution,
       isSettingsView,
       profilePicUrl,
+      isWeb,
       isLoggedIn,
       headerFabricTheme,
       logout,
@@ -123,12 +125,14 @@ class Header extends React.Component<IHeader, IState> {
 
     const nonSettingsButtons: ICommandBarItemProps[] = [
       {
+        hidden: isWeb || solution.id === NULL_SOLUTION_ID,
         key: 'run',
         text: 'Run',
         iconProps: { iconName: 'Play' },
         href: '/run.html',
       },
       {
+        hidden: solution.id === NULL_SOLUTION_ID,
         key: 'share',
         text: 'Share',
         iconProps: { iconName: 'Share' },
@@ -137,12 +141,18 @@ class Header extends React.Component<IHeader, IState> {
         },
       },
       {
+        hidden: solution.id === NULL_SOLUTION_ID,
         key: 'delete',
         text: 'Delete',
         iconProps: { iconName: 'Delete' },
         onClick: deleteSolution,
       },
     ]
+      .filter(({ hidden }) => !hidden)
+      .map(option => {
+        const { hidden, ...rest } = option
+        return rest
+      })
 
     const commonItems: ICommandBarItemProps[] = [
       {
@@ -152,11 +162,17 @@ class Header extends React.Component<IHeader, IState> {
         onClick: showBackstage,
       },
       {
+        hidden: solution.id === NULL_SOLUTION_ID,
         key: solutionName,
         text: solutionName,
         onClick: isSettingsView ? undefined : this.openSolutionSettings,
       },
     ]
+      .filter(({ hidden }) => !hidden)
+      .map(option => {
+        const { hidden, ...rest } = option
+        return rest
+      })
 
     const items: ICommandBarItemProps[] = [
       ...commonItems,
