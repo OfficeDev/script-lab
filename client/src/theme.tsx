@@ -39,7 +39,7 @@ export const getTheme = (host: string): ITheme => {
     primaryDarker: primaryColor.darken(0.5).hex(),
     primaryDark: primaryColor.darken(0.3).hex(),
     primary: primaryColor.hex(),
-    primaryLight: primaryColor.lighten(0.35).hex(),
+    primaryLight: primaryColor.lighten(0.3).hex(),
     primaryLighter: primaryColor.lighten(0.5).hex(),
     primaryLightest: primaryColor.lighten(0.6).hex(),
     ...neutralColors,
