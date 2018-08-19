@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { withTheme } from 'styled-components'
 import { BackstageWrapper } from './styles'
 
 import Menu from './Menu'
@@ -9,6 +10,11 @@ import ImportSolution from './ImportSolution'
 import ConflictResolutionDialog from './ConflictResolutionDialog'
 import { ConflictResolutionOptions } from '../../interfaces/enums'
 
+import { connect } from 'react-redux'
+import selectors from '../../store/selectors'
+import { solutions, samples, gists } from '../../store/actions'
+import { push } from 'connected-react-router'
+
 interface IBackstageItem {
   key: string
   iconName: string
@@ -17,15 +23,19 @@ interface IBackstageItem {
   content?: JSX.Element
 }
 
-export interface IBackstagePropsFromRedux {
+interface IPropsFromRedux {
   solutions: ISolution[]
   sharedGistMetadata: ISharedGistMetadata[]
   samplesByGroup: { [group: string]: ISampleMetadata[] }
-
-  theme: ITheme
 }
 
-export interface IBackstageActionsFromRedux {
+const mapStateToProps = (state): IPropsFromRedux => ({
+  sharedGistMetadata: selectors.gists.getGistMetadata(state),
+  solutions: selectors.solutions.getAll(state),
+  samplesByGroup: selectors.samples.getMetadataByGroup(state),
+})
+
+interface IActionsFromRedux {
   createNewSolution: () => void
   openSolution: (solutionId: string) => void
   openSample: (rawUrl: string) => void
@@ -37,10 +47,25 @@ export interface IBackstageActionsFromRedux {
   importGist: (gistId?: string, gist?: string) => void
 }
 
-export interface IBackstage extends IBackstagePropsFromRedux, IBackstageActionsFromRedux {
+const mapDispatchToProps = (dispatch): IActionsFromRedux => ({
+  createNewSolution: () => dispatch(solutions.create()),
+  openSolution: (solutionId: string) => dispatch(push(`/${solutionId}/`)),
+  openSample: (rawUrl: string) => dispatch(samples.get.request({ rawUrl })),
+  openGist: (
+    rawUrl: string,
+    gistId: string,
+    conflictResolution?: { type: ConflictResolutionOptions; existingSolution: ISolution },
+  ) => dispatch(gists.get.request({ rawUrl, gistId, conflictResolution })),
+  importGist: (gistId?: string, gist?: string) =>
+    dispatch(gists.importSnippet.request({ gistId, gist })),
+})
+
+export interface IBackstage extends IPropsFromRedux, IActionsFromRedux {
   isHidden: boolean
   hideBackstage: () => void
   activeSolution?: ISolution
+
+  theme: ITheme // from withTheme
 }
 
 interface IState {
@@ -49,7 +74,7 @@ interface IState {
   existingSolutionsConflicting: ISolution[] | null
 }
 
-export default class Backstage extends Component<IBackstage, IState> {
+class Backstage extends Component<IBackstage, IState> {
   state = {
     selectedKey: 'my-solutions',
     conflictingGist: null,
@@ -179,3 +204,8 @@ export default class Backstage extends Component<IBackstage, IState> {
     )
   }
 }
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(withTheme(Backstage))

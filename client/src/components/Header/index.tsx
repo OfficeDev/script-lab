@@ -13,12 +13,21 @@ import SolutionSettings from './SolutionSettings'
 import { ITheme as IFabricTheme } from 'office-ui-fabric-react/lib/Styling'
 import { NULL_SOLUTION_ID } from '../../constants'
 
+import { connect } from 'react-redux'
+import { solutions, github, gists, messageBar } from '../../store/actions'
+import selectors from '../../store/selectors'
+
+import { SETTINGS_SOLUTION_ID } from '../../constants'
+import { getHeaderFabricTheme } from '../../theme'
+import { MessageBarType } from 'office-ui-fabric-react/lib/MessageBar'
+import { goBack } from 'connected-react-router'
+
 const HeaderWrapper = styled.header`
   grid-area: header;
   background-color: ${props => props.theme.primary};
 `
 
-export interface IHeaderPropsFromRedux {
+interface IPropsFromRedux {
   profilePicUrl?: string
   isWeb: boolean
   isSettingsView: boolean
@@ -26,7 +35,15 @@ export interface IHeaderPropsFromRedux {
   headerFabricTheme: IFabricTheme
 }
 
-export interface IHeaderActionsFromRedux {
+const mapStateToProps = (state, ownProps: IHeader): IPropsFromRedux => ({
+  isSettingsView: ownProps.solution.id === SETTINGS_SOLUTION_ID,
+  isLoggedIn: !!selectors.github.getToken(state),
+  isWeb: selectors.host.getIsWeb(state),
+  profilePicUrl: selectors.github.getProfilePicUrl(state),
+  headerFabricTheme: getHeaderFabricTheme(selectors.host.get(state)),
+})
+
+interface IActionsFromRedux {
   login: () => void
   logout: () => void
 
@@ -45,7 +62,30 @@ export interface IHeaderActionsFromRedux {
   notifyClipboardCopyFailure: () => void
 }
 
-export interface IHeader extends IHeaderPropsFromRedux, IHeaderActionsFromRedux {
+const mapDispatchToProps = (dispatch, ownProps: IHeader): IActionsFromRedux => ({
+  login: () => dispatch(github.login.request()),
+  logout: () => dispatch(github.logout()),
+
+  goBack: () => dispatch(goBack()),
+
+  editSolution: (solutionId: string, solution: Partial<IEditableSolutionProperties>) =>
+    dispatch(solutions.edit({ id: solutionId, solution })),
+  deleteSolution: () => dispatch(solutions.remove(ownProps.solution)),
+
+  createPublicGist: () =>
+    dispatch(gists.create.request({ solutionId: ownProps.solution.id, isPublic: true })),
+  createSecretGist: () =>
+    dispatch(gists.create.request({ solutionId: ownProps.solution.id, isPublic: false })),
+  updateGist: () => dispatch(gists.update.request({ solutionId: ownProps.solution.id })),
+  notifyClipboardCopySuccess: () =>
+    dispatch(messageBar.show('Snippet copied to clipboard.')),
+  notifyClipboardCopyFailure: () =>
+    dispatch(
+      messageBar.show('Snippet failed to copy to clipboard.', MessageBarType.error),
+    ),
+})
+
+export interface IHeader extends IPropsFromRedux, IActionsFromRedux {
   solution: ISolution
   showBackstage: () => void
 }
@@ -253,4 +293,4 @@ class Header extends React.Component<IHeader, IState> {
   private closeSolutionSettings = () => this.setState({ showSolutionSettings: false })
 }
 
-export default Header
+export default connect(mapStateToProps, mapDispatchToProps)(Header)

@@ -1,16 +1,21 @@
 import React, { Component } from 'react'
+import { withTheme } from 'styled-components'
 
-import Header from '../../containers/Header'
+import Header from '../Header'
 import PivotBar from '../PivotBar'
-import MessageBar from '../../containers/MessageBar'
-import Editor from '../../containers/Editor'
-import Footer from '../../containers/Footer'
+import MessageBar from '../MessageBar'
+import Editor from '../Editor'
+import Footer from '../Footer'
 
-import Backstage from '../../containers/Backstage'
+import Backstage from '../Backstage'
 
 import { Layout, ContentWrapper } from './styles'
 import { NULL_SOLUTION, NULL_FILE, NULL_FILE_ID, NULL_SOLUTION_ID } from '../../constants'
 import Only from '../Only'
+
+import { connect } from 'react-redux'
+import selectors from '../../store/selectors'
+import { push } from 'connected-react-router'
 
 const FILE_NAME_MAP = {
   'index.ts': 'Script',
@@ -19,18 +24,30 @@ const FILE_NAME_MAP = {
   'libraries.txt': 'Libraries',
 }
 
-export interface IIDEPropsFromRedux {
+interface IPropsFromRedux {
   activeSolution: ISolution
   activeFile: IFile
-  theme: ITheme
 }
 
-export interface IIDEActionsFromRedux {
+const mapStateToProps = (state): Partial<IPropsFromRedux> => ({
+  activeSolution: selectors.solutions.getActive(state),
+  activeFile: selectors.solutions.getActiveFile(state),
+})
+
+interface IActionsFromRedux {
   openSolution: (solutionId: string) => void
   openFile: (solutionId: string, fileId: string) => void
 }
 
-export interface IIDE extends IIDEPropsFromRedux, IIDEActionsFromRedux {}
+const mapDispatchToProps = (dispatch): IActionsFromRedux => ({
+  openSolution: (solutionId: string) => dispatch(push(`/${solutionId}`)),
+  openFile: (solutionId: string, fileId: string) =>
+    dispatch(push(`/${solutionId}/${fileId}`)),
+})
+
+export interface IIDE extends IPropsFromRedux, IActionsFromRedux {
+  theme: ITheme // from withTheme
+}
 
 interface IState {
   isBackstageVisible: boolean
@@ -92,4 +109,7 @@ class IDE extends Component<IIDE, IState> {
   }
 }
 
-export default IDE
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(withTheme(IDE))

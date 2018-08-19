@@ -16,6 +16,13 @@ import { Wrapper } from './styles'
 import BarButton from '../BarButton'
 import FabricIcon from '../FabricIcon'
 
+import { connect } from 'react-redux'
+import selectors from '../../store/selectors'
+import { host as hostActions } from '../../store/actions'
+
+import { push } from 'connected-react-router'
+import { SETTINGS_SOLUTION_ID, SETTINGS_FILE_ID } from '../../constants'
+
 const languageMap = {
   typescript: 'TypeScript',
   javascript: 'JavaScript',
@@ -24,20 +31,32 @@ const languageMap = {
   json: 'JSON',
 }
 
-export interface IFooterPropsFromRedux {
+interface IPropsFromRedux {
   language: string
   currentHost: string
   isWeb: boolean
 }
 
-export interface IFooterActionsFromRedux {
+const mapStateToProps = (state, ownProps: IFooter): IPropsFromRedux => ({
+  language: ownProps.activeFile.language,
+  currentHost: selectors.host.get(state),
+  isWeb: selectors.host.getIsWeb(state),
+})
+
+interface IActionsFromRedux {
   onSettingsIconClick: () => void
   changeHost: (host: string) => void
 }
 
-export interface IFooter extends IFooterPropsFromRedux, IFooterActionsFromRedux {
+const mapDispatchToProps = (dispatch): IActionsFromRedux => ({
+  onSettingsIconClick: () =>
+    dispatch(push(`/${SETTINGS_SOLUTION_ID}/${SETTINGS_FILE_ID}`)),
+  changeHost: (host: string) => dispatch(hostActions.change(host)),
+})
+
+export interface IFooter extends IPropsFromRedux, IActionsFromRedux {
   activeFile: IFile
-  theme: any
+  theme: ITheme // from withTheme
 }
 
 const Footer = ({
@@ -118,4 +137,7 @@ const Footer = ({
   </Wrapper>
 )
 
-export default withTheme(Footer)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(withTheme(Footer))

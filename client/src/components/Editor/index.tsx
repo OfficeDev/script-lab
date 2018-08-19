@@ -16,7 +16,13 @@ import { Layout } from './styles'
 
 import { getModel, setPosForModel, getModelByIdIfExists } from './Monaco/monaco-models'
 
-export interface IEditorSettings {
+import { connect } from 'react-redux'
+import { withTheme } from 'styled-components'
+import { solutions } from '../../store/actions'
+import selectors from '../../store/selectors'
+import { push } from 'connected-react-router'
+
+interface IEditorSettings {
   monacoTheme: string
   fontFamily: string
   fontSize: number
@@ -26,24 +32,54 @@ export interface IEditorSettings {
   isPrettierEnabled: boolean
 }
 
-export interface IEditor {
-  activeSolution: ISolution
-  activeFiles: IFile[]
-  activeFile: IFile
+interface IPropsFromRedux {
   settingsFile: IFile
-
   isSettingsView: boolean
-
   editorSettings: IEditorSettings
+}
 
-  openSettings: () => void
+const mapStateToProps = (state, ownProps: IEditor): IPropsFromRedux => ({
+  settingsFile: selectors.solutions.getFile(state, SETTINGS_FILE_ID),
+  isSettingsView: ownProps.activeSolution.id === SETTINGS_SOLUTION_ID,
+
+  editorSettings: {
+    monacoTheme: selectors.settings.getMonacoTheme(state),
+    fontFamily: selectors.settings.getFontFamily(state),
+    fontSize: selectors.settings.getFontSize(state),
+    lineHeight: selectors.settings.getLineHeight(state),
+    isMinimapEnabled: selectors.settings.getIsMinimapEnabled(state),
+    isFoldingEnabled: selectors.settings.getIsFoldingEnabled(state),
+    isPrettierEnabled: selectors.settings.getIsPrettierEnabled(state),
+  },
+})
+
+interface IActionsFromRedux {
   changeActiveFile: (fileId: string) => void
   editFile: (
     solutionId: string,
     fileId: string,
     file: Partial<IEditableFileProperties>,
   ) => void
-  theme: any
+  openSettings: () => void
+}
+
+const mapDispatchToProps = (dispatch, ownProps: IEditor): IActionsFromRedux => ({
+  changeActiveFile: (fileId: string) =>
+    dispatch(push(`/${ownProps.activeSolution.id}/${fileId}`)),
+  editFile: (
+    solutionId: string,
+    fileId: string,
+    file: Partial<IEditableFileProperties>,
+  ) => dispatch(solutions.edit({ id: solutionId, fileId, file })),
+  openSettings: () => dispatch(push(`/${SETTINGS_SOLUTION_ID}/${SETTINGS_FILE_ID}`)),
+})
+
+export interface IEditor extends IPropsFromRedux, IActionsFromRedux {
+  activeSolution: ISolution
+  activeFiles: IFile[]
+  activeFile: IFile
+
+  theme: ITheme // from withTheme
 }
 
 interface IState {
@@ -298,4 +334,7 @@ class Editor extends Component<IEditor, IState> {
   }
 }
 
-export default Editor
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(withTheme(Editor))
