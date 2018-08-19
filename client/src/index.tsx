@@ -5,7 +5,7 @@ import { Authenticator } from '@microsoft/office-js-helpers'
 import configureStore from './store/configureStore'
 import { setupFabricTheme } from './theme'
 import registerServiceWorker from './registerServiceWorker'
-import { samples, gists } from './store/actions'
+import { misc } from './store/actions'
 import selectors from './store/selectors'
 
 import './index.css'
@@ -34,8 +34,7 @@ Office.onReady(async () => {
   setupFabricTheme(selectors.host.get(store.getState()))
 
   // initial actions
-  store.dispatch(samples.fetchMetadata.request())
-  store.dispatch(gists.fetchMetadata.request())
+  store.dispatch(misc.initialize())
 
   ReactDOM.render(<Root store={store} history={history} />, document.getElementById(
     'root',
