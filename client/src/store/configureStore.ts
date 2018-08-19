@@ -2,7 +2,14 @@
 import { createStore, applyMiddleware } from 'redux'
 import rootReducer from './reducer'
 import { composeWithDevTools } from 'redux-devtools-extension'
-import { loadState, saveState } from './localStorage'
+import {
+  loadState as loadStateFromLocalStorage,
+  saveState as saveStateToLocalStorage,
+} from './localStorage'
+import {
+  loadState as loadStateFromSessionStorage,
+  saveState as saveStateToSessionStorage,
+} from './sessionStorage'
 
 // saga
 import createSagaMiddleware from 'redux-saga'
@@ -39,7 +46,10 @@ const configureStore = () => {
   const history = createHashHistory()
   const sagaMiddleware = createSagaMiddleware()
 
-  const persistedState = loadState()
+  const persistedState = {
+    ...loadStateFromLocalStorage(),
+    ...loadStateFromSessionStorage(),
+  }
   const store = createStore(
     connectRouter(history)(rootReducer),
     persistedState as any,
@@ -53,7 +63,9 @@ const configureStore = () => {
 
   store.subscribe(
     throttle(() => {
-      saveState(store.getState())
+      const state = store.getState()
+      saveStateToLocalStorage(state)
+      saveStateToSessionStorage(state)
     }, 1000),
   )
 
