@@ -4,10 +4,12 @@ import { getType, ActionType } from 'typesafe-actions'
 import { host, gists, samples } from '../actions'
 import selectors from '../selectors'
 import { getDefaultSaga } from '../solutions/sagas'
+import { setupFabricTheme } from '../../theme'
 
 export function* hostChangedSaga() {
   // whenever the host changes, we will check to see
   // if there are any solutions, and if not, create a default
+
   const solutions = yield select(selectors.solutions.getAll)
 
   if (solutions.length === 0) {
@@ -16,6 +18,9 @@ export function* hostChangedSaga() {
 
   yield put(samples.fetchMetadata.request())
   yield put(gists.fetchMetadata.request())
+
+  const host = yield select(selectors.host.get)
+  setupFabricTheme(host)
 }
 
 export default function* hostWatcher() {
