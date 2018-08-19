@@ -15,6 +15,7 @@ const actionProps = {
   ) => {},
   login: () => {},
   logout: () => {},
+  goBack: () => {},
   deleteSolution: () => {},
   createPublicGist: () => {},
   createSecretGist: () => {},

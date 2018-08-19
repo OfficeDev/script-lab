@@ -30,6 +30,8 @@ export interface IHeaderActionsFromRedux {
   login: () => void
   logout: () => void
 
+  goBack: () => void
+
   editSolution: (
     solutionId: string,
     solution: Partial<IEditableSolutionProperties>,
@@ -79,6 +81,7 @@ class Header extends React.Component<IHeader, IState> {
       headerFabricTheme,
       logout,
       login,
+      goBack,
       updateGist,
       createPublicGist,
       createSecretGist,
@@ -154,25 +157,33 @@ class Header extends React.Component<IHeader, IState> {
         return rest
       })
 
-    const commonItems: ICommandBarItemProps[] = [
-      {
-        key: 'nav',
-        iconOnly: true,
-        iconProps: { iconName: 'GlobalNavButton' },
-        onClick: showBackstage,
-      },
-      {
-        hidden: solution.id === NULL_SOLUTION_ID,
-        key: solutionName,
-        text: solutionName,
-        onClick: isSettingsView ? undefined : this.openSolutionSettings,
-      },
-    ]
-      .filter(({ hidden }) => !hidden)
-      .map(option => {
-        const { hidden, ...rest } = option
-        return rest
-      })
+    const name = {
+      hidden: solution.id === NULL_SOLUTION_ID,
+      key: solutionName,
+      text: solutionName,
+      onClick: isSettingsView ? undefined : this.openSolutionSettings,
+    }
+
+    const nav = {
+      hidden: isSettingsView,
+      key: 'nav',
+      iconOnly: true,
+      iconProps: { iconName: 'GlobalNavButton' },
+      onClick: showBackstage,
+    }
+
+    const back = {
+      hidden: !isSettingsView,
+      key: 'back',
+      iconOnly: true,
+      iconProps: { iconName: 'Back' },
+      onClick: goBack,
+    }
+
+    const commonItems = [back, nav, name].filter(({ hidden }) => !hidden).map(option => {
+      const { hidden, ...rest } = option
+      return rest
+    })
 
     const items: ICommandBarItemProps[] = [
       ...commonItems,

@@ -14,7 +14,7 @@ export const get = (state: IState, id: string): ISolution => {
 
 export const getAll = (state: IState): ISolution[] =>
   getObjectValues(state.solutions.metadata)
-    .filter(solution => solution.host === state.host)
+    .filter(solution => solution.host === state.host || solution.host === 'ALL')
     .filter(({ id }) => id !== SETTINGS_SOLUTION_ID)
     .map(solution => ({
       ...solution,
@@ -28,12 +28,11 @@ export const getActive = (state: IState): ISolution | undefined => {
   const [path, pathSolutionId, pathFileId] = solutionPathRegex.exec(
     state.router.location.pathname,
   )
-
   const allSolutions = getInLastModifiedOrder(state)
 
   if (allSolutions.length > 0) {
     const allSolutionIds = getObjectValues(state.solutions.metadata)
-      .filter(solution => solution.host === state.host)
+      .filter(solution => solution.host === state.host || solution.host === 'ALL')
       .map(solution => solution.id)
 
     return allSolutionIds.includes(pathSolutionId)

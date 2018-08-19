@@ -9,6 +9,7 @@ import Header, {
 import { SETTINGS_SOLUTION_ID } from '../constants'
 import { getHeaderFabricTheme, getTheme } from '../theme'
 import { MessageBarType } from 'office-ui-fabric-react/lib/MessageBar'
+import { goBack } from 'connected-react-router'
 
 const mapStateToProps = (state, ownProps: IHeader): IHeaderPropsFromRedux => ({
   isSettingsView: ownProps.solution.id === SETTINGS_SOLUTION_ID,
@@ -21,6 +22,8 @@ const mapStateToProps = (state, ownProps: IHeader): IHeaderPropsFromRedux => ({
 const mapDispatchToProps = (dispatch, ownProps: IHeader): IHeaderActionsFromRedux => ({
   login: () => dispatch(github.login.request()),
   logout: () => dispatch(github.logout()),
+
+  goBack: () => dispatch(goBack()),
 
   editSolution: (solutionId: string, solution: Partial<IEditableSolutionProperties>) =>
     dispatch(solutions.edit({ id: solutionId, solution })),
