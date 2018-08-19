@@ -7,6 +7,7 @@ import { setupFabricTheme } from './theme'
 import registerServiceWorker from './registerServiceWorker'
 import { misc } from './store/actions'
 import selectors from './store/selectors'
+import { initializeIcons } from 'office-ui-fabric-react/lib/Icons'
 
 import './index.css'
 import Root from './components/Root'
@@ -28,6 +29,7 @@ Office.onReady(async () => {
   if (Authenticator.isAuthDialog()) {
     return
   }
+  initializeIcons()
 
   const { store, history } = configureStore()
 

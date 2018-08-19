@@ -1,7 +1,6 @@
 import { HostType } from '@microsoft/office-js-helpers'
 import Color from 'color'
 import { loadTheme, createTheme } from 'office-ui-fabric-react/lib/Styling'
-import { initializeIcons } from 'office-ui-fabric-react/lib/Icons'
 
 const neutralColors: IThemeNeutralColors = {
   black: '#000000',
@@ -124,5 +123,4 @@ export const setupFabricTheme = (host: string) => {
   }
 
   loadTheme({ palette: fabricTheme, isInverted: true })
-  initializeIcons()
 }
