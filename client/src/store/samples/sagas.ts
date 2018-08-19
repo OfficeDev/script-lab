@@ -2,7 +2,7 @@ import { put, takeEvery, call, select } from 'redux-saga/effects'
 import { getType, ActionType } from 'typesafe-actions'
 
 import selectors from '../selectors'
-import { samples, host } from '../actions'
+import { samples } from '../actions'
 import { fetchYaml } from '../../services/general'
 import { convertSnippetToSolution } from '../../utils'
 import { createSolutionSaga } from '../solutions/sagas'
@@ -41,7 +41,6 @@ function* handleOpenSampleSuccessSaga(action: ActionType<typeof samples.get.succ
 
 export default function* samplesWatcher() {
   yield takeEvery(getType(samples.fetchMetadata.request), fetchAllSamplesMetadetaSaga)
-  yield takeEvery(getType(host.change), fetchAllSamplesMetadetaSaga)
 
   yield takeEvery(getType(samples.get.request), openSampleSaga)
   yield takeEvery(getType(samples.get.success), handleOpenSampleSuccessSaga)

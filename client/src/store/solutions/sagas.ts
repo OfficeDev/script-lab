@@ -8,7 +8,7 @@ import selectors from '../selectors'
 import { convertSnippetToSolution } from '../../utils'
 import { getBoilerplate } from '../../newSolutionData'
 
-function* getDefaultSaga() {
+export function* getDefaultSaga() {
   const host: string = yield select(selectors.host.get)
   const response = yield call(
     fetchYaml,
