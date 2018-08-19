@@ -38,7 +38,10 @@ class PivotBar extends React.Component<IPivotBar> {
             root: { backgroundColor: theme.primaryDarker },
             link: {
               backgroundColor: theme.primaryDarker,
-              selectors: { ':active': { backgroundColor: theme.primaryDarkest } },
+              selectors: {
+                ':hover': { backgroundColor: 'rgba(0, 0, 0, 0.1)' },
+                ':active': { backgroundColor: theme.primaryDarkest },
+              },
             },
             linkIsSelected: {
               backgroundColor: theme.primaryDarkest,

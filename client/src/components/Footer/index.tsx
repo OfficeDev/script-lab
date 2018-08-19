@@ -58,10 +58,6 @@ const Footer = ({
               themeSecondary: theme.primary,
               themeDarkAlt: theme.primaryDark,
               themeDark: theme.primaryDark,
-              themeTertiary: 'pink',
-              themeLight: 'pink',
-              themeLighter: 'magenta',
-              themeLighterAlt: 'orange',
             },
           }),
         }}
@@ -106,6 +102,7 @@ const Footer = ({
               },
             },
             label: {
+              fontSize: '1.2rem',
               color: theme.white,
             },
           }}

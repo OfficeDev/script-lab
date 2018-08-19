@@ -114,6 +114,7 @@ interface IThemePrimaryColors {
   primary: string
   primaryLight: string
   primaryLighter: string
+  primaryLightest: string
 }
 
 interface IThemeNeutralColors {

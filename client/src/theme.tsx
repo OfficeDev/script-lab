@@ -41,6 +41,7 @@ export const getTheme = (host: string): ITheme => {
     primary: primaryColor.hex(),
     primaryLight: primaryColor.lighten(0.35).hex(),
     primaryLighter: primaryColor.lighten(0.5).hex(),
+    primaryLightest: primaryColor.lighten(0.6).hex(),
     ...neutralColors,
   }
 }
@@ -92,18 +93,18 @@ export const setupFabricTheme = (host: string) => {
   const theme = getTheme(host)
 
   const fabricTheme = {
-    themePrimary: '#217346',
-    themeLighterAlt: '#f2f9f5',
-    themeLighter: '#cee9da',
-    themeLight: '#a8d5bc',
-    themeTertiary: '#62ab83',
-    themeSecondary: '#318456',
-    themeDarkAlt: '#1e673f',
-    themeDark: '#195735',
-    themeDarker: '#134027',
-    neutralLighterAlt: '#f8f8f8',
-    neutralLighter: '#f4f4f4',
-    neutralLight: '#eaeaea',
+    themePrimary: theme.primary,
+    themeLighterAlt: theme.neutralLighter,
+    themeLighter: theme.primaryLightest,
+    themeLight: theme.primaryLighter,
+    themeTertiary: theme.primaryLight,
+    themeSecondary: theme.primary,
+    themeDarkAlt: theme.primaryDark,
+    themeDark: theme.primaryDarker,
+    themeDarker: theme.primaryDarkest,
+    neutralLighterAlt: theme.neutralLighter,
+    neutralLighter: theme.neutralLighter,
+    neutralLight: theme.neutralLight,
     neutralQuaternaryAlt: '#dadada',
     neutralQuaternary: '#d0d0d0',
     neutralTertiaryAlt: '#c8c8c8',
