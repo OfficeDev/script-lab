@@ -72,8 +72,8 @@ describe('solutions reducer', () => {
     const { timestamp } = actionToDispatch.payload
 
     const expectedState = getStateWith([1, 2])
-    expectedState[getExampleSolution(1).id].name = newName
-    expectedState[getExampleSolution(1).id].dateLastModified = timestamp
+    expectedState.metadata[getExampleSolution(1).id].name = newName
+    expectedState.metadata[getExampleSolution(1).id].dateLastModified = timestamp
     expect(reducer(getStateWith([1, 2]), actionToDispatch)).toEqual(expectedState)
   })
 
@@ -91,8 +91,9 @@ describe('solutions reducer', () => {
     const { timestamp } = actionToDispatch.payload
 
     const expectedState = getStateWith([1, 2])
-    expectedState[file.id].content = newContent
-    expectedState[file.id].dateLastModified = timestamp
+    expectedState.metadata[solution.id].dateLastModified = timestamp
+    expectedState.files[file.id].content = newContent
+    expectedState.files[file.id].dateLastModified = timestamp
     expect(reducer(getStateWith([1, 2]), actionToDispatch)).toEqual(expectedState)
   })
 })

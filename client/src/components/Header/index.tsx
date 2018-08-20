@@ -95,7 +95,7 @@ interface IState {
   showSolutionSettings: boolean
 }
 
-class Header extends React.Component<IHeader, IState> {
+export class Header extends React.Component<IHeader, IState> {
   state = { showSolutionSettings: false }
   clipboard
 

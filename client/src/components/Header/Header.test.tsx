@@ -1,9 +1,10 @@
 import React from 'react'
 import { mount } from 'enzyme'
 
-import Header, { IHeader } from '.'
+import { Header, IHeader } from '.'
 import { getBoilerplate } from '../../newSolutionData'
 import { ITheme as IFabricTheme } from '@uifabric/styling'
+import { getTheme, getHeaderFabricTheme } from '../../theme'
 
 const normalExample = getBoilerplate('EXCEL')
 
@@ -30,10 +31,10 @@ describe('Header should render properly', () => {
     const headerProps: IHeader = {
       solution,
       isLoggedIn: true,
-      isRunnableOnThisHost: false,
+      isRunnableOnThisHost: true,
       isSettingsView: false,
       profilePicUrl: undefined,
-      headerFabricTheme: {} as IFabricTheme,
+      headerFabricTheme: getHeaderFabricTheme('WEB') as IFabricTheme,
       ...actionProps,
     }
     const header = mount(<Header {...headerProps} />)
