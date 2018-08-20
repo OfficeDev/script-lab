@@ -21,6 +21,7 @@ import { SETTINGS_SOLUTION_ID } from '../../constants'
 import { getHeaderFabricTheme } from '../../theme'
 import { MessageBarType } from 'office-ui-fabric-react/lib/MessageBar'
 import { goBack } from 'connected-react-router'
+import { getIsRunnableOnThisHost } from '../../store/host/selectors'
 
 const HeaderWrapper = styled.header`
   grid-area: header;
@@ -29,7 +30,7 @@ const HeaderWrapper = styled.header`
 
 interface IPropsFromRedux {
   profilePicUrl?: string
-  isWeb: boolean
+  isRunnableOnThisHost: boolean
   isSettingsView: boolean
   isLoggedIn: boolean
   headerFabricTheme: IFabricTheme
@@ -38,7 +39,7 @@ interface IPropsFromRedux {
 const mapStateToProps = (state, ownProps: IHeader): IPropsFromRedux => ({
   isSettingsView: ownProps.solution.id === SETTINGS_SOLUTION_ID,
   isLoggedIn: !!selectors.github.getToken(state),
-  isWeb: selectors.host.getIsWeb(state),
+  isRunnableOnThisHost: selectors.host.getIsRunnableOnThisHost(state),
   profilePicUrl: selectors.github.getProfilePicUrl(state),
   headerFabricTheme: getHeaderFabricTheme(selectors.host.get(state)),
 })
@@ -116,7 +117,7 @@ class Header extends React.Component<IHeader, IState> {
       deleteSolution,
       isSettingsView,
       profilePicUrl,
-      isWeb,
+      isRunnableOnThisHost,
       isLoggedIn,
       headerFabricTheme,
       logout,
@@ -168,7 +169,7 @@ class Header extends React.Component<IHeader, IState> {
 
     const nonSettingsButtons: ICommandBarItemProps[] = [
       {
-        hidden: isWeb || solution.id === NULL_SOLUTION_ID,
+        hidden: !isRunnableOnThisHost || solution.id === NULL_SOLUTION_ID,
         key: 'run',
         text: 'Run',
         iconProps: { iconName: 'Play' },
@@ -293,4 +294,7 @@ class Header extends React.Component<IHeader, IState> {
   private closeSolutionSettings = () => this.setState({ showSolutionSettings: false })
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Header)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Header)

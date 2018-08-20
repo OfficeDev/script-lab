@@ -8,7 +8,7 @@ import { setupFabricTheme } from '../../theme'
 
 export function* hostChangedSaga() {
   // whenever the host changes, we will check to see
-  // if there are any solutions, and if not, create a default
+  //    if there are any solutions, and if not, create a default
 
   const solutions = yield select(selectors.solutions.getAll)
 

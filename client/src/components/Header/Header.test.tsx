@@ -30,7 +30,7 @@ describe('Header should render properly', () => {
     const headerProps: IHeader = {
       solution,
       isLoggedIn: true,
-      isWeb: false,
+      isRunnableOnThisHost: false,
       isSettingsView: false,
       profilePicUrl: undefined,
       headerFabricTheme: {} as IFabricTheme,

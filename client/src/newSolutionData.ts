@@ -8,7 +8,7 @@ export const getBoilerplateFiles = (timestamp: number): IFile[] =>
       content: `$("#run").click(() => tryCatch(run));
 
 async function run() {
-  console.log('I have been run')
+    console.log("Your code here");
 }
 
 /** Default helper for invoking an action and handling errors. */
@@ -32,11 +32,7 @@ async function tryCatch(callback) {
 </button>
 `,
     },
-    {
-      name: 'index.css',
-      language: 'CSS',
-      content: '',
-    },
+    { name: 'index.css', language: 'CSS', content: '' },
     {
       name: 'libraries.txt',
       language: 'libraries',
