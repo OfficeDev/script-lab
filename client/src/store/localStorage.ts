@@ -28,6 +28,7 @@ export const saveState = (state: IState) => {
     }
   } catch (err) {
     // TODO
+    console.error(err)
   }
 }
 
