@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { Customizer } from 'office-ui-fabric-react/lib/Utilities'
 import { CommandBar, ICommandBarItemProps } from 'office-ui-fabric-react/lib/CommandBar'
 import { PersonaSize, PersonaCoin } from 'office-ui-fabric-react/lib/Persona'
+import { MessageBarType } from 'office-ui-fabric-react/lib/MessageBar'
 
 import Clipboard from 'clipboard'
 import { convertSolutionToSnippet } from '../../utils'
@@ -11,17 +12,14 @@ import YAML from 'yamljs'
 
 import SolutionSettings from './SolutionSettings'
 import { ITheme as IFabricTheme } from 'office-ui-fabric-react/lib/Styling'
-import { NULL_SOLUTION_ID } from '../../constants'
+import { NULL_SOLUTION_ID, SETTINGS_SOLUTION_ID } from '../../constants'
 
 import { connect } from 'react-redux'
 import { solutions, github, gists, messageBar } from '../../store/actions'
 import selectors from '../../store/selectors'
 
-import { SETTINGS_SOLUTION_ID } from '../../constants'
 import { getHeaderFabricTheme } from '../../theme'
-import { MessageBarType } from 'office-ui-fabric-react/lib/MessageBar'
 import { goBack } from 'connected-react-router'
-import { getIsRunnableOnThisHost } from '../../store/host/selectors'
 
 const HeaderWrapper = styled.header`
   grid-area: header;
@@ -127,7 +125,7 @@ export class Header extends React.Component<IHeader, IState> {
       createPublicGist,
       createSecretGist,
     } = this.props
-
+    const isNullSolution = solution.id === NULL_SOLUTION_ID
     const solutionName = solution ? solution.name : 'Solution Name'
 
     const shareOptions = [
@@ -169,14 +167,14 @@ export class Header extends React.Component<IHeader, IState> {
 
     const nonSettingsButtons: ICommandBarItemProps[] = [
       {
-        hidden: !isRunnableOnThisHost || solution.id === NULL_SOLUTION_ID,
+        hidden: !isRunnableOnThisHost || isNullSolution,
         key: 'run',
         text: 'Run',
         iconProps: { iconName: 'Play' },
         href: '/run.html',
       },
       {
-        hidden: solution.id === NULL_SOLUTION_ID,
+        hidden: isNullSolution,
         key: 'share',
         text: 'Share',
         iconProps: { iconName: 'Share' },
@@ -185,7 +183,7 @@ export class Header extends React.Component<IHeader, IState> {
         },
       },
       {
-        hidden: solution.id === NULL_SOLUTION_ID,
+        hidden: isNullSolution,
         key: 'delete',
         text: 'Delete',
         iconProps: { iconName: 'Delete' },
@@ -199,8 +197,8 @@ export class Header extends React.Component<IHeader, IState> {
       })
 
     const name = {
-      hidden: solution.id === NULL_SOLUTION_ID,
-      key: solutionName,
+      hidden: isNullSolution,
+      key: 'solution-name',
       text: solutionName,
       onClick: isSettingsView ? undefined : this.openSolutionSettings,
     }
