@@ -38,7 +38,7 @@ export const request = ({
     .catch(error => ({ error }))
 }
 
-export const login = async () => {
+export const login = async (): Promise<{ token?: string; profilePicUrl?: string }> => {
   const auth = new Authenticator()
 
   auth.endpoints.add('GitHub', {
@@ -57,5 +57,5 @@ export const login = async () => {
     token: token.access_token,
   })
 
-  return { token: token.access_token, profilePic: response!.avatar_url }
+  return { token: token.access_token, profilePicUrl: response!.avatar_url }
 }
