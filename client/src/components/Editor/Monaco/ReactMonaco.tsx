@@ -139,7 +139,7 @@ class ReactMonaco extends Component<IReactMonaco, IReactMonacoState> {
             return []
           }
 
-          if (Regex.GLOBAL.test(currentLine)) {
+          if (currentLine === '') {
             return this.libraries
           }
 
