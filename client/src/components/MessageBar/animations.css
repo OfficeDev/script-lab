@@ -1,0 +1,33 @@
+.message-enter {
+  opacity: 0.01;
+  transform: scale(0.9) translateY(50%);
+}
+.message-enter-active {
+  opacity: 1;
+  transform: scale(1) translateY(0%);
+  transition: all 300ms ease-out;
+}
+.message-exit {
+  opacity: 1;
+  transform: scale(1) translateY(0%);
+}
+.message-exit-active {
+  opacity: 0.01;
+  transform: scale(0.9) translateY(50%);
+  transition: all 300ms ease-out;
+}
+
+.message-bar {
+  position: relative;
+  height: 0rem;
+  opacity: 0;
+  top: -4.8rem;
+  transition: all 350ms ease-in-out;
+  z-index: 999;
+}
+
+.message-bar.active {
+  top: 0;
+  height: 4.8rem;
+  opacity: 1;
+}

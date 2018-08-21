@@ -6,6 +6,8 @@ import { IState as IMessageBarState } from '../../store/messageBar/reducer'
 import { connect } from 'react-redux'
 import { messageBar } from '../../store/actions'
 
+import './animations.css'
+
 interface IPropsFromRedux {
   messageBarProps: IMessageBarState
 }
@@ -24,8 +26,8 @@ const mapDispatchToProps = dispatch => ({
 
 interface IMessageBar extends IPropsFromRedux, IActionsFromRedux {}
 
-const MessageBar = ({ messageBarProps, dismiss }: IMessageBar) =>
-  messageBarProps.isVisible ? (
+const MessageBar = ({ messageBarProps, dismiss }: IMessageBar) => (
+  <div className={`message-bar ${messageBarProps.isVisible ? 'active' : ''}`}>
     <FabricMessageBar
       dismissButtonAriaLabel="Close"
       messageBarType={messageBarProps.style}
@@ -36,7 +38,8 @@ const MessageBar = ({ messageBarProps, dismiss }: IMessageBar) =>
         <Link href={messageBarProps.link.url}>{messageBarProps.link.text}</Link>
       )}
     </FabricMessageBar>
-  ) : null
+  </div>
+)
 
 export default connect(
   mapStateToProps,

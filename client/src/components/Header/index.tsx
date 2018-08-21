@@ -22,8 +22,8 @@ import { getHeaderFabricTheme } from '../../theme'
 import { goBack } from 'connected-react-router'
 
 const HeaderWrapper = styled.header`
-  grid-area: header;
   background-color: ${props => props.theme.primary};
+  z-index: 1000;
 `
 
 interface IPropsFromRedux {

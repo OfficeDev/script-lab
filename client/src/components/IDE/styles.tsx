@@ -6,6 +6,7 @@ export const Layout = styled.div`
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  z-index: 1000;
 `
 
 export const ContentWrapper = styled.div`

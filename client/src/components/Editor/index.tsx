@@ -305,7 +305,7 @@ class Editor extends Component<IEditor, IState> {
           onDismiss={this.closeSaveSettingsDialog}
           dialogContentProps={{
             type: DialogType.largeHeader,
-            title: 'Ut Oh!',
+            title: 'Oh no!',
             subText:
               "It looks like you made an edit to your settings that you didn't apply.Would you like to apply these changes ?",
           }}
