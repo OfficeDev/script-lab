@@ -30,17 +30,13 @@ export const getActive = (state: IState): ISolution | undefined => {
   )
   const allSolutions = getInLastModifiedOrder(state)
 
-  if (allSolutions.length > 0) {
-    const allSolutionIds = getObjectValues(state.solutions.metadata)
-      .filter(solution => solution.host === state.host || solution.host === 'ALL')
-      .map(solution => solution.id)
+  const allSolutionIds = getObjectValues(state.solutions.metadata)
+    .filter(solution => solution.host === state.host || solution.host === 'ALL')
+    .map(solution => solution.id)
 
-    return allSolutionIds.includes(pathSolutionId)
-      ? get(state, pathSolutionId)
-      : allSolutions[0]
-  } else {
-    return undefined
-  }
+  return allSolutionIds.includes(pathSolutionId)
+    ? get(state, pathSolutionId)
+    : allSolutions[0]
 }
 
 // files
