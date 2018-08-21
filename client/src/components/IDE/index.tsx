@@ -1,14 +1,21 @@
 import React, { Component } from 'react'
+import { withTheme } from 'styled-components'
 
-import Header from '../../containers/Header'
+import Header from '../Header'
 import PivotBar from '../PivotBar'
-import MessageBar from '../../containers/MessageBar'
-import Editor from '../../containers/Editor'
-import Footer from '../../containers/Footer'
+import MessageBar from '../MessageBar'
+import Editor from '../Editor'
+import Footer from '../Footer'
 
-import Backstage from '../../containers/Backstage'
+import Backstage from '../Backstage'
 
 import { Layout, ContentWrapper } from './styles'
+import { NULL_SOLUTION, NULL_FILE, NULL_FILE_ID, NULL_SOLUTION_ID } from '../../constants'
+import Only from '../Only'
+
+import { connect } from 'react-redux'
+import selectors from '../../store/selectors'
+import { push } from 'connected-react-router'
 
 const FILE_NAME_MAP = {
   'index.ts': 'Script',
@@ -17,19 +24,30 @@ const FILE_NAME_MAP = {
   'libraries.txt': 'Libraries',
 }
 
-export interface IIDEPropsFromRedux {
+interface IPropsFromRedux {
   activeSolution: ISolution
-  files: IFile[]
   activeFile: IFile
-  theme: ITheme
 }
 
-export interface IIDEActionsFromRedux {
+const mapStateToProps = (state): Partial<IPropsFromRedux> => ({
+  activeSolution: selectors.solutions.getActive(state),
+  activeFile: selectors.solutions.getActiveFile(state),
+})
+
+interface IActionsFromRedux {
   openSolution: (solutionId: string) => void
   openFile: (solutionId: string, fileId: string) => void
 }
 
-export interface IIDE extends IIDEPropsFromRedux, IIDEActionsFromRedux {}
+const mapDispatchToProps = (dispatch): IActionsFromRedux => ({
+  openSolution: (solutionId: string) => dispatch(push(`/${solutionId}`)),
+  openFile: (solutionId: string, fileId: string) =>
+    dispatch(push(`/${solutionId}/${fileId}`)),
+})
+
+export interface IIDE extends IPropsFromRedux, IActionsFromRedux {
+  theme: ITheme // from withTheme
+}
 
 interface IState {
   isBackstageVisible: boolean
@@ -38,11 +56,16 @@ interface IState {
 class IDE extends Component<IIDE, IState> {
   state = { isBackstageVisible: false }
 
+  static defaultProps: Partial<IIDE> = {
+    activeSolution: NULL_SOLUTION,
+    activeFile: NULL_FILE,
+  }
+
   showBackstage = () => this.setState({ isBackstageVisible: true })
   hideBackstage = () => this.setState({ isBackstageVisible: false })
 
   componentWillReceiveProps(newProps) {
-    if (!newProps.match.params.fileId) {
+    if (!newProps.match.params.fileId && newProps.activeFile.id !== NULL_FILE_ID) {
       this.props.openFile(newProps.activeSolution.id, newProps.activeFile.id)
     }
   }
@@ -52,18 +75,14 @@ class IDE extends Component<IIDE, IState> {
 
   render() {
     const { isBackstageVisible } = this.state
-    const { activeSolution, files, activeFile, theme } = this.props
+    const { activeSolution, activeFile, theme } = this.props
     return (
       <>
         <Layout style={{ display: isBackstageVisible ? 'none' : 'flex' }}>
-          <Header
-            solution={activeSolution}
-            files={files}
-            showBackstage={this.showBackstage}
-          />
+          <Header solution={activeSolution} showBackstage={this.showBackstage} />
           <PivotBar
             theme={theme}
-            items={files.map(file => ({
+            items={activeSolution.files.map(file => ({
               key: file.id,
               text: FILE_NAME_MAP[file.name] || file.name,
             }))}
@@ -74,7 +93,7 @@ class IDE extends Component<IIDE, IState> {
           <ContentWrapper>
             <Editor
               activeSolution={activeSolution}
-              activeFiles={files}
+              activeFiles={activeSolution.files}
               activeFile={activeFile}
             />
           </ContentWrapper>
@@ -90,4 +109,7 @@ class IDE extends Component<IIDE, IState> {
   }
 }
 
-export default IDE
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(withTheme(IDE))

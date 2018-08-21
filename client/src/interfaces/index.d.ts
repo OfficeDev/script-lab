@@ -13,11 +13,18 @@ interface ISourceInformation {
   origin: 'gist'
 }
 
-interface ISolution extends IEditableSolutionProperties, ITimestamps {
+interface ISolutionWithoutFiles extends IEditableSolutionProperties, ITimestamps {
   id: string
   source?: ISourceInformation
   host: string
+}
+
+interface ISolutionWithFileIds extends ISolutionWithoutFiles {
   files: string[]
+}
+
+interface ISolution extends ISolutionWithoutFiles {
+  files: IFile[]
 }
 
 interface IEditableFileProperties {
@@ -32,6 +39,7 @@ interface IFile extends IEditableFileProperties, ITimestamps {
 
 interface ISampleMetadata {
   id: string
+  host: string
   name: string
   fileName: string
   description: string
@@ -40,8 +48,13 @@ interface ISampleMetadata {
   api_set: any
 }
 
+interface ISampleMetadataByGroup {
+  [group: string]: ISampleMetadata[]
+}
+
 interface ISharedGistMetadata extends ITimestamps {
   id: string
+  host: string
   url: string
   title: string
   description: string
@@ -95,11 +108,13 @@ interface IGithubGistPayload {
 }
 
 interface IThemePrimaryColors {
+  primaryDarkest: string
   primaryDarker: string
   primaryDark: string
   primary: string
   primaryLight: string
   primaryLighter: string
+  primaryLightest: string
 }
 
 interface IThemeNeutralColors {
@@ -113,3 +128,33 @@ interface IThemeNeutralColors {
 }
 
 interface ITheme extends IThemePrimaryColors, IThemeNeutralColors {}
+
+// script-lab
+interface IContentLanguagePair {
+  content: string
+  language: string
+}
+
+interface ISnippet {
+  id: string
+  gist?: string
+  gistOwnerId?: string
+  name: string
+  description?: string
+  /** author: export-only */
+  author?: string
+  host: string
+  /** api_set: export-only (+ check at first level of import) */
+  api_set?: {
+    [index: string]: number
+  }
+  platform: string
+  created_at: number
+  modified_at: number
+  order?: number
+
+  script: IContentLanguagePair
+  template: IContentLanguagePair
+  style: IContentLanguagePair
+  libraries: string
+}

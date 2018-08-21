@@ -6,4 +6,6 @@ export const Layout = styled.div`
   background-color: ${props => props.theme.neutralDark};
 
   padding: 1rem 0;
+
+  z-index: 500;
 `

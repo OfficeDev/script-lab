@@ -8,7 +8,7 @@ import { MessageBar, MessageBarType } from 'office-ui-fabric-react/lib/MessageBa
 import { Dialog, DialogType, DialogFooter } from 'office-ui-fabric-react/lib/Dialog'
 import { PrimaryButton, DefaultButton } from 'office-ui-fabric-react/lib/Button'
 
-import { SETTINGS_FILE_ID, SETTINGS_SOLUTION_ID } from '../../constants'
+import { SETTINGS_FILE_ID, SETTINGS_SOLUTION_ID, NULL_SOLUTION_ID } from '../../constants'
 
 import Monaco from './Monaco'
 import Only from '../Only'
@@ -16,9 +16,14 @@ import { Layout } from './styles'
 
 import { getModel, setPosForModel, getModelByIdIfExists } from './Monaco/monaco-models'
 
-export interface IEditorSettings {
+import { connect } from 'react-redux'
+import { withTheme } from 'styled-components'
+import { solutions } from '../../store/actions'
+import selectors from '../../store/selectors'
+import { push } from 'connected-react-router'
+
+interface IEditorSettings {
   monacoTheme: string
-  backgroundColor: string
   fontFamily: string
   fontSize: number
   lineHeight: number
@@ -27,23 +32,54 @@ export interface IEditorSettings {
   isPrettierEnabled: boolean
 }
 
-export interface IEditor {
-  activeSolution: ISolution
-  activeFiles: IFile[]
-  activeFile: IFile
+interface IPropsFromRedux {
   settingsFile: IFile
-
   isSettingsView: boolean
-
   editorSettings: IEditorSettings
+}
 
-  openSettings: () => void
+const mapStateToProps = (state, ownProps: IEditor): IPropsFromRedux => ({
+  settingsFile: selectors.solutions.getFile(state, SETTINGS_FILE_ID),
+  isSettingsView: ownProps.activeSolution.id === SETTINGS_SOLUTION_ID,
+
+  editorSettings: {
+    monacoTheme: selectors.settings.getMonacoTheme(state),
+    fontFamily: selectors.settings.getFontFamily(state),
+    fontSize: selectors.settings.getFontSize(state),
+    lineHeight: selectors.settings.getLineHeight(state),
+    isMinimapEnabled: selectors.settings.getIsMinimapEnabled(state),
+    isFoldingEnabled: selectors.settings.getIsFoldingEnabled(state),
+    isPrettierEnabled: selectors.settings.getIsPrettierEnabled(state),
+  },
+})
+
+interface IActionsFromRedux {
   changeActiveFile: (fileId: string) => void
   editFile: (
     solutionId: string,
     fileId: string,
     file: Partial<IEditableFileProperties>,
   ) => void
+  openSettings: () => void
+}
+
+const mapDispatchToProps = (dispatch, ownProps: IEditor): IActionsFromRedux => ({
+  changeActiveFile: (fileId: string) =>
+    dispatch(push(`/${ownProps.activeSolution.id}/${fileId}`)),
+  editFile: (
+    solutionId: string,
+    fileId: string,
+    file: Partial<IEditableFileProperties>,
+  ) => dispatch(solutions.edit({ id: solutionId, fileId, file })),
+  openSettings: () => dispatch(push(`/${SETTINGS_SOLUTION_ID}/${SETTINGS_FILE_ID}`)),
+})
+
+export interface IEditor extends IPropsFromRedux, IActionsFromRedux {
+  activeSolution: ISolution
+  activeFiles: IFile[]
+  activeFile: IFile
+
+  theme: ITheme // from withTheme
 }
 
 interface IState {
@@ -160,6 +196,7 @@ class Editor extends Component<IEditor, IState> {
       glyphMargin: false,
       fixedOverflowWidgets: true,
       ariaLabel: 'todo',
+      readOnly: this.props.activeSolution.id === NULL_SOLUTION_ID,
     }
   }
 
@@ -233,8 +270,8 @@ class Editor extends Component<IEditor, IState> {
   }
 
   render() {
-    const { activeFiles, editorSettings, isSettingsView } = this.props
-    const { backgroundColor, monacoTheme } = editorSettings
+    const { activeFiles, editorSettings, isSettingsView, theme } = this.props
+    const { monacoTheme } = editorSettings
     const options = this.getMonacoOptions()
     const libraries = activeFiles.find(file => file.name === 'libraries.txt')
 
@@ -268,7 +305,7 @@ class Editor extends Component<IEditor, IState> {
           onDismiss={this.closeSaveSettingsDialog}
           dialogContentProps={{
             type: DialogType.largeHeader,
-            title: 'Ut Oh!',
+            title: 'Oh no!',
             subText:
               "It looks like you made an edit to your settings that you didn't apply.Would you like to apply these changes ?",
           }}
@@ -284,7 +321,7 @@ class Editor extends Component<IEditor, IState> {
           </DialogFooter>
         </Dialog>
 
-        <Layout style={{ backgroundColor }}>
+        <Layout style={{ backgroundColor: theme.neutralDark }}>
           <Monaco
             theme={monacoTheme}
             options={options}
@@ -297,4 +334,7 @@ class Editor extends Component<IEditor, IState> {
   }
 }
 
-export default Editor
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(withTheme(Editor))

@@ -2,10 +2,12 @@ import './polyfills'
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { Authenticator } from '@microsoft/office-js-helpers'
-import configureStore from './configureStore'
+import configureStore from './store/configureStore'
 import { setupFabricTheme } from './theme'
 import registerServiceWorker from './registerServiceWorker'
-import { samples, gists } from './actions'
+import { misc } from './store/actions'
+import selectors from './store/selectors'
+import { initializeIcons } from 'office-ui-fabric-react/lib/Icons'
 
 import './index.css'
 import Root from './components/Root'
@@ -27,14 +29,14 @@ Office.onReady(async () => {
   if (Authenticator.isAuthDialog()) {
     return
   }
-
-  setupFabricTheme()
+  initializeIcons()
 
   const { store, history } = configureStore()
 
+  setupFabricTheme(selectors.host.get(store.getState()))
+
   // initial actions
-  store.dispatch(samples.fetchMetadata.request())
-  store.dispatch(gists.fetchMetadata.request())
+  store.dispatch(misc.initialize())
 
   ReactDOM.render(<Root store={store} history={history} />, document.getElementById(
     'root',

@@ -2,7 +2,7 @@ import React from 'react'
 import { Provider } from 'react-redux'
 import { ConnectedRouter } from 'connected-react-router'
 
-import App from '../../containers/App'
+import App from '../App'
 
 export default ({ store, history }) => (
   <Provider store={store}>
