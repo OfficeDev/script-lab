@@ -5,17 +5,42 @@ import { SETTINGS_SOLUTION_ID, SETTINGS_FILE_ID } from '../constants'
 import { getSettingsSolutionAndFiles, defaultSettings } from '../defaultSettings'
 import { merge } from './settings/sagas'
 import { allowedSettings } from '../SettingsJSONSchema'
+import { getAllLocalStorageKeys } from '../utils'
+import isEqual from 'lodash/isEqual'
+
+const SOLUTION_ROOT = 'solution'
+
+let lastSavedState: IState
+
+// helpers
+const writeItem = (root: string, id: string, object: any) => {
+  localStorage.setItem(`${root}${id}`, JSON.stringify(object))
+}
+
+const readItem = (root: string, id: string) =>
+  JSON.parse(localStorage.getItem(`${root}${id}`) || 'null')
+
+const writeIfChanged = (
+  root: string,
+  selector: (state: IState) => any,
+  currentState: IState,
+  lastState: IState | undefined,
+) => {
+  const current = selector(currentState)
+  const last = lastState ? selector(lastState) : null
+  if (current && (!last || !isEqual(current, last))) {
+    writeItem(root, current.id, current)
+  }
+}
 
 export const saveState = (state: IState) => {
   try {
-    const { solutions, github, settings } = state
-    const serializedSolutions = JSON.stringify(solutions.metadata)
-    const serializedFiles = JSON.stringify(solutions.files)
+    writeIfChanged(SOLUTION_ROOT, selectors.solutions.getActive, state, lastSavedState)
+
+    const { github, settings } = state
     const serializedGithub = JSON.stringify(github)
     const serializedValidSettings = JSON.stringify(settings)
 
-    localStorage.setItem('solutions', serializedSolutions)
-    localStorage.setItem('files', serializedFiles)
     localStorage.setItem('github', serializedGithub)
     localStorage.setItem('validSettings', serializedValidSettings)
 
@@ -26,6 +51,8 @@ export const saveState = (state: IState) => {
     } else {
       localStorage.setItem('activeSnippet', 'null')
     }
+
+    lastSavedState = state
   } catch (err) {
     // TODO
     console.error(err)
@@ -34,8 +61,21 @@ export const saveState = (state: IState) => {
 
 export const loadState = (): Partial<IState> => {
   try {
-    let solutions = JSON.parse(localStorage.getItem('solutions') || '{}')
-    let files = JSON.parse(localStorage.getItem('files') || '{}')
+    let solutions = {}
+    let files = {}
+
+    getAllLocalStorageKeys()
+      .filter(key => key.startsWith(SOLUTION_ROOT))
+      .map(key => key.replace(SOLUTION_ROOT, ''))
+      .map(id => readItem(SOLUTION_ROOT, id))
+      .forEach(solution => {
+        solution.files.forEach(file => {
+          files[file.id] = file
+        })
+        solution.files = solution.files.map(({ id }) => id)
+        solutions[solution.id] = solution
+      })
+
     let settings = JSON.parse(localStorage.getItem('settings') || 'null')
     const github = JSON.parse(localStorage.getItem('github') || '{}')
 
