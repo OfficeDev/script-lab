@@ -3,6 +3,22 @@ import uuidv4 from 'uuid'
 export const getObjectValues = (dict: object): any[] =>
   Object.keys(dict).map(key => dict[key])
 
+export function setUpMomentJsDurationDefaults(momentInstance: {
+  relativeTimeThreshold(threshold: string, limit: number): boolean
+}) {
+  momentInstance.relativeTimeThreshold('s', 40)
+  // Note, per documentation, "ss" must be set after "s"
+  momentInstance.relativeTimeThreshold('ss', 1)
+  momentInstance.relativeTimeThreshold('m', 40)
+  momentInstance.relativeTimeThreshold('h', 20)
+  momentInstance.relativeTimeThreshold('d', 25)
+  momentInstance.relativeTimeThreshold('M', 10)
+}
+
+export function pause(ms: number) {
+  return new Promise(r => setTimeout(r, ms))
+}
+
 const EXT_TO_LANG_MAP = {
   js: 'JavaScript',
   ts: 'TypeScript',
