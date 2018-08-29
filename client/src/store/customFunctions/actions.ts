@@ -12,7 +12,9 @@ export const fetchMetadata = createAsyncAction(
 )<void, IMetadata, Error>()
 
 export const registerMetadata = createAsyncAction(
-  'CUSTOM_FUNCTIONS_REGISTER_METADATA_REQUEST',
+  'REGISTER_METADATA_REQUEST_CUSTOM_FUNCTIONS',
   'CUSTOM_FUNCTIONS_REGISTER_METADATA_SUCCESS',
   'CUSTOM_FUNCTIONS_REGISTER_METADATA_FAILURE',
 )<IMetadata, void, Error>()
+
+export const clearLogs = createAction('CUSTOM_FUNCTIONS_CLEAR_LOGS')

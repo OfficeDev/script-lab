@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux'
 import { getType } from 'typesafe-actions'
 
-import { customFunctions } from '../actions'
+import { customFunctions, ICustomFunctionsAction } from '../actions'
 
 type IMetadataState = ICFVisualSnippetMetadata[]
 
@@ -17,8 +17,12 @@ const metadata = (state: IMetadataState, action) => {
 
 type ILogsState = ILogData[]
 
-const logs = (state: ILogsState, action) => {
+const initialLogs = []
+const logs = (state: ILogsState = initialLogs, action: ICustomFunctionsAction) => {
   switch (action.type) {
+    case getType(customFunctions.clearLogs):
+      return initialLogs
+
     default:
       return state
   }

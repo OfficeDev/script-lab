@@ -22,7 +22,7 @@ import { setUpMomentJsDurationDefaults } from '../../../utils'
 import Only from '../../Only'
 import { connect } from 'react-redux'
 import { IState as IReduxState } from '../../../store/reducer'
-import selectors from '../../../store/selectors'
+import actions from '../../../store/actions'
 
 export enum ConsoleLogTypes {
   Info = 'info',
@@ -45,9 +45,16 @@ const mapStateToProps = (state: IReduxState): IConsolePropsFromRedux => ({
   engineStatus: state.customFunctions.engineStatus,
 })
 
-interface IConsole extends IConsolePropsFromRedux {
+interface IConsoleActionsFromRedux {
+  clearLogs: () => void
+}
+
+const mapDispatchToProps = (dispatch): IConsoleActionsFromRedux => ({
+  clearLogs: () => dispatch(actions.customFunctions.clearLogs()),
+})
+
+interface IConsole extends IConsolePropsFromRedux, IConsoleActionsFromRedux {
   theme: ITheme // from withTheme
-  clearLogsCallback: () => void
 }
 
 interface IState {
@@ -94,7 +101,7 @@ class ConsoleWithoutTheme extends React.Component<IConsole, IState> {
       runnerIsAlive,
       runnerLastUpdated,
       engineStatus,
-      clearLogsCallback,
+      clearLogs,
     } = this.props
 
     const runnerLastUpdatedText = runnerIsAlive
@@ -116,7 +123,7 @@ class ConsoleWithoutTheme extends React.Component<IConsole, IState> {
         {logs.length > 0 ? (
           <>
             <FilterWrapper>
-              <ClearButton onClick={clearLogsCallback}>
+              <ClearButton onClick={clearLogs}>
                 <Icon
                   style={{
                     position: 'absolute',
@@ -236,4 +243,7 @@ class ConsoleWithoutTheme extends React.Component<IConsole, IState> {
 
 export const Console = withTheme(ConsoleWithoutTheme)
 
-export default connect(mapStateToProps)(Console)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Console)

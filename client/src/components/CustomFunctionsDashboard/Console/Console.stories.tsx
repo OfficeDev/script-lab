@@ -61,6 +61,6 @@ stories.add('basic', () => (
     }}
     runnerIsAlive={true}
     runnerLastUpdated={Date.now()}
-    clearLogsCallback={voidFunc}
+    clearLogs={voidFunc}
   />
 ))
