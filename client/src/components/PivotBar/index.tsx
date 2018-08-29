@@ -1,5 +1,5 @@
 import React from 'react'
-import styled from 'styled-components'
+import styled, { withTheme } from 'styled-components'
 import {
   Pivot,
   PivotItem,
@@ -21,12 +21,15 @@ export interface IPivotBar {
   items: IPivotBarItem[]
   selectedKey: string | null
   onSelect: (selectedKey: string) => void
-  theme: ITheme
+  theme: ITheme // from withTheme
+
+  backgroundColor?: string
+  selectedColor?: string
 }
 
 class PivotBar extends React.Component<IPivotBar> {
   render() {
-    const { items, selectedKey, theme } = this.props
+    const { items, selectedKey, theme, backgroundColor, selectedColor } = this.props
 
     return (
       <PivotBarWrapper>
@@ -36,16 +39,16 @@ class PivotBar extends React.Component<IPivotBar> {
           onLinkClick={this.onLinkClick}
           selectedKey={selectedKey || undefined}
           styles={{
-            root: { backgroundColor: theme.primaryDarker },
+            root: { backgroundColor: backgroundColor || theme.primaryDarker },
             link: {
-              backgroundColor: theme.primaryDarker,
+              backgroundColor: backgroundColor || theme.primaryDarker,
               selectors: {
                 ':hover': { backgroundColor: 'rgba(0, 0, 0, 0.1)' },
-                ':active': { backgroundColor: theme.primaryDarkest },
+                ':active': { backgroundColor: selectedColor || theme.primaryDarkest },
               },
             },
             linkIsSelected: {
-              backgroundColor: theme.primaryDarkest,
+              backgroundColor: selectedColor || theme.primaryDarkest,
               selectors: {
                 ':before': {
                   borderBottom: `2px solid ${theme.white}`,
@@ -71,4 +74,4 @@ class PivotBar extends React.Component<IPivotBar> {
   }
 }
 
-export default PivotBar
+export default withTheme(PivotBar)

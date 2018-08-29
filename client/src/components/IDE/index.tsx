@@ -45,9 +45,7 @@ const mapDispatchToProps = (dispatch): IActionsFromRedux => ({
     dispatch(push(`/${solutionId}/${fileId}`)),
 })
 
-export interface IIDE extends IPropsFromRedux, IActionsFromRedux {
-  theme: ITheme // from withTheme
-}
+export interface IIDE extends IPropsFromRedux, IActionsFromRedux {}
 
 interface IState {
   isBackstageVisible: boolean
@@ -75,13 +73,12 @@ class IDE extends Component<IIDE, IState> {
 
   render() {
     const { isBackstageVisible } = this.state
-    const { activeSolution, activeFile, theme } = this.props
+    const { activeSolution, activeFile } = this.props
     return (
       <>
         <Layout style={{ display: isBackstageVisible ? 'none' : 'flex' }}>
           <Header solution={activeSolution} showBackstage={this.showBackstage} />
           <PivotBar
-            theme={theme}
             items={activeSolution.files.map(file => ({
               key: file.id,
               text: FILE_NAME_MAP[file.name] || file.name,
@@ -112,4 +109,4 @@ class IDE extends Component<IIDE, IState> {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(withTheme(IDE))
+)(IDE)
