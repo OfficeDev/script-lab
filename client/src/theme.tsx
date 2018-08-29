@@ -7,6 +7,7 @@ const neutralColors: IThemeNeutralColors = {
   neutralDark: '#212121',
   neutralPrimary: '#333333',
   neutralSecondary: '#666666',
+  neutralSecondaryLight: '#888888',
   neutralLight: '#eaeaea',
   neutralLighter: '#f4f4f4',
   white: '#ffffff',
