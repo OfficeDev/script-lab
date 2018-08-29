@@ -46,47 +46,29 @@ export const BasicSummary = () => <Summary {...basicSummaryProps} />
 stories
   .addDecorator(checkA11y)
   .add('basic', () => <BasicSummary />)
-  .add('all good', () => {
-    const snippetName = 'SnippetName'
-    const funcName = 'foo'
-    return (
-      <Summary
-        items={[
-          { snippetName, funcName, status: Status.Good },
-          { snippetName, funcName, status: Status.Good },
-          { snippetName, funcName, status: Status.Good },
-          { snippetName, funcName, status: Status.Good },
-        ]}
-      />
-    )
-  })
-  .add('all bad', () => {
-    const snippetName = 'SnippetName'
-    const funcName = 'foo'
-    return (
-      <Summary
-        items={[
-          { snippetName, funcName, status: Status.Good },
-          { snippetName, funcName, status: Status.Good },
-          { snippetName, funcName, status: Status.Good },
-          { snippetName, funcName, status: Status.Good },
-        ]}
-      />
-    )
-  })
+  .add('all good', () => (
+    <Summary
+      items={basicSummaryProps.items.filter(item => item.status === Status.Good)}
+    />
+  ))
+  .add('all bad', () => (
+    <Summary
+      items={basicSummaryProps.items.filter(item => item.status !== Status.Good)}
+    />
+  ))
   .add('summary items', () => (
     <div>
-      <SummaryItem status={Status.Good} snippetName="SnippetName" funcName="foo" />
-      <SummaryItem status={Status.Skipped} snippetName="SnippetName" funcName="foo" />
+      <SummaryItem status={Status.Good} snippetName="SnippetName" funcName="foo1" />
+      <SummaryItem status={Status.Skipped} snippetName="SnippetName" funcName="foo2" />
       <SummaryItem
         status={Status.Error}
         snippetName="SnippetName"
-        funcName="foo"
+        funcName="foo3"
         additionalInfo={[
           'Error - I am an error message. Be scared of me .',
           'Error - so many error messages. And this error message turns out to be a longer error message than the other ones. It is so long. A very very long error message, becauser your code is verry veryy messed up.',
         ]}
       />
-      <SummaryItem status={Status.Untrusted} snippetName="SnippetName" funcName="foo" />
+      <SummaryItem status={Status.Untrusted} snippetName="SnippetName" funcName="foo4" />
     </div>
   ))
