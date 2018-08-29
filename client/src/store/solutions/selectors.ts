@@ -39,6 +39,15 @@ export const getActive = (state: IState): ISolution | undefined => {
     : allSolutions[0]
 }
 
+// NOTE: might need to make a getLastModifiedCustomFunctionSolution or something of that nature
+//       that filters for only custom functions to prevent false positive refreshes
+export const getEditorLastModifiedDate = (state: IState): number => {
+  const lastModifiedOrderSolutions = getInLastModifiedOrder(state)
+  return lastModifiedOrderSolutions.length > 0
+    ? lastModifiedOrderSolutions[0].dateLastModified
+    : 0
+}
+
 // files
 export const getFile = (state: IState, id: string): IFile => state.solutions.files[id]
 export const getFiles = (state: IState, ids: string[]): IFile[] =>

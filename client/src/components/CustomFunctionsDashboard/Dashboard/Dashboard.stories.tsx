@@ -5,7 +5,7 @@ import { BasicSummary } from '../Summary/Summary.stories'
 import { BasicConsole } from '../Console/Console.stories'
 import { storiesOf } from '@storybook/react'
 
-const stories = storiesOf('Dashboard', module)
+const stories = storiesOf('CustomFunctions/Dashboard', module)
 
 const Dummy = ({ letter }) => <div>I AM {letter}</div>
 
