@@ -34,3 +34,5 @@ export const localStorageKeys = {
     'playground_custom_functions_currently_running_timestamp',
   log: 'playground_log',
 }
+
+export const CUSTOM_FUNCTIONS_INFO_URL = 'https://aka.ms/customfunctions'
