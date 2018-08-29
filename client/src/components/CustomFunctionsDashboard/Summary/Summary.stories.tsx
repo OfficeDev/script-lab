@@ -28,20 +28,20 @@ stories.addDecorator(containerWrapper)
 const snippetName = 'SnippetName'
 const funcName = 'foo'
 
-export const BasicSummary = () => (
-  <Summary
-    items={[
-      { snippetName, funcName, status: Status.Error },
-      { snippetName, funcName, status: Status.Skipped },
-      { snippetName, funcName, status: Status.Error },
-      { snippetName, funcName, status: Status.Skipped },
-      { snippetName, funcName, status: Status.Good },
-      { snippetName, funcName, status: Status.Good },
-      { snippetName, funcName, status: Status.Good },
-      { snippetName, funcName, status: Status.Good },
-    ]}
-  />
-)
+export const basicSummaryProps = {
+  items: [
+    { snippetName, funcName: `${funcName}1`, status: Status.Error },
+    { snippetName, funcName: `${funcName}2`, status: Status.Skipped },
+    { snippetName, funcName: `${funcName}3`, status: Status.Error },
+    { snippetName, funcName: `${funcName}4`, status: Status.Skipped },
+    { snippetName, funcName: `${funcName}5`, status: Status.Good },
+    { snippetName, funcName: `${funcName}6`, status: Status.Good },
+    { snippetName, funcName: `${funcName}7`, status: Status.Good },
+    { snippetName, funcName: `${funcName}8`, status: Status.Good },
+  ],
+}
+
+export const BasicSummary = () => <Summary {...basicSummaryProps} />
 
 stories
   .addDecorator(checkA11y)

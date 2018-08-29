@@ -1,10 +1,10 @@
 import React from 'react'
 import { mount } from 'enzyme'
 
-import { Header, IHeader } from '.'
-import { getBoilerplate } from '../../newSolutionData'
+import { Header, IHeader } from '..'
+import { getBoilerplate } from '../../../newSolutionData'
 import { ITheme as IFabricTheme } from '@uifabric/styling'
-import { getHeaderFabricTheme } from '../../theme'
+import { getHeaderFabricTheme } from '../../../theme'
 import { ICommandBarProps } from 'office-ui-fabric-react/lib/CommandBar'
 
 const actionProps = {
