@@ -46,10 +46,12 @@ const mapStateToProps = (state: IReduxState): IConsolePropsFromRedux => ({
 })
 
 interface IConsoleActionsFromRedux {
+  fetchLogs: () => void
   clearLogs: () => void
 }
 
 const mapDispatchToProps = (dispatch): IConsoleActionsFromRedux => ({
+  fetchLogs: () => dispatch(actions.customFunctions.fetchLogsAndHeartbeat()),
   clearLogs: () => dispatch(actions.customFunctions.clearLogs()),
 })
 
@@ -63,6 +65,7 @@ interface IState {
 }
 
 class ConsoleWithoutTheme extends React.Component<IConsole, IState> {
+  private logFetchInterval
   state = { shouldScrollToBottom: true, filterQuery: '' }
 
   constructor(props: IConsole) {
@@ -73,6 +76,11 @@ class ConsoleWithoutTheme extends React.Component<IConsole, IState> {
 
   componentDidMount() {
     this.scrollToBottom()
+    this.logFetchInterval = setInterval(this.props.fetchLogs, 300)
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.logFetchInterval)
   }
 
   componentDidUpdate() {

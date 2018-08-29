@@ -6,10 +6,19 @@ import { customFunctions } from '../actions'
 import selectors from '../selectors'
 
 import { convertSolutionToSnippet } from '../../utils'
-import { isCustomFunctionScript } from '../../utils/customFunctions'
+import {
+  isCustomFunctionScript,
+  getCustomFunctionEngineStatus,
+} from '../../utils/customFunctions'
 import { registerMetadata } from '../../utils/customFunctions'
 
 import { RUNNER_URL } from '../../constants'
+import {
+  getCustomFunctionLogs,
+  getCustomFunctionRunnerLastUpdated,
+  getIsCustomFunctionRunnerAlive,
+} from '../../store/localStorage'
+import { fetchLogsAndHeartbeat, updateEngineStatus } from './actions'
 
 export function* fetchCustomFunctionsMetadataSaga() {
   const solutions = yield select(selectors.solutions.getAll)
@@ -42,9 +51,21 @@ function* registerCustomFunctionsMetadataSaga(
   try {
     registerMetadata(visual, code)
     yield put(customFunctions.registerMetadata.success())
+
+    const engineStatus = yield call(getCustomFunctionEngineStatus)
+    yield put(updateEngineStatus(engineStatus))
   } catch (error) {
     yield put(customFunctions.registerMetadata.failure(error))
   }
+}
+
+function* fetchLogsAndHeartbeatSaga() {
+  const logs = yield call(getCustomFunctionLogs)
+  const lastUpdated = yield call(getCustomFunctionRunnerLastUpdated)
+  const isAlive = yield call(getIsCustomFunctionRunnerAlive)
+
+  yield put(customFunctions.pushLogs(logs))
+  yield put(customFunctions.updateRunner({ isAlive, lastUpdated }))
 }
 
 export default function* customFunctionsWatcher() {
@@ -55,5 +76,10 @@ export default function* customFunctionsWatcher() {
   yield takeEvery(
     getType(customFunctions.fetchMetadata.success),
     registerCustomFunctionsMetadataSaga,
+  )
+
+  yield takeEvery(
+    getType(customFunctions.fetchLogsAndHeartbeat),
+    fetchLogsAndHeartbeatSaga,
   )
 }

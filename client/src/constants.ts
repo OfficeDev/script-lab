@@ -24,3 +24,13 @@ export const NULL_SOLUTION: ISolution = {
 }
 
 export const RUNNER_URL = 'https://bornholm-runner-edge.azurewebsites.net/'
+
+export const localStorageKeys = {
+  customFunctionsLastHeartbeatTimestamp:
+    'playground_custom_functions_last_heartbeat_timestamp',
+  customFunctionsLastUpdatedCodeTimestamp:
+    'playground_custom_functions_last_updated_code_timestamp',
+  customFunctionsCurrentlyRunningTimestamp:
+    'playground_custom_functions_currently_running_timestamp',
+  log: 'playground_log',
+}

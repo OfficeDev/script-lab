@@ -122,3 +122,8 @@ interface ICustomFunctionSummaryItem {
   funcName: string
   additionalInfo?: string[]
 }
+
+interface IRunnerState {
+  isAlive: boolean
+  lastUpdated: number
+}

@@ -1,7 +1,7 @@
 import { IState } from './reducer'
 import selectors from './selectors'
 import { convertSolutionToSnippet } from '../utils'
-import { SETTINGS_SOLUTION_ID, SETTINGS_FILE_ID } from '../constants'
+import { SETTINGS_SOLUTION_ID, SETTINGS_FILE_ID, localStorageKeys } from '../constants'
 import { getSettingsSolutionAndFiles, defaultSettings } from '../defaultSettings'
 import { merge } from './settings/sagas'
 import { allowedSettings } from '../SettingsJSONSchema'
@@ -73,5 +73,36 @@ export const loadState = (): Partial<IState> => {
         files: settings.files.reduce((all, file) => ({ ...all, [file.id]: file }), {}),
       },
     }
+  }
+}
+
+// custom functions
+export const getIsCustomFunctionRunnerAlive = (): boolean => {
+  const lastHeartbeat = localStorage.getItem(
+    localStorageKeys.customFunctionsLastHeartbeatTimestamp,
+  )
+  return lastHeartbeat ? +lastHeartbeat > 3000 : false
+}
+
+export const getCustomFunctionRunnerLastUpdated = (): number => {
+  const lastUpdated = localStorage.getItem(
+    localStorageKeys.customFunctionsLastUpdatedCodeTimestamp,
+  )
+  return lastUpdated ? +lastUpdated : 0
+}
+
+export const getCustomFunctionLogs = (): ILogData[] | null => {
+  const logsString = window.localStorage.getItem(localStorageKeys.log)
+
+  if (logsString !== null) {
+    localStorage.removeItem(localStorageKeys.log)
+
+    return logsString
+      .split('\n')
+      .filter(line => line !== '')
+      .filter(line => !line.includes('Agave.HostCall'))
+      .map(entry => JSON.parse(entry) as ILogData)
+  } else {
+    return null
   }
 }

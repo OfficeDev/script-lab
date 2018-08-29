@@ -20,6 +20,9 @@ type ILogsState = ILogData[]
 const initialLogs = []
 const logs = (state: ILogsState = initialLogs, action: ICustomFunctionsAction) => {
   switch (action.type) {
+    case getType(customFunctions.pushLogs):
+      return [...state, ...action.payload]
+
     case getType(customFunctions.clearLogs):
       return initialLogs
 
@@ -28,13 +31,11 @@ const logs = (state: ILogsState = initialLogs, action: ICustomFunctionsAction) =
   }
 }
 
-interface IRunnerState {
-  isAlive: boolean
-  lastUpdated: number
-}
-
-const runner = (state: IRunnerState, action) => {
+const runner = (state: IRunnerState, action: ICustomFunctionsAction) => {
   switch (action.type) {
+    case getType(customFunctions.updateRunner):
+      return action.payload
+
     default:
       return state
   }
@@ -42,6 +43,9 @@ const runner = (state: IRunnerState, action) => {
 
 const engineStatus = (state: ICustomFunctionEngineStatus, action) => {
   switch (action.type) {
+    case getType(customFunctions.updateEngineStatus):
+      return action.payload
+
     default:
       return state
   }
