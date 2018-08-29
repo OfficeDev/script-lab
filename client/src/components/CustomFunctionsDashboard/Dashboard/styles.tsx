@@ -7,8 +7,10 @@ export const Layout = styled.div`
 `
 export const Header = styled.header`
   box-shadow: 0px 2px 5px 2px ${props => props.theme.neutralSecondary};
+  z-index: 1000;
 `
 export const Content = styled.main`
   flex: 1;
   overflow: hidden;
+  z-index: 999;
 `

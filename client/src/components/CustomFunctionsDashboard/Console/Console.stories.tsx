@@ -52,7 +52,7 @@ const sampleLogs = [
 
 const voidFunc = () => {}
 
-stories.add('basic', () => (
+export const BasicConsole = () => (
   <Console
     logs={sampleLogs}
     engineStatus={{
@@ -63,4 +63,6 @@ stories.add('basic', () => (
     runnerLastUpdated={Date.now()}
     clearLogs={voidFunc}
   />
-))
+)
+
+stories.add('basic', () => <BasicConsole />)

@@ -25,26 +25,27 @@ const containerWrapper = storyFn => (
 
 stories.addDecorator(containerWrapper)
 
+const snippetName = 'SnippetName'
+const funcName = 'foo'
+
+export const BasicSummary = () => (
+  <Summary
+    items={[
+      { snippetName, funcName, status: Status.Error },
+      { snippetName, funcName, status: Status.Skipped },
+      { snippetName, funcName, status: Status.Error },
+      { snippetName, funcName, status: Status.Skipped },
+      { snippetName, funcName, status: Status.Good },
+      { snippetName, funcName, status: Status.Good },
+      { snippetName, funcName, status: Status.Good },
+      { snippetName, funcName, status: Status.Good },
+    ]}
+  />
+)
+
 stories
   .addDecorator(checkA11y)
-  .add('basic', () => {
-    const snippetName = 'SnippetName'
-    const funcName = 'foo'
-    return (
-      <Summary
-        items={[
-          { snippetName, funcName, status: Status.Error },
-          { snippetName, funcName, status: Status.Skipped },
-          { snippetName, funcName, status: Status.Error },
-          { snippetName, funcName, status: Status.Skipped },
-          { snippetName, funcName, status: Status.Good },
-          { snippetName, funcName, status: Status.Good },
-          { snippetName, funcName, status: Status.Good },
-          { snippetName, funcName, status: Status.Good },
-        ]}
-      />
-    )
-  })
+  .add('basic', () => <BasicSummary />)
   .add('all good', () => {
     const snippetName = 'SnippetName'
     const funcName = 'foo'
