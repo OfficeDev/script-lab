@@ -61,6 +61,7 @@ export const BasicConsole = () => (
     }}
     runnerIsAlive={true}
     runnerLastUpdated={Date.now()}
+    fetchLogs={voidFunc}
     clearLogs={voidFunc}
   />
 )
