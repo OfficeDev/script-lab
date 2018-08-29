@@ -22,3 +22,5 @@ export const NULL_SOLUTION: ISolution = {
   dateLastModified: 0,
   files: [],
 }
+
+export const RUNNER_URL = 'https://bornholm-runner-edge.azurewebsites.net/'
