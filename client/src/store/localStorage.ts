@@ -19,7 +19,7 @@ export const saveState = (state: IState) => {
     localStorage.setItem('github', serializedGithub)
     localStorage.setItem('validSettings', serializedValidSettings)
 
-    const activeSolution = selectors.solutions.getActive(state)
+    const activeSolution = selectors.editor.getActiveSolution(state)
     if (activeSolution && activeSolution.id !== SETTINGS_SOLUTION_ID) {
       const activeSnippet = convertSolutionToSnippet(activeSolution)
       localStorage.setItem('activeSnippet', JSON.stringify(activeSnippet))
