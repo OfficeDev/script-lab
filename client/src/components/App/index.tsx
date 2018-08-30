@@ -4,6 +4,7 @@ import { Route } from 'react-router-dom'
 import { ThemeProvider } from 'styled-components'
 
 import IDE from '../IDE'
+import CustomFunctionsDashboard from '../CustomFunctionsDashboard'
 
 import selectors from '../../store/selectors'
 import { getTheme } from '../../theme'
@@ -20,6 +21,7 @@ export interface IApp extends IPropsFromRedux {}
 
 const App = ({ theme }: IApp) => (
   <ThemeProvider theme={theme}>
+    <Route exact path="/custom-functions" component={CustomFunctionsDashboard} />
     <Route exact path="/:solutionId?/:fileId?" component={IDE} />
   </ThemeProvider>
 )

@@ -5,7 +5,7 @@ import { customFunctions, ICustomFunctionsAction } from '../actions'
 
 type IMetadataState = ICFVisualSnippetMetadata[]
 
-const metadata = (state: IMetadataState, action) => {
+const metadata = (state: IMetadataState | null = null, action) => {
   switch (action.type) {
     case getType(customFunctions.fetchMetadata.success):
       return action.payload
@@ -31,7 +31,10 @@ const logs = (state: ILogsState = initialLogs, action: ICustomFunctionsAction) =
   }
 }
 
-const runner = (state: IRunnerState, action: ICustomFunctionsAction) => {
+const runner = (
+  state: IRunnerState = { isAlive: false, lastUpdated: 0 },
+  action: ICustomFunctionsAction,
+) => {
   switch (action.type) {
     case getType(customFunctions.updateRunner):
       return action.payload
@@ -41,7 +44,10 @@ const runner = (state: IRunnerState, action: ICustomFunctionsAction) => {
   }
 }
 
-const engineStatus = (state: ICustomFunctionEngineStatus, action) => {
+const engineStatus = (
+  state: ICustomFunctionEngineStatus = { enabled: false },
+  action: ICustomFunctionsAction,
+) => {
   switch (action.type) {
     case getType(customFunctions.updateEngineStatus):
       return action.payload

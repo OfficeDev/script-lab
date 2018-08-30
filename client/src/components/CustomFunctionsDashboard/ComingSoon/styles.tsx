@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import LogoImage from '../../../../public/assets/images/icon-large.svg'
+import LogoImage from '../../../assets/icon-large.svg'
 
 export const CenteredContent = styled.main`
   display: flex;
