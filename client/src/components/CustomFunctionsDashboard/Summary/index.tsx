@@ -9,11 +9,11 @@ import {
 import { connect } from 'react-redux'
 import selectors from '../../../store/selectors'
 
-interface ISummaryPropsFromRedux {
+interface IPropsFromRedux {
   items: ICustomFunctionSummaryItem[]
 }
 
-const mapStateToProps = (state): ISummaryPropsFromRedux => ({
+const mapStateToProps = (state): IPropsFromRedux => ({
   items: selectors.customFunctions.getMetadataSummaryItems(state),
 })
 

@@ -14,27 +14,28 @@ import {
 
 import { connect } from 'react-redux'
 import { IState as IReduxState } from '../../../store/reducer'
+import { customFunctions as customFunctionsActions } from '../../../store/actions'
 import selectors from '../../../store/selectors'
 
-interface IWelcomePropsFromRedux {
+interface IPropsFromRedux {
   isRefreshEnabled: boolean
 }
 
-const mapStateToProps = (state: IReduxState): IWelcomePropsFromRedux => ({
+const mapStateToProps = (state: IReduxState): IPropsFromRedux => ({
   isRefreshEnabled:
     selectors.solutions.getEditorLastModifiedDate(state) >
     state.customFunctions.runner.lastUpdated,
 })
 
-interface IWelcomeActionsFromRedux {
+interface IActionsFromRedux {
   refresh: () => void
 }
 
-const mapDispatchToProps = (state): IWelcomeActionsFromRedux => ({
-  refresh: () => {}, // TODO:(nicobell)
+const mapDispatchToProps = (dispatch): IActionsFromRedux => ({
+  refresh: () => dispatch(customFunctionsActions.fetchMetadata.request()),
 })
 
-interface IWelcome extends IWelcomePropsFromRedux, IWelcomeActionsFromRedux {}
+interface IWelcome extends IPropsFromRedux, IActionsFromRedux {}
 
 export const Welcome = ({ isRefreshEnabled, refresh }: IWelcome) => (
   <CenteredContent>

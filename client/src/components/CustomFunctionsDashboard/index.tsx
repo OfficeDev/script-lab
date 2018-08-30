@@ -15,16 +15,16 @@ import selectors from '../../store/selectors'
 
 import { getIsCustomFunctionsSupportedOnHost } from '../../utils/customFunctions'
 
-interface ICustomFunctionsDashboardPropsFromRedux {
+interface IPropsFromRedux {
   hasCustomFunctionsInSolutions: boolean
 }
 
-const mapStateToProps = (state): ICustomFunctionsDashboardPropsFromRedux => ({
+const mapStateToProps = (state): IPropsFromRedux => ({
   hasCustomFunctionsInSolutions:
     selectors.solutions.getCustomFunctionSolutions(state).length > 0,
 })
 
-interface ICustomFunctionsDashboard extends ICustomFunctionsDashboardPropsFromRedux {}
+interface ICustomFunctionsDashboard extends IPropsFromRedux {}
 
 interface IState {
   isCFSupportedOnHost: boolean | undefined

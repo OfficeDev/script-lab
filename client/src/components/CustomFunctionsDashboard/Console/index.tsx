@@ -31,31 +31,31 @@ export enum ConsoleLogTypes {
   Error = 'error',
 }
 
-interface IConsolePropsFromRedux {
+interface IPropsFromRedux {
   logs: ILogData[]
   runnerLastUpdated: number
   runnerIsAlive: boolean
   engineStatus: ICustomFunctionEngineStatus
 }
 
-const mapStateToProps = (state: IReduxState): IConsolePropsFromRedux => ({
+const mapStateToProps = (state: IReduxState): IPropsFromRedux => ({
   logs: state.customFunctions.logs,
   runnerLastUpdated: state.customFunctions.runner.lastUpdated,
   runnerIsAlive: state.customFunctions.runner.isAlive,
   engineStatus: state.customFunctions.engineStatus,
 })
 
-interface IConsoleActionsFromRedux {
+interface IActionsFromRedux {
   fetchLogs: () => void
   clearLogs: () => void
 }
 
-const mapDispatchToProps = (dispatch): IConsoleActionsFromRedux => ({
+const mapDispatchToProps = (dispatch): IActionsFromRedux => ({
   fetchLogs: () => dispatch(actions.customFunctions.fetchLogsAndHeartbeat()),
   clearLogs: () => dispatch(actions.customFunctions.clearLogs()),
 })
 
-interface IConsole extends IConsolePropsFromRedux, IConsoleActionsFromRedux {
+interface IConsole extends IPropsFromRedux, IActionsFromRedux {
   theme: ITheme // from withTheme
 }
 

@@ -6,15 +6,15 @@ import { Layout, Header, Content } from './styles'
 import { connect } from 'react-redux'
 import { customFunctions as customFunctionsActions } from '../../../store/actions'
 
-interface IDashboardActionsFromRedux {
+interface IActionsFromRedux {
   onMount?: () => void
 }
 
-const mapDispatchToProps = (dispatch): IDashboardActionsFromRedux => ({
+const mapDispatchToProps = (dispatch): IActionsFromRedux => ({
   onMount: () => dispatch(customFunctionsActions.fetchMetadata.request()),
 })
 
-interface IDashboard extends IDashboardActionsFromRedux {
+interface IDashboard extends IActionsFromRedux {
   items: { [itemName: string]: any /* react component */ }
   theme: ITheme // from withTheme
 }
