@@ -1,6 +1,7 @@
 import { ActionType } from 'typesafe-actions'
 
 import * as customFunctions from './customFunctions/actions'
+import * as editor from './editor/actions'
 import * as gists from './gists/actions'
 import * as github from './github/actions'
 import * as host from './host/actions'
@@ -11,6 +12,7 @@ import * as settings from './settings/actions'
 import * as solutions from './solutions/actions'
 
 export { customFunctions }
+export { editor }
 export { gists }
 export { github }
 export { host }
@@ -33,6 +35,7 @@ export default {
 }
 
 export type ICustomFunctionsAction = ActionType<typeof customFunctions>
+export type IEditorAction = ActionType<typeof editor>
 export type IGistsAction = ActionType<typeof gists>
 export type IGithubAction = ActionType<typeof github>
 export type IHostAction = ActionType<typeof host>

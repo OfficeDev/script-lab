@@ -26,7 +26,6 @@ interface IGistConflictDialog {
       existingSolution: ISolution
     },
   ) => void
-  hideBackstage: () => void
   closeDialog: () => void
 }
 
@@ -65,7 +64,6 @@ class ConflictResolutionDialog extends Component<IGistConflictDialog, IState> {
     })
 
     this.closeDialog()
-    this.props.hideBackstage()
   }
 
   setDropdownRef = (component: IDropdown | null) => {

@@ -4,7 +4,7 @@ import { getObjectValues } from '../../utils'
 import { SETTINGS_SOLUTION_ID } from '../../constants'
 import { isCustomFunctionScript } from '../../utils/customFunctions'
 
-const solutionPathRegex = pathToRegexp('/:solutionId?/:fileId?')
+const solutionPathRegex = pathToRegexp('/editor/:solutionId?/:fileId?')
 
 // solutions
 export const get = (state: IState, id: string): ISolution => {
@@ -24,21 +24,6 @@ export const getAll = (state: IState): ISolution[] =>
 
 export const getInLastModifiedOrder = (state: IState): ISolution[] =>
   getAll(state).sort((a, b) => b.dateLastModified - a.dateLastModified)
-
-export const getActive = (state: IState): ISolution | undefined => {
-  const [path, pathSolutionId, pathFileId] = solutionPathRegex.exec(
-    state.router.location.pathname,
-  )
-  const allSolutions = getInLastModifiedOrder(state)
-
-  const allSolutionIds = getObjectValues(state.solutions.metadata)
-    .filter(solution => solution.host === state.host || solution.host === 'ALL')
-    .map(solution => solution.id)
-
-  return allSolutionIds.includes(pathSolutionId)
-    ? get(state, pathSolutionId)
-    : allSolutions[0]
-}
 
 // NOTE: might need to make a getLastModifiedCustomFunctionSolution or something of that nature
 //       that filters for only custom functions to prevent false positive refreshes
@@ -62,20 +47,3 @@ export const getCustomFunctionSolutions = (state: IState): ISolution[] =>
 export const getFile = (state: IState, id: string): IFile => state.solutions.files[id]
 export const getFiles = (state: IState, ids: string[]): IFile[] =>
   ids.map(id => getFile(state, id))
-
-export const getActiveFile = (state: IState): IFile | undefined => {
-  const [path, pathSolutionId, pathFileId] = solutionPathRegex.exec(
-    state.router.location.pathname,
-  )
-
-  const activeSolution = getActive(state)
-  if (activeSolution) {
-    console.log({ activeSolution, files: activeSolution.files, pathSolutionId })
-    console.log(activeSolution.files.find(file => file.id === pathFileId))
-    return (
-      activeSolution.files.find(file => file.id === pathFileId) || activeSolution.files[0]
-    )
-  } else {
-    return undefined
-  }
-}

@@ -18,7 +18,7 @@ import { getModel, setPosForModel, getModelByIdIfExists } from './Monaco/monaco-
 
 import { connect } from 'react-redux'
 import { withTheme } from 'styled-components'
-import { solutions } from '../../store/actions'
+import { solutions, editor } from '../../store/actions'
 import selectors from '../../store/selectors'
 import { push } from 'connected-react-router'
 
@@ -65,13 +65,14 @@ interface IActionsFromRedux {
 
 const mapDispatchToProps = (dispatch, ownProps: IEditor): IActionsFromRedux => ({
   changeActiveFile: (fileId: string) =>
-    dispatch(push(`/${ownProps.activeSolution.id}/${fileId}`)),
+    dispatch(editor.open({ solutionId: ownProps.activeSolution.id, fileId })),
   editFile: (
     solutionId: string,
     fileId: string,
     file: Partial<IEditableFileProperties>,
   ) => dispatch(solutions.edit({ id: solutionId, fileId, file })),
-  openSettings: () => dispatch(push(`/${SETTINGS_SOLUTION_ID}/${SETTINGS_FILE_ID}`)),
+  openSettings: () =>
+    dispatch(editor.open({ solutionId: SETTINGS_SOLUTION_ID, fileId: SETTINGS_FILE_ID })),
 })
 
 export interface IEditor extends IPropsFromRedux, IActionsFromRedux {

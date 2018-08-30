@@ -1,8 +1,7 @@
 import { put, takeEvery, call, select } from 'redux-saga/effects'
 import { getType, ActionType } from 'typesafe-actions'
 
-import { push } from 'connected-react-router'
-import { solutions } from '../actions'
+import { solutions, editor } from '../actions'
 import { fetchYaml } from '../../services/general'
 import selectors from '../selectors'
 import { convertSnippetToSolution } from '../../utils'
@@ -41,16 +40,7 @@ function* handleGetDefaultFailureSaga(
 
 export function* createSolutionSaga(solution: ISolution) {
   yield put(solutions.add(solution))
-  yield call(openSolutionSaga, solution)
-}
-
-export function* openSolutionSaga(solution: ISolution) {
-  const { files } = solution
-  if (files.length > 0) {
-    yield put(push(`/${solution.id}/${files[0].id}`))
-  } else {
-    yield put(push(`/${solution.id}/`))
-  }
+  yield put(editor.open({ solutionId: solution.id, fileId: solution.files[0].id }))
 }
 
 export default function* solutionsWatcher() {

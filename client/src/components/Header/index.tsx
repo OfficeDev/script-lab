@@ -19,7 +19,7 @@ import { solutions, github, gists, messageBar } from '../../store/actions'
 import selectors from '../../store/selectors'
 
 import { getHeaderFabricTheme } from '../../theme'
-import { goBack } from 'connected-react-router'
+import { push, goBack } from 'connected-react-router'
 
 const HeaderWrapper = styled.header`
   background-color: ${props => props.theme.primary};
@@ -46,6 +46,7 @@ interface IActionsFromRedux {
   login: () => void
   logout: () => void
 
+  showBackstage: () => void
   goBack: () => void
 
   editSolution: (
@@ -65,6 +66,7 @@ const mapDispatchToProps = (dispatch, ownProps: IHeader): IActionsFromRedux => (
   login: () => dispatch(github.login.request()),
   logout: () => dispatch(github.logout()),
 
+  showBackstage: () => dispatch(push('/backstage')),
   goBack: () => dispatch(goBack()),
 
   editSolution: (solutionId: string, solution: Partial<IEditableSolutionProperties>) =>
@@ -86,7 +88,6 @@ const mapDispatchToProps = (dispatch, ownProps: IHeader): IActionsFromRedux => (
 
 export interface IHeader extends IPropsFromRedux, IActionsFromRedux {
   solution: ISolution
-  showBackstage: () => void
 }
 
 interface IState {

@@ -3,6 +3,7 @@ import { RouterState } from 'connected-react-router'
 
 // reducers
 import customFunctions, { IState as ICFState } from './customFunctions/reducer'
+import editor, { IState as IEditorState } from './editor/reducer'
 import github, { IState as IGithubState } from './github/reducer'
 import messageBar, { IState as IMessageBarState } from './messageBar/reducer'
 import settings, { IState as ISettingsState } from './settings/reducer'
@@ -13,6 +14,7 @@ import samples, { IState as ISamplesState } from './samples/reducer'
 
 export interface IState {
   customFunctions: ICFState
+  editor: IEditorState
   github: IGithubState
   messageBar: IMessageBarState
   settings: ISettingsState
@@ -25,6 +27,7 @@ export interface IState {
 
 const root = combineReducers({
   customFunctions,
+  editor,
   github,
   messageBar,
   settings,

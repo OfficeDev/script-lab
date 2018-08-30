@@ -6,7 +6,6 @@ import { PrimaryButton } from 'office-ui-fabric-react/lib/Button'
 
 interface IImportSolution {
   importGist: (gistId?: string, gist?: string) => void
-  hideBackstage: () => void
 }
 
 // TODO: incorp. localization
@@ -50,8 +49,6 @@ class ImportSolution extends Component<IImportSolution> {
 
     this.props.importGist(gistId, gist)
     this.setState({ importFieldText: '' })
-
-    this.props.hideBackstage()
   }
 }
 

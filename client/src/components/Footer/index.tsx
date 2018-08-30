@@ -18,7 +18,7 @@ import FabricIcon from '../FabricIcon'
 
 import { connect } from 'react-redux'
 import selectors from '../../store/selectors'
-import { host as hostActions } from '../../store/actions'
+import { host as hostActions, editor as editorActions } from '../../store/actions'
 
 import { push } from 'connected-react-router'
 import { SETTINGS_SOLUTION_ID, SETTINGS_FILE_ID } from '../../constants'
@@ -50,7 +50,12 @@ interface IActionsFromRedux {
 
 const mapDispatchToProps = (dispatch): IActionsFromRedux => ({
   onSettingsIconClick: () =>
-    dispatch(push(`/${SETTINGS_SOLUTION_ID}/${SETTINGS_FILE_ID}`)),
+    dispatch(
+      editorActions.open({
+        solutionId: SETTINGS_SOLUTION_ID,
+        fileId: SETTINGS_FILE_ID,
+      }),
+    ),
   changeHost: (host: string) => dispatch(hostActions.change(host)),
 })
 

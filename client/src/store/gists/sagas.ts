@@ -4,13 +4,13 @@ import YAML from 'yamljs'
 
 import * as github from '../../services/github'
 import { fetchYaml } from '../../services/general'
-import { gists, solutions } from '../actions'
+import { gists, editor, solutions } from '../actions'
 import selectors from '../selectors'
 
 import { convertSnippetToSolution, convertSolutionToSnippet } from '../../utils'
 import { ConflictResolutionOptions } from '../../interfaces/enums'
 
-import { createSolutionSaga, openSolutionSaga } from '../solutions/sagas'
+import { createSolutionSaga } from '../solutions/sagas'
 
 export function* fetchAllGistMetadataSaga() {
   const token = yield select(selectors.github.getToken)
@@ -50,7 +50,8 @@ function* getGistSaga(action: ActionType<typeof gists.get.request>) {
   if (action.payload.conflictResolution) {
     switch (action.payload.conflictResolution.type) {
       case ConflictResolutionOptions.Open:
-        yield call(openSolutionSaga, action.payload.conflictResolution.existingSolution)
+        const solution = action.payload.conflictResolution.existingSolution
+        yield put(editor.open({ solutionId: solution.id, fileId: solution.files[0].id }))
         return
 
       case ConflictResolutionOptions.Overwrite:

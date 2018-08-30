@@ -12,8 +12,8 @@ import { ConflictResolutionOptions } from '../../interfaces/enums'
 
 import { connect } from 'react-redux'
 import selectors from '../../store/selectors'
-import { solutions, samples, gists } from '../../store/actions'
-import { push } from 'connected-react-router'
+import { editor, solutions, samples, gists } from '../../store/actions'
+import { goBack } from 'connected-react-router'
 
 interface IBackstageItem {
   key: string
@@ -25,19 +25,21 @@ interface IBackstageItem {
 
 interface IPropsFromRedux {
   solutions: ISolution[]
+  activeSolution?: ISolution
   sharedGistMetadata: ISharedGistMetadata[]
   samplesByGroup: { [group: string]: ISampleMetadata[] }
 }
 
 const mapStateToProps = (state): IPropsFromRedux => ({
-  sharedGistMetadata: selectors.gists.getGistMetadata(state),
   solutions: selectors.solutions.getAll(state),
+  activeSolution: selectors.editor.getActiveSolution(state),
+  sharedGistMetadata: selectors.gists.getGistMetadata(state),
   samplesByGroup: selectors.samples.getMetadataByGroup(state),
 })
 
 interface IActionsFromRedux {
   createNewSolution: () => void
-  openSolution: (solutionId: string) => void
+  openSolution: (solutionId: string, fileId: string) => void
   openSample: (rawUrl: string) => void
   openGist: (
     rawUrl: string,
@@ -45,11 +47,13 @@ interface IActionsFromRedux {
     conflictResolution?: { type: ConflictResolutionOptions; existingSolution: ISolution },
   ) => void
   importGist: (gistId?: string, gist?: string) => void
+  goBack: () => void
 }
 
 const mapDispatchToProps = (dispatch): IActionsFromRedux => ({
   createNewSolution: () => dispatch(solutions.create()),
-  openSolution: (solutionId: string) => dispatch(push(`/${solutionId}/`)),
+  openSolution: (solutionId: string, fileId: string) =>
+    dispatch(editor.open({ solutionId, fileId })),
   openSample: (rawUrl: string) => dispatch(samples.get.request({ rawUrl })),
   openGist: (
     rawUrl: string,
@@ -58,13 +62,10 @@ const mapDispatchToProps = (dispatch): IActionsFromRedux => ({
   ) => dispatch(gists.get.request({ rawUrl, gistId, conflictResolution })),
   importGist: (gistId?: string, gist?: string) =>
     dispatch(gists.importSnippet.request({ gistId, gist })),
+  goBack: () => dispatch(goBack()),
 })
 
 export interface IBackstage extends IPropsFromRedux, IActionsFromRedux {
-  isHidden: boolean
-  hideBackstage: () => void
-  activeSolution?: ISolution
-
   theme: ITheme // from withTheme
 }
 
@@ -82,30 +83,29 @@ class Backstage extends Component<IBackstage, IState> {
   }
 
   openSolution = (solutionId: string) => {
-    this.props.openSolution(solutionId)
-    this.props.hideBackstage()
+    const solution = this.props.solutions.find(solution => solution.id === solutionId)
+    this.props.openSolution(solutionId, solution!.files[0].id)
+    // this.props.hideBackstage()
   }
 
   openSample = (rawUrl: string) => {
     this.props.openSample(rawUrl)
-    this.props.hideBackstage()
+    // this.props.hideBackstage()
     this.setState({ selectedKey: 'my-solutions' })
   }
 
   openSharedGist = (gistMeta: ISharedGistMetadata) => {
-    const { solutions, openGist, hideBackstage } = this.props
+    const { solutions, openGist } = this.props
     const { id, url } = gistMeta
     const existingSolutions = solutions.filter(
       s => s.source && s.source.origin === 'gist' && s.source.id === id,
     )
 
-    console.log({ existingSolutions })
     if (existingSolutions.length > 0) {
       // version of this gist already exists locally in solutions
       this.showGistConflictDialog(gistMeta, existingSolutions)
     } else {
       openGist(url, id)
-      hideBackstage()
     }
   }
 
@@ -122,7 +122,7 @@ class Backstage extends Component<IBackstage, IState> {
       {
         key: 'back',
         iconName: 'GlobalNavButton',
-        onSelect: this.props.hideBackstage,
+        onSelect: this.props.goBack,
       },
       {
         key: 'new',
@@ -130,7 +130,6 @@ class Backstage extends Component<IBackstage, IState> {
         iconName: 'Add',
         onSelect: () => {
           this.props.createNewSolution()
-          this.props.hideBackstage()
         },
       },
       {
@@ -164,12 +163,7 @@ class Backstage extends Component<IBackstage, IState> {
         key: 'import',
         label: 'Import',
         iconName: 'Download',
-        content: (
-          <ImportSolution
-            importGist={this.props.importGist}
-            hideBackstage={this.props.hideBackstage}
-          />
-        ),
+        content: <ImportSolution importGist={this.props.importGist} />,
       },
     ].map((item: IBackstageItem) => ({
       onSelect: () => this.setState({ selectedKey: item.key }),
@@ -178,7 +172,7 @@ class Backstage extends Component<IBackstage, IState> {
     const { selectedKey, conflictingGist, existingSolutionsConflicting } = this.state
     const activeItem = items.find(item => item.key === selectedKey)
     return (
-      <BackstageWrapper style={{ display: this.props.isHidden ? 'none' : 'flex' }}>
+      <BackstageWrapper>
         <Menu
           theme={this.props.theme}
           selectedKey={this.state.selectedKey}
@@ -196,7 +190,6 @@ class Backstage extends Component<IBackstage, IState> {
               conflictingGist={conflictingGist}
               existingSolutions={existingSolutionsConflicting}
               closeDialog={this.hideGistConflictDialog}
-              hideBackstage={this.props.hideBackstage}
               openGist={this.props.openGist}
             />
           )}

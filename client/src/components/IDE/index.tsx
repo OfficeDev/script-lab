@@ -7,15 +7,14 @@ import MessageBar from '../MessageBar'
 import Editor from '../Editor'
 import Footer from '../Footer'
 
-import Backstage from '../Backstage'
-
 import { Layout, ContentWrapper } from './styles'
 import { NULL_SOLUTION, NULL_FILE, NULL_FILE_ID, NULL_SOLUTION_ID } from '../../constants'
 import Only from '../Only'
 
 import { connect } from 'react-redux'
+import { IState as IReduxState } from '../../store/reducer'
 import selectors from '../../store/selectors'
-import { push } from 'connected-react-router'
+import { editor as editorActions } from '../../store/actions'
 
 const FILE_NAME_MAP = {
   'index.ts': 'Script',
@@ -25,83 +24,60 @@ const FILE_NAME_MAP = {
 }
 
 interface IPropsFromRedux {
+  isVisible: boolean
   activeSolution: ISolution
   activeFile: IFile
 }
 
-const mapStateToProps = (state): Partial<IPropsFromRedux> => ({
-  activeSolution: selectors.solutions.getActive(state),
-  activeFile: selectors.solutions.getActiveFile(state),
+const mapStateToProps = (state: IReduxState): Partial<IPropsFromRedux> => ({
+  isVisible: state.editor.isVisible,
+  activeSolution: selectors.editor.getActiveSolution(state),
+  activeFile: selectors.editor.getActiveFile(state),
 })
 
 interface IActionsFromRedux {
-  openSolution: (solutionId: string) => void
   openFile: (solutionId: string, fileId: string) => void
 }
 
 const mapDispatchToProps = (dispatch): IActionsFromRedux => ({
-  openSolution: (solutionId: string) => dispatch(push(`/${solutionId}`)),
   openFile: (solutionId: string, fileId: string) =>
-    dispatch(push(`/${solutionId}/${fileId}`)),
+    dispatch(editorActions.open({ solutionId, fileId })),
 })
 
 export interface IIDE extends IPropsFromRedux, IActionsFromRedux {}
 
-interface IState {
-  isBackstageVisible: boolean
-}
-
-class IDE extends Component<IIDE, IState> {
-  state = { isBackstageVisible: false }
-
+class IDE extends Component<IIDE> {
   static defaultProps: Partial<IIDE> = {
     activeSolution: NULL_SOLUTION,
     activeFile: NULL_FILE,
-  }
-
-  showBackstage = () => this.setState({ isBackstageVisible: true })
-  hideBackstage = () => this.setState({ isBackstageVisible: false })
-
-  componentWillReceiveProps(newProps) {
-    if (!newProps.match.params.fileId && newProps.activeFile.id !== NULL_FILE_ID) {
-      this.props.openFile(newProps.activeSolution.id, newProps.activeFile.id)
-    }
   }
 
   changeActiveFile = (fileId: string) =>
     this.props.openFile(this.props.activeSolution.id, fileId)
 
   render() {
-    const { isBackstageVisible } = this.state
-    const { activeSolution, activeFile } = this.props
+    const { isVisible, activeSolution, activeFile } = this.props
     return (
-      <>
-        <Layout style={{ display: isBackstageVisible ? 'none' : 'flex' }}>
-          <Header solution={activeSolution} showBackstage={this.showBackstage} />
-          <PivotBar
-            items={activeSolution.files.map(file => ({
-              key: file.id,
-              text: FILE_NAME_MAP[file.name] || file.name,
-            }))}
-            selectedKey={activeFile.id}
-            onSelect={this.changeActiveFile}
-          />
-          <MessageBar />
-          <ContentWrapper>
-            <Editor
-              activeSolution={activeSolution}
-              activeFiles={activeSolution.files}
-              activeFile={activeFile}
-            />
-          </ContentWrapper>
-          <Footer activeFile={activeFile} />
-        </Layout>
-        <Backstage
-          activeSolution={activeSolution}
-          isHidden={!isBackstageVisible}
-          hideBackstage={this.hideBackstage}
+      <Layout style={{ display: isVisible ? 'flex' : 'none' }}>
+        <Header solution={activeSolution} />
+        <PivotBar
+          items={activeSolution.files.map(file => ({
+            key: file.id,
+            text: FILE_NAME_MAP[file.name] || file.name,
+          }))}
+          selectedKey={activeFile.id}
+          onSelect={this.changeActiveFile}
         />
-      </>
+        <MessageBar />
+        <ContentWrapper>
+          <Editor
+            activeSolution={activeSolution}
+            activeFiles={activeSolution.files}
+            activeFile={activeFile}
+          />
+        </ContentWrapper>
+        <Footer activeFile={activeFile} />
+      </Layout>
     )
   }
 }
