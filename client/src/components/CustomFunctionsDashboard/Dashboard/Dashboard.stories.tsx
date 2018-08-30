@@ -1,6 +1,6 @@
 import React from 'react'
 
-import Dashboard from './'
+import { Dashboard } from './'
 import { BasicSummary } from '../Summary/Summary.stories'
 import { BasicConsole } from '../Console/Console.stories'
 import { storiesOf } from '@storybook/react'

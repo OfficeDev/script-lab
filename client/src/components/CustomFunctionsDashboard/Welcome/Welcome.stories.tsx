@@ -1,6 +1,6 @@
 import React from 'react'
 
-import Welcome from './'
+import { Welcome } from './'
 import { storiesOf } from '@storybook/react'
 
 const stories = storiesOf('CustomFunctions/Welcome', module)

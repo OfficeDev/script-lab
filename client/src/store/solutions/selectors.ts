@@ -2,6 +2,7 @@ import pathToRegexp from 'path-to-regexp'
 import { IState } from '../reducer'
 import { getObjectValues } from '../../utils'
 import { SETTINGS_SOLUTION_ID } from '../../constants'
+import { isCustomFunctionScript } from '../../utils/customFunctions'
 
 const solutionPathRegex = pathToRegexp('/:solutionId?/:fileId?')
 
@@ -47,6 +48,15 @@ export const getEditorLastModifiedDate = (state: IState): number => {
     ? lastModifiedOrderSolutions[0].dateLastModified
     : 0
 }
+
+export const getCustomFunctionSolutions = (state: IState): ISolution[] =>
+  getAll(state)
+    .map(solution => {
+      const script = solution.files.find(file => file.name === 'index.ts')
+      return { solution, script }
+    })
+    .filter(({ script }) => script && isCustomFunctionScript(script.content))
+    .map(({ solution }) => solution)
 
 // files
 export const getFile = (state: IState, id: string): IFile => state.solutions.files[id]

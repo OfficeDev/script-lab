@@ -12,12 +12,31 @@ import {
   CodeBlock,
 } from './styles'
 
-interface IWelcome {
+import { connect } from 'react-redux'
+import { IState as IReduxState } from '../../../store/reducer'
+import selectors from '../../../store/selectors'
+
+interface IWelcomePropsFromRedux {
   isRefreshEnabled: boolean
+}
+
+const mapStateToProps = (state: IReduxState): IWelcomePropsFromRedux => ({
+  isRefreshEnabled:
+    selectors.solutions.getEditorLastModifiedDate(state) >
+    state.customFunctions.runner.lastUpdated,
+})
+
+interface IWelcomeActionsFromRedux {
   refresh: () => void
 }
 
-const Welcome = ({ isRefreshEnabled, refresh }: IWelcome) => (
+const mapDispatchToProps = (state): IWelcomeActionsFromRedux => ({
+  refresh: () => {}, // TODO:(nicobell)
+})
+
+interface IWelcome extends IWelcomePropsFromRedux, IWelcomeActionsFromRedux {}
+
+export const Welcome = ({ isRefreshEnabled, refresh }: IWelcome) => (
   <CenteredContent>
     <WelcomeTitle>Welcome</WelcomeTitle>
     <WelcomeSubTitle>
@@ -57,4 +76,7 @@ const Welcome = ({ isRefreshEnabled, refresh }: IWelcome) => (
   </CenteredContent>
 )
 
-export default Welcome
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Welcome)

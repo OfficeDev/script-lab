@@ -21,15 +21,9 @@ import {
 import { fetchLogsAndHeartbeat, updateEngineStatus } from './actions'
 
 export function* fetchCustomFunctionsMetadataSaga() {
-  const solutions = yield select(selectors.solutions.getAll)
+  const solutions = yield select(selectors.solutions.getCustomFunctionSolutions)
 
-  const snippets = solutions
-    .map(solution => {
-      const script = solution.files.find(file => file.name === 'index.ts')
-      return { solution, script }
-    })
-    .filter(({ script }) => isCustomFunctionScript(script.content))
-    .map(({ solution }) => convertSolutionToSnippet(solution))
+  const snippets = solutions.map(solution => convertSolutionToSnippet(solution))
 
   const { content, error } = yield call(request, {
     method: 'POST',
