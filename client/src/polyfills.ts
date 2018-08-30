@@ -1,3 +1,5 @@
+import 'core-js/es6/symbol'
+
 // string includes polyfill
 if (!String.prototype.includes) {
   String.prototype.includes = function(search, start) {
@@ -116,4 +118,11 @@ if (!Array.prototype.includes) {
       return false
     },
   })
+}
+
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/startsWith
+if (!String.prototype.startsWith) {
+  String.prototype.startsWith = function(search, pos) {
+    return this.substr(!pos || pos < 0 ? 0 : +pos, search.length) === search
+  }
 }

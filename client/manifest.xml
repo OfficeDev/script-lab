@@ -484,7 +484,7 @@
       </bt:Images>
       <bt:Urls>
         <bt:Url id="PG.Code.Url" DefaultValue="https://localhost:3000?commands=1" />
-        <bt:Url id="PG.CF.Url" DefaultValue="https://localhost:3000/custom-functions.html" />
+        <bt:Url id="PG.CF.Url" DefaultValue="https://localhost:3000/#/custom-functions" />
         <bt:Url id="PG.Run.Url" DefaultValue="https://localhost:3000/run.html" />
         <bt:Url id="PG.Functions.Url" DefaultValue="https://localhost:3000/functions.html" />
         <bt:Url id="PG.CFRunner.Url" DefaultValue="https://localhost:3000/custom-functions-run.html" />

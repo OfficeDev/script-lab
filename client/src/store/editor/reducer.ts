@@ -6,6 +6,8 @@ import { EDITOR_PATH } from '../../constants'
 type IIsVisibleState = boolean
 
 const initialVisibility = window.location.hash.replace('#', '') === EDITOR_PATH
+console.log(window.location.hash.replace('#', ''))
+console.log(EDITOR_PATH)
 const isVisible = (state: IIsVisibleState = initialVisibility, action) => {
   switch (action.type) {
     case '@@router/LOCATION_CHANGE':
