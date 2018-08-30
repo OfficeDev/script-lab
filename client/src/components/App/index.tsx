@@ -26,7 +26,6 @@ const App = ({ theme }: IApp) => (
     <>
       <Route exact path="/backstage" component={Backstage} />
       <Route exact path="/custom-functions" component={CustomFunctionsDashboard} />
-      {/* <Route exact path="/editor/:solutionId?/:fileId?" component={IDE} /> */}
       <IDE />
     </>
   </ThemeProvider>
