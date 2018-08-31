@@ -92,7 +92,7 @@ export const getCustomFunctionRunnerLastUpdated = (): number => {
 }
 
 export const getCustomFunctionLogs = (): ILogData[] | null => {
-  const logsString = window.localStorage.getItem(localStorageKeys.log)
+  const logsString = localStorage.getItem(localStorageKeys.log)
 
   if (logsString !== null) {
     localStorage.removeItem(localStorageKeys.log)

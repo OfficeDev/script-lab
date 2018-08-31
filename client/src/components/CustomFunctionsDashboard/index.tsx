@@ -47,6 +47,7 @@ export class CustomFunctionsDashboard extends React.Component<
   render() {
     const { isCFSupportedOnHost } = this.state
     const { hasCustomFunctionsInSolutions } = this.props
+    console.log({ isCFSupportedOnHost })
 
     if (isCFSupportedOnHost === undefined) {
       return (
@@ -54,7 +55,7 @@ export class CustomFunctionsDashboard extends React.Component<
       )
     } else if (isCFSupportedOnHost) {
       if (hasCustomFunctionsInSolutions) {
-        return <Dashboard items={{ Summary, Console }} />
+        return <Dashboard items={{ Summary: <Summary />, Console: <Console /> }} />
       } else {
         return <Welcome />
       }

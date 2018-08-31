@@ -22,6 +22,7 @@ const actionProps = {
   updateGist: () => {},
   notifyClipboardCopySuccess: () => {},
   notifyClipboardCopyFailure: () => {},
+  navigateToCustomFunctions: () => {},
 }
 
 describe('Header should render properly in basic case', () => {
@@ -33,6 +34,7 @@ describe('Header should render properly in basic case', () => {
     isLoggedIn: true,
     isRunnableOnThisHost: true,
     isSettingsView: false,
+    isCustomFunctionsView: false,
     profilePicUrl: undefined,
     headerFabricTheme: getHeaderFabricTheme('WEB') as IFabricTheme,
     ...actionProps,
@@ -79,6 +81,7 @@ describe("Header shouldn't show run button if isn't runnable", () => {
     isLoggedIn: true,
     isRunnableOnThisHost: false,
     isSettingsView: false,
+    isCustomFunctionsView: false,
     profilePicUrl: undefined,
     headerFabricTheme: getHeaderFabricTheme('WEB') as IFabricTheme,
     ...actionProps,

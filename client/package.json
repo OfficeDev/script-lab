@@ -31,7 +31,7 @@
   },
   "scripts": {
     "copy-monaco": "node scripts/copy-monaco.js",
-    "start": "set HTTPS=true&&react-scripts-ts start",
+    "start": "set HTTPS=false&&react-scripts-ts start",
     "build": "react-scripts-ts build",
     "test": "react-scripts-ts test --env=jsdom",
     "test-coverage": "yarn test -- --coverage",

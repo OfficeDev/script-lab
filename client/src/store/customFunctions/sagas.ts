@@ -25,14 +25,16 @@ export function* fetchCustomFunctionsMetadataSaga() {
 
   const snippets = solutions.map(solution => convertSolutionToSnippet(solution))
 
-  const { content, error } = yield call(request, {
+  const { response, error } = yield call(request, {
     method: 'POST',
     url: `${RUNNER_URL}/custom-functions/parse-metadata`,
     jsonPayload: JSON.stringify({ data: snippets }),
   })
+  console.log({ response, error })
 
-  if (content) {
-    yield put(customFunctions.fetchMetadata.success(content))
+  if (response) {
+    console.log('going to put success for fetch metadata')
+    yield put(customFunctions.fetchMetadata.success(response))
   } else {
     yield put(customFunctions.fetchMetadata.failure(error))
   }
@@ -57,8 +59,9 @@ function* fetchLogsAndHeartbeatSaga() {
   const logs = yield call(getCustomFunctionLogs)
   const lastUpdated = yield call(getCustomFunctionRunnerLastUpdated)
   const isAlive = yield call(getIsCustomFunctionRunnerAlive)
-
-  yield put(customFunctions.pushLogs(logs))
+  if (logs) {
+    yield put(customFunctions.pushLogs(logs))
+  }
   yield put(customFunctions.updateRunner({ isAlive, lastUpdated }))
 }
 

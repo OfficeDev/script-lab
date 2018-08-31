@@ -30,12 +30,14 @@ interface IPropsFromRedux {
   profilePicUrl?: string
   isRunnableOnThisHost: boolean
   isSettingsView: boolean
+  isCustomFunctionsView: boolean
   isLoggedIn: boolean
   headerFabricTheme: IFabricTheme
 }
 
 const mapStateToProps = (state, ownProps: IHeader): IPropsFromRedux => ({
   isSettingsView: ownProps.solution.id === SETTINGS_SOLUTION_ID,
+  isCustomFunctionsView: selectors.customFunctions.getIsCurrentSolutionCF(state),
   isLoggedIn: !!selectors.github.getToken(state),
   isRunnableOnThisHost: selectors.host.getIsRunnableOnThisHost(state),
   profilePicUrl: selectors.github.getProfilePicUrl(state),
@@ -60,6 +62,8 @@ interface IActionsFromRedux {
   updateGist: () => void
   notifyClipboardCopySuccess: () => void
   notifyClipboardCopyFailure: () => void
+
+  navigateToCustomFunctions: () => void
 }
 
 const mapDispatchToProps = (dispatch, ownProps: IHeader): IActionsFromRedux => ({
@@ -84,6 +88,8 @@ const mapDispatchToProps = (dispatch, ownProps: IHeader): IActionsFromRedux => (
     dispatch(
       messageBar.show('Snippet failed to copy to clipboard.', MessageBarType.error),
     ),
+
+  navigateToCustomFunctions: () => dispatch(push('/custom-functions')),
 })
 
 export interface IHeader extends IPropsFromRedux, IActionsFromRedux {
@@ -115,6 +121,7 @@ export class Header extends React.Component<IHeader, IState> {
       editSolution,
       deleteSolution,
       isSettingsView,
+      isCustomFunctionsView,
       profilePicUrl,
       isRunnableOnThisHost,
       isLoggedIn,
@@ -125,6 +132,7 @@ export class Header extends React.Component<IHeader, IState> {
       updateGist,
       createPublicGist,
       createSecretGist,
+      navigateToCustomFunctions,
     } = this.props
     const isNullSolution = solution.id === NULL_SOLUTION_ID
     const solutionName = solution ? solution.name : 'Solution Name'
@@ -168,11 +176,18 @@ export class Header extends React.Component<IHeader, IState> {
 
     const nonSettingsButtons: ICommandBarItemProps[] = [
       {
-        hidden: !isRunnableOnThisHost || isNullSolution,
+        hidden: !isRunnableOnThisHost || isNullSolution || isCustomFunctionsView,
         key: 'run',
         text: 'Run',
         iconProps: { iconName: 'Play' },
         href: '/run.html',
+      },
+      {
+        hidden: !isRunnableOnThisHost || !isCustomFunctionsView,
+        key: 'register-cf',
+        text: 'Register',
+        iconProps: { iconName: 'Play' },
+        onClick: navigateToCustomFunctions,
       },
       {
         hidden: isNullSolution,

@@ -96,7 +96,7 @@ class ConsoleWithoutTheme extends React.Component<IConsole, IState> {
     })
 
   scrollToBottom() {
-    if (this.state.shouldScrollToBottom) {
+    if (this.state.shouldScrollToBottom && this.refs.lastLog) {
       const lastLogRef = this.refs.lastLog as any
       lastLogRef.scrollIntoView()
     }
@@ -222,26 +222,26 @@ class ConsoleWithoutTheme extends React.Component<IConsole, IState> {
           </>
         ) : (
           <NoLogsPlaceholder>
-            engineStatus.nativeRuntime ? (
-            <>
-              Currently, the native javascript execution engine does not support console
-              logging from within Script Lab. Sorry about that!
-            </>
+            {engineStatus.nativeRuntime ? (
+              <>
+                Currently, the native javascript execution engine does not support console
+                logging from within Script Lab. Sorry about that!
+              </>
             ) : (
-            <>
-              There are no logs to display. Use{' '}
-              <pre
-                style={{
-                  fontFamily: 'Consolas, monaco, monospace',
-                  fontWeight: 'bold',
-                  display: 'inline',
-                }}
-              >
-                console.log()
-              </pre>{' '}
-              inside your functions to display logs here.
-            </>
-            )
+              <>
+                There are no logs to display. Use{' '}
+                <pre
+                  style={{
+                    fontFamily: 'Consolas, monaco, monospace',
+                    fontWeight: 'bold',
+                    display: 'inline',
+                  }}
+                >
+                  console.log()
+                </pre>{' '}
+                inside your functions to display logs here.
+              </>
+            )}
           </NoLogsPlaceholder>
         )}
       </Wrapper>

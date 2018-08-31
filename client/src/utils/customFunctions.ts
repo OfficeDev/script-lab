@@ -226,8 +226,8 @@ export async function getIsCustomFunctionsSupportedOnHost(): Promise<boolean> {
             'Microsoft.Office.OEP.UdfRuntime',
           ].map(name => (context as any).flighting.getFeatureGate(name).load('value'))
           await context.sync()
-          const firstNonTrueIndex = features.findIndex(item => item.value !== true)
-          const allWereTrue = firstNonTrueIndex < 0
+          const allWereTrue = features.filter(item => !item.value).length === 0
+
           return allWereTrue
         })
 

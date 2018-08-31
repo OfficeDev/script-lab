@@ -5,9 +5,11 @@ import { customFunctions, ICustomFunctionsAction } from '../actions'
 
 type IMetadataState = ICFVisualSnippetMetadata[]
 
-const metadata = (state: IMetadataState | null = null, action) => {
+const metadata = (state: IMetadataState = [], action) => {
   switch (action.type) {
     case getType(customFunctions.fetchMetadata.success):
+      console.log('metadata fetch success')
+      console.log(action.payload)
       return action.payload
 
     default:

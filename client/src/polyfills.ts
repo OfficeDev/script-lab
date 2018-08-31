@@ -1,4 +1,5 @@
 import 'core-js/es6/symbol'
+import 'core-js/fn/array/from'
 
 // string includes polyfill
 if (!String.prototype.includes) {

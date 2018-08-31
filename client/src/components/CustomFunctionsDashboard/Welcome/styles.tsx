@@ -30,6 +30,7 @@ export const Seperator = styled.hr`
 `
 
 export const Instructions = styled.section`
+  max-width: 33rem;
   text-align: left;
 `
 

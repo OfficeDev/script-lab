@@ -43,5 +43,5 @@ export const request = ({
   })
     .then(response => response.json())
     .then(response => ({ response }))
-    .catch(error => ({ error }))
+  // .catch(error => ({ error }))
 }
