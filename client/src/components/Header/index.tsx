@@ -15,11 +15,11 @@ import { ITheme as IFabricTheme } from 'office-ui-fabric-react/lib/Styling'
 import { NULL_SOLUTION_ID, SETTINGS_SOLUTION_ID } from '../../constants'
 
 import { connect } from 'react-redux'
-import { solutions, github, gists, messageBar } from '../../store/actions'
+import { solutions, github, gists, messageBar, settings } from '../../store/actions'
 import selectors from '../../store/selectors'
 
 import { getHeaderFabricTheme } from '../../theme'
-import { push, goBack } from 'connected-react-router'
+import { push } from 'connected-react-router'
 
 const HeaderWrapper = styled.header`
   background-color: ${props => props.theme.primary};
@@ -47,7 +47,7 @@ interface IActionsFromRedux {
   logout: () => void
 
   showBackstage: () => void
-  goBack: () => void
+  closeSettings: () => void
 
   editSolution: (
     solutionId: string,
@@ -67,7 +67,7 @@ const mapDispatchToProps = (dispatch, ownProps: IHeader): IActionsFromRedux => (
   logout: () => dispatch(github.logout()),
 
   showBackstage: () => dispatch(push('/backstage')),
-  goBack: () => dispatch(goBack()),
+  closeSettings: () => dispatch(settings.close()),
 
   editSolution: (solutionId: string, solution: Partial<IEditableSolutionProperties>) =>
     dispatch(solutions.edit({ id: solutionId, solution })),
@@ -121,7 +121,7 @@ export class Header extends React.Component<IHeader, IState> {
       headerFabricTheme,
       logout,
       login,
-      goBack,
+      closeSettings,
       updateGist,
       createPublicGist,
       createSecretGist,
@@ -217,7 +217,7 @@ export class Header extends React.Component<IHeader, IState> {
       key: 'back',
       iconOnly: true,
       iconProps: { iconName: 'Back' },
-      onClick: goBack,
+      onClick: closeSettings,
     }
 
     const commonItems = [back, nav, name].filter(({ hidden }) => !hidden).map(option => {
