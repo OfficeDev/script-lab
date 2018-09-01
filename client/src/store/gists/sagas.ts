@@ -127,8 +127,12 @@ function* createGistSaga(action: ActionType<typeof gists.create.request>) {
 
 function* handleCreateGistSuccessSaga(action: ActionType<typeof gists.create.success>) {
   const { solution } = action.payload
-  solution.source = { id: action.payload.gist.id, origin: 'gist' }
-  yield put(solutions.edit({ id: solution.id, solution }))
+  yield put(
+    solutions.edit({
+      id: solution.id,
+      solution: { source: { id: action.payload.gist.id, origin: 'gist' } },
+    }),
+  )
 }
 
 function* updateGistSaga(action: ActionType<typeof gists.update.request>) {

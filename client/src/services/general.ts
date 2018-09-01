@@ -36,6 +36,7 @@ export const request = ({
       'Content-Type': 'application/json; charset=utf-8',
     }),
   }
+  console.log({ method, headers, url, token, jsonPayload })
   return fetch(url, {
     method,
     headers,

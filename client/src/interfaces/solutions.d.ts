@@ -6,6 +6,7 @@ interface ITimestamps {
 interface IEditableSolutionProperties {
   name: string
   description?: string
+  source?: ISourceInformation
 }
 
 interface ISourceInformation {
@@ -15,7 +16,6 @@ interface ISourceInformation {
 
 interface ISolutionWithoutFiles extends IEditableSolutionProperties, ITimestamps {
   id: string
-  source?: ISourceInformation
   host: string
 }
 

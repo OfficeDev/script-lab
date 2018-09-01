@@ -21,7 +21,6 @@ export const getLastModifiedDate = (state: IState): number => {
 
 export const getActiveFile = (state: IState): IFile | undefined => {
   const activeSolution = getActiveSolution(state)
-
   return activeSolution
     ? activeSolution.files.find(file => file.id === state.editor.active.fileId)
     : undefined
