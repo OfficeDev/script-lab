@@ -2,10 +2,13 @@ import React from 'react'
 
 import GalleryList from './'
 
+import {getBasicGalleryListItemProps} from './GalleryListItem/GalleryListItem.stories'
+
 import { storiesOf } from '@storybook/react'
-const voidFunc = () => { }
+
+export const BasicGalleryList = () => <GalleryList title='Example Title' items={Array.from({ length: 5 }, (v, k) =>  getBasicGalleryListItemProps(k))} />
+
+storiesOf('Backstage/GalleryList', module).add('basic', () => <BasicGalleryList />)
 
 
-// const stories = storiesOf('Backstage/Menu', module)
 
-// stories.add('basic', () => <Menu items={menuItems} selectedKey={menuItems[2].key} />)

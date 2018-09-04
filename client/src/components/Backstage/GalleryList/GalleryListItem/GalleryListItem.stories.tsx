@@ -1,11 +1,10 @@
 import React from 'react'
 
-import GalleryListItem, {IGalleryListItem} from './'
+import GalleryListItem, { IGalleryListItem } from './'
 
 import { storiesOf } from '@storybook/react'
-const voidFunc = () => { }
 
+export const getBasicGalleryListItemProps = (n: number): IGalleryListItem => ({key:`key-${n}`, title:`Example Title ${n} for a Gallery List Item ${n}`, description:`This is a description for gallery list item ${n}`})
+export const BasicGalleryListItem = (props) => <GalleryListItem {...props} />
 
-const stories = storiesOf('Backstage/GalleryList/Item', module)
-
-stories.add('basic', () => <GalleryListItem key='key1' title='Example Title of a Gallery List Item' description='This is a description of a gallery list item' />)
+storiesOf('Backstage/GalleryList/Item', module).add('basic', () => <BasicGalleryListItem {...getBasicGalleryListItemProps(1)} />)
