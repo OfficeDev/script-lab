@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Content from './Content'
+import Content from '../Content'
 
 import { TextField } from 'office-ui-fabric-react/lib/TextField'
 import { PrimaryButton } from 'office-ui-fabric-react/lib/Button'

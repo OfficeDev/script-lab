@@ -132,8 +132,8 @@
 
 // export default Samples
 import React from 'react'
-import Content from './Content'
-import GalleryList from './GalleryList'
+import Content from '../Content'
+import GalleryList from '../GalleryList'
 
 export default ({ samplesByGroup, openSample, theme }) => (
   <Content title="Samples" description="Choose one of the samples below to get started.">

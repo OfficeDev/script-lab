@@ -7,7 +7,7 @@ import MySolutions from './MySolutions'
 import Samples from './Samples'
 import ImportSolution from './ImportSolution'
 
-import ConflictResolutionDialog from './ConflictResolutionDialog'
+import ConflictResolutionDialog from './ConflictResolutionDialog/ConflictResolutionDialog'
 import { ConflictResolutionOptions } from '../../interfaces/enums'
 
 import { connect } from 'react-redux'

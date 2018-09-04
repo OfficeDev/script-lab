@@ -1,6 +1,6 @@
 import React from 'react'
-import Content from './Content'
-import GalleryList from './GalleryList'
+import Content from '../Content'
+import GalleryList from '../GalleryList'
 
 // TODO: incorp. localization
 interface IMySolutions {
