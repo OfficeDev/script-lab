@@ -38,7 +38,6 @@ const getCFPostData = (state: IState): IRunnerCustomFunctionsPostData => {
     experimentationFlags: {},
   }
 
-  console.log(result)
   return result
 }
 
