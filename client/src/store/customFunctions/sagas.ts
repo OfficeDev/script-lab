@@ -6,10 +6,7 @@ import { customFunctions } from '../actions'
 import selectors from '../selectors'
 
 import { convertSolutionToSnippet } from '../../utils'
-import {
-  isCustomFunctionScript,
-  getCustomFunctionEngineStatus,
-} from '../../utils/customFunctions'
+import { getCustomFunctionEngineStatus } from '../../utils/customFunctions'
 import { registerMetadata } from '../../utils/customFunctions'
 
 import { RUNNER_URL } from '../../constants'
@@ -33,7 +30,6 @@ export function* fetchCustomFunctionsMetadataSaga() {
   console.log({ response, error })
 
   if (response) {
-    console.log('going to put success for fetch metadata')
     yield put(customFunctions.fetchMetadata.success(response))
   } else {
     yield put(customFunctions.fetchMetadata.failure(error))
@@ -44,7 +40,6 @@ function* registerCustomFunctionsMetadataSaga(
   action: ActionType<typeof customFunctions.registerMetadata.request>,
 ) {
   const { visual, code } = action.payload
-  console.log('registering custom functions!')
   try {
     yield call(registerMetadata, visual, code)
     yield put(customFunctions.registerMetadata.success())
