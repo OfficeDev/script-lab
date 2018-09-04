@@ -28,7 +28,7 @@ export function* fetchCustomFunctionsMetadataSaga() {
   const { response, error } = yield call(request, {
     method: 'POST',
     url: `${RUNNER_URL}/custom-functions/parse-metadata`,
-    jsonPayload: JSON.stringify({ data: snippets }),
+    jsonPayload: JSON.stringify({ data: JSON.stringify({ snippets }) }),
   })
   console.log({ response, error })
 
@@ -44,8 +44,9 @@ function* registerCustomFunctionsMetadataSaga(
   action: ActionType<typeof customFunctions.registerMetadata.request>,
 ) {
   const { visual, code } = action.payload
+  console.log('registering custom functions!')
   try {
-    registerMetadata(visual, code)
+    yield call(registerMetadata, visual, code)
     yield put(customFunctions.registerMetadata.success())
 
     const engineStatus = yield call(getCustomFunctionEngineStatus)

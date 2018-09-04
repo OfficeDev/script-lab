@@ -1,7 +1,12 @@
 import { IState } from './reducer'
 import selectors from './selectors'
 import { convertSolutionToSnippet } from '../utils'
-import { SETTINGS_SOLUTION_ID, SETTINGS_FILE_ID, localStorageKeys } from '../constants'
+import {
+  SETTINGS_SOLUTION_ID,
+  SETTINGS_FILE_ID,
+  NULL_SOLUTION_ID,
+  localStorageKeys,
+} from '../constants'
 import { getSettingsSolutionAndFiles, defaultSettings } from '../defaultSettings'
 import { merge } from './settings/sagas'
 import { allowedSettings } from '../SettingsJSONSchema'
@@ -20,7 +25,10 @@ export const saveState = (state: IState) => {
     localStorage.setItem('validSettings', serializedValidSettings)
 
     const activeSolution = selectors.editor.getActiveSolution(state)
-    if (activeSolution && activeSolution.id !== SETTINGS_SOLUTION_ID) {
+    if (
+      activeSolution.id !== NULL_SOLUTION_ID &&
+      activeSolution.id !== SETTINGS_SOLUTION_ID
+    ) {
       const activeSnippet = convertSolutionToSnippet(activeSolution)
       localStorage.setItem('activeSnippet', JSON.stringify(activeSnippet))
     } else {

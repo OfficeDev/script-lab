@@ -33,7 +33,9 @@ export const getActiveFile = (state: IState): IFile => {
     file => file.id === state.editor.active.fileId,
   )
 
-  if (!activeFile && activeSolution.files.length > 0) {
+  if (activeFile) {
+    return activeFile
+  } else if (!activeFile && activeSolution.files.length > 0) {
     return activeSolution.files[0]
   } else {
     return NULL_FILE

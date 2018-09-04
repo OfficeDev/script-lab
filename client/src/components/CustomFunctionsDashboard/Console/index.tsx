@@ -9,6 +9,7 @@ import { Checkbox } from 'office-ui-fabric-react/lib/Checkbox'
 import {
   RunnerLastUpdatedWrapper,
   Wrapper,
+  NoLogsPlaceholderContainer,
   NoLogsPlaceholder,
   CheckboxWrapper,
   ClearButton,
@@ -221,14 +222,14 @@ class ConsoleWithoutTheme extends React.Component<IConsole, IState> {
             </CheckboxWrapper>
           </>
         ) : (
-          <NoLogsPlaceholder>
+          <NoLogsPlaceholderContainer>
             {engineStatus.nativeRuntime ? (
-              <>
+              <NoLogsPlaceholder>
                 Currently, the native javascript execution engine does not support console
                 logging from within Script Lab. Sorry about that!
-              </>
+              </NoLogsPlaceholder>
             ) : (
-              <>
+              <NoLogsPlaceholder>
                 There are no logs to display. Use{' '}
                 <pre
                   style={{
@@ -240,9 +241,9 @@ class ConsoleWithoutTheme extends React.Component<IConsole, IState> {
                   console.log()
                 </pre>{' '}
                 inside your functions to display logs here.
-              </>
+              </NoLogsPlaceholder>
             )}
-          </NoLogsPlaceholder>
+          </NoLogsPlaceholderContainer>
         )}
       </Wrapper>
     )

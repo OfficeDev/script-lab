@@ -36,7 +36,7 @@ export const request = ({
       'Content-Type': 'application/json; charset=utf-8',
     }),
   }
-  console.log({ method, headers, url, token, jsonPayload })
+
   return fetch(url, {
     method,
     headers,
@@ -44,5 +44,5 @@ export const request = ({
   })
     .then(response => response.json())
     .then(response => ({ response }))
-  // .catch(error => ({ error }))
+    .catch(error => ({ error }))
 }

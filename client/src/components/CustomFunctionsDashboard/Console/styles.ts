@@ -11,20 +11,21 @@ export const Wrapper = styled.div`
   /* border-top: 0.5px solid ${props => props.theme.neutralLight}; */
   /* border-bottom: 0.5px solid ${props => props.theme.neutralLight}; */
 `
-export const NoLogsPlaceholder = styled.div`
+export const NoLogsPlaceholderContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: ${props => props.theme.neutralPrimary};
-  text-align: 'center';
 
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  margin: 'auto';
-
-  height: 6rem;
-  padding: 2rem;
+  height: 100%;
+  width: 100%;
 `
+
+export const NoLogsPlaceholder = styled.div`
+  text-align: center;
+  max-width: 90%;
+`
+
 export const RunnerLastUpdatedWrapper = styled.div.attrs({ className: 'ms-font-m' })`
   padding: 0rem 1.6rem;
   height: 2.8rem;

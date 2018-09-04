@@ -20,7 +20,6 @@ import { connect } from 'react-redux'
 import { withTheme } from 'styled-components'
 import { solutions, editor, settings } from '../../store/actions'
 import selectors from '../../store/selectors'
-import { push } from 'connected-react-router'
 
 interface IEditorSettings {
   monacoTheme: string
@@ -90,6 +89,7 @@ class Editor extends Component<IEditor, IState> {
   editor: monaco.editor.IStandaloneCodeEditor
   monaco: any
   state = { isSaveSettingsDialogVisible: false }
+  resizeInterval: any
 
   constructor(props) {
     super(props)
@@ -99,6 +99,10 @@ class Editor extends Component<IEditor, IState> {
     if (prevProps.activeFile.id !== this.props.activeFile.id) {
       this.changeActiveFile(prevProps.activeFile, this.props.activeFile)
     }
+  }
+
+  componentWillUnmount = () => {
+    clearInterval(this.resizeInterval)
   }
 
   changeActiveFile = (oldFile: IFile | null, newFile: IFile) => {
@@ -158,6 +162,7 @@ class Editor extends Component<IEditor, IState> {
     this.changeActiveFile(null, this.props.activeFile)
 
     window.addEventListener('resize', debounce(this.resizeEditor, 100))
+    this.resizeInterval = setInterval(this.resizeEditor, 3000) // TODO: when /#/backstage is the first page loaded, the editor is only 5px tall, this is a stopgap fix
   }
 
   getMonacoOptions = (): monaco.editor.IEditorConstructionOptions => {

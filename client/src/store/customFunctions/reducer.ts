@@ -5,17 +5,26 @@ import { customFunctions, ICustomFunctionsAction } from '../actions'
 
 type IMetadataState = ICFVisualSnippetMetadata[]
 
-const metadata = (state: IMetadataState = [], action) => {
+const metadata = (state: IMetadataState = [], action: ICustomFunctionsAction) => {
   switch (action.type) {
     case getType(customFunctions.fetchMetadata.success):
-      console.log('metadata fetch success')
-      console.log(action.payload)
-      return action.payload
+      return action.payload.visual.snippets
 
     default:
       return state
   }
 }
+
+// type ICodeState = string
+
+// const code = (state: ICodeState = '', action: ICustomFunctionsAction) => {
+//   switch (action.type) {
+//     case getType(customFunctions.fetchMetadata.success):
+//       return action.payload.code
+//     default:
+//       return state
+//   }
+// }
 
 type ILogsState = ILogData[]
 
@@ -61,6 +70,7 @@ const engineStatus = (
 
 export interface IState {
   metadata: IMetadataState
+  // code: ICodeState
   logs: ILogsState
   runner: IRunnerState
   engineStatus: ICustomFunctionEngineStatus
@@ -68,6 +78,7 @@ export interface IState {
 
 export default combineReducers({
   metadata,
+  // code,
   logs,
   runner,
   engineStatus,

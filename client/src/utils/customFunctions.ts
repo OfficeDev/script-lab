@@ -30,6 +30,8 @@ export async function registerMetadata(
     }),
   }
 
+  console.log(registrationPayload)
+
   if (Office.context.requirements.isSetSupported('CustomFunctions', 1.3)) {
     const excel = Excel as any
     await Excel.run(async context => {

@@ -66,4 +66,15 @@ export const BasicConsole = () => (
   />
 )
 
-stories.add('basic', () => <BasicConsole />)
+stories
+  .add('basic', () => <BasicConsole />)
+  .add('empty', () => (
+    <Console
+      clearLogs={voidFunc}
+      fetchLogs={voidFunc}
+      runnerIsAlive={false}
+      runnerLastUpdated={Date.now()}
+      engineStatus={{ enabled: false, nativeRuntime: false }}
+      logs={[]}
+    />
+  ))

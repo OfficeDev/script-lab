@@ -1,5 +1,6 @@
 import 'core-js/es6/symbol'
 import 'core-js/fn/array/from'
+import 'core-js/fn/array/sort'
 
 // string includes polyfill
 if (!String.prototype.includes) {

@@ -58,7 +58,7 @@ class DashboardWithoutTheme extends React.Component<IDashboard, IState> {
 
   render() {
     const { selectedKey } = this.state
-    const { items, theme, headerFabricTheme } = this.props
+    const { items, theme, headerFabricTheme, goBack } = this.props
 
     return (
       <Layout>
@@ -70,6 +70,7 @@ class DashboardWithoutTheme extends React.Component<IDashboard, IState> {
                   key: 'go-back',
                   iconOnly: true,
                   iconProps: { iconName: 'Back' },
+                  onClick: goBack,
                 },
                 {
                   key: 'title',
