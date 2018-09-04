@@ -85,12 +85,10 @@ class Backstage extends Component<IBackstage, IState> {
   openSolution = (solutionId: string) => {
     const solution = this.props.solutions.find(solution => solution.id === solutionId)
     this.props.openSolution(solutionId, solution!.files[0].id)
-    // this.props.hideBackstage()
   }
 
   openSample = (rawUrl: string) => {
     this.props.openSample(rawUrl)
-    // this.props.hideBackstage()
     this.setState({ selectedKey: 'my-solutions' })
   }
 
