@@ -24,6 +24,7 @@ export { solutions }
 
 export default {
   customFunctions,
+  editor,
   gists,
   github,
   host,
