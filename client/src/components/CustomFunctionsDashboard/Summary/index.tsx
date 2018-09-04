@@ -1,11 +1,7 @@
 import React from 'react'
 
 import SummaryItem from './SummaryItem'
-import {
-  CustomFunctionsTitle,
-  CustomFunctionsDescription,
-  SummaryItemsContainer,
-} from './styles'
+import { CustomFunctionsDescription, SummaryItemsContainer } from './styles'
 import { connect } from 'react-redux'
 import selectors from '../../../store/selectors'
 
@@ -30,7 +26,6 @@ export const Summary = ({ items }: ISummary) => {
 
   return (
     <div>
-      <CustomFunctionsTitle>Custom Functions (Preview)</CustomFunctionsTitle>
       <CustomFunctionsDescription>{description}</CustomFunctionsDescription>
       <SummaryItemsContainer>
         {items.map(item => (

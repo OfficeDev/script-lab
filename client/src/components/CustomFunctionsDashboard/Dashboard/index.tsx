@@ -3,18 +3,35 @@ import { withTheme } from 'styled-components'
 import PivotBar from '../../PivotBar'
 import { Layout, Header, Content } from './styles'
 
+import { Customizer } from 'office-ui-fabric-react/lib/Utilities'
+import { CommandBar, ICommandBarItemProps } from 'office-ui-fabric-react/lib/CommandBar'
+import { ITheme as IFabricTheme } from '@uifabric/styling'
+import { getHeaderFabricTheme } from '../../../theme'
+
 import { connect } from 'react-redux'
+import selectors from '../../../store/selectors'
 import { customFunctions as customFunctionsActions } from '../../../store/actions'
+import { goBack } from 'connected-react-router'
+
+interface IPropsFromRedux {
+  headerFabricTheme: IFabricTheme
+}
+
+const mapStateToProps = (state): IPropsFromRedux => ({
+  headerFabricTheme: getHeaderFabricTheme(selectors.host.get(state)),
+})
 
 interface IActionsFromRedux {
   onMount?: () => void
+  goBack: () => void
 }
 
 const mapDispatchToProps = (dispatch): IActionsFromRedux => ({
   onMount: () => dispatch(customFunctionsActions.fetchMetadata.request()),
+  goBack: () => dispatch(goBack()),
 })
 
-interface IDashboard extends IActionsFromRedux {
+interface IDashboard extends IPropsFromRedux, IActionsFromRedux {
   items: { [itemName: string]: any /* react component */ }
   theme: ITheme // from withTheme
 }
@@ -41,17 +58,33 @@ class DashboardWithoutTheme extends React.Component<IDashboard, IState> {
 
   render() {
     const { selectedKey } = this.state
-    const { items, theme } = this.props
+    const { items, theme, headerFabricTheme } = this.props
 
     return (
       <Layout>
         <Header>
+          <Customizer settings={{ theme: headerFabricTheme }}>
+            <CommandBar
+              items={[
+                {
+                  key: 'go-back',
+                  iconOnly: true,
+                  iconProps: { iconName: 'Back' },
+                },
+                {
+                  key: 'title',
+                  text: 'Custom Functions (Preview)',
+                },
+              ]}
+              styles={{
+                root: { paddingLeft: 0, paddingRight: 0 },
+              }}
+            />
+          </Customizer>
           <PivotBar
             items={Object.keys(items).map(key => ({ key, text: key }))}
             selectedKey={selectedKey}
             onSelect={this.setSelectedKey}
-            backgroundColor={theme.primary}
-            selectedColor={theme.primaryDark}
           />
         </Header>
         <Content>{items[selectedKey]}</Content>
@@ -63,6 +96,6 @@ class DashboardWithoutTheme extends React.Component<IDashboard, IState> {
 export const Dashboard = withTheme(DashboardWithoutTheme)
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps,
 )(Dashboard)
