@@ -174,7 +174,6 @@ class Backstage extends Component<IBackstage, IState> {
     return (
       <BackstageWrapper>
         <Menu
-          theme={this.props.theme}
           selectedKey={this.state.selectedKey}
           items={items.map(item => ({
             key: item.key,

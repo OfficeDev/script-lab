@@ -14,17 +14,24 @@ const metadata = (state: IMetadataState = [], action: ICustomFunctionsAction) =>
       return state
   }
 }
+type IIsFetchingMetadataState = boolean
 
-// type ICodeState = string
+const isFetchingMetadata = (
+  state: IIsFetchingMetadataState = false,
+  action: ICustomFunctionsAction,
+) => {
+  switch (action.type) {
+    case getType(customFunctions.fetchMetadata.request):
+      return true
 
-// const code = (state: ICodeState = '', action: ICustomFunctionsAction) => {
-//   switch (action.type) {
-//     case getType(customFunctions.fetchMetadata.success):
-//       return action.payload.code
-//     default:
-//       return state
-//   }
-// }
+    case getType(customFunctions.fetchMetadata.success):
+    case getType(customFunctions.fetchMetadata.failure):
+      return false
+
+    default:
+      return state
+  }
+}
 
 type ILogsState = ILogData[]
 
@@ -70,7 +77,7 @@ const engineStatus = (
 
 export interface IState {
   metadata: IMetadataState
-  // code: ICodeState
+  isFetchingMetadata: IIsFetchingMetadataState
   logs: ILogsState
   runner: IRunnerState
   engineStatus: ICustomFunctionEngineStatus
@@ -78,7 +85,7 @@ export interface IState {
 
 export default combineReducers({
   metadata,
-  // code,
+  isFetchingMetadata,
   logs,
   runner,
   engineStatus,

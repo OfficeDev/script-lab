@@ -4,7 +4,6 @@
 // import GalleryList from './GalleryList'
 // import GalleryListItem from './GalleryList/GalleryListItem'
 
-// import { checkA11y } from '@storybook/addon-a11y'
 // import { storiesOf } from '@storybook/react'
 
 // const stories = storiesOf('Backstage', module)
@@ -17,8 +16,9 @@
 //   alert(`opening solutionId: ${solutionId}`)
 // const fakeOpenSample = (rawUrl: string) => alert(`opening sample: ${rawUrl}`)
 
+// const voidFunc = (...args) => {}
+
 // stories
-//   .addDecorator(checkA11y)
 //   .add('basic', () => (
 //     <Backstage
 //       openGist={fakeOpenSample}

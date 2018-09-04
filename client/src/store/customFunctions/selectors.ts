@@ -3,6 +3,8 @@ import { createSelector } from 'reselect'
 import flatten from 'lodash/flatten'
 
 import { getActiveSolution } from '../editor/selectors'
+import { getAll as getAllSolutions } from '../solutions/selectors'
+
 import { isCustomFunctionScript } from '../../utils/customFunctions'
 
 export const getMetadata = (state: IState) => state.customFunctions.metadata
@@ -45,3 +47,12 @@ export const getIsCurrentSolutionCF = (state: IState): boolean => {
     return false
   }
 }
+
+export const getSolutions = (state: IState): ISolution[] =>
+  getAllSolutions(state)
+    .map(solution => {
+      const script = solution.files.find(file => file.name === 'index.ts')
+      return { solution, script }
+    })
+    .filter(({ script }) => script && isCustomFunctionScript(script.content))
+    .map(({ solution }) => solution)

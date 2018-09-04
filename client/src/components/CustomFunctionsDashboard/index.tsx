@@ -20,8 +20,7 @@ interface IPropsFromRedux {
 }
 
 const mapStateToProps = (state): IPropsFromRedux => ({
-  hasCustomFunctionsInSolutions:
-    selectors.solutions.getCustomFunctionSolutions(state).length > 0,
+  hasCustomFunctionsInSolutions: selectors.customFunctions.getSolutions(state).length > 0,
 })
 
 interface ICustomFunctionsDashboard extends IPropsFromRedux {}

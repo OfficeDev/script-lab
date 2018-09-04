@@ -11,6 +11,37 @@ import { getSettingsSolutionAndFiles, defaultSettings } from '../defaultSettings
 import { merge } from './settings/sagas'
 import { allowedSettings } from '../SettingsJSONSchema'
 
+const getCFPostData = (state: IState): IRunnerCustomFunctionsPostData => {
+  const cfSolutions = selectors.customFunctions.getSolutions(state)
+
+  const snippets = cfSolutions.map(solution => {
+    const snippet = convertSolutionToSnippet(solution)
+    const { name, id, libraries, script } = snippet
+
+    return {
+      name,
+      id,
+      libraries,
+      script,
+      metadata: undefined,
+    }
+  })
+
+  const result = {
+    snippets,
+    loadFromOfficeJsPreviewCachedCopy: false,
+    displayLanguage: 'en-us',
+    heartbeatParams: {
+      clientTimestamp: Date.now(),
+      loadFromOfficeJsPreviewCachedCopy: false,
+    },
+    experimentationFlags: {},
+  }
+
+  console.log(result)
+  return result
+}
+
 export const saveState = (state: IState) => {
   try {
     const { solutions, github, settings } = state
@@ -34,6 +65,12 @@ export const saveState = (state: IState) => {
     } else {
       localStorage.setItem('activeSnippet', 'null')
     }
+
+    const cfPostData = getCFPostData(state)
+    localStorage.setItem(
+      localStorageKeys.customFunctionsRunPostData,
+      JSON.stringify(cfPostData),
+    )
   } catch (err) {
     // TODO
     console.error(err)

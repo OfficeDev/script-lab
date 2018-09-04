@@ -81,7 +81,7 @@ interface ICustomFunctionsRunnerRelevantData {
   id: string
   libraries: string
   script: IContentLanguagePair
-  metadata: ICustomFunctionsSnippetRegistrationData
+  metadata?: ICustomFunctionsSnippetRegistrationData
 }
 
 interface ICustomFunctionsSnippetRegistrationData {

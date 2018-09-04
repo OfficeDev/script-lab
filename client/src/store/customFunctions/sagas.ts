@@ -21,7 +21,7 @@ import {
 import { fetchLogsAndHeartbeat, updateEngineStatus } from './actions'
 
 export function* fetchCustomFunctionsMetadataSaga() {
-  const solutions = yield select(selectors.solutions.getCustomFunctionSolutions)
+  const solutions = yield select(selectors.customFunctions.getSolutions)
 
   const snippets = solutions.map(solution => convertSolutionToSnippet(solution))
 
