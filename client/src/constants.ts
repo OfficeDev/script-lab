@@ -23,7 +23,7 @@ export const NULL_SOLUTION: ISolution = {
   files: [],
 }
 
-export const RUNNER_URL = 'https://bornholm-runner-edge.azurewebsites.net'
+export const RUNNER_URL = 'https://bornholm-runner-insiders.azurewebsites.net'
 
 export const localStorageKeys = {
   customFunctionsLastHeartbeatTimestamp:
