@@ -3,6 +3,32 @@ import { getType } from 'typesafe-actions'
 
 import { solutions as solutionActions, ISolutionsAction } from '../actions'
 
+function normalizeSolutionName(
+  state: IMetadataState,
+  id: string,
+  currentName?: string,
+): { name?: string } {
+  let name = currentName
+  if (!name) {
+    return {}
+  }
+
+  const allNames = Object.keys(state)
+    .map(k => state[k])
+    .filter(s => s.id !== id)
+    .map(s => s.name)
+
+  if (allNames.includes(name)) {
+    name = name.replace(/\(\d+\)$/gm, '').trim()
+    let suffix = 1
+    while (allNames.includes(`${name} (${suffix})`)) {
+      suffix++
+    }
+    name = `${name} (${suffix})`
+  }
+  return { name }
+}
+
 interface IMetadataState {
   [id: string]: ISolutionWithFileIds
 }
@@ -17,6 +43,7 @@ const metadata = (
         ...state,
         [action.payload.id]: {
           ...action.payload,
+          ...normalizeSolutionName(state, action.payload.id, action.payload.name),
           files: action.payload.files.map(file => file.id),
         },
       }
@@ -26,7 +53,12 @@ const metadata = (
         ...state,
         [action.payload.id]: {
           ...state[action.payload.id],
-          ...action.payload.solution, // maybe || {}
+          ...action.payload.solution,
+          ...normalizeSolutionName(
+            state,
+            action.payload.id,
+            action.payload.solution ? action.payload.solution.name : undefined,
+          ),
           dateLastModified: action.payload.timestamp,
         },
       }

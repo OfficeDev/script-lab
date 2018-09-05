@@ -14,7 +14,6 @@ export function* getDefaultSaga() {
     `https://raw.githubusercontent.com/OfficeDev/office-js-snippets/master/samples/${host.toLowerCase()}/default.yaml`,
   )
 
-  console.log(response)
   const { content, error } = response
   if (content) {
     const solution = convertSnippetToSolution(content)
@@ -43,8 +42,26 @@ export function* createSolutionSaga(solution: ISolution) {
   yield put(editor.open({ solutionId: solution.id, fileId: solution.files[0].id }))
 }
 
+export function* openLastModifiedOrDefaultSolutionSaga() {
+  const solutions = yield select(selectors.solutions.getInLastModifiedOrder)
+
+  if (solutions.length === 0) {
+    yield call(getDefaultSaga)
+  } else {
+    yield put(
+      editor.open({ solutionId: solutions[0].id, fileId: solutions[0].files[0].id }),
+    )
+  }
+}
+
+function* removeSolutionSaga(action: ActionType<typeof solutions.remove>) {
+  yield call(openLastModifiedOrDefaultSolutionSaga)
+}
+
 export default function* solutionsWatcher() {
   yield takeEvery(getType(solutions.create), getDefaultSaga)
   yield takeEvery(getType(solutions.getDefault.success), handleGetDefaultSuccessSaga)
   yield takeEvery(getType(solutions.getDefault.failure), handleGetDefaultFailureSaga)
+
+  yield takeEvery(getType(solutions.remove), removeSolutionSaga)
 }
