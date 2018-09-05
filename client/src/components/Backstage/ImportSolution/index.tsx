@@ -4,13 +4,18 @@ import Content from '../Content'
 import { TextField } from 'office-ui-fabric-react/lib/TextField'
 import { PrimaryButton } from 'office-ui-fabric-react/lib/Button'
 
-interface IImportSolution {
+interface IProps {
   importGist: (gistId?: string, gist?: string) => void
 }
 
+interface IState {
+  importFieldText: string
+}
+
 // TODO: incorp. localization
-class ImportSolution extends Component<IImportSolution> {
+class ImportSolution extends Component<IProps, IState> {
   state = { importFieldText: '' }
+
   render() {
     return (
       <Content
