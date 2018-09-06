@@ -46,7 +46,6 @@ export class CustomFunctionsDashboard extends React.Component<
   render() {
     const { isCFSupportedOnHost } = this.state
     const { hasCustomFunctionsInSolutions } = this.props
-    console.log({ isCFSupportedOnHost })
 
     if (isCFSupportedOnHost === undefined) {
       return (

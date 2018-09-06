@@ -5,8 +5,6 @@ import { EDITOR_PATH } from '../../constants'
 
 type IIsVisibleState = boolean
 
-console.log(window.location)
-
 const initialVisibility =
   location.hash.replace('#', '') === EDITOR_PATH ||
   (window.location.pathname === EDITOR_PATH && window.location.hash === '')
