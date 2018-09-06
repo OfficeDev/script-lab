@@ -29,7 +29,7 @@ describe('Header should render properly in basic case', () => {
   const normalExample = getBoilerplate('EXCEL')
 
   const solution = normalExample
-  const headerProps: IProps = {
+  const headerProps = {
     solution,
     isLoggedIn: true,
     isRunnableOnThisHost: true,
@@ -76,7 +76,7 @@ describe("Header shouldn't show run button if isn't runnable", () => {
   const normalExample = getBoilerplate('EXCEL')
 
   const solution = normalExample
-  const headerProps: IProps = {
+  const headerProps = {
     solution,
     isLoggedIn: true,
     isRunnableOnThisHost: false,

@@ -1,4 +1,4 @@
-import YAML from 'yamljs'
+import YAML from 'js-yaml'
 
 export interface IResponseOrError {
   response?: any

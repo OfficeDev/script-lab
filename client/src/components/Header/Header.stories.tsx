@@ -20,10 +20,7 @@ const defaultHeaderProps = {
   showBackstage: voidFunc,
   closeSettings: voidFunc,
 
-  editSolution: (
-    solutionId: string,
-    solution: Partial<IEditableSolutionProperties>,
-  ) => {},
+  editSolution: (solutionId: string, solution: any) => {},
   deleteSolution: voidFunc,
 
   createPublicGist: voidFunc,
@@ -37,4 +34,11 @@ const defaultHeaderProps = {
   solution: getBoilerplate('EXCEL'),
 }
 
-storiesOf('IDE/Header', module).add('basic', () => <Header {...defaultHeaderProps} />)
+storiesOf('IDE/Header', module)
+  .add('basic', () => <Header {...defaultHeaderProps} />)
+  .add('custom functions view', () => (
+    <Header {...{ ...defaultHeaderProps, isCustomFunctionsView: true }} />
+  ))
+  .add('settings view', () => (
+    <Header {...{ ...defaultHeaderProps, isSettingsView: true }} />
+  ))

@@ -1,5 +1,5 @@
 import React from 'react'
-import styled from 'styled-components'
+import styled, { withTheme } from 'styled-components'
 
 import { Customizer } from 'office-ui-fabric-react/lib/Utilities'
 import { CommandBar, ICommandBarItemProps } from 'office-ui-fabric-react/lib/CommandBar'
@@ -8,7 +8,7 @@ import { MessageBarType } from 'office-ui-fabric-react/lib/MessageBar'
 
 import Clipboard from 'clipboard'
 import { convertSolutionToSnippet } from '../../utils'
-import YAML from 'yamljs'
+import YAML from 'js-yaml'
 
 import SolutionSettings from './SolutionSettings'
 import { ITheme as IFabricTheme } from 'office-ui-fabric-react/lib/Styling'
@@ -33,6 +33,7 @@ interface IPropsFromRedux {
   isCustomFunctionsView: boolean
   isLoggedIn: boolean
   headerFabricTheme: IFabricTheme
+  solution: ISolution
 }
 
 const mapStateToProps = (state, ownProps: IProps): IPropsFromRedux => ({
@@ -42,6 +43,7 @@ const mapStateToProps = (state, ownProps: IProps): IPropsFromRedux => ({
   isRunnableOnThisHost: selectors.host.getIsRunnableOnThisHost(state),
   profilePicUrl: selectors.github.getProfilePicUrl(state),
   headerFabricTheme: getHeaderFabricTheme(selectors.host.get(state)),
+  solution: selectors.editor.getActiveSolution(state),
 })
 
 interface IActionsFromRedux {
@@ -103,14 +105,14 @@ const mapDispatchToProps = (dispatch, ownProps: IProps): IActionsFromRedux => ({
 })
 
 export interface IProps extends IPropsFromRedux, IActionsFromRedux {
-  solution: ISolution
+  theme: ITheme // from withTheme
 }
 
 interface IState {
   showSolutionSettings: boolean
 }
 
-export class Header extends React.Component<IProps, IState> {
+class HeaderWithoutTheme extends React.Component<IProps, IState> {
   state = { showSolutionSettings: false }
   clipboard
 
@@ -262,11 +264,9 @@ export class Header extends React.Component<IProps, IState> {
           <PersonaCoin
             imageUrl={profilePicUrl}
             size={PersonaSize.size28}
+            initialsColor="white"
             styles={{
-              coin: { backgroundColor: 'brick' },
-              image: { backgroundColor: 'white' },
               initials: {
-                backgroundColor: '#000',
                 color: 'green',
               },
             }}
@@ -317,6 +317,8 @@ export class Header extends React.Component<IProps, IState> {
   private openSolutionSettings = () => this.setState({ showSolutionSettings: true })
   private closeSolutionSettings = () => this.setState({ showSolutionSettings: false })
 }
+
+export const Header = withTheme(HeaderWithoutTheme)
 
 export default connect(
   mapStateToProps,

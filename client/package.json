@@ -8,6 +8,7 @@
     "color": "^3.0.0",
     "connected-react-router": "^4.3.0",
     "core-js": "^2.5.7",
+    "js-yaml": "^3.12.0",
     "lodash": "^4.17.10",
     "monaco-editor": "^0.13.1",
     "normalizr": "^3.2.4",
@@ -26,8 +27,7 @@
     "semver": "^5.5.1",
     "styled-components": "^3.4.2",
     "typesafe-actions": "^2.0.4",
-    "uuid": "^3.2.1",
-    "yamljs": "^0.3.0"
+    "uuid": "^3.2.1"
   },
   "scripts": {
     "copy-monaco": "node scripts/copy-monaco.js",
