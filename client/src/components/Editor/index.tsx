@@ -135,6 +135,7 @@ class Editor extends Component<IEditor, IState> {
         }
       })
     }
+    setTimeout(this.resizeEditor, 50)
   }
 
   setupEditor = (editor: monaco.editor.IStandaloneCodeEditor, monaco: any) => {

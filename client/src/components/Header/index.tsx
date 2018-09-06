@@ -123,8 +123,7 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
     this.clipboard.on('error', props.notifyClipboardCopyFailure)
   }
 
-  getSnippetYaml = (): string =>
-    YAML.stringify(convertSolutionToSnippet(this.props.solution))
+  getSnippetYaml = (): string => YAML.dump(convertSolutionToSnippet(this.props.solution))
 
   render() {
     const {

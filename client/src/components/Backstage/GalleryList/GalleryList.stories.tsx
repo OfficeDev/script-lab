@@ -26,3 +26,12 @@ export const GalleryListWithActive = () => (
 storiesOf('Backstage/GalleryList', module)
   .add('basic', () => <BasicGalleryList />)
   .add('with an active', () => <GalleryListWithActive />)
+  .add('multiple', () => (
+    <div>
+      <BasicGalleryList />
+      <BasicGalleryList />
+      <BasicGalleryList />
+      <BasicGalleryList />
+      <BasicGalleryList />
+    </div>
+  ))
