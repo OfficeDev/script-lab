@@ -3,10 +3,10 @@ import { getType, ActionType } from 'typesafe-actions'
 
 import { editor } from '../actions'
 import { push } from 'connected-react-router'
-import { EDITOR_PATH } from '../../constants'
+import { PATHS } from '../../constants'
 
 export function* openSolutionSaga(action: ActionType<typeof editor.open>) {
-  yield put(push(EDITOR_PATH))
+  yield put(push(PATHS.EDITOR))
 }
 
 export default function* editorWatcher() {

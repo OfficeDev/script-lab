@@ -75,3 +75,8 @@ export const getShouldPromptRefresh = createSelector(
     return lastModified > lastUpdated
   },
 )
+
+export const getHasCustomFunctions = createSelector(
+  getSolutions,
+  (solutions: ISolution[]) => solutions.length > 0,
+)

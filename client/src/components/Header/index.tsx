@@ -12,10 +12,10 @@ import YAML from 'yamljs'
 
 import SolutionSettings from './SolutionSettings'
 import { ITheme as IFabricTheme } from 'office-ui-fabric-react/lib/Styling'
-import { NULL_SOLUTION_ID, SETTINGS_SOLUTION_ID } from '../../constants'
+import { NULL_SOLUTION_ID, SETTINGS_SOLUTION_ID, PATHS } from '../../constants'
 
 import { connect } from 'react-redux'
-import { solutions, github, gists, messageBar, settings } from '../../store/actions'
+import actions from '../../store/actions'
 import selectors from '../../store/selectors'
 
 import { getHeaderFabricTheme } from '../../theme'
@@ -60,6 +60,7 @@ interface IActionsFromRedux {
   createPublicGist: () => void
   createSecretGist: () => void
   updateGist: () => void
+
   notifyClipboardCopySuccess: () => void
   notifyClipboardCopyFailure: () => void
 
@@ -67,29 +68,38 @@ interface IActionsFromRedux {
 }
 
 const mapDispatchToProps = (dispatch, ownProps: IHeader): IActionsFromRedux => ({
-  login: () => dispatch(github.login.request()),
-  logout: () => dispatch(github.logout()),
+  login: () => dispatch(actions.github.login.request()),
+  logout: () => dispatch(actions.github.logout()),
 
-  showBackstage: () => dispatch(push('/backstage')),
-  closeSettings: () => dispatch(settings.close()),
+  showBackstage: () => dispatch(push(PATHS.BACKSTAGE)),
+  closeSettings: () => dispatch(actions.settings.close()),
 
   editSolution: (solutionId: string, solution: Partial<IEditableSolutionProperties>) =>
-    dispatch(solutions.edit({ id: solutionId, solution })),
-  deleteSolution: () => dispatch(solutions.remove(ownProps.solution)),
+    dispatch(actions.solutions.edit({ id: solutionId, solution })),
+  deleteSolution: () => dispatch(actions.solutions.remove(ownProps.solution)),
 
   createPublicGist: () =>
-    dispatch(gists.create.request({ solutionId: ownProps.solution.id, isPublic: true })),
+    dispatch(
+      actions.gists.create.request({ solutionId: ownProps.solution.id, isPublic: true }),
+    ),
   createSecretGist: () =>
-    dispatch(gists.create.request({ solutionId: ownProps.solution.id, isPublic: false })),
-  updateGist: () => dispatch(gists.update.request({ solutionId: ownProps.solution.id })),
+    dispatch(
+      actions.gists.create.request({ solutionId: ownProps.solution.id, isPublic: false }),
+    ),
+  updateGist: () =>
+    dispatch(actions.gists.update.request({ solutionId: ownProps.solution.id })),
+
   notifyClipboardCopySuccess: () =>
-    dispatch(messageBar.show('Snippet copied to clipboard.')),
+    dispatch(actions.messageBar.show('Snippet copied to clipboard.')),
   notifyClipboardCopyFailure: () =>
     dispatch(
-      messageBar.show('Snippet failed to copy to clipboard.', MessageBarType.error),
+      actions.messageBar.show(
+        'Snippet failed to copy to clipboard.',
+        MessageBarType.error,
+      ),
     ),
 
-  navigateToCustomFunctions: () => dispatch(push('/custom-functions')),
+  navigateToCustomFunctions: () => dispatch(actions.customFunctions.openDashboard()),
 })
 
 export interface IHeader extends IPropsFromRedux, IActionsFromRedux {

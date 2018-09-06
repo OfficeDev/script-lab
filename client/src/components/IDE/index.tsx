@@ -76,7 +76,7 @@ class IDE extends Component<IIDE> {
             activeFile={activeFile}
           />
         </ContentWrapper>
-        <Footer activeFile={activeFile} />
+        <Footer />
       </Layout>
     )
   }

@@ -9,14 +9,14 @@ import { convertSolutionToSnippet } from '../../utils'
 import { getCustomFunctionEngineStatus } from '../../utils/customFunctions'
 import { registerMetadata } from '../../utils/customFunctions'
 
-import { RUNNER_URL } from '../../constants'
+import { RUNNER_URL, PATHS } from '../../constants'
 import {
   getCustomFunctionLogs,
   getCustomFunctionRunnerLastUpdated,
   getIsCustomFunctionRunnerAlive,
 } from '../../store/localStorage'
-import { fetchLogsAndHeartbeat, updateEngineStatus } from './actions'
-
+import { fetchLogsAndHeartbeat, updateEngineStatus, openDashboard } from './actions'
+import { push } from 'connected-react-router'
 export function* fetchCustomFunctionsMetadataSaga() {
   const solutions = yield select(selectors.customFunctions.getSolutions)
 
@@ -61,6 +61,10 @@ function* fetchLogsAndHeartbeatSaga() {
   yield put(customFunctions.updateRunner({ isAlive, lastUpdated }))
 }
 
+function* openDashboardSaga() {
+  yield put(push(PATHS.CUSTOM_FUNCTIONS))
+}
+
 export default function* customFunctionsWatcher() {
   yield takeEvery(
     getType(customFunctions.fetchMetadata.request),
@@ -75,4 +79,6 @@ export default function* customFunctionsWatcher() {
     getType(customFunctions.fetchLogsAndHeartbeat),
     fetchLogsAndHeartbeatSaga,
   )
+
+  yield takeEvery(getType(customFunctions.openDashboard), openDashboardSaga)
 }

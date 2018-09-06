@@ -37,3 +37,5 @@ export const clearLogs = createAction('CUSTOM_FUNCTIONS_CLEAR_LOGS')
 export const fetchLogsAndHeartbeat = createAction(
   'CUSTOM_FUNCTIONS_FETCH_LOGS_AND_HEARTBEAT',
 )
+
+export const openDashboard = createAction('CUSTOM_FUNCTIONS_OPEN_DASHBOARD')
