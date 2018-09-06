@@ -57,8 +57,6 @@ function* fetchLogsAndHeartbeatSaga() {
   if (logs) {
     yield put(customFunctions.pushLogs(logs))
   }
-
-  // yield call(fetchHeartbeatSaga)
 }
 
 function* fetchHeartbeatSaga() {
