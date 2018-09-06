@@ -35,7 +35,7 @@ interface IPropsFromRedux {
   headerFabricTheme: IFabricTheme
 }
 
-const mapStateToProps = (state, ownProps: IHeader): IPropsFromRedux => ({
+const mapStateToProps = (state, ownProps: IProps): IPropsFromRedux => ({
   isSettingsView: ownProps.solution.id === SETTINGS_SOLUTION_ID,
   isCustomFunctionsView: selectors.customFunctions.getIsCurrentSolutionCF(state),
   isLoggedIn: !!selectors.github.getToken(state),
@@ -66,7 +66,7 @@ interface IActionsFromRedux {
   navigateToCustomFunctions: () => void
 }
 
-const mapDispatchToProps = (dispatch, ownProps: IHeader): IActionsFromRedux => ({
+const mapDispatchToProps = (dispatch, ownProps: IProps): IActionsFromRedux => ({
   login: () => dispatch(github.login.request()),
   logout: () => dispatch(github.logout()),
 
@@ -92,7 +92,7 @@ const mapDispatchToProps = (dispatch, ownProps: IHeader): IActionsFromRedux => (
   navigateToCustomFunctions: () => dispatch(push('/custom-functions')),
 })
 
-export interface IHeader extends IPropsFromRedux, IActionsFromRedux {
+export interface IProps extends IPropsFromRedux, IActionsFromRedux {
   solution: ISolution
 }
 
@@ -100,11 +100,11 @@ interface IState {
   showSolutionSettings: boolean
 }
 
-export class Header extends React.Component<IHeader, IState> {
+export class Header extends React.Component<IProps, IState> {
   state = { showSolutionSettings: false }
   clipboard
 
-  constructor(props: IHeader) {
+  constructor(props: IProps) {
     super(props)
     this.clipboard = new Clipboard('.export-to-clipboard', { text: this.getSnippetYaml })
     this.clipboard.on('success', props.notifyClipboardCopySuccess)
