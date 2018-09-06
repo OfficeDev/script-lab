@@ -62,6 +62,7 @@ const FooterWithoutTheme = ({
   isWeb,
   hasCustomFunctions,
   onSettingsIconClick,
+  navigateToCustomFunctionsDashboard,
   changeHost,
 }: IProps) => {
   const buttonStyles = {
@@ -97,6 +98,7 @@ const FooterWithoutTheme = ({
           primary={true}
           text="Custom Functions Dashboard"
           styles={buttonStyles}
+          onClick={navigateToCustomFunctionsDashboard}
         />
       </Only>
 
@@ -150,6 +152,7 @@ const FooterWithoutTheme = ({
         primary={true}
         iconProps={{ iconName: 'Settings' }}
         styles={buttonStyles}
+        onClick={onSettingsIconClick}
       />
     </Wrapper>
   )

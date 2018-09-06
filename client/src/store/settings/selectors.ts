@@ -1,4 +1,9 @@
 import { IState } from '../reducer'
+import { getActiveSolution } from '../editor/selectors'
+import { SETTINGS_SOLUTION_ID } from '../../constants'
+
+export const getIsOpen = (state: IState): boolean =>
+  getActiveSolution(state).id === SETTINGS_SOLUTION_ID
 
 export const getMonacoTheme = (state: IState): 'vs' | 'vs-dark' | 'hc-black' => {
   return {

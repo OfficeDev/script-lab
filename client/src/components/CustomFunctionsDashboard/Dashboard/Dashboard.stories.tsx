@@ -19,6 +19,7 @@ storiesOf('CustomFunctions/Dashboard', module)
         Charlie: <Dummy letter="C" />,
       }}
       shouldPromptRefresh={false}
+      isStandalone={false}
     />
   ))
   .add('with actual tabs', () => (
@@ -26,6 +27,7 @@ storiesOf('CustomFunctions/Dashboard', module)
       headerFabricTheme={headerFabricTheme}
       items={{ Summary: <BasicSummary />, Console: <BasicConsole /> }}
       shouldPromptRefresh={false}
+      isStandalone={false}
     />
   ))
   .add('with refresh', () => (
@@ -33,5 +35,14 @@ storiesOf('CustomFunctions/Dashboard', module)
       headerFabricTheme={headerFabricTheme}
       items={{ Summary: <BasicSummary />, Console: <BasicConsole /> }}
       shouldPromptRefresh={true}
+      isStandalone={false}
+    />
+  ))
+  .add('as standalone', () => (
+    <Dashboard
+      headerFabricTheme={headerFabricTheme}
+      items={{ Summary: <BasicSummary />, Console: <BasicConsole /> }}
+      shouldPromptRefresh={true}
+      isStandalone={true}
     />
   ))

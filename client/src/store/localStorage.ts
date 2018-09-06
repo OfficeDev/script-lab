@@ -70,6 +70,11 @@ export const saveState = (state: IState) => {
       localStorageKeys.customFunctionsRunPostData,
       JSON.stringify(cfPostData),
     )
+
+    localStorage.setItem(
+      localStorageKeys.customFunctionsLastUpdatedCodeTimestamp,
+      selectors.customFunctions.getLastModifiedDate(state).toString(),
+    )
   } catch (err) {
     // TODO
     console.error(err)

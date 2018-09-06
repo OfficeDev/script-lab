@@ -42,5 +42,6 @@ export const EDITOR_PATH = '/'
 export const PATHS = {
   EDITOR: '/',
   CUSTOM_FUNCTIONS: '/custom-functions',
+  CUSTOM_FUNCTIONS_DASHBOARD: '/custom-functions-dashboard', // stand alone page with no back button
   BACKSTAGE: '/backstage',
 }

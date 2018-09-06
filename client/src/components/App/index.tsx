@@ -26,7 +26,11 @@ const App = ({ theme }: IProps) => (
   <ThemeProvider theme={theme}>
     <>
       <Route exact path={PATHS.BACKSTAGE} component={Backstage} />
-      <Route exact path={PATHS.CUSTOM_FUNCTIONS} component={CustomFunctionsDashboard} />
+      <Route
+        exact
+        path={'/(custom-functions|custom-functions-dashboard)/'}
+        component={CustomFunctionsDashboard}
+      />
       <IDE />
     </>
   </ThemeProvider>

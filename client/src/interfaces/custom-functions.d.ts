@@ -31,7 +31,7 @@ interface ICFVisualFunctionMetadata /* doesn't extend ICFSchemaFunctionMetadata 
 
   description?: string
   parameters: ICFVisualParameterMetadata[]
-  result: ICFSchemaFunctionResultMetadata
+  result: ICFVisualFunctionResultMetadata
   options: ICFSchemaFunctionOptions
 }
 

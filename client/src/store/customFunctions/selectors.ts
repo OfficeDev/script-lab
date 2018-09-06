@@ -9,6 +9,7 @@ import {
 } from '../solutions/selectors'
 
 import { isCustomFunctionScript } from '../../utils/customFunctions'
+import { PATHS } from '../../constants'
 
 export const getMetadata = (state: IState) => state.customFunctions.metadata
 export const getMetadataSummaryItems: (
@@ -29,11 +30,26 @@ export const getMetadataSummaryItems: (
         })
         .map(snippet => {
           const { name } = snippet
-          return snippet.functions.map(({ funcName, status }) => ({
-            snippetName: name,
-            funcName,
-            status,
-          }))
+          return snippet.functions.map(({ funcName, status, parameters, result }) => {
+            let additionalInfo
+            if (status === 'error') {
+              additionalInfo = []
+              parameters.forEach(({ name, error }) => {
+                if (error) {
+                  additionalInfo.push(`${name} - ${error}`)
+                }
+              })
+              if (result.error) {
+                additionalInfo.push(`Result - ${result.error}`)
+              }
+            }
+            return {
+              snippetName: name,
+              funcName,
+              status,
+              additionalInfo,
+            }
+          })
         }),
     ),
 )
@@ -66,17 +82,24 @@ export const getSolutions = (state: IState): ISolution[] =>
 
 export const getLastModifiedDate = (state: IState): number => {
   const solutions = filterCustomFunctions(getSolutionsInLastModifiedOrder(state))
+  console.log({ solutions })
   return solutions.length > 0 ? solutions[0].dateLastModified : 0
 }
 
-export const getShouldPromptRefresh = createSelector(
-  [getLastModifiedDate, state => state.customFunctions.runner.lastUpdated],
-  (lastModified: number, lastUpdated: number): boolean => {
-    return lastModified > lastUpdated
-  },
-)
+// export const getShouldPromptRefresh = createSelector(
+//   [getLastModifiedDate, state => state.customFunctions.runner.lastUpdated],
+//   (lastModified: number, lastUpdated: number): boolean => {
+//     return lastModified > lastUpdated
+//   },
+// )
+
+// export const getShouldPromptRefresh = (state: IState): boolean =>
+//   getLastModifiedDate(state) > state.customFunctions.runner.lastUpdated
 
 export const getHasCustomFunctions = createSelector(
   getSolutions,
   (solutions: ISolution[]) => solutions.length > 0,
 )
+
+export const getIsStandalone = (state: IState): boolean =>
+  state.router.location.pathname === PATHS.CUSTOM_FUNCTIONS_DASHBOARD

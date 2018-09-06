@@ -36,8 +36,8 @@ interface IPropsFromRedux {
   solution: ISolution
 }
 
-const mapStateToProps = (state, ownProps: IProps): IPropsFromRedux => ({
-  isSettingsView: ownProps.solution.id === SETTINGS_SOLUTION_ID,
+const mapStateToProps = (state): IPropsFromRedux => ({
+  isSettingsView: selectors.settings.getIsOpen(state),
   isCustomFunctionsView: selectors.customFunctions.getIsCurrentSolutionCF(state),
   isLoggedIn: !!selectors.github.getToken(state),
   isRunnableOnThisHost: selectors.host.getIsRunnableOnThisHost(state),

@@ -14,26 +14,28 @@ import { connect } from 'react-redux'
 import selectors from '../../store/selectors'
 
 import { getIsCustomFunctionsSupportedOnHost } from '../../utils/customFunctions'
+import { localStorageKeys } from '../../constants'
 
 interface IPropsFromRedux {
   hasCustomFunctionsInSolutions: boolean
+  runnerLastUpdated: number
 }
 
 const mapStateToProps = (state): IPropsFromRedux => ({
   hasCustomFunctionsInSolutions: selectors.customFunctions.getSolutions(state).length > 0,
+  runnerLastUpdated: state.customFunctions.runner.lastUpdated,
 })
 
-interface ICustomFunctionsDashboard extends IPropsFromRedux {}
+interface IProps extends IPropsFromRedux {}
 
 interface IState {
   isCFSupportedOnHost: boolean | undefined
+  customFunctionsLastModified: number
 }
 
-export class CustomFunctionsDashboard extends React.Component<
-  ICustomFunctionsDashboard,
-  IState
-> {
-  state = { isCFSupportedOnHost: undefined }
+export class CustomFunctionsDashboard extends React.Component<IProps, IState> {
+  localStorageCheckInterval
+  state = { isCFSupportedOnHost: undefined, customFunctionsLastModified: 0 }
 
   constructor(props) {
     super(props)
@@ -43,19 +45,48 @@ export class CustomFunctionsDashboard extends React.Component<
     })
   }
 
+  componentDidMount() {
+    this.localStorageCheckInterval = setInterval(
+      this.getCustomFunctionsLastModified,
+      1000,
+    )
+  }
+
+  componentWillUnmount = () => {
+    clearInterval(this.localStorageCheckInterval)
+  }
+
+  getShouldPromptRefresh = () =>
+    this.state.customFunctionsLastModified > this.props.runnerLastUpdated
+
+  getCustomFunctionsLastModified = () =>
+    this.setState({
+      customFunctionsLastModified:
+        Number(
+          localStorage.getItem(localStorageKeys.customFunctionsLastUpdatedCodeTimestamp),
+        ) || 0,
+    })
+
   render() {
     const { isCFSupportedOnHost } = this.state
     const { hasCustomFunctionsInSolutions } = this.props
 
     if (isCFSupportedOnHost === undefined) {
       return (
-        <LoadingIndicator ballSize={32} numBalls={5} ballColor="#d83b01" delay={0.05} />
+        <div style={{ width: '100vh', height: '100vh' }}>
+          <LoadingIndicator ballSize={32} numBalls={5} ballColor="#d83b01" delay={0.05} />
+        </div>
       )
     } else if (isCFSupportedOnHost) {
       if (hasCustomFunctionsInSolutions) {
-        return <Dashboard items={{ Summary: <Summary />, Console: <Console /> }} />
+        return (
+          <Dashboard
+            items={{ Summary: <Summary />, Console: <Console /> }}
+            shouldPromptRefresh={this.getShouldPromptRefresh()}
+          />
+        )
       } else {
-        return <Welcome />
+        return <Welcome isRefreshEnabled={this.getShouldPromptRefresh()} />
       }
     } else {
       return <ComingSoon />

@@ -12,30 +12,13 @@ import {
   CodeBlock,
 } from './styles'
 
-import { connect } from 'react-redux'
-import { IState as IReduxState } from '../../../store/reducer'
-import { customFunctions as customFunctionsActions } from '../../../store/actions'
-import selectors from '../../../store/selectors'
-
-interface IPropsFromRedux {
+interface IProps {
   isRefreshEnabled: boolean
 }
 
-const mapStateToProps = (state: IReduxState): IPropsFromRedux => ({
-  isRefreshEnabled: selectors.customFunctions.getShouldPromptRefresh(state),
-})
+const refresh = () => window.location.reload()
 
-interface IActionsFromRedux {
-  refresh: () => void
-}
-
-const mapDispatchToProps = (dispatch): IActionsFromRedux => ({
-  refresh: () => dispatch(customFunctionsActions.fetchMetadata.request()),
-})
-
-interface IWelcome extends IPropsFromRedux, IActionsFromRedux {}
-
-export const Welcome = ({ isRefreshEnabled, refresh }: IWelcome) => (
+export const Welcome = ({ isRefreshEnabled }: IProps) => (
   <CenteredContent>
     <WelcomeTitle>Welcome</WelcomeTitle>
     <WelcomeSubTitle>
@@ -75,7 +58,4 @@ export const Welcome = ({ isRefreshEnabled, refresh }: IWelcome) => (
   </CenteredContent>
 )
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(Welcome)
+export default Welcome

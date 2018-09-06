@@ -46,6 +46,7 @@ function* registerCustomFunctionsMetadataSaga(
 
     const engineStatus = yield call(getCustomFunctionEngineStatus)
     yield put(updateEngineStatus(engineStatus))
+    yield put(customFunctions.updateRunner({ isAlive: true, lastUpdated: Date.now() }))
   } catch (error) {
     yield put(customFunctions.registerMetadata.failure(error))
   }
@@ -53,11 +54,16 @@ function* registerCustomFunctionsMetadataSaga(
 
 function* fetchLogsAndHeartbeatSaga() {
   const logs = yield call(getCustomFunctionLogs)
-  const lastUpdated = yield call(getCustomFunctionRunnerLastUpdated)
-  const isAlive = yield call(getIsCustomFunctionRunnerAlive)
   if (logs) {
     yield put(customFunctions.pushLogs(logs))
   }
+
+  // yield call(fetchHeartbeatSaga)
+}
+
+function* fetchHeartbeatSaga() {
+  const lastUpdated = yield call(getCustomFunctionRunnerLastUpdated)
+  const isAlive = yield call(getIsCustomFunctionRunnerAlive)
   yield put(customFunctions.updateRunner({ isAlive, lastUpdated }))
 }
 
