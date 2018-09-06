@@ -59,7 +59,7 @@ class IDE extends Component<IIDE> {
     const { isVisible, activeSolution, activeFile } = this.props
     return (
       <Layout style={{ display: isVisible ? 'flex' : 'none' }}>
-        <Header solution={activeSolution} />
+        <Header />
         <PivotBar
           items={activeSolution.files.map(file => ({
             key: file.id,
