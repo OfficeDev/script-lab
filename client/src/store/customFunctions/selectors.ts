@@ -3,7 +3,10 @@ import { createSelector } from 'reselect'
 import flatten from 'lodash/flatten'
 
 import { getActiveSolution } from '../editor/selectors'
-import { getAll as getAllSolutions } from '../solutions/selectors'
+import {
+  getAll as getAllSolutions,
+  getInLastModifiedOrder as getSolutionsInLastModifiedOrder,
+} from '../solutions/selectors'
 
 import { isCustomFunctionScript } from '../../utils/customFunctions'
 
@@ -48,11 +51,32 @@ export const getIsCurrentSolutionCF = (state: IState): boolean => {
   }
 }
 
-export const getSolutions = (state: IState): ISolution[] =>
-  getAllSolutions(state)
+const filterCustomFunctions = (solutions: ISolution[]): ISolution[] => {
+  return solutions
     .map(solution => {
       const script = solution.files.find(file => file.name === 'index.ts')
       return { solution, script }
     })
     .filter(({ script }) => script && isCustomFunctionScript(script.content))
     .map(({ solution }) => solution)
+}
+
+export const getSolutions = (state: IState): ISolution[] =>
+  filterCustomFunctions(getAllSolutions(state))
+
+export const getLastModifiedDate = (state: IState): number => {
+  const solutions = filterCustomFunctions(getSolutionsInLastModifiedOrder(state))
+  return solutions.length > 0 ? solutions[0].dateLastModified : 0
+}
+
+export const getShouldPromptRefresh = createSelector(
+  [getLastModifiedDate, state => state.customFunctions.runner.lastUpdated],
+  (lastModified: number, lastUpdated: number): boolean => {
+    return lastModified > lastUpdated
+  },
+)
+
+export const getHasCustomFunctions = createSelector(
+  getSolutions,
+  (solutions: ISolution[]) => solutions.length > 0,
+)

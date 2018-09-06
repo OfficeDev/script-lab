@@ -7,11 +7,9 @@ import { storiesOf } from '@storybook/react'
 import { getHeaderFabricTheme } from '../../../theme'
 
 const headerFabricTheme = getHeaderFabricTheme('EXCEL')
-const stories = storiesOf('CustomFunctions/Dashboard', module)
-
 const Dummy = ({ letter }) => <div>I AM {letter}</div>
 
-stories
+storiesOf('CustomFunctions/Dashboard', module)
   .add('basic', () => (
     <Dashboard
       headerFabricTheme={headerFabricTheme}
@@ -20,11 +18,20 @@ stories
         Bravo: <Dummy letter="B" />,
         Charlie: <Dummy letter="C" />,
       }}
+      shouldPromptRefresh={false}
     />
   ))
   .add('with actual tabs', () => (
     <Dashboard
       headerFabricTheme={headerFabricTheme}
       items={{ Summary: <BasicSummary />, Console: <BasicConsole /> }}
+      shouldPromptRefresh={false}
+    />
+  ))
+  .add('with refresh', () => (
+    <Dashboard
+      headerFabricTheme={headerFabricTheme}
+      items={{ Summary: <BasicSummary />, Console: <BasicConsole /> }}
+      shouldPromptRefresh={true}
     />
   ))

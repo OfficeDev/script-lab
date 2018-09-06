@@ -39,3 +39,8 @@ export const localStorageKeys = {
 export const CUSTOM_FUNCTIONS_INFO_URL = 'https://aka.ms/customfunctions'
 
 export const EDITOR_PATH = '/'
+export const PATHS = {
+  EDITOR: '/',
+  CUSTOM_FUNCTIONS: '/custom-functions',
+  BACKSTAGE: '/backstage',
+}

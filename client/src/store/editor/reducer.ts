@@ -1,20 +1,18 @@
 import { combineReducers } from 'redux'
 import { getType } from 'typesafe-actions'
 import { editor, IEditorAction } from '../actions'
-import { EDITOR_PATH } from '../../constants'
+import { PATHS } from '../../constants'
 
 type IIsVisibleState = boolean
 
-console.log(window.location)
-
 const initialVisibility =
-  location.hash.replace('#', '') === EDITOR_PATH ||
-  (window.location.pathname === EDITOR_PATH && window.location.hash === '')
+  location.hash.replace('#', '') === PATHS.EDITOR ||
+  (window.location.pathname === PATHS.EDITOR && window.location.hash === '')
 
 const isVisible = (state: IIsVisibleState = initialVisibility, action) => {
   switch (action.type) {
     case '@@router/LOCATION_CHANGE':
-      return action.payload.location.pathname === EDITOR_PATH
+      return action.payload.location.pathname === PATHS.EDITOR
     default:
       return state
   }

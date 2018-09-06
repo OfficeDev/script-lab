@@ -10,6 +10,7 @@ import CustomFunctionsDashboard from '../CustomFunctionsDashboard'
 
 import selectors from '../../store/selectors'
 import { getTheme } from '../../theme'
+import { PATHS } from '../../constants'
 
 interface IPropsFromRedux {
   theme: ITheme
@@ -19,13 +20,13 @@ const mapStateToProps = (state): IPropsFromRedux => ({
   theme: getTheme(selectors.host.get(state)),
 })
 
-export interface IApp extends IPropsFromRedux {}
+export interface IProps extends IPropsFromRedux {}
 
-const App = ({ theme }: IApp) => (
+const App = ({ theme }: IProps) => (
   <ThemeProvider theme={theme}>
     <>
-      <Route exact path="/backstage" component={Backstage} />
-      <Route exact path="/custom-functions" component={CustomFunctionsDashboard} />
+      <Route exact path={PATHS.BACKSTAGE} component={Backstage} />
+      <Route exact path={PATHS.CUSTOM_FUNCTIONS} component={CustomFunctionsDashboard} />
       <IDE />
     </>
   </ThemeProvider>

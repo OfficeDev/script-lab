@@ -22,9 +22,7 @@ interface IPropsFromRedux {
 }
 
 const mapStateToProps = (state: IReduxState): IPropsFromRedux => ({
-  isRefreshEnabled:
-    selectors.solutions.getEditorLastModifiedDate(state) >
-    state.customFunctions.runner.lastUpdated,
+  isRefreshEnabled: selectors.customFunctions.getShouldPromptRefresh(state),
 })
 
 interface IActionsFromRedux {

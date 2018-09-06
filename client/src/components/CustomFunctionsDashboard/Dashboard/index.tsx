@@ -4,6 +4,8 @@ import PivotBar from '../../PivotBar'
 import { Layout, Header, Content } from './styles'
 
 import { Customizer } from 'office-ui-fabric-react/lib/Utilities'
+import { MessageBar, MessageBarType } from 'office-ui-fabric-react/lib/MessageBar'
+import { DefaultButton } from 'office-ui-fabric-react/lib/Button'
 import { CommandBar, ICommandBarItemProps } from 'office-ui-fabric-react/lib/CommandBar'
 import { ITheme as IFabricTheme } from '@uifabric/styling'
 import { getHeaderFabricTheme } from '../../../theme'
@@ -12,13 +14,16 @@ import { connect } from 'react-redux'
 import selectors from '../../../store/selectors'
 import { customFunctions as customFunctionsActions } from '../../../store/actions'
 import { goBack } from 'connected-react-router'
+import Only from '../../Only'
 
 interface IPropsFromRedux {
   headerFabricTheme: IFabricTheme
+  shouldPromptRefresh: boolean
 }
 
 const mapStateToProps = (state): IPropsFromRedux => ({
   headerFabricTheme: getHeaderFabricTheme(selectors.host.get(state)),
+  shouldPromptRefresh: selectors.customFunctions.getShouldPromptRefresh(state),
 })
 
 interface IActionsFromRedux {
@@ -31,7 +36,7 @@ const mapDispatchToProps = (dispatch): IActionsFromRedux => ({
   goBack: () => dispatch(goBack()),
 })
 
-interface IDashboard extends IPropsFromRedux, IActionsFromRedux {
+interface IProps extends IPropsFromRedux, IActionsFromRedux {
   items: { [itemName: string]: any /* react component */ }
   theme: ITheme // from withTheme
 }
@@ -40,7 +45,7 @@ interface IState {
   selectedKey: string
 }
 
-class DashboardWithoutTheme extends React.Component<IDashboard, IState> {
+class DashboardWithoutTheme extends React.Component<IProps, IState> {
   constructor(props) {
     super(props)
     const selectedKey =
@@ -56,9 +61,11 @@ class DashboardWithoutTheme extends React.Component<IDashboard, IState> {
 
   setSelectedKey = (selectedKey: string) => this.setState({ selectedKey })
 
+  reload = () => window.location.reload()
+
   render() {
     const { selectedKey } = this.state
-    const { items, theme, headerFabricTheme, goBack } = this.props
+    const { items, theme, headerFabricTheme, goBack, shouldPromptRefresh } = this.props
 
     return (
       <Layout>
@@ -75,19 +82,36 @@ class DashboardWithoutTheme extends React.Component<IDashboard, IState> {
                 {
                   key: 'title',
                   text: 'Custom Functions (Preview)',
+                  onClick: this.reload,
                 },
               ]}
-              styles={{
-                root: { paddingLeft: 0, paddingRight: 0 },
-              }}
+              styles={{ root: { paddingLeft: 0, paddingRight: 0 } }}
             />
           </Customizer>
           <PivotBar
-            items={Object.keys(items).map(key => ({ key, text: key }))}
+            items={Object.keys(items).map(key => ({
+              key,
+              text: key,
+            }))}
             selectedKey={selectedKey}
             onSelect={this.setSelectedKey}
           />
         </Header>
+        <Only when={shouldPromptRefresh}>
+          <MessageBar
+            messageBarType={MessageBarType.info}
+            isMultiline={false}
+            actions={
+              <div>
+                <DefaultButton primary={true} onClick={this.reload}>
+                  Reload
+                </DefaultButton>
+              </div>
+            }
+          >
+            You have made changes to your Custom Functions. Would you like to re-register?
+          </MessageBar>
+        </Only>
         <Content>{items[selectedKey]}</Content>
       </Layout>
     )
