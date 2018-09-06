@@ -1,11 +1,17 @@
 import { put, takeEvery, call, select } from 'redux-saga/effects'
 import { getType, ActionType } from 'typesafe-actions'
 
-import { settings as settingsActions, solutions } from '../actions'
+import {
+  settings as settingsActions,
+  solutions as solutionsActions,
+  editor as editorActions,
+} from '../actions'
+
+import selectors from '../selectors'
 
 import { allowedSettings } from '../../SettingsJSONSchema'
 
-import { SETTINGS_FILE_ID } from '../../constants'
+import { SETTINGS_SOLUTION_ID, SETTINGS_FILE_ID } from '../../constants'
 
 // TODO: (nicobell) make it so that this thing throws when a nonaccepted value is used for setting
 export const merge = (valid, parsed, allowed) =>
@@ -27,14 +33,13 @@ export const merge = (valid, parsed, allowed) =>
     })
     .reduce((acc, [key, value]) => ((acc[key] = value), acc), {})
 
-function* editSettingsCheckSaga(action: ActionType<typeof solutions.edit>) {
+function* editSettingsCheckSaga(action: ActionType<typeof solutionsActions.edit>) {
   if (
     action.payload.fileId === SETTINGS_FILE_ID &&
     action.payload.file &&
     action.payload.file.content
   ) {
-    const state = yield select()
-    const { settings } = state
+    const { settings } = yield select()
 
     try {
       const parsed = JSON.parse(action.payload.file.content)
@@ -46,6 +51,27 @@ function* editSettingsCheckSaga(action: ActionType<typeof solutions.edit>) {
   }
 }
 
+function* openSettingsSaga(action: ActionType<typeof settingsActions.open>) {
+  const { editor } = yield select()
+  const { active } = editor
+  const { solutionId, fileId } = active
+  yield put(settingsActions.setLastActive({ solutionId, fileId }))
+
+  yield put(
+    editorActions.open({ solutionId: SETTINGS_SOLUTION_ID, fileId: SETTINGS_FILE_ID }),
+  )
+}
+
+function* closeSettingsSaga(action: ActionType<typeof settingsActions.close>) {
+  const { settings } = yield select()
+  const { lastActive } = settings
+  const { solutionId, fileId } = lastActive
+  yield put(editorActions.open({ solutionId, fileId }))
+}
+
 export default function* settingsWatcher() {
-  yield takeEvery(getType(solutions.edit), editSettingsCheckSaga)
+  yield takeEvery(getType(solutionsActions.edit), editSettingsCheckSaga)
+
+  yield takeEvery(getType(settingsActions.open), openSettingsSaga)
+  yield takeEvery(getType(settingsActions.close), closeSettingsSaga)
 }

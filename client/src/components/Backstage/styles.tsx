@@ -8,8 +8,7 @@ export const BackstageWrapper = styled.div`
   position: absolute;
   top: 0;
   z-index: 1000;
-  /* TODO: use theme */
-  background-color: white;
+  background-color: ${props => props.theme.white};
   height: 100vh;
   width: 100%;
 

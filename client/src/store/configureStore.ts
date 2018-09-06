@@ -42,6 +42,7 @@ const addLoggingToDispatch = store => {
 
 const configureStore = () => {
   // TODO: (nicobell) find out why supportsHistory() says true for the agave window or use another condition
+  // NOTE: editor/reducer will need to be updated as it currently is hardcoded to depend on window.location.hash
   // const history = supportsHistory() ? createBrowserHistory() : createHashHistory()
   const history = createHashHistory()
   const sagaMiddleware = createSagaMiddleware()

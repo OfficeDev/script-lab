@@ -4,15 +4,14 @@ import { ThemeProvider } from 'styled-components'
 import React from 'react'
 
 import '../src/index.css'
-import { StyledComponentsThemeProvider, fabricTheme } from '../src/theme'
-import { loadTheme } from 'office-ui-fabric-react/lib/Styling'
+import { getTheme, setupFabricTheme } from '../src/theme'
 import { initializeIcons } from 'office-ui-fabric-react/lib/Icons'
 
-loadTheme({ palette: fabricTheme })
+setupFabricTheme('EXCEL')
 initializeIcons()
 
 const scThemeProvider = storyFn => (
-  <StyledComponentsThemeProvider>{storyFn()}</StyledComponentsThemeProvider>
+  <ThemeProvider theme={getTheme('EXCEL')}>{storyFn()}</ThemeProvider>
 )
 
 addDecorator(scThemeProvider)

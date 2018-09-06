@@ -1,5 +1,7 @@
 import { all } from 'redux-saga/effects'
 
+import customFunctionsWatcher from './customFunctions/sagas'
+import editorWatcher from './editor/sagas'
 import gistsWatcher from './gists/sagas'
 import githubWatcher from './github/sagas'
 import hostWatcher from './host/sagas'
@@ -10,6 +12,8 @@ import solutionsWatcher from './solutions/sagas'
 
 export default function* rootSaga() {
   yield all([
+    customFunctionsWatcher(),
+    editorWatcher(),
     gistsWatcher(),
     githubWatcher(),
     hostWatcher(),

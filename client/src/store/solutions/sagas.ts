@@ -1,8 +1,7 @@
 import { put, takeEvery, call, select } from 'redux-saga/effects'
 import { getType, ActionType } from 'typesafe-actions'
 
-import { push } from 'connected-react-router'
-import { solutions } from '../actions'
+import { solutions, editor } from '../actions'
 import { fetchYaml } from '../../services/general'
 import selectors from '../selectors'
 import { convertSnippetToSolution } from '../../utils'
@@ -15,7 +14,6 @@ export function* getDefaultSaga() {
     `https://raw.githubusercontent.com/OfficeDev/office-js-snippets/master/samples/${host.toLowerCase()}/default.yaml`,
   )
 
-  console.log(response)
   const { content, error } = response
   if (content) {
     const solution = convertSnippetToSolution(content)
@@ -41,20 +39,29 @@ function* handleGetDefaultFailureSaga(
 
 export function* createSolutionSaga(solution: ISolution) {
   yield put(solutions.add(solution))
-  yield call(openSolutionSaga, solution)
+  yield put(editor.open({ solutionId: solution.id, fileId: solution.files[0].id }))
 }
 
-export function* openSolutionSaga(solution: ISolution) {
-  const { files } = solution
-  if (files.length > 0) {
-    yield put(push(`/${solution.id}/${files[0].id}`))
+export function* openLastModifiedOrDefaultSolutionSaga() {
+  const solutions = yield select(selectors.solutions.getInLastModifiedOrder)
+
+  if (solutions.length === 0) {
+    yield call(getDefaultSaga)
   } else {
-    yield put(push(`/${solution.id}/`))
+    yield put(
+      editor.open({ solutionId: solutions[0].id, fileId: solutions[0].files[0].id }),
+    )
   }
+}
+
+function* removeSolutionSaga(action: ActionType<typeof solutions.remove>) {
+  yield call(openLastModifiedOrDefaultSolutionSaga)
 }
 
 export default function* solutionsWatcher() {
   yield takeEvery(getType(solutions.create), getDefaultSaga)
   yield takeEvery(getType(solutions.getDefault.success), handleGetDefaultSuccessSaga)
   yield takeEvery(getType(solutions.getDefault.failure), handleGetDefaultFailureSaga)
+
+  yield takeEvery(getType(solutions.remove), removeSolutionSaga)
 }

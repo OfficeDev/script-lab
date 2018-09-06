@@ -1,19 +1,23 @@
 import React from 'react'
+import { withTheme } from 'styled-components'
 import { Nav, INavStyleProps, INavStyles } from 'office-ui-fabric-react/lib/Nav'
-import {
-  getFocusStyle,
-  mergeStyles,
-  ITheme as IFabricTheme,
-} from 'office-ui-fabric-react/lib/Styling'
+import { getFocusStyle, mergeStyles } from 'office-ui-fabric-react/lib/Styling'
 
-// TODO: make it so that I don't cry when I look at this styling..
-export interface IMenu {
-  theme: ITheme
-  items: any[]
-  selectedKey: string
+export interface IMenuItem {
+  key: string
+  label?: string
+  icon: string
+  onClick: () => void
 }
 
-export class Menu extends React.Component<IMenu> {
+// TODO: make it so that I don't cry when I look at this styling..
+export interface IProps {
+  items: IMenuItem[]
+  selectedKey: string
+  theme: ITheme // from withTheme
+}
+
+class Menu extends React.Component<IProps> {
   getNavStyles = (props: INavStyleProps): Partial<INavStyles> => {
     const { theme } = this.props
     const { isSelected } = props
@@ -66,7 +70,7 @@ export class Menu extends React.Component<IMenu> {
         groups={[
           {
             links: items.map(item => ({
-              name: item.label,
+              name: item.label || '',
               key: item.key,
               icon: item.icon,
               iconProps: {
@@ -86,4 +90,4 @@ export class Menu extends React.Component<IMenu> {
   }
 }
 
-export default Menu
+export default withTheme(Menu)

@@ -1,5 +1,5 @@
 import React from 'react'
-import styled from 'styled-components'
+import styled, { withTheme } from 'styled-components'
 
 import { Customizer } from 'office-ui-fabric-react/lib/Utilities'
 import { CommandBar, ICommandBarItemProps } from 'office-ui-fabric-react/lib/CommandBar'
@@ -8,18 +8,18 @@ import { MessageBarType } from 'office-ui-fabric-react/lib/MessageBar'
 
 import Clipboard from 'clipboard'
 import { convertSolutionToSnippet } from '../../utils'
-import YAML from 'yamljs'
+import YAML from 'js-yaml'
 
 import SolutionSettings from './SolutionSettings'
 import { ITheme as IFabricTheme } from 'office-ui-fabric-react/lib/Styling'
-import { NULL_SOLUTION_ID, SETTINGS_SOLUTION_ID } from '../../constants'
+import { NULL_SOLUTION_ID, SETTINGS_SOLUTION_ID, PATHS } from '../../constants'
 
 import { connect } from 'react-redux'
-import { solutions, github, gists, messageBar } from '../../store/actions'
+import actions from '../../store/actions'
 import selectors from '../../store/selectors'
 
 import { getHeaderFabricTheme } from '../../theme'
-import { goBack } from 'connected-react-router'
+import { push } from 'connected-react-router'
 
 const HeaderWrapper = styled.header`
   background-color: ${props => props.theme.primary};
@@ -30,23 +30,28 @@ interface IPropsFromRedux {
   profilePicUrl?: string
   isRunnableOnThisHost: boolean
   isSettingsView: boolean
+  isCustomFunctionsView: boolean
   isLoggedIn: boolean
   headerFabricTheme: IFabricTheme
+  solution: ISolution
 }
 
-const mapStateToProps = (state, ownProps: IHeader): IPropsFromRedux => ({
-  isSettingsView: ownProps.solution.id === SETTINGS_SOLUTION_ID,
+const mapStateToProps = (state): IPropsFromRedux => ({
+  isSettingsView: selectors.settings.getIsOpen(state),
+  isCustomFunctionsView: selectors.customFunctions.getIsCurrentSolutionCF(state),
   isLoggedIn: !!selectors.github.getToken(state),
   isRunnableOnThisHost: selectors.host.getIsRunnableOnThisHost(state),
   profilePicUrl: selectors.github.getProfilePicUrl(state),
   headerFabricTheme: getHeaderFabricTheme(selectors.host.get(state)),
+  solution: selectors.editor.getActiveSolution(state),
 })
 
 interface IActionsFromRedux {
   login: () => void
   logout: () => void
 
-  goBack: () => void
+  showBackstage: () => void
+  closeSettings: () => void
 
   editSolution: (
     solutionId: string,
@@ -57,47 +62,61 @@ interface IActionsFromRedux {
   createPublicGist: () => void
   createSecretGist: () => void
   updateGist: () => void
+
   notifyClipboardCopySuccess: () => void
   notifyClipboardCopyFailure: () => void
+
+  navigateToCustomFunctions: () => void
 }
 
-const mapDispatchToProps = (dispatch, ownProps: IHeader): IActionsFromRedux => ({
-  login: () => dispatch(github.login.request()),
-  logout: () => dispatch(github.logout()),
+const mapDispatchToProps = (dispatch, ownProps: IProps): IActionsFromRedux => ({
+  login: () => dispatch(actions.github.login.request()),
+  logout: () => dispatch(actions.github.logout()),
 
-  goBack: () => dispatch(goBack()),
+  showBackstage: () => dispatch(push(PATHS.BACKSTAGE)),
+  closeSettings: () => dispatch(actions.settings.close()),
 
   editSolution: (solutionId: string, solution: Partial<IEditableSolutionProperties>) =>
-    dispatch(solutions.edit({ id: solutionId, solution })),
-  deleteSolution: () => dispatch(solutions.remove(ownProps.solution)),
+    dispatch(actions.solutions.edit({ id: solutionId, solution })),
+  deleteSolution: () => dispatch(actions.solutions.remove(ownProps.solution)),
 
   createPublicGist: () =>
-    dispatch(gists.create.request({ solutionId: ownProps.solution.id, isPublic: true })),
+    dispatch(
+      actions.gists.create.request({ solutionId: ownProps.solution.id, isPublic: true }),
+    ),
   createSecretGist: () =>
-    dispatch(gists.create.request({ solutionId: ownProps.solution.id, isPublic: false })),
-  updateGist: () => dispatch(gists.update.request({ solutionId: ownProps.solution.id })),
+    dispatch(
+      actions.gists.create.request({ solutionId: ownProps.solution.id, isPublic: false }),
+    ),
+  updateGist: () =>
+    dispatch(actions.gists.update.request({ solutionId: ownProps.solution.id })),
+
   notifyClipboardCopySuccess: () =>
-    dispatch(messageBar.show('Snippet copied to clipboard.')),
+    dispatch(actions.messageBar.show('Snippet copied to clipboard.')),
   notifyClipboardCopyFailure: () =>
     dispatch(
-      messageBar.show('Snippet failed to copy to clipboard.', MessageBarType.error),
+      actions.messageBar.show(
+        'Snippet failed to copy to clipboard.',
+        MessageBarType.error,
+      ),
     ),
+
+  navigateToCustomFunctions: () => dispatch(actions.customFunctions.openDashboard()),
 })
 
-export interface IHeader extends IPropsFromRedux, IActionsFromRedux {
-  solution: ISolution
-  showBackstage: () => void
+export interface IProps extends IPropsFromRedux, IActionsFromRedux {
+  theme: ITheme // from withTheme
 }
 
 interface IState {
   showSolutionSettings: boolean
 }
 
-export class Header extends React.Component<IHeader, IState> {
+class HeaderWithoutTheme extends React.Component<IProps, IState> {
   state = { showSolutionSettings: false }
   clipboard
 
-  constructor(props: IHeader) {
+  constructor(props: IProps) {
     super(props)
     this.clipboard = new Clipboard('.export-to-clipboard', { text: this.getSnippetYaml })
     this.clipboard.on('success', props.notifyClipboardCopySuccess)
@@ -114,16 +133,18 @@ export class Header extends React.Component<IHeader, IState> {
       editSolution,
       deleteSolution,
       isSettingsView,
+      isCustomFunctionsView,
       profilePicUrl,
       isRunnableOnThisHost,
       isLoggedIn,
       headerFabricTheme,
       logout,
       login,
-      goBack,
+      closeSettings,
       updateGist,
       createPublicGist,
       createSecretGist,
+      navigateToCustomFunctions,
     } = this.props
     const isNullSolution = solution.id === NULL_SOLUTION_ID
     const solutionName = solution ? solution.name : 'Solution Name'
@@ -167,11 +188,18 @@ export class Header extends React.Component<IHeader, IState> {
 
     const nonSettingsButtons: ICommandBarItemProps[] = [
       {
-        hidden: !isRunnableOnThisHost || isNullSolution,
+        hidden: !isRunnableOnThisHost || isNullSolution || isCustomFunctionsView,
         key: 'run',
         text: 'Run',
         iconProps: { iconName: 'Play' },
         href: '/run.html',
+      },
+      {
+        hidden: !isRunnableOnThisHost || !isCustomFunctionsView,
+        key: 'register-cf',
+        text: 'Register',
+        iconProps: { iconName: 'Play' },
+        onClick: navigateToCustomFunctions,
       },
       {
         hidden: isNullSolution,
@@ -216,7 +244,7 @@ export class Header extends React.Component<IHeader, IState> {
       key: 'back',
       iconOnly: true,
       iconProps: { iconName: 'Back' },
-      onClick: goBack,
+      onClick: closeSettings,
     }
 
     const commonItems = [back, nav, name].filter(({ hidden }) => !hidden).map(option => {
@@ -236,11 +264,9 @@ export class Header extends React.Component<IHeader, IState> {
           <PersonaCoin
             imageUrl={profilePicUrl}
             size={PersonaSize.size28}
+            initialsColor="white"
             styles={{
-              coin: { backgroundColor: 'brick' },
-              image: { backgroundColor: 'white' },
               initials: {
-                backgroundColor: '#000',
                 color: 'green',
               },
             }}
@@ -291,6 +317,8 @@ export class Header extends React.Component<IHeader, IState> {
   private openSolutionSettings = () => this.setState({ showSolutionSettings: true })
   private closeSolutionSettings = () => this.setState({ showSolutionSettings: false })
 }
+
+export const Header = withTheme(HeaderWithoutTheme)
 
 export default connect(
   mapStateToProps,

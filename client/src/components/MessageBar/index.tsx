@@ -24,9 +24,9 @@ const mapDispatchToProps = dispatch => ({
   dismiss: () => dispatch(messageBar.dismiss()),
 })
 
-interface IMessageBar extends IPropsFromRedux, IActionsFromRedux {}
+export interface IProps extends IPropsFromRedux, IActionsFromRedux {}
 
-const MessageBar = ({ messageBarProps, dismiss }: IMessageBar) => (
+export const MessageBar = ({ messageBarProps, dismiss }: IProps) => (
   <div className={`message-bar ${messageBarProps.isVisible ? 'active' : ''}`}>
     <FabricMessageBar
       dismissButtonAriaLabel="Close"

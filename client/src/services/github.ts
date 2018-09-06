@@ -1,9 +1,7 @@
 import { Authenticator, IToken } from '@microsoft/office-js-helpers'
+import { request as generalRequest, IResponseOrError } from './general'
 
-interface IResponseOrError {
-  response?: any
-  error?: Error
-}
+const baseApiUrl = 'https://api.github.com'
 
 interface IRequest {
   method: string
@@ -12,31 +10,13 @@ interface IRequest {
   jsonPayload?: string
 }
 
-const baseApiUrl = 'https://api.github.com'
-
-const addIf = (condition, payload) => (condition ? payload : {})
-
 export const request = ({
   method,
   path,
   token,
   jsonPayload,
-}: IRequest): Promise<IResponseOrError> => {
-  const headers = {
-    ...addIf(token, { Authorization: `Bearer ${token}` }),
-    ...addIf(method !== 'GET', {
-      'Content-Type': 'application/json; charset=utf-8',
-    }),
-  }
-  return fetch(`${baseApiUrl}/${path}`, {
-    method,
-    headers,
-    body: jsonPayload,
-  })
-    .then(response => response.json())
-    .then(response => ({ response }))
-    .catch(error => ({ error }))
-}
+}: IRequest): Promise<IResponseOrError> =>
+  generalRequest({ url: `${baseApiUrl}/${path}`, method, token, jsonPayload })
 
 export const login = async (): Promise<{ token?: string; profilePicUrl?: string }> => {
   const auth = new Authenticator()

@@ -1,8 +1,16 @@
 import React from 'react'
 import styled, { keyframes } from 'styled-components'
-import { execFile } from 'child_process'
 
-export const LoadingBar = styled.div``
+export const CenteringContainer = styled.div`
+  height: 100%;
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+
+export const BallContainer = styled.div``
 
 const MovingBalls = keyframes`
   0%, 80%, 100% {

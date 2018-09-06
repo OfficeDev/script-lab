@@ -1,14 +1,15 @@
 import React, { Component } from 'react'
+import { withTheme } from 'styled-components'
 import ReactDOM from 'react-dom'
 import { GalleryListWrapper, TitleBar, Title, ArrowWrapper } from './styles'
 
 import GalleryListItem, { IGalleryListItem } from './GalleryListItem'
 import FabricIcon from '../../FabricIcon'
 
-export interface IGalleryList {
+export interface IProps {
   title: string
-  items: any
-  theme: ITheme
+  items: IGalleryListItem[]
+  theme: ITheme // from withTheme
 }
 
 interface IState {
@@ -16,7 +17,7 @@ interface IState {
   focusedItemIndex: number | null
 }
 
-export default class GalleryList extends Component<IGalleryList, IState> {
+class GalleryList extends Component<IProps, IState> {
   state = { isExpanded: true, focusedItemIndex: null }
 
   constructor(props) {
@@ -40,7 +41,10 @@ export default class GalleryList extends Component<IGalleryList, IState> {
       this.setState({ focusedItemIndex: null })
     } else if (e.keyCode === 32) {
       if (index !== null) {
-        this.props.items[index].onClick()
+        const {onClick} = this.props.items[index]
+        if (onClick) {
+          onClick()
+        }
       }
     }
     this.forceUpdate()
@@ -83,3 +87,5 @@ export default class GalleryList extends Component<IGalleryList, IState> {
     )
   }
 }
+
+export default withTheme(GalleryList)
