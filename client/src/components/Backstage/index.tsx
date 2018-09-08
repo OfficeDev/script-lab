@@ -65,9 +65,7 @@ const mapDispatchToProps = (dispatch): IActionsFromRedux => ({
   goBack: () => dispatch(goBack()),
 })
 
-export interface IBackstage extends IPropsFromRedux, IActionsFromRedux {
-  theme: ITheme // from withTheme
-}
+export interface IBackstage extends IPropsFromRedux, IActionsFromRedux {}
 
 interface IState {
   selectedKey: string
@@ -116,6 +114,7 @@ class Backstage extends Component<IBackstage, IState> {
     this.setState({ conflictingGist: null, existingSolutionsConflicting: null })
 
   render() {
+    console.log(JSON.stringify(this.props.samplesByGroup))
     const items = [
       {
         key: 'back',
@@ -136,7 +135,6 @@ class Backstage extends Component<IBackstage, IState> {
         iconName: 'DocumentSet',
         content: (
           <MySolutions
-            theme={this.props.theme}
             solutions={this.props.solutions}
             openSolution={this.openSolution}
             activeSolution={this.props.activeSolution}
@@ -151,7 +149,6 @@ class Backstage extends Component<IBackstage, IState> {
         iconName: 'Dictionary',
         content: (
           <Samples
-            theme={this.props.theme}
             openSample={this.openSample}
             samplesByGroup={this.props.samplesByGroup}
           />
@@ -198,4 +195,4 @@ class Backstage extends Component<IBackstage, IState> {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(withTheme(Backstage))
+)(Backstage)

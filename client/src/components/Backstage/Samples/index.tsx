@@ -135,12 +135,11 @@ import React from 'react'
 import Content from '../Content'
 import GalleryList from '../GalleryList'
 
-export default ({ samplesByGroup, openSample, theme }) => (
+export default ({ samplesByGroup, openSample }) => (
   <Content title="Samples" description="Choose one of the samples below to get started.">
     {Object.keys(samplesByGroup).length > 0 ? (
       Object.keys(samplesByGroup).map(group => (
         <GalleryList
-          theme={theme}
           key={group}
           title={group}
           items={samplesByGroup[group].map(({ id, name, description, rawUrl }) => ({

@@ -10,12 +10,12 @@ interface IProps {
   activeSolution?: ISolution
   gistMetadata: ISharedGistMetadata[]
   openGist: (gistMetadata: ISharedGistMetadata) => void
-  theme: ITheme
 }
 
 interface IState {
   filterQuery: string
 }
+
 class MySolutions extends React.Component<IProps> {
   state = { filterQuery: '' }
 
@@ -26,24 +26,12 @@ class MySolutions extends React.Component<IProps> {
   setFilterQuery = filterQuery => this.setState({ filterQuery })
 
   render() {
-    const {
-      solutions,
-      openSolution,
-      activeSolution,
-      gistMetadata,
-      openGist,
-      theme,
-    } = this.props
+    const { solutions, openSolution, activeSolution, gistMetadata, openGist } = this.props
 
     return (
       <Content title="My Snippets" description="Choose a snippet that you have saved">
-        <SearchBox
-          placeholder="Search your snippets"
-          // onSearch={newValue => console.log('value is ' + newValue)}
-          onChange={this.setFilterQuery}
-        />
+        <SearchBox placeholder="Search your snippets" onChange={this.setFilterQuery} />
         <GalleryList
-          theme={theme}
           title="My snippets on this computer"
           items={solutions
             .filter(solution => {
@@ -71,7 +59,6 @@ class MySolutions extends React.Component<IProps> {
         />
         {gistMetadata.length > 0 && (
           <GalleryList
-            theme={theme}
             title="My shared gists on GitHub"
             items={gistMetadata.map(gist => ({
               key: gist.id,
