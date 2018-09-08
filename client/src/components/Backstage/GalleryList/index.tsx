@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { withTheme } from 'styled-components'
-import ReactDOM from 'react-dom'
 import { GalleryListWrapper, TitleBar, Title, ArrowWrapper } from './styles'
 import { FocusZone } from 'office-ui-fabric-react/lib/FocusZone'
 

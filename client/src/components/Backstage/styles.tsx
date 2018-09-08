@@ -30,5 +30,5 @@ export const ContentTitle = styled.h1.attrs({ className: 'ms-font-xxl' })`
 
 export const ContentDescription = styled.h2.attrs({ className: 'ms-font-l' })`
   margin-top: 1.5rem;
-  margin-bottom: 3rem;
+  margin-bottom: 1.5rem;
 `

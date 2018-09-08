@@ -11,6 +11,9 @@ export const Wrapper = styled.article.attrs({ className: 'ms-font-m' })`
     color: ${props => props.theme.white};
     cursor: pointer;
   }
+  &:focus {
+    outline-color: ${props => props.theme.primary};
+  }
 `
 
 export const ActiveWrapper = Wrapper.extend`
@@ -18,7 +21,6 @@ export const ActiveWrapper = Wrapper.extend`
   color: ${props => props.theme.white};
 `
 
-// TODO: refactor css into theme
 export const Title = styled.div``
 
 export const Description = styled.div`
