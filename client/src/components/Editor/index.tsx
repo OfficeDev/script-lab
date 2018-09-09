@@ -37,7 +37,7 @@ interface IPropsFromRedux {
   editorSettings: IEditorSettings
 }
 
-const mapStateToProps = (state, ownProps: IEditor): IPropsFromRedux => ({
+const mapStateToProps = (state, ownProps: IProps): IPropsFromRedux => ({
   settingsFile: selectors.solutions.getFile(state, SETTINGS_FILE_ID),
   isSettingsView: ownProps.activeSolution.id === SETTINGS_SOLUTION_ID,
 
@@ -62,7 +62,7 @@ interface IActionsFromRedux {
   openSettings: () => void
 }
 
-const mapDispatchToProps = (dispatch, ownProps: IEditor): IActionsFromRedux => ({
+const mapDispatchToProps = (dispatch, ownProps: IProps): IActionsFromRedux => ({
   changeActiveFile: (fileId: string) =>
     dispatch(editor.open({ solutionId: ownProps.activeSolution.id, fileId })),
   editFile: (
@@ -73,10 +73,11 @@ const mapDispatchToProps = (dispatch, ownProps: IEditor): IActionsFromRedux => (
   openSettings: () => dispatch(settings.open()),
 })
 
-export interface IEditor extends IPropsFromRedux, IActionsFromRedux {
+export interface IProps extends IPropsFromRedux, IActionsFromRedux {
   activeSolution: ISolution
   activeFiles: IFile[]
   activeFile: IFile
+  isVisible: boolean
 
   theme: ITheme // from withTheme
 }
@@ -85,7 +86,7 @@ interface IState {
   isSaveSettingsDialogVisible: boolean
 }
 
-class Editor extends Component<IEditor, IState> {
+class Editor extends Component<IProps, IState> {
   editor: monaco.editor.IStandaloneCodeEditor
   monaco: any
   state = { isSaveSettingsDialogVisible: false }
@@ -98,6 +99,10 @@ class Editor extends Component<IEditor, IState> {
   componentDidUpdate(prevProps) {
     if (prevProps.activeFile.id !== this.props.activeFile.id) {
       this.changeActiveFile(prevProps.activeFile, this.props.activeFile)
+    }
+
+    if (!prevProps.isVisible && this.props.isVisible) {
+      this.resizeEditor()
     }
   }
 
@@ -163,7 +168,6 @@ class Editor extends Component<IEditor, IState> {
     this.changeActiveFile(null, this.props.activeFile)
 
     window.addEventListener('resize', debounce(this.resizeEditor, 100))
-    this.resizeInterval = setInterval(this.resizeEditor, 3000) // TODO: when /#/backstage is the first page loaded, the editor is only 5px tall, this is a stopgap fix
   }
 
   getMonacoOptions = (): monaco.editor.IEditorConstructionOptions => {

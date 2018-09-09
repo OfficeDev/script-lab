@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { withTheme } from 'styled-components'
 
 import Header from '../Header'
 import PivotBar from '../PivotBar'
@@ -8,8 +7,7 @@ import Editor from '../Editor'
 import Footer from '../Footer'
 
 import { Layout, ContentWrapper } from './styles'
-import { NULL_SOLUTION, NULL_FILE, NULL_FILE_ID, NULL_SOLUTION_ID } from '../../constants'
-import Only from '../Only'
+import { NULL_SOLUTION, NULL_FILE } from '../../constants'
 
 import { connect } from 'react-redux'
 import { IState as IReduxState } from '../../store/reducer'
@@ -74,6 +72,7 @@ class IDE extends Component<IIDE> {
             activeSolution={activeSolution}
             activeFiles={activeSolution.files}
             activeFile={activeFile}
+            isVisible={isVisible}
           />
         </ContentWrapper>
         <Footer />
