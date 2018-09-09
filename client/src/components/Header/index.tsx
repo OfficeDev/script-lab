@@ -33,7 +33,6 @@ interface IPropsFromRedux {
   isCustomFunctionsView: boolean
   isLoggedIn: boolean
   headerFabricTheme: IFabricTheme
-  solution: ISolution
 }
 
 const mapStateToProps = (state): IPropsFromRedux => ({
@@ -43,7 +42,6 @@ const mapStateToProps = (state): IPropsFromRedux => ({
   isRunnableOnThisHost: selectors.host.getIsRunnableOnThisHost(state),
   profilePicUrl: selectors.github.getProfilePicUrl(state),
   headerFabricTheme: getHeaderFabricTheme(selectors.host.get(state)),
-  solution: selectors.editor.getActiveSolution(state),
 })
 
 interface IActionsFromRedux {
@@ -105,6 +103,7 @@ const mapDispatchToProps = (dispatch, ownProps: IProps): IActionsFromRedux => ({
 })
 
 export interface IProps extends IPropsFromRedux, IActionsFromRedux {
+  solution: ISolution
   theme: ITheme // from withTheme
 }
 

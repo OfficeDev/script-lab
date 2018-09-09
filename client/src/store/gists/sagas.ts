@@ -28,11 +28,16 @@ export function* fetchAllGistMetadataSaga() {
     const gistsMetadata = response.map(gist => {
       const { files, id, description, updated_at, created_at } = gist
       const file = files[Object.keys(files)[0]]
-      const title = file.filename.split('.')[0]
+      const splitFileName = file.filename.split('.')
+      const title = splitFileName[0]
+
+      const host = splitFileName.length > 2 ? splitFileName[1] : undefined // TODO: how 2 handle legacy case
+
       const url = file.raw_url
 
       return {
         url,
+        host,
         id,
         description,
         title,
@@ -40,6 +45,7 @@ export function* fetchAllGistMetadataSaga() {
         dateLastModified: updated_at,
       }
     })
+
     yield put(gists.fetchMetadata.success(gistsMetadata))
   } else {
     yield put(gists.fetchMetadata.failure(error))
@@ -109,9 +115,10 @@ function* createGistSaga(action: ActionType<typeof gists.create.request>) {
     token,
     jsonPayload: JSON.stringify({
       public: action.payload.isPublic,
+      host: snippet.host,
       description: `${solution.description}`,
       files: {
-        [`${solution.name}.yaml`]: {
+        [`${solution.name}.${solution.host}.yaml`]: {
           content: snippet,
         },
       },
@@ -211,6 +218,7 @@ export default function* gistsWatcher() {
 
   yield takeEvery(getType(gists.create.request), createGistSaga)
   yield takeEvery(getType(gists.create.success), handleCreateGistSuccessSaga)
+  yield takeEvery(getType(gists.create.success), fetchAllGistMetadataSaga)
 
   yield takeEvery(getType(gists.update.request), updateGistSaga)
 

@@ -114,7 +114,6 @@ class Backstage extends Component<IBackstage, IState> {
     this.setState({ conflictingGist: null, existingSolutionsConflicting: null })
 
   render() {
-    console.log(JSON.stringify(this.props.samplesByGroup))
     const items = [
       {
         key: 'back',
