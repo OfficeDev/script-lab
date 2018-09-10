@@ -3,8 +3,9 @@ import React from 'react'
 import MySolutions from './'
 
 import { storiesOf } from '@storybook/react'
+import { action } from '@storybook/addon-actions'
 
-const exampleSolutions = [
+export const exampleSolutions = [
   {
     id: 'ec3bc646-e174-4635-8ced-e9da85155073',
     name: 'Blank snippet',
@@ -466,7 +467,7 @@ const exampleSolutions = [
   },
 ]
 
-const exampleGistMetadata = [
+export const exampleGistMetadata = [
   {
     url:
       'https://gist.githubusercontent.com/nico-bellante/d3402717c21255f44385054831834d74/raw/cd6c2ff178e76e4aa3ff9e74dae1b88417d433c5/Insert,%20delete,%20clear%20range.EXCEL.yaml',
@@ -476,6 +477,7 @@ const exampleGistMetadata = [
     title: 'Insert, delete, clear range',
     dateCreated: '2018-09-09T07:26:51Z',
     dateLastModified: '2018-09-09T07:26:51Z',
+    isPublic: true,
   },
   {
     url:
@@ -486,6 +488,7 @@ const exampleGistMetadata = [
     title: 'Conditional Formatting for Ranges - Basic',
     dateCreated: '2018-09-09T07:24:56Z',
     dateLastModified: '2018-09-09T07:24:56Z',
+    isPublic: true,
   },
   {
     url:
@@ -497,6 +500,7 @@ const exampleGistMetadata = [
     title: 'Report generation',
     dateCreated: '2018-09-09T07:24:44Z',
     dateLastModified: '2018-09-09T07:24:45Z',
+    isPublic: true,
   },
   {
     url:
@@ -507,6 +511,7 @@ const exampleGistMetadata = [
     title: 'Blank snippet (1)',
     dateCreated: '2018-09-09T07:22:17Z',
     dateLastModified: '2018-09-09T07:22:18Z',
+    isPublic: true,
   },
 ]
 
@@ -515,9 +520,9 @@ export const BasicMySolutions = () => (
   <MySolutions
     solutions={exampleSolutions}
     gistMetadata={exampleGistMetadata}
-    openSolution={voidFunc}
-    openGist={voidFunc}
+    openSolution={action('open-solution')}
+    openGist={action('open-gist')}
   />
 )
 
-storiesOf('Backstage/Samples', module).add('basic', () => <BasicMySolutions />)
+storiesOf('Backstage/MySolutions', module).add('basic', () => <BasicMySolutions />)

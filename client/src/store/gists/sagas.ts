@@ -26,7 +26,7 @@ export function* fetchAllGistMetadataSaga() {
 
   if (response) {
     const gistsMetadata = response.map(gist => {
-      const { files, id, description, updated_at, created_at } = gist
+      const { files, id, description } = gist
       const file = files[Object.keys(files)[0]]
       const splitFileName = file.filename.split('.')
       const title = splitFileName[0]
@@ -41,8 +41,7 @@ export function* fetchAllGistMetadataSaga() {
         id,
         description,
         title,
-        dateCreated: created_at,
-        dateLastModified: updated_at,
+        isPublic: gist.public,
       }
     })
 

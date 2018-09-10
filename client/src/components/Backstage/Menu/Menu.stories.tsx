@@ -1,42 +1,42 @@
 import React from 'react'
 
-import Menu, { IProps as IMenu, IMenuItem } from './'
+import Menu, { IMenuItem } from './'
 
 import { storiesOf } from '@storybook/react'
-const voidFunc = () => {}
+import { action } from '@storybook/addon-actions'
 
 const menuItems: IMenuItem[] = [
   {
     key: 'back',
     icon: 'GlobalNavButton',
-    onClick: voidFunc,
+    onClick: action('back-clicked'),
   },
   {
     key: 'new',
     label: 'New Snippet',
     icon: 'Add',
-    onClick: voidFunc,
+    onClick: action('new-clicked'),
   },
   {
     key: 'my-solutions',
     label: 'My Snippets',
     icon: 'DocumentSet',
-    onClick: voidFunc,
+    onClick: action('my-solutions-clicked'),
   },
   {
     key: 'samples',
     label: 'Samples',
     icon: 'Dictionary',
-    onClick: voidFunc,
+    onClick: action('samples-clicked'),
   },
   {
     key: 'import',
     label: 'Import',
     icon: 'Download',
-    onClick: voidFunc,
+    onClick: action('import-clicked'),
   },
 ]
 
-const stories = storiesOf('Backstage/Menu', module)
-
-stories.add('basic', () => <Menu items={menuItems} selectedKey={menuItems[2].key} />)
+storiesOf('Backstage/Menu', module).add('basic', () => (
+  <Menu items={menuItems} selectedKey={menuItems[2].key} />
+))

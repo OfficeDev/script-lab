@@ -77,7 +77,7 @@ interface IState {
   existingSolutionsConflicting: ISolution[] | null
 }
 
-class Backstage extends Component<IProps, IState> {
+export class Backstage extends Component<IProps, IState> {
   state = {
     isLoading: false,
     selectedKey: 'my-solutions',

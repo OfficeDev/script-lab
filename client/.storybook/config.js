@@ -1,4 +1,6 @@
 import { configure, addDecorator } from '@storybook/react'
+import { configureActions } from '@storybook/addon-actions'
+
 import { withKnobs } from '@storybook/addon-knobs'
 import { ThemeProvider } from 'styled-components'
 import React from 'react'
@@ -6,6 +8,11 @@ import React from 'react'
 import '../src/index.css'
 import { getTheme, setupFabricTheme } from '../src/theme'
 import { initializeIcons } from 'office-ui-fabric-react/lib/Icons'
+
+configureActions({
+  depth: 100,
+  limit: 20,
+})
 
 setupFabricTheme('EXCEL')
 initializeIcons()
