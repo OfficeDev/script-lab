@@ -1,16 +1,15 @@
 import React, { Component } from 'react'
-import { withTheme } from 'styled-components'
 import { GalleryListWrapper, TitleBar, Title, ArrowWrapper } from './styles'
+
 import { FocusZone } from 'office-ui-fabric-react/lib/FocusZone'
+import { Icon } from 'office-ui-fabric-react/lib/Icon'
 
 import GalleryListItem, { IGalleryListItem } from './GalleryListItem'
-import FabricIcon from '../../FabricIcon'
 import Only from '../../Only'
 
 export interface IProps {
   title: string
   items: IGalleryListItem[]
-  theme: ITheme // from withTheme
 }
 
 interface IState {
@@ -27,15 +26,15 @@ class GalleryList extends Component<IProps, IState> {
   toggleExpansion = () => this.setState({ isExpanded: !this.state.isExpanded })
 
   render() {
-    const { title, items, theme } = this.props
+    const { title, items } = this.props
     const { isExpanded } = this.state
     return (
       <GalleryListWrapper>
         <FocusZone>
           <TitleBar>
             <Title>{title}</Title>
-            <ArrowWrapper onClick={this.toggleExpansion} data-is-focusable="true">
-              <FabricIcon name={isExpanded ? 'ChevronUp' : 'ChevronDown'} />
+            <ArrowWrapper onClick={this.toggleExpansion} data-is-focusable={true}>
+              <Icon iconName={isExpanded ? 'ChevronUp' : 'ChevronDown'} />
             </ArrowWrapper>
           </TitleBar>
           <Only when={isExpanded}>
@@ -49,4 +48,4 @@ class GalleryList extends Component<IProps, IState> {
   }
 }
 
-export default withTheme(GalleryList)
+export default GalleryList
