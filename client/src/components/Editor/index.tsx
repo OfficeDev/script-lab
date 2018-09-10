@@ -140,7 +140,6 @@ class Editor extends Component<IProps, IState> {
         }
       })
     }
-    setTimeout(this.resizeEditor, 50)
   }
 
   setupEditor = (editor: monaco.editor.IStandaloneCodeEditor, monaco: any) => {
