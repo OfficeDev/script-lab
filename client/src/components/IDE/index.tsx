@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 
-import Header from '../Header'
+import Header from './Header'
 import PivotBar from '../PivotBar'
-import MessageBar from '../MessageBar'
-import Editor from '../Editor'
-import Footer from '../Footer'
+import MessageBar from './MessageBar'
+import Editor from './Editor'
+import Footer from './Footer'
 
 import { Layout, ContentWrapper } from './styles'
 import { NULL_SOLUTION, NULL_FILE } from '../../constants'

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import librariesIntellisenseJSON from './libraryIntellisense'
-import SettingsSchema from '../../../SettingsJSONSchema'
-import { SETTINGS_FILE_ID } from '../../../constants'
+import SettingsSchema from '../../../../SettingsJSONSchema'
+import { SETTINGS_FILE_ID } from '../../../../constants'
 import isEqual from 'lodash/isEqual'
 interface IDisposableFile {
   url: string

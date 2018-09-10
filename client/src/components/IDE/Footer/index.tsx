@@ -9,12 +9,12 @@ import { DefaultButton, IconButton } from 'office-ui-fabric-react/lib/Button'
 
 import { HostType } from '@microsoft/office-js-helpers'
 
-import Only from '../Only'
+import Only from '../../Only'
 import { Wrapper } from './styles'
 
 import { connect } from 'react-redux'
-import selectors from '../../store/selectors'
-import actions from '../../store/actions'
+import selectors from '../../../store/selectors'
+import actions from '../../../store/actions'
 
 const languageMap = {
   typescript: 'TypeScript',

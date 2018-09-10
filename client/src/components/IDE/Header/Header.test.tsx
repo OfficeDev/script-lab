@@ -1,7 +1,7 @@
 import React from 'react'
 import { mount } from 'enzyme'
 
-import { Header, IProps } from '..'
+import { Header, IProps } from '.'
 import { getBoilerplate } from '../../../newSolutionData'
 import { ITheme as IFabricTheme } from '@uifabric/styling'
 import { getHeaderFabricTheme } from '../../../theme'

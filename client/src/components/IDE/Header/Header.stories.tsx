@@ -2,8 +2,8 @@ import React from 'react'
 import { storiesOf } from '@storybook/react'
 
 import { Header } from './'
-import { getHeaderFabricTheme } from '../../theme'
-import { getBoilerplate, getBoilerplateSolution } from '../../newSolutionData'
+import { getHeaderFabricTheme } from '../../../theme'
+import { getBoilerplate, getBoilerplateSolution } from '../../../newSolutionData'
 
 const voidFunc = () => {}
 

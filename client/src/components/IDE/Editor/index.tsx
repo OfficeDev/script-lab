@@ -8,18 +8,22 @@ import { MessageBar, MessageBarType } from 'office-ui-fabric-react/lib/MessageBa
 import { Dialog, DialogType, DialogFooter } from 'office-ui-fabric-react/lib/Dialog'
 import { PrimaryButton, DefaultButton } from 'office-ui-fabric-react/lib/Button'
 
-import { SETTINGS_FILE_ID, SETTINGS_SOLUTION_ID, NULL_SOLUTION_ID } from '../../constants'
+import {
+  SETTINGS_FILE_ID,
+  SETTINGS_SOLUTION_ID,
+  NULL_SOLUTION_ID,
+} from '../../../constants'
 
 import Monaco from './Monaco'
-import Only from '../Only'
+import Only from '../../Only'
 import { Layout } from './styles'
 
 import { getModel, setPosForModel, getModelByIdIfExists } from './Monaco/monaco-models'
 
 import { connect } from 'react-redux'
 import { withTheme } from 'styled-components'
-import { solutions, editor, settings } from '../../store/actions'
-import selectors from '../../store/selectors'
+import { solutions, editor, settings } from '../../../store/actions'
+import selectors from '../../../store/selectors'
 
 interface IEditorSettings {
   monacoTheme: string
