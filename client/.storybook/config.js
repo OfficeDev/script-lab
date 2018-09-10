@@ -1,14 +1,14 @@
 import { configure, addDecorator } from '@storybook/react'
 import { configureActions } from '@storybook/addon-actions'
 import { checkA11y } from '@storybook/addon-a11y'
-
 import { withKnobs } from '@storybook/addon-knobs'
+
 import { ThemeProvider } from 'styled-components'
 import React from 'react'
 
 import '../src/index.css'
 import { getTheme, setupFabricTheme } from '../src/theme'
-import { initializeIcons } from 'office-ui-fabric-react/lib/Icons'
+import { initializeIcons } from 'office-ui-fabric-react/lib-commonjs/Icons'
 
 configureActions({
   depth: 100,
@@ -32,6 +32,8 @@ function loadStories() {
   req.keys().forEach(filename => req(filename))
 }
 
-document.getElementsByTagName('body')[0].classList.add('ms-Fabric')
+if (global.document !== undefined) {
+  global.document.getElementsByTagName('body')[0].classList.add('ms-Fabric')
+}
 
 configure(loadStories, module)
