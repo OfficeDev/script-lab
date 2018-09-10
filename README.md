@@ -42,3 +42,24 @@ From the root directory of the repo:
 From the root directory of the repo:
 
 ```yarn start```
+
+## Client Only
+
+### Step 0 -- Get latest code
+Sync repo.
+
+### Step 1 -- Go to client folder
+
+```cd client```
+
+### Step 2 -- Install Dependencies
+
+```yarn install```
+
+### Step 3 -- Copy Monaco
+
+```yarn copy-monaco```
+
+### Step 4 -- Start
+
+```yarn start```
