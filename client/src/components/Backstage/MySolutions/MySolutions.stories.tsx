@@ -4,6 +4,7 @@ import MySolutions from './'
 
 import { storiesOf } from '@storybook/react'
 import { action } from '@storybook/addon-actions'
+import { object } from '@storybook/addon-knobs'
 
 export const exampleSolutions = [
   {
@@ -515,11 +516,13 @@ export const exampleGistMetadata = [
   },
 ]
 
-const voidFunc = () => {}
+const solutionsKnob = object('solutions', exampleSolutions)
+const gistKnob = object('gist-metadata', exampleGistMetadata)
+
 export const BasicMySolutions = () => (
   <MySolutions
-    solutions={exampleSolutions}
-    gistMetadata={exampleGistMetadata}
+    solutions={solutionsKnob}
+    gistMetadata={gistKnob}
     openSolution={action('open-solution')}
     openGist={action('open-gist')}
   />

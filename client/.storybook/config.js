@@ -1,5 +1,6 @@
 import { configure, addDecorator } from '@storybook/react'
 import { configureActions } from '@storybook/addon-actions'
+import { checkA11y } from '@storybook/addon-a11y'
 
 import { withKnobs } from '@storybook/addon-knobs'
 import { ThemeProvider } from 'styled-components'
@@ -23,6 +24,7 @@ const scThemeProvider = storyFn => (
 
 addDecorator(scThemeProvider)
 addDecorator(withKnobs)
+addDecorator(checkA11y)
 
 // automatically import all files ending in *.stories.js
 const req = require.context('../src', true, /.stories.tsx$/)

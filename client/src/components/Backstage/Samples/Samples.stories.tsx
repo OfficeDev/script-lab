@@ -4,6 +4,7 @@ import Samples from './'
 
 import { storiesOf } from '@storybook/react'
 import { action } from '@storybook/addon-actions'
+import { object } from '@storybook/addon-knobs'
 
 export const exampleSamples = {
   Basics: [
@@ -1230,8 +1231,10 @@ export const exampleSamples = {
   ],
 }
 
+const samplesKnob = object('samples', exampleSamples)
+
 export const BasicSamples = () => (
-  <Samples samplesByGroup={exampleSamples} openSample={action('open-sample')} />
+  <Samples samplesByGroup={samplesKnob} openSample={action('open-sample')} />
 )
 
 storiesOf('Backstage/Samples', module).add('basic', () => <BasicSamples />)
