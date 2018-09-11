@@ -1,26 +1,14 @@
 {
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "baseUrl": ".",
+    "rootDir": "./",
     "outDir": "build/dist",
-    "module": "esnext",
-    "target": "es5",
-    "lib": ["es6", "dom", "es2017"],
-    "sourceMap": true,
-    "allowJs": true,
-    "jsx": "react",
-    "moduleResolution": "node",
-    "rootDir": "src",
-    "forceConsistentCasingInFileNames": true,
-    "noImplicitReturns": true,
-    "noImplicitThis": true,
-    "noImplicitAny": false,
-    "strictNullChecks": true,
-    "suppressImplicitAnyIndexErrors": true,
-    "noUnusedLocals": false,
-    "allowSyntheticDefaultImports": true,
-    "typeRoots": ["node_modules/@types", "src/interfaces"],
-    "downlevelIteration": true
+    "typeRoots": ["./src/interfaces", "node_modules/@types"]
+
   },
+  "include": [
+    "../interfaces/*"
+  ],
   "exclude": [
     "node_modules",
     "build",
@@ -32,4 +20,5 @@
     "public",
     "**/*.stories.tsx"
   ]
+
 }
