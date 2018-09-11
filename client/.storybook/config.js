@@ -9,7 +9,11 @@ import React from 'react'
 import '../src/index.css'
 import { getTheme, setupFabricTheme } from '../src/theme'
 import { initializeIcons } from 'office-ui-fabric-react/lib-commonjs/Icons'
-
+import { setOptions } from '@storybook/addon-options'
+setOptions({
+  hierarchySeparator: /\//,
+  hierarchyRootSeparator: /\|/,
+})
 configureActions({
   depth: 100,
   limit: 20,

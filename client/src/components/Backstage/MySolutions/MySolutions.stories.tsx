@@ -528,4 +528,4 @@ export const BasicMySolutions = () => (
   />
 )
 
-storiesOf('Backstage/MySolutions', module).add('basic', () => <BasicMySolutions />)
+storiesOf('Backstage|MySolutions', module).add('basic', () => <BasicMySolutions />)

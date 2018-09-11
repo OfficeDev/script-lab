@@ -12,7 +12,7 @@ enum Status {
   Untrusted = 'untrusted',
 }
 
-const stories = storiesOf('CustomFunctions/Summary/Items', module)
+const stories = storiesOf('Custom Functions|Summary/Items', module)
 
 stories.add('basic', () => (
   <div>

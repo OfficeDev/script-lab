@@ -14,7 +14,7 @@ enum Status {
   Untrusted = 'untrusted',
 }
 
-const stories = storiesOf('CustomFunctions/Summary', module)
+const stories = storiesOf('Custom Functions|Summary', module)
 
 const containerWrapper = storyFn => (
   <Layout>

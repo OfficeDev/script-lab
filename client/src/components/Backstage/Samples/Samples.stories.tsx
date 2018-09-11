@@ -1237,4 +1237,4 @@ export const BasicSamples = () => (
   <Samples samplesByGroup={samplesKnob} openSample={action('open-sample')} />
 )
 
-storiesOf('Backstage/Samples', module).add('basic', () => <BasicSamples />)
+storiesOf('Backstage|Samples', module).add('basic', () => <BasicSamples />)

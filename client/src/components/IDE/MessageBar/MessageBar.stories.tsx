@@ -14,7 +14,7 @@ const defaultMessageBarProps: IMessageBarState = {
 
 const voidFunc = () => {}
 
-storiesOf('MessageBar', module)
+storiesOf('IDE|MessageBar', module)
   .add('basic info', () => (
     <MessageBar messageBarProps={defaultMessageBarProps} dismiss={voidFunc} />
   ))

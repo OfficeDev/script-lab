@@ -4,6 +4,6 @@ import { boolean } from '@storybook/addon-knobs'
 
 import { Welcome } from './'
 
-storiesOf('CustomFunctions/Welcome', module).add('basic', () => (
+storiesOf('Custom Functions|Welcome', module).add('basic', () => (
   <Welcome isRefreshEnabled={boolean('isRefreshEnabled', false)} />
 ))

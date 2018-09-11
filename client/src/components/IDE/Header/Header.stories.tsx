@@ -34,7 +34,7 @@ const defaultHeaderProps = {
   solution: getBoilerplate('EXCEL'),
 }
 
-storiesOf('IDE/Header', module)
+storiesOf('IDE|Header', module)
   .add('basic', () => <Header {...defaultHeaderProps} />)
   .add('custom functions view', () => (
     <Header {...{ ...defaultHeaderProps, isCustomFunctionsView: true }} />

@@ -15,7 +15,7 @@ const defaultProps = {
   language: 'typescript',
 }
 
-storiesOf('IDE/Footer', module)
+storiesOf('IDE|Footer', module)
   .add('basic', () => <Footer {...defaultProps} />)
   .add('isWeb', () => <Footer {...{ ...defaultProps, isWeb: true }} />)
   .add('with Custom Function Solutions', () => (

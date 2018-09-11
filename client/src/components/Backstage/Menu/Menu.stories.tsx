@@ -37,6 +37,6 @@ const menuItems: IMenuItem[] = [
   },
 ]
 
-storiesOf('Backstage/Menu', module).add('basic', () => (
+storiesOf('Backstage|Menu', module).add('basic', () => (
   <Menu items={menuItems} selectedKey={menuItems[2].key} />
 ))

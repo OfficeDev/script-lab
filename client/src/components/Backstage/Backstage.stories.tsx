@@ -21,6 +21,6 @@ const defaultBackstageProps: IProps = {
   openSolution: action('open-solution'),
 }
 
-storiesOf('Backstage', module).add('basic', () => (
+storiesOf('Backstage|All', module).add('basic', () => (
   <Backstage {...defaultBackstageProps} />
 ))
