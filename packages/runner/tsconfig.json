@@ -1,9 +1,9 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "rootDir": "./",
-    "outDir": "build/dist",
-    "typeRoots": ["./src/interfaces", "node_modules/@types"]
+    "rootDir": "./src",
+    "outDir": "build/dist"
+    // "typeRoots": ["./src/interfaces", "node_modules/@types"]
   },
   "include": ["../interfaces/*"],
   "exclude": [

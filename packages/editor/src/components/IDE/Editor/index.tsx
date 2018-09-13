@@ -283,11 +283,17 @@ class Editor extends Component<IProps, IState> {
   }
 
   render() {
-    const { activeFiles, editorSettings, isSettingsView, theme } = this.props
+    const {
+      activeFiles,
+      activeSolution,
+      editorSettings,
+      isSettingsView,
+      theme,
+    } = this.props
     const { monacoTheme } = editorSettings
     const options = this.getMonacoOptions()
     const libraries = activeFiles.find(file => file.name === 'libraries.txt')
-
+    console.log(JSON.stringify(activeSolution))
     return (
       <>
         <Only when={isSettingsView && this.checkIfUnsaved(this.props.activeFile)}>

@@ -17,6 +17,7 @@
     "allowSyntheticDefaultImports": true,
     "downlevelIteration": true
   },
+  "include": ["packages/interfaces/*"],
   "exclude": [
     "node_modules",
     "build",
