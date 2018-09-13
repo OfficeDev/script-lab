@@ -47,7 +47,7 @@ export const saveState = (state: IState) => {
     const serializedSolutions = JSON.stringify(solutions.metadata)
     const serializedFiles = JSON.stringify(solutions.files)
     const serializedGithub = JSON.stringify(github)
-    const serializedValidSettings = JSON.stringify(settings)
+    const serializedValidSettings = JSON.stringify(settings.values)
 
     localStorage.setItem('solutions', serializedSolutions)
     localStorage.setItem('files', serializedFiles)
@@ -107,9 +107,15 @@ export const loadState = (): Partial<IState> => {
     const presetSettings = settings || defaultSettings
 
     try {
-      settings = merge(presetSettings, JSON.parse(settingsFile.content), allowedSettings)
+      settings = {
+        values: merge(presetSettings, JSON.parse(settingsFile.content), allowedSettings),
+        lastActive: { solutionId: null, fileId: null },
+      }
     } catch (e) {
-      settings = presetSettings
+      settings = {
+        values: presetSettings,
+        lastActive: { solutionId: null, fileId: null },
+      }
     }
 
     return { solutions: { metadata: solutions, files }, github, settings }

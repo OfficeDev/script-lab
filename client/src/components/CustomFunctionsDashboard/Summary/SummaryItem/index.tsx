@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
-import FabricIcon from '../../../FabricIcon'
+
+import { Icon } from 'office-ui-fabric-react/lib/Icon'
 
 const Wrapper = styled.div`
   position: relative;
@@ -61,9 +62,12 @@ const SummaryItem = ({
   return (
     <Wrapper>
       <FunctionNameWrapper>
-        <div style={{ marginRight: '0.5rem', position: 'relative', top: '2px', color }}>
-          <FabricIcon name={iconName} size={16} />
-        </div>
+        <Icon
+          iconName={iconName}
+          styles={{
+            root: { marginRight: '0.5rem', color },
+          }}
+        />
         <FunctionName>
           {funcName}
           (...)

@@ -1,10 +1,9 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
+import { boolean } from '@storybook/addon-knobs'
 
 import { Welcome } from './'
 
-const voidFunc = () => {}
-
-storiesOf('CustomFunctions/Welcome', module)
-  .add('can refresh', () => <Welcome isRefreshEnabled={true} refresh={voidFunc} />)
-  .add('cannot refresh', () => <Welcome isRefreshEnabled={false} refresh={voidFunc} />)
+storiesOf('Custom Functions|Welcome', module).add('basic', () => (
+  <Welcome isRefreshEnabled={boolean('isRefreshEnabled', false)} />
+))

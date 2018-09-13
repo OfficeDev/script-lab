@@ -26,20 +26,25 @@ export function* fetchAllGistMetadataSaga() {
 
   if (response) {
     const gistsMetadata = response.map(gist => {
-      const { files, id, description, updated_at, created_at } = gist
+      const { files, id, description } = gist
       const file = files[Object.keys(files)[0]]
-      const title = file.filename.split('.')[0]
+      const splitFileName = file.filename.split('.')
+      const title = splitFileName[0]
+
+      const host = splitFileName.length > 2 ? splitFileName[1] : undefined // TODO: how 2 handle legacy case
+
       const url = file.raw_url
 
       return {
         url,
+        host,
         id,
         description,
         title,
-        dateCreated: created_at,
-        dateLastModified: updated_at,
+        isPublic: gist.public,
       }
     })
+
     yield put(gists.fetchMetadata.success(gistsMetadata))
   } else {
     yield put(gists.fetchMetadata.failure(error))
@@ -101,7 +106,7 @@ function* createGistSaga(action: ActionType<typeof gists.create.request>) {
     action.payload.solutionId,
   )
 
-  const snippet = YAML.stringify(convertSolutionToSnippet(solution))
+  const snippet = YAML.dump(convertSolutionToSnippet(solution))
 
   const { response, error } = yield call(github.request, {
     method: 'POST',
@@ -109,9 +114,10 @@ function* createGistSaga(action: ActionType<typeof gists.create.request>) {
     token,
     jsonPayload: JSON.stringify({
       public: action.payload.isPublic,
+      host: snippet.host,
       description: `${solution.description}`,
       files: {
-        [`${solution.name}.yaml`]: {
+        [`${solution.name}.${solution.host}.yaml`]: {
           content: snippet,
         },
       },
@@ -142,7 +148,7 @@ function* updateGistSaga(action: ActionType<typeof gists.update.request>) {
   }
 
   const solution = yield select(selectors.solutions.get, action.payload.solutionId)
-  const snippet = YAML.stringify(convertSolutionToSnippet(solution))
+  const snippet = YAML.dump(convertSolutionToSnippet(solution))
   const gistId = solution.source.id
 
   if (!gistId) {
@@ -179,14 +185,14 @@ function* importSnippetSaga(action: ActionType<typeof gists.importSnippet.reques
       })
       if (response) {
         const gistFiles = response.files
-        const snippet = YAML.parse(gistFiles[Object.keys(gistFiles)[0]].content)
+        const snippet = YAML.load(gistFiles[Object.keys(gistFiles)[0]].content)
         const solution = convertSnippetToSolution(snippet)
         yield put(gists.importSnippet.success({ solution }))
       } else {
         throw error
       }
     } else if (action.payload.gist) {
-      const snippet = YAML.parse(action.payload.gist)
+      const snippet = YAML.load(action.payload.gist)
       const solution = convertSnippetToSolution(snippet)
       yield put(gists.importSnippet.success({ solution }))
     } else {
@@ -211,6 +217,7 @@ export default function* gistsWatcher() {
 
   yield takeEvery(getType(gists.create.request), createGistSaga)
   yield takeEvery(getType(gists.create.success), handleCreateGistSuccessSaga)
+  yield takeEvery(getType(gists.create.success), fetchAllGistMetadataSaga)
 
   yield takeEvery(getType(gists.update.request), updateGistSaga)
 

@@ -9,6 +9,7 @@ module.exports = (baseConfig, env) => {
     test: /\.(ts|tsx)$/,
     loader: require.resolve('ts-loader'),
   })
+
   config.resolve.extensions.push('.ts', '.tsx')
   return config
 }

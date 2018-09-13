@@ -52,7 +52,7 @@ interface ISampleMetadataByGroup {
   [group: string]: ISampleMetadata[]
 }
 
-interface ISharedGistMetadata extends ITimestamps {
+interface ISharedGistMetadata {
   id: string
   host: string
   url: string

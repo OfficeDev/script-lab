@@ -18,7 +18,8 @@ export const BackstageWrapper = styled.div`
 `
 
 export const ContentWrapper = styled.main`
-  flex: 1;
+  height: 100%;
+  width: 100%;
   padding: 1rem;
   font-size: 1.6rem;
   overflow-y: auto;
@@ -30,5 +31,26 @@ export const ContentTitle = styled.h1.attrs({ className: 'ms-font-xxl' })`
 
 export const ContentDescription = styled.h2.attrs({ className: 'ms-font-l' })`
   margin-top: 1.5rem;
-  margin-bottom: 3rem;
+  margin-bottom: 1.5rem;
+`
+
+export const ContentContainer = styled.div`
+  flex: 1;
+  position: relative;
+`
+
+export const LoadingContainer = styled.div`
+  position: absolute;
+
+  background-color: rgba(0, 0, 0, 0.35);
+
+  top: 0;
+  left: 0;
+
+  height: 100vh;
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `

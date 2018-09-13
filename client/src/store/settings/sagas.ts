@@ -40,10 +40,11 @@ function* editSettingsCheckSaga(action: ActionType<typeof solutionsActions.edit>
     action.payload.file.content
   ) {
     const { settings } = yield select()
+    const { values } = settings
 
     try {
       const parsed = JSON.parse(action.payload.file.content)
-      const newSettings = merge(settings, parsed, allowedSettings)
+      const newSettings = merge(values, parsed, allowedSettings)
       yield put(settingsActions.edit.success({ settings: newSettings }))
     } catch (e) {
       yield put(settingsActions.edit.failure(e))

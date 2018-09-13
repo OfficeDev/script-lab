@@ -81,6 +81,12 @@
     global "^4.3.2"
     prop-types "^15.6.1"
 
+"@storybook/addon-options@^3.4.10":
+  version "3.4.10"
+  resolved "https://registry.yarnpkg.com/@storybook/addon-options/-/addon-options-3.4.10.tgz#0b6ed3e22b7541a86a7c507ff80356d33784eda9"
+  dependencies:
+    babel-runtime "^6.26.0"
+
 "@storybook/addon-storyshots@^3.4.4":
   version "3.4.4"
   resolved "https://registry.yarnpkg.com/@storybook/addon-storyshots/-/addon-storyshots-3.4.4.tgz#cff74f2d35a424e3a22684fc05b1bcbb3d377b6c"

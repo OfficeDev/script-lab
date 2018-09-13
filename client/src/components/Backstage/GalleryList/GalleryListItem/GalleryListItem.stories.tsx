@@ -11,7 +11,7 @@ export const getBasicGalleryListItemProps = (n: number): IGalleryListItem => ({
 })
 export const BasicGalleryListItem = props => <GalleryListItem {...props} />
 
-storiesOf('Backstage/GalleryList/Item', module)
+storiesOf('Backstage|GalleryList/Item', module)
   .add('basic', () => <BasicGalleryListItem {...getBasicGalleryListItemProps(1)} />)
   .add('active', () => (
     <BasicGalleryListItem {...{ ...getBasicGalleryListItemProps(1), isActive: true }} />

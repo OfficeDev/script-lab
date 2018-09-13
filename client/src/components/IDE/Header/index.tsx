@@ -7,18 +7,18 @@ import { PersonaSize, PersonaCoin } from 'office-ui-fabric-react/lib/Persona'
 import { MessageBarType } from 'office-ui-fabric-react/lib/MessageBar'
 
 import Clipboard from 'clipboard'
-import { convertSolutionToSnippet } from '../../utils'
+import { convertSolutionToSnippet } from '../../../utils'
 import YAML from 'js-yaml'
 
 import SolutionSettings from './SolutionSettings'
 import { ITheme as IFabricTheme } from 'office-ui-fabric-react/lib/Styling'
-import { NULL_SOLUTION_ID, SETTINGS_SOLUTION_ID, PATHS } from '../../constants'
+import { NULL_SOLUTION_ID, SETTINGS_SOLUTION_ID, PATHS } from '../../../constants'
 
 import { connect } from 'react-redux'
-import actions from '../../store/actions'
-import selectors from '../../store/selectors'
+import actions from '../../../store/actions'
+import selectors from '../../../store/selectors'
 
-import { getHeaderFabricTheme } from '../../theme'
+import { getHeaderFabricTheme } from '../../../theme'
 import { push } from 'connected-react-router'
 
 const HeaderWrapper = styled.header`
@@ -33,7 +33,6 @@ interface IPropsFromRedux {
   isCustomFunctionsView: boolean
   isLoggedIn: boolean
   headerFabricTheme: IFabricTheme
-  solution: ISolution
 }
 
 const mapStateToProps = (state): IPropsFromRedux => ({
@@ -43,7 +42,6 @@ const mapStateToProps = (state): IPropsFromRedux => ({
   isRunnableOnThisHost: selectors.host.getIsRunnableOnThisHost(state),
   profilePicUrl: selectors.github.getProfilePicUrl(state),
   headerFabricTheme: getHeaderFabricTheme(selectors.host.get(state)),
-  solution: selectors.editor.getActiveSolution(state),
 })
 
 interface IActionsFromRedux {
@@ -105,6 +103,7 @@ const mapDispatchToProps = (dispatch, ownProps: IProps): IActionsFromRedux => ({
 })
 
 export interface IProps extends IPropsFromRedux, IActionsFromRedux {
+  solution: ISolution
   theme: ITheme // from withTheme
 }
 
@@ -123,8 +122,7 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
     this.clipboard.on('error', props.notifyClipboardCopyFailure)
   }
 
-  getSnippetYaml = (): string =>
-    YAML.stringify(convertSolutionToSnippet(this.props.solution))
+  getSnippetYaml = (): string => YAML.dump(convertSolutionToSnippet(this.props.solution))
 
   render() {
     const {

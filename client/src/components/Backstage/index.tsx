@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { withTheme } from 'styled-components'
-import { BackstageWrapper } from './styles'
+import { BackstageWrapper, ContentContainer, LoadingContainer } from './styles'
+
+import { Spinner, SpinnerSize } from 'office-ui-fabric-react/lib/Spinner'
 
 import Menu from './Menu'
 import MySolutions from './MySolutions'
@@ -14,6 +16,7 @@ import { connect } from 'react-redux'
 import selectors from '../../store/selectors'
 import { editor, solutions, samples, gists } from '../../store/actions'
 import { goBack } from 'connected-react-router'
+import Only from '../Only'
 
 interface IBackstageItem {
   key: string
@@ -65,31 +68,36 @@ const mapDispatchToProps = (dispatch): IActionsFromRedux => ({
   goBack: () => dispatch(goBack()),
 })
 
-export interface IBackstage extends IPropsFromRedux, IActionsFromRedux {
-  theme: ITheme // from withTheme
-}
+export interface IProps extends IPropsFromRedux, IActionsFromRedux {}
 
 interface IState {
+  isLoading: boolean
   selectedKey: string
   conflictingGist: ISharedGistMetadata | null
   existingSolutionsConflicting: ISolution[] | null
 }
 
-class Backstage extends Component<IBackstage, IState> {
+export class Backstage extends Component<IProps, IState> {
   state = {
+    isLoading: false,
     selectedKey: 'my-solutions',
     conflictingGist: null,
     existingSolutionsConflicting: null,
   }
 
+  componentWillUnmount() {
+    this.setState({ selectedKey: 'my-solutions', isLoading: false })
+  }
+
   openSolution = (solutionId: string) => {
     const solution = this.props.solutions.find(solution => solution.id === solutionId)
     this.props.openSolution(solutionId, solution!.files[0].id)
+    this.setState({ isLoading: true })
   }
 
   openSample = (rawUrl: string) => {
     this.props.openSample(rawUrl)
-    this.setState({ selectedKey: 'my-solutions' })
+    this.setState({ isLoading: true })
   }
 
   openSharedGist = (gistMeta: ISharedGistMetadata) => {
@@ -105,6 +113,7 @@ class Backstage extends Component<IBackstage, IState> {
     } else {
       openGist(url, id)
     }
+    this.setState({ isLoading: true })
   }
 
   showGistConflictDialog = (
@@ -113,7 +122,11 @@ class Backstage extends Component<IBackstage, IState> {
   ) => this.setState({ conflictingGist, existingSolutionsConflicting })
 
   hideGistConflictDialog = () =>
-    this.setState({ conflictingGist: null, existingSolutionsConflicting: null })
+    this.setState({
+      conflictingGist: null,
+      existingSolutionsConflicting: null,
+      isLoading: false,
+    })
 
   render() {
     const items = [
@@ -136,7 +149,6 @@ class Backstage extends Component<IBackstage, IState> {
         iconName: 'DocumentSet',
         content: (
           <MySolutions
-            theme={this.props.theme}
             solutions={this.props.solutions}
             openSolution={this.openSolution}
             activeSolution={this.props.activeSolution}
@@ -151,7 +163,6 @@ class Backstage extends Component<IBackstage, IState> {
         iconName: 'Dictionary',
         content: (
           <Samples
-            theme={this.props.theme}
             openSample={this.openSample}
             samplesByGroup={this.props.samplesByGroup}
           />
@@ -180,7 +191,14 @@ class Backstage extends Component<IBackstage, IState> {
             onClick: item.onSelect,
           }))}
         />
-        {activeItem && activeItem.content}
+        <ContentContainer>
+          {activeItem && activeItem.content}
+          <Only when={this.state.isLoading}>
+            <LoadingContainer>
+              <Spinner size={SpinnerSize.large} />
+            </LoadingContainer>
+          </Only>
+        </ContentContainer>
         {conflictingGist &&
           existingSolutionsConflicting && (
             <ConflictResolutionDialog
@@ -198,4 +216,4 @@ class Backstage extends Component<IBackstage, IState> {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(withTheme(Backstage))
+)(Backstage)

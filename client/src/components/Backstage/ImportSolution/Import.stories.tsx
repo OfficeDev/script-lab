@@ -3,9 +3,8 @@ import React from 'react'
 import ImportSolution from './'
 
 import { storiesOf } from '@storybook/react'
+import { action } from '@storybook/addon-actions'
 
-const voidFunc = () => {}
-
-storiesOf('Backstage/ImportSolution', module).add('basic', () => (
-  <ImportSolution importGist={voidFunc} />
+storiesOf('Backstage|ImportSolution', module).add('basic', () => (
+  <ImportSolution importGist={action('import-gist')} />
 ))

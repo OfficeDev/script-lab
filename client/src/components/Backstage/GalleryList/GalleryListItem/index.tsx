@@ -12,9 +12,9 @@ export interface IGalleryListItem {
 const GalleryListItem = ({ title, description, isActive, onClick }: IGalleryListItem) => {
   const ItemWrapper = isActive ? ActiveWrapper : Wrapper
   return (
-    <ItemWrapper onClick={onClick}>
-      <Title tabIndex={-1}>{title}</Title>
-      <Description tabIndex={-1}>{description}</Description>
+    <ItemWrapper data-is-focusable="true" onClick={onClick}>
+      <Title>{title}</Title>
+      <Description>{description}</Description>
     </ItemWrapper>
   )
 }

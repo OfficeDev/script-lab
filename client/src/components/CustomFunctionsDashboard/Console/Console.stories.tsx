@@ -6,7 +6,7 @@ import { storiesOf } from '@storybook/react'
 
 import { Layout, Content } from '../Dashboard/styles'
 
-const stories = storiesOf('CustomFunctions/Console', module)
+const stories = storiesOf('Custom Functions|Console', module)
 
 const containerWrapper = storyFn => (
   <Layout>

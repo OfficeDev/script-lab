@@ -9,7 +9,6 @@ export const GalleryListWrapper = styled.section`
   }
 `
 
-// TODO: decide on convention here: GalleryListWrapper vs Wrapper
 export const TitleBar = styled.div.attrs({ className: 'ms-font-m' })`
   display: flex;
   height: 4rem;
@@ -24,13 +23,16 @@ export const Title = styled.span`
   flex: 1;
 `
 
-// TODO: really realllly refactor those styles out soon
 export const ArrowWrapper = styled.div`
   padding: 1.2rem;
 
   &:hover, &:focus {
-    background-color: ${props => props.theme.primary}
+    background-color: ${props => props.theme.primary};
     color: ${props => props.theme.white}
     cursor: pointer;
+  }
+
+  &:focus {
+    outline-color: ${props => props.theme.primary};
   }
 `

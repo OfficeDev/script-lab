@@ -9,7 +9,7 @@ import { getHeaderFabricTheme } from '../../../theme'
 const headerFabricTheme = getHeaderFabricTheme('EXCEL')
 const Dummy = ({ letter }) => <div>I AM {letter}</div>
 
-storiesOf('CustomFunctions/Dashboard', module)
+storiesOf('Custom Functions|Dashboard', module)
   .add('basic', () => (
     <Dashboard
       headerFabricTheme={headerFabricTheme}
