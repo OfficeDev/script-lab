@@ -2,7 +2,7 @@ import React from 'react'
 function processLibraries(libraries: string, isInsideOffice: boolean) {
   const linkReferences: string[] = []
   const scriptReferences: string[] = []
-  let officeJS: string = null
+  let officeJS: string | null = null
 
   libraries.split('\n').forEach(processLibrary)
 
@@ -82,7 +82,7 @@ class Snippet extends React.Component<IProps> {
   shouldComponentUpdate(nextProps: IProps, nextState) {
     return (
       nextProps.solution.id !== this.props.solution.id ||
-      nextProps.solution.lastModifiedDate !== this.props.solution.lastModifiedDate
+      nextProps.solution.dateLastModified !== this.props.solution.dateLastModified
     )
   }
 

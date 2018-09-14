@@ -8,7 +8,7 @@
     "jsx": "react",
     "moduleResolution": "node",
     "forceConsistentCasingInFileNames": true,
-    "noImplicitReturns": true,
+    "noImplicitReturns": false,
     "noImplicitThis": true,
     "noImplicitAny": false,
     "strictNullChecks": true,
@@ -17,6 +17,7 @@
     "allowSyntheticDefaultImports": true,
     "downlevelIteration": true
   },
+
   "include": ["packages/interfaces/*"],
   "exclude": [
     "node_modules",
