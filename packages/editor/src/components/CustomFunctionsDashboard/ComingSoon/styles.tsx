@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-import LogoImage from '../../../assets/icon-large.svg'
 
 export const CenteredContent = styled.main`
   display: flex;
@@ -10,7 +9,7 @@ export const CenteredContent = styled.main`
   width: 100vw;
 `
 
-export const Logo = styled.img.attrs({ src: LogoImage })`
+export const Logo = styled.img.attrs({ src: '../../../assets/icon-large.svg' })`
   height: 12rem;
   width: 12rem;
 `

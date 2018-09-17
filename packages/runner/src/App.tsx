@@ -1,6 +1,4 @@
 import React from 'react'
-// import Frame, { FrameContextConsumer } from 'react-frame-component'
-import Frame from './components/Frame'
 import Snippet from './components/Snippet'
 
 const exampleSolution = {
@@ -189,7 +187,7 @@ class App extends React.Component {
         <p className="App-intro">
           To get started, edit <code>src/App.tsx</code> and save to reload.
         </p>
-        <Frame message={this.state.count.toString()} />
+        {/* <Frame message={this.state.count.toString()} /> */}
         <Snippet solution={exampleSolution2} />
         {/* <Solution solution={exampleSolution} /> */}
       </div>

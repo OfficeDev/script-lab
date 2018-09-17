@@ -1,0 +1,14 @@
+.message-bar {
+  position: relative;
+  height: 0rem;
+  opacity: 0;
+  top: -4.8rem;
+  transition: all 350ms ease-in-out;
+  z-index: 999;
+}
+
+.message-bar.active {
+  top: 0;
+  height: 4.8rem;
+  opacity: 1;
+}
