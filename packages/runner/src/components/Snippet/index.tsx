@@ -1,4 +1,5 @@
 import React from 'react'
+
 function processLibraries(libraries: string, isInsideOffice: boolean) {
   const linkReferences: string[] = []
   const scriptReferences: string[] = []
@@ -95,9 +96,7 @@ class Snippet extends React.Component<IProps> {
   getContentDoc = () => this.node.contentDocument
 
   renderContents = () => {
-    if (!this._isMounted) {
-      return null
-    } else {
+    if (this._isMounted) {
       const { solution } = this.props
       const html = solution.files.find(file => file.name === 'index.html')!.content
       const css = solution.files.find(file => file.name === 'index.css')!.content
@@ -125,6 +124,7 @@ class Snippet extends React.Component<IProps> {
       const body = `<body>${html}${inlineScript}</body>`
 
       const content = `<!DOCTYPE html><html>${head}${body}</html>`
+
       const doc = this.getContentDoc()
       doc.open('text/html', 'replace')
       doc.write(content)
@@ -138,7 +138,12 @@ class Snippet extends React.Component<IProps> {
 
   render() {
     this.renderContents()
-    return <iframe ref={node => (this.node = node)} />
+    return (
+      <iframe
+        ref={node => (this.node = node)}
+        style={{ width: '100%', height: '100%', margin: 0, border: 0 }}
+      />
+    )
   }
 }
 

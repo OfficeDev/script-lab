@@ -301,8 +301,6 @@ class Editor extends Component<IProps, IState> {
             messageBarType={MessageBarType.info}
             actions={
               <div>
-                {/* TODO: (nicobell) Figure out why MessageBarButtons didn't work (get
-                styled properly) and if they have advantages regular buttons miss */}
                 <DefaultButton primary={true} onClick={this.applySettingsUpdate}>
                   Apply
                 </DefaultButton>
