@@ -61,8 +61,10 @@ export const saveState = (state: IState) => {
     ) {
       const activeSnippet = convertSolutionToSnippet(activeSolution)
       localStorage.setItem('activeSnippet', JSON.stringify(activeSnippet))
+      localStorage.setItem('activeSolution', JSON.stringify(activeSolution))
     } else {
       localStorage.setItem('activeSnippet', 'null')
+      localStorage.setItem('activeSolution', 'null')
     }
 
     const cfPostData = getCFPostData(state)
