@@ -8,7 +8,8 @@ var {
   DEPLOYMENT_PASSWORD,
 } = process.env // from travis
 
-if (TRAVIS_BRANCH === 'master') {
+// if (TRAVIS_BRANCH === 'master') {
+if (TRAVIS_BRANCH === 'deployment') {
   var SITE = 'script-lab-react'
 
   shell.cd('build')
