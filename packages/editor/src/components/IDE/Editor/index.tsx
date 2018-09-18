@@ -29,6 +29,7 @@ interface IEditorSettings {
   monacoTheme: string
   fontFamily: string
   fontSize: number
+  tabSize: number
   lineHeight: number
   isMinimapEnabled: boolean
   isFoldingEnabled: boolean
@@ -49,6 +50,7 @@ const mapStateToProps = (state, ownProps: IProps): IPropsFromRedux => ({
     monacoTheme: selectors.settings.getMonacoTheme(state),
     fontFamily: selectors.settings.getFontFamily(state),
     fontSize: selectors.settings.getFontSize(state),
+    tabSize: selectors.settings.getTabSize(state),
     lineHeight: selectors.settings.getLineHeight(state),
     isMinimapEnabled: selectors.settings.getIsMinimapEnabled(state),
     isFoldingEnabled: selectors.settings.getIsFoldingEnabled(state),
@@ -290,10 +292,10 @@ class Editor extends Component<IProps, IState> {
       isSettingsView,
       theme,
     } = this.props
+
     const { monacoTheme } = editorSettings
     const options = this.getMonacoOptions()
     const libraries = activeFiles.find(file => file.name === 'libraries.txt')
-    console.log(JSON.stringify(activeSolution))
     return (
       <>
         <Only when={isSettingsView && this.checkIfUnsaved(this.props.activeFile)}>
@@ -342,6 +344,7 @@ class Editor extends Component<IProps, IState> {
           <Monaco
             theme={monacoTheme}
             options={options}
+            tabSize={editorSettings.tabSize}
             editorDidMount={this.setupEditor}
             libraries={libraries && libraries.content}
           />

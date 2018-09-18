@@ -5,6 +5,12 @@ interface ICachedModel {
 
 const cache = {}
 
+interface IModelOptions {
+  tabSize: number
+}
+
+let globalOptions = {}
+
 export function createModel(monaco: any, file: IFile): ICachedModel {
   // TODO: move language to a computed property of each file
   const { language, content, id } = file
@@ -23,12 +29,10 @@ export function getModelByIdIfExists(monaco: any, fileId: string): ICachedModel 
 
 export function getModel(monaco: any, file: IFile) {
   const id = file.id
+  const cachedModel = cache[id] || createModel(monaco, file)
+  cachedModel.model.updateOptions(globalOptions)
 
-  if (cache[id]) {
-    return cache[id]
-  } else {
-    return createModel(monaco, file)
-  }
+  return cachedModel
 }
 
 export function setPosForModel(fileId: string, pos: monaco.IPosition) {
@@ -42,4 +46,8 @@ export function removeModelFromCache(fileId: string) {
     cache[fileId].model.dispose()
     delete cache[fileId]
   }
+}
+
+export function setOptions(options: IModelOptions) {
+  globalOptions = options
 }

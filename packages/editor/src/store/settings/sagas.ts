@@ -7,6 +7,8 @@ import {
   editor as editorActions,
 } from '../actions'
 
+import { environmentName, editorUrls } from '../../environment'
+
 import selectors from '../selectors'
 
 import { allowedSettings } from '../../SettingsJSONSchema'
@@ -52,6 +54,19 @@ function* editSettingsCheckSaga(action: ActionType<typeof solutionsActions.edit>
   }
 }
 
+function* onSettingsEditSuccessSaga(
+  action: ActionType<typeof settingsActions.edit.success>,
+) {
+  const { settings } = action.payload
+
+  const newEnvironment = settings.developer.environment
+  if (newEnvironment !== environmentName) {
+    window.location.href = `${
+      editorUrls.production
+    }?targetEnvironment=${encodeURIComponent(editorUrls[newEnvironment])}`
+  }
+}
+
 function* openSettingsSaga(action: ActionType<typeof settingsActions.open>) {
   const { editor } = yield select()
   const { active } = editor
@@ -72,7 +87,7 @@ function* closeSettingsSaga(action: ActionType<typeof settingsActions.close>) {
 
 export default function* settingsWatcher() {
   yield takeEvery(getType(solutionsActions.edit), editSettingsCheckSaga)
-
+  yield takeEvery(getType(settingsActions.edit.success), onSettingsEditSuccessSaga)
   yield takeEvery(getType(settingsActions.open), openSettingsSaga)
   yield takeEvery(getType(settingsActions.close), closeSettingsSaga)
 }
