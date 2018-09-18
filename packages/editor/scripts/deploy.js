@@ -22,7 +22,7 @@ if (TRAVIS_BRANCH === 'deployment') {
   shell.exec('git commit -m "commit message"')
 
   var result = shell.exec(
-    `git push https://${DEPLOYMENT_USERNAME}:${DEPLOYMENT_PASSWORD}@${SITE}.scm.azurewebsites.net:443/${SITE}.git  -q -f -u HEAD:refs/heads/master`,
+    `git push https://${DEPLOYMENT_USERNAME}:${DEPLOYMENT_PASSWORD}@${SITE}.scm.azurewebsites.net:443/${SITE}.git -q -f -u HEAD:refs/heads/master`,
     { silent: true },
   )
 }
