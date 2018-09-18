@@ -2,10 +2,13 @@
   "name": "script-lab",
   "version": "2.0.0",
   "scripts": {
-    "installAll": "yarn install && cd client && yarn install && cd ../server && yarn install",
-    "client": "cd client && yarn start",
-    "server": "cd server && yarn start",
-    "start": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
+    "installAll": "yarn install && cd packages/editor && yarn install && cd ../server && yarn install",
+    "copy-monaco": "cd packages/editor && yarn copy-monaco",
+    "editor": "cd packages/editor && yarn start",
+    "server": "cd packages/server && yarn start",
+    "start": "concurrently --kill-others-on-fail \"yarn server\" \"yarn editor\"",
+    "build": "cd packages/editor && yarn build",
+    "deploy": "cd packages/editor && yarn deploy"
   },
   "dependencies": {},
   "devDependencies": {

@@ -33,6 +33,7 @@
     "copy-monaco": "node scripts/copy-monaco.js",
     "start": "set HTTPS=false&&react-scripts-ts start",
     "build": "react-scripts-ts build",
+    "deploy": "node scripts/deploy.js",
     "test": "react-scripts-ts test --env=jsdom",
     "test-coverage": "yarn test -- --coverage",
     "show-coverage": "yarn test-coverage && coverage\\lcov-report\\index.html",
@@ -79,6 +80,7 @@
     "prettier": "^1.14.0",
     "react-test-renderer": "^16.3.2",
     "redux-devtools": "^3.4.1",
+    "shelljs": "^0.8.2",
     "ts-jest": "^22.4.6",
     "typescript": "^3.0.1"
   }
