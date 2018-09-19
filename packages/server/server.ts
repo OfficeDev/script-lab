@@ -12,8 +12,6 @@ const {
   GITHUB_REDIRECT_URL
 } = process.env;
 
-const keys = require("../keys");
-
 const app = express();
 const port = process.env.PORT || 5000;
 
@@ -22,10 +20,6 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // routes
-app.get("/api/hello", (req, res) => {
-  res.send({ express: "Hello From Express" });
-});
-
 app.post("/auth", (req, res) => {
   console.log(req.body);
   const { code, state } = req.body;
@@ -36,9 +30,9 @@ app.post("/auth", (req, res) => {
         Accept: "application/json"
       },
       json: {
-        client_id: keys.github.clientId,
-        client_secret: keys.github.clientSecret,
-        redirect_uri: keys.github.redirectUri,
+        client_id: GITHUB_CLIENT_ID,
+        client_secret: GITHUB_CLIENT_SECRET,
+        redirect_uri: GITHUB_REDIRECT_URL,
         code,
         state
       }
