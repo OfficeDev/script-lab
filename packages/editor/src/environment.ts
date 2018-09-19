@@ -17,9 +17,9 @@ export const environmentName = {
 
 export const editorUrls = {
   local: 'https://localhost:3000',
-  'react-alpha': 'https://script-lab-react-alpha.azurewebsites.net/',
-  'react-beta': 'https://script-lab-react-beta.azurewebsites.net/',
-  alpha: 'https://bornholm-edge.azurewebsites.net/',
-  beta: 'https://bornholm-insiders.azurewebsites.net/',
-  production: 'https://script-lab.azureedge.net/',
+  'react-alpha': 'https://script-lab-react-alpha.azurewebsites.net',
+  'react-beta': 'https://script-lab-react-beta.azurewebsites.net',
+  alpha: 'https://bornholm-edge.azurewebsites.net',
+  beta: 'https://bornholm-insiders.azurewebsites.net',
+  production: 'https://script-lab.azureedge.net',
 }
