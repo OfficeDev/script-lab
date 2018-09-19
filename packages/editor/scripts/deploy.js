@@ -17,7 +17,8 @@ var deploymentSlot = {
   production: '',
 }[TRAVIS_BRANCH]
 
-var SITE = `script-lab-react${deploymentSlot}`
+var BASE_SITE = 'script-lab-react'
+var SITE = `${BASE_SITE}${deploymentSlot}`
 
 if (deploymentSlot !== undefined) {
   shell.cd('build')
@@ -30,7 +31,7 @@ if (deploymentSlot !== undefined) {
   shell.exec(`git commit -m "${TRAVIS_COMMIT_MESSAGE_SANITIZED}"`)
 
   var result = shell.exec(
-    `git push https://${DEPLOYMENT_USERNAME}:${DEPLOYMENT_PASSWORD}@${SITE}.scm.azurewebsites.net:443/${SITE}.git -q -f -u HEAD:refs/heads/master`,
+    `git push https://${DEPLOYMENT_USERNAME}:${DEPLOYMENT_PASSWORD}@${SITE}.scm.azurewebsites.net:443/${BASE_SITE}.git -q -f -u HEAD:refs/heads/master`,
     { silent: true },
   )
 }
