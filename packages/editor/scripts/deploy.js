@@ -22,7 +22,7 @@ var SITE = `${BASE_SITE}${deploymentSlot}`
 
 shell.exec(`echo '${TRAVIS_PULL_REQUEST}'`)
 
-if (!TRAVIS_PULL_REQUEST && deploymentSlot !== undefined) {
+if (deploymentSlot !== undefined) {
   shell.exec('echo "starting deployment"')
   shell.cd('build')
   shell.exec('git init')
