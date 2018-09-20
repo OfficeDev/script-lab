@@ -31,6 +31,12 @@ const getSettingsContent = (settings?: ISettings): string => {
   return JSON.stringify(settingsToSet, null, tabSize) + '\n'
 }
 
+const getAboutContent = (): string => {
+  const commit = process.env.REACT_APP_COMMIT
+  const lastUpdated = process.env.REACT_APP_LAST_UPDATED
+  return `Last Updated: ${lastUpdated}\nCommit: ${commit}`
+}
+
 const getSettingsFiles = (timestamp: number, settings?: ISettings): IFile[] => [
   {
     id: SETTINGS_FILE_ID,
@@ -46,7 +52,7 @@ const getSettingsFiles = (timestamp: number, settings?: ISettings): IFile[] => [
     dateCreated: timestamp,
     dateLastModified: timestamp,
     language: 'plaintext',
-    content: `Version 2.0.0`,
+    content: getAboutContent(),
   },
 ]
 

@@ -1,6 +1,6 @@
 var shell = require('shelljs')
 
-var { TRAVIS_BRANCH } = process.env // from travis
+var { TRAVIS_BRANCH, TRAVIS_COMMIT } = process.env // from travis
 
 var REACT_APP_STAGING = {
   deployment: 'alpha',
@@ -8,6 +8,11 @@ var REACT_APP_STAGING = {
   production: 'production',
 }[TRAVIS_BRANCH]
 
-shell.exec(
-  `export REACT_APP_STAGING=${REACT_APP_STAGING} && echo $REACT_APP_STAGING && react-scripts-ts build`,
-)
+var commands = [
+  `export REACT_APP_STAGING=${REACT_APP_STAGING}`,
+  `export REACT_APP_COMMIT=${TRAVIS_COMMIT}`,
+  `export REACT_APP_LAST_UPDATED=${new Date().toUTCString()}`,
+  'react-script-ts build',
+].join(' && ')
+
+shell.exec(`commands`)
