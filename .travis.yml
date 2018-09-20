@@ -11,8 +11,7 @@ branches:
     - deployment
 
 cache:
-  directories:
-    - node_modules
+  yarn: true
 
 install:
   - yarn installAll

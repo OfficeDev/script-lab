@@ -20,7 +20,7 @@ var deploymentSlot = {
 var BASE_SITE = "script-lab-react-server";
 var SITE = `${BASE_SITE}${deploymentSlot}`;
 
-if (TRAVIS_PULL_REQUEST !== "false" && deploymentSlot !== undefined) {
+if (TRAVIS_PULL_REQUEST != false && deploymentSlot !== undefined) {
   shell.cd("build");
   shell.exec("git init");
 
