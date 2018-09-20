@@ -8,5 +8,5 @@ var REACT_APP_STAGING = {
   production: 'production',
 }[TRAVIS_BRANCH]
 
-shell.exec(`set REACT_APP_STAGING=${REACT_APP_STAGING}`)
+shell.exec(`export REACT_APP_STAGING=${REACT_APP_STAGING}`)
 shell.exec(`react-scripts-ts build`)
