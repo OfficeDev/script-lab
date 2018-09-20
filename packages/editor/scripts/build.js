@@ -12,7 +12,7 @@ var commands = [
   `export REACT_APP_STAGING='${REACT_APP_STAGING}'`,
   `export REACT_APP_COMMIT='${TRAVIS_COMMIT}'`,
   `export REACT_APP_LAST_UPDATED='${new Date().toUTCString()}'`,
-  'node_modules/.bin/react-script-ts build',
+  'yarn react-scripts-ts:build',
 ].join(' && ')
 
 shell.exec(commands)
