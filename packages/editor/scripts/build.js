@@ -9,4 +9,5 @@ var REACT_APP_STAGING = {
 }[TRAVIS_BRANCH]
 
 shell.exec(`export REACT_APP_STAGING=${REACT_APP_STAGING}`)
+shell.exec('echo $REACT_APP_STAGING')
 shell.exec(`react-scripts-ts build`)
