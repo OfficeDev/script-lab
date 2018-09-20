@@ -8,6 +8,4 @@ var REACT_APP_STAGING = {
   production: 'production',
 }[TRAVIS_BRANCH]
 
-shell.exec(`export REACT_APP_STAGING=${REACT_APP_STAGING}`)
-shell.exec('echo $REACT_APP_STAGING')
-shell.exec(`react-scripts-ts build`)
+shell.exec(`export REACT_APP_STAGING=${REACT_APP_STAGING} && react-scripts-ts build`)
