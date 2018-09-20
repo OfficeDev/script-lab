@@ -9,9 +9,9 @@ var REACT_APP_STAGING = {
 }[TRAVIS_BRANCH]
 
 var commands = [
-  `export REACT_APP_STAGING=${REACT_APP_STAGING}`,
-  `export REACT_APP_COMMIT=${TRAVIS_COMMIT}`,
-  `export REACT_APP_LAST_UPDATED=${new Date().toUTCString()}`,
+  `export REACT_APP_STAGING='${REACT_APP_STAGING}'`,
+  `export REACT_APP_COMMIT='${TRAVIS_COMMIT}'`,
+  `export REACT_APP_LAST_UPDATED='${new Date().toUTCString()}'`,
   'react-script-ts build',
 ].join(' && ')
 
