@@ -2,8 +2,8 @@
   "name": "script-lab-server",
   "version": "1.0.0",
   "scripts": {
-    "start": "nodemon server.ts",
-    "build": "tsc",
+    "start": "nodemon index.ts",
+    "build": "tsc && cp web.config build/.",
     "deploy": "node scripts/deploy.js"
   },
   "dependencies": {
