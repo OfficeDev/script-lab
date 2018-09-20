@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "start": "nodemon index.ts",
-    "build": "tsc && cp web.config build/.",
+    "build": "tsc && cp web.config build/. && cp node_modules build/.",
     "deploy": "node scripts/deploy.js"
   },
   "dependencies": {
