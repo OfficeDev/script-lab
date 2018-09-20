@@ -15,4 +15,4 @@ var commands = [
   'react-script-ts build',
 ].join(' && ')
 
-shell.exec(`commands`)
+shell.exec(commands)
