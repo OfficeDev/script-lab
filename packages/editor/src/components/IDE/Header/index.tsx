@@ -225,7 +225,7 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
     const name = {
       hidden: isNullSolution,
       key: 'solution-name',
-      text: solutionName,
+      text: solutionName + JSON.stringify(process.env),
       onClick: isSettingsView ? undefined : this.openSolutionSettings,
     }
 
