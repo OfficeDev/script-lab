@@ -20,7 +20,8 @@ var deploymentSlot = {
 var BASE_SITE = 'script-lab-react'
 var SITE = `${BASE_SITE}${deploymentSlot}`
 
-if (!TRAVIS_PULL_REQUEST && deploymentSlot !== undefined) {
+if (!TRAVIS_PULL_REQUEST && deploymentSlot !== undefined && shell.test('-e', 'build')) {
+  shell.exec('echo "starting deployment"')
   shell.cd('build')
   shell.exec('git init')
 
@@ -32,6 +33,6 @@ if (!TRAVIS_PULL_REQUEST && deploymentSlot !== undefined) {
 
   var result = shell.exec(
     `git push https://${DEPLOYMENT_USERNAME}:${DEPLOYMENT_PASSWORD}@${SITE}.scm.azurewebsites.net:443/${BASE_SITE}.git -q -f -u HEAD:refs/heads/master`,
-    { silent: true },
+    // { silent: true },
   )
 }
