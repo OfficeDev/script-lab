@@ -1,8 +1,8 @@
 export const authServerUrl = {
   local: 'https://localhost:5000',
-  alpha: 'https://script-lab-react-server-alpha.azurewebsites.net/',
-  beta: 'https://script-lab-react-server-beta.azurewebsites.net/',
-  prod: 'https://script-lab-react-server.azurewebsites.net/',
+  alpha: 'https://script-lab-react-server-alpha.azurewebsites.net',
+  beta: 'https://script-lab-react-server-beta.azurewebsites.net',
+  prod: 'https://script-lab-react-server.azurewebsites.net',
 }[process.env.REACT_APP_STAGING || 'prod']
 
 export const githubAppClientId = {
