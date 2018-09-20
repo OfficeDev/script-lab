@@ -1,10 +1,14 @@
 export const authServerUrl = {
   local: 'https://localhost:5000',
-  prod: 'asdf',
+  alpha: 'https://script-lab-react-server-alpha.azurewebsites.net/',
+  beta: 'https://script-lab-react-server-beta.azurewebsites.net/',
+  prod: 'https://script-lab-react-server.azurewebsites.net/',
 }[process.env.REACT_APP_STAGING || 'prod']
 
 export const githubAppClientId = {
   local: '210a167954d9ef04b501',
+  alpha: 'ad26df7ba62ef691669e',
+  beta: 'edb61fe543b382628d68',
   prod: '5db9e6dbe957707a3cb2',
 }[process.env.REACT_APP_STAGING || 'prod']
 
