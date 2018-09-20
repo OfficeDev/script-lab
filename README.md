@@ -1,4 +1,4 @@
-# MakerIDE
+# Script Lab React
 
 ## Initial setup
 
