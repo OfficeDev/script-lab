@@ -42,5 +42,5 @@ Office.onReady(async () => {
     'root',
   ) as HTMLElement)
 
-  unregister()
+  unregister() // did this help?
 })
