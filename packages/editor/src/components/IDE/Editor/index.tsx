@@ -67,6 +67,7 @@ interface IActionsFromRedux {
     file: Partial<IEditableFileProperties>,
   ) => void
   openSettings: () => void
+  signalEditorLoaded: () => void
 }
 
 const mapDispatchToProps = (dispatch, ownProps: IProps): IActionsFromRedux => ({
@@ -78,6 +79,7 @@ const mapDispatchToProps = (dispatch, ownProps: IProps): IActionsFromRedux => ({
     file: Partial<IEditableFileProperties>,
   ) => dispatch(solutions.edit({ id: solutionId, fileId, file })),
   openSettings: () => dispatch(settings.open()),
+  signalEditorLoaded: () => dispatch(editor.signalHasLoaded()),
 })
 
 export interface IProps extends IPropsFromRedux, IActionsFromRedux {
@@ -174,6 +176,8 @@ class Editor extends Component<IProps, IState> {
     this.changeActiveFile(null, this.props.activeFile)
 
     window.addEventListener('resize', debounce(this.resizeEditor, 100))
+
+    this.props.signalEditorLoaded()
   }
 
   getMonacoOptions = (): monaco.editor.IEditorConstructionOptions => {

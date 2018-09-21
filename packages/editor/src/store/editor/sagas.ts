@@ -9,6 +9,14 @@ export function* openSolutionSaga(action: ActionType<typeof editor.open>) {
   yield put(push(PATHS.EDITOR))
 }
 
+export function* hasLoadedSaga(action: ActionType<typeof editor.signalHasLoaded>) {
+  const loadingIndicator = document.getElementById('loading')
+  if (loadingIndicator) {
+    loadingIndicator.remove()
+  }
+}
+
 export default function* editorWatcher() {
   yield takeEvery(getType(editor.open), openSolutionSaga)
+  yield takeEvery(getType(editor.signalHasLoaded), hasLoadedSaga)
 }
