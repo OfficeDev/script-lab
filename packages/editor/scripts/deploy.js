@@ -20,8 +20,6 @@ var deploymentSlot = {
 var BASE_SITE = 'script-lab-react'
 var SITE = `${BASE_SITE}${deploymentSlot}`
 
-shell.exec(`echo '${TRAVIS_PULL_REQUEST}'`)
-
 if (deploymentSlot !== undefined) {
   shell.exec('echo "starting deployment"')
   shell.cd('build')

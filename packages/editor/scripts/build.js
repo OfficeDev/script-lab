@@ -15,6 +15,4 @@ var commands = [
   'yarn react-scripts-ts:build',
 ].join(' && ')
 
-if (REACT_APP_STAGING) {
-  shell.exec(commands)
-}
+shell.exec(commands)
