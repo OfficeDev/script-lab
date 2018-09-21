@@ -12,6 +12,7 @@ import {
   SETTINGS_FILE_ID,
   SETTINGS_SOLUTION_ID,
   NULL_SOLUTION_ID,
+  ABOUT_FILE_ID,
 } from '../../../constants'
 
 import Monaco from './Monaco'
@@ -185,8 +186,6 @@ class Editor extends Component<IProps, IState> {
       isFoldingEnabled,
     } = editorSettings
 
-    console.log('getting monaco options')
-
     return {
       selectOnLineNumbers: true,
       fontSize,
@@ -211,7 +210,9 @@ class Editor extends Component<IProps, IState> {
       glyphMargin: false,
       fixedOverflowWidgets: true,
       ariaLabel: 'todo',
-      readOnly: this.props.activeSolution.id === NULL_SOLUTION_ID,
+      readOnly:
+        this.props.activeSolution.id === NULL_SOLUTION_ID ||
+        this.props.activeFile.id === ABOUT_FILE_ID,
     }
   }
 
