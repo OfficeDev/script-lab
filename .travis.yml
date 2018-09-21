@@ -3,11 +3,11 @@ language: node_js
 node_js:
   - 10
 
-branches:
-  only:
-    - master
-    - beta
-    - production
+# branches:
+#   only:
+#     - master
+#     - beta
+#     - production
 
 cache:
   yarn: true
