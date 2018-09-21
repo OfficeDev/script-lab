@@ -3,7 +3,7 @@ var shell = require('shelljs')
 var { TRAVIS_BRANCH, TRAVIS_COMMIT } = process.env // from travis
 
 var REACT_APP_STAGING = {
-  deployment: 'alpha',
+  master: 'alpha',
   beta: 'beta',
   production: 'production',
 }[TRAVIS_BRANCH]

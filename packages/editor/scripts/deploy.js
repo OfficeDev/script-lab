@@ -12,7 +12,7 @@ var {
 var TRAVIS_COMMIT_MESSAGE_SANITIZED = TRAVIS_COMMIT_MESSAGE.replace(/\W/g, '_')
 
 var deploymentSlot = {
-  deployment: '-alpha', // test
+  master: '-alpha', // test
   beta: '-beta',
   production: '',
 }[TRAVIS_BRANCH]
@@ -22,7 +22,7 @@ var SITE = `${BASE_SITE}${deploymentSlot}`
 
 shell.exec(`echo '${TRAVIS_PULL_REQUEST}'`)
 
-if (TRAVIS_PULL_REQUEST != false && deploymentSlot !== undefined) {
+if (deploymentSlot !== undefined) {
   shell.exec('echo "starting deployment"')
   shell.cd('build')
   shell.exec('git init')

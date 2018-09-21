@@ -12,15 +12,14 @@ var {
 var TRAVIS_COMMIT_MESSAGE_SANITIZED = TRAVIS_COMMIT_MESSAGE.replace(/\W/g, "_");
 
 var deploymentSlot = {
-  deployment: "-alpha", // test
-  beta: "-beta",
+  master: "-alpha",
   production: ""
 }[TRAVIS_BRANCH];
 
 var BASE_SITE = "script-lab-react-server";
 var SITE = `${BASE_SITE}${deploymentSlot}`;
 
-if (TRAVIS_PULL_REQUEST != false && deploymentSlot !== undefined) {
+if (deploymentSlot !== undefined) {
   shell.cd("build");
   shell.exec("git init");
 
