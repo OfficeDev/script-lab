@@ -20,10 +20,11 @@ before_script:
   - yarn copy-monaco
 
 script:
-  - yarn build
+  - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then yarn test; fi'
+  - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then yarn build; fi'
 
 after_success:
-  - yarn deploy
+  - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then yarn deploy; fi'
 
 env:
   global:
