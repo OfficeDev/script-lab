@@ -3,7 +3,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "outDir": "build/dist",
-    "typeRoots": ["./src/interfaces", "node_modules/@types"]
+    "typeRoots": ["./src/interfaces", "node_modules/@types", "../../node_modules/@types"]
   },
   "include": ["../interfaces/*", "./src/**/*"],
   "exclude": [
