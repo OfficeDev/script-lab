@@ -33,6 +33,7 @@ script:
 deploy:
   - provider: azure_web_apps
     site: script-lab-react
+    skip_cleanup: true
     verbose: true
     slot: script-lab-react-alpha
     before_deploy:
