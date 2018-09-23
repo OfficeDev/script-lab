@@ -266,7 +266,7 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
             initialsColor="white"
             styles={{
               initials: {
-                color: theme.primary,
+                color: (theme && theme.primary) || 'black',
               },
             }}
           />

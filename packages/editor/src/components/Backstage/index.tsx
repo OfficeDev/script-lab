@@ -101,9 +101,12 @@ export class Backstage extends Component<IProps, IState> {
   }
 
   setWidth = () => {
-    const { width } = this.containerDomNode.current.getBoundingClientRect()
-    if (this.state.width !== width) {
-      this.setState({ width })
+    const { current } = this.containerDomNode
+    if (current) {
+      const { width } = current.getBoundingClientRect()
+      if (this.state.width !== width) {
+        this.setState({ width })
+      }
     }
   }
 
