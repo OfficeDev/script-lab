@@ -38,7 +38,7 @@ deploy:
     after_deploy:
       - cd ../
     on:
-      branch: master
+      branch: deployment
       condition: $PACKAGE_NAME = editor
 
   - provider: azure_web_apps
