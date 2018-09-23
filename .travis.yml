@@ -5,11 +5,8 @@ node_js:
 
 cache: yarn
 
-before_install:
-  - yarn global add lerna
-
 install:
-  - lerna bootstrap
+  - yarn install
 
 before_script:
   - yarn copy-monaco

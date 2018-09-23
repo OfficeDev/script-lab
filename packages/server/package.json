@@ -4,7 +4,8 @@
   "scripts": {
     "start": "nodemon index.ts",
     "build": "tsc && cp web.config build/. && cp -r node_modules build/.",
-    "deploy": "node scripts/deploy.js"
+    "deploy": "node scripts/deploy.js",
+    "test": "echo 'no tests'"
   },
   "dependencies": {
     "body-parser": "^1.18.3",
