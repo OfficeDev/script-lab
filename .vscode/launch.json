@@ -2,14 +2,25 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Chrome",
+      "name": "Editor",
       "type": "chrome",
       "request": "launch",
-      "url": "https://localhost:3000",
-      "webRoot": "${workspaceRoot}/client/src",
+      "url": "http://localhost:3000",
+      "webRoot": "${workspaceRoot}/packages/editor/src",
       "userDataDir": "${workspaceRoot}/.vscode/chrome",
       "sourceMapPathOverrides": {
-        "webpack:///client/src/*": "${webRoot}/*"
+        "webpack:///packages/editor/src/*": "${webRoot}/*"
+      }
+    },
+    {
+      "name": "Runner",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:3000",
+      "webRoot": "${workspaceRoot}/packages/runner/src",
+      "userDataDir": "${workspaceRoot}/.vscode/chrome",
+      "sourceMapPathOverrides": {
+        "webpack:///packages/runner/src/*": "${webRoot}/*"
       }
     }
   ]

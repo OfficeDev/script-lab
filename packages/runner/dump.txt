@@ -1,0 +1,22 @@
+yarn run v1.7.0
+$ react-scripts-ts start
+Failed to load tsconfig.json: Missing baseUrl in compilerOptions
+Found no baseUrl in tsconfig.json, not applying tsconfig-paths-webpack-plugin
+Found no baseUrl in tsconfig.json, not applying tsconfig-paths-webpack-plugin
+Starting type checking and linting service...
+Using [1m1 worker[22m with [1m2048MB[22m memory limit
+Watching: [90m/Users/nicobell/Coding/ide/packages/runner/src[39m
+Starting the development server...
+
+ts-loader: Using typescript@3.0.3 and /Users/nicobell/Coding/ide/packages/runner/tsconfig.json
+Compiled successfully!
+
+You can now view runner2 in the browser.
+
+  Local:            http://localhost:3000/
+  On Your Network:  http://192.168.1.56:3000/
+
+Note that the development build is not optimized.
+To create a production build, use yarn build.
+
+Compiling...
