@@ -100,6 +100,7 @@ class Editor extends Component<IProps, IState> {
   monaco: any
   state = { isSaveSettingsDialogVisible: false }
   resizeInterval: any
+  resizeListener: any
 
   constructor(props) {
     super(props)
@@ -117,10 +118,10 @@ class Editor extends Component<IProps, IState> {
 
   componentWillUnmount = () => {
     clearInterval(this.resizeInterval)
+    window.removeEventListener('resize', this.resizeListener)
   }
 
   changeActiveFile = (oldFile: IFile | null, newFile: IFile) => {
-    console.log('active file changed')
     if (this.editor && newFile) {
       if (oldFile && oldFile.id === SETTINGS_FILE_ID && this.checkIfUnsaved(oldFile)) {
         // Open the save settings dialog if the user tries to
@@ -175,7 +176,10 @@ class Editor extends Component<IProps, IState> {
 
     this.changeActiveFile(null, this.props.activeFile)
 
-    window.addEventListener('resize', debounce(this.resizeEditor, 100))
+    this.resizeListener = window.addEventListener(
+      'resize',
+      debounce(this.resizeEditor, 100),
+    )
 
     this.props.signalEditorLoaded()
   }
