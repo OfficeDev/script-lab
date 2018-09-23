@@ -32,8 +32,6 @@ deploy:
     site: script-lab-react
     verbose: true
     slot: alpha
-    username: $DEPLOYMENT_USERNAME
-    password: $DEPLOYMENT_PASSWORD
     before_deploy:
       - cd build
     after_deploy:
@@ -45,8 +43,6 @@ deploy:
   - provider: azure_web_apps
     site: script-lab-react
     slot: beta
-    username: $DEPLOYMENT_USERNAME
-    password: $DEPLOYMENT_PASSWORD
     before_deploy:
       - cd build
     after_deploy:
