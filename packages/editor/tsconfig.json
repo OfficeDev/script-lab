@@ -2,7 +2,6 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "baseUrl": ".",
-    "rootDir": "./",
     "outDir": "build/dist",
     "typeRoots": ["./src/interfaces", "node_modules/@types"]
   },
