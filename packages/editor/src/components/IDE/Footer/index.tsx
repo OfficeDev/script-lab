@@ -1,5 +1,7 @@
 import React from 'react'
 import { withTheme } from 'styled-components'
+import { getCurrentEnv } from '../../../environment'
+import { PATHS } from '../../../constants'
 
 import {
   DirectionalHint,
@@ -124,6 +126,9 @@ const FooterWithoutTheme = ({
                         ':hover': {
                           background: theme.primaryDark,
                         },
+                        ':active': {
+                          background: theme.primaryDarker,
+                        },
                       },
                     },
                     label: {
@@ -145,6 +150,15 @@ const FooterWithoutTheme = ({
           primary={true}
           text={languageMap[language.toLowerCase()]}
           styles={buttonStyles}
+        />
+      </Only>
+
+      <Only when={getCurrentEnv() !== 'production'}>
+        <IconButton
+          primary={true}
+          iconProps={{ iconName: 'Bug' }}
+          styles={buttonStyles}
+          href={PATHS.GITHUB_ISSUE}
         />
       </Only>
 
