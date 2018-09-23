@@ -1,18 +1,21 @@
 {
-  "name": "script-lab",
-  "version": "2.0.0",
+  "name": "script-lab-react",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
     "installAll": "yarn install && cd packages/editor && yarn install && cd ../server && yarn install",
     "copy-monaco": "cd packages/editor && yarn copy-monaco",
     "build": "cd packages/editor && yarn build && cd ../server && yarn build",
     "deploy": "cd packages/editor && yarn deploy && cd ../server && yarn deploy",
-    "test": "cd packages/editor && yarn test",
     "editor": "cd packages/editor && yarn start",
     "server": "cd packages/server && yarn start",
     "start": "concurrently --kill-others-on-fail \"yarn server\" \"yarn editor\""
   },
-  "dependencies": {},
   "devDependencies": {
-    "concurrently": "^3.5.0"
+    "concurrently": "^3.5.0",
+    "lerna": "^3.4.0"
   }
 }
