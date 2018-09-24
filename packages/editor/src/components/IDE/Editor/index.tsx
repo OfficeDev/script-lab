@@ -247,7 +247,6 @@ class Editor extends Component<IProps, IState> {
   }
 
   prettifyCode = () => {
-    console.log('prettify called')
     const model = this.editor.getModel()
     const unformatted = model.getValue()
     if (unformatted) {
@@ -257,7 +256,6 @@ class Editor extends Component<IProps, IState> {
       })
 
       if (formatted !== unformatted) {
-        console.log('setting model')
         model.setValue(formatted)
       }
     }
