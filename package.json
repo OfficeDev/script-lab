@@ -6,7 +6,6 @@
     "packages/*"
   ],
   "scripts": {
-    "installAll": "yarn install && cd packages/editor && yarn install && cd ../server && yarn install",
     "copy-monaco": "cd packages/editor && yarn copy-monaco",
     "build": "cd packages/editor && yarn build && cd ../server && yarn build",
     "deploy": "node scripts/deploy.js",
@@ -16,7 +15,6 @@
   },
   "devDependencies": {
     "concurrently": "^3.5.0",
-    "lerna": "^3.4.0",
     "shelljs": "^0.8.2"
   }
 }
