@@ -34,7 +34,7 @@ script:
 
 after_success:
   - cd ..
-  - yarn deploy
+  - if [[ "$PULL_REQUEST" == false ]]; then yarn deploy; fi
 
 env:
   global:

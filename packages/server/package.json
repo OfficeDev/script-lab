@@ -4,7 +4,6 @@
   "scripts": {
     "start": "webpack --mode development",
     "build": "webpack --mode production",
-    "deploy": "node scripts/deploy.js",
     "test": "echo 'no tests'"
   },
   "dependencies": {
