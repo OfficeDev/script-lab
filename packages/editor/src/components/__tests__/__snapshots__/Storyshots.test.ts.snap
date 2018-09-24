@@ -232,7 +232,7 @@ exports[`Storyshots Backstage|All basic 1`] = `
     <div
       className="sc-ifAKCX jMcgzj"
     >
-      <main
+      <div
         className="sc-bwzfXH gBubRK"
       >
         <h1
@@ -575,7 +575,7 @@ exports[`Storyshots Backstage|All basic 1`] = `
             </article>
           </div>
         </section>
-      </main>
+      </div>
     </div>
   </div>
 </div>
@@ -1425,7 +1425,7 @@ exports[`Storyshots Backstage|GalleryList/Item basic 1`] = `
 `;
 
 exports[`Storyshots Backstage|ImportSolution basic 1`] = `
-<main
+<div
   className="sc-bwzfXH gBubRK"
 >
   <h1
@@ -1508,7 +1508,7 @@ exports[`Storyshots Backstage|ImportSolution basic 1`] = `
       </div>
     </div>
   </button>
-</main>
+</div>
 `;
 
 exports[`Storyshots Backstage|Menu basic 1`] = `
@@ -1809,7 +1809,7 @@ exports[`Storyshots Backstage|Menu basic 1`] = `
 `;
 
 exports[`Storyshots Backstage|MySolutions basic 1`] = `
-<main
+<div
   className="sc-bwzfXH gBubRK"
 >
   <h1
@@ -2152,11 +2152,11 @@ exports[`Storyshots Backstage|MySolutions basic 1`] = `
       </article>
     </div>
   </section>
-</main>
+</div>
 `;
 
 exports[`Storyshots Backstage|Samples basic 1`] = `
-<main
+<div
   className="sc-bwzfXH gBubRK"
 >
   <h1
@@ -4217,11 +4217,11 @@ exports[`Storyshots Backstage|Samples basic 1`] = `
       </article>
     </div>
   </section>
-</main>
+</div>
 `;
 
 exports[`Storyshots Custom Functions|Coming Soon basic 1`] = `
-<main
+<div
   className="sc-jzJRlG fMeyJC"
 >
   <img
@@ -4257,14 +4257,14 @@ exports[`Storyshots Custom Functions|Coming Soon basic 1`] = `
     </a>
     .
   </p>
-</main>
+</div>
 `;
 
 exports[`Storyshots Custom Functions|Console basic 1`] = `
 <div
   className="sc-eHgmQL jjLxRA"
 >
-  <main
+  <div
     className="sc-jWBwVP keUZJP"
   >
     <div
@@ -4524,7 +4524,7 @@ exports[`Storyshots Custom Functions|Console basic 1`] = `
         </button>
       </div>
     </div>
-  </main>
+  </div>
 </div>
 `;
 
@@ -4532,7 +4532,7 @@ exports[`Storyshots Custom Functions|Console empty 1`] = `
 <div
   className="sc-eHgmQL jjLxRA"
 >
-  <main
+  <div
     className="sc-jWBwVP keUZJP"
   >
     <div
@@ -4593,7 +4593,7 @@ exports[`Storyshots Custom Functions|Console empty 1`] = `
         </div>
       </div>
     </div>
-  </main>
+  </div>
 </div>
 `;
 
@@ -4841,7 +4841,7 @@ exports[`Storyshots Custom Functions|Dashboard as standalone 1`] = `
       </div>
     </div>
   </div>
-  <main
+  <div
     className="sc-jWBwVP keUZJP"
   >
     <div>
@@ -5103,7 +5103,7 @@ exports[`Storyshots Custom Functions|Dashboard as standalone 1`] = `
         </div>
       </div>
     </div>
-  </main>
+  </div>
 </div>
 `;
 
@@ -5352,14 +5352,14 @@ exports[`Storyshots Custom Functions|Dashboard basic 1`] = `
       </div>
     </div>
   </header>
-  <main
+  <div
     className="sc-jWBwVP keUZJP"
   >
     <div>
       I AM 
       A
     </div>
-  </main>
+  </div>
 </div>
 `;
 
@@ -5572,7 +5572,7 @@ exports[`Storyshots Custom Functions|Dashboard with actual tabs 1`] = `
       </div>
     </div>
   </header>
-  <main
+  <div
     className="sc-jWBwVP keUZJP"
   >
     <div>
@@ -5834,7 +5834,7 @@ exports[`Storyshots Custom Functions|Dashboard with actual tabs 1`] = `
         </div>
       </div>
     </div>
-  </main>
+  </div>
 </div>
 `;
 
@@ -6116,7 +6116,7 @@ exports[`Storyshots Custom Functions|Dashboard with refresh 1`] = `
       </div>
     </div>
   </div>
-  <main
+  <div
     className="sc-jWBwVP keUZJP"
   >
     <div>
@@ -6378,7 +6378,7 @@ exports[`Storyshots Custom Functions|Dashboard with refresh 1`] = `
         </div>
       </div>
     </div>
-  </main>
+  </div>
 </div>
 `;
 
@@ -6386,7 +6386,7 @@ exports[`Storyshots Custom Functions|Summary all bad 1`] = `
 <div
   className="sc-eHgmQL jjLxRA"
 >
-  <main
+  <div
     className="sc-jWBwVP keUZJP"
   >
     <div>
@@ -6524,7 +6524,7 @@ exports[`Storyshots Custom Functions|Summary all bad 1`] = `
         </div>
       </div>
     </div>
-  </main>
+  </div>
 </div>
 `;
 
@@ -6532,7 +6532,7 @@ exports[`Storyshots Custom Functions|Summary all good 1`] = `
 <div
   className="sc-eHgmQL jjLxRA"
 >
-  <main
+  <div
     className="sc-jWBwVP keUZJP"
   >
     <div>
@@ -6670,7 +6670,7 @@ exports[`Storyshots Custom Functions|Summary all good 1`] = `
         </div>
       </div>
     </div>
-  </main>
+  </div>
 </div>
 `;
 
@@ -6678,7 +6678,7 @@ exports[`Storyshots Custom Functions|Summary basic 1`] = `
 <div
   className="sc-eHgmQL jjLxRA"
 >
-  <main
+  <div
     className="sc-jWBwVP keUZJP"
   >
     <div>
@@ -6940,7 +6940,7 @@ exports[`Storyshots Custom Functions|Summary basic 1`] = `
         </div>
       </div>
     </div>
-  </main>
+  </div>
 </div>
 `;
 
@@ -6948,7 +6948,7 @@ exports[`Storyshots Custom Functions|Summary loading 1`] = `
 <div
   className="sc-eHgmQL jjLxRA"
 >
-  <main
+  <div
     className="sc-jWBwVP keUZJP"
   >
     <div
@@ -6971,7 +6971,7 @@ exports[`Storyshots Custom Functions|Summary loading 1`] = `
         />
       </div>
     </div>
-  </main>
+  </div>
 </div>
 `;
 
@@ -7119,7 +7119,7 @@ exports[`Storyshots Custom Functions|Summary/Items basic 1`] = `
 `;
 
 exports[`Storyshots Custom Functions|Welcome basic 1`] = `
-<main
+<div
   className="sc-Rmtcm khnGYV"
 >
   <h1
@@ -7222,7 +7222,7 @@ exports[`Storyshots Custom Functions|Welcome basic 1`] = `
       </div>
     </button>
   </section>
-</main>
+</div>
 `;
 
 exports[`Storyshots IDE|Footer basic 1`] = `
