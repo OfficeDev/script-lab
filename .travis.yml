@@ -37,6 +37,7 @@ deploy:
     verbose: true
     slot: script-lab-react-alpha
     before_deploy:
+      - rm .gitignore
       - cd build
     after_deploy:
       - cd ../
