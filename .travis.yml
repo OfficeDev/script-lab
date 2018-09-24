@@ -3,9 +3,6 @@ language: node_js
 node_js:
   - 10
 
-git:
-  depth: false
-
 cache: yarn
 
 install:
@@ -26,6 +23,7 @@ matrix:
       env:
         - PACKAGE_LOCATION=packages/server
         - PACKAGE_NAME=server
+        - SITE_NAME=script-lab-react-server
 
 script:
   - cd $PACKAGE_LOCATION
