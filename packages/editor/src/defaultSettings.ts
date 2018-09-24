@@ -34,7 +34,7 @@ const getSettingsContent = (settings?: ISettings): string => {
 const getAboutContent = (): string => {
   const commit = process.env.REACT_APP_COMMIT
   const lastUpdated = process.env.REACT_APP_LAST_UPDATED
-  return `Last Updated: ${lastUpdated}\nCommit: ${commit}`
+  return `Last Updated: ${lastUpdated}\nCommit: ${commit}\nEnvironment: ${environmentName}`
 }
 
 const getSettingsFiles = (timestamp: number, settings?: ISettings): IFile[] => [
