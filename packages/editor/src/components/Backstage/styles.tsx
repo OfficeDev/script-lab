@@ -17,7 +17,7 @@ export const BackstageWrapper = styled.div`
   }
 `
 
-export const ContentWrapper = styled.main`
+export const ContentWrapper = styled.div`
   height: 100%;
   width: 100%;
   padding: 1rem;

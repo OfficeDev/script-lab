@@ -12,7 +12,10 @@ export function* openSolutionSaga(action: ActionType<typeof editor.open>) {
 export function* hasLoadedSaga(action: ActionType<typeof editor.signalHasLoaded>) {
   const loadingIndicator = document.getElementById('loading')
   if (loadingIndicator) {
-    loadingIndicator.remove()
+    const { parentNode } = loadingIndicator
+    if (parentNode) {
+      parentNode.removeChild(loadingIndicator)
+    }
   }
 }
 
