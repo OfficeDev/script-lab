@@ -32,7 +32,7 @@ script:
 
 after_success:
   - cd ..
-  - if [[ "$PULL_REQUEST" == false ]]; then yarn deploy; fi
+  - if [[ "$TRAVIS_PULL_REQUEST" == false ]]; then yarn deploy; fi
 
 env:
   global:
