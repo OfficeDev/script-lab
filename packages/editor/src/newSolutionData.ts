@@ -8,7 +8,7 @@ export const getBoilerplateFiles = (timestamp: number): IFile[] =>
       content: `$("#run").click(() => tryCatch(run));
 
 async function run() {
-    console.log("Your code here");
+    console.log("Hello World");
 }
 
 /** Default helper for invoking an action and handling errors. */

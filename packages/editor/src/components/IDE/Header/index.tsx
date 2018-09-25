@@ -135,6 +135,7 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
       profilePicUrl,
       isRunnableOnThisHost,
       isLoggedIn,
+      theme,
       headerFabricTheme,
       logout,
       login,
@@ -267,7 +268,7 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
             initialsColor="white"
             styles={{
               initials: {
-                color: 'green',
+                color: (theme && theme.primary) || 'black',
               },
             }}
           />

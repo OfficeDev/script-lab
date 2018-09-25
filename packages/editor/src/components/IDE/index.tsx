@@ -23,12 +23,14 @@ const FILE_NAME_MAP = {
 
 interface IPropsFromRedux {
   isVisible: boolean
+  hasLoaded: boolean
   activeSolution: ISolution
   activeFile: IFile
 }
 
 const mapStateToProps = (state: IReduxState): Partial<IPropsFromRedux> => ({
   isVisible: state.editor.isVisible,
+  hasLoaded: state.editor.hasLoaded,
   activeSolution: selectors.editor.getActiveSolution(state),
   activeFile: selectors.editor.getActiveFile(state),
 })
@@ -54,9 +56,15 @@ class IDE extends Component<IIDE> {
     this.props.openFile(this.props.activeSolution.id, fileId)
 
   render() {
-    const { isVisible, activeSolution, activeFile } = this.props
+    const { isVisible, hasLoaded, activeSolution, activeFile } = this.props
     return (
-      <Layout style={{ display: isVisible ? 'flex' : 'none' }}>
+      <Layout
+        style={
+          isVisible && hasLoaded
+            ? { visibility: 'visible' }
+            : { visibility: 'hidden', opacity: hasLoaded ? 1 : 0 }
+        }
+      >
         <Header solution={activeSolution} />
         <PivotBar
           items={activeSolution.files.map(file => ({
@@ -72,7 +80,7 @@ class IDE extends Component<IIDE> {
             activeSolution={activeSolution}
             activeFiles={activeSolution.files}
             activeFile={activeFile}
-            isVisible={isVisible}
+            isVisible={isVisible && hasLoaded}
           />
         </ContentWrapper>
         <Footer />

@@ -14,10 +14,11 @@ const PivotBarWrapper = styled.div`
 
 export interface IPivotBarItem {
   key: string
-  text: string
+  text?: string
+  iconName?: string
 }
 
-export interface IPivotBar {
+export interface IProps {
   items: IPivotBarItem[]
   selectedKey: string | null
   onSelect: (selectedKey: string) => void
@@ -25,11 +26,23 @@ export interface IPivotBar {
 
   backgroundColor?: string
   selectedColor?: string
+  hideUnderline?: boolean
 }
 
-class PivotBar extends React.Component<IPivotBar> {
+class PivotBar extends React.Component<IProps> {
+  static defaultProps: Partial<IProps> = {
+    hideUnderline: false,
+  }
+
   render() {
-    const { items, selectedKey, theme, backgroundColor, selectedColor } = this.props
+    const {
+      items,
+      selectedKey,
+      theme,
+      backgroundColor,
+      selectedColor,
+      hideUnderline,
+    } = this.props
 
     return (
       <PivotBarWrapper>
@@ -51,7 +64,7 @@ class PivotBar extends React.Component<IPivotBar> {
               backgroundColor: selectedColor || theme.primaryDarkest,
               selectors: {
                 ':before': {
-                  borderBottom: `2px solid ${theme.white}`,
+                  borderBottom: `${hideUnderline ? 0 : 2}px solid ${theme.white}`,
                 },
               },
             },
@@ -59,7 +72,12 @@ class PivotBar extends React.Component<IPivotBar> {
           }}
         >
           {items.map(item => (
-            <PivotItem key={item.key} itemKey={item.key} linkText={item.text} />
+            <PivotItem
+              key={item.key}
+              itemKey={item.key}
+              linkText={item.text}
+              itemIcon={item.iconName}
+            />
           ))}
         </Pivot>
       </PivotBarWrapper>

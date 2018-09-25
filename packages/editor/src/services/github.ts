@@ -1,5 +1,6 @@
 import { Authenticator, IToken } from '@microsoft/office-js-helpers'
 import { request as generalRequest, IResponseOrError } from './general'
+import { authServerUrl, githubAppClientId } from '../environment'
 
 const baseApiUrl = 'https://api.github.com'
 
@@ -22,12 +23,12 @@ export const login = async (): Promise<{ token?: string; profilePicUrl?: string 
   const auth = new Authenticator()
 
   auth.endpoints.add('GitHub', {
-    clientId: '210a167954d9ef04b501', // TODO: un-hardcode clientId
+    clientId: githubAppClientId,
     baseUrl: 'https://github.com/login',
     authorizeUrl: '/oauth/authorize',
     scope: 'gist',
     state: true,
-    tokenUrl: 'http://localhost:5000/auth',
+    tokenUrl: `${authServerUrl}/auth`,
   })
 
   const token: IToken = await auth.authenticate('GitHub')
