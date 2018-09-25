@@ -152,7 +152,7 @@ class Editor extends Component<IProps, IState> {
         }
       })
 
-      // For some unknown reason, the editor.getActiveSolution('editor.action.format').run() did not work at this point in the code
+      // For some unknown reason, the editor.getAction('editor.action.format').run() did not work at this point in the code
       if (this.props.editorSettings.isPrettierEnabled) {
         this.editor.trigger('anyString', 'editor.action.formatDocument', '')
       }
