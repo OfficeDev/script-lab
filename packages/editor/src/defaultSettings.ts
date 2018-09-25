@@ -5,6 +5,8 @@ import {
   ABOUT_FILE_ID,
 } from './constants'
 
+import { environmentName } from './environment'
+
 export const defaultSettings: ISettings = {
   editor: {
     theme: 'dark',
@@ -17,6 +19,20 @@ export const defaultSettings: ISettings = {
   },
   hostSpecific: { officeOnline: { openEditorInNewTab: 'prompt' } },
   defaultActions: { applySettings: 'prompt', gistImport: 'prompt' },
+  environment: environmentName,
+}
+
+const getSettingsContent = (settings?: ISettings): string => {
+  const settingsToSet = settings !== undefined ? settings : defaultSettings
+  settingsToSet.environment = environmentName
+  const { tabSize } = settingsToSet.editor
+  return JSON.stringify(settingsToSet, null, tabSize) + '\n'
+}
+
+const getAboutContent = (): string => {
+  const commit = process.env.REACT_APP_COMMIT
+  const lastUpdated = process.env.REACT_APP_LAST_UPDATED
+  return `Last Updated: ${lastUpdated}\nCommit: ${commit}\nEnvironment: ${environmentName}`
 }
 
 const getSettingsFiles = (timestamp: number, settings?: ISettings): IFile[] => [
@@ -26,8 +42,7 @@ const getSettingsFiles = (timestamp: number, settings?: ISettings): IFile[] => [
     dateCreated: timestamp,
     dateLastModified: timestamp,
     language: SETTINGS_JSON_LANGUAGE,
-    content:
-      JSON.stringify(settings !== undefined ? settings : defaultSettings, null, 4) + '\n',
+    content: getSettingsContent(settings),
   },
   {
     id: ABOUT_FILE_ID,
@@ -35,7 +50,7 @@ const getSettingsFiles = (timestamp: number, settings?: ISettings): IFile[] => [
     dateCreated: timestamp,
     dateLastModified: timestamp,
     language: 'plaintext',
-    content: `Version 2.0.0`,
+    content: getAboutContent(),
   },
 ]
 

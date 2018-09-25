@@ -3,6 +3,7 @@ import librariesIntellisenseJSON from './libraryIntellisense'
 import SettingsSchema from '../../../../SettingsJSONSchema'
 import { SETTINGS_FILE_ID } from '../../../../constants'
 import isEqual from 'lodash/isEqual'
+import { setOptions } from './monaco-models'
 interface IDisposableFile {
   url: string
   disposable: monaco.IDisposable
@@ -44,6 +45,7 @@ function parse(libraries: string): string[] {
 interface IReactMonaco {
   theme: string
   options: monaco.editor.IEditorConstructionOptions
+  tabSize: number
   editorDidMount: (editor, monaco) => void
   libraries?: string
 }
@@ -95,6 +97,10 @@ class ReactMonaco extends Component<IReactMonaco, IReactMonacoState> {
 
     if (this.editor && !isEqual(prevProps.options, this.props.options)) {
       this.editor.updateOptions(this.props.options)
+    }
+
+    if (prevProps.tabSize !== this.props.tabSize) {
+      setOptions({ tabSize: this.props.tabSize })
     }
   }
 
@@ -165,6 +171,7 @@ class ReactMonaco extends Component<IReactMonaco, IReactMonacoState> {
         ],
       })
 
+      setOptions({ tabSize: this.props.tabSize })
       this.editorDidMount(this.editor, monaco)
       this.updateIntellisense()
     }

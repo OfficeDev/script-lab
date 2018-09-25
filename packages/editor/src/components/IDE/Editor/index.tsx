@@ -12,6 +12,7 @@ import {
   SETTINGS_FILE_ID,
   SETTINGS_SOLUTION_ID,
   NULL_SOLUTION_ID,
+  ABOUT_FILE_ID,
 } from '../../../constants'
 
 import Monaco from './Monaco'
@@ -29,6 +30,7 @@ interface IEditorSettings {
   monacoTheme: string
   fontFamily: string
   fontSize: number
+  tabSize: number
   lineHeight: number
   isMinimapEnabled: boolean
   isFoldingEnabled: boolean
@@ -49,6 +51,7 @@ const mapStateToProps = (state, ownProps: IProps): IPropsFromRedux => ({
     monacoTheme: selectors.settings.getMonacoTheme(state),
     fontFamily: selectors.settings.getFontFamily(state),
     fontSize: selectors.settings.getFontSize(state),
+    tabSize: selectors.settings.getTabSize(state),
     lineHeight: selectors.settings.getLineHeight(state),
     isMinimapEnabled: selectors.settings.getIsMinimapEnabled(state),
     isFoldingEnabled: selectors.settings.getIsFoldingEnabled(state),
@@ -64,6 +67,7 @@ interface IActionsFromRedux {
     file: Partial<IEditableFileProperties>,
   ) => void
   openSettings: () => void
+  signalEditorLoaded: () => void
 }
 
 const mapDispatchToProps = (dispatch, ownProps: IProps): IActionsFromRedux => ({
@@ -75,6 +79,7 @@ const mapDispatchToProps = (dispatch, ownProps: IProps): IActionsFromRedux => ({
     file: Partial<IEditableFileProperties>,
   ) => dispatch(solutions.edit({ id: solutionId, fileId, file })),
   openSettings: () => dispatch(settings.open()),
+  signalEditorLoaded: () => dispatch(editor.signalHasLoaded()),
 })
 
 export interface IProps extends IPropsFromRedux, IActionsFromRedux {
@@ -95,6 +100,7 @@ class Editor extends Component<IProps, IState> {
   monaco: any
   state = { isSaveSettingsDialogVisible: false }
   resizeInterval: any
+  resizeListener: any
 
   constructor(props) {
     super(props)
@@ -112,10 +118,10 @@ class Editor extends Component<IProps, IState> {
 
   componentWillUnmount = () => {
     clearInterval(this.resizeInterval)
+    window.removeEventListener('resize', this.resizeListener)
   }
 
   changeActiveFile = (oldFile: IFile | null, newFile: IFile) => {
-    console.log('active file changed')
     if (this.editor && newFile) {
       if (oldFile && oldFile.id === SETTINGS_FILE_ID && this.checkIfUnsaved(oldFile)) {
         // Open the save settings dialog if the user tries to
@@ -170,7 +176,12 @@ class Editor extends Component<IProps, IState> {
 
     this.changeActiveFile(null, this.props.activeFile)
 
-    window.addEventListener('resize', debounce(this.resizeEditor, 100))
+    this.resizeListener = window.addEventListener(
+      'resize',
+      debounce(this.resizeEditor, 100),
+    )
+
+    this.props.signalEditorLoaded()
   }
 
   getMonacoOptions = (): monaco.editor.IEditorConstructionOptions => {
@@ -182,8 +193,6 @@ class Editor extends Component<IProps, IState> {
       isMinimapEnabled,
       isFoldingEnabled,
     } = editorSettings
-
-    console.log('getting monaco options')
 
     return {
       selectOnLineNumbers: true,
@@ -209,7 +218,10 @@ class Editor extends Component<IProps, IState> {
       glyphMargin: false,
       fixedOverflowWidgets: true,
       ariaLabel: 'todo',
-      readOnly: this.props.activeSolution.id === NULL_SOLUTION_ID,
+      wordWrap: 'bounded',
+      readOnly:
+        this.props.activeSolution.id === NULL_SOLUTION_ID ||
+        this.props.activeFile.id === ABOUT_FILE_ID,
     }
   }
 
@@ -236,7 +248,6 @@ class Editor extends Component<IProps, IState> {
   }
 
   prettifyCode = () => {
-    console.log('prettify called')
     const model = this.editor.getModel()
     const unformatted = model.getValue()
     if (unformatted) {
@@ -246,7 +257,6 @@ class Editor extends Component<IProps, IState> {
       })
 
       if (formatted !== unformatted) {
-        console.log('setting model')
         model.setValue(formatted)
       }
     }
@@ -290,10 +300,10 @@ class Editor extends Component<IProps, IState> {
       isSettingsView,
       theme,
     } = this.props
+
     const { monacoTheme } = editorSettings
     const options = this.getMonacoOptions()
     const libraries = activeFiles.find(file => file.name === 'libraries.txt')
-    console.log(JSON.stringify(activeSolution))
     return (
       <>
         <Only when={isSettingsView && this.checkIfUnsaved(this.props.activeFile)}>
@@ -342,6 +352,7 @@ class Editor extends Component<IProps, IState> {
           <Monaco
             theme={monacoTheme}
             options={options}
+            tabSize={editorSettings.tabSize}
             editorDidMount={this.setupEditor}
             libraries={libraries && libraries.content}
           />

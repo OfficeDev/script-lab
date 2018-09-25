@@ -17,7 +17,7 @@ export const exampleSolutions = [
         id: '5890734a-d2b1-4e80-af99-80b4e730a4f1',
         name: 'index.ts',
         content:
-          '$("#run").click(() => tryCatch(run));\n\nasync function run() {\n    await Excel.run(async (context) => {\n\n        OfficeHelpers.UI.notify("Your code goes here");\n\n        await context.sync();\n    });\n}\n\n/** Default helper for invoking an action and handling errors. */\nasync function tryCatch(callback) {\n    try {\n        await callback();\n    }\n    catch (error) {\n        OfficeHelpers.UI.notify(error);\n        OfficeHelpers.Utilities.log(error);\n    }\n}\n',
+          '$("#run").click(() => tryCatch(run));\n\nasync function run() {\n    await Excel.run(async (context) => {\n\n        OfficeHelpers.UI.notify("Hello world");\n\n        await context.sync();\n    });\n}\n\n/** Default helper for invoking an action and handling errors. */\nasync function tryCatch(callback) {\n    try {\n        await callback();\n    }\n    catch (error) {\n        OfficeHelpers.UI.notify(error);\n        OfficeHelpers.Utilities.log(error);\n    }\n}\n',
         language: 'typescript',
         dateCreated: 1535175129365,
         dateLastModified: 1535175129365,

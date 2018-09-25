@@ -31,4 +31,5 @@ interface ISettings {
   editor: IEditorSettings
   hostSpecific: IHostSpecificSettings
   defaultActions: IDefaultActions
+  environment: string
 }

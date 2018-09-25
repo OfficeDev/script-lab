@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { withTheme } from 'styled-components'
 import { BackstageWrapper, ContentContainer, LoadingContainer } from './styles'
+import debounce from 'lodash/debounce'
 
 import { Spinner, SpinnerSize } from 'office-ui-fabric-react/lib/Spinner'
 
@@ -75,6 +76,7 @@ interface IState {
   selectedKey: string
   conflictingGist: ISharedGistMetadata | null
   existingSolutionsConflicting: ISolution[] | null
+  width: number
 }
 
 export class Backstage extends Component<IProps, IState> {
@@ -83,6 +85,29 @@ export class Backstage extends Component<IProps, IState> {
     selectedKey: 'my-solutions',
     conflictingGist: null,
     existingSolutionsConflicting: null,
+    width: 0,
+  }
+  containerDomNode
+  resizeListener
+
+  constructor(props) {
+    super(props)
+    this.containerDomNode = React.createRef()
+  }
+
+  componentDidMount() {
+    this.resizeListener = window.addEventListener('resize', debounce(this.setWidth, 100))
+    this.setWidth()
+  }
+
+  setWidth = () => {
+    const { current } = this.containerDomNode
+    if (current) {
+      const { width } = current.getBoundingClientRect()
+      if (this.state.width !== width) {
+        this.setState({ width })
+      }
+    }
   }
 
   componentWillUnmount() {
@@ -178,37 +203,45 @@ export class Backstage extends Component<IProps, IState> {
       onSelect: () => this.setState({ selectedKey: item.key }),
       ...item,
     }))
-    const { selectedKey, conflictingGist, existingSolutionsConflicting } = this.state
+    const {
+      selectedKey,
+      conflictingGist,
+      existingSolutionsConflicting,
+      width,
+    } = this.state
     const activeItem = items.find(item => item.key === selectedKey)
     return (
-      <BackstageWrapper>
-        <Menu
-          selectedKey={this.state.selectedKey}
-          items={items.map(item => ({
-            key: item.key,
-            label: item.label,
-            icon: item.iconName,
-            onClick: item.onSelect,
-          }))}
-        />
-        <ContentContainer>
-          {activeItem && activeItem.content}
-          <Only when={this.state.isLoading}>
-            <LoadingContainer>
-              <Spinner size={SpinnerSize.large} />
-            </LoadingContainer>
-          </Only>
-        </ContentContainer>
-        {conflictingGist &&
-          existingSolutionsConflicting && (
-            <ConflictResolutionDialog
-              conflictingGist={conflictingGist}
-              existingSolutions={existingSolutionsConflicting}
-              closeDialog={this.hideGistConflictDialog}
-              openGist={this.props.openGist}
-            />
-          )}
-      </BackstageWrapper>
+      <div ref={this.containerDomNode}>
+        <BackstageWrapper>
+          <Menu
+            isCompact={width <= 500}
+            selectedKey={this.state.selectedKey}
+            items={items.map(item => ({
+              key: item.key,
+              label: item.label,
+              icon: item.iconName,
+              onClick: item.onSelect,
+            }))}
+          />
+          <ContentContainer>
+            {activeItem && activeItem.content}
+            <Only when={this.state.isLoading}>
+              <LoadingContainer>
+                <Spinner size={SpinnerSize.large} />
+              </LoadingContainer>
+            </Only>
+          </ContentContainer>
+          {conflictingGist &&
+            existingSolutionsConflicting && (
+              <ConflictResolutionDialog
+                conflictingGist={conflictingGist}
+                existingSolutions={existingSolutionsConflicting}
+                closeDialog={this.hideGistConflictDialog}
+                openGist={this.props.openGist}
+              />
+            )}
+        </BackstageWrapper>
+      </div>
     )
   }
 }

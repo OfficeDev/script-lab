@@ -87,30 +87,29 @@ export const loadState = (): Partial<IState> => {
   try {
     let solutions = JSON.parse(localStorage.getItem('solutions') || '{}')
     let files = JSON.parse(localStorage.getItem('files') || '{}')
-    let settings = JSON.parse(localStorage.getItem('settings') || 'null')
+    let settings = JSON.parse(localStorage.getItem('validSettings') || 'null')
     const github = JSON.parse(localStorage.getItem('github') || '{}')
 
-    // inject settings if doesn't exist
-    if (!Object.keys(solutions).includes(SETTINGS_SOLUTION_ID)) {
-      const presetSettings = settings || defaultSettings
-      const settingsSolAndFiles = getSettingsSolutionAndFiles(presetSettings)
-      solutions = { ...solutions, [SETTINGS_SOLUTION_ID]: settingsSolAndFiles.solution }
-      files = {
-        ...files,
-        ...settingsSolAndFiles.files.reduce(
-          (all, file) => ({ ...all, [file.id]: file }),
-          {},
-        ),
-      }
+    const presetSettings = settings
+      ? merge(defaultSettings, settings, allowedSettings)
+      : defaultSettings
+
+    const settingsSolAndFiles = getSettingsSolutionAndFiles(presetSettings)
+    solutions = { ...solutions, [SETTINGS_SOLUTION_ID]: settingsSolAndFiles.solution }
+    files = {
+      ...files,
+      ...settingsSolAndFiles.files.reduce(
+        (all, file) => ({ ...all, [file.id]: file }),
+        {},
+      ),
     }
 
     // get initial settings
     const settingsFile = files[SETTINGS_FILE_ID]
-    const presetSettings = settings || defaultSettings
 
     try {
       settings = {
-        values: merge(presetSettings, JSON.parse(settingsFile.content), allowedSettings),
+        values: presetSettings,
         lastActive: { solutionId: null, fileId: null },
       }
     } catch (e) {

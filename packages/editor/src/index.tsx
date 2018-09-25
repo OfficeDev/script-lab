@@ -4,7 +4,7 @@ import * as ReactDOM from 'react-dom'
 import { Authenticator } from '@microsoft/office-js-helpers'
 import configureStore from './store/configureStore'
 import { setupFabricTheme } from './theme'
-import registerServiceWorker from './registerServiceWorker'
+import registerServiceWorker, { unregister } from './registerServiceWorker'
 import { misc } from './store/actions'
 import selectors from './store/selectors'
 import { initializeIcons } from 'office-ui-fabric-react/lib/Icons'
@@ -42,5 +42,5 @@ Office.onReady(async () => {
     'root',
   ) as HTMLElement)
 
-  registerServiceWorker()
+  unregister() // did this help?
 })

@@ -18,6 +18,17 @@ const isVisible = (state: IIsVisibleState = initialVisibility, action) => {
   }
 }
 
+type IHasLoadedState = boolean
+
+const hasLoaded = (state: IHasLoadedState = false, action) => {
+  switch (action.type) {
+    case getType(editor.signalHasLoaded):
+      return true
+    default:
+      return state
+  }
+}
+
 interface IActiveState {
   solutionId: string | null
   fileId: string | null
@@ -37,10 +48,12 @@ const active = (
 
 export interface IState {
   isVisible: IIsVisibleState
+  hasLoaded: IHasLoadedState
   active: IActiveState
 }
 
 export default combineReducers({
   isVisible,
+  hasLoaded,
   active,
 })
