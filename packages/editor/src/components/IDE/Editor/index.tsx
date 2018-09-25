@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
 
 import debounce from 'lodash/debounce'
-import prettier from 'prettier/standalone'
-import prettierTypeScript from 'prettier/parser-typescript'
 
 import { MessageBar, MessageBarType } from 'office-ui-fabric-react/lib/MessageBar'
 import { Dialog, DialogType, DialogFooter } from 'office-ui-fabric-react/lib/Dialog'
@@ -106,12 +104,13 @@ class Editor extends Component<IProps, IState> {
     super(props)
   }
 
+  getEditor() {
+    return this.editor
+  }
+
   componentDidUpdate(prevProps) {
     if (prevProps.activeFile.id !== this.props.activeFile.id) {
       this.changeActiveFile(prevProps.activeFile, this.props.activeFile)
-      if (this.props.editorSettings.isPrettierEnabled) {
-        this.prettifyCode()
-      }
     }
 
     if (!prevProps.isVisible && this.props.isVisible) {
@@ -152,6 +151,11 @@ class Editor extends Component<IProps, IState> {
           // make it a pain to use
         }
       })
+
+      // For some unknown reason, the editor.getActiveSolution('editor.action.format').run() did not work at this point in the code
+      if (this.props.editorSettings.isPrettierEnabled) {
+        this.editor.trigger('anyString', 'editor.action.formatDocument', '')
+      }
     }
   }
 
@@ -167,7 +171,10 @@ class Editor extends Component<IProps, IState> {
 
     editor.addCommand(
       monaco.KeyMod.CtrlCmd | monaco.KeyMod.Shift | monaco.KeyCode.KEY_F,
-      this.prettifyCode,
+      () => {
+        editor.getAction('editor.action.format').run()
+      },
+
       '',
     )
 
@@ -248,23 +255,6 @@ class Editor extends Component<IProps, IState> {
     this.forceUpdate(() => {
       this.editor.layout()
     })
-  }
-
-  prettifyCode = () => {
-    console.log('prettifying code')
-    const model = this.editor.getModel()
-    const unformatted = model.getValue()
-    console.log({ unformatted })
-    if (unformatted) {
-      const formatted = prettier.format(unformatted, {
-        parser: 'typescript',
-        plugins: [prettierTypeScript],
-      })
-      console.log({ formatted })
-      if (formatted !== unformatted) {
-        model.setValue(formatted)
-      }
-    }
   }
 
   // settings related methods

@@ -1,9 +1,12 @@
 import React, { Component } from 'react'
+import prettier from 'prettier/standalone'
+import prettierTypeScript from 'prettier/parser-typescript'
+import isEqual from 'lodash/isEqual'
+import { setOptions } from './monaco-models'
+
 import librariesIntellisenseJSON from './libraryIntellisense'
 import SettingsSchema from '../../../../SettingsJSONSchema'
 import { SETTINGS_FILE_ID } from '../../../../constants'
-import isEqual from 'lodash/isEqual'
-import { setOptions } from './monaco-models'
 interface IDisposableFile {
   url: string
   disposable: monaco.IDisposable
@@ -170,6 +173,33 @@ class ReactMonaco extends Component<IReactMonaco, IReactMonacoState> {
           },
         ],
       })
+
+      /* Adds Prettier Formatting to Monaco for TypeScript */
+      const PrettierTypeScriptFormatter: monaco.languages.DocumentFormattingEditProvider = {
+        provideDocumentFormattingEdits: (
+          document: monaco.editor.ITextModel,
+          options: monaco.languages.FormattingOptions,
+          token: monaco.CancellationToken,
+        ): monaco.languages.TextEdit[] => {
+          const text = document.getValue()
+          const formatted = prettier.format(text, {
+            parser: 'typescript',
+            plugins: [prettierTypeScript],
+          })
+
+          return [
+            {
+              range: document.getFullModelRange(),
+              text: formatted,
+            },
+          ]
+        },
+      }
+
+      monaco.languages.registerDocumentFormattingEditProvider(
+        'typescript',
+        PrettierTypeScriptFormatter,
+      )
 
       setOptions({ tabSize: this.props.tabSize })
       this.editorDidMount(this.editor, monaco)
