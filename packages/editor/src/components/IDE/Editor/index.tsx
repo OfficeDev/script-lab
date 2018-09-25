@@ -104,10 +104,6 @@ class Editor extends Component<IProps, IState> {
     super(props)
   }
 
-  getEditor() {
-    return this.editor
-  }
-
   componentDidUpdate(prevProps) {
     if (prevProps.activeFile.id !== this.props.activeFile.id) {
       this.changeActiveFile(prevProps.activeFile, this.props.activeFile)
