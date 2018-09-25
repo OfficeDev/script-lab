@@ -8,6 +8,7 @@ export interface IMenuItem {
   label?: string
   icon: string
   onClick: () => void
+  ariaLabel?: string
 }
 
 // TODO: make it so that I don't cry when I look at this styling..
@@ -79,6 +80,7 @@ class Menu extends React.Component<IProps> {
                   root: { color: `${theme.white} !important`, marginRight: '1rem' },
                 },
               },
+              ariaLabel: item.ariaLabel,
               onClick: item.onClick,
               url: '',
             })),
