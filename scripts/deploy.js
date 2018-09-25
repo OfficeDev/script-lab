@@ -12,7 +12,7 @@ var {
 var TRAVIS_COMMIT_MESSAGE_SANITIZED = TRAVIS_COMMIT_MESSAGE.replace(/\W/g, '_');
 
 var deploymentSlot = {
-  deployment: '-alpha', // TODO: change deployment to master
+  master: '-alpha',
   beta: '-beta',
   production: '',
 }[TRAVIS_BRANCH];
