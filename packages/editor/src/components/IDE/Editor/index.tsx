@@ -218,6 +218,7 @@ class Editor extends Component<IProps, IState> {
       glyphMargin: false,
       fixedOverflowWidgets: true,
       ariaLabel: 'todo',
+      wordWrap: 'bounded',
       readOnly:
         this.props.activeSolution.id === NULL_SOLUTION_ID ||
         this.props.activeFile.id === ABOUT_FILE_ID,
