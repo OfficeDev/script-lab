@@ -109,6 +109,9 @@ class Editor extends Component<IProps, IState> {
   componentDidUpdate(prevProps) {
     if (prevProps.activeFile.id !== this.props.activeFile.id) {
       this.changeActiveFile(prevProps.activeFile, this.props.activeFile)
+      if (this.props.editorSettings.isPrettierEnabled) {
+        this.prettifyCode()
+      }
     }
 
     if (!prevProps.isVisible && this.props.isVisible) {
@@ -248,14 +251,16 @@ class Editor extends Component<IProps, IState> {
   }
 
   prettifyCode = () => {
+    console.log('prettifying code')
     const model = this.editor.getModel()
     const unformatted = model.getValue()
+    console.log({ unformatted })
     if (unformatted) {
       const formatted = prettier.format(unformatted, {
         parser: 'typescript',
         plugins: [prettierTypeScript],
       })
-
+      console.log({ formatted })
       if (formatted !== unformatted) {
         model.setValue(formatted)
       }
