@@ -24,8 +24,6 @@ interface IBackstageItem {
   icon: string
   label?: string
   onClick?: () => void
-  // does this content get used anymore beyond being a boolean check?
-  // if not, IBackstageItem can just extend IMenuItem from Backstage/Menu
   content?: JSX.Element
   ariaLabel?: string
 }
