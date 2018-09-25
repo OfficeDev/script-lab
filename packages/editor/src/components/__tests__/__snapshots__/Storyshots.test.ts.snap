@@ -1,15 +1,158 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Storyshots Backstage|All basic 1`] = `
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-wrap: no-wrap;
+  -ms-flex-wrap: no-wrap;
+  flex-wrap: no-wrap;
+  position: absolute;
+  top: 0;
+  z-index: 1000;
+  background-color: #ffffff;
+  height: 100vh;
+  width: 100%;
+}
+
+.c4 {
+  height: 100%;
+  width: 100%;
+  padding: 1rem;
+  font-size: 1.6rem;
+  overflow-y: auto;
+}
+
+.c5 {
+  margin-bottom: 2rem;
+}
+
+.c6 {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.c3 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  position: relative;
+}
+
+.c2 {
+  background-color: #113A23;
+  z-index: 1000;
+}
+
+.c1 {
+  box-shadow: 0px 2px 4px 2px #666666;
+}
+
+.c7 {
+  margin: 1.2rem 0;
+}
+
+.c7:focus {
+  outline-color: #217346;
+}
+
+.c8 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 4rem;
+  color: #212121;
+  background-color: #eaeaea;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.c9 {
+  padding: 1.2rem;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.c10 {
+  padding: 1.2rem;
+}
+
+.c10:hover,
+.c10:focus {
+  background-color: #217346;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.c10:focus {
+  outline-color: #217346;
+}
+
+.c11 {
+  padding: 1rem 1.5rem;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.c11:hover,
+.c11:focus {
+  background-color: #217346;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.c11:focus {
+  outline-color: #217346;
+}
+
+.c13 {
+  padding: 1rem 1.5rem;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  background-color: #113A23;
+  color: #ffffff;
+}
+
+.c13:hover,
+.c13:focus {
+  background-color: #217346;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.c13:focus {
+  outline-color: #217346;
+}
+
+.c12 {
+  opacity: 0.75;
+}
+
+@media (max-width:500px) {
+  .c0 {
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+  }
+}
+
 <div>
   <div
-    className="sc-bdVaJa ttXvQ"
+    className="c0"
   >
     <div
-      className="sc-gzVnrw MHskv"
+      className="c1"
     >
       <div
-        className="sc-bZQynM hPENVI"
+        className="c2"
       >
         <div>
           <div
@@ -230,18 +373,18 @@ exports[`Storyshots Backstage|All basic 1`] = `
       </div>
     </div>
     <div
-      className="sc-ifAKCX jMcgzj"
+      className="c3"
     >
       <div
-        className="sc-bwzfXH gBubRK"
+        className="c4"
       >
         <h1
-          className="sc-htpNat ms-font-xxl fHlYCv"
+          className="ms-font-xxl c5"
         >
           My Snippets
         </h1>
         <h2
-          className="sc-bxivhb ms-font-l khzLfi"
+          className="ms-font-l c6"
         >
           Choose a snippet that you have saved
         </h2>
@@ -276,7 +419,7 @@ exports[`Storyshots Backstage|All basic 1`] = `
           />
         </div>
         <section
-          className="sc-htoDjs fHLEQR"
+          className="c7"
         >
           <div
             aria-describedby={undefined}
@@ -289,15 +432,15 @@ exports[`Storyshots Backstage|All basic 1`] = `
             role="presentation"
           >
             <div
-              className="sc-dnqmqq ms-font-m eFvVne"
+              className="ms-font-m c8"
             >
               <span
-                className="sc-iwsKbI dYUZde"
+                className="c9"
               >
                 My snippets on this computer
               </span>
               <div
-                className="sc-gZMcBi hYLLWj"
+                className="c10"
                 data-is-focusable={true}
                 onClick={[Function]}
               >
@@ -312,161 +455,161 @@ exports[`Storyshots Backstage|All basic 1`] = `
               </div>
             </div>
             <article
-              className="sc-gqjmRU ms-font-m ffENiG"
+              className="ms-font-m c11"
               data-is-focusable="true"
               onClick={[Function]}
             >
               <div
-                className="sc-jTzLTM eCMmlJ"
+                className=""
               >
                 Blank snippet
               </div>
               <div
-                className="sc-fjdhpX ilSRnl"
+                className="c12"
               >
                 Create a new snippet from a blank template.
               </div>
             </article>
             <article
-              className="sc-gqjmRU ms-font-m ffENiG"
+              className="ms-font-m c11"
               data-is-focusable="true"
               onClick={[Function]}
             >
               <div
-                className="sc-jTzLTM eCMmlJ"
+                className=""
               >
                 Conditional Formatting for Ranges - Basic
               </div>
               <div
-                className="sc-fjdhpX ilSRnl"
+                className="c12"
               >
                 Apply common types of conditional formatting to ranges.
               </div>
             </article>
             <article
-              className="sc-VigVT ms-font-m kqsEKu"
+              className="ms-font-m c13"
               data-is-focusable="true"
               onClick={[Function]}
             >
               <div
-                className="sc-jTzLTM eCMmlJ"
+                className=""
               >
                 Basic API call (Office 2013)
               </div>
               <div
-                className="sc-fjdhpX ilSRnl"
+                className="c12"
               >
                 Executes a basic Excel API call using the "common API" syntax (compatible with Office 2013).
               </div>
             </article>
             <article
-              className="sc-gqjmRU ms-font-m ffENiG"
+              className="ms-font-m c11"
               data-is-focusable="true"
               onClick={[Function]}
             >
               <div
-                className="sc-jTzLTM eCMmlJ"
+                className=""
               >
                 Basic API call
               </div>
               <div
-                className="sc-fjdhpX ilSRnl"
+                className="c12"
               >
                 Executes a basic Excel API call
               </div>
             </article>
             <article
-              className="sc-gqjmRU ms-font-m ffENiG"
+              className="ms-font-m c11"
               data-is-focusable="true"
               onClick={[Function]}
             >
               <div
-                className="sc-jTzLTM eCMmlJ"
+                className=""
               >
                 Report generation
               </div>
               <div
-                className="sc-fjdhpX ilSRnl"
+                className="c12"
               >
                 Writes data to the workbook, reads and applies basic formatting, and adds a chart bound to that data.
               </div>
             </article>
             <article
-              className="sc-gqjmRU ms-font-m ffENiG"
+              className="ms-font-m c11"
               data-is-focusable="true"
               onClick={[Function]}
             >
               <div
-                className="sc-jTzLTM eCMmlJ"
+                className=""
               >
                 Basic API call
               </div>
               <div
-                className="sc-fjdhpX ilSRnl"
+                className="c12"
               >
                 Executes a basic Excel API call
               </div>
             </article>
             <article
-              className="sc-gqjmRU ms-font-m ffENiG"
+              className="ms-font-m c11"
               data-is-focusable="true"
               onClick={[Function]}
             >
               <div
-                className="sc-jTzLTM eCMmlJ"
+                className=""
               >
                 Conditional Formatting for Ranges - Basic
               </div>
               <div
-                className="sc-fjdhpX ilSRnl"
+                className="c12"
               >
                 Apply common types of conditional formatting to ranges.
               </div>
             </article>
             <article
-              className="sc-gqjmRU ms-font-m ffENiG"
+              className="ms-font-m c11"
               data-is-focusable="true"
               onClick={[Function]}
             >
               <div
-                className="sc-jTzLTM eCMmlJ"
+                className=""
               >
                 Basic API call (1)
               </div>
               <div
-                className="sc-fjdhpX ilSRnl"
+                className="c12"
               >
                 Executes a basic Excel API call
               </div>
             </article>
             <article
-              className="sc-gqjmRU ms-font-m ffENiG"
+              className="ms-font-m c11"
               data-is-focusable="true"
               onClick={[Function]}
             >
               <div
-                className="sc-jTzLTM eCMmlJ"
+                className=""
               >
                 Report generation (1)
               </div>
               <div
-                className="sc-fjdhpX ilSRnl"
+                className="c12"
               >
                 Writes data to the workbook, reads and applies basic formatting, and adds a chart bound to that data.
               </div>
             </article>
             <article
-              className="sc-gqjmRU ms-font-m ffENiG"
+              className="ms-font-m c11"
               data-is-focusable="true"
               onClick={[Function]}
             >
               <div
-                className="sc-jTzLTM eCMmlJ"
+                className=""
               >
                 Reference worksheets by relative position
               </div>
               <div
-                className="sc-fjdhpX ilSRnl"
+                className="c12"
               >
                 Shows how to use the worksheet shortcut methods, such as getFirst, getLast, getPrevious, and getNext.
               </div>
@@ -474,7 +617,7 @@ exports[`Storyshots Backstage|All basic 1`] = `
           </div>
         </section>
         <section
-          className="sc-htoDjs fHLEQR"
+          className="c7"
         >
           <div
             aria-describedby={undefined}
@@ -487,15 +630,15 @@ exports[`Storyshots Backstage|All basic 1`] = `
             role="presentation"
           >
             <div
-              className="sc-dnqmqq ms-font-m eFvVne"
+              className="ms-font-m c8"
             >
               <span
-                className="sc-iwsKbI dYUZde"
+                className="c9"
               >
                 My shared gists on GitHub
               </span>
               <div
-                className="sc-gZMcBi hYLLWj"
+                className="c10"
                 data-is-focusable={true}
                 onClick={[Function]}
               >
@@ -510,65 +653,65 @@ exports[`Storyshots Backstage|All basic 1`] = `
               </div>
             </div>
             <article
-              className="sc-gqjmRU ms-font-m ffENiG"
+              className="ms-font-m c11"
               data-is-focusable="true"
               onClick={[Function]}
             >
               <div
-                className="sc-jTzLTM eCMmlJ"
+                className=""
               >
                 Insert, delete, clear range
               </div>
               <div
-                className="sc-fjdhpX ilSRnl"
+                className="c12"
               >
                 Insert, delete and clear a range
               </div>
             </article>
             <article
-              className="sc-gqjmRU ms-font-m ffENiG"
+              className="ms-font-m c11"
               data-is-focusable="true"
               onClick={[Function]}
             >
               <div
-                className="sc-jTzLTM eCMmlJ"
+                className=""
               >
                 Conditional Formatting for Ranges - Basic
               </div>
               <div
-                className="sc-fjdhpX ilSRnl"
+                className="c12"
               >
                 Apply common types of conditional formatting to ranges.
               </div>
             </article>
             <article
-              className="sc-gqjmRU ms-font-m ffENiG"
+              className="ms-font-m c11"
               data-is-focusable="true"
               onClick={[Function]}
             >
               <div
-                className="sc-jTzLTM eCMmlJ"
+                className=""
               >
                 Report generation
               </div>
               <div
-                className="sc-fjdhpX ilSRnl"
+                className="c12"
               >
                 Writes data to the workbook, reads and applies basic formatting, and adds a chart bound to that data.
               </div>
             </article>
             <article
-              className="sc-gqjmRU ms-font-m ffENiG"
+              className="ms-font-m c11"
               data-is-focusable="true"
               onClick={[Function]}
             >
               <div
-                className="sc-jTzLTM eCMmlJ"
+                className=""
               >
                 Blank snippet (1)
               </div>
               <div
-                className="sc-fjdhpX ilSRnl"
+                className="c12"
               >
                 Create a new snippet from a blank template.
               </div>
@@ -582,8 +725,73 @@ exports[`Storyshots Backstage|All basic 1`] = `
 `;
 
 exports[`Storyshots Backstage|GalleryList basic 1`] = `
+.c0 {
+  margin: 1.2rem 0;
+}
+
+.c0:focus {
+  outline-color: #217346;
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 4rem;
+  color: #212121;
+  background-color: #eaeaea;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.c2 {
+  padding: 1.2rem;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.c3 {
+  padding: 1.2rem;
+}
+
+.c3:hover,
+.c3:focus {
+  background-color: #217346;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.c3:focus {
+  outline-color: #217346;
+}
+
+.c4 {
+  padding: 1rem 1.5rem;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.c4:hover,
+.c4:focus {
+  background-color: #217346;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.c4:focus {
+  outline-color: #217346;
+}
+
+.c5 {
+  opacity: 0.75;
+}
+
 <section
-  className="sc-htoDjs fHLEQR"
+  className="c0"
 >
   <div
     aria-describedby={undefined}
@@ -596,15 +804,15 @@ exports[`Storyshots Backstage|GalleryList basic 1`] = `
     role="presentation"
   >
     <div
-      className="sc-dnqmqq ms-font-m eFvVne"
+      className="ms-font-m c1"
     >
       <span
-        className="sc-iwsKbI dYUZde"
+        className="c2"
       >
         Example Title
       </span>
       <div
-        className="sc-gZMcBi hYLLWj"
+        className="c3"
         data-is-focusable={true}
         onClick={[Function]}
       >
@@ -619,81 +827,81 @@ exports[`Storyshots Backstage|GalleryList basic 1`] = `
       </div>
     </div>
     <article
-      className="sc-gqjmRU ms-font-m ffENiG"
+      className="ms-font-m c4"
       data-is-focusable="true"
       onClick={undefined}
     >
       <div
-        className="sc-jTzLTM eCMmlJ"
+        className=""
       >
         Example Title 0 for a Gallery List Item 0
       </div>
       <div
-        className="sc-fjdhpX ilSRnl"
+        className="c5"
       >
         This is a description for gallery list item 0
       </div>
     </article>
     <article
-      className="sc-gqjmRU ms-font-m ffENiG"
+      className="ms-font-m c4"
       data-is-focusable="true"
       onClick={undefined}
     >
       <div
-        className="sc-jTzLTM eCMmlJ"
+        className=""
       >
         Example Title 1 for a Gallery List Item 1
       </div>
       <div
-        className="sc-fjdhpX ilSRnl"
+        className="c5"
       >
         This is a description for gallery list item 1
       </div>
     </article>
     <article
-      className="sc-gqjmRU ms-font-m ffENiG"
+      className="ms-font-m c4"
       data-is-focusable="true"
       onClick={undefined}
     >
       <div
-        className="sc-jTzLTM eCMmlJ"
+        className=""
       >
         Example Title 2 for a Gallery List Item 2
       </div>
       <div
-        className="sc-fjdhpX ilSRnl"
+        className="c5"
       >
         This is a description for gallery list item 2
       </div>
     </article>
     <article
-      className="sc-gqjmRU ms-font-m ffENiG"
+      className="ms-font-m c4"
       data-is-focusable="true"
       onClick={undefined}
     >
       <div
-        className="sc-jTzLTM eCMmlJ"
+        className=""
       >
         Example Title 3 for a Gallery List Item 3
       </div>
       <div
-        className="sc-fjdhpX ilSRnl"
+        className="c5"
       >
         This is a description for gallery list item 3
       </div>
     </article>
     <article
-      className="sc-gqjmRU ms-font-m ffENiG"
+      className="ms-font-m c4"
       data-is-focusable="true"
       onClick={undefined}
     >
       <div
-        className="sc-jTzLTM eCMmlJ"
+        className=""
       >
         Example Title 4 for a Gallery List Item 4
       </div>
       <div
-        className="sc-fjdhpX ilSRnl"
+        className="c5"
       >
         This is a description for gallery list item 4
       </div>
@@ -703,9 +911,74 @@ exports[`Storyshots Backstage|GalleryList basic 1`] = `
 `;
 
 exports[`Storyshots Backstage|GalleryList multiple 1`] = `
+.c0 {
+  margin: 1.2rem 0;
+}
+
+.c0:focus {
+  outline-color: #217346;
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 4rem;
+  color: #212121;
+  background-color: #eaeaea;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.c2 {
+  padding: 1.2rem;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.c3 {
+  padding: 1.2rem;
+}
+
+.c3:hover,
+.c3:focus {
+  background-color: #217346;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.c3:focus {
+  outline-color: #217346;
+}
+
+.c4 {
+  padding: 1rem 1.5rem;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.c4:hover,
+.c4:focus {
+  background-color: #217346;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.c4:focus {
+  outline-color: #217346;
+}
+
+.c5 {
+  opacity: 0.75;
+}
+
 <div>
   <section
-    className="sc-htoDjs fHLEQR"
+    className="c0"
   >
     <div
       aria-describedby={undefined}
@@ -718,15 +991,15 @@ exports[`Storyshots Backstage|GalleryList multiple 1`] = `
       role="presentation"
     >
       <div
-        className="sc-dnqmqq ms-font-m eFvVne"
+        className="ms-font-m c1"
       >
         <span
-          className="sc-iwsKbI dYUZde"
+          className="c2"
         >
           Example Title
         </span>
         <div
-          className="sc-gZMcBi hYLLWj"
+          className="c3"
           data-is-focusable={true}
           onClick={[Function]}
         >
@@ -741,81 +1014,81 @@ exports[`Storyshots Backstage|GalleryList multiple 1`] = `
         </div>
       </div>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c4"
         data-is-focusable="true"
         onClick={undefined}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Example Title 0 for a Gallery List Item 0
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c5"
         >
           This is a description for gallery list item 0
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c4"
         data-is-focusable="true"
         onClick={undefined}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Example Title 1 for a Gallery List Item 1
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c5"
         >
           This is a description for gallery list item 1
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c4"
         data-is-focusable="true"
         onClick={undefined}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Example Title 2 for a Gallery List Item 2
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c5"
         >
           This is a description for gallery list item 2
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c4"
         data-is-focusable="true"
         onClick={undefined}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Example Title 3 for a Gallery List Item 3
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c5"
         >
           This is a description for gallery list item 3
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c4"
         data-is-focusable="true"
         onClick={undefined}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Example Title 4 for a Gallery List Item 4
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c5"
         >
           This is a description for gallery list item 4
         </div>
@@ -823,7 +1096,7 @@ exports[`Storyshots Backstage|GalleryList multiple 1`] = `
     </div>
   </section>
   <section
-    className="sc-htoDjs fHLEQR"
+    className="c0"
   >
     <div
       aria-describedby={undefined}
@@ -836,15 +1109,15 @@ exports[`Storyshots Backstage|GalleryList multiple 1`] = `
       role="presentation"
     >
       <div
-        className="sc-dnqmqq ms-font-m eFvVne"
+        className="ms-font-m c1"
       >
         <span
-          className="sc-iwsKbI dYUZde"
+          className="c2"
         >
           Example Title
         </span>
         <div
-          className="sc-gZMcBi hYLLWj"
+          className="c3"
           data-is-focusable={true}
           onClick={[Function]}
         >
@@ -859,81 +1132,81 @@ exports[`Storyshots Backstage|GalleryList multiple 1`] = `
         </div>
       </div>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c4"
         data-is-focusable="true"
         onClick={undefined}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Example Title 0 for a Gallery List Item 0
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c5"
         >
           This is a description for gallery list item 0
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c4"
         data-is-focusable="true"
         onClick={undefined}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Example Title 1 for a Gallery List Item 1
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c5"
         >
           This is a description for gallery list item 1
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c4"
         data-is-focusable="true"
         onClick={undefined}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Example Title 2 for a Gallery List Item 2
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c5"
         >
           This is a description for gallery list item 2
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c4"
         data-is-focusable="true"
         onClick={undefined}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Example Title 3 for a Gallery List Item 3
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c5"
         >
           This is a description for gallery list item 3
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c4"
         data-is-focusable="true"
         onClick={undefined}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Example Title 4 for a Gallery List Item 4
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c5"
         >
           This is a description for gallery list item 4
         </div>
@@ -941,7 +1214,7 @@ exports[`Storyshots Backstage|GalleryList multiple 1`] = `
     </div>
   </section>
   <section
-    className="sc-htoDjs fHLEQR"
+    className="c0"
   >
     <div
       aria-describedby={undefined}
@@ -954,15 +1227,15 @@ exports[`Storyshots Backstage|GalleryList multiple 1`] = `
       role="presentation"
     >
       <div
-        className="sc-dnqmqq ms-font-m eFvVne"
+        className="ms-font-m c1"
       >
         <span
-          className="sc-iwsKbI dYUZde"
+          className="c2"
         >
           Example Title
         </span>
         <div
-          className="sc-gZMcBi hYLLWj"
+          className="c3"
           data-is-focusable={true}
           onClick={[Function]}
         >
@@ -977,81 +1250,81 @@ exports[`Storyshots Backstage|GalleryList multiple 1`] = `
         </div>
       </div>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c4"
         data-is-focusable="true"
         onClick={undefined}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Example Title 0 for a Gallery List Item 0
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c5"
         >
           This is a description for gallery list item 0
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c4"
         data-is-focusable="true"
         onClick={undefined}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Example Title 1 for a Gallery List Item 1
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c5"
         >
           This is a description for gallery list item 1
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c4"
         data-is-focusable="true"
         onClick={undefined}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Example Title 2 for a Gallery List Item 2
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c5"
         >
           This is a description for gallery list item 2
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c4"
         data-is-focusable="true"
         onClick={undefined}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Example Title 3 for a Gallery List Item 3
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c5"
         >
           This is a description for gallery list item 3
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c4"
         data-is-focusable="true"
         onClick={undefined}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Example Title 4 for a Gallery List Item 4
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c5"
         >
           This is a description for gallery list item 4
         </div>
@@ -1059,7 +1332,7 @@ exports[`Storyshots Backstage|GalleryList multiple 1`] = `
     </div>
   </section>
   <section
-    className="sc-htoDjs fHLEQR"
+    className="c0"
   >
     <div
       aria-describedby={undefined}
@@ -1072,15 +1345,15 @@ exports[`Storyshots Backstage|GalleryList multiple 1`] = `
       role="presentation"
     >
       <div
-        className="sc-dnqmqq ms-font-m eFvVne"
+        className="ms-font-m c1"
       >
         <span
-          className="sc-iwsKbI dYUZde"
+          className="c2"
         >
           Example Title
         </span>
         <div
-          className="sc-gZMcBi hYLLWj"
+          className="c3"
           data-is-focusable={true}
           onClick={[Function]}
         >
@@ -1095,81 +1368,81 @@ exports[`Storyshots Backstage|GalleryList multiple 1`] = `
         </div>
       </div>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c4"
         data-is-focusable="true"
         onClick={undefined}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Example Title 0 for a Gallery List Item 0
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c5"
         >
           This is a description for gallery list item 0
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c4"
         data-is-focusable="true"
         onClick={undefined}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Example Title 1 for a Gallery List Item 1
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c5"
         >
           This is a description for gallery list item 1
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c4"
         data-is-focusable="true"
         onClick={undefined}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Example Title 2 for a Gallery List Item 2
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c5"
         >
           This is a description for gallery list item 2
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c4"
         data-is-focusable="true"
         onClick={undefined}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Example Title 3 for a Gallery List Item 3
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c5"
         >
           This is a description for gallery list item 3
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c4"
         data-is-focusable="true"
         onClick={undefined}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Example Title 4 for a Gallery List Item 4
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c5"
         >
           This is a description for gallery list item 4
         </div>
@@ -1177,7 +1450,7 @@ exports[`Storyshots Backstage|GalleryList multiple 1`] = `
     </div>
   </section>
   <section
-    className="sc-htoDjs fHLEQR"
+    className="c0"
   >
     <div
       aria-describedby={undefined}
@@ -1190,15 +1463,15 @@ exports[`Storyshots Backstage|GalleryList multiple 1`] = `
       role="presentation"
     >
       <div
-        className="sc-dnqmqq ms-font-m eFvVne"
+        className="ms-font-m c1"
       >
         <span
-          className="sc-iwsKbI dYUZde"
+          className="c2"
         >
           Example Title
         </span>
         <div
-          className="sc-gZMcBi hYLLWj"
+          className="c3"
           data-is-focusable={true}
           onClick={[Function]}
         >
@@ -1213,81 +1486,81 @@ exports[`Storyshots Backstage|GalleryList multiple 1`] = `
         </div>
       </div>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c4"
         data-is-focusable="true"
         onClick={undefined}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Example Title 0 for a Gallery List Item 0
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c5"
         >
           This is a description for gallery list item 0
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c4"
         data-is-focusable="true"
         onClick={undefined}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Example Title 1 for a Gallery List Item 1
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c5"
         >
           This is a description for gallery list item 1
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c4"
         data-is-focusable="true"
         onClick={undefined}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Example Title 2 for a Gallery List Item 2
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c5"
         >
           This is a description for gallery list item 2
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c4"
         data-is-focusable="true"
         onClick={undefined}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Example Title 3 for a Gallery List Item 3
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c5"
         >
           This is a description for gallery list item 3
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c4"
         data-is-focusable="true"
         onClick={undefined}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Example Title 4 for a Gallery List Item 4
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c5"
         >
           This is a description for gallery list item 4
         </div>
@@ -1298,8 +1571,94 @@ exports[`Storyshots Backstage|GalleryList multiple 1`] = `
 `;
 
 exports[`Storyshots Backstage|GalleryList with an active 1`] = `
+.c0 {
+  margin: 1.2rem 0;
+}
+
+.c0:focus {
+  outline-color: #217346;
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 4rem;
+  color: #212121;
+  background-color: #eaeaea;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.c2 {
+  padding: 1.2rem;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.c3 {
+  padding: 1.2rem;
+}
+
+.c3:hover,
+.c3:focus {
+  background-color: #217346;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.c3:focus {
+  outline-color: #217346;
+}
+
+.c4 {
+  padding: 1rem 1.5rem;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.c4:hover,
+.c4:focus {
+  background-color: #217346;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.c4:focus {
+  outline-color: #217346;
+}
+
+.c6 {
+  padding: 1rem 1.5rem;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  background-color: #113A23;
+  color: #ffffff;
+}
+
+.c6:hover,
+.c6:focus {
+  background-color: #217346;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.c6:focus {
+  outline-color: #217346;
+}
+
+.c5 {
+  opacity: 0.75;
+}
+
 <section
-  className="sc-htoDjs fHLEQR"
+  className="c0"
 >
   <div
     aria-describedby={undefined}
@@ -1312,15 +1671,15 @@ exports[`Storyshots Backstage|GalleryList with an active 1`] = `
     role="presentation"
   >
     <div
-      className="sc-dnqmqq ms-font-m eFvVne"
+      className="ms-font-m c1"
     >
       <span
-        className="sc-iwsKbI dYUZde"
+        className="c2"
       >
         Example Title
       </span>
       <div
-        className="sc-gZMcBi hYLLWj"
+        className="c3"
         data-is-focusable={true}
         onClick={[Function]}
       >
@@ -1335,49 +1694,49 @@ exports[`Storyshots Backstage|GalleryList with an active 1`] = `
       </div>
     </div>
     <article
-      className="sc-gqjmRU ms-font-m ffENiG"
+      className="ms-font-m c4"
       data-is-focusable="true"
       onClick={undefined}
     >
       <div
-        className="sc-jTzLTM eCMmlJ"
+        className=""
       >
         Example Title 0 for a Gallery List Item 0
       </div>
       <div
-        className="sc-fjdhpX ilSRnl"
+        className="c5"
       >
         This is a description for gallery list item 0
       </div>
     </article>
     <article
-      className="sc-gqjmRU ms-font-m ffENiG"
+      className="ms-font-m c4"
       data-is-focusable="true"
       onClick={undefined}
     >
       <div
-        className="sc-jTzLTM eCMmlJ"
+        className=""
       >
         Example Title 1 for a Gallery List Item 1
       </div>
       <div
-        className="sc-fjdhpX ilSRnl"
+        className="c5"
       >
         This is a description for gallery list item 1
       </div>
     </article>
     <article
-      className="sc-VigVT ms-font-m kqsEKu"
+      className="ms-font-m c6"
       data-is-focusable="true"
       onClick={undefined}
     >
       <div
-        className="sc-jTzLTM eCMmlJ"
+        className=""
       >
         Example Title 2 for a Gallery List Item 2
       </div>
       <div
-        className="sc-fjdhpX ilSRnl"
+        className="c5"
       >
         This is a description for gallery list item 2
       </div>
@@ -1387,18 +1746,43 @@ exports[`Storyshots Backstage|GalleryList with an active 1`] = `
 `;
 
 exports[`Storyshots Backstage|GalleryList/Item active 1`] = `
+.c0 {
+  padding: 1rem 1.5rem;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  background-color: #113A23;
+  color: #ffffff;
+}
+
+.c0:hover,
+.c0:focus {
+  background-color: #217346;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.c0:focus {
+  outline-color: #217346;
+}
+
+.c1 {
+  opacity: 0.75;
+}
+
 <article
-  className="sc-VigVT ms-font-m kqsEKu"
+  className="ms-font-m c0"
   data-is-focusable="true"
   onClick={undefined}
 >
   <div
-    className="sc-jTzLTM eCMmlJ"
+    className=""
   >
     Example Title 1 for a Gallery List Item 1
   </div>
   <div
-    className="sc-fjdhpX ilSRnl"
+    className="c1"
   >
     This is a description for gallery list item 1
   </div>
@@ -1406,18 +1790,41 @@ exports[`Storyshots Backstage|GalleryList/Item active 1`] = `
 `;
 
 exports[`Storyshots Backstage|GalleryList/Item basic 1`] = `
+.c0 {
+  padding: 1rem 1.5rem;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.c0:hover,
+.c0:focus {
+  background-color: #217346;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.c0:focus {
+  outline-color: #217346;
+}
+
+.c1 {
+  opacity: 0.75;
+}
+
 <article
-  className="sc-gqjmRU ms-font-m ffENiG"
+  className="ms-font-m c0"
   data-is-focusable="true"
   onClick={undefined}
 >
   <div
-    className="sc-jTzLTM eCMmlJ"
+    className=""
   >
     Example Title 1 for a Gallery List Item 1
   </div>
   <div
-    className="sc-fjdhpX ilSRnl"
+    className="c1"
   >
     This is a description for gallery list item 1
   </div>
@@ -1425,16 +1832,33 @@ exports[`Storyshots Backstage|GalleryList/Item basic 1`] = `
 `;
 
 exports[`Storyshots Backstage|ImportSolution basic 1`] = `
+.c0 {
+  height: 100%;
+  width: 100%;
+  padding: 1rem;
+  font-size: 1.6rem;
+  overflow-y: auto;
+}
+
+.c1 {
+  margin-bottom: 2rem;
+}
+
+.c2 {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
 <div
-  className="sc-bwzfXH gBubRK"
+  className="c0"
 >
   <h1
-    className="sc-htpNat ms-font-xxl fHlYCv"
+    className="ms-font-xxl c1"
   >
     Import snippet
   </h1>
   <h2
-    className="sc-bxivhb ms-font-l khzLfi"
+    className="ms-font-l c2"
   >
     Enter the snippet's URL or paste the YAML below, then choose Import.
   </h2>
@@ -1809,16 +2233,98 @@ exports[`Storyshots Backstage|Menu basic 1`] = `
 `;
 
 exports[`Storyshots Backstage|MySolutions basic 1`] = `
+.c0 {
+  height: 100%;
+  width: 100%;
+  padding: 1rem;
+  font-size: 1.6rem;
+  overflow-y: auto;
+}
+
+.c1 {
+  margin-bottom: 2rem;
+}
+
+.c2 {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.c3 {
+  margin: 1.2rem 0;
+}
+
+.c3:focus {
+  outline-color: #217346;
+}
+
+.c4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 4rem;
+  color: #212121;
+  background-color: #eaeaea;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.c5 {
+  padding: 1.2rem;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.c6 {
+  padding: 1.2rem;
+}
+
+.c6:hover,
+.c6:focus {
+  background-color: #217346;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.c6:focus {
+  outline-color: #217346;
+}
+
+.c7 {
+  padding: 1rem 1.5rem;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.c7:hover,
+.c7:focus {
+  background-color: #217346;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.c7:focus {
+  outline-color: #217346;
+}
+
+.c8 {
+  opacity: 0.75;
+}
+
 <div
-  className="sc-bwzfXH gBubRK"
+  className="c0"
 >
   <h1
-    className="sc-htpNat ms-font-xxl fHlYCv"
+    className="ms-font-xxl c1"
   >
     My Snippets
   </h1>
   <h2
-    className="sc-bxivhb ms-font-l khzLfi"
+    className="ms-font-l c2"
   >
     Choose a snippet that you have saved
   </h2>
@@ -1853,7 +2359,7 @@ exports[`Storyshots Backstage|MySolutions basic 1`] = `
     />
   </div>
   <section
-    className="sc-htoDjs fHLEQR"
+    className="c3"
   >
     <div
       aria-describedby={undefined}
@@ -1866,15 +2372,15 @@ exports[`Storyshots Backstage|MySolutions basic 1`] = `
       role="presentation"
     >
       <div
-        className="sc-dnqmqq ms-font-m eFvVne"
+        className="ms-font-m c4"
       >
         <span
-          className="sc-iwsKbI dYUZde"
+          className="c5"
         >
           My snippets on this computer
         </span>
         <div
-          className="sc-gZMcBi hYLLWj"
+          className="c6"
           data-is-focusable={true}
           onClick={[Function]}
         >
@@ -1889,161 +2395,161 @@ exports[`Storyshots Backstage|MySolutions basic 1`] = `
         </div>
       </div>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Blank snippet
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Create a new snippet from a blank template.
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Conditional Formatting for Ranges - Basic
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Apply common types of conditional formatting to ranges.
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Basic API call (Office 2013)
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Executes a basic Excel API call using the "common API" syntax (compatible with Office 2013).
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Basic API call
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Executes a basic Excel API call
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Report generation
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Writes data to the workbook, reads and applies basic formatting, and adds a chart bound to that data.
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Basic API call
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Executes a basic Excel API call
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Conditional Formatting for Ranges - Basic
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Apply common types of conditional formatting to ranges.
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Basic API call (1)
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Executes a basic Excel API call
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Report generation (1)
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Writes data to the workbook, reads and applies basic formatting, and adds a chart bound to that data.
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Reference worksheets by relative position
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Shows how to use the worksheet shortcut methods, such as getFirst, getLast, getPrevious, and getNext.
         </div>
@@ -2051,7 +2557,7 @@ exports[`Storyshots Backstage|MySolutions basic 1`] = `
     </div>
   </section>
   <section
-    className="sc-htoDjs fHLEQR"
+    className="c3"
   >
     <div
       aria-describedby={undefined}
@@ -2064,15 +2570,15 @@ exports[`Storyshots Backstage|MySolutions basic 1`] = `
       role="presentation"
     >
       <div
-        className="sc-dnqmqq ms-font-m eFvVne"
+        className="ms-font-m c4"
       >
         <span
-          className="sc-iwsKbI dYUZde"
+          className="c5"
         >
           My shared gists on GitHub
         </span>
         <div
-          className="sc-gZMcBi hYLLWj"
+          className="c6"
           data-is-focusable={true}
           onClick={[Function]}
         >
@@ -2087,65 +2593,65 @@ exports[`Storyshots Backstage|MySolutions basic 1`] = `
         </div>
       </div>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Insert, delete, clear range
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Insert, delete and clear a range
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Conditional Formatting for Ranges - Basic
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Apply common types of conditional formatting to ranges.
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Report generation
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Writes data to the workbook, reads and applies basic formatting, and adds a chart bound to that data.
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Blank snippet (1)
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Create a new snippet from a blank template.
         </div>
@@ -2156,21 +2662,103 @@ exports[`Storyshots Backstage|MySolutions basic 1`] = `
 `;
 
 exports[`Storyshots Backstage|Samples basic 1`] = `
+.c0 {
+  height: 100%;
+  width: 100%;
+  padding: 1rem;
+  font-size: 1.6rem;
+  overflow-y: auto;
+}
+
+.c1 {
+  margin-bottom: 2rem;
+}
+
+.c2 {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.c3 {
+  margin: 1.2rem 0;
+}
+
+.c3:focus {
+  outline-color: #217346;
+}
+
+.c4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 4rem;
+  color: #212121;
+  background-color: #eaeaea;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.c5 {
+  padding: 1.2rem;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.c6 {
+  padding: 1.2rem;
+}
+
+.c6:hover,
+.c6:focus {
+  background-color: #217346;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.c6:focus {
+  outline-color: #217346;
+}
+
+.c7 {
+  padding: 1rem 1.5rem;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.c7:hover,
+.c7:focus {
+  background-color: #217346;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.c7:focus {
+  outline-color: #217346;
+}
+
+.c8 {
+  opacity: 0.75;
+}
+
 <div
-  className="sc-bwzfXH gBubRK"
+  className="c0"
 >
   <h1
-    className="sc-htpNat ms-font-xxl fHlYCv"
+    className="ms-font-xxl c1"
   >
     Samples
   </h1>
   <h2
-    className="sc-bxivhb ms-font-l khzLfi"
+    className="ms-font-l c2"
   >
     Choose one of the samples below to get started.
   </h2>
   <section
-    className="sc-htoDjs fHLEQR"
+    className="c3"
   >
     <div
       aria-describedby={undefined}
@@ -2183,15 +2771,15 @@ exports[`Storyshots Backstage|Samples basic 1`] = `
       role="presentation"
     >
       <div
-        className="sc-dnqmqq ms-font-m eFvVne"
+        className="ms-font-m c4"
       >
         <span
-          className="sc-iwsKbI dYUZde"
+          className="c5"
         >
           Basics
         </span>
         <div
-          className="sc-gZMcBi hYLLWj"
+          className="c6"
           data-is-focusable={true}
           onClick={[Function]}
         >
@@ -2206,49 +2794,49 @@ exports[`Storyshots Backstage|Samples basic 1`] = `
         </div>
       </div>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Basic API call
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Executes a basic Excel API call
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Basic API call (JavaScript)
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Executes a basic Excel API call using plain JavaScript & Promises
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Basic API call (Office 2013)
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Executes a basic Excel API call using the "common API" syntax (compatible with Office 2013).
         </div>
@@ -2256,7 +2844,7 @@ exports[`Storyshots Backstage|Samples basic 1`] = `
     </div>
   </section>
   <section
-    className="sc-htoDjs fHLEQR"
+    className="c3"
   >
     <div
       aria-describedby={undefined}
@@ -2269,15 +2857,15 @@ exports[`Storyshots Backstage|Samples basic 1`] = `
       role="presentation"
     >
       <div
-        className="sc-dnqmqq ms-font-m eFvVne"
+        className="ms-font-m c4"
       >
         <span
-          className="sc-iwsKbI dYUZde"
+          className="c5"
         >
           Scenarios
         </span>
         <div
-          className="sc-gZMcBi hYLLWj"
+          className="c6"
           data-is-focusable={true}
           onClick={[Function]}
         >
@@ -2292,17 +2880,17 @@ exports[`Storyshots Backstage|Samples basic 1`] = `
         </div>
       </div>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Report generation
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Writes data to the workbook, reads and applies basic formatting, and adds a chart bound to that data.
         </div>
@@ -2310,7 +2898,7 @@ exports[`Storyshots Backstage|Samples basic 1`] = `
     </div>
   </section>
   <section
-    className="sc-htoDjs fHLEQR"
+    className="c3"
   >
     <div
       aria-describedby={undefined}
@@ -2323,15 +2911,15 @@ exports[`Storyshots Backstage|Samples basic 1`] = `
       role="presentation"
     >
       <div
-        className="sc-dnqmqq ms-font-m eFvVne"
+        className="ms-font-m c4"
       >
         <span
-          className="sc-iwsKbI dYUZde"
+          className="c5"
         >
           Range
         </span>
         <div
-          className="sc-gZMcBi hYLLWj"
+          className="c6"
           data-is-focusable={true}
           onClick={[Function]}
         >
@@ -2346,209 +2934,209 @@ exports[`Storyshots Backstage|Samples basic 1`] = `
         </div>
       </div>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Conditional Formatting for Ranges - Basic
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Apply common types of conditional formatting to ranges.
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Conditional Formatting for Ranges - Advanced
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Work with more than one conditional format on the same range.
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Copy and multiply values
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Copy and multiply values in a range
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Create and Use an Intersection of Ranges
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Create a an intersection of two ranges and make a chart of it.
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Formatting
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Format a range
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Insert, delete, clear range
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Insert, delete and clear a range
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Range operations
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Bounding rect, intersection, offset and resized range
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Selected range
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Get and set the currently selected range
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Set and get values
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Set and get values and formulas for a range
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Test for used range
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Create a chart from a table only if there's data in the table.
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Working with dates
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Setting and getting date values in a range and manipulating them using the Moment JavaScript library with the Moment-MSDate plug-in
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Range hyperlink
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Create, update, and clear a hyperlink for a range.
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Range text orientation
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Set and get the text orientation within a range
         </div>
@@ -2556,7 +3144,7 @@ exports[`Storyshots Backstage|Samples basic 1`] = `
     </div>
   </section>
   <section
-    className="sc-htoDjs fHLEQR"
+    className="c3"
   >
     <div
       aria-describedby={undefined}
@@ -2569,15 +3157,15 @@ exports[`Storyshots Backstage|Samples basic 1`] = `
       role="presentation"
     >
       <div
-        className="sc-dnqmqq ms-font-m eFvVne"
+        className="ms-font-m c4"
       >
         <span
-          className="sc-iwsKbI dYUZde"
+          className="c5"
         >
           Worksheet
         </span>
         <div
-          className="sc-gZMcBi hYLLWj"
+          className="c6"
           data-is-focusable={true}
           onClick={[Function]}
         >
@@ -2592,145 +3180,145 @@ exports[`Storyshots Backstage|Samples basic 1`] = `
         </div>
       </div>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Active worksheet
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Get and set the active worksheet
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Add, delete, rename and move worksheet
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Add, delete, rename and change the position of a worksheet
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Hide and unhide worksheet
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Hide and unhide a worksheet
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           List worksheets
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           List the worksheets in the workbook
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Reference worksheets by relative position
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Shows how to use the worksheet shortcut methods, such as getFirst, getLast, getPrevious, and getNext.
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Worksheet range and cell
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Get a range or a cell in a worksheet
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Copy worksheet
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Copies the active worksheet to the specified location.
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Manage frozen panes in a worksheet
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Freeze columns, freeze rows, freeze a range, and manage frozen panes in a worksheet.
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Worksheet tab color
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Set and get the tab color of a worksheet
         </div>
@@ -2738,7 +3326,7 @@ exports[`Storyshots Backstage|Samples basic 1`] = `
     </div>
   </section>
   <section
-    className="sc-htoDjs fHLEQR"
+    className="c3"
   >
     <div
       aria-describedby={undefined}
@@ -2751,15 +3339,15 @@ exports[`Storyshots Backstage|Samples basic 1`] = `
       role="presentation"
     >
       <div
-        className="sc-dnqmqq ms-font-m eFvVne"
+        className="ms-font-m c4"
       >
         <span
-          className="sc-iwsKbI dYUZde"
+          className="c5"
         >
           Workbook
         </span>
         <div
-          className="sc-gZMcBi hYLLWj"
+          className="c6"
           data-is-focusable={true}
           onClick={[Function]}
         >
@@ -2774,33 +3362,33 @@ exports[`Storyshots Backstage|Samples basic 1`] = `
         </div>
       </div>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Get active cell
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Gets the active cell of the entire workbook.
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Protect data in worksheet and the workbook structure
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Shows how to protect data in a worksheet and the workbook structure.
         </div>
@@ -2808,7 +3396,7 @@ exports[`Storyshots Backstage|Samples basic 1`] = `
     </div>
   </section>
   <section
-    className="sc-htoDjs fHLEQR"
+    className="c3"
   >
     <div
       aria-describedby={undefined}
@@ -2821,15 +3409,15 @@ exports[`Storyshots Backstage|Samples basic 1`] = `
       role="presentation"
     >
       <div
-        className="sc-dnqmqq ms-font-m eFvVne"
+        className="ms-font-m c4"
       >
         <span
-          className="sc-iwsKbI dYUZde"
+          className="c5"
         >
           Table
         </span>
         <div
-          className="sc-gZMcBi hYLLWj"
+          className="c6"
           data-is-focusable={true}
           onClick={[Function]}
         >
@@ -2844,161 +3432,161 @@ exports[`Storyshots Backstage|Samples basic 1`] = `
         </div>
       </div>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Style
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Add, apply, get and delete styles.
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Add rows and columns
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Add rows and columns to a table
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Convert a range to a table
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Convert a range to a table
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Create a table
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Creates a table with four columns and seven rows.
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Filter data
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Filter data in a table
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Format table
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Format a table
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Get data from a table
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Get data from a table
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Get visible range from a filtered table
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Get visible range from a filtered table
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Import JSON data
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Import JSON data into a table
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Sort table data
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Sort table data
         </div>
@@ -3006,7 +3594,7 @@ exports[`Storyshots Backstage|Samples basic 1`] = `
     </div>
   </section>
   <section
-    className="sc-htoDjs fHLEQR"
+    className="c3"
   >
     <div
       aria-describedby={undefined}
@@ -3019,15 +3607,15 @@ exports[`Storyshots Backstage|Samples basic 1`] = `
       role="presentation"
     >
       <div
-        className="sc-dnqmqq ms-font-m eFvVne"
+        className="ms-font-m c4"
       >
         <span
-          className="sc-iwsKbI dYUZde"
+          className="c5"
         >
           Named Item
         </span>
         <div
-          className="sc-gZMcBi hYLLWj"
+          className="c6"
           data-is-focusable={true}
           onClick={[Function]}
         >
@@ -3042,81 +3630,81 @@ exports[`Storyshots Backstage|Samples basic 1`] = `
         </div>
       </div>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Create a named item
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Create a named item for a formula
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Create and remove named items
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Create and remove named items for a formula
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Create and use named range item
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Create and use named range item
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           List all named items in a workbook
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           List all named items in a workbook
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Update a named item
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Create and then update a named item
         </div>
@@ -3124,7 +3712,7 @@ exports[`Storyshots Backstage|Samples basic 1`] = `
     </div>
   </section>
   <section
-    className="sc-htoDjs fHLEQR"
+    className="c3"
   >
     <div
       aria-describedby={undefined}
@@ -3137,15 +3725,15 @@ exports[`Storyshots Backstage|Samples basic 1`] = `
       role="presentation"
     >
       <div
-        className="sc-dnqmqq ms-font-m eFvVne"
+        className="ms-font-m c4"
       >
         <span
-          className="sc-iwsKbI dYUZde"
+          className="c5"
         >
           Chart
         </span>
         <div
-          className="sc-gZMcBi hYLLWj"
+          className="c6"
           data-is-focusable={true}
           onClick={[Function]}
         >
@@ -3160,225 +3748,225 @@ exports[`Storyshots Backstage|Samples basic 1`] = `
         </div>
       </div>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Column clustered chart
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Create a column clustered chart
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Doughnut chart
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Create a doughnut chart
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Line chart
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Create a line chart
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           XY scatter chart
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Draws a basic XY scatter chart
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Create Additional Chart Types
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Create area, radar, pie, 3D, cylinder, and 100% charts.
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Chart axis
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Get, set, and remove axis unit, label and title in a chart.
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Chart legend
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Format legend font
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Chart point
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Set chart point color.
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Chart series
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Add, set, and delete a series in a chart.
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Chart series - doughnutHoleSize
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Set the doughnutHoleSize property in a series for a dough nut chart.
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Chart series markers
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Set chart series marker properties
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Chart - series plot order
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Order the plotting of series in a chart.
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Chart - Title substring
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Get and set title substring for a chart.
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Chart trendlines
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Add, get, and format trendlines in a chart.
         </div>
@@ -3386,7 +3974,7 @@ exports[`Storyshots Backstage|Samples basic 1`] = `
     </div>
   </section>
   <section
-    className="sc-htoDjs fHLEQR"
+    className="c3"
   >
     <div
       aria-describedby={undefined}
@@ -3399,15 +3987,15 @@ exports[`Storyshots Backstage|Samples basic 1`] = `
       role="presentation"
     >
       <div
-        className="sc-dnqmqq ms-font-m eFvVne"
+        className="ms-font-m c4"
       >
         <span
-          className="sc-iwsKbI dYUZde"
+          className="c5"
         >
           PivotTable
         </span>
         <div
-          className="sc-gZMcBi hYLLWj"
+          className="c6"
           data-is-focusable={true}
           onClick={[Function]}
         >
@@ -3422,17 +4010,17 @@ exports[`Storyshots Backstage|Samples basic 1`] = `
         </div>
       </div>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Refresh PivotTable
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Refresh PivotTable
         </div>
@@ -3440,7 +4028,7 @@ exports[`Storyshots Backstage|Samples basic 1`] = `
     </div>
   </section>
   <section
-    className="sc-htoDjs fHLEQR"
+    className="c3"
   >
     <div
       aria-describedby={undefined}
@@ -3453,15 +4041,15 @@ exports[`Storyshots Backstage|Samples basic 1`] = `
       role="presentation"
     >
       <div
-        className="sc-dnqmqq ms-font-m eFvVne"
+        className="ms-font-m c4"
       >
         <span
-          className="sc-iwsKbI dYUZde"
+          className="c5"
         >
           Events
         </span>
         <div
-          className="sc-gZMcBi hYLLWj"
+          className="c6"
           data-is-focusable={true}
           onClick={[Function]}
         >
@@ -3476,129 +4064,129 @@ exports[`Storyshots Backstage|Samples basic 1`] = `
         </div>
       </div>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Handle the data changed event
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           This snippet shows how to register a handler for the data-changed event.
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Selection Changed
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Add and remove an event handler on the selection changed event
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Handle the settings-changed event
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           This snippet shows how to register a handler for the SettingsChanged event.
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Events - Table changed
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Add event handlers for table onChanged and onSelectionChanged events
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Events - Table collection changed
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Add event handlers for table collection onChanged event
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Events - Worksheet activated
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Add event handlers for worksheet onActivated and onDeactivated events
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Events - Worksheet changed
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Add event handlers for worksheet onChanged and onAdded events
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Events - Worksheet onSelectionChanged
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Add an event handler for the worksheet onSelectionChanged event
         </div>
@@ -3606,7 +4194,7 @@ exports[`Storyshots Backstage|Samples basic 1`] = `
     </div>
   </section>
   <section
-    className="sc-htoDjs fHLEQR"
+    className="c3"
   >
     <div
       aria-describedby={undefined}
@@ -3619,15 +4207,15 @@ exports[`Storyshots Backstage|Samples basic 1`] = `
       role="presentation"
     >
       <div
-        className="sc-dnqmqq ms-font-m eFvVne"
+        className="ms-font-m c4"
       >
         <span
-          className="sc-iwsKbI dYUZde"
+          className="c5"
         >
           Settings
         </span>
         <div
-          className="sc-gZMcBi hYLLWj"
+          className="c6"
           data-is-focusable={true}
           onClick={[Function]}
         >
@@ -3642,17 +4230,17 @@ exports[`Storyshots Backstage|Samples basic 1`] = `
         </div>
       </div>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Create, get, change, and delete a setting
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Show how to create, get, change, and delete settings in the document.
         </div>
@@ -3660,7 +4248,7 @@ exports[`Storyshots Backstage|Samples basic 1`] = `
     </div>
   </section>
   <section
-    className="sc-htoDjs fHLEQR"
+    className="c3"
   >
     <div
       aria-describedby={undefined}
@@ -3673,15 +4261,15 @@ exports[`Storyshots Backstage|Samples basic 1`] = `
       role="presentation"
     >
       <div
-        className="sc-dnqmqq ms-font-m eFvVne"
+        className="ms-font-m c4"
       >
         <span
-          className="sc-iwsKbI dYUZde"
+          className="c5"
         >
           Document
         </span>
         <div
-          className="sc-gZMcBi hYLLWj"
+          className="c6"
           data-is-focusable={true}
           onClick={[Function]}
         >
@@ -3696,33 +4284,33 @@ exports[`Storyshots Backstage|Samples basic 1`] = `
         </div>
       </div>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Get file (using slicing)
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Use slicing to get the byte array and base64-encoded string that represent the current document.
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Document properties
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Set and get document properties.
         </div>
@@ -3730,7 +4318,7 @@ exports[`Storyshots Backstage|Samples basic 1`] = `
     </div>
   </section>
   <section
-    className="sc-htoDjs fHLEQR"
+    className="c3"
   >
     <div
       aria-describedby={undefined}
@@ -3743,15 +4331,15 @@ exports[`Storyshots Backstage|Samples basic 1`] = `
       role="presentation"
     >
       <div
-        className="sc-dnqmqq ms-font-m eFvVne"
+        className="ms-font-m c4"
       >
         <span
-          className="sc-iwsKbI dYUZde"
+          className="c5"
         >
           Custom XML Parts
         </span>
         <div
-          className="sc-gZMcBi hYLLWj"
+          className="c6"
           data-is-focusable={true}
           onClick={[Function]}
         >
@@ -3766,33 +4354,33 @@ exports[`Storyshots Backstage|Samples basic 1`] = `
         </div>
       </div>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Create, set, get, and delete custom XML part
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Shows how to create, set, get, and delete a custom XML part.
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Test custom XML part for unique namespace
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Shows how to test to see if there is only one XML part for a specified namespace.
         </div>
@@ -3800,7 +4388,7 @@ exports[`Storyshots Backstage|Samples basic 1`] = `
     </div>
   </section>
   <section
-    className="sc-htoDjs fHLEQR"
+    className="c3"
   >
     <div
       aria-describedby={undefined}
@@ -3813,15 +4401,15 @@ exports[`Storyshots Backstage|Samples basic 1`] = `
       role="presentation"
     >
       <div
-        className="sc-dnqmqq ms-font-m eFvVne"
+        className="ms-font-m c4"
       >
         <span
-          className="sc-iwsKbI dYUZde"
+          className="c5"
         >
           Common Patterns
         </span>
         <div
-          className="sc-gZMcBi hYLLWj"
+          className="c6"
           data-is-focusable={true}
           onClick={[Function]}
         >
@@ -3836,17 +4424,17 @@ exports[`Storyshots Backstage|Samples basic 1`] = `
         </div>
       </div>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Multiple Property Set
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Setting multiple properties at once with the rich API object set() method.
         </div>
@@ -3854,7 +4442,7 @@ exports[`Storyshots Backstage|Samples basic 1`] = `
     </div>
   </section>
   <section
-    className="sc-htoDjs fHLEQR"
+    className="c3"
   >
     <div
       aria-describedby={undefined}
@@ -3867,15 +4455,15 @@ exports[`Storyshots Backstage|Samples basic 1`] = `
       role="presentation"
     >
       <div
-        className="sc-dnqmqq ms-font-m eFvVne"
+        className="ms-font-m c4"
       >
         <span
-          className="sc-iwsKbI dYUZde"
+          className="c5"
         >
           Preview APIs
         </span>
         <div
-          className="sc-gZMcBi hYLLWj"
+          className="c6"
           data-is-focusable={true}
           onClick={[Function]}
         >
@@ -3890,225 +4478,225 @@ exports[`Storyshots Backstage|Samples basic 1`] = `
         </div>
       </div>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Chart - Axis formatting
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Format the vertical and horizontal axis in a chart.
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Chart - Formatting
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Format labels and lines of a slope chart.
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Data Validation
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           This snippet shows how to programmatically set a variety of data validation rules on ranges, how to prompt users to enter valid data, and how to popup a warning or informational message when invalid data is entered.
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Events - Chart Activate
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Create handlers for the Chart.onActivated and Chart.onDeactivated events.
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Events - ChartCollection
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Shows how to handle the ChartCollection onActivated, onDeactivated, onAdded, and onDeleted events.
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Disable Events
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Toggle event firing on and off for performance.
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Events - Worksheet onCalculated
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Add an event handler for the worksheet onCalculated event
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Events - WorksheetCollection onCalculated
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Add an event handler for the WorksheetCollection onCalculated event
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Worksheet gridlines
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Hide and show gridlines in a worksheet
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           PivotTable Calculations
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Change the calculations the PivotTable performs.
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Create and modify PivotTable
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Create and modify a PivotTable.
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           PivotTable filters and summaries
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Filter PivotTable data and show different summarizations.
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Using RangeAreas (Discontiguous Ranges)
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Work with RangeAreas, which are sets of ranges that need not be contiguous.
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Copy and paste ranges
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Use the Range.copyFrom method to copy data and formatting.
         </div>
@@ -4116,7 +4704,7 @@ exports[`Storyshots Backstage|Samples basic 1`] = `
     </div>
   </section>
   <section
-    className="sc-htoDjs fHLEQR"
+    className="c3"
   >
     <div
       aria-describedby={undefined}
@@ -4129,15 +4717,15 @@ exports[`Storyshots Backstage|Samples basic 1`] = `
       role="presentation"
     >
       <div
-        className="sc-dnqmqq ms-font-m eFvVne"
+        className="ms-font-m c4"
       >
         <span
-          className="sc-iwsKbI dYUZde"
+          className="c5"
         >
           Just For Fun
         </span>
         <div
-          className="sc-gZMcBi hYLLWj"
+          className="c6"
           data-is-focusable={true}
           onClick={[Function]}
         >
@@ -4152,65 +4740,65 @@ exports[`Storyshots Backstage|Samples basic 1`] = `
         </div>
       </div>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Gradient
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Uses range formatting and external libraries to draw a colorful gradient within a range. Contributed by Alexander Zlatkovski.
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Colorful Patterns
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Shows how to use range formatting to draw interesting pattern. Contributed by Alexander Zlatkovski
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Path finder
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Using range formatting to play a "pathfinder game". Contributed by Alexander Zlatkovski
         </div>
       </article>
       <article
-        className="sc-gqjmRU ms-font-m ffENiG"
+        className="ms-font-m c7"
         data-is-focusable="true"
         onClick={[Function]}
       >
         <div
-          className="sc-jTzLTM eCMmlJ"
+          className=""
         >
           Wheel of colors
         </div>
         <div
-          className="sc-fjdhpX ilSRnl"
+          className="c8"
         >
           Uses chart formatting to draw a wheel with changing colors. Contributed by Alexander Zlatkovski.
         </div>
@@ -4221,28 +4809,75 @@ exports[`Storyshots Backstage|Samples basic 1`] = `
 `;
 
 exports[`Storyshots Custom Functions|Coming Soon basic 1`] = `
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+}
+
+.c1 {
+  height: 12rem;
+  width: 12rem;
+}
+
+.c2 {
+  color: #d83b01;
+  margin-top: 2.4rem;
+  line-height: 5.6rem;
+  max-width: 30rem;
+  text-align: center;
+}
+
+.c3 {
+  width: 11.8rem;
+  margin-top: 2.2rem;
+  margin-bottom: 2.7rem;
+  color: #212121;
+}
+
+.c4 {
+  max-width: 25rem;
+  text-align: center;
+  line-height: 1.9rem;
+  color: #212121;
+}
+
 <div
-  className="sc-jzJRlG fMeyJC"
+  className="c0"
 >
   <img
-    className="sc-cSHVUG QxCwP"
+    className="c1"
     src="../../../assets/icon-large.svg"
   />
   <h2
-    className="sc-kAzzGY ms-font-xxl jHprQs"
+    className="ms-font-xxl "
   >
     Script Lab
   </h2>
   <h1
-    className="sc-chPdSV ms-fontSize-su ms-fontWeight-light eEOYoQ"
+    className="ms-fontSize-su ms-fontWeight-light c2"
   >
     Custom Functions
   </h1>
   <hr
-    className="sc-kgoBCf ikpBjl"
+    className="c3"
   />
   <p
-    className="sc-kGXeez ms-fontSize-m ms-fontWeight-regular MsuCE"
+    className="ms-fontSize-m ms-fontWeight-regular c4"
   >
     Currently, Script Lab only supports Custom Functions (Preview) on Windows Desktop, and only on the latest Insider builds.
     <br />
@@ -4261,14 +4896,129 @@ exports[`Storyshots Custom Functions|Coming Soon basic 1`] = `
 `;
 
 exports[`Storyshots Custom Functions|Console basic 1`] = `
+.c2 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  height: 100%;
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.c3 {
+  padding: 0rem 1.6rem;
+  height: 2.8rem;
+  line-height: 2.8rem;
+  background: #f4f4f4;
+  overflow: hidden;
+  overflow-wrap: normal;
+}
+
+.c4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 0.8rem;
+  height: 4.8rem;
+  background: #f4f4f4;
+  box-sizing: border-box;
+}
+
+.c8 {
+  height: 3.8rem;
+  background: #f4f4f4;
+  box-sizing: border-box;
+  padding: 0.9rem;
+}
+
+.c6 {
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.c7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  width: 100%;
+  min-height: 4.2rem;
+  padding: 1.3rem;
+  box-sizing: border-box;
+  word-wrap: break-word;
+  border-top: 0.5px solid #eaeaea;
+  border-bottom: 0.5px solid #eaeaea;
+}
+
+.c5 {
+  width: 2rem;
+  height: 2rem;
+  background: none;
+  border: 0px;
+  position: relative;
+  margin-right: 1.3rem;
+  margin-left: 0.5rem;
+}
+
+.c5:hover {
+  color: #b22222;
+  cursor: pointer;
+}
+
+.c5:active {
+  color: red;
+}
+
+.c5:focus {
+  outline: none;
+}
+
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.c1 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  overflow: hidden;
+  z-index: 999;
+}
+
 <div
-  className="sc-eHgmQL jjLxRA"
+  className="c0"
 >
   <div
-    className="sc-jWBwVP keUZJP"
+    className="c1"
   >
     <div
-      className="sc-kpOJdX iPNfaC"
+      className="c2"
     >
       <div
         aria-live="polite"
@@ -4302,16 +5052,16 @@ exports[`Storyshots Custom Functions|Console basic 1`] = `
         </div>
       </div>
       <div
-        className="sc-jKJlTe ms-font-m eJySVr"
+        className="ms-font-m c3"
       >
         Runner last updated 
         a few seconds ago
       </div>
       <div
-        className="sc-eNQAEJ fQFwoq"
+        className="c4"
       >
         <button
-          className="sc-hSdWYo hBgRHn"
+          className="c5"
           onClick={[Function]}
         >
           <i
@@ -4351,13 +5101,13 @@ exports[`Storyshots Custom Functions|Console basic 1`] = `
         />
       </div>
       <div
-        className="sc-kEYyzF eSmOZN"
+        className="c6"
       >
         <ul
-          className="sc-kkGfuU gqJIVH"
+          className=""
         >
           <li
-            className="sc-iAyFgw eXKyOz"
+            className="c7"
             style={
               Object {
                 "backgroundColor": "#cce6ff",
@@ -4383,7 +5133,7 @@ exports[`Storyshots Custom Functions|Console basic 1`] = `
             I am a sample log 1 log 1 log log. I am such a log.
           </li>
           <li
-            className="sc-iAyFgw eXKyOz"
+            className="c7"
             style={
               Object {
                 "backgroundColor": "#cce6ff",
@@ -4409,7 +5159,7 @@ exports[`Storyshots Custom Functions|Console basic 1`] = `
             I am a sample log info log info log log. I am such a log.
           </li>
           <li
-            className="sc-iAyFgw eXKyOz"
+            className="c7"
             style={
               Object {
                 "backgroundColor": "#ffffff",
@@ -4420,7 +5170,7 @@ exports[`Storyshots Custom Functions|Console basic 1`] = `
             I am a sample log log log log log log. I am such a log.
           </li>
           <li
-            className="sc-iAyFgw eXKyOz"
+            className="c7"
             style={
               Object {
                 "backgroundColor": "#fff4ce",
@@ -4446,7 +5196,7 @@ exports[`Storyshots Custom Functions|Console basic 1`] = `
             I am a sample log warn log warn log log. I am such a log.
           </li>
           <li
-            className="sc-iAyFgw eXKyOz"
+            className="c7"
             style={
               Object {
                 "backgroundColor": "#fde7e9",
@@ -4475,7 +5225,7 @@ exports[`Storyshots Custom Functions|Console basic 1`] = `
         <div />
       </div>
       <div
-        className="sc-hMqMXs juDbnK"
+        className="c8"
       >
         <button
           aria-checked={true}
@@ -4529,14 +5279,71 @@ exports[`Storyshots Custom Functions|Console basic 1`] = `
 `;
 
 exports[`Storyshots Custom Functions|Console empty 1`] = `
+.c2 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  height: 100%;
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.c3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  color: #333333;
+  height: 100%;
+  width: 100%;
+}
+
+.c4 {
+  text-align: center;
+  max-width: 90%;
+}
+
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.c1 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  overflow: hidden;
+  z-index: 999;
+}
+
 <div
-  className="sc-eHgmQL jjLxRA"
+  className="c0"
 >
   <div
-    className="sc-jWBwVP keUZJP"
+    className="c1"
   >
     <div
-      className="sc-kpOJdX iPNfaC"
+      className="c2"
     >
       <div
         aria-live="polite"
@@ -4570,10 +5377,10 @@ exports[`Storyshots Custom Functions|Console empty 1`] = `
         </div>
       </div>
       <div
-        className="sc-dxgOiQ fgbSCI"
+        className="c3"
       >
         <div
-          className="sc-ckVGcZ hAoEEZ"
+          className="c4"
         >
           There are no logs to display. Use
            
@@ -4598,11 +5405,79 @@ exports[`Storyshots Custom Functions|Console empty 1`] = `
 `;
 
 exports[`Storyshots Custom Functions|Dashboard as standalone 1`] = `
+.c2 {
+  background-color: #113A23;
+  z-index: 1000;
+}
+
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.c1 {
+  box-shadow: 0px 2px 5px 2px #666666;
+  z-index: 1000;
+}
+
+.c3 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  overflow: hidden;
+  z-index: 999;
+}
+
+.c6 {
+  position: relative;
+  padding: 0rem 1.8rem;
+  border-top: 0.5px solid #eaeaea;
+  border-bottom: 0.5px solid #eaeaea;
+}
+
+.c7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  min-height: 4.25rem;
+  line-height: 4.25rem;
+}
+
+.c8 {
+  position: absolute;
+  bottom: 0.2rem;
+  right: 0.5rem;
+  font-size: 1rem;
+  color: #888888;
+  font-variant: small-caps;
+}
+
+.c4 {
+  margin: 2.3rem 1.7rem 0rem 1.7rem;
+}
+
+.c5 {
+  margin-top: 1.5rem;
+  border-top: 1px solid #eaeaea;
+  border-bottom: 1px solid #eaeaea;
+}
+
 <div
-  className="sc-eHgmQL jjLxRA"
+  className="c0"
 >
   <header
-    className="sc-cvbbAY gHpXLP"
+    className="c1"
   >
     <div
       className="ms-ResizeGroup root-148"
@@ -4672,7 +5547,7 @@ exports[`Storyshots Custom Functions|Dashboard as standalone 1`] = `
       </div>
     </div>
     <div
-      className="sc-bZQynM hPENVI"
+      className="c2"
     >
       <div>
         <div
@@ -4842,22 +5717,22 @@ exports[`Storyshots Custom Functions|Dashboard as standalone 1`] = `
     </div>
   </div>
   <div
-    className="sc-jWBwVP keUZJP"
+    className="c3"
   >
     <div>
       <h4
-        className="sc-jlyJG ms-font-m cXZKOJ"
+        className="ms-font-m c4"
       >
         Some of your functions are invalid and cannot be declared. Review and fix the issues.
       </h4>
       <div
-        className="sc-gipzik kROAEN"
+        className="c5"
       >
         <div
-          className="sc-brqgnP jLZkHj"
+          className="c6"
         >
           <div
-            className="sc-cMljjf fWEzoS"
+            className="c7"
           >
             <i
               aria-hidden={true}
@@ -4868,14 +5743,14 @@ exports[`Storyshots Custom Functions|Dashboard as standalone 1`] = `
               
             </i>
             <h4
-              className="sc-jAaTju ms-font-s fNCBho"
+              className="ms-font-s "
             >
               foo1
               (...)
             </h4>
           </div>
           <div
-            className="sc-iRbamj ms-font-xs IuvzM"
+            className="ms-font-xs c8"
           >
             =ScriptLab.
             SnippetName
@@ -4885,10 +5760,10 @@ exports[`Storyshots Custom Functions|Dashboard as standalone 1`] = `
           </div>
         </div>
         <div
-          className="sc-brqgnP jLZkHj"
+          className="c6"
         >
           <div
-            className="sc-cMljjf fWEzoS"
+            className="c7"
           >
             <i
               aria-hidden={true}
@@ -4899,14 +5774,14 @@ exports[`Storyshots Custom Functions|Dashboard as standalone 1`] = `
               
             </i>
             <h4
-              className="sc-jAaTju ms-font-s fNCBho"
+              className="ms-font-s "
             >
               foo2
               (...)
             </h4>
           </div>
           <div
-            className="sc-iRbamj ms-font-xs IuvzM"
+            className="ms-font-xs c8"
           >
             =ScriptLab.
             SnippetName
@@ -4916,10 +5791,10 @@ exports[`Storyshots Custom Functions|Dashboard as standalone 1`] = `
           </div>
         </div>
         <div
-          className="sc-brqgnP jLZkHj"
+          className="c6"
         >
           <div
-            className="sc-cMljjf fWEzoS"
+            className="c7"
           >
             <i
               aria-hidden={true}
@@ -4930,14 +5805,14 @@ exports[`Storyshots Custom Functions|Dashboard as standalone 1`] = `
               
             </i>
             <h4
-              className="sc-jAaTju ms-font-s fNCBho"
+              className="ms-font-s "
             >
               foo3
               (...)
             </h4>
           </div>
           <div
-            className="sc-iRbamj ms-font-xs IuvzM"
+            className="ms-font-xs c8"
           >
             =ScriptLab.
             SnippetName
@@ -4947,10 +5822,10 @@ exports[`Storyshots Custom Functions|Dashboard as standalone 1`] = `
           </div>
         </div>
         <div
-          className="sc-brqgnP jLZkHj"
+          className="c6"
         >
           <div
-            className="sc-cMljjf fWEzoS"
+            className="c7"
           >
             <i
               aria-hidden={true}
@@ -4961,14 +5836,14 @@ exports[`Storyshots Custom Functions|Dashboard as standalone 1`] = `
               
             </i>
             <h4
-              className="sc-jAaTju ms-font-s fNCBho"
+              className="ms-font-s "
             >
               foo4
               (...)
             </h4>
           </div>
           <div
-            className="sc-iRbamj ms-font-xs IuvzM"
+            className="ms-font-xs c8"
           >
             =ScriptLab.
             SnippetName
@@ -4978,10 +5853,10 @@ exports[`Storyshots Custom Functions|Dashboard as standalone 1`] = `
           </div>
         </div>
         <div
-          className="sc-brqgnP jLZkHj"
+          className="c6"
         >
           <div
-            className="sc-cMljjf fWEzoS"
+            className="c7"
           >
             <i
               aria-hidden={true}
@@ -4992,14 +5867,14 @@ exports[`Storyshots Custom Functions|Dashboard as standalone 1`] = `
               
             </i>
             <h4
-              className="sc-jAaTju ms-font-s fNCBho"
+              className="ms-font-s "
             >
               foo5
               (...)
             </h4>
           </div>
           <div
-            className="sc-iRbamj ms-font-xs IuvzM"
+            className="ms-font-xs c8"
           >
             =ScriptLab.
             SnippetName
@@ -5009,10 +5884,10 @@ exports[`Storyshots Custom Functions|Dashboard as standalone 1`] = `
           </div>
         </div>
         <div
-          className="sc-brqgnP jLZkHj"
+          className="c6"
         >
           <div
-            className="sc-cMljjf fWEzoS"
+            className="c7"
           >
             <i
               aria-hidden={true}
@@ -5023,14 +5898,14 @@ exports[`Storyshots Custom Functions|Dashboard as standalone 1`] = `
               
             </i>
             <h4
-              className="sc-jAaTju ms-font-s fNCBho"
+              className="ms-font-s "
             >
               foo6
               (...)
             </h4>
           </div>
           <div
-            className="sc-iRbamj ms-font-xs IuvzM"
+            className="ms-font-xs c8"
           >
             =ScriptLab.
             SnippetName
@@ -5040,10 +5915,10 @@ exports[`Storyshots Custom Functions|Dashboard as standalone 1`] = `
           </div>
         </div>
         <div
-          className="sc-brqgnP jLZkHj"
+          className="c6"
         >
           <div
-            className="sc-cMljjf fWEzoS"
+            className="c7"
           >
             <i
               aria-hidden={true}
@@ -5054,14 +5929,14 @@ exports[`Storyshots Custom Functions|Dashboard as standalone 1`] = `
               
             </i>
             <h4
-              className="sc-jAaTju ms-font-s fNCBho"
+              className="ms-font-s "
             >
               foo7
               (...)
             </h4>
           </div>
           <div
-            className="sc-iRbamj ms-font-xs IuvzM"
+            className="ms-font-xs c8"
           >
             =ScriptLab.
             SnippetName
@@ -5071,10 +5946,10 @@ exports[`Storyshots Custom Functions|Dashboard as standalone 1`] = `
           </div>
         </div>
         <div
-          className="sc-brqgnP jLZkHj"
+          className="c6"
         >
           <div
-            className="sc-cMljjf fWEzoS"
+            className="c7"
           >
             <i
               aria-hidden={true}
@@ -5085,14 +5960,14 @@ exports[`Storyshots Custom Functions|Dashboard as standalone 1`] = `
               
             </i>
             <h4
-              className="sc-jAaTju ms-font-s fNCBho"
+              className="ms-font-s "
             >
               foo8
               (...)
             </h4>
           </div>
           <div
-            className="sc-iRbamj ms-font-xs IuvzM"
+            className="ms-font-xs c8"
           >
             =ScriptLab.
             SnippetName
@@ -5108,11 +5983,40 @@ exports[`Storyshots Custom Functions|Dashboard as standalone 1`] = `
 `;
 
 exports[`Storyshots Custom Functions|Dashboard basic 1`] = `
+.c2 {
+  background-color: #113A23;
+  z-index: 1000;
+}
+
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.c1 {
+  box-shadow: 0px 2px 5px 2px #666666;
+  z-index: 1000;
+}
+
+.c3 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  overflow: hidden;
+  z-index: 999;
+}
+
 <div
-  className="sc-eHgmQL jjLxRA"
+  className="c0"
 >
   <header
-    className="sc-cvbbAY gHpXLP"
+    className="c1"
   >
     <div
       className="ms-ResizeGroup root-148"
@@ -5216,7 +6120,7 @@ exports[`Storyshots Custom Functions|Dashboard basic 1`] = `
       </div>
     </div>
     <div
-      className="sc-bZQynM hPENVI"
+      className="c2"
     >
       <div>
         <div
@@ -5353,7 +6257,7 @@ exports[`Storyshots Custom Functions|Dashboard basic 1`] = `
     </div>
   </header>
   <div
-    className="sc-jWBwVP keUZJP"
+    className="c3"
   >
     <div>
       I AM 
@@ -5364,11 +6268,79 @@ exports[`Storyshots Custom Functions|Dashboard basic 1`] = `
 `;
 
 exports[`Storyshots Custom Functions|Dashboard with actual tabs 1`] = `
+.c2 {
+  background-color: #113A23;
+  z-index: 1000;
+}
+
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.c1 {
+  box-shadow: 0px 2px 5px 2px #666666;
+  z-index: 1000;
+}
+
+.c3 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  overflow: hidden;
+  z-index: 999;
+}
+
+.c6 {
+  position: relative;
+  padding: 0rem 1.8rem;
+  border-top: 0.5px solid #eaeaea;
+  border-bottom: 0.5px solid #eaeaea;
+}
+
+.c7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  min-height: 4.25rem;
+  line-height: 4.25rem;
+}
+
+.c8 {
+  position: absolute;
+  bottom: 0.2rem;
+  right: 0.5rem;
+  font-size: 1rem;
+  color: #888888;
+  font-variant: small-caps;
+}
+
+.c4 {
+  margin: 2.3rem 1.7rem 0rem 1.7rem;
+}
+
+.c5 {
+  margin-top: 1.5rem;
+  border-top: 1px solid #eaeaea;
+  border-bottom: 1px solid #eaeaea;
+}
+
 <div
-  className="sc-eHgmQL jjLxRA"
+  className="c0"
 >
   <header
-    className="sc-cvbbAY gHpXLP"
+    className="c1"
   >
     <div
       className="ms-ResizeGroup root-148"
@@ -5472,7 +6444,7 @@ exports[`Storyshots Custom Functions|Dashboard with actual tabs 1`] = `
       </div>
     </div>
     <div
-      className="sc-bZQynM hPENVI"
+      className="c2"
     >
       <div>
         <div
@@ -5573,22 +6545,22 @@ exports[`Storyshots Custom Functions|Dashboard with actual tabs 1`] = `
     </div>
   </header>
   <div
-    className="sc-jWBwVP keUZJP"
+    className="c3"
   >
     <div>
       <h4
-        className="sc-jlyJG ms-font-m cXZKOJ"
+        className="ms-font-m c4"
       >
         Some of your functions are invalid and cannot be declared. Review and fix the issues.
       </h4>
       <div
-        className="sc-gipzik kROAEN"
+        className="c5"
       >
         <div
-          className="sc-brqgnP jLZkHj"
+          className="c6"
         >
           <div
-            className="sc-cMljjf fWEzoS"
+            className="c7"
           >
             <i
               aria-hidden={true}
@@ -5599,14 +6571,14 @@ exports[`Storyshots Custom Functions|Dashboard with actual tabs 1`] = `
               
             </i>
             <h4
-              className="sc-jAaTju ms-font-s fNCBho"
+              className="ms-font-s "
             >
               foo1
               (...)
             </h4>
           </div>
           <div
-            className="sc-iRbamj ms-font-xs IuvzM"
+            className="ms-font-xs c8"
           >
             =ScriptLab.
             SnippetName
@@ -5616,10 +6588,10 @@ exports[`Storyshots Custom Functions|Dashboard with actual tabs 1`] = `
           </div>
         </div>
         <div
-          className="sc-brqgnP jLZkHj"
+          className="c6"
         >
           <div
-            className="sc-cMljjf fWEzoS"
+            className="c7"
           >
             <i
               aria-hidden={true}
@@ -5630,14 +6602,14 @@ exports[`Storyshots Custom Functions|Dashboard with actual tabs 1`] = `
               
             </i>
             <h4
-              className="sc-jAaTju ms-font-s fNCBho"
+              className="ms-font-s "
             >
               foo2
               (...)
             </h4>
           </div>
           <div
-            className="sc-iRbamj ms-font-xs IuvzM"
+            className="ms-font-xs c8"
           >
             =ScriptLab.
             SnippetName
@@ -5647,10 +6619,10 @@ exports[`Storyshots Custom Functions|Dashboard with actual tabs 1`] = `
           </div>
         </div>
         <div
-          className="sc-brqgnP jLZkHj"
+          className="c6"
         >
           <div
-            className="sc-cMljjf fWEzoS"
+            className="c7"
           >
             <i
               aria-hidden={true}
@@ -5661,14 +6633,14 @@ exports[`Storyshots Custom Functions|Dashboard with actual tabs 1`] = `
               
             </i>
             <h4
-              className="sc-jAaTju ms-font-s fNCBho"
+              className="ms-font-s "
             >
               foo3
               (...)
             </h4>
           </div>
           <div
-            className="sc-iRbamj ms-font-xs IuvzM"
+            className="ms-font-xs c8"
           >
             =ScriptLab.
             SnippetName
@@ -5678,10 +6650,10 @@ exports[`Storyshots Custom Functions|Dashboard with actual tabs 1`] = `
           </div>
         </div>
         <div
-          className="sc-brqgnP jLZkHj"
+          className="c6"
         >
           <div
-            className="sc-cMljjf fWEzoS"
+            className="c7"
           >
             <i
               aria-hidden={true}
@@ -5692,14 +6664,14 @@ exports[`Storyshots Custom Functions|Dashboard with actual tabs 1`] = `
               
             </i>
             <h4
-              className="sc-jAaTju ms-font-s fNCBho"
+              className="ms-font-s "
             >
               foo4
               (...)
             </h4>
           </div>
           <div
-            className="sc-iRbamj ms-font-xs IuvzM"
+            className="ms-font-xs c8"
           >
             =ScriptLab.
             SnippetName
@@ -5709,10 +6681,10 @@ exports[`Storyshots Custom Functions|Dashboard with actual tabs 1`] = `
           </div>
         </div>
         <div
-          className="sc-brqgnP jLZkHj"
+          className="c6"
         >
           <div
-            className="sc-cMljjf fWEzoS"
+            className="c7"
           >
             <i
               aria-hidden={true}
@@ -5723,14 +6695,14 @@ exports[`Storyshots Custom Functions|Dashboard with actual tabs 1`] = `
               
             </i>
             <h4
-              className="sc-jAaTju ms-font-s fNCBho"
+              className="ms-font-s "
             >
               foo5
               (...)
             </h4>
           </div>
           <div
-            className="sc-iRbamj ms-font-xs IuvzM"
+            className="ms-font-xs c8"
           >
             =ScriptLab.
             SnippetName
@@ -5740,10 +6712,10 @@ exports[`Storyshots Custom Functions|Dashboard with actual tabs 1`] = `
           </div>
         </div>
         <div
-          className="sc-brqgnP jLZkHj"
+          className="c6"
         >
           <div
-            className="sc-cMljjf fWEzoS"
+            className="c7"
           >
             <i
               aria-hidden={true}
@@ -5754,14 +6726,14 @@ exports[`Storyshots Custom Functions|Dashboard with actual tabs 1`] = `
               
             </i>
             <h4
-              className="sc-jAaTju ms-font-s fNCBho"
+              className="ms-font-s "
             >
               foo6
               (...)
             </h4>
           </div>
           <div
-            className="sc-iRbamj ms-font-xs IuvzM"
+            className="ms-font-xs c8"
           >
             =ScriptLab.
             SnippetName
@@ -5771,10 +6743,10 @@ exports[`Storyshots Custom Functions|Dashboard with actual tabs 1`] = `
           </div>
         </div>
         <div
-          className="sc-brqgnP jLZkHj"
+          className="c6"
         >
           <div
-            className="sc-cMljjf fWEzoS"
+            className="c7"
           >
             <i
               aria-hidden={true}
@@ -5785,14 +6757,14 @@ exports[`Storyshots Custom Functions|Dashboard with actual tabs 1`] = `
               
             </i>
             <h4
-              className="sc-jAaTju ms-font-s fNCBho"
+              className="ms-font-s "
             >
               foo7
               (...)
             </h4>
           </div>
           <div
-            className="sc-iRbamj ms-font-xs IuvzM"
+            className="ms-font-xs c8"
           >
             =ScriptLab.
             SnippetName
@@ -5802,10 +6774,10 @@ exports[`Storyshots Custom Functions|Dashboard with actual tabs 1`] = `
           </div>
         </div>
         <div
-          className="sc-brqgnP jLZkHj"
+          className="c6"
         >
           <div
-            className="sc-cMljjf fWEzoS"
+            className="c7"
           >
             <i
               aria-hidden={true}
@@ -5816,14 +6788,14 @@ exports[`Storyshots Custom Functions|Dashboard with actual tabs 1`] = `
               
             </i>
             <h4
-              className="sc-jAaTju ms-font-s fNCBho"
+              className="ms-font-s "
             >
               foo8
               (...)
             </h4>
           </div>
           <div
-            className="sc-iRbamj ms-font-xs IuvzM"
+            className="ms-font-xs c8"
           >
             =ScriptLab.
             SnippetName
@@ -5839,11 +6811,79 @@ exports[`Storyshots Custom Functions|Dashboard with actual tabs 1`] = `
 `;
 
 exports[`Storyshots Custom Functions|Dashboard with refresh 1`] = `
+.c2 {
+  background-color: #113A23;
+  z-index: 1000;
+}
+
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.c1 {
+  box-shadow: 0px 2px 5px 2px #666666;
+  z-index: 1000;
+}
+
+.c3 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  overflow: hidden;
+  z-index: 999;
+}
+
+.c6 {
+  position: relative;
+  padding: 0rem 1.8rem;
+  border-top: 0.5px solid #eaeaea;
+  border-bottom: 0.5px solid #eaeaea;
+}
+
+.c7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  min-height: 4.25rem;
+  line-height: 4.25rem;
+}
+
+.c8 {
+  position: absolute;
+  bottom: 0.2rem;
+  right: 0.5rem;
+  font-size: 1rem;
+  color: #888888;
+  font-variant: small-caps;
+}
+
+.c4 {
+  margin: 2.3rem 1.7rem 0rem 1.7rem;
+}
+
+.c5 {
+  margin-top: 1.5rem;
+  border-top: 1px solid #eaeaea;
+  border-bottom: 1px solid #eaeaea;
+}
+
 <div
-  className="sc-eHgmQL jjLxRA"
+  className="c0"
 >
   <header
-    className="sc-cvbbAY gHpXLP"
+    className="c1"
   >
     <div
       className="ms-ResizeGroup root-148"
@@ -5947,7 +6987,7 @@ exports[`Storyshots Custom Functions|Dashboard with refresh 1`] = `
       </div>
     </div>
     <div
-      className="sc-bZQynM hPENVI"
+      className="c2"
     >
       <div>
         <div
@@ -6117,22 +7157,22 @@ exports[`Storyshots Custom Functions|Dashboard with refresh 1`] = `
     </div>
   </div>
   <div
-    className="sc-jWBwVP keUZJP"
+    className="c3"
   >
     <div>
       <h4
-        className="sc-jlyJG ms-font-m cXZKOJ"
+        className="ms-font-m c4"
       >
         Some of your functions are invalid and cannot be declared. Review and fix the issues.
       </h4>
       <div
-        className="sc-gipzik kROAEN"
+        className="c5"
       >
         <div
-          className="sc-brqgnP jLZkHj"
+          className="c6"
         >
           <div
-            className="sc-cMljjf fWEzoS"
+            className="c7"
           >
             <i
               aria-hidden={true}
@@ -6143,14 +7183,14 @@ exports[`Storyshots Custom Functions|Dashboard with refresh 1`] = `
               
             </i>
             <h4
-              className="sc-jAaTju ms-font-s fNCBho"
+              className="ms-font-s "
             >
               foo1
               (...)
             </h4>
           </div>
           <div
-            className="sc-iRbamj ms-font-xs IuvzM"
+            className="ms-font-xs c8"
           >
             =ScriptLab.
             SnippetName
@@ -6160,10 +7200,10 @@ exports[`Storyshots Custom Functions|Dashboard with refresh 1`] = `
           </div>
         </div>
         <div
-          className="sc-brqgnP jLZkHj"
+          className="c6"
         >
           <div
-            className="sc-cMljjf fWEzoS"
+            className="c7"
           >
             <i
               aria-hidden={true}
@@ -6174,14 +7214,14 @@ exports[`Storyshots Custom Functions|Dashboard with refresh 1`] = `
               
             </i>
             <h4
-              className="sc-jAaTju ms-font-s fNCBho"
+              className="ms-font-s "
             >
               foo2
               (...)
             </h4>
           </div>
           <div
-            className="sc-iRbamj ms-font-xs IuvzM"
+            className="ms-font-xs c8"
           >
             =ScriptLab.
             SnippetName
@@ -6191,10 +7231,10 @@ exports[`Storyshots Custom Functions|Dashboard with refresh 1`] = `
           </div>
         </div>
         <div
-          className="sc-brqgnP jLZkHj"
+          className="c6"
         >
           <div
-            className="sc-cMljjf fWEzoS"
+            className="c7"
           >
             <i
               aria-hidden={true}
@@ -6205,14 +7245,14 @@ exports[`Storyshots Custom Functions|Dashboard with refresh 1`] = `
               
             </i>
             <h4
-              className="sc-jAaTju ms-font-s fNCBho"
+              className="ms-font-s "
             >
               foo3
               (...)
             </h4>
           </div>
           <div
-            className="sc-iRbamj ms-font-xs IuvzM"
+            className="ms-font-xs c8"
           >
             =ScriptLab.
             SnippetName
@@ -6222,10 +7262,10 @@ exports[`Storyshots Custom Functions|Dashboard with refresh 1`] = `
           </div>
         </div>
         <div
-          className="sc-brqgnP jLZkHj"
+          className="c6"
         >
           <div
-            className="sc-cMljjf fWEzoS"
+            className="c7"
           >
             <i
               aria-hidden={true}
@@ -6236,14 +7276,14 @@ exports[`Storyshots Custom Functions|Dashboard with refresh 1`] = `
               
             </i>
             <h4
-              className="sc-jAaTju ms-font-s fNCBho"
+              className="ms-font-s "
             >
               foo4
               (...)
             </h4>
           </div>
           <div
-            className="sc-iRbamj ms-font-xs IuvzM"
+            className="ms-font-xs c8"
           >
             =ScriptLab.
             SnippetName
@@ -6253,10 +7293,10 @@ exports[`Storyshots Custom Functions|Dashboard with refresh 1`] = `
           </div>
         </div>
         <div
-          className="sc-brqgnP jLZkHj"
+          className="c6"
         >
           <div
-            className="sc-cMljjf fWEzoS"
+            className="c7"
           >
             <i
               aria-hidden={true}
@@ -6267,14 +7307,14 @@ exports[`Storyshots Custom Functions|Dashboard with refresh 1`] = `
               
             </i>
             <h4
-              className="sc-jAaTju ms-font-s fNCBho"
+              className="ms-font-s "
             >
               foo5
               (...)
             </h4>
           </div>
           <div
-            className="sc-iRbamj ms-font-xs IuvzM"
+            className="ms-font-xs c8"
           >
             =ScriptLab.
             SnippetName
@@ -6284,10 +7324,10 @@ exports[`Storyshots Custom Functions|Dashboard with refresh 1`] = `
           </div>
         </div>
         <div
-          className="sc-brqgnP jLZkHj"
+          className="c6"
         >
           <div
-            className="sc-cMljjf fWEzoS"
+            className="c7"
           >
             <i
               aria-hidden={true}
@@ -6298,14 +7338,14 @@ exports[`Storyshots Custom Functions|Dashboard with refresh 1`] = `
               
             </i>
             <h4
-              className="sc-jAaTju ms-font-s fNCBho"
+              className="ms-font-s "
             >
               foo6
               (...)
             </h4>
           </div>
           <div
-            className="sc-iRbamj ms-font-xs IuvzM"
+            className="ms-font-xs c8"
           >
             =ScriptLab.
             SnippetName
@@ -6315,10 +7355,10 @@ exports[`Storyshots Custom Functions|Dashboard with refresh 1`] = `
           </div>
         </div>
         <div
-          className="sc-brqgnP jLZkHj"
+          className="c6"
         >
           <div
-            className="sc-cMljjf fWEzoS"
+            className="c7"
           >
             <i
               aria-hidden={true}
@@ -6329,14 +7369,14 @@ exports[`Storyshots Custom Functions|Dashboard with refresh 1`] = `
               
             </i>
             <h4
-              className="sc-jAaTju ms-font-s fNCBho"
+              className="ms-font-s "
             >
               foo7
               (...)
             </h4>
           </div>
           <div
-            className="sc-iRbamj ms-font-xs IuvzM"
+            className="ms-font-xs c8"
           >
             =ScriptLab.
             SnippetName
@@ -6346,10 +7386,10 @@ exports[`Storyshots Custom Functions|Dashboard with refresh 1`] = `
           </div>
         </div>
         <div
-          className="sc-brqgnP jLZkHj"
+          className="c6"
         >
           <div
-            className="sc-cMljjf fWEzoS"
+            className="c7"
           >
             <i
               aria-hidden={true}
@@ -6360,14 +7400,14 @@ exports[`Storyshots Custom Functions|Dashboard with refresh 1`] = `
               
             </i>
             <h4
-              className="sc-jAaTju ms-font-s fNCBho"
+              className="ms-font-s "
             >
               foo8
               (...)
             </h4>
           </div>
           <div
-            className="sc-iRbamj ms-font-xs IuvzM"
+            className="ms-font-xs c8"
           >
             =ScriptLab.
             SnippetName
@@ -6383,26 +7423,84 @@ exports[`Storyshots Custom Functions|Dashboard with refresh 1`] = `
 `;
 
 exports[`Storyshots Custom Functions|Summary all bad 1`] = `
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.c1 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  overflow: hidden;
+  z-index: 999;
+}
+
+.c4 {
+  position: relative;
+  padding: 0rem 1.8rem;
+  border-top: 0.5px solid #eaeaea;
+  border-bottom: 0.5px solid #eaeaea;
+}
+
+.c5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  min-height: 4.25rem;
+  line-height: 4.25rem;
+}
+
+.c6 {
+  position: absolute;
+  bottom: 0.2rem;
+  right: 0.5rem;
+  font-size: 1rem;
+  color: #888888;
+  font-variant: small-caps;
+}
+
+.c2 {
+  margin: 2.3rem 1.7rem 0rem 1.7rem;
+}
+
+.c3 {
+  margin-top: 1.5rem;
+  border-top: 1px solid #eaeaea;
+  border-bottom: 1px solid #eaeaea;
+}
+
 <div
-  className="sc-eHgmQL jjLxRA"
+  className="c0"
 >
   <div
-    className="sc-jWBwVP keUZJP"
+    className="c1"
   >
     <div>
       <h4
-        className="sc-jlyJG ms-font-m cXZKOJ"
+        className="ms-font-m c2"
       >
         Some of your functions are invalid and cannot be declared. Review and fix the issues.
       </h4>
       <div
-        className="sc-gipzik kROAEN"
+        className="c3"
       >
         <div
-          className="sc-brqgnP jLZkHj"
+          className="c4"
         >
           <div
-            className="sc-cMljjf fWEzoS"
+            className="c5"
           >
             <i
               aria-hidden={true}
@@ -6413,14 +7511,14 @@ exports[`Storyshots Custom Functions|Summary all bad 1`] = `
               
             </i>
             <h4
-              className="sc-jAaTju ms-font-s fNCBho"
+              className="ms-font-s "
             >
               foo1
               (...)
             </h4>
           </div>
           <div
-            className="sc-iRbamj ms-font-xs IuvzM"
+            className="ms-font-xs c6"
           >
             =ScriptLab.
             SnippetName
@@ -6430,10 +7528,10 @@ exports[`Storyshots Custom Functions|Summary all bad 1`] = `
           </div>
         </div>
         <div
-          className="sc-brqgnP jLZkHj"
+          className="c4"
         >
           <div
-            className="sc-cMljjf fWEzoS"
+            className="c5"
           >
             <i
               aria-hidden={true}
@@ -6444,14 +7542,14 @@ exports[`Storyshots Custom Functions|Summary all bad 1`] = `
               
             </i>
             <h4
-              className="sc-jAaTju ms-font-s fNCBho"
+              className="ms-font-s "
             >
               foo2
               (...)
             </h4>
           </div>
           <div
-            className="sc-iRbamj ms-font-xs IuvzM"
+            className="ms-font-xs c6"
           >
             =ScriptLab.
             SnippetName
@@ -6461,10 +7559,10 @@ exports[`Storyshots Custom Functions|Summary all bad 1`] = `
           </div>
         </div>
         <div
-          className="sc-brqgnP jLZkHj"
+          className="c4"
         >
           <div
-            className="sc-cMljjf fWEzoS"
+            className="c5"
           >
             <i
               aria-hidden={true}
@@ -6475,14 +7573,14 @@ exports[`Storyshots Custom Functions|Summary all bad 1`] = `
               
             </i>
             <h4
-              className="sc-jAaTju ms-font-s fNCBho"
+              className="ms-font-s "
             >
               foo3
               (...)
             </h4>
           </div>
           <div
-            className="sc-iRbamj ms-font-xs IuvzM"
+            className="ms-font-xs c6"
           >
             =ScriptLab.
             SnippetName
@@ -6492,10 +7590,10 @@ exports[`Storyshots Custom Functions|Summary all bad 1`] = `
           </div>
         </div>
         <div
-          className="sc-brqgnP jLZkHj"
+          className="c4"
         >
           <div
-            className="sc-cMljjf fWEzoS"
+            className="c5"
           >
             <i
               aria-hidden={true}
@@ -6506,14 +7604,14 @@ exports[`Storyshots Custom Functions|Summary all bad 1`] = `
               
             </i>
             <h4
-              className="sc-jAaTju ms-font-s fNCBho"
+              className="ms-font-s "
             >
               foo4
               (...)
             </h4>
           </div>
           <div
-            className="sc-iRbamj ms-font-xs IuvzM"
+            className="ms-font-xs c6"
           >
             =ScriptLab.
             SnippetName
@@ -6529,26 +7627,84 @@ exports[`Storyshots Custom Functions|Summary all bad 1`] = `
 `;
 
 exports[`Storyshots Custom Functions|Summary all good 1`] = `
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.c1 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  overflow: hidden;
+  z-index: 999;
+}
+
+.c4 {
+  position: relative;
+  padding: 0rem 1.8rem;
+  border-top: 0.5px solid #eaeaea;
+  border-bottom: 0.5px solid #eaeaea;
+}
+
+.c5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  min-height: 4.25rem;
+  line-height: 4.25rem;
+}
+
+.c6 {
+  position: absolute;
+  bottom: 0.2rem;
+  right: 0.5rem;
+  font-size: 1rem;
+  color: #888888;
+  font-variant: small-caps;
+}
+
+.c2 {
+  margin: 2.3rem 1.7rem 0rem 1.7rem;
+}
+
+.c3 {
+  margin-top: 1.5rem;
+  border-top: 1px solid #eaeaea;
+  border-bottom: 1px solid #eaeaea;
+}
+
 <div
-  className="sc-eHgmQL jjLxRA"
+  className="c0"
 >
   <div
-    className="sc-jWBwVP keUZJP"
+    className="c1"
   >
     <div>
       <h4
-        className="sc-jlyJG ms-font-m cXZKOJ"
+        className="ms-font-m c2"
       >
         The following functions have been registered successfully.
       </h4>
       <div
-        className="sc-gipzik kROAEN"
+        className="c3"
       >
         <div
-          className="sc-brqgnP jLZkHj"
+          className="c4"
         >
           <div
-            className="sc-cMljjf fWEzoS"
+            className="c5"
           >
             <i
               aria-hidden={true}
@@ -6559,14 +7715,14 @@ exports[`Storyshots Custom Functions|Summary all good 1`] = `
               
             </i>
             <h4
-              className="sc-jAaTju ms-font-s fNCBho"
+              className="ms-font-s "
             >
               foo5
               (...)
             </h4>
           </div>
           <div
-            className="sc-iRbamj ms-font-xs IuvzM"
+            className="ms-font-xs c6"
           >
             =ScriptLab.
             SnippetName
@@ -6576,10 +7732,10 @@ exports[`Storyshots Custom Functions|Summary all good 1`] = `
           </div>
         </div>
         <div
-          className="sc-brqgnP jLZkHj"
+          className="c4"
         >
           <div
-            className="sc-cMljjf fWEzoS"
+            className="c5"
           >
             <i
               aria-hidden={true}
@@ -6590,14 +7746,14 @@ exports[`Storyshots Custom Functions|Summary all good 1`] = `
               
             </i>
             <h4
-              className="sc-jAaTju ms-font-s fNCBho"
+              className="ms-font-s "
             >
               foo6
               (...)
             </h4>
           </div>
           <div
-            className="sc-iRbamj ms-font-xs IuvzM"
+            className="ms-font-xs c6"
           >
             =ScriptLab.
             SnippetName
@@ -6607,10 +7763,10 @@ exports[`Storyshots Custom Functions|Summary all good 1`] = `
           </div>
         </div>
         <div
-          className="sc-brqgnP jLZkHj"
+          className="c4"
         >
           <div
-            className="sc-cMljjf fWEzoS"
+            className="c5"
           >
             <i
               aria-hidden={true}
@@ -6621,14 +7777,14 @@ exports[`Storyshots Custom Functions|Summary all good 1`] = `
               
             </i>
             <h4
-              className="sc-jAaTju ms-font-s fNCBho"
+              className="ms-font-s "
             >
               foo7
               (...)
             </h4>
           </div>
           <div
-            className="sc-iRbamj ms-font-xs IuvzM"
+            className="ms-font-xs c6"
           >
             =ScriptLab.
             SnippetName
@@ -6638,10 +7794,10 @@ exports[`Storyshots Custom Functions|Summary all good 1`] = `
           </div>
         </div>
         <div
-          className="sc-brqgnP jLZkHj"
+          className="c4"
         >
           <div
-            className="sc-cMljjf fWEzoS"
+            className="c5"
           >
             <i
               aria-hidden={true}
@@ -6652,14 +7808,14 @@ exports[`Storyshots Custom Functions|Summary all good 1`] = `
               
             </i>
             <h4
-              className="sc-jAaTju ms-font-s fNCBho"
+              className="ms-font-s "
             >
               foo8
               (...)
             </h4>
           </div>
           <div
-            className="sc-iRbamj ms-font-xs IuvzM"
+            className="ms-font-xs c6"
           >
             =ScriptLab.
             SnippetName
@@ -6675,26 +7831,84 @@ exports[`Storyshots Custom Functions|Summary all good 1`] = `
 `;
 
 exports[`Storyshots Custom Functions|Summary basic 1`] = `
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.c1 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  overflow: hidden;
+  z-index: 999;
+}
+
+.c4 {
+  position: relative;
+  padding: 0rem 1.8rem;
+  border-top: 0.5px solid #eaeaea;
+  border-bottom: 0.5px solid #eaeaea;
+}
+
+.c5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  min-height: 4.25rem;
+  line-height: 4.25rem;
+}
+
+.c6 {
+  position: absolute;
+  bottom: 0.2rem;
+  right: 0.5rem;
+  font-size: 1rem;
+  color: #888888;
+  font-variant: small-caps;
+}
+
+.c2 {
+  margin: 2.3rem 1.7rem 0rem 1.7rem;
+}
+
+.c3 {
+  margin-top: 1.5rem;
+  border-top: 1px solid #eaeaea;
+  border-bottom: 1px solid #eaeaea;
+}
+
 <div
-  className="sc-eHgmQL jjLxRA"
+  className="c0"
 >
   <div
-    className="sc-jWBwVP keUZJP"
+    className="c1"
   >
     <div>
       <h4
-        className="sc-jlyJG ms-font-m cXZKOJ"
+        className="ms-font-m c2"
       >
         Some of your functions are invalid and cannot be declared. Review and fix the issues.
       </h4>
       <div
-        className="sc-gipzik kROAEN"
+        className="c3"
       >
         <div
-          className="sc-brqgnP jLZkHj"
+          className="c4"
         >
           <div
-            className="sc-cMljjf fWEzoS"
+            className="c5"
           >
             <i
               aria-hidden={true}
@@ -6705,14 +7919,14 @@ exports[`Storyshots Custom Functions|Summary basic 1`] = `
               
             </i>
             <h4
-              className="sc-jAaTju ms-font-s fNCBho"
+              className="ms-font-s "
             >
               foo1
               (...)
             </h4>
           </div>
           <div
-            className="sc-iRbamj ms-font-xs IuvzM"
+            className="ms-font-xs c6"
           >
             =ScriptLab.
             SnippetName
@@ -6722,10 +7936,10 @@ exports[`Storyshots Custom Functions|Summary basic 1`] = `
           </div>
         </div>
         <div
-          className="sc-brqgnP jLZkHj"
+          className="c4"
         >
           <div
-            className="sc-cMljjf fWEzoS"
+            className="c5"
           >
             <i
               aria-hidden={true}
@@ -6736,14 +7950,14 @@ exports[`Storyshots Custom Functions|Summary basic 1`] = `
               
             </i>
             <h4
-              className="sc-jAaTju ms-font-s fNCBho"
+              className="ms-font-s "
             >
               foo2
               (...)
             </h4>
           </div>
           <div
-            className="sc-iRbamj ms-font-xs IuvzM"
+            className="ms-font-xs c6"
           >
             =ScriptLab.
             SnippetName
@@ -6753,10 +7967,10 @@ exports[`Storyshots Custom Functions|Summary basic 1`] = `
           </div>
         </div>
         <div
-          className="sc-brqgnP jLZkHj"
+          className="c4"
         >
           <div
-            className="sc-cMljjf fWEzoS"
+            className="c5"
           >
             <i
               aria-hidden={true}
@@ -6767,14 +7981,14 @@ exports[`Storyshots Custom Functions|Summary basic 1`] = `
               
             </i>
             <h4
-              className="sc-jAaTju ms-font-s fNCBho"
+              className="ms-font-s "
             >
               foo3
               (...)
             </h4>
           </div>
           <div
-            className="sc-iRbamj ms-font-xs IuvzM"
+            className="ms-font-xs c6"
           >
             =ScriptLab.
             SnippetName
@@ -6784,10 +7998,10 @@ exports[`Storyshots Custom Functions|Summary basic 1`] = `
           </div>
         </div>
         <div
-          className="sc-brqgnP jLZkHj"
+          className="c4"
         >
           <div
-            className="sc-cMljjf fWEzoS"
+            className="c5"
           >
             <i
               aria-hidden={true}
@@ -6798,14 +8012,14 @@ exports[`Storyshots Custom Functions|Summary basic 1`] = `
               
             </i>
             <h4
-              className="sc-jAaTju ms-font-s fNCBho"
+              className="ms-font-s "
             >
               foo4
               (...)
             </h4>
           </div>
           <div
-            className="sc-iRbamj ms-font-xs IuvzM"
+            className="ms-font-xs c6"
           >
             =ScriptLab.
             SnippetName
@@ -6815,10 +8029,10 @@ exports[`Storyshots Custom Functions|Summary basic 1`] = `
           </div>
         </div>
         <div
-          className="sc-brqgnP jLZkHj"
+          className="c4"
         >
           <div
-            className="sc-cMljjf fWEzoS"
+            className="c5"
           >
             <i
               aria-hidden={true}
@@ -6829,14 +8043,14 @@ exports[`Storyshots Custom Functions|Summary basic 1`] = `
               
             </i>
             <h4
-              className="sc-jAaTju ms-font-s fNCBho"
+              className="ms-font-s "
             >
               foo5
               (...)
             </h4>
           </div>
           <div
-            className="sc-iRbamj ms-font-xs IuvzM"
+            className="ms-font-xs c6"
           >
             =ScriptLab.
             SnippetName
@@ -6846,10 +8060,10 @@ exports[`Storyshots Custom Functions|Summary basic 1`] = `
           </div>
         </div>
         <div
-          className="sc-brqgnP jLZkHj"
+          className="c4"
         >
           <div
-            className="sc-cMljjf fWEzoS"
+            className="c5"
           >
             <i
               aria-hidden={true}
@@ -6860,14 +8074,14 @@ exports[`Storyshots Custom Functions|Summary basic 1`] = `
               
             </i>
             <h4
-              className="sc-jAaTju ms-font-s fNCBho"
+              className="ms-font-s "
             >
               foo6
               (...)
             </h4>
           </div>
           <div
-            className="sc-iRbamj ms-font-xs IuvzM"
+            className="ms-font-xs c6"
           >
             =ScriptLab.
             SnippetName
@@ -6877,10 +8091,10 @@ exports[`Storyshots Custom Functions|Summary basic 1`] = `
           </div>
         </div>
         <div
-          className="sc-brqgnP jLZkHj"
+          className="c4"
         >
           <div
-            className="sc-cMljjf fWEzoS"
+            className="c5"
           >
             <i
               aria-hidden={true}
@@ -6891,14 +8105,14 @@ exports[`Storyshots Custom Functions|Summary basic 1`] = `
               
             </i>
             <h4
-              className="sc-jAaTju ms-font-s fNCBho"
+              className="ms-font-s "
             >
               foo7
               (...)
             </h4>
           </div>
           <div
-            className="sc-iRbamj ms-font-xs IuvzM"
+            className="ms-font-xs c6"
           >
             =ScriptLab.
             SnippetName
@@ -6908,10 +8122,10 @@ exports[`Storyshots Custom Functions|Summary basic 1`] = `
           </div>
         </div>
         <div
-          className="sc-brqgnP jLZkHj"
+          className="c4"
         >
           <div
-            className="sc-cMljjf fWEzoS"
+            className="c5"
           >
             <i
               aria-hidden={true}
@@ -6922,14 +8136,14 @@ exports[`Storyshots Custom Functions|Summary basic 1`] = `
               
             </i>
             <h4
-              className="sc-jAaTju ms-font-s fNCBho"
+              className="ms-font-s "
             >
               foo8
               (...)
             </h4>
           </div>
           <div
-            className="sc-iRbamj ms-font-xs IuvzM"
+            className="ms-font-xs c6"
           >
             =ScriptLab.
             SnippetName
@@ -6945,14 +8159,50 @@ exports[`Storyshots Custom Functions|Summary basic 1`] = `
 `;
 
 exports[`Storyshots Custom Functions|Summary loading 1`] = `
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.c1 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  overflow: hidden;
+  z-index: 999;
+}
+
+.c2 {
+  height: 100%;
+  width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
 <div
-  className="sc-eHgmQL jjLxRA"
+  className="c0"
 >
   <div
-    className="sc-jWBwVP keUZJP"
+    className="c1"
   >
     <div
-      className="sc-csuQGl cpEldH"
+      className="c2"
     >
       <div
         className="ms-Spinner root-142"
@@ -6976,12 +8226,54 @@ exports[`Storyshots Custom Functions|Summary loading 1`] = `
 `;
 
 exports[`Storyshots Custom Functions|Summary/Items basic 1`] = `
+.c0 {
+  position: relative;
+  padding: 0rem 1.8rem;
+  border-top: 0.5px solid #eaeaea;
+  border-bottom: 0.5px solid #eaeaea;
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  min-height: 4.25rem;
+  line-height: 4.25rem;
+}
+
+.c5 {
+  color: red;
+  margin-top: 0.8rem;
+}
+
+.c3 {
+  padding: 0rem 2rem 2rem 2.5rem;
+}
+
+.c3 > .c4:first-child {
+  margin-top: 0;
+}
+
+.c2 {
+  position: absolute;
+  bottom: 0.2rem;
+  right: 0.5rem;
+  font-size: 1rem;
+  color: #888888;
+  font-variant: small-caps;
+}
+
 <div>
   <div
-    className="sc-brqgnP jLZkHj"
+    className="c0"
   >
     <div
-      className="sc-cMljjf fWEzoS"
+      className="c1"
     >
       <i
         aria-hidden={true}
@@ -6992,14 +8284,14 @@ exports[`Storyshots Custom Functions|Summary/Items basic 1`] = `
         
       </i>
       <h4
-        className="sc-jAaTju ms-font-s fNCBho"
+        className="ms-font-s "
       >
         foo1
         (...)
       </h4>
     </div>
     <div
-      className="sc-iRbamj ms-font-xs IuvzM"
+      className="ms-font-xs c2"
     >
       =ScriptLab.
       SnippetName
@@ -7009,10 +8301,10 @@ exports[`Storyshots Custom Functions|Summary/Items basic 1`] = `
     </div>
   </div>
   <div
-    className="sc-brqgnP jLZkHj"
+    className="c0"
   >
     <div
-      className="sc-cMljjf fWEzoS"
+      className="c1"
     >
       <i
         aria-hidden={true}
@@ -7023,14 +8315,14 @@ exports[`Storyshots Custom Functions|Summary/Items basic 1`] = `
         
       </i>
       <h4
-        className="sc-jAaTju ms-font-s fNCBho"
+        className="ms-font-s "
       >
         foo2
         (...)
       </h4>
     </div>
     <div
-      className="sc-iRbamj ms-font-xs IuvzM"
+      className="ms-font-xs c2"
     >
       =ScriptLab.
       SnippetName
@@ -7040,10 +8332,10 @@ exports[`Storyshots Custom Functions|Summary/Items basic 1`] = `
     </div>
   </div>
   <div
-    className="sc-brqgnP jLZkHj"
+    className="c0"
   >
     <div
-      className="sc-cMljjf fWEzoS"
+      className="c1"
     >
       <i
         aria-hidden={true}
@@ -7054,28 +8346,28 @@ exports[`Storyshots Custom Functions|Summary/Items basic 1`] = `
         
       </i>
       <h4
-        className="sc-jAaTju ms-font-s fNCBho"
+        className="ms-font-s "
       >
         foo3
         (...)
       </h4>
     </div>
     <div
-      className="sc-gPEVay fjVrXm"
+      className="c3"
     >
       <div
-        className="sc-jDwBTQ ms-font-xs fYpFnD"
+        className="c4 ms-font-xs c5"
       >
         Error - I am an error message. Be scared of me .
       </div>
       <div
-        className="sc-jDwBTQ ms-font-xs fYpFnD"
+        className="c4 ms-font-xs c5"
       >
         Error - so many error messages. And this error message turns out to be a longer error message than the other ones. It is so long. A very very long error message, becauser your code is verry veryy messed up.
       </div>
     </div>
     <div
-      className="sc-iRbamj ms-font-xs IuvzM"
+      className="ms-font-xs c2"
     >
       =ScriptLab.
       SnippetName
@@ -7085,10 +8377,10 @@ exports[`Storyshots Custom Functions|Summary/Items basic 1`] = `
     </div>
   </div>
   <div
-    className="sc-brqgnP jLZkHj"
+    className="c0"
   >
     <div
-      className="sc-cMljjf fWEzoS"
+      className="c1"
     >
       <i
         aria-hidden={true}
@@ -7099,14 +8391,14 @@ exports[`Storyshots Custom Functions|Summary/Items basic 1`] = `
         
       </i>
       <h4
-        className="sc-jAaTju ms-font-s fNCBho"
+        className="ms-font-s "
       >
         foo4
         (...)
       </h4>
     </div>
     <div
-      className="sc-iRbamj ms-font-xs IuvzM"
+      className="ms-font-xs c2"
     >
       =ScriptLab.
       SnippetName
@@ -7119,44 +8411,104 @@ exports[`Storyshots Custom Functions|Summary/Items basic 1`] = `
 `;
 
 exports[`Storyshots Custom Functions|Welcome basic 1`] = `
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+}
+
+.c1 {
+  line-height: 5.6rem;
+  color: #333333;
+}
+
+.c2 {
+  margin-top: 0.7rem;
+  line-height: 1.7rem;
+  color: #333333;
+  max-width: 20rem;
+  text-align: center;
+}
+
+.c3 {
+  width: 14.1rem;
+  margin-top: 2.4rem;
+  margin-bottom: 3.2rem;
+  color: #eaeaea;
+}
+
+.c4 {
+  max-width: 33rem;
+  text-align: left;
+}
+
+.c5 {
+  margin-bottom: 1.9rem;
+}
+
+.c6 {
+  margin-bottom: 2.6rem;
+}
+
+.c7 {
+  white-space: pre-line;
+  background: #eaeaea;
+  padding: 0.6rem;
+  margin-top: 0.8rem;
+}
+
 <div
-  className="sc-Rmtcm khnGYV"
+  className="c0"
 >
   <h1
-    className="sc-bRBYWo ms-font-su kisHIi"
+    className="ms-font-su c1"
   >
     Welcome
   </h1>
   <h3
-    className="sc-hzDkRC ms-font-s-plus ksWBHe"
+    className="ms-font-s-plus c2"
   >
     Discover what custom functions can do for you today!
   </h3>
   <hr
-    className="sc-jhAzac dxhBCT"
+    className="c3"
   />
   <section
-    className="sc-fBuWsC jYINpP"
+    className="c4"
   >
     <h3
-      className="sc-fMiknA ms-font-s-plus hxMEfq"
+      className="ms-font-s-plus c5"
     >
       Get started with your first custom function.
     </h3>
     <ol
-      className="sc-dVhcbM ms-font-s fghLuF"
+      className="ms-font-s "
     >
       <li
-        className="sc-eqIVtm kCdyge"
+        className="c6"
       >
         Open the code editor.
       </li>
       <li
-        className="sc-eqIVtm kCdyge"
+        className="c6"
       >
         Copy the following script and paste it into the editor.
         <div
-          className="sc-fAjcbJ ms-font-xs hzdZTa"
+          className="ms-font-xs c7"
         >
           <pre>
             /** @CustomFunction */
@@ -7174,7 +8526,7 @@ exports[`Storyshots Custom Functions|Welcome basic 1`] = `
         </div>
       </li>
       <li
-        className="sc-eqIVtm kCdyge"
+        className="c6"
       >
         After pasting, click the 
         <strong>
@@ -7226,8 +8578,27 @@ exports[`Storyshots Custom Functions|Welcome basic 1`] = `
 `;
 
 exports[`Storyshots IDE|Footer basic 1`] = `
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+  height: 2rem;
+  font-size: 1.2rem;
+  background-color: #217346;
+  color: #ffffff;
+}
+
 <footer
-  className="sc-caSCKo gUbPEM"
+  className="c0"
 >
   <button
     aria-describedby={undefined}
@@ -7325,8 +8696,27 @@ exports[`Storyshots IDE|Footer basic 1`] = `
 `;
 
 exports[`Storyshots IDE|Footer isWeb 1`] = `
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+  height: 2rem;
+  font-size: 1.2rem;
+  background-color: #217346;
+  color: #ffffff;
+}
+
 <footer
-  className="sc-caSCKo gUbPEM"
+  className="c0"
 >
   <button
     aria-describedby={undefined}
@@ -7467,8 +8857,27 @@ exports[`Storyshots IDE|Footer isWeb 1`] = `
 `;
 
 exports[`Storyshots IDE|Footer with Custom Function Solutions 1`] = `
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+  height: 2rem;
+  font-size: 1.2rem;
+  background-color: #217346;
+  color: #ffffff;
+}
+
 <footer
-  className="sc-caSCKo gUbPEM"
+  className="c0"
 >
   <button
     aria-describedby={undefined}
@@ -7598,8 +9007,13 @@ exports[`Storyshots IDE|Footer with Custom Function Solutions 1`] = `
 `;
 
 exports[`Storyshots IDE|Header basic 1`] = `
+.c0 {
+  background-color: #217346;
+  z-index: 1000;
+}
+
 <header
-  className="sc-gisBJw kZUFDb"
+  className="c0"
 >
   <div
     className="ms-ResizeGroup root-148"
@@ -7913,8 +9327,13 @@ exports[`Storyshots IDE|Header basic 1`] = `
 `;
 
 exports[`Storyshots IDE|Header custom functions view 1`] = `
+.c0 {
+  background-color: #217346;
+  z-index: 1000;
+}
+
 <header
-  className="sc-gisBJw kZUFDb"
+  className="c0"
 >
   <div
     className="ms-ResizeGroup root-148"
@@ -8228,8 +9647,13 @@ exports[`Storyshots IDE|Header custom functions view 1`] = `
 `;
 
 exports[`Storyshots IDE|Header settings view 1`] = `
+.c0 {
+  background-color: #217346;
+  z-index: 1000;
+}
+
 <header
-  className="sc-gisBJw kZUFDb"
+  className="c0"
 >
   <div
     className="ms-ResizeGroup root-148"
@@ -8672,6 +10096,31 @@ exports[`Storyshots IDE|MessageBar basic warning 1`] = `
 `;
 
 exports[`Storyshots Misc|Loading Indicator basic 1`] = `
+.c0 {
+  height: 100%;
+  width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.c1 {
+  margin: 4px;
+  border-radius: 100%;
+  display: inline-block;
+  -webkit-animation: ctIBbK 1.4s infinite ease-in-out both;
+  animation: ctIBbK 1.4s infinite ease-in-out both;
+}
+
 <div
   style={
     Object {
@@ -8682,10 +10131,10 @@ exports[`Storyshots Misc|Loading Indicator basic 1`] = `
   }
 >
   <div
-    className="sc-kjoXOD dlKMCS"
+    className="c0"
   >
     <div
-      className="sc-cHGsZl bHiaRe"
+      className=""
       style={
         Object {
           "height": "32px",
@@ -8693,7 +10142,7 @@ exports[`Storyshots Misc|Loading Indicator basic 1`] = `
       }
     >
       <div
-        className="sc-TOsTZ ksIywl"
+        className="c1"
         style={
           Object {
             "animationDelay": "-0.25s",
@@ -8704,7 +10153,7 @@ exports[`Storyshots Misc|Loading Indicator basic 1`] = `
         }
       />
       <div
-        className="sc-TOsTZ ksIywl"
+        className="c1"
         style={
           Object {
             "animationDelay": "-0.2s",
@@ -8715,7 +10164,7 @@ exports[`Storyshots Misc|Loading Indicator basic 1`] = `
         }
       />
       <div
-        className="sc-TOsTZ ksIywl"
+        className="c1"
         style={
           Object {
             "animationDelay": "-0.15000000000000002s",
@@ -8726,7 +10175,7 @@ exports[`Storyshots Misc|Loading Indicator basic 1`] = `
         }
       />
       <div
-        className="sc-TOsTZ ksIywl"
+        className="c1"
         style={
           Object {
             "animationDelay": "-0.1s",
@@ -8737,7 +10186,7 @@ exports[`Storyshots Misc|Loading Indicator basic 1`] = `
         }
       />
       <div
-        className="sc-TOsTZ ksIywl"
+        className="c1"
         style={
           Object {
             "animationDelay": "-0.05s",
