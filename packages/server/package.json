@@ -4,7 +4,9 @@
   "scripts": {
     "start": "webpack --mode development",
     "build": "webpack --mode production",
-    "lint": "echo 'no linting'",
+    "lint:tslint": "tslint 'src/**/*.ts?(x)'",
+    "lint:prettier": "prettier --list-different './**/*.ts?(x)'",
+    "lint": "yarn lint:tslint && yarn lint:prettier",
     "test": "echo 'no tests'"
   },
   "dependencies": {
@@ -19,8 +21,10 @@
     "@types/node": "^10.10.3",
     "copy-webpack-plugin": "^4.5.2",
     "nodemon": "^1.18.3",
+    "prettier": "^1.14.3",
     "shelljs": "^0.8.2",
     "ts-loader": "^5.2.0",
+    "tslint": "^5.11.0",
     "typescript": "^2.9.2",
     "webpack": "^4.19.1",
     "webpack-cli": "^3.1.1"
