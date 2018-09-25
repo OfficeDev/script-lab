@@ -273,7 +273,7 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
           />
         </div>
       ),
-      ariaLabel: isLoggedIn ? "Logout" : "Login",
+      ariaLabel: isLoggedIn ? 'Logout' : 'Login',
       subMenuProps: isLoggedIn
         ? {
             items: [

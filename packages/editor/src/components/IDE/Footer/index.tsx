@@ -150,7 +150,7 @@ const FooterWithoutTheme = ({
 
       <IconButton
         primary={true}
-        ariaLabel={ 'Settings' }
+        ariaLabel='Settings'
         iconProps={{ iconName: 'Settings' }}
         styles={buttonStyles}
         onClick={onSettingsIconClick}
