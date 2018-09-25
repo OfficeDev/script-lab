@@ -2,15 +2,7 @@ import React from 'react'
 import { withTheme } from 'styled-components'
 import { Nav, INavStyleProps, INavStyles } from 'office-ui-fabric-react/lib/Nav'
 import { getFocusStyle, mergeStyles } from 'office-ui-fabric-react/lib/Styling'
-
-interface IMenuItem {
-  // also factor this instance of the interface out
-  key: string
-  label?: string
-  icon: string
-  onClick: () => void
-  ariaLabel?: string
-}
+import IMenuItem from './IMenuItem'
 
 export interface IProps {
   items: IMenuItem[]
