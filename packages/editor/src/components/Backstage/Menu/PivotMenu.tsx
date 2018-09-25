@@ -8,10 +8,12 @@ const Wrapper = styled.div`
 `
 
 interface IMenuItem {
+  // this interface should get factored out, it's redundant too.
   key: string
   label?: string
   icon: string
   onClick: () => void
+  ariaLabel?: string
 }
 
 export interface IProps {
@@ -31,11 +33,12 @@ class PivotMenu extends React.Component<IProps> {
         <PivotBar
           selectedKey={selectedKey}
           onSelect={this.onSelect}
-          items={items.map(({ label, icon, key }) => {
+          items={items.map(({ label, icon, key, ariaLabel }) => {
             if (['back', 'new'].includes(key)) {
               return {
                 iconName: icon,
                 key,
+                ariaLabel,
               }
             } else {
               return {

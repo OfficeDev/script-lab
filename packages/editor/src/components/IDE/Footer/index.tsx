@@ -159,12 +159,13 @@ const FooterWithoutTheme = ({
           iconProps={{ iconName: 'Bug' }}
           styles={buttonStyles}
           href={PATHS.GITHUB_ISSUE}
+          ariaLabel="Report an issue"
         />
       </Only>
 
       <IconButton
         primary={true}
-        ariaLabel='Settings'
+        ariaLabel="Settings"
         iconProps={{ iconName: 'Settings' }}
         styles={buttonStyles}
         onClick={onSettingsIconClick}
