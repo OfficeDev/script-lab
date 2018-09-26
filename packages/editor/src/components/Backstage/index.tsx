@@ -21,10 +21,11 @@ import Only from '../Only'
 
 interface IBackstageItem {
   key: string
-  iconName: string
+  icon: string
   label?: string
-  onSelect?: () => void
+  onClick?: () => void
   content?: JSX.Element
+  ariaLabel?: string
 }
 
 interface IPropsFromRedux {
@@ -157,21 +158,22 @@ export class Backstage extends Component<IProps, IState> {
     const items = [
       {
         key: 'back',
-        iconName: 'GlobalNavButton',
-        onSelect: this.props.goBack,
+        ariaLabel: 'Back',
+        icon: 'GlobalNavButton',
+        onClick: this.props.goBack,
       },
       {
         key: 'new',
         label: 'New Snippet',
-        iconName: 'Add',
-        onSelect: () => {
+        icon: 'Add',
+        onClick: () => {
           this.props.createNewSolution()
         },
       },
       {
         key: 'my-solutions',
         label: 'My Snippets',
-        iconName: 'DocumentSet',
+        icon: 'DocumentSet',
         content: (
           <MySolutions
             solutions={this.props.solutions}
@@ -185,7 +187,7 @@ export class Backstage extends Component<IProps, IState> {
       {
         key: 'samples',
         label: 'Samples',
-        iconName: 'Dictionary',
+        icon: 'Dictionary',
         content: (
           <Samples
             openSample={this.openSample}
@@ -196,11 +198,11 @@ export class Backstage extends Component<IProps, IState> {
       {
         key: 'import',
         label: 'Import',
-        iconName: 'Download',
+        icon: 'Download',
         content: <ImportSolution importGist={this.props.importGist} />,
       },
     ].map((item: IBackstageItem) => ({
-      onSelect: () => this.setState({ selectedKey: item.key }),
+      onClick: () => this.setState({ selectedKey: item.key }),
       ...item,
     }))
     const {
@@ -216,12 +218,7 @@ export class Backstage extends Component<IProps, IState> {
           <Menu
             isCompact={width <= 500}
             selectedKey={this.state.selectedKey}
-            items={items.map(item => ({
-              key: item.key,
-              label: item.label,
-              icon: item.iconName,
-              onClick: item.onSelect,
-            }))}
+            items={items}
           />
           <ContentContainer>
             {activeItem && activeItem.content}

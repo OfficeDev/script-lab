@@ -6797,9 +6797,22 @@ obuf@^1.0.0, obuf@^1.1.1:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/obuf/-/obuf-1.1.2.tgz#09bea3343d41859ebd446292d11c9d4db619084e"
 
-office-ui-fabric-react@^6.64.0, office-ui-fabric-react@^6.69.0:
+office-ui-fabric-react@^6.69.0:
   version "6.72.1"
   resolved "https://registry.yarnpkg.com/office-ui-fabric-react/-/office-ui-fabric-react-6.72.1.tgz#defbcc9fea740dace93acecd318c23c83eaafef6"
+  dependencies:
+    "@microsoft/load-themed-styles" "^1.7.13"
+    "@uifabric/icons" ">=6.1.1 <7.0.0"
+    "@uifabric/merge-styles" ">=6.9.1 <7.0.0"
+    "@uifabric/set-version" ">=1.1.0 <2.0.0"
+    "@uifabric/styling" ">=6.27.0 <7.0.0"
+    "@uifabric/utilities" ">=6.21.0 <7.0.0"
+    prop-types "^15.5.10"
+    tslib "^1.7.1"
+
+office-ui-fabric-react@^6.73.0:
+  version "6.73.0"
+  resolved "https://registry.yarnpkg.com/office-ui-fabric-react/-/office-ui-fabric-react-6.73.0.tgz#3364f13c915c3ee444403635e635480583a4203e"
   dependencies:
     "@microsoft/load-themed-styles" "^1.7.13"
     "@uifabric/icons" ">=6.1.1 <7.0.0"

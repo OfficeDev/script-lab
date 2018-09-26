@@ -233,6 +233,7 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
     const nav = {
       hidden: isSettingsView,
       key: 'nav',
+      ariaLabel: 'Backstage',
       iconOnly: true,
       iconProps: { iconName: 'GlobalNavButton' },
       onClick: showBackstage,
@@ -241,6 +242,7 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
     const back = {
       hidden: !isSettingsView,
       key: 'back',
+      ariaLabel: 'Back',
       iconOnly: true,
       iconProps: { iconName: 'Back' },
       onClick: closeSettings,
@@ -272,6 +274,7 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
           />
         </div>
       ),
+      ariaLabel: isLoggedIn ? 'Logout' : 'Login',
       subMenuProps: isLoggedIn
         ? {
             items: [
