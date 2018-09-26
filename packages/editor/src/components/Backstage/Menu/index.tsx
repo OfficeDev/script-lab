@@ -1,13 +1,7 @@
 import React from 'react'
 import NavMenu from './NavMenu'
 import PivotMenu from './PivotMenu'
-
-export interface IMenuItem {
-  key: string
-  label?: string
-  icon: string
-  onClick: () => void
-}
+import IMenuItem from './IMenuItem'
 
 // TODO: make it so that I don't cry when I look at this styling..
 export interface IProps {
