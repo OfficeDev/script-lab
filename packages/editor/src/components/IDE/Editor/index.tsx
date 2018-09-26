@@ -344,6 +344,7 @@ class Editor extends Component<IProps, IState> {
             theme={monacoTheme}
             options={options}
             tabSize={editorSettings.tabSize}
+            isPrettierEnabled={editorSettings.isPrettierEnabled}
             editorDidMount={this.setupEditor}
             libraries={libraries && libraries.content}
           />
