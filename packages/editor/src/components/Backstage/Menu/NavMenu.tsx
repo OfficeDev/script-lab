@@ -2,13 +2,7 @@ import React from 'react'
 import { withTheme } from 'styled-components'
 import { Nav, INavStyleProps, INavStyles } from 'office-ui-fabric-react/lib/Nav'
 import { getFocusStyle, mergeStyles } from 'office-ui-fabric-react/lib/Styling'
-
-interface IMenuItem {
-  key: string
-  label?: string
-  icon: string
-  onClick: () => void
-}
+import IMenuItem from './IMenuItem'
 
 export interface IProps {
   items: IMenuItem[]
@@ -79,6 +73,7 @@ class NavMenu extends React.Component<IProps> {
                   root: { color: `${theme.white} !important`, marginRight: '1rem' },
                 },
               },
+              ariaLabel: item.ariaLabel,
               onClick: item.onClick,
               url: '',
             })),

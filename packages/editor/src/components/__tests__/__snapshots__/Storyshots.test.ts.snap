@@ -5480,7 +5480,13 @@ exports[`Storyshots Custom Functions|Dashboard as standalone 1`] = `
     className="c1"
   >
     <div
-      className="ms-ResizeGroup root-148"
+      className={undefined}
+      style={
+        Object {
+          "display": "block",
+          "position": "relative",
+        }
+      }
     >
       <div
         data-automation-id="visibleContent"
@@ -5503,11 +5509,11 @@ exports[`Storyshots Custom Functions|Dashboard as standalone 1`] = `
           role="menubar"
         >
           <div
-            className="ms-OverflowSet ms-CommandBar-primaryCommand primarySet-149"
+            className="ms-OverflowSet ms-CommandBar-primaryCommand primarySet-148"
             role="presentation"
           >
             <div
-              className="ms-OverflowSet-item item-150"
+              className="ms-OverflowSet-item item-149"
             >
               <button
                 aria-describedby={undefined}
@@ -5515,7 +5521,7 @@ exports[`Storyshots Custom Functions|Dashboard as standalone 1`] = `
                 aria-label={undefined}
                 aria-labelledby={undefined}
                 aria-pressed={undefined}
-                className="ms-Button ms-Button--commandBar ms-CommandBarItem-link root-152"
+                className="ms-Button ms-Button--commandBar ms-CommandBarItem-link root-151"
                 data-is-focusable={true}
                 disabled={undefined}
                 onClick={[Function]}
@@ -5524,6 +5530,7 @@ exports[`Storyshots Custom Functions|Dashboard as standalone 1`] = `
                 onKeyUp={[Function]}
                 onMouseDown={[Function]}
                 onMouseUp={[Function]}
+                role="menuitem"
                 type="button"
               >
                 <div
@@ -5533,7 +5540,7 @@ exports[`Storyshots Custom Functions|Dashboard as standalone 1`] = `
                     className="ms-Button-textContainer textContainer-83"
                   >
                     <div
-                      className="ms-Button-label label-154"
+                      className="ms-Button-label label-153"
                       id="id__124"
                     >
                       Custom Functions (Preview)
@@ -5561,7 +5568,7 @@ exports[`Storyshots Custom Functions|Dashboard as standalone 1`] = `
           role="presentation"
         >
           <ul
-            className="ms-Pivot ms-Pivot--tabs root-157"
+            className="ms-Pivot ms-Pivot--tabs root-156"
             role="tablist"
           >
             <button
@@ -5571,7 +5578,7 @@ exports[`Storyshots Custom Functions|Dashboard as standalone 1`] = `
               aria-labelledby={undefined}
               aria-pressed={undefined}
               aria-selected={true}
-              className="ms-Button ms-Button--action ms-Button--command ms-Pivot-link is-selected linkIsSelected-160"
+              className="ms-Button ms-Button--action ms-Button--command ms-Pivot-link is-selected linkIsSelected-159"
               data-is-focusable={true}
               disabled={undefined}
               id="Pivot127-Tab0"
@@ -5607,7 +5614,7 @@ exports[`Storyshots Custom Functions|Dashboard as standalone 1`] = `
               aria-labelledby={undefined}
               aria-pressed={undefined}
               aria-selected={false}
-              className="ms-Button ms-Button--action ms-Button--command ms-Pivot-link link-161"
+              className="ms-Button ms-Button--action ms-Button--command ms-Pivot-link link-160"
               data-is-focusable={true}
               disabled={undefined}
               id="Pivot127-Tab1"
@@ -5649,10 +5656,10 @@ exports[`Storyshots Custom Functions|Dashboard as standalone 1`] = `
   </header>
   <div
     aria-expanded={undefined}
-    className="ms-MessageBar ms-MessageBar-singleline root-162"
+    className="ms-MessageBar ms-MessageBar-singleline root-161"
   >
     <div
-      className="ms-MessageBar-content content-163"
+      className="ms-MessageBar-content content-162"
     >
       <div
         className="ms-MessageBar-icon iconContainer-119"
@@ -5667,17 +5674,17 @@ exports[`Storyshots Custom Functions|Dashboard as standalone 1`] = `
         </i>
       </div>
       <div
-        className="ms-MessageBar-text text-164"
+        className="ms-MessageBar-text text-163"
         id="MessageBar135"
       >
         <span
           aria-live="polite"
-          className="ms-MessageBar-innerText innerText-165"
+          className="ms-MessageBar-innerText innerText-164"
           role="status"
         />
       </div>
       <div
-        className="ms-MessageBar-actionsSingleLine actions-166"
+        className="ms-MessageBar-actionsSingleLine actions-165"
       >
         <div>
           <button
@@ -6019,7 +6026,13 @@ exports[`Storyshots Custom Functions|Dashboard basic 1`] = `
     className="c1"
   >
     <div
-      className="ms-ResizeGroup root-148"
+      className={undefined}
+      style={
+        Object {
+          "display": "block",
+          "position": "relative",
+        }
+      }
     >
       <div
         data-automation-id="visibleContent"
@@ -6042,11 +6055,11 @@ exports[`Storyshots Custom Functions|Dashboard basic 1`] = `
           role="menubar"
         >
           <div
-            className="ms-OverflowSet ms-CommandBar-primaryCommand primarySet-149"
+            className="ms-OverflowSet ms-CommandBar-primaryCommand primarySet-148"
             role="presentation"
           >
             <div
-              className="ms-OverflowSet-item item-150"
+              className="ms-OverflowSet-item item-149"
             >
               <button
                 aria-describedby={undefined}
@@ -6054,7 +6067,7 @@ exports[`Storyshots Custom Functions|Dashboard basic 1`] = `
                 aria-label={undefined}
                 aria-labelledby={undefined}
                 aria-pressed={undefined}
-                className="ms-Button ms-Button--commandBar ms-CommandBarItem-link root-152"
+                className="ms-Button ms-Button--commandBar ms-CommandBarItem-link root-151"
                 data-is-focusable={true}
                 disabled={undefined}
                 onClick={[Function]}
@@ -6063,6 +6076,7 @@ exports[`Storyshots Custom Functions|Dashboard basic 1`] = `
                 onKeyUp={[Function]}
                 onMouseDown={[Function]}
                 onMouseUp={[Function]}
+                role="menuitem"
                 type="button"
               >
                 <div
@@ -6070,7 +6084,7 @@ exports[`Storyshots Custom Functions|Dashboard basic 1`] = `
                 >
                   <i
                     aria-hidden={true}
-                    className="ms-Button-icon icon-156"
+                    className="ms-Button-icon icon-155"
                     data-icon-name="Back"
                     role="presentation"
                   >
@@ -6080,7 +6094,7 @@ exports[`Storyshots Custom Functions|Dashboard basic 1`] = `
               </button>
             </div>
             <div
-              className="ms-OverflowSet-item item-150"
+              className="ms-OverflowSet-item item-149"
             >
               <button
                 aria-describedby={undefined}
@@ -6088,7 +6102,7 @@ exports[`Storyshots Custom Functions|Dashboard basic 1`] = `
                 aria-label={undefined}
                 aria-labelledby={undefined}
                 aria-pressed={undefined}
-                className="ms-Button ms-Button--commandBar ms-CommandBarItem-link root-152"
+                className="ms-Button ms-Button--commandBar ms-CommandBarItem-link root-151"
                 data-is-focusable={true}
                 disabled={undefined}
                 onClick={[Function]}
@@ -6097,6 +6111,7 @@ exports[`Storyshots Custom Functions|Dashboard basic 1`] = `
                 onKeyUp={[Function]}
                 onMouseDown={[Function]}
                 onMouseUp={[Function]}
+                role="menuitem"
                 type="button"
               >
                 <div
@@ -6106,7 +6121,7 @@ exports[`Storyshots Custom Functions|Dashboard basic 1`] = `
                     className="ms-Button-textContainer textContainer-83"
                   >
                     <div
-                      className="ms-Button-label label-154"
+                      className="ms-Button-label label-153"
                       id="id__75"
                     >
                       Custom Functions (Preview)
@@ -6134,7 +6149,7 @@ exports[`Storyshots Custom Functions|Dashboard basic 1`] = `
           role="presentation"
         >
           <ul
-            className="ms-Pivot ms-Pivot--tabs root-157"
+            className="ms-Pivot ms-Pivot--tabs root-156"
             role="tablist"
           >
             <button
@@ -6144,7 +6159,7 @@ exports[`Storyshots Custom Functions|Dashboard basic 1`] = `
               aria-labelledby={undefined}
               aria-pressed={undefined}
               aria-selected={true}
-              className="ms-Button ms-Button--action ms-Button--command ms-Pivot-link is-selected linkIsSelected-160"
+              className="ms-Button ms-Button--action ms-Button--command ms-Pivot-link is-selected linkIsSelected-159"
               data-is-focusable={true}
               disabled={undefined}
               id="Pivot78-Tab0"
@@ -6180,7 +6195,7 @@ exports[`Storyshots Custom Functions|Dashboard basic 1`] = `
               aria-labelledby={undefined}
               aria-pressed={undefined}
               aria-selected={false}
-              className="ms-Button ms-Button--action ms-Button--command ms-Pivot-link link-161"
+              className="ms-Button ms-Button--action ms-Button--command ms-Pivot-link link-160"
               data-is-focusable={true}
               disabled={undefined}
               id="Pivot78-Tab1"
@@ -6216,7 +6231,7 @@ exports[`Storyshots Custom Functions|Dashboard basic 1`] = `
               aria-labelledby={undefined}
               aria-pressed={undefined}
               aria-selected={false}
-              className="ms-Button ms-Button--action ms-Button--command ms-Pivot-link link-161"
+              className="ms-Button ms-Button--action ms-Button--command ms-Pivot-link link-160"
               data-is-focusable={true}
               disabled={undefined}
               id="Pivot78-Tab2"
@@ -6343,7 +6358,13 @@ exports[`Storyshots Custom Functions|Dashboard with actual tabs 1`] = `
     className="c1"
   >
     <div
-      className="ms-ResizeGroup root-148"
+      className={undefined}
+      style={
+        Object {
+          "display": "block",
+          "position": "relative",
+        }
+      }
     >
       <div
         data-automation-id="visibleContent"
@@ -6366,11 +6387,11 @@ exports[`Storyshots Custom Functions|Dashboard with actual tabs 1`] = `
           role="menubar"
         >
           <div
-            className="ms-OverflowSet ms-CommandBar-primaryCommand primarySet-149"
+            className="ms-OverflowSet ms-CommandBar-primaryCommand primarySet-148"
             role="presentation"
           >
             <div
-              className="ms-OverflowSet-item item-150"
+              className="ms-OverflowSet-item item-149"
             >
               <button
                 aria-describedby={undefined}
@@ -6378,7 +6399,7 @@ exports[`Storyshots Custom Functions|Dashboard with actual tabs 1`] = `
                 aria-label={undefined}
                 aria-labelledby={undefined}
                 aria-pressed={undefined}
-                className="ms-Button ms-Button--commandBar ms-CommandBarItem-link root-152"
+                className="ms-Button ms-Button--commandBar ms-CommandBarItem-link root-151"
                 data-is-focusable={true}
                 disabled={undefined}
                 onClick={[Function]}
@@ -6387,6 +6408,7 @@ exports[`Storyshots Custom Functions|Dashboard with actual tabs 1`] = `
                 onKeyUp={[Function]}
                 onMouseDown={[Function]}
                 onMouseUp={[Function]}
+                role="menuitem"
                 type="button"
               >
                 <div
@@ -6394,7 +6416,7 @@ exports[`Storyshots Custom Functions|Dashboard with actual tabs 1`] = `
                 >
                   <i
                     aria-hidden={true}
-                    className="ms-Button-icon icon-156"
+                    className="ms-Button-icon icon-155"
                     data-icon-name="Back"
                     role="presentation"
                   >
@@ -6404,7 +6426,7 @@ exports[`Storyshots Custom Functions|Dashboard with actual tabs 1`] = `
               </button>
             </div>
             <div
-              className="ms-OverflowSet-item item-150"
+              className="ms-OverflowSet-item item-149"
             >
               <button
                 aria-describedby={undefined}
@@ -6412,7 +6434,7 @@ exports[`Storyshots Custom Functions|Dashboard with actual tabs 1`] = `
                 aria-label={undefined}
                 aria-labelledby={undefined}
                 aria-pressed={undefined}
-                className="ms-Button ms-Button--commandBar ms-CommandBarItem-link root-152"
+                className="ms-Button ms-Button--commandBar ms-CommandBarItem-link root-151"
                 data-is-focusable={true}
                 disabled={undefined}
                 onClick={[Function]}
@@ -6421,6 +6443,7 @@ exports[`Storyshots Custom Functions|Dashboard with actual tabs 1`] = `
                 onKeyUp={[Function]}
                 onMouseDown={[Function]}
                 onMouseUp={[Function]}
+                role="menuitem"
                 type="button"
               >
                 <div
@@ -6430,7 +6453,7 @@ exports[`Storyshots Custom Functions|Dashboard with actual tabs 1`] = `
                     className="ms-Button-textContainer textContainer-83"
                   >
                     <div
-                      className="ms-Button-label label-154"
+                      className="ms-Button-label label-153"
                       id="id__93"
                     >
                       Custom Functions (Preview)
@@ -6458,7 +6481,7 @@ exports[`Storyshots Custom Functions|Dashboard with actual tabs 1`] = `
           role="presentation"
         >
           <ul
-            className="ms-Pivot ms-Pivot--tabs root-157"
+            className="ms-Pivot ms-Pivot--tabs root-156"
             role="tablist"
           >
             <button
@@ -6468,7 +6491,7 @@ exports[`Storyshots Custom Functions|Dashboard with actual tabs 1`] = `
               aria-labelledby={undefined}
               aria-pressed={undefined}
               aria-selected={true}
-              className="ms-Button ms-Button--action ms-Button--command ms-Pivot-link is-selected linkIsSelected-160"
+              className="ms-Button ms-Button--action ms-Button--command ms-Pivot-link is-selected linkIsSelected-159"
               data-is-focusable={true}
               disabled={undefined}
               id="Pivot96-Tab0"
@@ -6504,7 +6527,7 @@ exports[`Storyshots Custom Functions|Dashboard with actual tabs 1`] = `
               aria-labelledby={undefined}
               aria-pressed={undefined}
               aria-selected={false}
-              className="ms-Button ms-Button--action ms-Button--command ms-Pivot-link link-161"
+              className="ms-Button ms-Button--action ms-Button--command ms-Pivot-link link-160"
               data-is-focusable={true}
               disabled={undefined}
               id="Pivot96-Tab1"
@@ -6886,7 +6909,13 @@ exports[`Storyshots Custom Functions|Dashboard with refresh 1`] = `
     className="c1"
   >
     <div
-      className="ms-ResizeGroup root-148"
+      className={undefined}
+      style={
+        Object {
+          "display": "block",
+          "position": "relative",
+        }
+      }
     >
       <div
         data-automation-id="visibleContent"
@@ -6909,11 +6938,11 @@ exports[`Storyshots Custom Functions|Dashboard with refresh 1`] = `
           role="menubar"
         >
           <div
-            className="ms-OverflowSet ms-CommandBar-primaryCommand primarySet-149"
+            className="ms-OverflowSet ms-CommandBar-primaryCommand primarySet-148"
             role="presentation"
           >
             <div
-              className="ms-OverflowSet-item item-150"
+              className="ms-OverflowSet-item item-149"
             >
               <button
                 aria-describedby={undefined}
@@ -6921,7 +6950,7 @@ exports[`Storyshots Custom Functions|Dashboard with refresh 1`] = `
                 aria-label={undefined}
                 aria-labelledby={undefined}
                 aria-pressed={undefined}
-                className="ms-Button ms-Button--commandBar ms-CommandBarItem-link root-152"
+                className="ms-Button ms-Button--commandBar ms-CommandBarItem-link root-151"
                 data-is-focusable={true}
                 disabled={undefined}
                 onClick={[Function]}
@@ -6930,6 +6959,7 @@ exports[`Storyshots Custom Functions|Dashboard with refresh 1`] = `
                 onKeyUp={[Function]}
                 onMouseDown={[Function]}
                 onMouseUp={[Function]}
+                role="menuitem"
                 type="button"
               >
                 <div
@@ -6937,7 +6967,7 @@ exports[`Storyshots Custom Functions|Dashboard with refresh 1`] = `
                 >
                   <i
                     aria-hidden={true}
-                    className="ms-Button-icon icon-156"
+                    className="ms-Button-icon icon-155"
                     data-icon-name="Back"
                     role="presentation"
                   >
@@ -6947,7 +6977,7 @@ exports[`Storyshots Custom Functions|Dashboard with refresh 1`] = `
               </button>
             </div>
             <div
-              className="ms-OverflowSet-item item-150"
+              className="ms-OverflowSet-item item-149"
             >
               <button
                 aria-describedby={undefined}
@@ -6955,7 +6985,7 @@ exports[`Storyshots Custom Functions|Dashboard with refresh 1`] = `
                 aria-label={undefined}
                 aria-labelledby={undefined}
                 aria-pressed={undefined}
-                className="ms-Button ms-Button--commandBar ms-CommandBarItem-link root-152"
+                className="ms-Button ms-Button--commandBar ms-CommandBarItem-link root-151"
                 data-is-focusable={true}
                 disabled={undefined}
                 onClick={[Function]}
@@ -6964,6 +6994,7 @@ exports[`Storyshots Custom Functions|Dashboard with refresh 1`] = `
                 onKeyUp={[Function]}
                 onMouseDown={[Function]}
                 onMouseUp={[Function]}
+                role="menuitem"
                 type="button"
               >
                 <div
@@ -6973,7 +7004,7 @@ exports[`Storyshots Custom Functions|Dashboard with refresh 1`] = `
                     className="ms-Button-textContainer textContainer-83"
                   >
                     <div
-                      className="ms-Button-label label-154"
+                      className="ms-Button-label label-153"
                       id="id__108"
                     >
                       Custom Functions (Preview)
@@ -7001,7 +7032,7 @@ exports[`Storyshots Custom Functions|Dashboard with refresh 1`] = `
           role="presentation"
         >
           <ul
-            className="ms-Pivot ms-Pivot--tabs root-157"
+            className="ms-Pivot ms-Pivot--tabs root-156"
             role="tablist"
           >
             <button
@@ -7011,7 +7042,7 @@ exports[`Storyshots Custom Functions|Dashboard with refresh 1`] = `
               aria-labelledby={undefined}
               aria-pressed={undefined}
               aria-selected={true}
-              className="ms-Button ms-Button--action ms-Button--command ms-Pivot-link is-selected linkIsSelected-160"
+              className="ms-Button ms-Button--action ms-Button--command ms-Pivot-link is-selected linkIsSelected-159"
               data-is-focusable={true}
               disabled={undefined}
               id="Pivot111-Tab0"
@@ -7047,7 +7078,7 @@ exports[`Storyshots Custom Functions|Dashboard with refresh 1`] = `
               aria-labelledby={undefined}
               aria-pressed={undefined}
               aria-selected={false}
-              className="ms-Button ms-Button--action ms-Button--command ms-Pivot-link link-161"
+              className="ms-Button ms-Button--action ms-Button--command ms-Pivot-link link-160"
               data-is-focusable={true}
               disabled={undefined}
               id="Pivot111-Tab1"
@@ -7089,10 +7120,10 @@ exports[`Storyshots Custom Functions|Dashboard with refresh 1`] = `
   </header>
   <div
     aria-expanded={undefined}
-    className="ms-MessageBar ms-MessageBar-singleline root-162"
+    className="ms-MessageBar ms-MessageBar-singleline root-161"
   >
     <div
-      className="ms-MessageBar-content content-163"
+      className="ms-MessageBar-content content-162"
     >
       <div
         className="ms-MessageBar-icon iconContainer-119"
@@ -7107,17 +7138,17 @@ exports[`Storyshots Custom Functions|Dashboard with refresh 1`] = `
         </i>
       </div>
       <div
-        className="ms-MessageBar-text text-164"
+        className="ms-MessageBar-text text-163"
         id="MessageBar119"
       >
         <span
           aria-live="polite"
-          className="ms-MessageBar-innerText innerText-165"
+          className="ms-MessageBar-innerText innerText-164"
           role="status"
         />
       </div>
       <div
-        className="ms-MessageBar-actionsSingleLine actions-166"
+        className="ms-MessageBar-actionsSingleLine actions-165"
       >
         <div>
           <button
@@ -8384,7 +8415,7 @@ exports[`Storyshots Custom Functions|Summary/Items basic 1`] = `
     >
       <i
         aria-hidden={true}
-        className="root-167"
+        className="root-166"
         data-icon-name="ReportHacked"
         role="presentation"
       >
@@ -8541,7 +8572,7 @@ exports[`Storyshots Custom Functions|Welcome basic 1`] = `
       aria-label={undefined}
       aria-labelledby={undefined}
       aria-pressed={undefined}
-      className="ms-Button ms-Button--primary is-disabled root-168"
+      className="ms-Button ms-Button--primary is-disabled root-167"
       data-is-focusable={false}
       disabled={true}
       onClick={[Function]}
@@ -8606,7 +8637,7 @@ exports[`Storyshots IDE|Footer basic 1`] = `
     aria-label={undefined}
     aria-labelledby={undefined}
     aria-pressed={undefined}
-    className="ms-Button ms-Button--primary root-171"
+    className="ms-Button ms-Button--primary root-170"
     data-is-focusable={true}
     disabled={undefined}
     onClick={[Function]}
@@ -8624,7 +8655,7 @@ exports[`Storyshots IDE|Footer basic 1`] = `
         className="ms-Button-textContainer textContainer-83"
       >
         <div
-          className="ms-Button-label label-173"
+          className="ms-Button-label label-172"
           id="id__142"
         >
           TypeScript
@@ -8635,10 +8666,10 @@ exports[`Storyshots IDE|Footer basic 1`] = `
   <a
     aria-describedby={undefined}
     aria-disabled={undefined}
-    aria-label={undefined}
+    aria-label="Report an issue"
     aria-labelledby={undefined}
     aria-pressed={undefined}
-    className="ms-Button ms-Button--icon root-174"
+    className="ms-Button ms-Button--icon root-173"
     data-is-focusable={true}
     disabled={undefined}
     href="https://github.com/OfficeDev/script-lab-react/issues/new"
@@ -8654,7 +8685,7 @@ exports[`Storyshots IDE|Footer basic 1`] = `
     >
       <i
         aria-hidden={true}
-        className="ms-Button-icon icon-177"
+        className="ms-Button-icon icon-176"
         data-icon-name="Bug"
         role="presentation"
       >
@@ -8665,10 +8696,10 @@ exports[`Storyshots IDE|Footer basic 1`] = `
   <button
     aria-describedby={undefined}
     aria-disabled={undefined}
-    aria-label={undefined}
+    aria-label="Settings"
     aria-labelledby={undefined}
     aria-pressed={undefined}
-    className="ms-Button ms-Button--icon root-174"
+    className="ms-Button ms-Button--icon root-173"
     data-is-focusable={true}
     disabled={undefined}
     onClick={[Function]}
@@ -8684,7 +8715,7 @@ exports[`Storyshots IDE|Footer basic 1`] = `
     >
       <i
         aria-hidden={true}
-        className="ms-Button-icon icon-178"
+        className="ms-Button-icon icon-177"
         data-icon-name="Settings"
         role="presentation"
       >
@@ -8727,7 +8758,7 @@ exports[`Storyshots IDE|Footer isWeb 1`] = `
     aria-labelledby={undefined}
     aria-owns={null}
     aria-pressed={undefined}
-    className="ms-Button ms-Button--primary root-171"
+    className="ms-Button ms-Button--primary root-170"
     data-is-focusable={true}
     disabled={undefined}
     onClick={[Function]}
@@ -8745,7 +8776,7 @@ exports[`Storyshots IDE|Footer isWeb 1`] = `
         className="ms-Button-textContainer textContainer-83"
       >
         <div
-          className="ms-Button-label label-173"
+          className="ms-Button-label label-172"
           id="id__151"
         >
           EXCEL
@@ -8753,7 +8784,7 @@ exports[`Storyshots IDE|Footer isWeb 1`] = `
       </div>
       <i
         aria-hidden={true}
-        className="ms-Button-menuIcon menuIcon-179"
+        className="ms-Button-menuIcon menuIcon-178"
         data-icon-name="ChevronDown"
         role="presentation"
       >
@@ -8767,7 +8798,7 @@ exports[`Storyshots IDE|Footer isWeb 1`] = `
     aria-label={undefined}
     aria-labelledby={undefined}
     aria-pressed={undefined}
-    className="ms-Button ms-Button--primary root-171"
+    className="ms-Button ms-Button--primary root-170"
     data-is-focusable={true}
     disabled={undefined}
     onClick={[Function]}
@@ -8785,7 +8816,7 @@ exports[`Storyshots IDE|Footer isWeb 1`] = `
         className="ms-Button-textContainer textContainer-83"
       >
         <div
-          className="ms-Button-label label-173"
+          className="ms-Button-label label-172"
           id="id__154"
         >
           TypeScript
@@ -8796,10 +8827,10 @@ exports[`Storyshots IDE|Footer isWeb 1`] = `
   <a
     aria-describedby={undefined}
     aria-disabled={undefined}
-    aria-label={undefined}
+    aria-label="Report an issue"
     aria-labelledby={undefined}
     aria-pressed={undefined}
-    className="ms-Button ms-Button--icon root-174"
+    className="ms-Button ms-Button--icon root-173"
     data-is-focusable={true}
     disabled={undefined}
     href="https://github.com/OfficeDev/script-lab-react/issues/new"
@@ -8815,7 +8846,7 @@ exports[`Storyshots IDE|Footer isWeb 1`] = `
     >
       <i
         aria-hidden={true}
-        className="ms-Button-icon icon-177"
+        className="ms-Button-icon icon-176"
         data-icon-name="Bug"
         role="presentation"
       >
@@ -8826,10 +8857,10 @@ exports[`Storyshots IDE|Footer isWeb 1`] = `
   <button
     aria-describedby={undefined}
     aria-disabled={undefined}
-    aria-label={undefined}
+    aria-label="Settings"
     aria-labelledby={undefined}
     aria-pressed={undefined}
-    className="ms-Button ms-Button--icon root-174"
+    className="ms-Button ms-Button--icon root-173"
     data-is-focusable={true}
     disabled={undefined}
     onClick={[Function]}
@@ -8845,7 +8876,7 @@ exports[`Storyshots IDE|Footer isWeb 1`] = `
     >
       <i
         aria-hidden={true}
-        className="ms-Button-icon icon-178"
+        className="ms-Button-icon icon-177"
         data-icon-name="Settings"
         role="presentation"
       >
@@ -8885,7 +8916,7 @@ exports[`Storyshots IDE|Footer with Custom Function Solutions 1`] = `
     aria-label={undefined}
     aria-labelledby={undefined}
     aria-pressed={undefined}
-    className="ms-Button ms-Button--primary root-171"
+    className="ms-Button ms-Button--primary root-170"
     data-is-focusable={true}
     disabled={undefined}
     onClick={[Function]}
@@ -8903,7 +8934,7 @@ exports[`Storyshots IDE|Footer with Custom Function Solutions 1`] = `
         className="ms-Button-textContainer textContainer-83"
       >
         <div
-          className="ms-Button-label label-173"
+          className="ms-Button-label label-172"
           id="id__163"
         >
           Custom Functions Dashboard
@@ -8917,7 +8948,7 @@ exports[`Storyshots IDE|Footer with Custom Function Solutions 1`] = `
     aria-label={undefined}
     aria-labelledby={undefined}
     aria-pressed={undefined}
-    className="ms-Button ms-Button--primary root-171"
+    className="ms-Button ms-Button--primary root-170"
     data-is-focusable={true}
     disabled={undefined}
     onClick={[Function]}
@@ -8935,7 +8966,7 @@ exports[`Storyshots IDE|Footer with Custom Function Solutions 1`] = `
         className="ms-Button-textContainer textContainer-83"
       >
         <div
-          className="ms-Button-label label-173"
+          className="ms-Button-label label-172"
           id="id__166"
         >
           TypeScript
@@ -8946,10 +8977,10 @@ exports[`Storyshots IDE|Footer with Custom Function Solutions 1`] = `
   <a
     aria-describedby={undefined}
     aria-disabled={undefined}
-    aria-label={undefined}
+    aria-label="Report an issue"
     aria-labelledby={undefined}
     aria-pressed={undefined}
-    className="ms-Button ms-Button--icon root-174"
+    className="ms-Button ms-Button--icon root-173"
     data-is-focusable={true}
     disabled={undefined}
     href="https://github.com/OfficeDev/script-lab-react/issues/new"
@@ -8965,7 +8996,7 @@ exports[`Storyshots IDE|Footer with Custom Function Solutions 1`] = `
     >
       <i
         aria-hidden={true}
-        className="ms-Button-icon icon-177"
+        className="ms-Button-icon icon-176"
         data-icon-name="Bug"
         role="presentation"
       >
@@ -8976,10 +9007,10 @@ exports[`Storyshots IDE|Footer with Custom Function Solutions 1`] = `
   <button
     aria-describedby={undefined}
     aria-disabled={undefined}
-    aria-label={undefined}
+    aria-label="Settings"
     aria-labelledby={undefined}
     aria-pressed={undefined}
-    className="ms-Button ms-Button--icon root-174"
+    className="ms-Button ms-Button--icon root-173"
     data-is-focusable={true}
     disabled={undefined}
     onClick={[Function]}
@@ -8995,7 +9026,7 @@ exports[`Storyshots IDE|Footer with Custom Function Solutions 1`] = `
     >
       <i
         aria-hidden={true}
-        className="ms-Button-icon icon-178"
+        className="ms-Button-icon icon-177"
         data-icon-name="Settings"
         role="presentation"
       >
@@ -9016,7 +9047,13 @@ exports[`Storyshots IDE|Header basic 1`] = `
   className="c0"
 >
   <div
-    className="ms-ResizeGroup root-148"
+    className={undefined}
+    style={
+      Object {
+        "display": "block",
+        "position": "relative",
+      }
+    }
   >
     <div
       data-automation-id="visibleContent"
@@ -9039,19 +9076,19 @@ exports[`Storyshots IDE|Header basic 1`] = `
         role="menubar"
       >
         <div
-          className="ms-OverflowSet ms-CommandBar-primaryCommand primarySet-149"
+          className="ms-OverflowSet ms-CommandBar-primaryCommand primarySet-148"
           role="presentation"
         >
           <div
-            className="ms-OverflowSet-item item-150"
+            className="ms-OverflowSet-item item-149"
           >
             <button
               aria-describedby={undefined}
               aria-disabled={undefined}
-              aria-label={undefined}
+              aria-label="Backstage"
               aria-labelledby={undefined}
               aria-pressed={undefined}
-              className="ms-Button ms-Button--commandBar ms-CommandBarItem-link root-152"
+              className="ms-Button ms-Button--commandBar ms-CommandBarItem-link root-151"
               data-is-focusable={true}
               disabled={undefined}
               onClick={[Function]}
@@ -9060,6 +9097,7 @@ exports[`Storyshots IDE|Header basic 1`] = `
               onKeyUp={[Function]}
               onMouseDown={[Function]}
               onMouseUp={[Function]}
+              role="menuitem"
               type="button"
             >
               <div
@@ -9067,7 +9105,7 @@ exports[`Storyshots IDE|Header basic 1`] = `
               >
                 <i
                   aria-hidden={true}
-                  className="ms-Button-icon icon-180"
+                  className="ms-Button-icon icon-179"
                   data-icon-name="GlobalNavButton"
                   role="presentation"
                 >
@@ -9077,7 +9115,7 @@ exports[`Storyshots IDE|Header basic 1`] = `
             </button>
           </div>
           <div
-            className="ms-OverflowSet-item item-150"
+            className="ms-OverflowSet-item item-149"
           >
             <button
               aria-describedby={undefined}
@@ -9085,7 +9123,7 @@ exports[`Storyshots IDE|Header basic 1`] = `
               aria-label={undefined}
               aria-labelledby={undefined}
               aria-pressed={undefined}
-              className="ms-Button ms-Button--commandBar ms-CommandBarItem-link root-152"
+              className="ms-Button ms-Button--commandBar ms-CommandBarItem-link root-151"
               data-is-focusable={true}
               disabled={undefined}
               onClick={[Function]}
@@ -9094,6 +9132,7 @@ exports[`Storyshots IDE|Header basic 1`] = `
               onKeyUp={[Function]}
               onMouseDown={[Function]}
               onMouseUp={[Function]}
+              role="menuitem"
               type="button"
             >
               <div
@@ -9103,7 +9142,7 @@ exports[`Storyshots IDE|Header basic 1`] = `
                   className="ms-Button-textContainer textContainer-83"
                 >
                   <div
-                    className="ms-Button-label label-154"
+                    className="ms-Button-label label-153"
                     id="id__179"
                   >
                     Blank Snippet
@@ -9113,7 +9152,7 @@ exports[`Storyshots IDE|Header basic 1`] = `
             </button>
           </div>
           <div
-            className="ms-OverflowSet-item item-150"
+            className="ms-OverflowSet-item item-149"
           >
             <a
               aria-describedby={undefined}
@@ -9121,7 +9160,7 @@ exports[`Storyshots IDE|Header basic 1`] = `
               aria-label={undefined}
               aria-labelledby={undefined}
               aria-pressed={undefined}
-              className="ms-Button ms-Button--commandBar ms-CommandBarItem-link root-152"
+              className="ms-Button ms-Button--commandBar ms-CommandBarItem-link root-151"
               data-is-focusable={true}
               disabled={undefined}
               href="/run.html"
@@ -9131,13 +9170,14 @@ exports[`Storyshots IDE|Header basic 1`] = `
               onKeyUp={[Function]}
               onMouseDown={[Function]}
               onMouseUp={[Function]}
+              role="menuitem"
             >
               <div
                 className="ms-Button-flexContainer flexContainer-82"
               >
                 <i
                   aria-hidden={true}
-                  className="ms-Button-icon icon-156"
+                  className="ms-Button-icon icon-155"
                   data-icon-name="Play"
                   role="presentation"
                 >
@@ -9147,7 +9187,7 @@ exports[`Storyshots IDE|Header basic 1`] = `
                   className="ms-Button-textContainer textContainer-83"
                 >
                   <div
-                    className="ms-Button-label label-154"
+                    className="ms-Button-label label-153"
                     id="id__182"
                   >
                     Run
@@ -9157,7 +9197,7 @@ exports[`Storyshots IDE|Header basic 1`] = `
             </a>
           </div>
           <div
-            className="ms-OverflowSet-item item-150"
+            className="ms-OverflowSet-item item-149"
           >
             <button
               aria-describedby={undefined}
@@ -9168,7 +9208,7 @@ exports[`Storyshots IDE|Header basic 1`] = `
               aria-labelledby={undefined}
               aria-owns={null}
               aria-pressed={undefined}
-              className="ms-Button ms-Button--commandBar ms-CommandBarItem-link root-152"
+              className="ms-Button ms-Button--commandBar ms-CommandBarItem-link root-151"
               data-is-focusable={true}
               disabled={undefined}
               onClick={[Function]}
@@ -9177,6 +9217,7 @@ exports[`Storyshots IDE|Header basic 1`] = `
               onKeyUp={[Function]}
               onMouseDown={[Function]}
               onMouseUp={[Function]}
+              role="menuitem"
               type="button"
             >
               <div
@@ -9184,7 +9225,7 @@ exports[`Storyshots IDE|Header basic 1`] = `
               >
                 <i
                   aria-hidden={true}
-                  className="ms-Button-icon icon-180"
+                  className="ms-Button-icon icon-179"
                   data-icon-name="Share"
                   role="presentation"
                 >
@@ -9194,7 +9235,7 @@ exports[`Storyshots IDE|Header basic 1`] = `
                   className="ms-Button-textContainer textContainer-83"
                 >
                   <div
-                    className="ms-Button-label label-154"
+                    className="ms-Button-label label-153"
                     id="id__185"
                   >
                     Share
@@ -9202,7 +9243,7 @@ exports[`Storyshots IDE|Header basic 1`] = `
                 </div>
                 <i
                   aria-hidden={true}
-                  className="ms-Button-menuIcon menuIcon-181"
+                  className="ms-Button-menuIcon menuIcon-180"
                   data-icon-name="ChevronDown"
                   role="presentation"
                 >
@@ -9212,7 +9253,7 @@ exports[`Storyshots IDE|Header basic 1`] = `
             </button>
           </div>
           <div
-            className="ms-OverflowSet-item item-150"
+            className="ms-OverflowSet-item item-149"
           >
             <button
               aria-describedby={undefined}
@@ -9220,7 +9261,7 @@ exports[`Storyshots IDE|Header basic 1`] = `
               aria-label={undefined}
               aria-labelledby={undefined}
               aria-pressed={undefined}
-              className="ms-Button ms-Button--commandBar ms-CommandBarItem-link root-152"
+              className="ms-Button ms-Button--commandBar ms-CommandBarItem-link root-151"
               data-is-focusable={true}
               disabled={undefined}
               onClick={[Function]}
@@ -9229,6 +9270,7 @@ exports[`Storyshots IDE|Header basic 1`] = `
               onKeyUp={[Function]}
               onMouseDown={[Function]}
               onMouseUp={[Function]}
+              role="menuitem"
               type="button"
             >
               <div
@@ -9236,7 +9278,7 @@ exports[`Storyshots IDE|Header basic 1`] = `
               >
                 <i
                   aria-hidden={true}
-                  className="ms-Button-icon icon-180"
+                  className="ms-Button-icon icon-179"
                   data-icon-name="Delete"
                   role="presentation"
                 >
@@ -9246,7 +9288,7 @@ exports[`Storyshots IDE|Header basic 1`] = `
                   className="ms-Button-textContainer textContainer-83"
                 >
                   <div
-                    className="ms-Button-label label-154"
+                    className="ms-Button-label label-153"
                     id="id__188"
                   >
                     Delete
@@ -9257,19 +9299,19 @@ exports[`Storyshots IDE|Header basic 1`] = `
           </div>
         </div>
         <div
-          className="ms-OverflowSet ms-CommandBar-secondaryCommand secondarySet-182"
+          className="ms-OverflowSet ms-CommandBar-secondaryCommand secondarySet-181"
           role="presentation"
         >
           <div
-            className="ms-OverflowSet-item item-150"
+            className="ms-OverflowSet-item item-149"
           >
             <button
               aria-describedby={undefined}
               aria-disabled={undefined}
-              aria-label={undefined}
+              aria-label="Login"
               aria-labelledby={undefined}
               aria-pressed={undefined}
-              className="ms-Button ms-Button--commandBar ms-CommandBarItem-link root-152"
+              className="ms-Button ms-Button--commandBar ms-CommandBarItem-link root-151"
               data-is-focusable={true}
               disabled={undefined}
               onClick={[Function]}
@@ -9278,6 +9320,7 @@ exports[`Storyshots IDE|Header basic 1`] = `
               onKeyUp={[Function]}
               onMouseDown={[Function]}
               onMouseUp={[Function]}
+              role="menuitem"
               type="button"
             >
               <div
@@ -9292,16 +9335,16 @@ exports[`Storyshots IDE|Header basic 1`] = `
                   }
                 >
                   <div
-                    className="ms-Persona-coin ms-Persona--size28 coin-183"
+                    className="ms-Persona-coin ms-Persona--size28 coin-182"
                     size={7}
                   >
                     <div
-                      className="ms-Persona-imageArea imageArea-185"
+                      className="ms-Persona-imageArea imageArea-184"
                       style={undefined}
                     >
                       <div
                         aria-hidden="true"
-                        className="ms-Persona-initials initials-188"
+                        className="ms-Persona-initials initials-187"
                         style={undefined}
                       >
                         <i
@@ -9336,7 +9379,13 @@ exports[`Storyshots IDE|Header custom functions view 1`] = `
   className="c0"
 >
   <div
-    className="ms-ResizeGroup root-148"
+    className={undefined}
+    style={
+      Object {
+        "display": "block",
+        "position": "relative",
+      }
+    }
   >
     <div
       data-automation-id="visibleContent"
@@ -9359,19 +9408,19 @@ exports[`Storyshots IDE|Header custom functions view 1`] = `
         role="menubar"
       >
         <div
-          className="ms-OverflowSet ms-CommandBar-primaryCommand primarySet-149"
+          className="ms-OverflowSet ms-CommandBar-primaryCommand primarySet-148"
           role="presentation"
         >
           <div
-            className="ms-OverflowSet-item item-150"
+            className="ms-OverflowSet-item item-149"
           >
             <button
               aria-describedby={undefined}
               aria-disabled={undefined}
-              aria-label={undefined}
+              aria-label="Backstage"
               aria-labelledby={undefined}
               aria-pressed={undefined}
-              className="ms-Button ms-Button--commandBar ms-CommandBarItem-link root-152"
+              className="ms-Button ms-Button--commandBar ms-CommandBarItem-link root-151"
               data-is-focusable={true}
               disabled={undefined}
               onClick={[Function]}
@@ -9380,6 +9429,7 @@ exports[`Storyshots IDE|Header custom functions view 1`] = `
               onKeyUp={[Function]}
               onMouseDown={[Function]}
               onMouseUp={[Function]}
+              role="menuitem"
               type="button"
             >
               <div
@@ -9387,7 +9437,7 @@ exports[`Storyshots IDE|Header custom functions view 1`] = `
               >
                 <i
                   aria-hidden={true}
-                  className="ms-Button-icon icon-180"
+                  className="ms-Button-icon icon-179"
                   data-icon-name="GlobalNavButton"
                   role="presentation"
                 >
@@ -9397,7 +9447,7 @@ exports[`Storyshots IDE|Header custom functions view 1`] = `
             </button>
           </div>
           <div
-            className="ms-OverflowSet-item item-150"
+            className="ms-OverflowSet-item item-149"
           >
             <button
               aria-describedby={undefined}
@@ -9405,7 +9455,7 @@ exports[`Storyshots IDE|Header custom functions view 1`] = `
               aria-label={undefined}
               aria-labelledby={undefined}
               aria-pressed={undefined}
-              className="ms-Button ms-Button--commandBar ms-CommandBarItem-link root-152"
+              className="ms-Button ms-Button--commandBar ms-CommandBarItem-link root-151"
               data-is-focusable={true}
               disabled={undefined}
               onClick={[Function]}
@@ -9414,6 +9464,7 @@ exports[`Storyshots IDE|Header custom functions view 1`] = `
               onKeyUp={[Function]}
               onMouseDown={[Function]}
               onMouseUp={[Function]}
+              role="menuitem"
               type="button"
             >
               <div
@@ -9423,7 +9474,7 @@ exports[`Storyshots IDE|Header custom functions view 1`] = `
                   className="ms-Button-textContainer textContainer-83"
                 >
                   <div
-                    className="ms-Button-label label-154"
+                    className="ms-Button-label label-153"
                     id="id__200"
                   >
                     Blank Snippet
@@ -9433,7 +9484,7 @@ exports[`Storyshots IDE|Header custom functions view 1`] = `
             </button>
           </div>
           <div
-            className="ms-OverflowSet-item item-150"
+            className="ms-OverflowSet-item item-149"
           >
             <button
               aria-describedby={undefined}
@@ -9441,7 +9492,7 @@ exports[`Storyshots IDE|Header custom functions view 1`] = `
               aria-label={undefined}
               aria-labelledby={undefined}
               aria-pressed={undefined}
-              className="ms-Button ms-Button--commandBar ms-CommandBarItem-link root-152"
+              className="ms-Button ms-Button--commandBar ms-CommandBarItem-link root-151"
               data-is-focusable={true}
               disabled={undefined}
               onClick={[Function]}
@@ -9450,6 +9501,7 @@ exports[`Storyshots IDE|Header custom functions view 1`] = `
               onKeyUp={[Function]}
               onMouseDown={[Function]}
               onMouseUp={[Function]}
+              role="menuitem"
               type="button"
             >
               <div
@@ -9457,7 +9509,7 @@ exports[`Storyshots IDE|Header custom functions view 1`] = `
               >
                 <i
                   aria-hidden={true}
-                  className="ms-Button-icon icon-156"
+                  className="ms-Button-icon icon-155"
                   data-icon-name="Play"
                   role="presentation"
                 >
@@ -9467,7 +9519,7 @@ exports[`Storyshots IDE|Header custom functions view 1`] = `
                   className="ms-Button-textContainer textContainer-83"
                 >
                   <div
-                    className="ms-Button-label label-154"
+                    className="ms-Button-label label-153"
                     id="id__203"
                   >
                     Register
@@ -9477,7 +9529,7 @@ exports[`Storyshots IDE|Header custom functions view 1`] = `
             </button>
           </div>
           <div
-            className="ms-OverflowSet-item item-150"
+            className="ms-OverflowSet-item item-149"
           >
             <button
               aria-describedby={undefined}
@@ -9488,7 +9540,7 @@ exports[`Storyshots IDE|Header custom functions view 1`] = `
               aria-labelledby={undefined}
               aria-owns={null}
               aria-pressed={undefined}
-              className="ms-Button ms-Button--commandBar ms-CommandBarItem-link root-152"
+              className="ms-Button ms-Button--commandBar ms-CommandBarItem-link root-151"
               data-is-focusable={true}
               disabled={undefined}
               onClick={[Function]}
@@ -9497,6 +9549,7 @@ exports[`Storyshots IDE|Header custom functions view 1`] = `
               onKeyUp={[Function]}
               onMouseDown={[Function]}
               onMouseUp={[Function]}
+              role="menuitem"
               type="button"
             >
               <div
@@ -9504,7 +9557,7 @@ exports[`Storyshots IDE|Header custom functions view 1`] = `
               >
                 <i
                   aria-hidden={true}
-                  className="ms-Button-icon icon-180"
+                  className="ms-Button-icon icon-179"
                   data-icon-name="Share"
                   role="presentation"
                 >
@@ -9514,7 +9567,7 @@ exports[`Storyshots IDE|Header custom functions view 1`] = `
                   className="ms-Button-textContainer textContainer-83"
                 >
                   <div
-                    className="ms-Button-label label-154"
+                    className="ms-Button-label label-153"
                     id="id__206"
                   >
                     Share
@@ -9522,7 +9575,7 @@ exports[`Storyshots IDE|Header custom functions view 1`] = `
                 </div>
                 <i
                   aria-hidden={true}
-                  className="ms-Button-menuIcon menuIcon-181"
+                  className="ms-Button-menuIcon menuIcon-180"
                   data-icon-name="ChevronDown"
                   role="presentation"
                 >
@@ -9532,7 +9585,7 @@ exports[`Storyshots IDE|Header custom functions view 1`] = `
             </button>
           </div>
           <div
-            className="ms-OverflowSet-item item-150"
+            className="ms-OverflowSet-item item-149"
           >
             <button
               aria-describedby={undefined}
@@ -9540,7 +9593,7 @@ exports[`Storyshots IDE|Header custom functions view 1`] = `
               aria-label={undefined}
               aria-labelledby={undefined}
               aria-pressed={undefined}
-              className="ms-Button ms-Button--commandBar ms-CommandBarItem-link root-152"
+              className="ms-Button ms-Button--commandBar ms-CommandBarItem-link root-151"
               data-is-focusable={true}
               disabled={undefined}
               onClick={[Function]}
@@ -9549,6 +9602,7 @@ exports[`Storyshots IDE|Header custom functions view 1`] = `
               onKeyUp={[Function]}
               onMouseDown={[Function]}
               onMouseUp={[Function]}
+              role="menuitem"
               type="button"
             >
               <div
@@ -9556,7 +9610,7 @@ exports[`Storyshots IDE|Header custom functions view 1`] = `
               >
                 <i
                   aria-hidden={true}
-                  className="ms-Button-icon icon-180"
+                  className="ms-Button-icon icon-179"
                   data-icon-name="Delete"
                   role="presentation"
                 >
@@ -9566,7 +9620,7 @@ exports[`Storyshots IDE|Header custom functions view 1`] = `
                   className="ms-Button-textContainer textContainer-83"
                 >
                   <div
-                    className="ms-Button-label label-154"
+                    className="ms-Button-label label-153"
                     id="id__209"
                   >
                     Delete
@@ -9577,19 +9631,19 @@ exports[`Storyshots IDE|Header custom functions view 1`] = `
           </div>
         </div>
         <div
-          className="ms-OverflowSet ms-CommandBar-secondaryCommand secondarySet-182"
+          className="ms-OverflowSet ms-CommandBar-secondaryCommand secondarySet-181"
           role="presentation"
         >
           <div
-            className="ms-OverflowSet-item item-150"
+            className="ms-OverflowSet-item item-149"
           >
             <button
               aria-describedby={undefined}
               aria-disabled={undefined}
-              aria-label={undefined}
+              aria-label="Login"
               aria-labelledby={undefined}
               aria-pressed={undefined}
-              className="ms-Button ms-Button--commandBar ms-CommandBarItem-link root-152"
+              className="ms-Button ms-Button--commandBar ms-CommandBarItem-link root-151"
               data-is-focusable={true}
               disabled={undefined}
               onClick={[Function]}
@@ -9598,6 +9652,7 @@ exports[`Storyshots IDE|Header custom functions view 1`] = `
               onKeyUp={[Function]}
               onMouseDown={[Function]}
               onMouseUp={[Function]}
+              role="menuitem"
               type="button"
             >
               <div
@@ -9612,16 +9667,16 @@ exports[`Storyshots IDE|Header custom functions view 1`] = `
                   }
                 >
                   <div
-                    className="ms-Persona-coin ms-Persona--size28 coin-183"
+                    className="ms-Persona-coin ms-Persona--size28 coin-182"
                     size={7}
                   >
                     <div
-                      className="ms-Persona-imageArea imageArea-185"
+                      className="ms-Persona-imageArea imageArea-184"
                       style={undefined}
                     >
                       <div
                         aria-hidden="true"
-                        className="ms-Persona-initials initials-188"
+                        className="ms-Persona-initials initials-187"
                         style={undefined}
                       >
                         <i
@@ -9656,7 +9711,13 @@ exports[`Storyshots IDE|Header settings view 1`] = `
   className="c0"
 >
   <div
-    className="ms-ResizeGroup root-148"
+    className={undefined}
+    style={
+      Object {
+        "display": "block",
+        "position": "relative",
+      }
+    }
   >
     <div
       data-automation-id="visibleContent"
@@ -9679,19 +9740,19 @@ exports[`Storyshots IDE|Header settings view 1`] = `
         role="menubar"
       >
         <div
-          className="ms-OverflowSet ms-CommandBar-primaryCommand primarySet-149"
+          className="ms-OverflowSet ms-CommandBar-primaryCommand primarySet-148"
           role="presentation"
         >
           <div
-            className="ms-OverflowSet-item item-150"
+            className="ms-OverflowSet-item item-149"
           >
             <button
               aria-describedby={undefined}
               aria-disabled={undefined}
-              aria-label={undefined}
+              aria-label="Back"
               aria-labelledby={undefined}
               aria-pressed={undefined}
-              className="ms-Button ms-Button--commandBar ms-CommandBarItem-link root-152"
+              className="ms-Button ms-Button--commandBar ms-CommandBarItem-link root-151"
               data-is-focusable={true}
               disabled={undefined}
               onClick={[Function]}
@@ -9700,6 +9761,7 @@ exports[`Storyshots IDE|Header settings view 1`] = `
               onKeyUp={[Function]}
               onMouseDown={[Function]}
               onMouseUp={[Function]}
+              role="menuitem"
               type="button"
             >
               <div
@@ -9707,7 +9769,7 @@ exports[`Storyshots IDE|Header settings view 1`] = `
               >
                 <i
                   aria-hidden={true}
-                  className="ms-Button-icon icon-156"
+                  className="ms-Button-icon icon-155"
                   data-icon-name="Back"
                   role="presentation"
                 >
@@ -9717,7 +9779,7 @@ exports[`Storyshots IDE|Header settings view 1`] = `
             </button>
           </div>
           <div
-            className="ms-OverflowSet-item item-150"
+            className="ms-OverflowSet-item item-149"
           >
             <button
               aria-describedby={undefined}
@@ -9725,7 +9787,7 @@ exports[`Storyshots IDE|Header settings view 1`] = `
               aria-label={undefined}
               aria-labelledby={undefined}
               aria-pressed={undefined}
-              className="ms-Button ms-Button--commandBar ms-CommandBarItem-link root-152"
+              className="ms-Button ms-Button--commandBar ms-CommandBarItem-link root-151"
               data-is-focusable={true}
               disabled={undefined}
               onClick={[Function]}
@@ -9734,6 +9796,7 @@ exports[`Storyshots IDE|Header settings view 1`] = `
               onKeyUp={[Function]}
               onMouseDown={[Function]}
               onMouseUp={[Function]}
+              role="menuitem"
               type="button"
             >
               <div
@@ -9743,7 +9806,7 @@ exports[`Storyshots IDE|Header settings view 1`] = `
                   className="ms-Button-textContainer textContainer-83"
                 >
                   <div
-                    className="ms-Button-label label-154"
+                    className="ms-Button-label label-153"
                     id="id__221"
                   >
                     Blank Snippet
@@ -9754,19 +9817,19 @@ exports[`Storyshots IDE|Header settings view 1`] = `
           </div>
         </div>
         <div
-          className="ms-OverflowSet ms-CommandBar-secondaryCommand secondarySet-182"
+          className="ms-OverflowSet ms-CommandBar-secondaryCommand secondarySet-181"
           role="presentation"
         >
           <div
-            className="ms-OverflowSet-item item-150"
+            className="ms-OverflowSet-item item-149"
           >
             <button
               aria-describedby={undefined}
               aria-disabled={undefined}
-              aria-label={undefined}
+              aria-label="Login"
               aria-labelledby={undefined}
               aria-pressed={undefined}
-              className="ms-Button ms-Button--commandBar ms-CommandBarItem-link root-152"
+              className="ms-Button ms-Button--commandBar ms-CommandBarItem-link root-151"
               data-is-focusable={true}
               disabled={undefined}
               onClick={[Function]}
@@ -9775,6 +9838,7 @@ exports[`Storyshots IDE|Header settings view 1`] = `
               onKeyUp={[Function]}
               onMouseDown={[Function]}
               onMouseUp={[Function]}
+              role="menuitem"
               type="button"
             >
               <div
@@ -9789,16 +9853,16 @@ exports[`Storyshots IDE|Header settings view 1`] = `
                   }
                 >
                   <div
-                    className="ms-Persona-coin ms-Persona--size28 coin-183"
+                    className="ms-Persona-coin ms-Persona--size28 coin-182"
                     size={7}
                   >
                     <div
-                      className="ms-Persona-imageArea imageArea-185"
+                      className="ms-Persona-imageArea imageArea-184"
                       style={undefined}
                     >
                       <div
                         aria-hidden="true"
-                        className="ms-Persona-initials initials-188"
+                        className="ms-Persona-initials initials-187"
                         style={undefined}
                       >
                         <i
@@ -9829,7 +9893,7 @@ exports[`Storyshots IDE|MessageBar basic error 1`] = `
 >
   <div
     aria-live="assertive"
-    className="ms-MessageBar ms-MessageBar--error ms-MessageBar-multiline root-201"
+    className="ms-MessageBar ms-MessageBar--error ms-MessageBar-multiline root-200"
   >
     <div
       className="ms-MessageBar-content content-118"
@@ -9839,7 +9903,7 @@ exports[`Storyshots IDE|MessageBar basic error 1`] = `
       >
         <i
           aria-hidden={true}
-          className="icon-203"
+          className="icon-202"
           data-icon-name="ErrorBadge"
           role="presentation"
         >
@@ -9847,7 +9911,7 @@ exports[`Storyshots IDE|MessageBar basic error 1`] = `
         </i>
       </div>
       <div
-        className="ms-MessageBar-text text-192"
+        className="ms-MessageBar-text text-191"
         id="MessageBar241"
       >
         <span
@@ -9862,7 +9926,7 @@ exports[`Storyshots IDE|MessageBar basic error 1`] = `
         aria-label="Close"
         aria-labelledby={undefined}
         aria-pressed={undefined}
-        className="ms-Button ms-Button--icon ms-MessageBar-dismissal dismissal-193"
+        className="ms-Button ms-Button--icon ms-MessageBar-dismissal dismissal-192"
         data-is-focusable={true}
         disabled={undefined}
         onClick={[Function]}
@@ -9878,7 +9942,7 @@ exports[`Storyshots IDE|MessageBar basic error 1`] = `
         >
           <i
             aria-hidden={true}
-            className="ms-Button-icon icon-194"
+            className="ms-Button-icon icon-193"
             data-icon-name="Clear"
             role="presentation"
           >
@@ -9915,7 +9979,7 @@ exports[`Storyshots IDE|MessageBar basic info 1`] = `
         </i>
       </div>
       <div
-        className="ms-MessageBar-text text-192"
+        className="ms-MessageBar-text text-191"
         id="MessageBar229"
       >
         <span
@@ -9930,7 +9994,7 @@ exports[`Storyshots IDE|MessageBar basic info 1`] = `
         aria-label="Close"
         aria-labelledby={undefined}
         aria-pressed={undefined}
-        className="ms-Button ms-Button--icon ms-MessageBar-dismissal dismissal-193"
+        className="ms-Button ms-Button--icon ms-MessageBar-dismissal dismissal-192"
         data-is-focusable={true}
         disabled={undefined}
         onClick={[Function]}
@@ -9946,7 +10010,7 @@ exports[`Storyshots IDE|MessageBar basic info 1`] = `
         >
           <i
             aria-hidden={true}
-            className="ms-Button-icon icon-194"
+            className="ms-Button-icon icon-193"
             data-icon-name="Clear"
             role="presentation"
           >
@@ -9965,7 +10029,7 @@ exports[`Storyshots IDE|MessageBar basic success 1`] = `
 >
   <div
     aria-live="polite"
-    className="ms-MessageBar ms-MessageBar--success ms-MessageBar-multiline root-195"
+    className="ms-MessageBar ms-MessageBar--success ms-MessageBar-multiline root-194"
   >
     <div
       className="ms-MessageBar-content content-118"
@@ -9975,7 +10039,7 @@ exports[`Storyshots IDE|MessageBar basic success 1`] = `
       >
         <i
           aria-hidden={true}
-          className="icon-197"
+          className="icon-196"
           data-icon-name="Completed"
           role="presentation"
         >
@@ -9983,7 +10047,7 @@ exports[`Storyshots IDE|MessageBar basic success 1`] = `
         </i>
       </div>
       <div
-        className="ms-MessageBar-text text-192"
+        className="ms-MessageBar-text text-191"
         id="MessageBar233"
       >
         <span
@@ -9998,7 +10062,7 @@ exports[`Storyshots IDE|MessageBar basic success 1`] = `
         aria-label="Close"
         aria-labelledby={undefined}
         aria-pressed={undefined}
-        className="ms-Button ms-Button--icon ms-MessageBar-dismissal dismissal-193"
+        className="ms-Button ms-Button--icon ms-MessageBar-dismissal dismissal-192"
         data-is-focusable={true}
         disabled={undefined}
         onClick={[Function]}
@@ -10014,7 +10078,7 @@ exports[`Storyshots IDE|MessageBar basic success 1`] = `
         >
           <i
             aria-hidden={true}
-            className="ms-Button-icon icon-194"
+            className="ms-Button-icon icon-193"
             data-icon-name="Clear"
             role="presentation"
           >
@@ -10033,7 +10097,7 @@ exports[`Storyshots IDE|MessageBar basic warning 1`] = `
 >
   <div
     aria-live="polite"
-    className="ms-MessageBar ms-MessageBar--warning ms-MessageBar-multiline root-198"
+    className="ms-MessageBar ms-MessageBar--warning ms-MessageBar-multiline root-197"
   >
     <div
       className="ms-MessageBar-content content-118"
@@ -10043,7 +10107,7 @@ exports[`Storyshots IDE|MessageBar basic warning 1`] = `
       >
         <i
           aria-hidden={true}
-          className="icon-200"
+          className="icon-199"
           data-icon-name="Info"
           role="presentation"
         >
@@ -10051,7 +10115,7 @@ exports[`Storyshots IDE|MessageBar basic warning 1`] = `
         </i>
       </div>
       <div
-        className="ms-MessageBar-text text-192"
+        className="ms-MessageBar-text text-191"
         id="MessageBar237"
       >
         <span
@@ -10066,7 +10130,7 @@ exports[`Storyshots IDE|MessageBar basic warning 1`] = `
         aria-label="Close"
         aria-labelledby={undefined}
         aria-pressed={undefined}
-        className="ms-Button ms-Button--icon ms-MessageBar-dismissal dismissal-193"
+        className="ms-Button ms-Button--icon ms-MessageBar-dismissal dismissal-192"
         data-is-focusable={true}
         disabled={undefined}
         onClick={[Function]}
@@ -10082,7 +10146,7 @@ exports[`Storyshots IDE|MessageBar basic warning 1`] = `
         >
           <i
             aria-hidden={true}
-            className="ms-Button-icon icon-194"
+            className="ms-Button-icon icon-193"
             data-icon-name="Clear"
             role="presentation"
           >
