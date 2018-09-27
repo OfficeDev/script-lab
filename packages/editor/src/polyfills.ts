@@ -1,6 +1,11 @@
-import 'core-js/es6/symbol'
+import 'core-js/fn/symbol/iterator.js'
+import 'core-js/es6/symbol.js'
 import 'core-js/fn/array/from'
 import 'core-js/fn/array/sort'
+import 'core-js/fn/string/trim-right'
+import 'core-js/fn/string/code-point-at'
+import 'core-js/fn/string/repeat'
+import 'core-js/fn/number/is-nan'
 
 // string includes polyfill
 if (!String.prototype.includes) {
