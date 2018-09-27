@@ -270,7 +270,9 @@ class ReactMonaco extends Component<IReactMonaco, IReactMonacoState> {
   }
 
   render() {
-    return <div ref={this.container} style={{ width: '100%', height: '100%' }} />
+    return (
+      <div ref={this.container} style={{ width: '100%', height: '100%' }} role="main" />
+    )
   }
 }
 

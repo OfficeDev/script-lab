@@ -349,15 +349,13 @@ class Editor extends Component<IProps, IState> {
         </Dialog>
 
         <Layout style={{ backgroundColor: theme.neutralDark }}>
-          <div style={{ width: '100%', height: '100%' }} role="main">
-            <Monaco
-              theme={monacoTheme}
-              options={options}
-              tabSize={editorSettings.tabSize}
-              editorDidMount={this.setupEditor}
-              libraries={libraries && libraries.content}
-            />
-          </div>
+          <Monaco
+            theme={monacoTheme}
+            options={options}
+            tabSize={editorSettings.tabSize}
+            editorDidMount={this.setupEditor}
+            libraries={libraries && libraries.content}
+          />
         </Layout>
       </>
     )
