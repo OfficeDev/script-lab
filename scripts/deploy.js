@@ -35,7 +35,7 @@ if (deploymentSlot !== undefined) {
   if (shell.test("-d", `${PACKAGE_LOCATION}/build-storybook`)) {
     shell.echo("starting deployment of storybook");
     deploy(
-      `./build-storybook`,
+      `${PACKAGE_LOCATION}/build-storybook`,
       `${SITE_NAME}-storybook`,
       `${SITE_NAME}-storybook${deploymentSlot}`
     );
