@@ -34,6 +34,7 @@
     "copy-monaco": "node scripts/copy-monaco.js",
     "start": "set HTTPS=true&&react-scripts-ts start",
     "build": "node scripts/build.js",
+    "build:storybook": "build-storybook -c .storybook -o build_storybook",
     "lint:tslint": "tslint 'src/**/*.ts?(x)'",
     "lint:prettier": "prettier --list-different './**/*.ts?(x)'",
     "lint": "yarn lint:tslint && yarn lint:prettier",
