@@ -4265,7 +4265,7 @@ exports[`Storyshots Custom Functions|Console basic 1`] = `
   className="sc-eHgmQL jjLxRA"
 >
   <div
-    className="sc-jWBwVP keUZJP"
+    className="sc-jWBwVP jHQVAw"
   >
     <div
       className="sc-kpOJdX iPNfaC"
@@ -4533,7 +4533,7 @@ exports[`Storyshots Custom Functions|Console empty 1`] = `
   className="sc-eHgmQL jjLxRA"
 >
   <div
-    className="sc-jWBwVP keUZJP"
+    className="sc-jWBwVP jHQVAw"
   >
     <div
       className="sc-kpOJdX iPNfaC"
@@ -4849,7 +4849,7 @@ exports[`Storyshots Custom Functions|Dashboard as standalone 1`] = `
     </div>
   </div>
   <div
-    className="sc-jWBwVP keUZJP"
+    className="sc-jWBwVP jHQVAw"
   >
     <div>
       <h4
@@ -5368,7 +5368,7 @@ exports[`Storyshots Custom Functions|Dashboard basic 1`] = `
     </div>
   </header>
   <div
-    className="sc-jWBwVP keUZJP"
+    className="sc-jWBwVP jHQVAw"
   >
     <div>
       I AM 
@@ -5596,7 +5596,7 @@ exports[`Storyshots Custom Functions|Dashboard with actual tabs 1`] = `
     </div>
   </header>
   <div
-    className="sc-jWBwVP keUZJP"
+    className="sc-jWBwVP jHQVAw"
   >
     <div>
       <h4
@@ -6148,7 +6148,7 @@ exports[`Storyshots Custom Functions|Dashboard with refresh 1`] = `
     </div>
   </div>
   <div
-    className="sc-jWBwVP keUZJP"
+    className="sc-jWBwVP jHQVAw"
   >
     <div>
       <h4
@@ -6418,7 +6418,7 @@ exports[`Storyshots Custom Functions|Summary all bad 1`] = `
   className="sc-eHgmQL jjLxRA"
 >
   <div
-    className="sc-jWBwVP keUZJP"
+    className="sc-jWBwVP jHQVAw"
   >
     <div>
       <h4
@@ -6564,7 +6564,7 @@ exports[`Storyshots Custom Functions|Summary all good 1`] = `
   className="sc-eHgmQL jjLxRA"
 >
   <div
-    className="sc-jWBwVP keUZJP"
+    className="sc-jWBwVP jHQVAw"
   >
     <div>
       <h4
@@ -6710,7 +6710,7 @@ exports[`Storyshots Custom Functions|Summary basic 1`] = `
   className="sc-eHgmQL jjLxRA"
 >
   <div
-    className="sc-jWBwVP keUZJP"
+    className="sc-jWBwVP jHQVAw"
   >
     <div>
       <h4
@@ -6980,7 +6980,7 @@ exports[`Storyshots Custom Functions|Summary loading 1`] = `
   className="sc-eHgmQL jjLxRA"
 >
   <div
-    className="sc-jWBwVP keUZJP"
+    className="sc-jWBwVP jHQVAw"
   >
     <div
       className="sc-csuQGl cpEldH"
