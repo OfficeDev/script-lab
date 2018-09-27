@@ -18,5 +18,7 @@ Click the `Run` button.
 
 Open [this link](https://script-lab-react-alpha.azurewebsites.net) in a new tab.
 
+In the footer, switch hosts from `WEB` to `EXCEL`.
+
 ## Testing
 https://github.com/OfficeDev/script-lab/blob/master/TESTING.md
