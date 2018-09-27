@@ -161,7 +161,7 @@ function* updateGistSaga(action: ActionType<typeof gists.update.request>) {
       jsonPayload: JSON.stringify({
         description: `${solution.description}`,
         files: {
-          [`${solution.name}.yaml`]: {
+          [`${solution.name}.${solution.host}.yaml`]: {
             content: snippet,
           },
         },
