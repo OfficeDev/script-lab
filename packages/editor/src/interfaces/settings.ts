@@ -27,13 +27,9 @@ interface IDefaultActions {
   gistImport: string
 }
 
-interface IDeveloperSettings {
-  environment: string
-}
-
 interface ISettings {
   editor: IEditorSettings
   hostSpecific: IHostSpecificSettings
   defaultActions: IDefaultActions
-  developer: IDeveloperSettings
+  environment: string
 }

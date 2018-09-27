@@ -82,19 +82,8 @@ export const getSolutions = (state: IState): ISolution[] =>
 
 export const getLastModifiedDate = (state: IState): number => {
   const solutions = filterCustomFunctions(getSolutionsInLastModifiedOrder(state))
-  console.log({ solutions })
   return solutions.length > 0 ? solutions[0].dateLastModified : 0
 }
-
-// export const getShouldPromptRefresh = createSelector(
-//   [getLastModifiedDate, state => state.customFunctions.runner.lastUpdated],
-//   (lastModified: number, lastUpdated: number): boolean => {
-//     return lastModified > lastUpdated
-//   },
-// )
-
-// export const getShouldPromptRefresh = (state: IState): boolean =>
-//   getLastModifiedDate(state) > state.customFunctions.runner.lastUpdated
 
 export const getHasCustomFunctions = createSelector(
   getSolutions,

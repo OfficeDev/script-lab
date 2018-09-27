@@ -4,6 +4,7 @@ import Menu, { IMenuItem } from './'
 
 import { storiesOf } from '@storybook/react'
 import { action } from '@storybook/addon-actions'
+import { boolean } from '@storybook/addon-knobs'
 
 const menuItems: IMenuItem[] = [
   {
@@ -38,5 +39,9 @@ const menuItems: IMenuItem[] = [
 ]
 
 storiesOf('Backstage|Menu', module).add('basic', () => (
-  <Menu items={menuItems} selectedKey={menuItems[2].key} />
+  <Menu
+    isCompact={boolean('isCompact')}
+    items={menuItems}
+    selectedKey={menuItems[2].key}
+  />
 ))

@@ -12,7 +12,7 @@
     "lodash": "^4.17.10",
     "monaco-editor": "^0.13.1",
     "normalizr": "^3.2.4",
-    "office-ui-fabric-react": "^6.64.0",
+    "office-ui-fabric-react": "^6.73.0",
     "path-to-regexp": "^2.2.1",
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
@@ -30,11 +30,14 @@
     "uuid": "^3.2.1"
   },
   "scripts": {
+    "analyze": "source-map-explorer build/static/js/main.*",
     "copy-monaco": "node scripts/copy-monaco.js",
-    "start": "set HTTPS=false&&react-scripts-ts start",
+    "start": "set HTTPS=true&&react-scripts-ts start",
     "build": "node scripts/build.js",
+    "lint:tslint": "tslint 'src/**/*.ts?(x)'",
+    "lint:prettier": "prettier --list-different './**/*.ts?(x)'",
+    "lint": "yarn lint:tslint && yarn lint:prettier",
     "react-scripts-ts:build": "react-scripts-ts build",
-    "deploy": "node scripts/deploy.js",
     "test": "react-scripts-ts test --env=jsdom",
     "test-coverage": "yarn test -- --coverage",
     "show-coverage": "yarn test-coverage && coverage\\lcov-report\\index.html",
@@ -82,7 +85,9 @@
     "react-test-renderer": "^16.3.2",
     "redux-devtools": "^3.4.1",
     "shelljs": "^0.8.2",
+    "source-map-explorer": "^1.6.0",
     "ts-jest": "^22.4.6",
+    "tslint": "^5.11.0",
     "typescript": "^3.0.1"
   }
 }

@@ -17,9 +17,7 @@ export const allowedSettings = {
     applySettings: ['prompt', 'immediate'],
     gistImport: ['prompt', 'open', 'copy', 'overwrite'],
   },
-  developer: {
-    environment: ['production', 'beta', 'alpha', 'react-beta', 'react-alpha'],
-  },
+  environment: ['production', 'beta', 'alpha', 'react-beta', 'react-alpha'],
 }
 
 // Note: this must be kept in sync with the interfaces in src/interfaces/index.d.ts
@@ -139,17 +137,12 @@ export default {
         },
       },
     },
-    developer: {
-      $id: '/properties/developer',
-      type: 'object',
-      properties: {
-        environment: {
-          $id: 'properties/developer/properties/environment',
-          type: 'string',
-          default: allowedSettings.developer.environment[0],
-          enum: allowedSettings.developer.environment,
-        },
-      },
+
+    environment: {
+      $id: 'properties/environment',
+      type: 'string',
+      default: allowedSettings.environment[0],
+      enum: allowedSettings.environment,
     },
   },
 }

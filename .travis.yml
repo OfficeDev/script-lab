@@ -1,29 +1,45 @@
 language: node_js
 
 node_js:
-  - 8
+  - 10
 
 branches:
   only:
     - master
     - beta
     - production
-    - deployment
 
-cache:
-  yarn: true
+cache: yarn
 
 install:
-  - yarn installAll
+  - yarn install
 
 before_script:
   - yarn copy-monaco
 
+matrix:
+  include:
+    - name: 'Editor Pipeline'
+      env:
+        - PACKAGE_LOCATION=packages/editor
+        - PACKAGE_NAME=editor
+        - SITE_NAME=script-lab-react
+
+    - name: 'Server Pipeline'
+      env:
+        - PACKAGE_LOCATION=packages/server
+        - PACKAGE_NAME=server
+        - SITE_NAME=script-lab-react-server
+
 script:
+  - cd $PACKAGE_LOCATION
+  - yarn lint
+  - yarn test
   - yarn build
 
 after_success:
-  - yarn deploy
+  - cd ..
+  - if [[ "$TRAVIS_PULL_REQUEST" == false ]]; then yarn deploy; fi
 
 env:
   global:
