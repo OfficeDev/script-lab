@@ -8,7 +8,7 @@
 
 # production
 /build
-/build_storybook
+/build-storybook
 
 # misc
 .DS_Store
