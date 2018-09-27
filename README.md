@@ -17,3 +17,6 @@ Sideload [this manifest](https://github.com/OfficeDev/script-lab-react/blob/mast
 Click the `Run` button.
 
 Open [this link](https://script-lab-react-alpha.azurewebsites.net) in a new tab.
+
+## Testing
+https://github.com/OfficeDev/script-lab/blob/master/TESTING.md
