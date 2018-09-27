@@ -27,7 +27,6 @@ export function* fetchCustomFunctionsMetadataSaga() {
     url: `${RUNNER_URL}/custom-functions/parse-metadata`,
     jsonPayload: JSON.stringify({ data: JSON.stringify({ snippets }) }),
   })
-  console.log({ response, error })
 
   if (response) {
     yield put(customFunctions.fetchMetadata.success(response))

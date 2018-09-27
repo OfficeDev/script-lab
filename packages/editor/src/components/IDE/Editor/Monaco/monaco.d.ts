@@ -1,3 +1,4 @@
+/* tslint:disable */
 /*!-----------------------------------------------------------
  * Copyright (c) Microsoft Corporation. All rights reserved.
  * Type definitions for monaco-editor v0.13.1
@@ -848,11 +849,7 @@ declare namespace monaco.editor {
    * Create a new editor model.
    * You can specify the language that should be set for this model or let the language be inferred from the `uri`.
    */
-  export function createModel(
-    value: string,
-    language?: string,
-    uri?: Uri,
-  ): ITextModel
+  export function createModel(value: string, language?: string, uri?: Uri): ITextModel
 
   /**
    * Change the language for a model.
@@ -893,17 +890,13 @@ declare namespace monaco.editor {
    * Emitted when a model is created.
    * @event
    */
-  export function onDidCreateModel(
-    listener: (model: ITextModel) => void,
-  ): IDisposable
+  export function onDidCreateModel(listener: (model: ITextModel) => void): IDisposable
 
   /**
    * Emitted right before a model is disposed.
    * @event
    */
-  export function onWillDisposeModel(
-    listener: (model: ITextModel) => void,
-  ): IDisposable
+  export function onWillDisposeModel(listener: (model: ITextModel) => void): IDisposable
 
   /**
    * Emitted when a different language is set to a model.
@@ -922,9 +915,7 @@ declare namespace monaco.editor {
    * Create a new web worker that has model syncing capabilities built in.
    * Specify an AMD module to load that will `create` an object that will be proxied.
    */
-  export function createWebWorker<T>(
-    opts: IWebWorkerOptions,
-  ): MonacoWebWorker<T>
+  export function createWebWorker<T>(opts: IWebWorkerOptions): MonacoWebWorker<T>
 
   /**
    * Colorize the contents of `domNode` using attribute `data-lang`.
@@ -960,10 +951,7 @@ declare namespace monaco.editor {
   /**
    * Define a new theme.
    */
-  export function defineTheme(
-    themeName: string,
-    themeData: IStandaloneThemeData,
-  ): void
+  export function defineTheme(themeName: string, themeData: IStandaloneThemeData): void
 
   /**
    * Switches to a theme.
@@ -1118,21 +1106,13 @@ declare namespace monaco.editor {
   }
 
   export interface IStandaloneCodeEditor extends ICodeEditor {
-    addCommand(
-      keybinding: number,
-      handler: ICommandHandler,
-      context: string,
-    ): string
+    addCommand(keybinding: number, handler: ICommandHandler, context: string): string
     createContextKey<T>(key: string, defaultValue: T): IContextKey<T>
     addAction(descriptor: IActionDescriptor): IDisposable
   }
 
   export interface IStandaloneDiffEditor extends IDiffEditor {
-    addCommand(
-      keybinding: number,
-      handler: ICommandHandler,
-      context: string,
-    ): string
+    addCommand(keybinding: number, handler: ICommandHandler, context: string): string
     createContextKey<T>(key: string, defaultValue: T): IContextKey<T>
     addAction(descriptor: IActionDescriptor): IDisposable
     getOriginalEditor(): IStandaloneCodeEditor
@@ -1832,10 +1812,7 @@ declare namespace monaco.editor {
      * @param ownerId If set, it will ignore decorations belonging to other owners.
      * @param filterOutValidation If set, it will ignore decorations specific to validation (i.e. warnings, errors).
      */
-    getAllDecorations(
-      ownerId?: number,
-      filterOutValidation?: boolean,
-    ): IModelDecoration[]
+    getAllDecorations(ownerId?: number, filterOutValidation?: boolean): IModelDecoration[]
     /**
      * Gets all the decorations that should be rendered in the overview ruler as an array.
      * @param ownerId If set, it will ignore decorations belonging to other owners.
@@ -1860,10 +1837,7 @@ declare namespace monaco.editor {
     /**
      * Detect the indentation options for this model from its content.
      */
-    detectIndentation(
-      defaultInsertSpaces: boolean,
-      defaultTabSize: number,
-    ): void
+    detectIndentation(defaultInsertSpaces: boolean, defaultTabSize: number): void
     /**
      * Push a stack element onto the undo stack. This acts as an undo/redo point.
      * The idea is to use `pushEditOperations` to edit the model and then to
@@ -1896,9 +1870,7 @@ declare namespace monaco.editor {
      * An event emitted when the contents of the model have changed.
      * @event
      */
-    onDidChangeContent(
-      listener: (e: IModelContentChangedEvent) => void,
-    ): IDisposable
+    onDidChangeContent(listener: (e: IModelContentChangedEvent) => void): IDisposable
     /**
      * An event emitted when decorations of the model have changed.
      * @event
@@ -1910,16 +1882,12 @@ declare namespace monaco.editor {
      * An event emitted when the model options have changed.
      * @event
      */
-    onDidChangeOptions(
-      listener: (e: IModelOptionsChangedEvent) => void,
-    ): IDisposable
+    onDidChangeOptions(listener: (e: IModelOptionsChangedEvent) => void): IDisposable
     /**
      * An event emitted when the language associated with the model has changed.
      * @event
      */
-    onDidChangeLanguage(
-      listener: (e: IModelLanguageChangedEvent) => void,
-    ): IDisposable
+    onDidChangeLanguage(listener: (e: IModelLanguageChangedEvent) => void): IDisposable
     /**
      * An event emitted when the language configuration associated with the model has changed.
      * @event
@@ -2000,10 +1968,7 @@ declare namespace monaco.editor {
      * @param helper A helper to get inverse edit operations and to get previously tracked selections.
      * @return The cursor state after the command executed.
      */
-    computeCursorState(
-      model: ITextModel,
-      helper: ICursorStateComputerData,
-    ): Selection
+    computeCursorState(model: ITextModel, helper: ICursorStateComputerData): Selection
   }
 
   /**
@@ -2207,10 +2172,7 @@ declare namespace monaco.editor {
     /**
      * Scroll vertically as necessary and reveal a line centered vertically only if it lies outside the viewport.
      */
-    revealLineInCenterIfOutsideViewport(
-      lineNumber: number,
-      scrollType?: ScrollType,
-    ): void
+    revealLineInCenterIfOutsideViewport(lineNumber: number, scrollType?: ScrollType): void
     /**
      * Scroll vertically or horizontally as necessary and reveal a position.
      */
@@ -2298,10 +2260,7 @@ declare namespace monaco.editor {
     /**
      * Scroll vertically or horizontally as necessary and reveal a range centered vertically only if it lies outside the viewport.
      */
-    revealRangeInCenterIfOutsideViewport(
-      range: IRange,
-      scrollType?: ScrollType,
-    ): void
+    revealRangeInCenterIfOutsideViewport(range: IRange, scrollType?: ScrollType): void
     /**
      * Directly trigger a handler or an editor action.
      * @param source The source of the call.
@@ -3783,9 +3742,7 @@ declare namespace monaco.editor {
      * An event emitted when the content of the current model has changed.
      * @event
      */
-    onDidChangeModelContent(
-      listener: (e: IModelContentChangedEvent) => void,
-    ): IDisposable
+    onDidChangeModelContent(listener: (e: IModelContentChangedEvent) => void): IDisposable
     /**
      * An event emitted when the language of the current model has changed.
      * @event
@@ -3804,9 +3761,7 @@ declare namespace monaco.editor {
      * An event emitted when the options of the current model has changed.
      * @event
      */
-    onDidChangeModelOptions(
-      listener: (e: IModelOptionsChangedEvent) => void,
-    ): IDisposable
+    onDidChangeModelOptions(listener: (e: IModelOptionsChangedEvent) => void): IDisposable
     /**
      * An event emitted when the configuration of the editor has changed. (e.g. `editor.updateOptions()`)
      * @event
@@ -4199,10 +4154,7 @@ declare namespace monaco.languages {
    * An event emitted when a language is first time needed (e.g. a model has it set).
    * @event
    */
-  export function onLanguage(
-    languageId: string,
-    callback: () => void,
-  ): IDisposable
+  export function onLanguage(languageId: string, callback: () => void): IDisposable
 
   /**
    * Set the editing configuration for a language.
@@ -5294,10 +5246,7 @@ declare namespace monaco.languages {
       model: editor.ITextModel,
       token: CancellationToken,
     ): ILink[] | Thenable<ILink[]>
-    resolveLink?: (
-      link: ILink,
-      token: CancellationToken,
-    ) => ILink | Thenable<ILink>
+    resolveLink?: (link: ILink, token: CancellationToken) => ILink | Thenable<ILink>
   }
 
   /**
@@ -5671,12 +5620,7 @@ declare namespace monaco.languages.typescript {
     NodeJs = 2,
   }
 
-  type CompilerOptionsValue =
-    | string
-    | number
-    | boolean
-    | (string | number)[]
-    | string[]
+  type CompilerOptionsValue = string | number | boolean | (string | number)[] | string[]
   interface CompilerOptions {
     allowJs?: boolean
     allowSyntheticDefaultImports?: boolean
@@ -5892,11 +5836,7 @@ declare namespace monaco.languages.html {
     readonly indentHandlebars: boolean
     readonly endWithNewline: boolean
     readonly extraLiners: string
-    readonly wrapAttributes:
-      | 'auto'
-      | 'force'
-      | 'force-aligned'
-      | 'force-expand-multiline'
+    readonly wrapAttributes: 'auto' | 'force' | 'force-aligned' | 'force-expand-multiline'
   }
 
   export interface CompletionConfiguration {

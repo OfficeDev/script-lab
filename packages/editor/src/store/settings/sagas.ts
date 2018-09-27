@@ -59,7 +59,7 @@ function* onSettingsEditSuccessSaga(
 ) {
   const { settings } = action.payload
 
-  const newEnvironment = settings.developer.environment
+  const newEnvironment = settings.environment
   if (newEnvironment !== environmentName) {
     window.location.href = `${
       editorUrls.production

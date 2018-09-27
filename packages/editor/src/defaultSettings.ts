@@ -19,14 +19,12 @@ export const defaultSettings: ISettings = {
   },
   hostSpecific: { officeOnline: { openEditorInNewTab: 'prompt' } },
   defaultActions: { applySettings: 'prompt', gistImport: 'prompt' },
-  developer: {
-    environment: environmentName,
-  },
+  environment: environmentName,
 }
 
 const getSettingsContent = (settings?: ISettings): string => {
   const settingsToSet = settings !== undefined ? settings : defaultSettings
-  settingsToSet.developer.environment = environmentName
+  settingsToSet.environment = environmentName
   const { tabSize } = settingsToSet.editor
   return JSON.stringify(settingsToSet, null, tabSize) + '\n'
 }
@@ -34,7 +32,7 @@ const getSettingsContent = (settings?: ISettings): string => {
 const getAboutContent = (): string => {
   const commit = process.env.REACT_APP_COMMIT
   const lastUpdated = process.env.REACT_APP_LAST_UPDATED
-  return `Last Updated: ${lastUpdated}\nCommit: ${commit}`
+  return `Last Updated: ${lastUpdated}\nCommit: ${commit}\nEnvironment: ${environmentName}`
 }
 
 const getSettingsFiles = (timestamp: number, settings?: ISettings): IFile[] => [

@@ -73,7 +73,7 @@ export class CustomFunctionsDashboard extends React.Component<IProps, IState> {
 
     if (isCFSupportedOnHost === undefined) {
       return (
-        <div style={{ width: '100vh', height: '100vh' }}>
+        <div style={{ width: '100vw', height: '100vh' }}>
           <LoadingIndicator ballSize={32} numBalls={5} ballColor="#d83b01" delay={0.05} />
         </div>
       )
