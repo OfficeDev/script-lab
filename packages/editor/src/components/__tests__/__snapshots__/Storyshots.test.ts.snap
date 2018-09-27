@@ -5009,6 +5009,7 @@ exports[`Storyshots Custom Functions|Console basic 1`] = `
   flex: 1;
   overflow: hidden;
   z-index: 999;
+  background-color: #ffffff;
 }
 
 <div
@@ -5334,6 +5335,7 @@ exports[`Storyshots Custom Functions|Console empty 1`] = `
   flex: 1;
   overflow: hidden;
   z-index: 999;
+  background-color: #ffffff;
 }
 
 <div
@@ -5432,6 +5434,7 @@ exports[`Storyshots Custom Functions|Dashboard as standalone 1`] = `
   flex: 1;
   overflow: hidden;
   z-index: 999;
+  background-color: #ffffff;
 }
 
 .c6 {
@@ -6017,6 +6020,7 @@ exports[`Storyshots Custom Functions|Dashboard basic 1`] = `
   flex: 1;
   overflow: hidden;
   z-index: 999;
+  background-color: #ffffff;
 }
 
 <div
@@ -6310,6 +6314,7 @@ exports[`Storyshots Custom Functions|Dashboard with actual tabs 1`] = `
   flex: 1;
   overflow: hidden;
   z-index: 999;
+  background-color: #ffffff;
 }
 
 .c6 {
@@ -6861,6 +6866,7 @@ exports[`Storyshots Custom Functions|Dashboard with refresh 1`] = `
   flex: 1;
   overflow: hidden;
   z-index: 999;
+  background-color: #ffffff;
 }
 
 .c6 {
@@ -7471,6 +7477,7 @@ exports[`Storyshots Custom Functions|Summary all bad 1`] = `
   flex: 1;
   overflow: hidden;
   z-index: 999;
+  background-color: #ffffff;
 }
 
 .c4 {
@@ -7675,6 +7682,7 @@ exports[`Storyshots Custom Functions|Summary all good 1`] = `
   flex: 1;
   overflow: hidden;
   z-index: 999;
+  background-color: #ffffff;
 }
 
 .c4 {
@@ -7879,6 +7887,7 @@ exports[`Storyshots Custom Functions|Summary basic 1`] = `
   flex: 1;
   overflow: hidden;
   z-index: 999;
+  background-color: #ffffff;
 }
 
 .c4 {
@@ -8207,6 +8216,7 @@ exports[`Storyshots Custom Functions|Summary loading 1`] = `
   flex: 1;
   overflow: hidden;
   z-index: 999;
+  background-color: #ffffff;
 }
 
 .c2 {
