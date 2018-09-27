@@ -13,4 +13,6 @@ export const Content = styled.div`
   flex: 1;
   overflow: hidden;
   z-index: 999;
+
+  background-color: ${props => props.theme.white};
 `
