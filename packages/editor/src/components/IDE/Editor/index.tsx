@@ -29,6 +29,7 @@ import { connect } from 'react-redux'
 import { withTheme } from 'styled-components'
 import { solutions, editor, settings } from '../../../store/actions'
 import selectors from '../../../store/selectors'
+import { defaultSettings } from 'src/defaultSettings'
 
 interface IEditorSettings {
   monacoTheme: string
@@ -278,6 +279,17 @@ class Editor extends Component<IProps, IState> {
     this.closeSaveSettingsDialog()
   }
 
+  resetSettings = () => {
+    const copy = this.props.settingsFile
+    copy.content = JSON.stringify(
+      defaultSettings,
+      null,
+      this.props.editorSettings.tabSize,
+    )
+    this.props.editSettings(this.props.settingsFile, copy)
+    getModel(this.monaco, this.props.settingsFile).model.setValue(copy.content)
+  }
+
   cancelSettingsUpdate = () => {
     getModel(this.monaco, this.props.settingsFile).model.setValue(
       this.props.settingsFile.content,
@@ -315,7 +327,7 @@ class Editor extends Component<IProps, IState> {
                   Apply
                 </DefaultButton>
                 <DefaultButton onClick={this.cancelSettingsUpdate}>Cancel</DefaultButton>
-                <DefaultButton>Reset</DefaultButton>
+                <DefaultButton onClick={this.resetSettings}>Reset</DefaultButton>
               </div>
             }
             isMultiline={false}
