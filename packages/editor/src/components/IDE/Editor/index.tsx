@@ -16,7 +16,12 @@ import {
   ABOUT_FILE_ID,
 } from '../../../constants'
 
-import { getModel, setPosForModel, getModelByIdIfExists } from './Monaco/monaco-models'
+import {
+  getModel,
+  setPosForModel,
+  getModelByIdIfExists,
+  removeModelFromCache,
+} from './Monaco/monaco-models'
 
 import debounce from 'lodash/debounce'
 
@@ -66,6 +71,7 @@ interface IActionsFromRedux {
     file: Partial<IEditableFileProperties>,
   ) => void
   openSettings: () => void
+  editSettings: (currentSettings: IFile, newSettings: IFile) => void
   signalEditorLoaded: () => void
 }
 
@@ -78,6 +84,8 @@ const mapDispatchToProps = (dispatch, ownProps: IProps): IActionsFromRedux => ({
     file: Partial<IEditableFileProperties>,
   ) => dispatch(solutions.edit({ id: solutionId, fileId, file })),
   openSettings: () => dispatch(settings.open()),
+  editSettings: (currentSettings: IFile, newSettings: IFile) =>
+    dispatch(settings.editFile({ currentSettings, newSettings })),
   signalEditorLoaded: () => dispatch(editor.signalHasLoaded()),
 })
 
@@ -266,7 +274,7 @@ class Editor extends Component<IProps, IState> {
   applySettingsUpdate = () => {
     const copy = this.props.settingsFile
     copy.content = getModel(this.monaco, copy).model.getValue()
-    this.props.editFile(SETTINGS_SOLUTION_ID, SETTINGS_FILE_ID, copy)
+    this.props.editSettings(this.props.settingsFile, copy)
     this.closeSaveSettingsDialog()
   }
 

@@ -17,20 +17,22 @@ export const allowedSettings = {
     applySettings: ['prompt', 'immediate'],
     gistImport: ['prompt', 'open', 'copy', 'overwrite'],
   },
-  environment: ['production', 'beta', 'alpha', 'react-beta', 'react-alpha'],
+  environment: ['production', 'beta', 'alpha', 'react-beta', 'react-alpha', 'local'],
 }
 
 // Note: this must be kept in sync with the interfaces in src/interfaces/index.d.ts
 export default {
-  $id: 'http://todo.com/example.json',
+  $id: 'settings-schema.json',
   description: 'Schema for the settings of Script Lab',
   type: 'object',
   definitions: {},
   $schema: 'http://json-schema.org/draft-07/schema#',
+  additionalProperties: false,
   properties: {
     editor: {
       $id: '/properties/editor',
       type: 'object',
+      additionalProperties: false,
       properties: {
         theme: {
           $id: '/properties/editor/properties/theme',
@@ -41,6 +43,7 @@ export default {
         font: {
           $id: '/properties/editor/properties/font',
           type: 'object',
+          additionalProperties: false,
           properties: {
             family: {
               $id: '/properties/editor/properties/font/properties/family',
@@ -51,7 +54,7 @@ export default {
             size: {
               $id: '/properties/editor/properties/font/properties/size',
               type: 'integer',
-              default: 18,
+              default: 16,
               examples: [16, 18, 24],
             },
             lineHeight: {
@@ -89,6 +92,7 @@ export default {
         linter: {
           $id: '/properties/editor/properties/linter',
           type: 'object',
+          additionalProperties: false,
           properties: {
             mode: {
               $id: '/properties/editor/properties/linter/properties/mode',
@@ -103,6 +107,7 @@ export default {
     hostSpecific: {
       $id: '/properties/hostSpecific',
       type: 'object',
+      additionalProperties: false,
       properties: {
         officeOnline: {
           $id: '/properties/hostSpecific/properties/officeOnline',
@@ -122,6 +127,7 @@ export default {
     defaultActions: {
       $id: '/properties/defaultActions',
       type: 'object',
+      additionalProperties: false,
       properties: {
         applySettings: {
           $id: '/properties/defaultActions/properties/applySettings',
@@ -137,12 +143,11 @@ export default {
         },
       },
     },
-
     environment: {
       $id: 'properties/environment',
       type: 'string',
       default: allowedSettings.environment[0],
-      enum: allowedSettings.environment,
+      enum: allowedSettings.environment.filter(value => value !== 'local'),
     },
   },
 }
