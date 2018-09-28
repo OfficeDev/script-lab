@@ -19,13 +19,13 @@ before_script:
 
 matrix:
   include:
-    - name: 'Editor Pipeline'
+    - name: "Editor Pipeline"
       env:
         - PACKAGE_LOCATION=packages/editor
         - PACKAGE_NAME=editor
         - SITE_NAME=script-lab-react
 
-    - name: 'Server Pipeline'
+    - name: "Server Pipeline"
       env:
         - PACKAGE_LOCATION=packages/server
         - PACKAGE_NAME=server
@@ -36,9 +36,7 @@ script:
   - yarn lint
   - yarn test
   - yarn build
-
-after_success:
-  - cd ..
+  - cd $TRAVIS_BUILD_DIR
   - if [[ "$TRAVIS_PULL_REQUEST" == false ]]; then yarn deploy; fi
 
 env:
