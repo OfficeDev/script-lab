@@ -1,10 +1,13 @@
 import React, { Component } from 'react'
 
-import debounce from 'lodash/debounce'
-
 import { MessageBar, MessageBarType } from 'office-ui-fabric-react/lib/MessageBar'
-import { Dialog, DialogType, DialogFooter } from 'office-ui-fabric-react/lib/Dialog'
-import { PrimaryButton, DefaultButton } from 'office-ui-fabric-react/lib/Button'
+import { DefaultButton } from 'office-ui-fabric-react/lib/Button'
+
+import Monaco from './Monaco'
+import Only from '../../Only'
+import SettingsNotAppliedDialog from './SettingsNotAppliedDialog'
+
+import { Layout } from './styles'
 
 import {
   SETTINGS_FILE_ID,
@@ -13,11 +16,9 @@ import {
   ABOUT_FILE_ID,
 } from '../../../constants'
 
-import Monaco from './Monaco'
-import Only from '../../Only'
-import { Layout } from './styles'
-
 import { getModel, setPosForModel, getModelByIdIfExists } from './Monaco/monaco-models'
+
+import debounce from 'lodash/debounce'
 
 import { connect } from 'react-redux'
 import { withTheme } from 'styled-components'
@@ -255,7 +256,7 @@ class Editor extends Component<IProps, IState> {
 
   // settings related methods
   openSettings = () => {
-    this.props.changeActiveFile(SETTINGS_FILE_ID)
+    this.props.openSettings()
     this.closeSaveSettingsDialog()
   }
 
@@ -317,27 +318,13 @@ class Editor extends Component<IProps, IState> {
           </MessageBar>
         </Only>
 
-        <Dialog
-          isDarkOverlay={true}
-          hidden={!this.state.isSaveSettingsDialogVisible}
+        <SettingsNotAppliedDialog
+          isHidden={!this.state.isSaveSettingsDialogVisible}
           onDismiss={this.closeSaveSettingsDialog}
-          dialogContentProps={{
-            type: DialogType.largeHeader,
-            title: 'Oh no!',
-            subText:
-              "It looks like you made an edit to your settings that you didn't apply.Would you like to apply these changes ?",
-          }}
-          modalProps={{ isBlocking: true }}
-        >
-          {getModelByIdIfExists(this.monaco, SETTINGS_FILE_ID)
-            ? getModelByIdIfExists(this.monaco, SETTINGS_FILE_ID)!.model.getValue()
-            : 'no model ;('}
-          <DialogFooter>
-            <PrimaryButton text="Apply" onClick={this.applySettingsUpdate} />
-            <DefaultButton text="Cancel" onClick={this.cancelSettingsUpdate} />
-            <DefaultButton text="Open" onClick={this.openSettings} />
-          </DialogFooter>
-        </Dialog>
+          apply={this.applySettingsUpdate}
+          open={this.openSettings}
+          cancel={this.cancelSettingsUpdate}
+        />
 
         <Layout style={{ backgroundColor: theme.neutralDark }}>
           <Monaco
