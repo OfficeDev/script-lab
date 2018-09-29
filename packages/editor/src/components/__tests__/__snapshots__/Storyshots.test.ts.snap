@@ -9903,7 +9903,7 @@ exports[`Storyshots IDE|MessageBar basic error 1`] = `
 >
   <div
     aria-live="assertive"
-    className="ms-MessageBar ms-MessageBar--error ms-MessageBar-multiline root-200"
+    className="ms-MessageBar ms-MessageBar--error ms-MessageBar-multiline root-201"
   >
     <div
       className="ms-MessageBar-content content-118"
@@ -9913,7 +9913,7 @@ exports[`Storyshots IDE|MessageBar basic error 1`] = `
       >
         <i
           aria-hidden={true}
-          className="icon-202"
+          className="icon-203"
           data-icon-name="ErrorBadge"
           role="presentation"
         >
@@ -9921,7 +9921,7 @@ exports[`Storyshots IDE|MessageBar basic error 1`] = `
         </i>
       </div>
       <div
-        className="ms-MessageBar-text text-191"
+        className="ms-MessageBar-text text-192"
         id="MessageBar241"
       >
         <span
@@ -9936,7 +9936,7 @@ exports[`Storyshots IDE|MessageBar basic error 1`] = `
         aria-label="Close"
         aria-labelledby={undefined}
         aria-pressed={undefined}
-        className="ms-Button ms-Button--icon ms-MessageBar-dismissal dismissal-192"
+        className="ms-Button ms-Button--icon ms-MessageBar-dismissal dismissal-193"
         data-is-focusable={true}
         disabled={undefined}
         onClick={[Function]}
@@ -9952,7 +9952,7 @@ exports[`Storyshots IDE|MessageBar basic error 1`] = `
         >
           <i
             aria-hidden={true}
-            className="ms-Button-icon icon-193"
+            className="ms-Button-icon icon-194"
             data-icon-name="Clear"
             role="presentation"
           >
@@ -9971,7 +9971,7 @@ exports[`Storyshots IDE|MessageBar basic info 1`] = `
 >
   <div
     aria-live="polite"
-    className="ms-MessageBar ms-MessageBar-multiline root-117"
+    className="ms-MessageBar ms-MessageBar-multiline root-191"
   >
     <div
       className="ms-MessageBar-content content-118"
@@ -9989,7 +9989,7 @@ exports[`Storyshots IDE|MessageBar basic info 1`] = `
         </i>
       </div>
       <div
-        className="ms-MessageBar-text text-191"
+        className="ms-MessageBar-text text-192"
         id="MessageBar229"
       >
         <span
@@ -10004,7 +10004,7 @@ exports[`Storyshots IDE|MessageBar basic info 1`] = `
         aria-label="Close"
         aria-labelledby={undefined}
         aria-pressed={undefined}
-        className="ms-Button ms-Button--icon ms-MessageBar-dismissal dismissal-192"
+        className="ms-Button ms-Button--icon ms-MessageBar-dismissal dismissal-193"
         data-is-focusable={true}
         disabled={undefined}
         onClick={[Function]}
@@ -10020,7 +10020,7 @@ exports[`Storyshots IDE|MessageBar basic info 1`] = `
         >
           <i
             aria-hidden={true}
-            className="ms-Button-icon icon-193"
+            className="ms-Button-icon icon-194"
             data-icon-name="Clear"
             role="presentation"
           >
@@ -10039,7 +10039,7 @@ exports[`Storyshots IDE|MessageBar basic success 1`] = `
 >
   <div
     aria-live="polite"
-    className="ms-MessageBar ms-MessageBar--success ms-MessageBar-multiline root-194"
+    className="ms-MessageBar ms-MessageBar--success ms-MessageBar-multiline root-195"
   >
     <div
       className="ms-MessageBar-content content-118"
@@ -10049,7 +10049,7 @@ exports[`Storyshots IDE|MessageBar basic success 1`] = `
       >
         <i
           aria-hidden={true}
-          className="icon-196"
+          className="icon-197"
           data-icon-name="Completed"
           role="presentation"
         >
@@ -10057,7 +10057,7 @@ exports[`Storyshots IDE|MessageBar basic success 1`] = `
         </i>
       </div>
       <div
-        className="ms-MessageBar-text text-191"
+        className="ms-MessageBar-text text-192"
         id="MessageBar233"
       >
         <span
@@ -10072,7 +10072,7 @@ exports[`Storyshots IDE|MessageBar basic success 1`] = `
         aria-label="Close"
         aria-labelledby={undefined}
         aria-pressed={undefined}
-        className="ms-Button ms-Button--icon ms-MessageBar-dismissal dismissal-192"
+        className="ms-Button ms-Button--icon ms-MessageBar-dismissal dismissal-193"
         data-is-focusable={true}
         disabled={undefined}
         onClick={[Function]}
@@ -10088,7 +10088,7 @@ exports[`Storyshots IDE|MessageBar basic success 1`] = `
         >
           <i
             aria-hidden={true}
-            className="ms-Button-icon icon-193"
+            className="ms-Button-icon icon-194"
             data-icon-name="Clear"
             role="presentation"
           >
@@ -10107,7 +10107,7 @@ exports[`Storyshots IDE|MessageBar basic warning 1`] = `
 >
   <div
     aria-live="polite"
-    className="ms-MessageBar ms-MessageBar--warning ms-MessageBar-multiline root-197"
+    className="ms-MessageBar ms-MessageBar--warning ms-MessageBar-multiline root-198"
   >
     <div
       className="ms-MessageBar-content content-118"
@@ -10117,7 +10117,7 @@ exports[`Storyshots IDE|MessageBar basic warning 1`] = `
       >
         <i
           aria-hidden={true}
-          className="icon-199"
+          className="icon-200"
           data-icon-name="Info"
           role="presentation"
         >
@@ -10125,7 +10125,7 @@ exports[`Storyshots IDE|MessageBar basic warning 1`] = `
         </i>
       </div>
       <div
-        className="ms-MessageBar-text text-191"
+        className="ms-MessageBar-text text-192"
         id="MessageBar237"
       >
         <span
@@ -10140,7 +10140,7 @@ exports[`Storyshots IDE|MessageBar basic warning 1`] = `
         aria-label="Close"
         aria-labelledby={undefined}
         aria-pressed={undefined}
-        className="ms-Button ms-Button--icon ms-MessageBar-dismissal dismissal-192"
+        className="ms-Button ms-Button--icon ms-MessageBar-dismissal dismissal-193"
         data-is-focusable={true}
         disabled={undefined}
         onClick={[Function]}
@@ -10156,7 +10156,7 @@ exports[`Storyshots IDE|MessageBar basic warning 1`] = `
         >
           <i
             aria-hidden={true}
-            className="ms-Button-icon icon-193"
+            className="ms-Button-icon icon-194"
             data-icon-name="Clear"
             role="presentation"
           >
