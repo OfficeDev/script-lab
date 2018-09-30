@@ -17,9 +17,9 @@ const SettingsNotAppliedDialog = (props: IProps) => (
     onDismiss={props.onDismiss}
     dialogContentProps={{
       type: DialogType.largeHeader,
-      title: 'Oh no!',
+      title: 'Save changes?',
       subText:
-        "It looks like you made an edit to your settings that you didn't apply.Would you like to apply these changes ?",
+        "It looks like you made an edit to your settings that you didn't apply. Would you like to apply these changes?",
     }}
     modalProps={{ isBlocking: true }}
   >
