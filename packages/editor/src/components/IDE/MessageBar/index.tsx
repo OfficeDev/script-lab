@@ -5,6 +5,7 @@ import { IState as IMessageBarState } from '../../../store/messageBar/reducer'
 
 import { connect } from 'react-redux'
 import { messageBar } from '../../../store/actions'
+import { getMessageBarStyle } from './helpers'
 
 import './animations.css'
 
@@ -32,6 +33,7 @@ export const MessageBar = ({ messageBarProps, dismiss }: IProps) => (
       dismissButtonAriaLabel="Close"
       messageBarType={messageBarProps.style}
       onDismiss={dismiss}
+      styles={getMessageBarStyle(messageBarProps.style)}
     >
       {messageBarProps.text}
       {messageBarProps.link && (
