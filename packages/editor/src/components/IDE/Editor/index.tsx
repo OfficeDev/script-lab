@@ -27,7 +27,7 @@ import debounce from 'lodash/debounce'
 
 import { connect } from 'react-redux'
 import { withTheme } from 'styled-components'
-import { solutions, editor, settings } from '../../../store/actions'
+import actions from '../../../store/actions'
 import selectors from '../../../store/selectors'
 import { defaultSettings } from 'src/defaultSettings'
 
@@ -40,6 +40,8 @@ interface IEditorSettings {
   isMinimapEnabled: boolean
   isFoldingEnabled: boolean
   isPrettierEnabled: boolean
+  wordWrap: 'on' | 'off' | 'bounded' | 'wordWrapColumn'
+  wordWrapColumn: number
 }
 
 interface IPropsFromRedux {
@@ -61,6 +63,8 @@ const mapStateToProps = (state, ownProps: IProps): IPropsFromRedux => ({
     isMinimapEnabled: selectors.settings.getIsMinimapEnabled(state),
     isFoldingEnabled: selectors.settings.getIsFoldingEnabled(state),
     isPrettierEnabled: selectors.settings.getIsPrettierEnabled(state),
+    wordWrap: selectors.settings.getWordWrap(state),
+    wordWrapColumn: selectors.settings.getWordWrapColumn(state),
   },
 })
 
@@ -78,16 +82,16 @@ interface IActionsFromRedux {
 
 const mapDispatchToProps = (dispatch, ownProps: IProps): IActionsFromRedux => ({
   changeActiveFile: (fileId: string) =>
-    dispatch(editor.open({ solutionId: ownProps.activeSolution.id, fileId })),
+    dispatch(actions.editor.open({ solutionId: ownProps.activeSolution.id, fileId })),
   editFile: (
     solutionId: string,
     fileId: string,
     file: Partial<IEditableFileProperties>,
-  ) => dispatch(solutions.edit({ id: solutionId, fileId, file })),
-  openSettings: () => dispatch(settings.open()),
+  ) => dispatch(actions.solutions.edit({ id: solutionId, fileId, file })),
+  openSettings: () => dispatch(actions.settings.open()),
   editSettings: (currentSettings: IFile, newSettings: IFile) =>
-    dispatch(settings.editFile({ currentSettings, newSettings })),
-  signalEditorLoaded: () => dispatch(editor.signalHasLoaded()),
+    dispatch(actions.settings.editFile({ currentSettings, newSettings })),
+  signalEditorLoaded: () => dispatch(actions.editor.signalHasLoaded()),
 })
 
 export interface IProps extends IPropsFromRedux, IActionsFromRedux {
@@ -208,6 +212,8 @@ class Editor extends Component<IProps, IState> {
       lineHeight,
       isMinimapEnabled,
       isFoldingEnabled,
+      wordWrap,
+      wordWrapColumn,
     } = editorSettings
 
     return {
@@ -233,8 +239,9 @@ class Editor extends Component<IProps, IState> {
       folding: isFoldingEnabled,
       glyphMargin: false,
       fixedOverflowWidgets: true,
-      ariaLabel: 'todo',
-      wordWrap: 'bounded',
+      ariaLabel: 'editor',
+      wordWrap,
+      wordWrapColumn,
       readOnly:
         this.props.activeSolution.id === NULL_SOLUTION_ID ||
         this.props.activeFile.id === ABOUT_FILE_ID,

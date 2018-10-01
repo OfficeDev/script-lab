@@ -13,6 +13,8 @@ export const getMonacoTheme = (state: IState): 'vs' | 'vs-dark' | 'hc-black' => 
   }[state.settings.values.editor.theme]
 }
 
+export const get = (state: IState): ISettings => state.settings.values
+
 export const getFontSize = (state: IState): number =>
   state.settings.values.editor.font.size
 export const getFontFamily = (state: IState): string =>
@@ -28,3 +30,8 @@ export const getIsPrettierEnabled = (state: IState): boolean =>
   state.settings.values.editor.prettier
 
 export const getTabSize = (state: IState): number => state.settings.values.editor.tabSize
+
+export const getWordWrap = (state: IState): 'on' | 'off' | 'bounded' | 'wordWrapColumn' =>
+  state.settings.values.editor.wordWrap
+export const getWordWrapColumn = (state: IState): number =>
+  state.settings.values.editor.wordWrapColumn

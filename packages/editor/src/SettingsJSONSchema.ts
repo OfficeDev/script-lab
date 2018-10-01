@@ -1,18 +1,11 @@
 export const allowedSettings = {
   editor: {
     theme: ['dark', 'light', 'high-contrast'],
-    font: {
-      family: ['Menlo', 'Consolas', 'Courier New', 'Source Code Pro'],
-    },
-    linter: {
-      mode: ['warning', 'error', 'none'],
-    },
+    font: { family: ['Menlo', 'Consolas', 'Courier New', 'Source Code Pro'] },
+    linter: { mode: ['warning', 'error', 'none'] },
+    wordWrap: ['bounded', 'on', 'off', 'wordWrapColumn'],
   },
-  hostSpecific: {
-    officeOnline: {
-      openEditorInNewTab: ['prompt', 'always', 'never'],
-    },
-  },
+  hostSpecific: { officeOnline: { openEditorInNewTab: ['prompt', 'always', 'never'] } },
   defaultActions: {
     applySettings: ['prompt', 'immediate'],
     gistImport: ['prompt', 'open', 'copy', 'overwrite'],
@@ -101,6 +94,18 @@ export default {
               enum: allowedSettings.editor.linter.mode,
             },
           },
+        },
+        wordWrap: {
+          $id: '/properties/editor/properties/wordWrap',
+          type: 'string',
+          default: allowedSettings.editor.wordWrap[0],
+          enum: allowedSettings.editor.wordWrap,
+        },
+        wordWrapColumn: {
+          $id: '/properties/editor/properties/wordWrapColumn',
+          type: 'number',
+          default: 80,
+          examples: [60, 80, 100],
         },
       },
     },
