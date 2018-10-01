@@ -35,9 +35,7 @@ describe('settings merge', () => {
       editor: { theme: 'rainbows' },
     }
 
-    const expected = { ...current }
-
-    expect(merge(current, parsed, allowedSettings)).toEqual(expected)
+    expect(() => merge(current, parsed, allowedSettings)).toThrow()
   })
 
   test('more advanced unsupported setting', () => {
@@ -49,7 +47,7 @@ describe('settings merge', () => {
     const expected = { ...current }
     expected.editor.font.size = 72
 
-    expect(merge(current, parsed, allowedSettings)).toEqual(expected)
+    expect(() => merge(current, parsed, allowedSettings)).toThrow()
   })
 
   test('advanced nested', () => {

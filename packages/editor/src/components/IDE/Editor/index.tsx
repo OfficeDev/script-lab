@@ -1,10 +1,13 @@
 import React, { Component } from 'react'
 
-import debounce from 'lodash/debounce'
-
 import { MessageBar, MessageBarType } from 'office-ui-fabric-react/lib/MessageBar'
-import { Dialog, DialogType, DialogFooter } from 'office-ui-fabric-react/lib/Dialog'
-import { PrimaryButton, DefaultButton } from 'office-ui-fabric-react/lib/Button'
+import { DefaultButton } from 'office-ui-fabric-react/lib/Button'
+
+import Monaco from './Monaco'
+import Only from '../../Only'
+import SettingsNotAppliedDialog from './SettingsNotAppliedDialog'
+
+import { Layout } from './styles'
 
 import {
   SETTINGS_FILE_ID,
@@ -13,16 +16,20 @@ import {
   ABOUT_FILE_ID,
 } from '../../../constants'
 
-import Monaco from './Monaco'
-import Only from '../../Only'
-import { Layout } from './styles'
+import {
+  getModel,
+  setPosForModel,
+  getModelByIdIfExists,
+  removeModelFromCache,
+} from './Monaco/monaco-models'
 
-import { getModel, setPosForModel, getModelByIdIfExists } from './Monaco/monaco-models'
+import debounce from 'lodash/debounce'
 
 import { connect } from 'react-redux'
 import { withTheme } from 'styled-components'
-import { solutions, editor, settings } from '../../../store/actions'
+import actions from '../../../store/actions'
 import selectors from '../../../store/selectors'
+import { defaultSettings } from 'src/defaultSettings'
 
 interface IEditorSettings {
   monacoTheme: string
@@ -33,6 +40,8 @@ interface IEditorSettings {
   isMinimapEnabled: boolean
   isFoldingEnabled: boolean
   isPrettierEnabled: boolean
+  wordWrap: 'on' | 'off' | 'bounded' | 'wordWrapColumn'
+  wordWrapColumn: number
 }
 
 interface IPropsFromRedux {
@@ -54,6 +63,8 @@ const mapStateToProps = (state, ownProps: IProps): IPropsFromRedux => ({
     isMinimapEnabled: selectors.settings.getIsMinimapEnabled(state),
     isFoldingEnabled: selectors.settings.getIsFoldingEnabled(state),
     isPrettierEnabled: selectors.settings.getIsPrettierEnabled(state),
+    wordWrap: selectors.settings.getWordWrap(state),
+    wordWrapColumn: selectors.settings.getWordWrapColumn(state),
   },
 })
 
@@ -65,19 +76,22 @@ interface IActionsFromRedux {
     file: Partial<IEditableFileProperties>,
   ) => void
   openSettings: () => void
+  editSettings: (currentSettings: IFile, newSettings: IFile) => void
   signalEditorLoaded: () => void
 }
 
 const mapDispatchToProps = (dispatch, ownProps: IProps): IActionsFromRedux => ({
   changeActiveFile: (fileId: string) =>
-    dispatch(editor.open({ solutionId: ownProps.activeSolution.id, fileId })),
+    dispatch(actions.editor.open({ solutionId: ownProps.activeSolution.id, fileId })),
   editFile: (
     solutionId: string,
     fileId: string,
     file: Partial<IEditableFileProperties>,
-  ) => dispatch(solutions.edit({ id: solutionId, fileId, file })),
-  openSettings: () => dispatch(settings.open()),
-  signalEditorLoaded: () => dispatch(editor.signalHasLoaded()),
+  ) => dispatch(actions.solutions.edit({ id: solutionId, fileId, file })),
+  openSettings: () => dispatch(actions.settings.open()),
+  editSettings: (currentSettings: IFile, newSettings: IFile) =>
+    dispatch(actions.settings.editFile({ currentSettings, newSettings })),
+  signalEditorLoaded: () => dispatch(actions.editor.signalHasLoaded()),
 })
 
 export interface IProps extends IPropsFromRedux, IActionsFromRedux {
@@ -198,6 +212,8 @@ class Editor extends Component<IProps, IState> {
       lineHeight,
       isMinimapEnabled,
       isFoldingEnabled,
+      wordWrap,
+      wordWrapColumn,
     } = editorSettings
 
     return {
@@ -223,8 +239,9 @@ class Editor extends Component<IProps, IState> {
       folding: isFoldingEnabled,
       glyphMargin: false,
       fixedOverflowWidgets: true,
-      ariaLabel: 'todo',
-      wordWrap: 'bounded',
+      ariaLabel: 'editor',
+      wordWrap,
+      wordWrapColumn,
       readOnly:
         this.props.activeSolution.id === NULL_SOLUTION_ID ||
         this.props.activeFile.id === ABOUT_FILE_ID,
@@ -255,7 +272,7 @@ class Editor extends Component<IProps, IState> {
 
   // settings related methods
   openSettings = () => {
-    this.props.changeActiveFile(SETTINGS_FILE_ID)
+    this.props.openSettings()
     this.closeSaveSettingsDialog()
   }
 
@@ -265,8 +282,19 @@ class Editor extends Component<IProps, IState> {
   applySettingsUpdate = () => {
     const copy = this.props.settingsFile
     copy.content = getModel(this.monaco, copy).model.getValue()
-    this.props.editFile(SETTINGS_SOLUTION_ID, SETTINGS_FILE_ID, copy)
+    this.props.editSettings(this.props.settingsFile, copy)
     this.closeSaveSettingsDialog()
+  }
+
+  resetSettings = () => {
+    const copy = this.props.settingsFile
+    copy.content = JSON.stringify(
+      defaultSettings,
+      null,
+      this.props.editorSettings.tabSize,
+    )
+    this.props.editSettings(this.props.settingsFile, copy)
+    getModel(this.monaco, this.props.settingsFile).model.setValue(copy.content)
   }
 
   cancelSettingsUpdate = () => {
@@ -306,7 +334,7 @@ class Editor extends Component<IProps, IState> {
                   Apply
                 </DefaultButton>
                 <DefaultButton onClick={this.cancelSettingsUpdate}>Cancel</DefaultButton>
-                <DefaultButton>Reset</DefaultButton>
+                <DefaultButton onClick={this.resetSettings}>Reset</DefaultButton>
               </div>
             }
             isMultiline={false}
@@ -317,27 +345,13 @@ class Editor extends Component<IProps, IState> {
           </MessageBar>
         </Only>
 
-        <Dialog
-          isDarkOverlay={true}
-          hidden={!this.state.isSaveSettingsDialogVisible}
+        <SettingsNotAppliedDialog
+          isHidden={!this.state.isSaveSettingsDialogVisible}
           onDismiss={this.closeSaveSettingsDialog}
-          dialogContentProps={{
-            type: DialogType.largeHeader,
-            title: 'Oh no!',
-            subText:
-              "It looks like you made an edit to your settings that you didn't apply.Would you like to apply these changes ?",
-          }}
-          modalProps={{ isBlocking: true }}
-        >
-          {getModelByIdIfExists(this.monaco, SETTINGS_FILE_ID)
-            ? getModelByIdIfExists(this.monaco, SETTINGS_FILE_ID)!.model.getValue()
-            : 'no model ;('}
-          <DialogFooter>
-            <PrimaryButton text="Apply" onClick={this.applySettingsUpdate} />
-            <DefaultButton text="Cancel" onClick={this.cancelSettingsUpdate} />
-            <DefaultButton text="Open" onClick={this.openSettings} />
-          </DialogFooter>
-        </Dialog>
+          apply={this.applySettingsUpdate}
+          open={this.openSettings}
+          cancel={this.cancelSettingsUpdate}
+        />
 
         <Layout style={{ backgroundColor: theme.neutralDark }}>
           <Monaco

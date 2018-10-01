@@ -10,12 +10,14 @@ import { environmentName } from './environment'
 export const defaultSettings: ISettings = {
   editor: {
     theme: 'dark',
-    font: { family: 'Menlo', size: 18, lineHeight: 24 },
+    font: { family: 'Menlo', size: 16, lineHeight: 24 },
     minimap: false,
     tabSize: 2,
     prettier: true,
     folding: true,
     linter: { mode: 'warning' },
+    wordWrap: 'bounded',
+    wordWrapColumn: 80,
   },
   hostSpecific: { officeOnline: { openEditorInNewTab: 'prompt' } },
   defaultActions: { applySettings: 'prompt', gistImport: 'prompt' },

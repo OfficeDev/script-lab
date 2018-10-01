@@ -14,6 +14,8 @@ interface IEditorSettings {
   linter: {
     mode: string
   }
+  wordWrap: 'on' | 'off' | 'bounded' | 'wordWrapColumn'
+  wordWrapColumn: number
 }
 
 interface IHostSpecificSettings {

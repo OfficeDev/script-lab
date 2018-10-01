@@ -5,7 +5,7 @@
       "name": "Editor",
       "type": "chrome",
       "request": "launch",
-      "url": "http://localhost:3000",
+      "url": "https://localhost:3000",
       "webRoot": "${workspaceRoot}/packages/editor/src",
       "userDataDir": "${workspaceRoot}/.vscode/chrome",
       "sourceMapPathOverrides": {
@@ -16,7 +16,7 @@
       "name": "Runner",
       "type": "chrome",
       "request": "launch",
-      "url": "http://localhost:3000",
+      "url": "https://localhost:3200",
       "webRoot": "${workspaceRoot}/packages/runner/src",
       "userDataDir": "${workspaceRoot}/.vscode/chrome",
       "sourceMapPathOverrides": {
