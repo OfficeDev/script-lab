@@ -23,44 +23,58 @@
   <link rel="stylesheet" href="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-core/9.6.0/css/fabric.min.css">
 
   <title>Script Lab React</title>
+  <style>
+    *,
+    *::before,
+    *::after {
+      padding: 0;
+      margin: 0;
+      box-sizing: inherit;
+    }
+  </style>
 </head>
 
 <body class="ms-Fabric">
+  <div style="background-color: #212121; height: 100vh; width: 100vw; display: flex; align-items: center; justify-content: center;">
+    <span id="message" class="ms-font-xl" style="color: white; text-align: center;">Loading...</span>
+  </div>
   <noscript>
     You need to enable JavaScript to run this app.
   </noscript>
   <script>
     var snippet = JSON.parse(localStorage.getItem('activeSnippet'));
+    if (snippet) {
+      const state = {
+        snippet: snippet,
+        displayLanguage: 'en-us',
+        isInsideOfficeApp: true,
+        returnUrl: window.location.origin + '/',
+        refreshUrl: window.location.origin + '/run.html'
+      };
 
-    const state = {
-      snippet: snippet,
-      displayLanguage: 'en-us',
-      isInsideOfficeApp: true,
-      returnUrl: window.location.origin + '/',
-      refreshUrl: window.location.origin + '/run.html'
-    };
+      const data = JSON.stringify(state);
+      const params = { data: data, isTrustedSnippet: true }
 
-    const data = JSON.stringify(state);
-    const params = { data: data, isTrustedSnippet: true }
+      var path = 'https://bornholm-runner-insiders.azurewebsites.net/compile/page'
+      let form = document.createElement('form');
+      form.setAttribute('method', 'post');
+      form.setAttribute('action', path);
 
-    var path = 'https://bornholm-runner-insiders.azurewebsites.net/compile/page'
-    let form = document.createElement('form');
-    form.setAttribute('method', 'post');
-    form.setAttribute('action', path);
-
-    for (let key in params) {
-      if (params.hasOwnProperty(key)) {
-        let hiddenField = document.createElement('input');
-        hiddenField.setAttribute('type', 'hidden');
-        hiddenField.setAttribute('name', key);
-        hiddenField.setAttribute('value', params[key]);
-        form.appendChild(hiddenField);
+      for (let key in params) {
+        if (params.hasOwnProperty(key)) {
+          let hiddenField = document.createElement('input');
+          hiddenField.setAttribute('type', 'hidden');
+          hiddenField.setAttribute('name', key);
+          hiddenField.setAttribute('value', params[key]);
+          form.appendChild(hiddenField);
+        }
       }
+
+      document.body.appendChild(form);
+      form.submit();
+    } else {
+      document.getElementById('message').innerHTML = "Error: No snippet found.<br>Please open the editor to create a snippet."
     }
-
-    document.body.appendChild(form);
-    form.submit();
-
   </script>
 </body>
 
