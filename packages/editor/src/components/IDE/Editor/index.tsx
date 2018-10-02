@@ -162,8 +162,12 @@ class Editor extends Component<IProps, IState> {
         }
       })
 
-      // For some unknown reason, the editor.getAction('editor.action.format').run() did not work at this point in the code
-      if (this.props.editorSettings.isPrettierEnabled) {
+      if (
+        this.props.editorSettings.isPrettierEnabled &&
+        newFile.id !== SETTINGS_FILE_ID
+      ) {
+        // Don't run prettier on the settings unless they manually do so
+        // this was causing false notifications of settings changing
         this.editor.trigger('anyString', 'editor.action.formatDocument', '')
       }
     }
@@ -245,6 +249,7 @@ class Editor extends Component<IProps, IState> {
       readOnly:
         this.props.activeSolution.id === NULL_SOLUTION_ID ||
         this.props.activeFile.id === ABOUT_FILE_ID,
+      lineNumbers: this.props.activeFile.id !== ABOUT_FILE_ID ? 'on' : 'off',
     }
   }
 
