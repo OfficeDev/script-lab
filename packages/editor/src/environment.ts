@@ -36,3 +36,11 @@ export function getCurrentEnv(): 'local' | 'alpha' | 'beta' | 'production' {
     'https://script-lab-react.azurewebsites.net': 'production',
   }[window.location.origin]
 }
+
+export function getPlatform(): 'PC' | 'MAC' | 'WAC' {
+  return {
+    [Office.PlatformType.Mac]: 'MAC',
+    [Office.PlatformType.PC]: 'PC',
+    [Office.PlatformType.OfficeOnline]: 'WAC',
+  }[Office.context.platform || Office.PlatformType.OfficeOnline] as 'PC' | 'MAC' | 'WAC'
+}
