@@ -164,7 +164,11 @@ class Editor extends Component<IProps, IState> {
 
       // For some unknown reason, the editor.getAction('editor.action.format').run() did not work at this point in the code
       if (this.props.editorSettings.isPrettierEnabled) {
-        this.editor.trigger('anyString', 'editor.action.formatDocument', '')
+        this.editor.trigger(
+          'editor' /* source, unused */,
+          'editor.action.formatDocument',
+          '',
+        )
       }
     }
   }
@@ -189,12 +193,13 @@ class Editor extends Component<IProps, IState> {
     )
 
     editor.addAction({
-      id: 'trigger-suggest' /* Unique id for action */,
+      id: 'trigger-suggest',
       label: 'Trigger suggestion',
       keybindings: [monaco.KeyCode.F2],
       contextMenuGroupId: 'navigation',
       contextMenuOrder: 0 /* put at top of context menu */,
-      run: () => editor.trigger('anyString', 'editor.action.triggerSuggest', {}),
+      run: () =>
+        editor.trigger('editor' /* source, unused */, 'editor.action.triggerSuggest', {}),
     })
 
     editor.addCommand(
