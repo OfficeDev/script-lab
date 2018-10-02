@@ -8620,18 +8620,7 @@ exports[`Storyshots Custom Functions|Welcome basic 1`] = `
 
 exports[`Storyshots IDE|Footer basic 1`] = `
 .c0 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: end;
-  -webkit-justify-content: flex-end;
-  -ms-flex-pack: end;
-  justify-content: flex-end;
+  overflow: hidden;
   height: 2rem;
   font-size: 1.2rem;
   background-color: #217346;
@@ -8641,115 +8630,246 @@ exports[`Storyshots IDE|Footer basic 1`] = `
 <footer
   className="c0"
 >
-  <button
-    aria-describedby={undefined}
-    aria-disabled={undefined}
-    aria-label={undefined}
-    aria-labelledby={undefined}
-    aria-pressed={undefined}
-    className="ms-Button ms-Button--primary root-170"
-    data-is-focusable={true}
-    disabled={undefined}
-    onClick={[Function]}
-    onKeyDown={[Function]}
-    onKeyPress={[Function]}
-    onKeyUp={[Function]}
-    onMouseDown={[Function]}
-    onMouseUp={[Function]}
-    type="button"
+  <div
+    className={undefined}
+    style={
+      Object {
+        "display": "block",
+        "position": "relative",
+      }
+    }
   >
     <div
-      className="ms-Button-flexContainer flexContainer-82"
+      data-automation-id="visibleContent"
+      style={
+        Object {
+          "position": "fixed",
+          "visibility": "hidden",
+        }
+      }
     >
       <div
-        className="ms-Button-textContainer textContainer-83"
+        aria-describedby={undefined}
+        aria-label="Use left and right arrow keys to navigate between commands"
+        aria-labelledby={undefined}
+        className="ms-FocusZone ms-CommandBar root-170"
+        data-focuszone-id="FocusZone142"
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onMouseDownCapture={[Function]}
+        role="menubar"
       >
         <div
-          className="ms-Button-label label-172"
-          id="id__142"
+          className="ms-OverflowSet ms-CommandBar-primaryCommand primarySet-148"
+          role="presentation"
+        />
+        <div
+          className="ms-OverflowSet ms-CommandBar-secondaryCommand secondarySet-171"
+          role="presentation"
         >
-          TypeScript
+          <div
+            className="ms-OverflowSet-item item-149"
+          >
+            <button
+              aria-describedby={undefined}
+              aria-disabled={undefined}
+              aria-label={undefined}
+              aria-labelledby={undefined}
+              aria-pressed={undefined}
+              className="ms-Button ms-Button--commandBar ms-CommandBarItem-link root-151"
+              data-is-focusable={true}
+              disabled={undefined}
+              hidden={false}
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              onKeyPress={[Function]}
+              onKeyUp={[Function]}
+              onMouseDown={[Function]}
+              onMouseUp={[Function]}
+              role="menuitem"
+              style={
+                Object {
+                  "fontSize": "1.2rem",
+                }
+              }
+              type="button"
+            >
+              <div
+                className="ms-Button-flexContainer flexContainer-82"
+              >
+                <div
+                  className="ms-Button-textContainer textContainer-83"
+                >
+                  <div
+                    className="ms-Button-label label-153"
+                    id="id__143"
+                  >
+                    TypeScript
+                  </div>
+                </div>
+              </div>
+            </button>
+          </div>
+          <div
+            className="ms-OverflowSet-item item-149"
+          >
+            <button
+              aria-describedby={undefined}
+              aria-disabled={undefined}
+              aria-label="Cycle editor theme"
+              aria-labelledby={undefined}
+              aria-pressed={undefined}
+              className="ms-Button ms-Button--commandBar ms-CommandBarItem-link root-151"
+              data-is-focusable={true}
+              disabled={undefined}
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              onKeyPress={[Function]}
+              onKeyUp={[Function]}
+              onMouseDown={[Function]}
+              onMouseUp={[Function]}
+              role="menuitem"
+              style={
+                Object {
+                  "fontSize": "1.2rem",
+                }
+              }
+              type="button"
+            >
+              <div
+                className="ms-Button-flexContainer flexContainer-82"
+              >
+                <i
+                  aria-hidden={true}
+                  className="ms-Button-icon icon-172"
+                  data-icon-name="Color"
+                  role="presentation"
+                >
+                  
+                </i>
+                <div
+                  className="ms-Button-textContainer textContainer-83"
+                >
+                  <div
+                    className="ms-Button-label label-153"
+                    id="id__146"
+                  >
+                    Dark
+                  </div>
+                </div>
+              </div>
+            </button>
+          </div>
+          <div
+            className="ms-OverflowSet-item item-149"
+          >
+            <div
+              aria-describedby={undefined}
+              className="ms-TooltipHost host_a3f87333"
+              onBlurCapture={[Function]}
+              onFocusCapture={[Function]}
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
+            >
+              <a
+                aria-describedby={undefined}
+                aria-disabled={undefined}
+                aria-label="Report an issue"
+                aria-labelledby={undefined}
+                aria-pressed={undefined}
+                className="ms-Button ms-Button--commandBar ms-CommandBarItem-link root-151"
+                data-is-focusable={true}
+                disabled={undefined}
+                hidden={false}
+                href="https://github.com/OfficeDev/script-lab-react/issues/new"
+                onClick={[Function]}
+                onKeyDown={[Function]}
+                onKeyPress={[Function]}
+                onKeyUp={[Function]}
+                onMouseDown={[Function]}
+                onMouseUp={[Function]}
+                role="menuitem"
+                style={
+                  Object {
+                    "fontSize": "1.2rem",
+                  }
+                }
+                target="_blank"
+              >
+                <div
+                  className="ms-Button-flexContainer flexContainer-82"
+                >
+                  <i
+                    aria-hidden={true}
+                    className="ms-Button-icon icon-173"
+                    data-icon-name="Emoji2"
+                    role="presentation"
+                  >
+                    
+                  </i>
+                </div>
+              </a>
+            </div>
+          </div>
+          <div
+            className="ms-OverflowSet-item item-149"
+          >
+            <div
+              aria-describedby={undefined}
+              className="ms-TooltipHost host_a3f87333"
+              onBlurCapture={[Function]}
+              onFocusCapture={[Function]}
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
+            >
+              <button
+                aria-describedby={undefined}
+                aria-disabled={undefined}
+                aria-label="Settings"
+                aria-labelledby={undefined}
+                aria-pressed={undefined}
+                className="ms-Button ms-Button--commandBar ms-CommandBarItem-link root-151"
+                data-is-focusable={true}
+                disabled={undefined}
+                onClick={[Function]}
+                onKeyDown={[Function]}
+                onKeyPress={[Function]}
+                onKeyUp={[Function]}
+                onMouseDown={[Function]}
+                onMouseUp={[Function]}
+                role="menuitem"
+                style={
+                  Object {
+                    "fontSize": "1.2rem",
+                  }
+                }
+                type="button"
+              >
+                <div
+                  className="ms-Button-flexContainer flexContainer-82"
+                >
+                  <i
+                    aria-hidden={true}
+                    className="ms-Button-icon icon-174"
+                    data-icon-name="Settings"
+                    role="presentation"
+                  >
+                    
+                  </i>
+                </div>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </button>
-  <a
-    aria-describedby={undefined}
-    aria-disabled={undefined}
-    aria-label="Report an issue"
-    aria-labelledby={undefined}
-    aria-pressed={undefined}
-    className="ms-Button ms-Button--icon root-173"
-    data-is-focusable={true}
-    disabled={undefined}
-    href="https://github.com/OfficeDev/script-lab-react/issues/new"
-    onClick={[Function]}
-    onKeyDown={[Function]}
-    onKeyPress={[Function]}
-    onKeyUp={[Function]}
-    onMouseDown={[Function]}
-    onMouseUp={[Function]}
-  >
-    <div
-      className="ms-Button-flexContainer flexContainer-82"
-    >
-      <i
-        aria-hidden={true}
-        className="ms-Button-icon icon-176"
-        data-icon-name="Bug"
-        role="presentation"
-      >
-        
-      </i>
-    </div>
-  </a>
-  <button
-    aria-describedby={undefined}
-    aria-disabled={undefined}
-    aria-label="Settings"
-    aria-labelledby={undefined}
-    aria-pressed={undefined}
-    className="ms-Button ms-Button--icon root-173"
-    data-is-focusable={true}
-    disabled={undefined}
-    onClick={[Function]}
-    onKeyDown={[Function]}
-    onKeyPress={[Function]}
-    onKeyUp={[Function]}
-    onMouseDown={[Function]}
-    onMouseUp={[Function]}
-    type="button"
-  >
-    <div
-      className="ms-Button-flexContainer flexContainer-82"
-    >
-      <i
-        aria-hidden={true}
-        className="ms-Button-icon icon-177"
-        data-icon-name="Settings"
-        role="presentation"
-      >
-        
-      </i>
-    </div>
-  </button>
+  </div>
 </footer>
 `;
 
 exports[`Storyshots IDE|Footer isWeb 1`] = `
 .c0 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: end;
-  -webkit-justify-content: flex-end;
-  -ms-flex-pack: end;
-  justify-content: flex-end;
+  overflow: hidden;
   height: 2rem;
   font-size: 1.2rem;
   background-color: #217346;
@@ -8759,158 +8879,301 @@ exports[`Storyshots IDE|Footer isWeb 1`] = `
 <footer
   className="c0"
 >
-  <button
-    aria-describedby={undefined}
-    aria-disabled={undefined}
-    aria-expanded={false}
-    aria-haspopup={true}
-    aria-label={undefined}
-    aria-labelledby={undefined}
-    aria-owns={null}
-    aria-pressed={undefined}
-    className="ms-Button ms-Button--primary root-170"
-    data-is-focusable={true}
-    disabled={undefined}
-    onClick={[Function]}
-    onKeyDown={[Function]}
-    onKeyPress={[Function]}
-    onKeyUp={[Function]}
-    onMouseDown={[Function]}
-    onMouseUp={[Function]}
-    type="button"
+  <div
+    className={undefined}
+    style={
+      Object {
+        "display": "block",
+        "position": "relative",
+      }
+    }
   >
     <div
-      className="ms-Button-flexContainer flexContainer-82"
+      data-automation-id="visibleContent"
+      style={
+        Object {
+          "position": "fixed",
+          "visibility": "hidden",
+        }
+      }
     >
       <div
-        className="ms-Button-textContainer textContainer-83"
+        aria-describedby={undefined}
+        aria-label="Use left and right arrow keys to navigate between commands"
+        aria-labelledby={undefined}
+        className="ms-FocusZone ms-CommandBar root-170"
+        data-focuszone-id="FocusZone157"
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onMouseDownCapture={[Function]}
+        role="menubar"
       >
         <div
-          className="ms-Button-label label-172"
-          id="id__151"
+          className="ms-OverflowSet ms-CommandBar-primaryCommand primarySet-148"
+          role="presentation"
         >
-          EXCEL
+          <div
+            className="ms-OverflowSet-item item-149"
+          >
+            <button
+              aria-describedby={undefined}
+              aria-disabled={undefined}
+              aria-expanded={false}
+              aria-haspopup={true}
+              aria-label={undefined}
+              aria-labelledby={undefined}
+              aria-owns={null}
+              aria-pressed={undefined}
+              className="ms-Button ms-Button--commandBar ms-CommandBarItem-link root-151"
+              data-is-focusable={true}
+              disabled={undefined}
+              hidden={false}
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              onKeyPress={[Function]}
+              onKeyUp={[Function]}
+              onMouseDown={[Function]}
+              onMouseUp={[Function]}
+              role="menuitem"
+              style={
+                Object {
+                  "fontSize": "1.2rem",
+                }
+              }
+              type="button"
+            >
+              <div
+                className="ms-Button-flexContainer flexContainer-82"
+              >
+                <div
+                  className="ms-Button-textContainer textContainer-83"
+                >
+                  <div
+                    className="ms-Button-label label-153"
+                    id="id__158"
+                  >
+                    EXCEL
+                  </div>
+                </div>
+                <i
+                  aria-hidden={true}
+                  className="ms-Button-menuIcon menuIcon-175"
+                  data-icon-name="ChevronDown"
+                  role="presentation"
+                >
+                  
+                </i>
+              </div>
+            </button>
+          </div>
         </div>
-      </div>
-      <i
-        aria-hidden={true}
-        className="ms-Button-menuIcon menuIcon-178"
-        data-icon-name="ChevronDown"
-        role="presentation"
-      >
-        
-      </i>
-    </div>
-  </button>
-  <button
-    aria-describedby={undefined}
-    aria-disabled={undefined}
-    aria-label={undefined}
-    aria-labelledby={undefined}
-    aria-pressed={undefined}
-    className="ms-Button ms-Button--primary root-170"
-    data-is-focusable={true}
-    disabled={undefined}
-    onClick={[Function]}
-    onKeyDown={[Function]}
-    onKeyPress={[Function]}
-    onKeyUp={[Function]}
-    onMouseDown={[Function]}
-    onMouseUp={[Function]}
-    type="button"
-  >
-    <div
-      className="ms-Button-flexContainer flexContainer-82"
-    >
-      <div
-        className="ms-Button-textContainer textContainer-83"
-      >
         <div
-          className="ms-Button-label label-172"
-          id="id__154"
+          className="ms-OverflowSet ms-CommandBar-secondaryCommand secondarySet-171"
+          role="presentation"
         >
-          TypeScript
+          <div
+            className="ms-OverflowSet-item item-149"
+          >
+            <button
+              aria-describedby={undefined}
+              aria-disabled={undefined}
+              aria-label={undefined}
+              aria-labelledby={undefined}
+              aria-pressed={undefined}
+              className="ms-Button ms-Button--commandBar ms-CommandBarItem-link root-151"
+              data-is-focusable={true}
+              disabled={undefined}
+              hidden={false}
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              onKeyPress={[Function]}
+              onKeyUp={[Function]}
+              onMouseDown={[Function]}
+              onMouseUp={[Function]}
+              role="menuitem"
+              style={
+                Object {
+                  "fontSize": "1.2rem",
+                }
+              }
+              type="button"
+            >
+              <div
+                className="ms-Button-flexContainer flexContainer-82"
+              >
+                <div
+                  className="ms-Button-textContainer textContainer-83"
+                >
+                  <div
+                    className="ms-Button-label label-153"
+                    id="id__161"
+                  >
+                    TypeScript
+                  </div>
+                </div>
+              </div>
+            </button>
+          </div>
+          <div
+            className="ms-OverflowSet-item item-149"
+          >
+            <button
+              aria-describedby={undefined}
+              aria-disabled={undefined}
+              aria-label="Cycle editor theme"
+              aria-labelledby={undefined}
+              aria-pressed={undefined}
+              className="ms-Button ms-Button--commandBar ms-CommandBarItem-link root-151"
+              data-is-focusable={true}
+              disabled={undefined}
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              onKeyPress={[Function]}
+              onKeyUp={[Function]}
+              onMouseDown={[Function]}
+              onMouseUp={[Function]}
+              role="menuitem"
+              style={
+                Object {
+                  "fontSize": "1.2rem",
+                }
+              }
+              type="button"
+            >
+              <div
+                className="ms-Button-flexContainer flexContainer-82"
+              >
+                <i
+                  aria-hidden={true}
+                  className="ms-Button-icon icon-172"
+                  data-icon-name="Color"
+                  role="presentation"
+                >
+                  
+                </i>
+                <div
+                  className="ms-Button-textContainer textContainer-83"
+                >
+                  <div
+                    className="ms-Button-label label-153"
+                    id="id__164"
+                  >
+                    Dark
+                  </div>
+                </div>
+              </div>
+            </button>
+          </div>
+          <div
+            className="ms-OverflowSet-item item-149"
+          >
+            <div
+              aria-describedby={undefined}
+              className="ms-TooltipHost host_a3f87333"
+              onBlurCapture={[Function]}
+              onFocusCapture={[Function]}
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
+            >
+              <a
+                aria-describedby={undefined}
+                aria-disabled={undefined}
+                aria-label="Report an issue"
+                aria-labelledby={undefined}
+                aria-pressed={undefined}
+                className="ms-Button ms-Button--commandBar ms-CommandBarItem-link root-151"
+                data-is-focusable={true}
+                disabled={undefined}
+                hidden={false}
+                href="https://github.com/OfficeDev/script-lab-react/issues/new"
+                onClick={[Function]}
+                onKeyDown={[Function]}
+                onKeyPress={[Function]}
+                onKeyUp={[Function]}
+                onMouseDown={[Function]}
+                onMouseUp={[Function]}
+                role="menuitem"
+                style={
+                  Object {
+                    "fontSize": "1.2rem",
+                  }
+                }
+                target="_blank"
+              >
+                <div
+                  className="ms-Button-flexContainer flexContainer-82"
+                >
+                  <i
+                    aria-hidden={true}
+                    className="ms-Button-icon icon-173"
+                    data-icon-name="Emoji2"
+                    role="presentation"
+                  >
+                    
+                  </i>
+                </div>
+              </a>
+            </div>
+          </div>
+          <div
+            className="ms-OverflowSet-item item-149"
+          >
+            <div
+              aria-describedby={undefined}
+              className="ms-TooltipHost host_a3f87333"
+              onBlurCapture={[Function]}
+              onFocusCapture={[Function]}
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
+            >
+              <button
+                aria-describedby={undefined}
+                aria-disabled={undefined}
+                aria-label="Settings"
+                aria-labelledby={undefined}
+                aria-pressed={undefined}
+                className="ms-Button ms-Button--commandBar ms-CommandBarItem-link root-151"
+                data-is-focusable={true}
+                disabled={undefined}
+                onClick={[Function]}
+                onKeyDown={[Function]}
+                onKeyPress={[Function]}
+                onKeyUp={[Function]}
+                onMouseDown={[Function]}
+                onMouseUp={[Function]}
+                role="menuitem"
+                style={
+                  Object {
+                    "fontSize": "1.2rem",
+                  }
+                }
+                type="button"
+              >
+                <div
+                  className="ms-Button-flexContainer flexContainer-82"
+                >
+                  <i
+                    aria-hidden={true}
+                    className="ms-Button-icon icon-174"
+                    data-icon-name="Settings"
+                    role="presentation"
+                  >
+                    
+                  </i>
+                </div>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </button>
-  <a
-    aria-describedby={undefined}
-    aria-disabled={undefined}
-    aria-label="Report an issue"
-    aria-labelledby={undefined}
-    aria-pressed={undefined}
-    className="ms-Button ms-Button--icon root-173"
-    data-is-focusable={true}
-    disabled={undefined}
-    href="https://github.com/OfficeDev/script-lab-react/issues/new"
-    onClick={[Function]}
-    onKeyDown={[Function]}
-    onKeyPress={[Function]}
-    onKeyUp={[Function]}
-    onMouseDown={[Function]}
-    onMouseUp={[Function]}
-  >
-    <div
-      className="ms-Button-flexContainer flexContainer-82"
-    >
-      <i
-        aria-hidden={true}
-        className="ms-Button-icon icon-176"
-        data-icon-name="Bug"
-        role="presentation"
-      >
-        
-      </i>
-    </div>
-  </a>
-  <button
-    aria-describedby={undefined}
-    aria-disabled={undefined}
-    aria-label="Settings"
-    aria-labelledby={undefined}
-    aria-pressed={undefined}
-    className="ms-Button ms-Button--icon root-173"
-    data-is-focusable={true}
-    disabled={undefined}
-    onClick={[Function]}
-    onKeyDown={[Function]}
-    onKeyPress={[Function]}
-    onKeyUp={[Function]}
-    onMouseDown={[Function]}
-    onMouseUp={[Function]}
-    type="button"
-  >
-    <div
-      className="ms-Button-flexContainer flexContainer-82"
-    >
-      <i
-        aria-hidden={true}
-        className="ms-Button-icon icon-177"
-        data-icon-name="Settings"
-        role="presentation"
-      >
-        
-      </i>
-    </div>
-  </button>
+  </div>
 </footer>
 `;
 
 exports[`Storyshots IDE|Footer with Custom Function Solutions 1`] = `
 .c0 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: end;
-  -webkit-justify-content: flex-end;
-  -ms-flex-pack: end;
-  justify-content: flex-end;
+  overflow: hidden;
   height: 2rem;
   font-size: 1.2rem;
   background-color: #217346;
@@ -8920,130 +9183,284 @@ exports[`Storyshots IDE|Footer with Custom Function Solutions 1`] = `
 <footer
   className="c0"
 >
-  <button
-    aria-describedby={undefined}
-    aria-disabled={undefined}
-    aria-label={undefined}
-    aria-labelledby={undefined}
-    aria-pressed={undefined}
-    className="ms-Button ms-Button--primary root-170"
-    data-is-focusable={true}
-    disabled={undefined}
-    onClick={[Function]}
-    onKeyDown={[Function]}
-    onKeyPress={[Function]}
-    onKeyUp={[Function]}
-    onMouseDown={[Function]}
-    onMouseUp={[Function]}
-    type="button"
+  <div
+    className={undefined}
+    style={
+      Object {
+        "display": "block",
+        "position": "relative",
+      }
+    }
   >
     <div
-      className="ms-Button-flexContainer flexContainer-82"
+      data-automation-id="visibleContent"
+      style={
+        Object {
+          "position": "fixed",
+          "visibility": "hidden",
+        }
+      }
     >
       <div
-        className="ms-Button-textContainer textContainer-83"
+        aria-describedby={undefined}
+        aria-label="Use left and right arrow keys to navigate between commands"
+        aria-labelledby={undefined}
+        className="ms-FocusZone ms-CommandBar root-170"
+        data-focuszone-id="FocusZone175"
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onMouseDownCapture={[Function]}
+        role="menubar"
       >
         <div
-          className="ms-Button-label label-172"
-          id="id__163"
+          className="ms-OverflowSet ms-CommandBar-primaryCommand primarySet-148"
+          role="presentation"
         >
-          Custom Functions Dashboard
+          <div
+            className="ms-OverflowSet-item item-149"
+          >
+            <button
+              aria-describedby={undefined}
+              aria-disabled={undefined}
+              aria-label={undefined}
+              aria-labelledby={undefined}
+              aria-pressed={undefined}
+              className="ms-Button ms-Button--commandBar ms-CommandBarItem-link root-151"
+              data-is-focusable={true}
+              disabled={undefined}
+              hidden={false}
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              onKeyPress={[Function]}
+              onKeyUp={[Function]}
+              onMouseDown={[Function]}
+              onMouseUp={[Function]}
+              role="menuitem"
+              style={
+                Object {
+                  "fontSize": "1.2rem",
+                }
+              }
+              type="button"
+            >
+              <div
+                className="ms-Button-flexContainer flexContainer-82"
+              >
+                <div
+                  className="ms-Button-textContainer textContainer-83"
+                >
+                  <div
+                    className="ms-Button-label label-153"
+                    id="id__176"
+                  >
+                    Custom Functions Dashboard
+                  </div>
+                </div>
+              </div>
+            </button>
+          </div>
+        </div>
+        <div
+          className="ms-OverflowSet ms-CommandBar-secondaryCommand secondarySet-171"
+          role="presentation"
+        >
+          <div
+            className="ms-OverflowSet-item item-149"
+          >
+            <button
+              aria-describedby={undefined}
+              aria-disabled={undefined}
+              aria-label={undefined}
+              aria-labelledby={undefined}
+              aria-pressed={undefined}
+              className="ms-Button ms-Button--commandBar ms-CommandBarItem-link root-151"
+              data-is-focusable={true}
+              disabled={undefined}
+              hidden={false}
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              onKeyPress={[Function]}
+              onKeyUp={[Function]}
+              onMouseDown={[Function]}
+              onMouseUp={[Function]}
+              role="menuitem"
+              style={
+                Object {
+                  "fontSize": "1.2rem",
+                }
+              }
+              type="button"
+            >
+              <div
+                className="ms-Button-flexContainer flexContainer-82"
+              >
+                <div
+                  className="ms-Button-textContainer textContainer-83"
+                >
+                  <div
+                    className="ms-Button-label label-153"
+                    id="id__179"
+                  >
+                    TypeScript
+                  </div>
+                </div>
+              </div>
+            </button>
+          </div>
+          <div
+            className="ms-OverflowSet-item item-149"
+          >
+            <button
+              aria-describedby={undefined}
+              aria-disabled={undefined}
+              aria-label="Cycle editor theme"
+              aria-labelledby={undefined}
+              aria-pressed={undefined}
+              className="ms-Button ms-Button--commandBar ms-CommandBarItem-link root-151"
+              data-is-focusable={true}
+              disabled={undefined}
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              onKeyPress={[Function]}
+              onKeyUp={[Function]}
+              onMouseDown={[Function]}
+              onMouseUp={[Function]}
+              role="menuitem"
+              style={
+                Object {
+                  "fontSize": "1.2rem",
+                }
+              }
+              type="button"
+            >
+              <div
+                className="ms-Button-flexContainer flexContainer-82"
+              >
+                <i
+                  aria-hidden={true}
+                  className="ms-Button-icon icon-172"
+                  data-icon-name="Color"
+                  role="presentation"
+                >
+                  
+                </i>
+                <div
+                  className="ms-Button-textContainer textContainer-83"
+                >
+                  <div
+                    className="ms-Button-label label-153"
+                    id="id__182"
+                  >
+                    Dark
+                  </div>
+                </div>
+              </div>
+            </button>
+          </div>
+          <div
+            className="ms-OverflowSet-item item-149"
+          >
+            <div
+              aria-describedby={undefined}
+              className="ms-TooltipHost host_a3f87333"
+              onBlurCapture={[Function]}
+              onFocusCapture={[Function]}
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
+            >
+              <a
+                aria-describedby={undefined}
+                aria-disabled={undefined}
+                aria-label="Report an issue"
+                aria-labelledby={undefined}
+                aria-pressed={undefined}
+                className="ms-Button ms-Button--commandBar ms-CommandBarItem-link root-151"
+                data-is-focusable={true}
+                disabled={undefined}
+                hidden={false}
+                href="https://github.com/OfficeDev/script-lab-react/issues/new"
+                onClick={[Function]}
+                onKeyDown={[Function]}
+                onKeyPress={[Function]}
+                onKeyUp={[Function]}
+                onMouseDown={[Function]}
+                onMouseUp={[Function]}
+                role="menuitem"
+                style={
+                  Object {
+                    "fontSize": "1.2rem",
+                  }
+                }
+                target="_blank"
+              >
+                <div
+                  className="ms-Button-flexContainer flexContainer-82"
+                >
+                  <i
+                    aria-hidden={true}
+                    className="ms-Button-icon icon-173"
+                    data-icon-name="Emoji2"
+                    role="presentation"
+                  >
+                    
+                  </i>
+                </div>
+              </a>
+            </div>
+          </div>
+          <div
+            className="ms-OverflowSet-item item-149"
+          >
+            <div
+              aria-describedby={undefined}
+              className="ms-TooltipHost host_a3f87333"
+              onBlurCapture={[Function]}
+              onFocusCapture={[Function]}
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
+            >
+              <button
+                aria-describedby={undefined}
+                aria-disabled={undefined}
+                aria-label="Settings"
+                aria-labelledby={undefined}
+                aria-pressed={undefined}
+                className="ms-Button ms-Button--commandBar ms-CommandBarItem-link root-151"
+                data-is-focusable={true}
+                disabled={undefined}
+                onClick={[Function]}
+                onKeyDown={[Function]}
+                onKeyPress={[Function]}
+                onKeyUp={[Function]}
+                onMouseDown={[Function]}
+                onMouseUp={[Function]}
+                role="menuitem"
+                style={
+                  Object {
+                    "fontSize": "1.2rem",
+                  }
+                }
+                type="button"
+              >
+                <div
+                  className="ms-Button-flexContainer flexContainer-82"
+                >
+                  <i
+                    aria-hidden={true}
+                    className="ms-Button-icon icon-174"
+                    data-icon-name="Settings"
+                    role="presentation"
+                  >
+                    
+                  </i>
+                </div>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </button>
-  <button
-    aria-describedby={undefined}
-    aria-disabled={undefined}
-    aria-label={undefined}
-    aria-labelledby={undefined}
-    aria-pressed={undefined}
-    className="ms-Button ms-Button--primary root-170"
-    data-is-focusable={true}
-    disabled={undefined}
-    onClick={[Function]}
-    onKeyDown={[Function]}
-    onKeyPress={[Function]}
-    onKeyUp={[Function]}
-    onMouseDown={[Function]}
-    onMouseUp={[Function]}
-    type="button"
-  >
-    <div
-      className="ms-Button-flexContainer flexContainer-82"
-    >
-      <div
-        className="ms-Button-textContainer textContainer-83"
-      >
-        <div
-          className="ms-Button-label label-172"
-          id="id__166"
-        >
-          TypeScript
-        </div>
-      </div>
-    </div>
-  </button>
-  <a
-    aria-describedby={undefined}
-    aria-disabled={undefined}
-    aria-label="Report an issue"
-    aria-labelledby={undefined}
-    aria-pressed={undefined}
-    className="ms-Button ms-Button--icon root-173"
-    data-is-focusable={true}
-    disabled={undefined}
-    href="https://github.com/OfficeDev/script-lab-react/issues/new"
-    onClick={[Function]}
-    onKeyDown={[Function]}
-    onKeyPress={[Function]}
-    onKeyUp={[Function]}
-    onMouseDown={[Function]}
-    onMouseUp={[Function]}
-  >
-    <div
-      className="ms-Button-flexContainer flexContainer-82"
-    >
-      <i
-        aria-hidden={true}
-        className="ms-Button-icon icon-176"
-        data-icon-name="Bug"
-        role="presentation"
-      >
-        
-      </i>
-    </div>
-  </a>
-  <button
-    aria-describedby={undefined}
-    aria-disabled={undefined}
-    aria-label="Settings"
-    aria-labelledby={undefined}
-    aria-pressed={undefined}
-    className="ms-Button ms-Button--icon root-173"
-    data-is-focusable={true}
-    disabled={undefined}
-    onClick={[Function]}
-    onKeyDown={[Function]}
-    onKeyPress={[Function]}
-    onKeyUp={[Function]}
-    onMouseDown={[Function]}
-    onMouseUp={[Function]}
-    type="button"
-  >
-    <div
-      className="ms-Button-flexContainer flexContainer-82"
-    >
-      <i
-        aria-hidden={true}
-        className="ms-Button-icon icon-177"
-        data-icon-name="Settings"
-        role="presentation"
-      >
-        
-      </i>
-    </div>
-  </button>
+  </div>
 </footer>
 `;
 
@@ -9076,10 +9493,10 @@ exports[`Storyshots IDE|Header basic 1`] = `
     >
       <div
         aria-describedby={undefined}
-        aria-label={undefined}
+        aria-label="Use left and right arrow keys to navigate between commands"
         aria-labelledby={undefined}
         className="ms-FocusZone ms-CommandBar root-145"
-        data-focuszone-id="FocusZone175"
+        data-focuszone-id="FocusZone193"
         onFocus={[Function]}
         onKeyDown={[Function]}
         onMouseDownCapture={[Function]}
@@ -9115,7 +9532,7 @@ exports[`Storyshots IDE|Header basic 1`] = `
               >
                 <i
                   aria-hidden={true}
-                  className="ms-Button-icon icon-179"
+                  className="ms-Button-icon icon-176"
                   data-icon-name="GlobalNavButton"
                   role="presentation"
                 >
@@ -9153,7 +9570,7 @@ exports[`Storyshots IDE|Header basic 1`] = `
                 >
                   <div
                     className="ms-Button-label label-153"
-                    id="id__179"
+                    id="id__197"
                   >
                     Blank Snippet
                   </div>
@@ -9198,7 +9615,7 @@ exports[`Storyshots IDE|Header basic 1`] = `
                 >
                   <div
                     className="ms-Button-label label-153"
-                    id="id__182"
+                    id="id__200"
                   >
                     Run
                   </div>
@@ -9235,7 +9652,7 @@ exports[`Storyshots IDE|Header basic 1`] = `
               >
                 <i
                   aria-hidden={true}
-                  className="ms-Button-icon icon-179"
+                  className="ms-Button-icon icon-176"
                   data-icon-name="Share"
                   role="presentation"
                 >
@@ -9246,14 +9663,14 @@ exports[`Storyshots IDE|Header basic 1`] = `
                 >
                   <div
                     className="ms-Button-label label-153"
-                    id="id__185"
+                    id="id__203"
                   >
                     Share
                   </div>
                 </div>
                 <i
                   aria-hidden={true}
-                  className="ms-Button-menuIcon menuIcon-180"
+                  className="ms-Button-menuIcon menuIcon-175"
                   data-icon-name="ChevronDown"
                   role="presentation"
                 >
@@ -9288,7 +9705,7 @@ exports[`Storyshots IDE|Header basic 1`] = `
               >
                 <i
                   aria-hidden={true}
-                  className="ms-Button-icon icon-179"
+                  className="ms-Button-icon icon-176"
                   data-icon-name="Delete"
                   role="presentation"
                 >
@@ -9299,7 +9716,7 @@ exports[`Storyshots IDE|Header basic 1`] = `
                 >
                   <div
                     className="ms-Button-label label-153"
-                    id="id__188"
+                    id="id__206"
                   >
                     Delete
                   </div>
@@ -9309,7 +9726,7 @@ exports[`Storyshots IDE|Header basic 1`] = `
           </div>
         </div>
         <div
-          className="ms-OverflowSet ms-CommandBar-secondaryCommand secondarySet-181"
+          className="ms-OverflowSet ms-CommandBar-secondaryCommand secondarySet-171"
           role="presentation"
         >
           <div
@@ -9345,16 +9762,16 @@ exports[`Storyshots IDE|Header basic 1`] = `
                   }
                 >
                   <div
-                    className="ms-Persona-coin ms-Persona--size28 coin-182"
+                    className="ms-Persona-coin ms-Persona--size28 coin-177"
                     size={7}
                   >
                     <div
-                      className="ms-Persona-imageArea imageArea-184"
+                      className="ms-Persona-imageArea imageArea-179"
                       style={undefined}
                     >
                       <div
                         aria-hidden="true"
-                        className="ms-Persona-initials initials-187"
+                        className="ms-Persona-initials initials-182"
                         style={undefined}
                       >
                         <i
@@ -9408,10 +9825,10 @@ exports[`Storyshots IDE|Header custom functions view 1`] = `
     >
       <div
         aria-describedby={undefined}
-        aria-label={undefined}
+        aria-label="Use left and right arrow keys to navigate between commands"
         aria-labelledby={undefined}
         className="ms-FocusZone ms-CommandBar root-145"
-        data-focuszone-id="FocusZone196"
+        data-focuszone-id="FocusZone214"
         onFocus={[Function]}
         onKeyDown={[Function]}
         onMouseDownCapture={[Function]}
@@ -9447,7 +9864,7 @@ exports[`Storyshots IDE|Header custom functions view 1`] = `
               >
                 <i
                   aria-hidden={true}
-                  className="ms-Button-icon icon-179"
+                  className="ms-Button-icon icon-176"
                   data-icon-name="GlobalNavButton"
                   role="presentation"
                 >
@@ -9485,7 +9902,7 @@ exports[`Storyshots IDE|Header custom functions view 1`] = `
                 >
                   <div
                     className="ms-Button-label label-153"
-                    id="id__200"
+                    id="id__218"
                   >
                     Blank Snippet
                   </div>
@@ -9530,7 +9947,7 @@ exports[`Storyshots IDE|Header custom functions view 1`] = `
                 >
                   <div
                     className="ms-Button-label label-153"
-                    id="id__203"
+                    id="id__221"
                   >
                     Register
                   </div>
@@ -9567,7 +9984,7 @@ exports[`Storyshots IDE|Header custom functions view 1`] = `
               >
                 <i
                   aria-hidden={true}
-                  className="ms-Button-icon icon-179"
+                  className="ms-Button-icon icon-176"
                   data-icon-name="Share"
                   role="presentation"
                 >
@@ -9578,14 +9995,14 @@ exports[`Storyshots IDE|Header custom functions view 1`] = `
                 >
                   <div
                     className="ms-Button-label label-153"
-                    id="id__206"
+                    id="id__224"
                   >
                     Share
                   </div>
                 </div>
                 <i
                   aria-hidden={true}
-                  className="ms-Button-menuIcon menuIcon-180"
+                  className="ms-Button-menuIcon menuIcon-175"
                   data-icon-name="ChevronDown"
                   role="presentation"
                 >
@@ -9620,7 +10037,7 @@ exports[`Storyshots IDE|Header custom functions view 1`] = `
               >
                 <i
                   aria-hidden={true}
-                  className="ms-Button-icon icon-179"
+                  className="ms-Button-icon icon-176"
                   data-icon-name="Delete"
                   role="presentation"
                 >
@@ -9631,7 +10048,7 @@ exports[`Storyshots IDE|Header custom functions view 1`] = `
                 >
                   <div
                     className="ms-Button-label label-153"
-                    id="id__209"
+                    id="id__227"
                   >
                     Delete
                   </div>
@@ -9641,7 +10058,7 @@ exports[`Storyshots IDE|Header custom functions view 1`] = `
           </div>
         </div>
         <div
-          className="ms-OverflowSet ms-CommandBar-secondaryCommand secondarySet-181"
+          className="ms-OverflowSet ms-CommandBar-secondaryCommand secondarySet-171"
           role="presentation"
         >
           <div
@@ -9677,16 +10094,16 @@ exports[`Storyshots IDE|Header custom functions view 1`] = `
                   }
                 >
                   <div
-                    className="ms-Persona-coin ms-Persona--size28 coin-182"
+                    className="ms-Persona-coin ms-Persona--size28 coin-177"
                     size={7}
                   >
                     <div
-                      className="ms-Persona-imageArea imageArea-184"
+                      className="ms-Persona-imageArea imageArea-179"
                       style={undefined}
                     >
                       <div
                         aria-hidden="true"
-                        className="ms-Persona-initials initials-187"
+                        className="ms-Persona-initials initials-182"
                         style={undefined}
                       >
                         <i
@@ -9740,10 +10157,10 @@ exports[`Storyshots IDE|Header settings view 1`] = `
     >
       <div
         aria-describedby={undefined}
-        aria-label={undefined}
+        aria-label="Use left and right arrow keys to navigate between commands"
         aria-labelledby={undefined}
         className="ms-FocusZone ms-CommandBar root-145"
-        data-focuszone-id="FocusZone217"
+        data-focuszone-id="FocusZone235"
         onFocus={[Function]}
         onKeyDown={[Function]}
         onMouseDownCapture={[Function]}
@@ -9817,7 +10234,7 @@ exports[`Storyshots IDE|Header settings view 1`] = `
                 >
                   <div
                     className="ms-Button-label label-153"
-                    id="id__221"
+                    id="id__239"
                   >
                     Blank Snippet
                   </div>
@@ -9827,7 +10244,7 @@ exports[`Storyshots IDE|Header settings view 1`] = `
           </div>
         </div>
         <div
-          className="ms-OverflowSet ms-CommandBar-secondaryCommand secondarySet-181"
+          className="ms-OverflowSet ms-CommandBar-secondaryCommand secondarySet-171"
           role="presentation"
         >
           <div
@@ -9863,16 +10280,16 @@ exports[`Storyshots IDE|Header settings view 1`] = `
                   }
                 >
                   <div
-                    className="ms-Persona-coin ms-Persona--size28 coin-182"
+                    className="ms-Persona-coin ms-Persona--size28 coin-177"
                     size={7}
                   >
                     <div
-                      className="ms-Persona-imageArea imageArea-184"
+                      className="ms-Persona-imageArea imageArea-179"
                       style={undefined}
                     >
                       <div
                         aria-hidden="true"
-                        className="ms-Persona-initials initials-187"
+                        className="ms-Persona-initials initials-182"
                         style={undefined}
                       >
                         <i
@@ -9903,7 +10320,7 @@ exports[`Storyshots IDE|MessageBar basic error 1`] = `
 >
   <div
     aria-live="assertive"
-    className="ms-MessageBar ms-MessageBar--error ms-MessageBar-multiline root-201"
+    className="ms-MessageBar ms-MessageBar--error ms-MessageBar-multiline root-196"
   >
     <div
       className="ms-MessageBar-content content-118"
@@ -9913,7 +10330,7 @@ exports[`Storyshots IDE|MessageBar basic error 1`] = `
       >
         <i
           aria-hidden={true}
-          className="icon-203"
+          className="icon-198"
           data-icon-name="ErrorBadge"
           role="presentation"
         >
@@ -9921,8 +10338,8 @@ exports[`Storyshots IDE|MessageBar basic error 1`] = `
         </i>
       </div>
       <div
-        className="ms-MessageBar-text text-192"
-        id="MessageBar241"
+        className="ms-MessageBar-text text-187"
+        id="MessageBar259"
       >
         <span
           aria-live="assertive"
@@ -9936,7 +10353,7 @@ exports[`Storyshots IDE|MessageBar basic error 1`] = `
         aria-label="Close"
         aria-labelledby={undefined}
         aria-pressed={undefined}
-        className="ms-Button ms-Button--icon ms-MessageBar-dismissal dismissal-193"
+        className="ms-Button ms-Button--icon ms-MessageBar-dismissal dismissal-188"
         data-is-focusable={true}
         disabled={undefined}
         onClick={[Function]}
@@ -9952,7 +10369,7 @@ exports[`Storyshots IDE|MessageBar basic error 1`] = `
         >
           <i
             aria-hidden={true}
-            className="ms-Button-icon icon-194"
+            className="ms-Button-icon icon-189"
             data-icon-name="Clear"
             role="presentation"
           >
@@ -9971,7 +10388,7 @@ exports[`Storyshots IDE|MessageBar basic info 1`] = `
 >
   <div
     aria-live="polite"
-    className="ms-MessageBar ms-MessageBar-multiline root-191"
+    className="ms-MessageBar ms-MessageBar-multiline root-186"
   >
     <div
       className="ms-MessageBar-content content-118"
@@ -9989,8 +10406,8 @@ exports[`Storyshots IDE|MessageBar basic info 1`] = `
         </i>
       </div>
       <div
-        className="ms-MessageBar-text text-192"
-        id="MessageBar229"
+        className="ms-MessageBar-text text-187"
+        id="MessageBar247"
       >
         <span
           aria-live="polite"
@@ -10004,7 +10421,7 @@ exports[`Storyshots IDE|MessageBar basic info 1`] = `
         aria-label="Close"
         aria-labelledby={undefined}
         aria-pressed={undefined}
-        className="ms-Button ms-Button--icon ms-MessageBar-dismissal dismissal-193"
+        className="ms-Button ms-Button--icon ms-MessageBar-dismissal dismissal-188"
         data-is-focusable={true}
         disabled={undefined}
         onClick={[Function]}
@@ -10020,7 +10437,7 @@ exports[`Storyshots IDE|MessageBar basic info 1`] = `
         >
           <i
             aria-hidden={true}
-            className="ms-Button-icon icon-194"
+            className="ms-Button-icon icon-189"
             data-icon-name="Clear"
             role="presentation"
           >
@@ -10039,7 +10456,7 @@ exports[`Storyshots IDE|MessageBar basic success 1`] = `
 >
   <div
     aria-live="polite"
-    className="ms-MessageBar ms-MessageBar--success ms-MessageBar-multiline root-195"
+    className="ms-MessageBar ms-MessageBar--success ms-MessageBar-multiline root-190"
   >
     <div
       className="ms-MessageBar-content content-118"
@@ -10049,7 +10466,7 @@ exports[`Storyshots IDE|MessageBar basic success 1`] = `
       >
         <i
           aria-hidden={true}
-          className="icon-197"
+          className="icon-192"
           data-icon-name="Completed"
           role="presentation"
         >
@@ -10057,8 +10474,8 @@ exports[`Storyshots IDE|MessageBar basic success 1`] = `
         </i>
       </div>
       <div
-        className="ms-MessageBar-text text-192"
-        id="MessageBar233"
+        className="ms-MessageBar-text text-187"
+        id="MessageBar251"
       >
         <span
           aria-live="polite"
@@ -10072,7 +10489,7 @@ exports[`Storyshots IDE|MessageBar basic success 1`] = `
         aria-label="Close"
         aria-labelledby={undefined}
         aria-pressed={undefined}
-        className="ms-Button ms-Button--icon ms-MessageBar-dismissal dismissal-193"
+        className="ms-Button ms-Button--icon ms-MessageBar-dismissal dismissal-188"
         data-is-focusable={true}
         disabled={undefined}
         onClick={[Function]}
@@ -10088,7 +10505,7 @@ exports[`Storyshots IDE|MessageBar basic success 1`] = `
         >
           <i
             aria-hidden={true}
-            className="ms-Button-icon icon-194"
+            className="ms-Button-icon icon-189"
             data-icon-name="Clear"
             role="presentation"
           >
@@ -10107,7 +10524,7 @@ exports[`Storyshots IDE|MessageBar basic warning 1`] = `
 >
   <div
     aria-live="polite"
-    className="ms-MessageBar ms-MessageBar--warning ms-MessageBar-multiline root-198"
+    className="ms-MessageBar ms-MessageBar--warning ms-MessageBar-multiline root-193"
   >
     <div
       className="ms-MessageBar-content content-118"
@@ -10117,7 +10534,7 @@ exports[`Storyshots IDE|MessageBar basic warning 1`] = `
       >
         <i
           aria-hidden={true}
-          className="icon-200"
+          className="icon-195"
           data-icon-name="Info"
           role="presentation"
         >
@@ -10125,8 +10542,8 @@ exports[`Storyshots IDE|MessageBar basic warning 1`] = `
         </i>
       </div>
       <div
-        className="ms-MessageBar-text text-192"
-        id="MessageBar237"
+        className="ms-MessageBar-text text-187"
+        id="MessageBar255"
       >
         <span
           aria-live="polite"
@@ -10140,7 +10557,7 @@ exports[`Storyshots IDE|MessageBar basic warning 1`] = `
         aria-label="Close"
         aria-labelledby={undefined}
         aria-pressed={undefined}
-        className="ms-Button ms-Button--icon ms-MessageBar-dismissal dismissal-193"
+        className="ms-Button ms-Button--icon ms-MessageBar-dismissal dismissal-188"
         data-is-focusable={true}
         disabled={undefined}
         onClick={[Function]}
@@ -10156,7 +10573,7 @@ exports[`Storyshots IDE|MessageBar basic warning 1`] = `
         >
           <i
             aria-hidden={true}
-            className="ms-Button-icon icon-194"
+            className="ms-Button-icon icon-189"
             data-icon-name="Clear"
             role="presentation"
           >
