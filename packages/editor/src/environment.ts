@@ -37,10 +37,16 @@ export function getCurrentEnv(): 'local' | 'alpha' | 'beta' | 'production' {
   }[window.location.origin]
 }
 
-export function getPlatform(): 'PC' | 'MAC' | 'WAC' {
-  return {
-    [Office.PlatformType.Mac]: 'MAC',
-    [Office.PlatformType.PC]: 'PC',
-    [Office.PlatformType.OfficeOnline]: 'WAC',
-  }[Office.context.platform || Office.PlatformType.OfficeOnline] as 'PC' | 'MAC' | 'WAC'
+export enum PlatformType {
+  PC = 'PC',
+  OfficeOnline = 'OfficeOnline',
+  Mac = 'Mac',
+  iOS = 'iOS',
+  Android = 'Android',
+  Universal = 'Universal',
+}
+
+export function getPlatform(): PlatformType {
+  return ((Office && Office.context && Office.context.platform) ||
+    PlatformType.OfficeOnline) as PlatformType
 }
