@@ -9145,7 +9145,7 @@ exports[`Storyshots IDE|Header basic 1`] = `
               role="menuitem"
               style={
                 Object {
-                  "paddingRight": "2rem",
+                  "paddingRight": "4rem",
                 }
               }
               type="button"
@@ -9217,6 +9217,51 @@ exports[`Storyshots IDE|Header basic 1`] = `
             <button
               aria-describedby={undefined}
               aria-disabled={undefined}
+              aria-label={undefined}
+              aria-labelledby={undefined}
+              aria-pressed={undefined}
+              className="ms-Button ms-Button--commandBar ms-CommandBarItem-link root-151"
+              data-is-focusable={true}
+              disabled={undefined}
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              onKeyPress={[Function]}
+              onKeyUp={[Function]}
+              onMouseDown={[Function]}
+              onMouseUp={[Function]}
+              role="menuitem"
+              type="button"
+            >
+              <div
+                className="ms-Button-flexContainer flexContainer-82"
+              >
+                <i
+                  aria-hidden={true}
+                  className="ms-Button-icon icon-179"
+                  data-icon-name="Delete"
+                  role="presentation"
+                >
+                  
+                </i>
+                <div
+                  className="ms-Button-textContainer textContainer-83"
+                >
+                  <div
+                    className="ms-Button-label label-153"
+                    id="id__185"
+                  >
+                    Delete
+                  </div>
+                </div>
+              </div>
+            </button>
+          </div>
+          <div
+            className="ms-OverflowSet-item item-149"
+          >
+            <button
+              aria-describedby={undefined}
+              aria-disabled={undefined}
               aria-expanded={false}
               aria-haspopup={true}
               aria-label={undefined}
@@ -9251,7 +9296,7 @@ exports[`Storyshots IDE|Header basic 1`] = `
                 >
                   <div
                     className="ms-Button-label label-153"
-                    id="id__185"
+                    id="id__188"
                   >
                     Share
                   </div>
@@ -9264,51 +9309,6 @@ exports[`Storyshots IDE|Header basic 1`] = `
                 >
                   
                 </i>
-              </div>
-            </button>
-          </div>
-          <div
-            className="ms-OverflowSet-item item-149"
-          >
-            <button
-              aria-describedby={undefined}
-              aria-disabled={undefined}
-              aria-label={undefined}
-              aria-labelledby={undefined}
-              aria-pressed={undefined}
-              className="ms-Button ms-Button--commandBar ms-CommandBarItem-link root-151"
-              data-is-focusable={true}
-              disabled={undefined}
-              onClick={[Function]}
-              onKeyDown={[Function]}
-              onKeyPress={[Function]}
-              onKeyUp={[Function]}
-              onMouseDown={[Function]}
-              onMouseUp={[Function]}
-              role="menuitem"
-              type="button"
-            >
-              <div
-                className="ms-Button-flexContainer flexContainer-82"
-              >
-                <i
-                  aria-hidden={true}
-                  className="ms-Button-icon icon-179"
-                  data-icon-name="Delete"
-                  role="presentation"
-                >
-                  
-                </i>
-                <div
-                  className="ms-Button-textContainer textContainer-83"
-                >
-                  <div
-                    className="ms-Button-label label-153"
-                    id="id__188"
-                  >
-                    Delete
-                  </div>
-                </div>
               </div>
             </button>
           </div>
@@ -9482,7 +9482,7 @@ exports[`Storyshots IDE|Header custom functions view 1`] = `
               role="menuitem"
               style={
                 Object {
-                  "paddingRight": "2rem",
+                  "paddingRight": "4rem",
                 }
               }
               type="button"
@@ -9554,6 +9554,51 @@ exports[`Storyshots IDE|Header custom functions view 1`] = `
             <button
               aria-describedby={undefined}
               aria-disabled={undefined}
+              aria-label={undefined}
+              aria-labelledby={undefined}
+              aria-pressed={undefined}
+              className="ms-Button ms-Button--commandBar ms-CommandBarItem-link root-151"
+              data-is-focusable={true}
+              disabled={undefined}
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              onKeyPress={[Function]}
+              onKeyUp={[Function]}
+              onMouseDown={[Function]}
+              onMouseUp={[Function]}
+              role="menuitem"
+              type="button"
+            >
+              <div
+                className="ms-Button-flexContainer flexContainer-82"
+              >
+                <i
+                  aria-hidden={true}
+                  className="ms-Button-icon icon-179"
+                  data-icon-name="Delete"
+                  role="presentation"
+                >
+                  
+                </i>
+                <div
+                  className="ms-Button-textContainer textContainer-83"
+                >
+                  <div
+                    className="ms-Button-label label-153"
+                    id="id__206"
+                  >
+                    Delete
+                  </div>
+                </div>
+              </div>
+            </button>
+          </div>
+          <div
+            className="ms-OverflowSet-item item-149"
+          >
+            <button
+              aria-describedby={undefined}
+              aria-disabled={undefined}
               aria-expanded={false}
               aria-haspopup={true}
               aria-label={undefined}
@@ -9588,7 +9633,7 @@ exports[`Storyshots IDE|Header custom functions view 1`] = `
                 >
                   <div
                     className="ms-Button-label label-153"
-                    id="id__206"
+                    id="id__209"
                   >
                     Share
                   </div>
@@ -9601,51 +9646,6 @@ exports[`Storyshots IDE|Header custom functions view 1`] = `
                 >
                   
                 </i>
-              </div>
-            </button>
-          </div>
-          <div
-            className="ms-OverflowSet-item item-149"
-          >
-            <button
-              aria-describedby={undefined}
-              aria-disabled={undefined}
-              aria-label={undefined}
-              aria-labelledby={undefined}
-              aria-pressed={undefined}
-              className="ms-Button ms-Button--commandBar ms-CommandBarItem-link root-151"
-              data-is-focusable={true}
-              disabled={undefined}
-              onClick={[Function]}
-              onKeyDown={[Function]}
-              onKeyPress={[Function]}
-              onKeyUp={[Function]}
-              onMouseDown={[Function]}
-              onMouseUp={[Function]}
-              role="menuitem"
-              type="button"
-            >
-              <div
-                className="ms-Button-flexContainer flexContainer-82"
-              >
-                <i
-                  aria-hidden={true}
-                  className="ms-Button-icon icon-179"
-                  data-icon-name="Delete"
-                  role="presentation"
-                >
-                  
-                </i>
-                <div
-                  className="ms-Button-textContainer textContainer-83"
-                >
-                  <div
-                    className="ms-Button-label label-153"
-                    id="id__209"
-                  >
-                    Delete
-                  </div>
-                </div>
               </div>
             </button>
           </div>
@@ -9819,7 +9819,7 @@ exports[`Storyshots IDE|Header settings view 1`] = `
               role="menuitem"
               style={
                 Object {
-                  "paddingRight": "2rem",
+                  "paddingRight": "4rem",
                 }
               }
               type="button"
