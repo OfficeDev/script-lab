@@ -4,7 +4,7 @@ import { mount } from 'enzyme'
 import { Header, IProps } from '.'
 import { getBoilerplate } from '../../../newSolutionData'
 import { ITheme as IFabricTheme } from '@uifabric/styling'
-import { getHeaderFabricTheme } from '../../../theme'
+import { getCommandBarFabricTheme } from '../../../theme'
 import { ICommandBarProps } from 'office-ui-fabric-react/lib/CommandBar'
 
 const actionProps = {
@@ -36,7 +36,7 @@ describe('Header should render properly in basic case', () => {
     isSettingsView: false,
     isCustomFunctionsView: false,
     profilePicUrl: undefined,
-    headerFabricTheme: getHeaderFabricTheme('WEB') as IFabricTheme,
+    commandBarFabricTheme: getCommandBarFabricTheme('WEB') as IFabricTheme,
     ...actionProps,
   }
 
@@ -83,7 +83,7 @@ describe("Header shouldn't show run button if isn't runnable", () => {
     isSettingsView: false,
     isCustomFunctionsView: false,
     profilePicUrl: undefined,
-    headerFabricTheme: getHeaderFabricTheme('WEB') as IFabricTheme,
+    commandBarFabricTheme: getCommandBarFabricTheme('WEB') as IFabricTheme,
     ...actionProps,
   }
 

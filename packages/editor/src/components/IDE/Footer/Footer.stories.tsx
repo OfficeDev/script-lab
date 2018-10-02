@@ -2,7 +2,7 @@ import React from 'react'
 import { storiesOf } from '@storybook/react'
 
 import { Footer } from './'
-import { getHeaderFabricTheme } from '../../../theme'
+import { getCommandBarFabricTheme } from '../../../theme'
 
 const voidFunc = () => {}
 
@@ -14,7 +14,7 @@ const defaultProps = {
   hasCustomFunctions: false,
   isWeb: false,
   language: 'typescript',
-  headerFabricTheme: getHeaderFabricTheme('EXCEL'),
+  commandBarFabricTheme: getCommandBarFabricTheme('EXCEL'),
   currentEditorTheme: 'Dark',
   cycleEditorTheme: voidFunc,
 }

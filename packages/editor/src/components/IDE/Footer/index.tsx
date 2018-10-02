@@ -12,7 +12,7 @@ import {
   DirectionalHint,
   ContextualMenuItemType,
 } from 'office-ui-fabric-react/lib/ContextualMenu'
-import { getHeaderFabricTheme } from '../../../theme'
+import { getCommandBarFabricTheme } from '../../../theme'
 
 import { HostType } from '@microsoft/office-js-helpers'
 
@@ -35,7 +35,7 @@ interface IPropsFromRedux {
   currentHost: string
   isWeb: boolean
   hasCustomFunctions: boolean
-  headerFabricTheme: IFabricTheme
+  commandBarFabricTheme: IFabricTheme
   currentEditorTheme: string
 }
 
@@ -44,7 +44,7 @@ const mapStateToProps = (state, ownProps: IProps): IPropsFromRedux => ({
   currentHost: selectors.host.get(state),
   isWeb: selectors.host.getIsWeb(state),
   hasCustomFunctions: selectors.customFunctions.getHasCustomFunctions(state),
-  headerFabricTheme: getHeaderFabricTheme(selectors.host.get(state)),
+  commandBarFabricTheme: getCommandBarFabricTheme(selectors.host.get(state)),
   currentEditorTheme: selectors.settings.getPrettyEditorTheme(state),
 })
 
@@ -76,7 +76,7 @@ const FooterWithoutTheme = ({
   onSettingsIconClick,
   navigateToCustomFunctionsDashboard,
   changeHost,
-  headerFabricTheme,
+  commandBarFabricTheme,
   currentEditorTheme,
   cycleEditorTheme,
 }: IProps) => {
@@ -167,7 +167,7 @@ const FooterWithoutTheme = ({
     .map(item => ({ ...item, style: { fontSize: '1.2rem' } }))
 
   return (
-    <Customizer settings={{ theme: headerFabricTheme }}>
+    <Customizer settings={{ theme: commandBarFabricTheme }}>
       <Wrapper>
         <CommandBar
           items={items}

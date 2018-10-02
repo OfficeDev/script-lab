@@ -15,7 +15,7 @@ const neutralColors: IThemeNeutralColors = {
   white: '#ffffff',
 }
 
-export const getHeaderFabricTheme = (host: string) => {
+export const getCommandBarFabricTheme = (host: string) => {
   const theme = getTheme(host)
   return createTheme({
     palette: {
