@@ -228,6 +228,7 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
       key: 'solution-name',
       text: solutionName,
       onClick: isSettingsView ? undefined : this.openSolutionSettings,
+      style: { paddingRight: '2rem' },
     }
 
     const nav = {
