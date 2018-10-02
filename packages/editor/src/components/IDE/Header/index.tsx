@@ -202,19 +202,19 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
       },
       {
         hidden: isNullSolution,
+        key: 'delete',
+        text: 'Delete',
+        iconProps: { iconName: 'Delete' },
+        onClick: deleteSolution,
+      },
+      {
+        hidden: isNullSolution,
         key: 'share',
         text: 'Share',
         iconProps: { iconName: 'Share' },
         subMenuProps: {
           items: shareOptions,
         },
-      },
-      {
-        hidden: isNullSolution,
-        key: 'delete',
-        text: 'Delete',
-        iconProps: { iconName: 'Delete' },
-        onClick: deleteSolution,
       },
     ]
       .filter(({ hidden }) => !hidden)
@@ -228,7 +228,7 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
       key: 'solution-name',
       text: solutionName,
       onClick: isSettingsView ? undefined : this.openSolutionSettings,
-      style: { paddingRight: '2rem' },
+      style: { paddingRight: '4rem' },
     }
 
     const nav = {
