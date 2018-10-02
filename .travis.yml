@@ -33,9 +33,9 @@ matrix:
 
 script:
   - cd $PACKAGE_LOCATION
-  - yarn lint
-  - yarn test
-  - yarn build
+  - yarn lint || travis_terminate 1
+  - yarn test || travis_terminate 1
+  - yarn build || travis_terminate 1
   - cd $TRAVIS_BUILD_DIR
   - if [[ "$TRAVIS_PULL_REQUEST" == false ]]; then yarn deploy; fi
 
