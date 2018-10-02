@@ -188,6 +188,15 @@ class Editor extends Component<IProps, IState> {
       '',
     )
 
+    editor.addAction({
+      id: 'trigger-suggest' /* Unique id for action */,
+      label: 'Trigger suggestion',
+      keybindings: [monaco.KeyCode.F2],
+      contextMenuGroupId: 'navigation',
+      contextMenuOrder: 0 /* put at top of context menu */,
+      run: () => editor.trigger('anyString', 'editor.action.triggerSuggest', {}),
+    })
+
     editor.addCommand(
       monaco.KeyMod.CtrlCmd | monaco.KeyCode.US_COMMA,
       this.props.openSettings,
