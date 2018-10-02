@@ -13,7 +13,7 @@ import YAML from 'js-yaml'
 import SolutionSettings from './SolutionSettings'
 import { ITheme as IFabricTheme } from 'office-ui-fabric-react/lib/Styling'
 import { NULL_SOLUTION_ID, SETTINGS_SOLUTION_ID, PATHS } from '../../../constants'
-import { getPlatform, PlatformType } from 'src/environment'
+import { getPlatform, PlatformType } from '../../../environment'
 
 import { connect } from 'react-redux'
 import actions from '../../../store/actions'
