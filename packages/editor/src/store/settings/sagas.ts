@@ -7,6 +7,8 @@ import {
   editor as editorActions,
 } from '../actions'
 
+import selectors from '../selectors'
+
 import { environmentName, editorUrls } from '../../environment'
 
 import { allowedSettings } from '../../SettingsJSONSchema'
@@ -57,14 +59,24 @@ function* editSettingsCheckSaga(action: ActionType<typeof settingsActions.editFi
   const { values } = settings
 
   try {
-    const parsed = JSON.parse(action.payload.newSettings.content)
+    const parsed = JSON.parse(action.payload.newSettings)
     const newSettings = merge(values, parsed, allowedSettings)
-    yield put(settingsActions.edit.success({ settings: newSettings }))
+    const currentSettingsFile = yield select(
+      selectors.solutions.getFile,
+      SETTINGS_FILE_ID,
+    )
+    currentSettingsFile.content = newSettings
+    yield put(
+      settingsActions.edit.success({
+        settings: newSettings,
+        noMessageBar: action.payload.noMessageBar,
+      }),
+    )
     yield put(
       solutionsActions.edit({
         id: SETTINGS_SOLUTION_ID,
         fileId: SETTINGS_FILE_ID,
-        file: action.payload.newSettings,
+        file: currentSettingsFile,
       }),
     )
   } catch (e) {
@@ -103,9 +115,30 @@ function* closeSettingsSaga(action: ActionType<typeof settingsActions.close>) {
   yield put(editorActions.open({ solutionId, fileId }))
 }
 
+function* cycleEditorThemeSaga() {
+  const settings = yield select(selectors.settings.get)
+  const themes = allowedSettings.editor.theme
+
+  const currentTheme = settings.editor.theme
+  const currentThemeIndex = themes.indexOf(currentTheme)
+  const nextThemeIndex = (currentThemeIndex + 1) % themes.length
+  const nextTheme = themes[nextThemeIndex]
+
+  const newSettings = settings
+  newSettings.editor.theme = nextTheme
+
+  yield put(
+    settingsActions.editFile({
+      newSettings: JSON.stringify(newSettings),
+      noMessageBar: true,
+    }),
+  )
+}
+
 export default function* settingsWatcher() {
   yield takeEvery(getType(settingsActions.editFile), editSettingsCheckSaga)
   yield takeEvery(getType(settingsActions.edit.success), onSettingsEditSuccessSaga)
   yield takeEvery(getType(settingsActions.open), openSettingsSaga)
   yield takeEvery(getType(settingsActions.close), closeSettingsSaga)
+  yield takeEvery(getType(settingsActions.cycleEditorTheme), cycleEditorThemeSaga)
 }

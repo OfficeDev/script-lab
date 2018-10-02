@@ -4,6 +4,7 @@ import { loadTheme, createTheme } from 'office-ui-fabric-react/lib/Styling'
 
 const neutralColors: IThemeNeutralColors = {
   black: '#000000',
+  neutralDarker: '#1e1e1e',
   neutralDark: '#212121',
   neutralPrimary: '#333333',
   neutralSecondary: '#666666',

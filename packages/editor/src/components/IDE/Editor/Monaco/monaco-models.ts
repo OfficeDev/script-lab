@@ -9,7 +9,7 @@ interface IModelOptions {
   tabSize: number
 }
 
-let globalOptions = {}
+let globalOptions: Partial<IModelOptions> = {}
 
 export function createModel(monaco: any, file: IFile): ICachedModel {
   // TODO: move language to a computed property of each file

@@ -2,6 +2,7 @@ import React from 'react'
 import { storiesOf } from '@storybook/react'
 
 import { Footer } from './'
+import { getHeaderFabricTheme } from '../../../theme'
 
 const voidFunc = () => {}
 
@@ -13,6 +14,9 @@ const defaultProps = {
   hasCustomFunctions: false,
   isWeb: false,
   language: 'typescript',
+  headerFabricTheme: getHeaderFabricTheme('EXCEL'),
+  currentEditorTheme: 'Dark',
+  cycleEditorTheme: voidFunc,
 }
 
 storiesOf('IDE|Footer', module)

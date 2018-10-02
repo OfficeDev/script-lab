@@ -300,6 +300,7 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
                 root: { paddingLeft: 0, paddingRight: 0 },
               }}
               farItems={[profilePic]}
+              ariaLabel={'Use left and right arrow keys to navigate between commands'}
             />
           </HeaderWrapper>
         </Customizer>
