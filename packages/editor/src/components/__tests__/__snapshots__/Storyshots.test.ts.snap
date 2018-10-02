@@ -9143,6 +9143,11 @@ exports[`Storyshots IDE|Header basic 1`] = `
               onMouseDown={[Function]}
               onMouseUp={[Function]}
               role="menuitem"
+              style={
+                Object {
+                  "paddingRight": "2rem",
+                }
+              }
               type="button"
             >
               <div
@@ -9475,6 +9480,11 @@ exports[`Storyshots IDE|Header custom functions view 1`] = `
               onMouseDown={[Function]}
               onMouseUp={[Function]}
               role="menuitem"
+              style={
+                Object {
+                  "paddingRight": "2rem",
+                }
+              }
               type="button"
             >
               <div
@@ -9807,6 +9817,11 @@ exports[`Storyshots IDE|Header settings view 1`] = `
               onMouseDown={[Function]}
               onMouseUp={[Function]}
               role="menuitem"
+              style={
+                Object {
+                  "paddingRight": "2rem",
+                }
+              }
               type="button"
             >
               <div
