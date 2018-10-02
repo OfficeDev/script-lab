@@ -54,8 +54,8 @@ describe('Header should render properly in basic case', () => {
       'nav',
       'solution-name',
       'run',
-      'share',
       'delete',
+      'share',
     ])
   })
 
@@ -95,8 +95,8 @@ describe("Header shouldn't show run button if isn't runnable", () => {
     expect(commandBarProps.items.map(({ key }) => key)).toEqual([
       'nav',
       'solution-name',
-      'share',
       'delete',
+      'share',
     ])
   })
 })
