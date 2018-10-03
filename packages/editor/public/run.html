@@ -55,10 +55,10 @@
       const data = JSON.stringify(state);
       const params = { data: data, isTrustedSnippet: true }
 
-      var runnerSlotName = window.location.href.indexOf('script-lab-react-alpha') >= 0
-        ? 'alpha'
-        : 'insiders';
-      var path = 'https://bornholm-runner-' + runnerSlotName + '.azurewebsites.net/compile/page';
+      var useAlphaRunner =
+          /^http(s?):\/\/script-lab-react-alpha\./.test(window.location.href) ||
+          /^http(s?):\/\/localhost/.test(window.location.href);
+      var path = 'https://bornholm-runner-' + (useAlphaRunner ? 'edge' : 'insiders') + '.azurewebsites.net/compile/page';
       let form = document.createElement('form');
       form.setAttribute('method', 'post');
       form.setAttribute('action', path);
