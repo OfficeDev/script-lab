@@ -1,5 +1,8 @@
 # Dogfooding Instructions
 
+To switch to Script Lab React, you first need to be in the
+**Beta** version of today's Script Lab. The extra layer of redirection is to ensure that people don't accidently end up in the new experience until it's ready.
+
 ## Step 1 - Open Script Lab's About Page
 
 You can do this by clicking opening the code editor and clicking the about button in the bottom left corner.
@@ -8,15 +11,29 @@ You can do this by clicking opening the code editor and clicking the about butto
 
 ## Step 2 - Switch to Script Lab's Beta Environment
 
+If you haven't already, switch to the `Beta` environment. Press `OK` and the page will reload.
+
 ![Open Script Lab Beta Environment](./.github/images/select-beta-from-about.png)
 
 ## Step 3 - Open the About Page of Script Lab Beta
 
-After opening the page, select the 'Script Lab React - Beta' option.
+After opening the page, select the `Script Lab React - Beta` option.
 
 ![Open About Page of Script Lab Beta](./.github/images/script-lab-react-beta-option.png)
 
 ## Step 4 - Start Dogfooding!
+
+For the basic scenarios, things should "just work". Moreover:
+
+- Keyboard accessibility is now enabled.
+- Font size, theme, and autoformatting can be configured in settings.
+- You can now search through your snippets.
+
+### Known Issues
+
+- For now, you must manually click `Refresh` at the top of the runner in order to refresh the snippet. (The message bar prompting for reload has not yet been implemented.)
+- For Custom Functions support, you will need to use today's version of Script Lab
+- All other issues can be found [here](https://github.com/OfficeDev/script-lab-react/issues). If you don't have access to the repo, see [more below](DOGFOOD.md#access).
 
 ## Step 5 - Switching Back
 
@@ -29,6 +46,8 @@ Once in the settings view, change environment to `beta` and press apply at the t
 ![Go Back to Script Lab](./.github/images/switch-back-to-regular-beta.png)
 
 ---
+
+<div id="access"></div>
 
 # Getting Access to the Repo
 
