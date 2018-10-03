@@ -48,8 +48,9 @@
         snippet: snippet,
         displayLanguage: 'en-us',
         isInsideOfficeApp: true,
-        returnUrl: window.location.origin + '/',
-        refreshUrl: window.location.origin + '/run.html'
+        returnUrl: 'NONE',
+        refreshUrl: window.location.origin + '/run.html',
+        hideSyncWithEditorButton: true
       };
 
       const data = JSON.stringify(state);
