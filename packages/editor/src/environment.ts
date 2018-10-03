@@ -36,3 +36,18 @@ export function getCurrentEnv(): 'local' | 'alpha' | 'beta' | 'production' {
     'https://script-lab-react.azurewebsites.net': 'production',
   }[window.location.origin]
 }
+
+export enum PlatformType {
+  PC = 'PC',
+  OfficeOnline = 'OfficeOnline',
+  Mac = 'Mac',
+  iOS = 'iOS',
+  Android = 'Android',
+  Universal = 'Universal',
+}
+
+export function getPlatform(): PlatformType {
+  const w = window as any
+  return ((w.Office && w.context && w.context.platform) ||
+    PlatformType.OfficeOnline) as PlatformType
+}

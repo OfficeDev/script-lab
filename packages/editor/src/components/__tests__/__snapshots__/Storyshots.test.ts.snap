@@ -9078,7 +9078,7 @@ exports[`Storyshots IDE|Header basic 1`] = `
         aria-describedby={undefined}
         aria-label={undefined}
         aria-labelledby={undefined}
-        className="ms-FocusZone ms-CommandBar root-145"
+        className="ms-FocusZone ms-CommandBar root-179"
         data-focuszone-id="FocusZone175"
         onFocus={[Function]}
         onKeyDown={[Function]}
@@ -9115,7 +9115,7 @@ exports[`Storyshots IDE|Header basic 1`] = `
               >
                 <i
                   aria-hidden={true}
-                  className="ms-Button-icon icon-179"
+                  className="ms-Button-icon icon-180"
                   data-icon-name="GlobalNavButton"
                   role="presentation"
                 >
@@ -9237,7 +9237,7 @@ exports[`Storyshots IDE|Header basic 1`] = `
               >
                 <i
                   aria-hidden={true}
-                  className="ms-Button-icon icon-179"
+                  className="ms-Button-icon icon-180"
                   data-icon-name="Delete"
                   role="presentation"
                 >
@@ -9285,7 +9285,7 @@ exports[`Storyshots IDE|Header basic 1`] = `
               >
                 <i
                   aria-hidden={true}
-                  className="ms-Button-icon icon-179"
+                  className="ms-Button-icon icon-180"
                   data-icon-name="Share"
                   role="presentation"
                 >
@@ -9303,7 +9303,7 @@ exports[`Storyshots IDE|Header basic 1`] = `
                 </div>
                 <i
                   aria-hidden={true}
-                  className="ms-Button-menuIcon menuIcon-180"
+                  className="ms-Button-menuIcon menuIcon-181"
                   data-icon-name="ChevronDown"
                   role="presentation"
                 >
@@ -9314,7 +9314,7 @@ exports[`Storyshots IDE|Header basic 1`] = `
           </div>
         </div>
         <div
-          className="ms-OverflowSet ms-CommandBar-secondaryCommand secondarySet-181"
+          className="ms-OverflowSet ms-CommandBar-secondaryCommand secondarySet-182"
           role="presentation"
         >
           <div
@@ -9350,16 +9350,16 @@ exports[`Storyshots IDE|Header basic 1`] = `
                   }
                 >
                   <div
-                    className="ms-Persona-coin ms-Persona--size28 coin-182"
+                    className="ms-Persona-coin ms-Persona--size28 coin-183"
                     size={7}
                   >
                     <div
-                      className="ms-Persona-imageArea imageArea-184"
+                      className="ms-Persona-imageArea imageArea-185"
                       style={undefined}
                     >
                       <div
                         aria-hidden="true"
-                        className="ms-Persona-initials initials-187"
+                        className="ms-Persona-initials initials-188"
                         style={undefined}
                       >
                         <i
@@ -9415,7 +9415,7 @@ exports[`Storyshots IDE|Header custom functions view 1`] = `
         aria-describedby={undefined}
         aria-label={undefined}
         aria-labelledby={undefined}
-        className="ms-FocusZone ms-CommandBar root-145"
+        className="ms-FocusZone ms-CommandBar root-179"
         data-focuszone-id="FocusZone196"
         onFocus={[Function]}
         onKeyDown={[Function]}
@@ -9452,7 +9452,7 @@ exports[`Storyshots IDE|Header custom functions view 1`] = `
               >
                 <i
                   aria-hidden={true}
-                  className="ms-Button-icon icon-179"
+                  className="ms-Button-icon icon-180"
                   data-icon-name="GlobalNavButton"
                   role="presentation"
                 >
@@ -9574,7 +9574,7 @@ exports[`Storyshots IDE|Header custom functions view 1`] = `
               >
                 <i
                   aria-hidden={true}
-                  className="ms-Button-icon icon-179"
+                  className="ms-Button-icon icon-180"
                   data-icon-name="Delete"
                   role="presentation"
                 >
@@ -9622,7 +9622,7 @@ exports[`Storyshots IDE|Header custom functions view 1`] = `
               >
                 <i
                   aria-hidden={true}
-                  className="ms-Button-icon icon-179"
+                  className="ms-Button-icon icon-180"
                   data-icon-name="Share"
                   role="presentation"
                 >
@@ -9640,7 +9640,7 @@ exports[`Storyshots IDE|Header custom functions view 1`] = `
                 </div>
                 <i
                   aria-hidden={true}
-                  className="ms-Button-menuIcon menuIcon-180"
+                  className="ms-Button-menuIcon menuIcon-181"
                   data-icon-name="ChevronDown"
                   role="presentation"
                 >
@@ -9651,7 +9651,7 @@ exports[`Storyshots IDE|Header custom functions view 1`] = `
           </div>
         </div>
         <div
-          className="ms-OverflowSet ms-CommandBar-secondaryCommand secondarySet-181"
+          className="ms-OverflowSet ms-CommandBar-secondaryCommand secondarySet-182"
           role="presentation"
         >
           <div
@@ -9687,16 +9687,16 @@ exports[`Storyshots IDE|Header custom functions view 1`] = `
                   }
                 >
                   <div
-                    className="ms-Persona-coin ms-Persona--size28 coin-182"
+                    className="ms-Persona-coin ms-Persona--size28 coin-183"
                     size={7}
                   >
                     <div
-                      className="ms-Persona-imageArea imageArea-184"
+                      className="ms-Persona-imageArea imageArea-185"
                       style={undefined}
                     >
                       <div
                         aria-hidden="true"
-                        className="ms-Persona-initials initials-187"
+                        className="ms-Persona-initials initials-188"
                         style={undefined}
                       >
                         <i
@@ -9752,7 +9752,7 @@ exports[`Storyshots IDE|Header settings view 1`] = `
         aria-describedby={undefined}
         aria-label={undefined}
         aria-labelledby={undefined}
-        className="ms-FocusZone ms-CommandBar root-145"
+        className="ms-FocusZone ms-CommandBar root-179"
         data-focuszone-id="FocusZone217"
         onFocus={[Function]}
         onKeyDown={[Function]}
@@ -9842,7 +9842,7 @@ exports[`Storyshots IDE|Header settings view 1`] = `
           </div>
         </div>
         <div
-          className="ms-OverflowSet ms-CommandBar-secondaryCommand secondarySet-181"
+          className="ms-OverflowSet ms-CommandBar-secondaryCommand secondarySet-182"
           role="presentation"
         >
           <div
@@ -9878,16 +9878,16 @@ exports[`Storyshots IDE|Header settings view 1`] = `
                   }
                 >
                   <div
-                    className="ms-Persona-coin ms-Persona--size28 coin-182"
+                    className="ms-Persona-coin ms-Persona--size28 coin-183"
                     size={7}
                   >
                     <div
-                      className="ms-Persona-imageArea imageArea-184"
+                      className="ms-Persona-imageArea imageArea-185"
                       style={undefined}
                     >
                       <div
                         aria-hidden="true"
-                        className="ms-Persona-initials initials-187"
+                        className="ms-Persona-initials initials-188"
                         style={undefined}
                       >
                         <i
@@ -9918,7 +9918,7 @@ exports[`Storyshots IDE|MessageBar basic error 1`] = `
 >
   <div
     aria-live="assertive"
-    className="ms-MessageBar ms-MessageBar--error ms-MessageBar-multiline root-201"
+    className="ms-MessageBar ms-MessageBar--error ms-MessageBar-multiline root-202"
   >
     <div
       className="ms-MessageBar-content content-118"
@@ -9928,7 +9928,7 @@ exports[`Storyshots IDE|MessageBar basic error 1`] = `
       >
         <i
           aria-hidden={true}
-          className="icon-203"
+          className="icon-204"
           data-icon-name="ErrorBadge"
           role="presentation"
         >
@@ -9936,7 +9936,7 @@ exports[`Storyshots IDE|MessageBar basic error 1`] = `
         </i>
       </div>
       <div
-        className="ms-MessageBar-text text-192"
+        className="ms-MessageBar-text text-193"
         id="MessageBar241"
       >
         <span
@@ -9951,7 +9951,7 @@ exports[`Storyshots IDE|MessageBar basic error 1`] = `
         aria-label="Close"
         aria-labelledby={undefined}
         aria-pressed={undefined}
-        className="ms-Button ms-Button--icon ms-MessageBar-dismissal dismissal-193"
+        className="ms-Button ms-Button--icon ms-MessageBar-dismissal dismissal-194"
         data-is-focusable={true}
         disabled={undefined}
         onClick={[Function]}
@@ -9967,7 +9967,7 @@ exports[`Storyshots IDE|MessageBar basic error 1`] = `
         >
           <i
             aria-hidden={true}
-            className="ms-Button-icon icon-194"
+            className="ms-Button-icon icon-195"
             data-icon-name="Clear"
             role="presentation"
           >
@@ -9986,7 +9986,7 @@ exports[`Storyshots IDE|MessageBar basic info 1`] = `
 >
   <div
     aria-live="polite"
-    className="ms-MessageBar ms-MessageBar-multiline root-191"
+    className="ms-MessageBar ms-MessageBar-multiline root-192"
   >
     <div
       className="ms-MessageBar-content content-118"
@@ -10004,7 +10004,7 @@ exports[`Storyshots IDE|MessageBar basic info 1`] = `
         </i>
       </div>
       <div
-        className="ms-MessageBar-text text-192"
+        className="ms-MessageBar-text text-193"
         id="MessageBar229"
       >
         <span
@@ -10019,7 +10019,7 @@ exports[`Storyshots IDE|MessageBar basic info 1`] = `
         aria-label="Close"
         aria-labelledby={undefined}
         aria-pressed={undefined}
-        className="ms-Button ms-Button--icon ms-MessageBar-dismissal dismissal-193"
+        className="ms-Button ms-Button--icon ms-MessageBar-dismissal dismissal-194"
         data-is-focusable={true}
         disabled={undefined}
         onClick={[Function]}
@@ -10035,7 +10035,7 @@ exports[`Storyshots IDE|MessageBar basic info 1`] = `
         >
           <i
             aria-hidden={true}
-            className="ms-Button-icon icon-194"
+            className="ms-Button-icon icon-195"
             data-icon-name="Clear"
             role="presentation"
           >
@@ -10054,7 +10054,7 @@ exports[`Storyshots IDE|MessageBar basic success 1`] = `
 >
   <div
     aria-live="polite"
-    className="ms-MessageBar ms-MessageBar--success ms-MessageBar-multiline root-195"
+    className="ms-MessageBar ms-MessageBar--success ms-MessageBar-multiline root-196"
   >
     <div
       className="ms-MessageBar-content content-118"
@@ -10064,7 +10064,7 @@ exports[`Storyshots IDE|MessageBar basic success 1`] = `
       >
         <i
           aria-hidden={true}
-          className="icon-197"
+          className="icon-198"
           data-icon-name="Completed"
           role="presentation"
         >
@@ -10072,7 +10072,7 @@ exports[`Storyshots IDE|MessageBar basic success 1`] = `
         </i>
       </div>
       <div
-        className="ms-MessageBar-text text-192"
+        className="ms-MessageBar-text text-193"
         id="MessageBar233"
       >
         <span
@@ -10087,7 +10087,7 @@ exports[`Storyshots IDE|MessageBar basic success 1`] = `
         aria-label="Close"
         aria-labelledby={undefined}
         aria-pressed={undefined}
-        className="ms-Button ms-Button--icon ms-MessageBar-dismissal dismissal-193"
+        className="ms-Button ms-Button--icon ms-MessageBar-dismissal dismissal-194"
         data-is-focusable={true}
         disabled={undefined}
         onClick={[Function]}
@@ -10103,7 +10103,7 @@ exports[`Storyshots IDE|MessageBar basic success 1`] = `
         >
           <i
             aria-hidden={true}
-            className="ms-Button-icon icon-194"
+            className="ms-Button-icon icon-195"
             data-icon-name="Clear"
             role="presentation"
           >
@@ -10122,7 +10122,7 @@ exports[`Storyshots IDE|MessageBar basic warning 1`] = `
 >
   <div
     aria-live="polite"
-    className="ms-MessageBar ms-MessageBar--warning ms-MessageBar-multiline root-198"
+    className="ms-MessageBar ms-MessageBar--warning ms-MessageBar-multiline root-199"
   >
     <div
       className="ms-MessageBar-content content-118"
@@ -10132,7 +10132,7 @@ exports[`Storyshots IDE|MessageBar basic warning 1`] = `
       >
         <i
           aria-hidden={true}
-          className="icon-200"
+          className="icon-201"
           data-icon-name="Info"
           role="presentation"
         >
@@ -10140,7 +10140,7 @@ exports[`Storyshots IDE|MessageBar basic warning 1`] = `
         </i>
       </div>
       <div
-        className="ms-MessageBar-text text-192"
+        className="ms-MessageBar-text text-193"
         id="MessageBar237"
       >
         <span
@@ -10155,7 +10155,7 @@ exports[`Storyshots IDE|MessageBar basic warning 1`] = `
         aria-label="Close"
         aria-labelledby={undefined}
         aria-pressed={undefined}
-        className="ms-Button ms-Button--icon ms-MessageBar-dismissal dismissal-193"
+        className="ms-Button ms-Button--icon ms-MessageBar-dismissal dismissal-194"
         data-is-focusable={true}
         disabled={undefined}
         onClick={[Function]}
@@ -10171,7 +10171,7 @@ exports[`Storyshots IDE|MessageBar basic warning 1`] = `
         >
           <i
             aria-hidden={true}
-            className="ms-Button-icon icon-194"
+            className="ms-Button-icon icon-195"
             data-icon-name="Clear"
             role="presentation"
           >
