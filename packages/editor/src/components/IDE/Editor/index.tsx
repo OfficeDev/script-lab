@@ -161,14 +161,15 @@ class Editor extends Component<IProps, IState> {
           // make it a pain to use
         }
       })
-
       if (
         this.props.editorSettings.isPrettierEnabled &&
         newFile.id !== SETTINGS_FILE_ID
       ) {
-        // Don't run prettier on the settings unless they manually do so
-        // this was causing false notifications of settings changing
-        this.editor.trigger('anyString', 'editor.action.formatDocument', '')
+        this.editor.trigger(
+          'editor' /* source, unused */,
+          'editor.action.formatDocument',
+          '',
+        )
       }
     }
   }
@@ -191,6 +192,16 @@ class Editor extends Component<IProps, IState> {
 
       '',
     )
+
+    editor.addAction({
+      id: 'trigger-suggest',
+      label: 'Trigger suggestion',
+      keybindings: [monaco.KeyCode.F2],
+      contextMenuGroupId: 'navigation',
+      contextMenuOrder: 0 /* put at top of context menu */,
+      run: () =>
+        editor.trigger('editor' /* source, unused */, 'editor.action.triggerSuggest', {}),
+    })
 
     editor.addCommand(
       monaco.KeyMod.CtrlCmd | monaco.KeyCode.US_COMMA,
