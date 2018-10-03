@@ -10,10 +10,13 @@ import { environmentName } from './environment'
 export const defaultSettings: ISettings = {
   editor: {
     theme: 'dark',
-    font: { family: 'Menlo', size: 16, lineHeight: 24 },
+    font: { family: 'Menlo', size: 14, lineHeight: 19 },
     minimap: false,
     tabSize: 2,
-    prettier: true,
+    prettier: {
+      enabled: true,
+      autoFormat: true,
+    },
     folding: true,
     linter: { mode: 'warning' },
     wordWrap: 'bounded',
