@@ -1,5 +1,10 @@
 import React from 'react'
 import { withTheme } from 'styled-components'
+
+import { Customizer } from 'office-ui-fabric-react/lib/Utilities'
+import { CommandBar, ICommandBarItemProps } from 'office-ui-fabric-react/lib/CommandBar'
+import { ITheme as IFabricTheme } from 'office-ui-fabric-react/lib/Styling'
+
 import { getCurrentEnv } from '../../../environment'
 import { PATHS } from '../../../constants'
 
@@ -7,11 +12,10 @@ import {
   DirectionalHint,
   ContextualMenuItemType,
 } from 'office-ui-fabric-react/lib/ContextualMenu'
-import { DefaultButton, IconButton } from 'office-ui-fabric-react/lib/Button'
+import { getCommandBarFabricTheme } from '../../../theme'
 
 import { HostType } from '@microsoft/office-js-helpers'
 
-import Only from '../../Only'
 import { Wrapper } from './styles'
 
 import { connect } from 'react-redux'
@@ -31,6 +35,8 @@ interface IPropsFromRedux {
   currentHost: string
   isWeb: boolean
   hasCustomFunctions: boolean
+  commandBarFabricTheme: IFabricTheme
+  currentEditorTheme: string
 }
 
 const mapStateToProps = (state, ownProps: IProps): IPropsFromRedux => ({
@@ -38,12 +44,15 @@ const mapStateToProps = (state, ownProps: IProps): IPropsFromRedux => ({
   currentHost: selectors.host.get(state),
   isWeb: selectors.host.getIsWeb(state),
   hasCustomFunctions: selectors.customFunctions.getHasCustomFunctions(state),
+  commandBarFabricTheme: getCommandBarFabricTheme(selectors.host.get(state)),
+  currentEditorTheme: selectors.settings.getPrettyEditorTheme(state),
 })
 
 interface IActionsFromRedux {
   onSettingsIconClick: () => void
   changeHost: (host: string) => void
   navigateToCustomFunctionsDashboard: () => void
+  cycleEditorTheme: () => void
 }
 
 const mapDispatchToProps = (dispatch): IActionsFromRedux => ({
@@ -51,6 +60,7 @@ const mapDispatchToProps = (dispatch): IActionsFromRedux => ({
   changeHost: (host: string) => dispatch(actions.host.change(host)),
   navigateToCustomFunctionsDashboard: () =>
     dispatch(actions.customFunctions.openDashboard()),
+  cycleEditorTheme: () => dispatch(actions.settings.cycleEditorTheme()),
 })
 
 export interface IProps extends IPropsFromRedux, IActionsFromRedux {
@@ -66,111 +76,113 @@ const FooterWithoutTheme = ({
   onSettingsIconClick,
   navigateToCustomFunctionsDashboard,
   changeHost,
+  commandBarFabricTheme,
+  currentEditorTheme,
+  cycleEditorTheme,
 }: IProps) => {
-  const buttonStyles = {
-    root: {
-      height: '100%',
-      backgroundColor: theme.primary,
-      color: theme.white, // for the carrot
-      selectors: {
-        ':hover': {
-          backgroundColor: `${theme.primaryDark} !important`,
-          color: theme.white,
-        },
-        ':active': {
-          backgroundColor: theme.primaryDark,
-          color: theme.white,
-        },
-      },
-    },
-    label: {
-      fontSize: '1.2rem',
-      color: theme.white,
-    },
-    icon: {
-      fontSize: '1.4rem',
-      color: theme.white,
-    },
-  }
-
-  return (
-    <Wrapper>
-      <Only when={hasCustomFunctions}>
-        <DefaultButton
-          primary={true}
-          text="Custom Functions Dashboard"
-          styles={buttonStyles}
-          onClick={navigateToCustomFunctionsDashboard}
-        />
-      </Only>
-
-      <Only when={isWeb}>
-        <DefaultButton
-          primary={true}
-          text={currentHost}
-          menuProps={{
-            isBeakVisible: true,
-            shouldFocusOnMount: true,
-            items: Object.keys(HostType) // TODO(nicobell): fix the hover color
-              .map(k => HostType[k])
-              .filter(v => v !== currentHost)
-              .map(v => ({
-                key: v,
-                text: v,
-                onClick: () => changeHost(v),
-                itemProps: {
-                  styles: {
-                    root: {
-                      background: theme.primary,
-                      selectors: {
-                        ':hover': {
-                          background: theme.primaryDark,
-                        },
-                        ':active': {
-                          background: theme.primaryDarker,
-                        },
-                      },
+  const iconStyles = { root: { fontSize: '1.4rem' } }
+  const items = [
+    {
+      hidden: !isWeb,
+      key: 'host-selector',
+      text: currentHost,
+      subMenuProps: {
+        isBeakVisible: true,
+        shouldFocusOnMount: true,
+        items: Object.keys(HostType)
+          .map(k => HostType[k])
+          .filter(v => v !== currentHost)
+          .map(v => ({
+            key: v,
+            text: v,
+            onClick: () => changeHost(v),
+            itemProps: {
+              styles: {
+                root: {
+                  background: theme.primary,
+                  selectors: {
+                    ':hover': {
+                      background: theme.primaryDark,
                     },
-                    label: {
-                      color: theme.white,
+                    ':active': {
+                      background: theme.primaryDarker,
                     },
                   },
                 },
-              })),
-            styles: props => ({
-              root: { backgroundColor: theme.primary, color: theme.white },
-            }),
+                label: {
+                  color: theme.white,
+                },
+              },
+            },
+          })),
+        styles: props => ({
+          root: { backgroundColor: theme.primary, color: theme.white },
+        }),
+      },
+    },
+    {
+      hidden: !hasCustomFunctions,
+      key: 'custom-functions-dashboard',
+      text: 'Custom Functions Dashboard',
+      onClick: navigateToCustomFunctionsDashboard,
+    },
+  ]
+    .filter(({ hidden }) => !hidden)
+    .map(item => ({ ...item, style: { fontSize: '1.2rem' } }))
+
+  const farItems = [
+    {
+      hidden: !languageMap[language.toLowerCase()],
+      key: 'editor-language',
+      text: languageMap[language.toLowerCase()],
+    },
+    {
+      key: 'cycle-theme',
+      iconProps: { iconName: 'Color', styles: { root: { fontSize: '1.2rem' } } },
+      text: currentEditorTheme,
+      ariaLabel: 'Cycle editor theme',
+      onClick: cycleEditorTheme,
+    },
+    {
+      hidden: getCurrentEnv() === 'prod',
+      key: 'report-an-issue',
+      iconOnly: true,
+      iconProps: { iconName: 'Emoji2', styles: iconStyles },
+      href: PATHS.GITHUB_ISSUE,
+      target: '_blank',
+      text: 'Report an Issue',
+      ariaLabel: 'Report an issue',
+    },
+
+    {
+      key: 'settings',
+      iconOnly: true,
+      iconProps: { iconName: 'Settings', styles: iconStyles },
+      text: 'Settings',
+      ariaLabel: 'Settings',
+      onClick: onSettingsIconClick,
+    },
+  ]
+    .filter(({ hidden }) => !hidden)
+    .map(item => ({ ...item, style: { fontSize: '1.2rem' } }))
+
+  return (
+    <Customizer settings={{ theme: commandBarFabricTheme }}>
+      <Wrapper>
+        <CommandBar
+          items={items}
+          farItems={farItems}
+          styles={{
+            root: {
+              paddingLeft: 0,
+              paddingRight: 0,
+              height: '2rem',
+            },
           }}
-          styles={buttonStyles}
+          ariaLabel={'Use left and right arrow keys to navigate between commands'}
         />
-      </Only>
-
-      <Only when={languageMap[language.toLowerCase()]}>
-        <DefaultButton
-          primary={true}
-          text={languageMap[language.toLowerCase()]}
-          styles={buttonStyles}
-        />
-      </Only>
-
-      <Only when={getCurrentEnv() !== 'production'}>
-        <IconButton
-          primary={true}
-          iconProps={{ iconName: 'Bug' }}
-          styles={buttonStyles}
-          href={PATHS.GITHUB_ISSUE}
-          ariaLabel="Report an issue"
-        />
-      </Only>
-
-      <IconButton
-        primary={true}
-        ariaLabel="Settings"
-        iconProps={{ iconName: 'Settings' }}
-        styles={buttonStyles}
-        onClick={onSettingsIconClick}
-      />
-    </Wrapper>
+      </Wrapper>
+    </Customizer>
   )
 }
 

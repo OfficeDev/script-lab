@@ -9,11 +9,16 @@ interface IEditorSettings {
   }
   minimap: boolean
   tabSize: 2 | 4
-  prettier: boolean
+  prettier: {
+    enabled: boolean
+    autoFormat: boolean
+  }
   folding: boolean
   linter: {
     mode: string
   }
+  wordWrap: 'on' | 'off' | 'bounded' | 'wordWrapColumn'
+  wordWrapColumn: number
 }
 
 interface IHostSpecificSettings {

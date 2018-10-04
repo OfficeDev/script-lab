@@ -32,6 +32,8 @@
   <script>
 
     window.onmessage = function (event) {
+      // In order to fix the IE cross-tab issue (#147)
+      localStorage.setItem('playground_dummy_key', 'null')
 
       var solution = localStorage.getItem('activeSolution');
       console.log('posting message')

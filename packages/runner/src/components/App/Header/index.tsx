@@ -3,9 +3,9 @@ import React from 'react'
 import { Customizer } from 'office-ui-fabric-react/lib/Utilities'
 import { CommandBar, ICommandBarItemProps } from 'office-ui-fabric-react/lib/CommandBar'
 
-import { getHeaderFabricTheme } from '../../../theme'
+import { getCommandBarFabricTheme } from '../../../theme'
 
-const theme = getHeaderFabricTheme('EXCEL')
+const theme = getCommandBarFabricTheme('EXCEL')
 
 interface IProps {
   solutionName: string

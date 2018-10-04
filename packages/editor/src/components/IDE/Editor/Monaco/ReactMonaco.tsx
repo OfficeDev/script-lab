@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
+import prettier from 'prettier/standalone'
+import isEqual from 'lodash/isEqual'
+import { setOptions } from './monaco-models'
+
 import librariesIntellisenseJSON from './libraryIntellisense'
 import SettingsSchema from '../../../../SettingsJSONSchema'
 import { SETTINGS_FILE_ID } from '../../../../constants'
-import isEqual from 'lodash/isEqual'
-import { setOptions } from './monaco-models'
 interface IDisposableFile {
   url: string
   disposable: monaco.IDisposable
@@ -42,19 +44,20 @@ function parse(libraries: string): string[] {
     .map(x => x!)
 }
 
-interface IReactMonaco {
+interface IProps {
   theme: string
   options: monaco.editor.IEditorConstructionOptions
   tabSize: number
+  isPrettierEnabled: boolean
   editorDidMount: (editor, monaco) => void
   libraries?: string
 }
 
-interface IReactMonacoState {
+interface IState {
   intellisenseFiles: IDisposableFile[]
 }
 
-class ReactMonaco extends Component<IReactMonaco, IReactMonacoState> {
+class ReactMonaco extends Component<IProps, IState> {
   state = { intellisenseFiles: [] as IDisposableFile[] }
   container: React.RefObject<HTMLDivElement>
   editor: monaco.editor.IEditor
@@ -85,7 +88,7 @@ class ReactMonaco extends Component<IReactMonaco, IReactMonacoState> {
     await this.deinitializeMonaco()
   }
 
-  async componentDidUpdate(prevProps: IReactMonaco, prevState) {
+  async componentDidUpdate(prevProps: IProps, prevState) {
     if (prevProps.libraries !== this.props.libraries) {
       this.updateIntellisense()
     }
@@ -170,6 +173,37 @@ class ReactMonaco extends Component<IReactMonaco, IReactMonacoState> {
           },
         ],
       })
+
+      if (this.props.isPrettierEnabled) {
+        import('prettier/parser-typescript').then(prettierTypeScript => {
+          /* Adds Prettier Formatting to Monaco for TypeScript */
+          const PrettierTypeScriptFormatter: monaco.languages.DocumentFormattingEditProvider = {
+            provideDocumentFormattingEdits: (
+              document: monaco.editor.ITextModel,
+              options: monaco.languages.FormattingOptions,
+              token: monaco.CancellationToken,
+            ): monaco.languages.TextEdit[] => {
+              const text = document.getValue()
+              const formatted = prettier.format(text, {
+                parser: 'typescript',
+                plugins: [prettierTypeScript],
+              })
+
+              return [
+                {
+                  range: document.getFullModelRange(),
+                  text: formatted,
+                },
+              ]
+            },
+          }
+
+          monaco.languages.registerDocumentFormattingEditProvider(
+            'typescript',
+            PrettierTypeScriptFormatter,
+          )
+        })
+      }
 
       setOptions({ tabSize: this.props.tabSize })
       this.editorDidMount(this.editor, monaco)
@@ -270,7 +304,9 @@ class ReactMonaco extends Component<IReactMonaco, IReactMonacoState> {
   }
 
   render() {
-    return <div ref={this.container} style={{ width: '100%', height: '100%' }} />
+    return (
+      <div ref={this.container} style={{ width: '100%', height: '100%' }} role="main" />
+    )
   }
 }
 

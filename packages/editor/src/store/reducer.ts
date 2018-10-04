@@ -11,6 +11,7 @@ import solutions, { IState as ISolutionsState } from './solutions/reducer'
 import gists, { IState as IGistsState } from './gists/reducer'
 import host, { IState as IHostState } from './host/reducer'
 import samples, { IState as ISamplesState } from './samples/reducer'
+import screen, { IState as IScreenState } from './screen/reducer'
 
 export interface IState {
   customFunctions: ICFState
@@ -22,6 +23,7 @@ export interface IState {
   gists: IGistsState
   host: IHostState
   samples: ISamplesState
+  screen: IScreenState
   router: RouterState // from connected-react-router
 }
 
@@ -35,6 +37,7 @@ const root = combineReducers({
   gists,
   host,
   samples,
+  screen,
 })
 
 export default root

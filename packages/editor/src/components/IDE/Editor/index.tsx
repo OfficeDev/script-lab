@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 
-import debounce from 'lodash/debounce'
-import prettier from 'prettier/standalone'
-import prettierTypeScript from 'prettier/parser-typescript'
-
 import { MessageBar, MessageBarType } from 'office-ui-fabric-react/lib/MessageBar'
-import { Dialog, DialogType, DialogFooter } from 'office-ui-fabric-react/lib/Dialog'
-import { PrimaryButton, DefaultButton } from 'office-ui-fabric-react/lib/Button'
+import { DefaultButton } from 'office-ui-fabric-react/lib/Button'
+
+import Monaco from './Monaco'
+import Only from '../../Only'
+import SettingsNotAppliedDialog from './SettingsNotAppliedDialog'
+
+import { Layout } from './styles'
 
 import {
   SETTINGS_FILE_ID,
@@ -15,16 +16,20 @@ import {
   ABOUT_FILE_ID,
 } from '../../../constants'
 
-import Monaco from './Monaco'
-import Only from '../../Only'
-import { Layout } from './styles'
+import {
+  getModel,
+  setPosForModel,
+  getModelByIdIfExists,
+  removeModelFromCache,
+} from './Monaco/monaco-models'
 
-import { getModel, setPosForModel, getModelByIdIfExists } from './Monaco/monaco-models'
+import debounce from 'lodash/debounce'
 
 import { connect } from 'react-redux'
 import { withTheme } from 'styled-components'
-import { solutions, editor, settings } from '../../../store/actions'
+import actions from '../../../store/actions'
 import selectors from '../../../store/selectors'
+import { defaultSettings } from 'src/defaultSettings'
 
 interface IEditorSettings {
   monacoTheme: string
@@ -35,18 +40,22 @@ interface IEditorSettings {
   isMinimapEnabled: boolean
   isFoldingEnabled: boolean
   isPrettierEnabled: boolean
+  isAutoFormatEnabled: boolean
+  wordWrap: 'on' | 'off' | 'bounded' | 'wordWrapColumn'
+  wordWrapColumn: number
 }
 
 interface IPropsFromRedux {
   settingsFile: IFile
   isSettingsView: boolean
+  backgroundColor: string
   editorSettings: IEditorSettings
 }
 
 const mapStateToProps = (state, ownProps: IProps): IPropsFromRedux => ({
   settingsFile: selectors.solutions.getFile(state, SETTINGS_FILE_ID),
   isSettingsView: ownProps.activeSolution.id === SETTINGS_SOLUTION_ID,
-
+  backgroundColor: selectors.settings.getBackgroundColor(state),
   editorSettings: {
     monacoTheme: selectors.settings.getMonacoTheme(state),
     fontFamily: selectors.settings.getFontFamily(state),
@@ -56,6 +65,9 @@ const mapStateToProps = (state, ownProps: IProps): IPropsFromRedux => ({
     isMinimapEnabled: selectors.settings.getIsMinimapEnabled(state),
     isFoldingEnabled: selectors.settings.getIsFoldingEnabled(state),
     isPrettierEnabled: selectors.settings.getIsPrettierEnabled(state),
+    isAutoFormatEnabled: selectors.settings.getIsAutoFormatEnabled(state),
+    wordWrap: selectors.settings.getWordWrap(state),
+    wordWrapColumn: selectors.settings.getWordWrapColumn(state),
   },
 })
 
@@ -67,19 +79,22 @@ interface IActionsFromRedux {
     file: Partial<IEditableFileProperties>,
   ) => void
   openSettings: () => void
+  editSettings: (newSettings: string) => void
   signalEditorLoaded: () => void
 }
 
 const mapDispatchToProps = (dispatch, ownProps: IProps): IActionsFromRedux => ({
   changeActiveFile: (fileId: string) =>
-    dispatch(editor.open({ solutionId: ownProps.activeSolution.id, fileId })),
+    dispatch(actions.editor.open({ solutionId: ownProps.activeSolution.id, fileId })),
   editFile: (
     solutionId: string,
     fileId: string,
     file: Partial<IEditableFileProperties>,
-  ) => dispatch(solutions.edit({ id: solutionId, fileId, file })),
-  openSettings: () => dispatch(settings.open()),
-  signalEditorLoaded: () => dispatch(editor.signalHasLoaded()),
+  ) => dispatch(actions.solutions.edit({ id: solutionId, fileId, file })),
+  openSettings: () => dispatch(actions.settings.open()),
+  editSettings: (newSettings: string) =>
+    dispatch(actions.settings.editFile({ newSettings, showMessageBar: true })),
+  signalEditorLoaded: () => dispatch(actions.editor.signalHasLoaded()),
 })
 
 export interface IProps extends IPropsFromRedux, IActionsFromRedux {
@@ -101,10 +116,6 @@ class Editor extends Component<IProps, IState> {
   state = { isSaveSettingsDialogVisible: false }
   resizeInterval: any
   resizeListener: any
-
-  constructor(props) {
-    super(props)
-  }
 
   componentDidUpdate(prevProps) {
     if (prevProps.activeFile.id !== this.props.activeFile.id) {
@@ -149,6 +160,17 @@ class Editor extends Component<IProps, IState> {
           // make it a pain to use
         }
       })
+      if (
+        this.props.editorSettings.isPrettierEnabled &&
+        this.props.editorSettings.isAutoFormatEnabled &&
+        newFile.id !== SETTINGS_FILE_ID
+      ) {
+        this.editor.trigger(
+          'editor' /* source, unused */,
+          'editor.action.formatDocument',
+          '',
+        )
+      }
     }
   }
 
@@ -162,11 +184,15 @@ class Editor extends Component<IProps, IState> {
       })
     })
 
-    editor.addCommand(
-      monaco.KeyMod.CtrlCmd | monaco.KeyMod.Shift | monaco.KeyCode.KEY_F,
-      this.prettifyCode,
-      '',
-    )
+    editor.addAction({
+      id: 'trigger-suggest',
+      label: 'Trigger suggestion',
+      keybindings: [monaco.KeyCode.F2],
+      contextMenuGroupId: 'navigation',
+      contextMenuOrder: 0 /* put at top of context menu */,
+      run: () =>
+        editor.trigger('editor' /* source, unused */, 'editor.action.triggerSuggest', {}),
+    })
 
     editor.addCommand(
       monaco.KeyMod.CtrlCmd | monaco.KeyCode.US_COMMA,
@@ -192,6 +218,8 @@ class Editor extends Component<IProps, IState> {
       lineHeight,
       isMinimapEnabled,
       isFoldingEnabled,
+      wordWrap,
+      wordWrapColumn,
     } = editorSettings
 
     return {
@@ -217,11 +245,14 @@ class Editor extends Component<IProps, IState> {
       folding: isFoldingEnabled,
       glyphMargin: false,
       fixedOverflowWidgets: true,
-      ariaLabel: 'todo',
-      wordWrap: 'bounded',
+      ariaLabel: 'editor',
+      wordWrap,
+      wordWrapColumn,
+      wrappingIndent: 'indent',
       readOnly:
         this.props.activeSolution.id === NULL_SOLUTION_ID ||
         this.props.activeFile.id === ABOUT_FILE_ID,
+      lineNumbers: this.props.activeFile.id !== ABOUT_FILE_ID ? 'on' : 'off',
     }
   }
 
@@ -247,24 +278,9 @@ class Editor extends Component<IProps, IState> {
     })
   }
 
-  prettifyCode = () => {
-    const model = this.editor.getModel()
-    const unformatted = model.getValue()
-    if (unformatted) {
-      const formatted = prettier.format(unformatted, {
-        parser: 'typescript',
-        plugins: [prettierTypeScript],
-      })
-
-      if (formatted !== unformatted) {
-        model.setValue(formatted)
-      }
-    }
-  }
-
   // settings related methods
   openSettings = () => {
-    this.props.changeActiveFile(SETTINGS_FILE_ID)
+    this.props.openSettings()
     this.closeSaveSettingsDialog()
   }
 
@@ -272,10 +288,22 @@ class Editor extends Component<IProps, IState> {
   closeSaveSettingsDialog = () => this.setState({ isSaveSettingsDialogVisible: false })
 
   applySettingsUpdate = () => {
-    const copy = this.props.settingsFile
-    copy.content = getModel(this.monaco, copy).model.getValue()
-    this.props.editFile(SETTINGS_SOLUTION_ID, SETTINGS_FILE_ID, copy)
+    this.props.editSettings(
+      getModel(this.monaco, this.props.settingsFile).model.getValue(),
+    )
     this.closeSaveSettingsDialog()
+  }
+
+  resetSettings = () => {
+    const newSettings = JSON.stringify(
+      defaultSettings,
+      null,
+      this.props.editorSettings.tabSize,
+    )
+
+    this.props.editSettings(newSettings)
+
+    getModel(this.monaco, this.props.settingsFile).model.setValue(newSettings)
   }
 
   cancelSettingsUpdate = () => {
@@ -296,6 +324,7 @@ class Editor extends Component<IProps, IState> {
     const {
       activeFiles,
       activeSolution,
+      backgroundColor,
       editorSettings,
       isSettingsView,
       theme,
@@ -315,7 +344,7 @@ class Editor extends Component<IProps, IState> {
                   Apply
                 </DefaultButton>
                 <DefaultButton onClick={this.cancelSettingsUpdate}>Cancel</DefaultButton>
-                <DefaultButton>Reset</DefaultButton>
+                <DefaultButton onClick={this.resetSettings}>Reset</DefaultButton>
               </div>
             }
             isMultiline={false}
@@ -326,33 +355,20 @@ class Editor extends Component<IProps, IState> {
           </MessageBar>
         </Only>
 
-        <Dialog
-          isDarkOverlay={true}
-          hidden={!this.state.isSaveSettingsDialogVisible}
+        <SettingsNotAppliedDialog
+          isHidden={!this.state.isSaveSettingsDialogVisible}
           onDismiss={this.closeSaveSettingsDialog}
-          dialogContentProps={{
-            type: DialogType.largeHeader,
-            title: 'Oh no!',
-            subText:
-              "It looks like you made an edit to your settings that you didn't apply.Would you like to apply these changes ?",
-          }}
-          modalProps={{ isBlocking: true }}
-        >
-          {getModelByIdIfExists(this.monaco, SETTINGS_FILE_ID)
-            ? getModelByIdIfExists(this.monaco, SETTINGS_FILE_ID)!.model.getValue()
-            : 'no model ;('}
-          <DialogFooter>
-            <PrimaryButton text="Apply" onClick={this.applySettingsUpdate} />
-            <DefaultButton text="Cancel" onClick={this.cancelSettingsUpdate} />
-            <DefaultButton text="Open" onClick={this.openSettings} />
-          </DialogFooter>
-        </Dialog>
+          apply={this.applySettingsUpdate}
+          open={this.openSettings}
+          cancel={this.cancelSettingsUpdate}
+        />
 
-        <Layout style={{ backgroundColor: theme.neutralDark }}>
+        <Layout style={{ backgroundColor }}>
           <Monaco
             theme={monacoTheme}
             options={options}
             tabSize={editorSettings.tabSize}
+            isPrettierEnabled={editorSettings.isPrettierEnabled}
             editorDidMount={this.setupEditor}
             libraries={libraries && libraries.content}
           />

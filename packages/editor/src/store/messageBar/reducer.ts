@@ -69,8 +69,8 @@ const messageBarReducer = (
 
     case getType(settings.edit.success):
       return {
-        isVisible: true,
-        style: MessageBarType.info,
+        isVisible: action.payload.showMessageBar,
+        style: MessageBarType.success,
         text: 'Settings successfully applied.',
         link: null,
       }
