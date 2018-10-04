@@ -47,7 +47,9 @@ export const getIsMinimapEnabled = (state: IState): boolean =>
 export const getIsFoldingEnabled = (state: IState): boolean =>
   state.settings.values.editor.folding
 export const getIsPrettierEnabled = (state: IState): boolean =>
-  state.settings.values.editor.prettier
+  state.settings.values.editor.prettier.enabled
+export const getIsAutoFormatEnabled = (state: IState): boolean =>
+  state.settings.values.editor.prettier.autoFormat
 
 export const getTabSize = (state: IState): number => state.settings.values.editor.tabSize
 
