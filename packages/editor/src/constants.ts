@@ -46,3 +46,5 @@ export const PATHS = {
   BACKSTAGE: '/backstage',
   GITHUB_ISSUE: 'https://github.com/OfficeDev/script-lab-react/issues/new',
 } // stand alone page with no back button
+
+export const IS_TASK_PANE_WIDTH = 475

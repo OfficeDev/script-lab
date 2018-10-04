@@ -12,7 +12,12 @@ import YAML from 'js-yaml'
 
 import SolutionSettings from './SolutionSettings'
 import { ITheme as IFabricTheme } from 'office-ui-fabric-react/lib/Styling'
-import { NULL_SOLUTION_ID, SETTINGS_SOLUTION_ID, PATHS } from '../../../constants'
+import {
+  NULL_SOLUTION_ID,
+  SETTINGS_SOLUTION_ID,
+  PATHS,
+  IS_TASK_PANE_WIDTH,
+} from '../../../constants'
 import { getPlatform, PlatformType } from '../../../environment'
 
 import { connect } from 'react-redux'
@@ -34,6 +39,7 @@ interface IPropsFromRedux {
   isCustomFunctionsView: boolean
   isLoggedIn: boolean
   commandBarFabricTheme: IFabricTheme
+  screenWidth: number
 }
 
 const mapStateToProps = (state): IPropsFromRedux => ({
@@ -43,6 +49,7 @@ const mapStateToProps = (state): IPropsFromRedux => ({
   isRunnableOnThisHost: selectors.host.getIsRunnableOnThisHost(state),
   profilePicUrl: selectors.github.getProfilePicUrl(state),
   commandBarFabricTheme: getCommandBarFabricTheme(selectors.host.get(state)),
+  screenWidth: selectors.screen.getWidth(state),
 })
 
 interface IActionsFromRedux {
@@ -136,6 +143,7 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
       profilePicUrl,
       isRunnableOnThisHost,
       isLoggedIn,
+      screenWidth,
       theme,
       commandBarFabricTheme,
       logout,
@@ -221,7 +229,7 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
       .filter(({ hidden }) => !hidden)
       .map(option => {
         const { hidden, ...rest } = option
-        return rest
+        return { ...rest, iconOnly: screenWidth < IS_TASK_PANE_WIDTH }
       })
 
     const name = {
@@ -229,7 +237,15 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
       key: 'solution-name',
       text: solutionName,
       onClick: isSettingsView ? undefined : this.openSolutionSettings,
-      style: { paddingRight: '4rem' },
+      style: { paddingRight: '3rem' },
+      iconProps: {},
+      iconOnly: false,
+    }
+
+    if (screenWidth < IS_TASK_PANE_WIDTH) {
+      name.style.paddingRight = '0'
+      name.iconProps = { iconName: 'OfficeAddinsLogo' }
+      name.iconOnly = true
     }
 
     const nav = {
