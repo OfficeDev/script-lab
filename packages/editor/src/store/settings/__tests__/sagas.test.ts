@@ -58,7 +58,10 @@ describe('settings merge', () => {
         font: { family: 'Consolas', size: 17, lineHeight: 32 },
         linter: { mode: 'warning' },
         tabSize: 4,
-        prettier: false,
+        prettier: {
+          enabled: false,
+          autoFormat: false,
+        },
       },
       hostSpecific: {
         officeOnline: {
@@ -73,7 +76,7 @@ describe('settings merge', () => {
     expected.editor.font.size = 17
     expected.editor.font.lineHeight = 32
     expected.editor.tabSize = 4
-    expected.editor.prettier = false
+    expected.editor.prettier = { enabled: false, autoFormat: false }
     expected.hostSpecific.officeOnline.openEditorInNewTab = 'always'
 
     expect(merge(current, parsed, allowedSettings)).toEqual(expected)

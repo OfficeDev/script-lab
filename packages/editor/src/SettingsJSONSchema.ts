@@ -47,14 +47,14 @@ export default {
             size: {
               $id: '/properties/editor/properties/font/properties/size',
               type: 'integer',
-              default: 16,
-              examples: [16, 18, 24],
+              default: 14,
+              examples: [12, 14, 16, 18, 24],
             },
             lineHeight: {
               $id: '/properties/editor/properties/font/properties/lineHeight',
               type: 'integer',
-              default: 24,
-              examples: [18, 24, 36],
+              default: 19,
+              examples: [16, 19, 22, 24, 36],
             },
           },
         },
@@ -72,9 +72,22 @@ export default {
         },
         prettier: {
           $id: '/properties/editor/properties/prettier',
-          type: 'boolean',
-          default: true,
-          examples: [true, false],
+          type: 'object',
+          additionalProperties: false,
+          properties: {
+            enabled: {
+              $id: '/properties/editor/properties/prettier/properties/enabled',
+              type: 'boolean',
+              default: true,
+              examples: [true, false],
+            },
+            autoFormat: {
+              $id: '/properties/editor/properties/prettier/properties/autoFormat',
+              type: 'boolean',
+              default: true,
+              examples: [true, false],
+            },
+          },
         },
         folding: {
           $id: '/properties/editor/properties/folding',
