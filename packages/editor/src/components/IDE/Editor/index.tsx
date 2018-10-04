@@ -40,6 +40,7 @@ interface IEditorSettings {
   isMinimapEnabled: boolean
   isFoldingEnabled: boolean
   isPrettierEnabled: boolean
+  isAutoFormatEnabled: boolean
   wordWrap: 'on' | 'off' | 'bounded' | 'wordWrapColumn'
   wordWrapColumn: number
 }
@@ -64,6 +65,7 @@ const mapStateToProps = (state, ownProps: IProps): IPropsFromRedux => ({
     isMinimapEnabled: selectors.settings.getIsMinimapEnabled(state),
     isFoldingEnabled: selectors.settings.getIsFoldingEnabled(state),
     isPrettierEnabled: selectors.settings.getIsPrettierEnabled(state),
+    isAutoFormatEnabled: selectors.settings.getIsAutoFormatEnabled(state),
     wordWrap: selectors.settings.getWordWrap(state),
     wordWrapColumn: selectors.settings.getWordWrapColumn(state),
   },
@@ -160,6 +162,7 @@ class Editor extends Component<IProps, IState> {
       })
       if (
         this.props.editorSettings.isPrettierEnabled &&
+        this.props.editorSettings.isAutoFormatEnabled &&
         newFile.id !== SETTINGS_FILE_ID
       ) {
         this.editor.trigger(
@@ -245,6 +248,7 @@ class Editor extends Component<IProps, IState> {
       ariaLabel: 'editor',
       wordWrap,
       wordWrapColumn,
+      wrappingIndent: 'indent',
       readOnly:
         this.props.activeSolution.id === NULL_SOLUTION_ID ||
         this.props.activeFile.id === ABOUT_FILE_ID,
