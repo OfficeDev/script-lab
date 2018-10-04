@@ -1,7 +1,6 @@
---
+---
 name: Bug report
 about: Found a bug in Script Lab React? Please let us know.
-
 ---
 
 <!-- Use this template for bug/error reporting only -->
