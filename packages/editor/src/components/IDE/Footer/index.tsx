@@ -153,7 +153,7 @@ const FooterWithoutTheme = ({
         />
       </Only>
 
-      <Only when={getCurrentEnv() !== 'production'}>
+      <Only when={getCurrentEnv() !== 'prod'}>
         <IconButton
           primary={true}
           iconProps={{ iconName: 'Bug' }}
