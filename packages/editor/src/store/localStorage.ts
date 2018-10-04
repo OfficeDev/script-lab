@@ -86,7 +86,7 @@ export const saveState = (state: IState) => {
 export const loadState = (): Partial<IState> => {
   try {
     // In order to fix the IE cross-tab issue (#147)
-    localStorage.setItem('playground_dummy_key', Date.now().toString())
+    localStorage.setItem('playground_dummy_key', 'null')
 
     let solutions = JSON.parse(localStorage.getItem('solutions') || '{}')
     let files = JSON.parse(localStorage.getItem('files') || '{}')
@@ -138,7 +138,7 @@ export const loadState = (): Partial<IState> => {
 // custom functions
 export const getIsCustomFunctionRunnerAlive = (): boolean => {
   // In order to fix the IE cross-tab issue (#147)
-  localStorage.setItem('playground_dummy_key', Date.now().toString())
+  localStorage.setItem('playground_dummy_key', 'null')
 
   const lastHeartbeat = localStorage.getItem(
     localStorageKeys.customFunctionsLastHeartbeatTimestamp,
@@ -148,7 +148,7 @@ export const getIsCustomFunctionRunnerAlive = (): boolean => {
 
 export const getCustomFunctionRunnerLastUpdated = (): number => {
   // In order to fix the IE cross-tab issue (#147)
-  localStorage.setItem('playground_dummy_key', Date.now().toString())
+  localStorage.setItem('playground_dummy_key', 'null')
 
   const lastUpdated = localStorage.getItem(
     localStorageKeys.customFunctionsLastUpdatedCodeTimestamp,
@@ -158,7 +158,7 @@ export const getCustomFunctionRunnerLastUpdated = (): number => {
 
 export const getCustomFunctionLogs = (): ILogData[] | null => {
   // In order to fix the IE cross-tab issue (#147)
-  localStorage.setItem('playground_dummy_key', Date.now().toString())
+  localStorage.setItem('playground_dummy_key', 'null')
 
   const logsString = localStorage.getItem(localStorageKeys.log)
 
