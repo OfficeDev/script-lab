@@ -75,6 +75,7 @@
     "@types/react-dom": "^16.0.5",
     "@types/storybook__addon-storyshots": "^3.4.1",
     "@types/storybook__react": "^3.0.7",
+    "@uifabric/jest-serializer-merge-styles": "^6.0.5",
     "babel-core": "^6.26.3",
     "babel-runtime": "^6.26.0",
     "enzyme": "^3.4.1",
