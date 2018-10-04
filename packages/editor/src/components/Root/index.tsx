@@ -3,11 +3,14 @@ import { Provider } from 'react-redux'
 import { ConnectedRouter } from 'connected-react-router'
 
 import App from '../App'
+import WidthMonitor from '../WidthMonitor'
 
 export default ({ store, history }) => (
   <Provider store={store}>
     <ConnectedRouter history={history}>
-      <App />
+      <WidthMonitor>
+        <App />
+      </WidthMonitor>
     </ConnectedRouter>
   </Provider>
 )

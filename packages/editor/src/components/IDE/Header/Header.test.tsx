@@ -38,6 +38,7 @@ describe('Header should render properly in basic case', () => {
     isSettingsView: false,
     isCustomFunctionsView: false,
     profilePicUrl: undefined,
+    screenWidth: 700,
     commandBarFabricTheme: getCommandBarFabricTheme(host) as IFabricTheme,
     ...actionProps,
   }
@@ -85,6 +86,7 @@ describe("Header shouldn't show run button if isn't runnable", () => {
     isSettingsView: false,
     isCustomFunctionsView: false,
     profilePicUrl: undefined,
+    screenWidth: 800,
     commandBarFabricTheme: getCommandBarFabricTheme(host) as IFabricTheme,
     ...actionProps,
   }

@@ -17040,7 +17040,7 @@ exports[`Storyshots IDE|Header basic 1`] = `
               role="menuitem"
               style={
                 Object {
-                  "paddingRight": "4rem",
+                  "paddingRight": "3rem",
                 }
               }
               type="button"
@@ -17056,6 +17056,27 @@ exports[`Storyshots IDE|Header basic 1`] = `
                       justify-content: center;
                     }
               >
+                <i
+                  aria-hidden={true}
+                  className=
+                      ms-Button-icon
+                      {
+                        color: #f4f4f4;
+                        display: inline-block;
+                        flex-shrink: 0;
+                        font-size: 16px;
+                        height: 16px;
+                        line-height: 16px;
+                        margin-bottom: 0;
+                        margin-left: 4px;
+                        margin-right: 4px;
+                        margin-top: 0;
+                        text-align: center;
+                        vertical-align: middle;
+                      }
+                  data-icon-name={undefined}
+                  role="presentation"
+                />
                 <div
                   className=
                       ms-Button-textContainer
@@ -18109,7 +18130,7 @@ exports[`Storyshots IDE|Header custom functions view 1`] = `
               role="menuitem"
               style={
                 Object {
-                  "paddingRight": "4rem",
+                  "paddingRight": "3rem",
                 }
               }
               type="button"
@@ -18125,6 +18146,27 @@ exports[`Storyshots IDE|Header custom functions view 1`] = `
                       justify-content: center;
                     }
               >
+                <i
+                  aria-hidden={true}
+                  className=
+                      ms-Button-icon
+                      {
+                        color: #f4f4f4;
+                        display: inline-block;
+                        flex-shrink: 0;
+                        font-size: 16px;
+                        height: 16px;
+                        line-height: 16px;
+                        margin-bottom: 0;
+                        margin-left: 4px;
+                        margin-right: 4px;
+                        margin-top: 0;
+                        text-align: center;
+                        vertical-align: middle;
+                      }
+                  data-icon-name={undefined}
+                  role="presentation"
+                />
                 <div
                   className=
                       ms-Button-textContainer
@@ -19178,7 +19220,7 @@ exports[`Storyshots IDE|Header settings view 1`] = `
               role="menuitem"
               style={
                 Object {
-                  "paddingRight": "4rem",
+                  "paddingRight": "3rem",
                 }
               }
               type="button"
@@ -19194,6 +19236,27 @@ exports[`Storyshots IDE|Header settings view 1`] = `
                       justify-content: center;
                     }
               >
+                <i
+                  aria-hidden={true}
+                  className=
+                      ms-Button-icon
+                      {
+                        color: #f4f4f4;
+                        display: inline-block;
+                        flex-shrink: 0;
+                        font-size: 16px;
+                        height: 16px;
+                        line-height: 16px;
+                        margin-bottom: 0;
+                        margin-left: 4px;
+                        margin-right: 4px;
+                        margin-top: 0;
+                        text-align: center;
+                        vertical-align: middle;
+                      }
+                  data-icon-name={undefined}
+                  role="presentation"
+                />
                 <div
                   className=
                       ms-Button-textContainer

@@ -12,6 +12,7 @@ const defaultHeaderProps = {
   isSettingsView: false,
   isCustomFunctionsView: false,
   isLoggedIn: false,
+  screenWidth: 700,
   commandBarFabricTheme: getCommandBarFabricTheme('EXCEL'),
 
   login: voidFunc,
