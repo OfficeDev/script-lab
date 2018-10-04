@@ -406,6 +406,13 @@
     "@uifabric/styling" ">=6.27.0 <7.0.0"
     tslib "^1.7.1"
 
+"@uifabric/jest-serializer-merge-styles@^6.0.5":
+  version "6.0.5"
+  resolved "https://registry.yarnpkg.com/@uifabric/jest-serializer-merge-styles/-/jest-serializer-merge-styles-6.0.5.tgz#3751dd6c9d55567466db8a00391cadb5bbc21f36"
+  dependencies:
+    "@uifabric/merge-styles" ">=6.9.1 <7.0.0"
+    "@uifabric/set-version" ">=1.1.0 <2.0.0"
+
 "@uifabric/merge-styles@>=6.9.1 <7.0.0":
   version "6.9.1"
   resolved "https://registry.yarnpkg.com/@uifabric/merge-styles/-/merge-styles-6.9.1.tgz#da173b7a978f22bae2a899ff29c7131355d4c122"
