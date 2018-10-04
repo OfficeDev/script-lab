@@ -55,21 +55,24 @@ export const merge = (valid, parsed, allowed) => {
 }
 
 function* editSettingsCheckSaga(action: ActionType<typeof settingsActions.editFile>) {
-  const { settings } = yield select()
-  const { values } = settings
+  const settings = yield select(selectors.settings.get)
 
   try {
     const parsed = JSON.parse(action.payload.newSettings)
-    const newSettings = merge(values, parsed, allowedSettings)
+    const newSettings = merge(settings, parsed, allowedSettings)
     const currentSettingsFile = yield select(
       selectors.solutions.getFile,
       SETTINGS_FILE_ID,
     )
-    currentSettingsFile.content = newSettings
+    currentSettingsFile.content = JSON.stringify(
+      newSettings,
+      null,
+      settings.editor.tabSize,
+    )
     yield put(
       settingsActions.edit.success({
         settings: newSettings,
-        noMessageBar: action.payload.noMessageBar,
+        showMessageBar: action.payload.showMessageBar,
       }),
     )
     yield put(
@@ -130,7 +133,7 @@ function* cycleEditorThemeSaga() {
   yield put(
     settingsActions.editFile({
       newSettings: JSON.stringify(newSettings),
-      noMessageBar: true,
+      showMessageBar: false,
     }),
   )
 }

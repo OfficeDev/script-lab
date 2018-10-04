@@ -7,6 +7,8 @@ import { ITheme as IFabricTheme } from '@uifabric/styling'
 import { getCommandBarFabricTheme } from '../../../theme'
 import { ICommandBarProps } from 'office-ui-fabric-react/lib/CommandBar'
 
+const host = 'EXCEL'
+
 const actionProps = {
   showBackstage: () => {},
   editSolution: (
@@ -26,7 +28,7 @@ const actionProps = {
 }
 
 describe('Header should render properly in basic case', () => {
-  const normalExample = getBoilerplate('EXCEL')
+  const normalExample = getBoilerplate(host)
 
   const solution = normalExample
   const headerProps = {
@@ -36,7 +38,7 @@ describe('Header should render properly in basic case', () => {
     isSettingsView: false,
     isCustomFunctionsView: false,
     profilePicUrl: undefined,
-    commandBarFabricTheme: getCommandBarFabricTheme('WEB') as IFabricTheme,
+    commandBarFabricTheme: getCommandBarFabricTheme(host) as IFabricTheme,
     ...actionProps,
   }
 
@@ -73,7 +75,7 @@ describe('Header should render properly in basic case', () => {
 })
 
 describe("Header shouldn't show run button if isn't runnable", () => {
-  const normalExample = getBoilerplate('EXCEL')
+  const normalExample = getBoilerplate(host)
 
   const solution = normalExample
   const headerProps = {
@@ -83,7 +85,7 @@ describe("Header shouldn't show run button if isn't runnable", () => {
     isSettingsView: false,
     isCustomFunctionsView: false,
     profilePicUrl: undefined,
-    commandBarFabricTheme: getCommandBarFabricTheme('WEB') as IFabricTheme,
+    commandBarFabricTheme: getCommandBarFabricTheme(host) as IFabricTheme,
     ...actionProps,
   }
 

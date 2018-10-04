@@ -91,7 +91,7 @@ const mapDispatchToProps = (dispatch, ownProps: IProps): IActionsFromRedux => ({
   ) => dispatch(actions.solutions.edit({ id: solutionId, fileId, file })),
   openSettings: () => dispatch(actions.settings.open()),
   editSettings: (newSettings: string) =>
-    dispatch(actions.settings.editFile({ newSettings })),
+    dispatch(actions.settings.editFile({ newSettings, showMessageBar: true })),
   signalEditorLoaded: () => dispatch(actions.editor.signalHasLoaded()),
 })
 
