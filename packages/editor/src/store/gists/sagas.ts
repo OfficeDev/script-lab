@@ -18,6 +18,8 @@ export function* fetchAllGistMetadataSaga() {
     return
   }
 
+  const currentHost = yield select(selectors.host.get)
+
   const { response, error } = yield call(github.request, {
     method: 'GET',
     path: 'gists',
@@ -28,10 +30,15 @@ export function* fetchAllGistMetadataSaga() {
     const gistsMetadata = response.map(gist => {
       const { files, id, description } = gist
       const file = files[Object.keys(files)[0]]
-      const splitFileName = file.filename.split('.')
-      const title = splitFileName[0]
 
-      const host = splitFileName.length > 2 ? splitFileName[1] : undefined // TODO: how 2 handle legacy case
+      const result = /^(.*)\.(EXCEL|WORD|POWERPOINT|ACCESS|PROJECT|OUTLOOK|ONENOTE|WEB)\.yaml$/.exec(
+        file.filename,
+      )
+
+      const { title, host } =
+        result !== null
+          ? { title: result[1], host: result[2] }
+          : { title: file.filename.replace('.yaml', ''), host: currentHost }
 
       const url = file.raw_url
 

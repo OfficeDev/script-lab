@@ -103,6 +103,7 @@ interface IThemePrimaryColors {
 
 interface IThemeNeutralColors {
   black: string;
+  neutralDarker: string;
   neutralDark: string;
   neutralPrimary: string;
   neutralSecondary: string;

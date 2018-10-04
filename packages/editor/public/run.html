@@ -42,6 +42,9 @@
     You need to enable JavaScript to run this app.
   </noscript>
   <script>
+    // In order to fix the IE cross-tab issue (#147)
+    localStorage.setItem('playground_dummy_key', 'null')
+
     var snippet = JSON.parse(localStorage.getItem('activeSnippet'));
     if (snippet) {
       const state = {

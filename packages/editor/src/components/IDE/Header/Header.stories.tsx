@@ -2,7 +2,7 @@ import React from 'react'
 import { storiesOf } from '@storybook/react'
 
 import { Header } from './'
-import { getHeaderFabricTheme } from '../../../theme'
+import { getCommandBarFabricTheme } from '../../../theme'
 import { getBoilerplate, getBoilerplateSolution } from '../../../newSolutionData'
 
 const voidFunc = () => {}
@@ -12,7 +12,7 @@ const defaultHeaderProps = {
   isSettingsView: false,
   isCustomFunctionsView: false,
   isLoggedIn: false,
-  headerFabricTheme: getHeaderFabricTheme('EXCEL'),
+  commandBarFabricTheme: getCommandBarFabricTheme('EXCEL'),
 
   login: voidFunc,
   logout: voidFunc,
