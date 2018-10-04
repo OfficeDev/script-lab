@@ -48,14 +48,18 @@
         snippet: snippet,
         displayLanguage: 'en-us',
         isInsideOfficeApp: true,
-        returnUrl: window.location.origin + '/',
-        refreshUrl: window.location.origin + '/run.html'
+        returnUrl: 'NONE',
+        refreshUrl: window.location.origin + '/run.html',
+        hideSyncWithEditorButton: true
       };
 
       const data = JSON.stringify(state);
       const params = { data: data, isTrustedSnippet: true }
 
-      var path = 'https://bornholm-runner-insiders.azurewebsites.net/compile/page'
+      var useAlphaRunner =
+          /^http(s?):\/\/script-lab-react-alpha\./.test(window.location.href) ||
+          /^http(s?):\/\/localhost/.test(window.location.href);
+      var path = 'https://bornholm-runner-' + (useAlphaRunner ? 'edge' : 'insiders') + '.azurewebsites.net/compile/page';
       let form = document.createElement('form');
       form.setAttribute('method', 'post');
       form.setAttribute('action', path);

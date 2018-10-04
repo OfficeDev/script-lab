@@ -158,10 +158,15 @@ class Editor extends Component<IProps, IState> {
           // make it a pain to use
         }
       })
-
-      // For some unknown reason, the editor.getAction('editor.action.format').run() did not work at this point in the code
-      if (this.props.editorSettings.isPrettierEnabled) {
-        this.editor.trigger('anyString', 'editor.action.formatDocument', '')
+      if (
+        this.props.editorSettings.isPrettierEnabled &&
+        newFile.id !== SETTINGS_FILE_ID
+      ) {
+        this.editor.trigger(
+          'editor' /* source, unused */,
+          'editor.action.formatDocument',
+          '',
+        )
       }
     }
   }
@@ -174,6 +179,16 @@ class Editor extends Component<IProps, IState> {
       editor.onDidChangeModelContent(event => {
         this.handleChange()
       })
+    })
+
+    editor.addAction({
+      id: 'trigger-suggest',
+      label: 'Trigger suggestion',
+      keybindings: [monaco.KeyCode.F2],
+      contextMenuGroupId: 'navigation',
+      contextMenuOrder: 0 /* put at top of context menu */,
+      run: () =>
+        editor.trigger('editor' /* source, unused */, 'editor.action.triggerSuggest', {}),
     })
 
     editor.addCommand(
@@ -233,6 +248,7 @@ class Editor extends Component<IProps, IState> {
       readOnly:
         this.props.activeSolution.id === NULL_SOLUTION_ID ||
         this.props.activeFile.id === ABOUT_FILE_ID,
+      lineNumbers: this.props.activeFile.id !== ABOUT_FILE_ID ? 'on' : 'off',
     }
   }
 

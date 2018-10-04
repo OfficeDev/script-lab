@@ -37,7 +37,9 @@ export const MessageBar = ({ messageBarProps, dismiss }: IProps) => (
     >
       {messageBarProps.text}
       {messageBarProps.link && (
-        <Link href={messageBarProps.link.url}>{messageBarProps.link.text}</Link>
+        <Link href={messageBarProps.link.url} target="_blank">
+          {messageBarProps.link.text}
+        </Link>
       )}
     </FabricMessageBar>
   </div>

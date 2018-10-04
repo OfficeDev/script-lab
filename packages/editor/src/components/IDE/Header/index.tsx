@@ -13,6 +13,7 @@ import YAML from 'js-yaml'
 import SolutionSettings from './SolutionSettings'
 import { ITheme as IFabricTheme } from 'office-ui-fabric-react/lib/Styling'
 import { NULL_SOLUTION_ID, SETTINGS_SOLUTION_ID, PATHS } from '../../../constants'
+import { getPlatform, PlatformType } from '../../../environment'
 
 import { connect } from 'react-redux'
 import actions from '../../../store/actions'
@@ -202,19 +203,19 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
       },
       {
         hidden: isNullSolution,
+        key: 'delete',
+        text: 'Delete',
+        iconProps: { iconName: 'Delete' },
+        onClick: deleteSolution,
+      },
+      {
+        hidden: isNullSolution,
         key: 'share',
         text: 'Share',
         iconProps: { iconName: 'Share' },
         subMenuProps: {
           items: shareOptions,
         },
-      },
-      {
-        hidden: isNullSolution,
-        key: 'delete',
-        text: 'Delete',
-        iconProps: { iconName: 'Delete' },
-        onClick: deleteSolution,
       },
     ]
       .filter(({ hidden }) => !hidden)
@@ -228,6 +229,7 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
       key: 'solution-name',
       text: solutionName,
       onClick: isSettingsView ? undefined : this.openSolutionSettings,
+      style: { paddingRight: '4rem' },
     }
 
     const nav = {
@@ -297,7 +299,14 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
             <CommandBar
               items={items}
               styles={{
-                root: { paddingLeft: 0, paddingRight: 0 },
+                root: {
+                  paddingLeft: 0,
+                  paddingRight: {
+                    [PlatformType.PC]: '20px',
+                    [PlatformType.Mac]: '40px',
+                    [PlatformType.OfficeOnline]: '0px',
+                  }[getPlatform()],
+                },
               }}
               farItems={[profilePic]}
               ariaLabel={'Use left and right arrow keys to navigate between commands'}
