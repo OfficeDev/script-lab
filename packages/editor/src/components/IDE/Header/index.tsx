@@ -19,7 +19,7 @@ import { connect } from 'react-redux'
 import actions from '../../../store/actions'
 import selectors from '../../../store/selectors'
 
-import { getHeaderFabricTheme } from '../../../theme'
+import { getCommandBarFabricTheme } from '../../../theme'
 import { push } from 'connected-react-router'
 
 const HeaderWrapper = styled.header`
@@ -33,7 +33,7 @@ interface IPropsFromRedux {
   isSettingsView: boolean
   isCustomFunctionsView: boolean
   isLoggedIn: boolean
-  headerFabricTheme: IFabricTheme
+  commandBarFabricTheme: IFabricTheme
 }
 
 const mapStateToProps = (state): IPropsFromRedux => ({
@@ -42,7 +42,7 @@ const mapStateToProps = (state): IPropsFromRedux => ({
   isLoggedIn: !!selectors.github.getToken(state),
   isRunnableOnThisHost: selectors.host.getIsRunnableOnThisHost(state),
   profilePicUrl: selectors.github.getProfilePicUrl(state),
-  headerFabricTheme: getHeaderFabricTheme(selectors.host.get(state)),
+  commandBarFabricTheme: getCommandBarFabricTheme(selectors.host.get(state)),
 })
 
 interface IActionsFromRedux {
@@ -137,7 +137,7 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
       isRunnableOnThisHost,
       isLoggedIn,
       theme,
-      headerFabricTheme,
+      commandBarFabricTheme,
       logout,
       login,
       closeSettings,
@@ -294,7 +294,7 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
 
     return (
       <>
-        <Customizer settings={{ theme: headerFabricTheme }}>
+        <Customizer settings={{ theme: commandBarFabricTheme }}>
           <HeaderWrapper>
             <CommandBar
               items={items}
@@ -309,6 +309,7 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
                 },
               }}
               farItems={[profilePic]}
+              ariaLabel={'Use left and right arrow keys to navigate between commands'}
             />
           </HeaderWrapper>
         </Customizer>

@@ -47,13 +47,14 @@ interface IEditorSettings {
 interface IPropsFromRedux {
   settingsFile: IFile
   isSettingsView: boolean
+  backgroundColor: string
   editorSettings: IEditorSettings
 }
 
 const mapStateToProps = (state, ownProps: IProps): IPropsFromRedux => ({
   settingsFile: selectors.solutions.getFile(state, SETTINGS_FILE_ID),
   isSettingsView: ownProps.activeSolution.id === SETTINGS_SOLUTION_ID,
-
+  backgroundColor: selectors.settings.getBackgroundColor(state),
   editorSettings: {
     monacoTheme: selectors.settings.getMonacoTheme(state),
     fontFamily: selectors.settings.getFontFamily(state),
@@ -76,7 +77,7 @@ interface IActionsFromRedux {
     file: Partial<IEditableFileProperties>,
   ) => void
   openSettings: () => void
-  editSettings: (currentSettings: IFile, newSettings: IFile) => void
+  editSettings: (newSettings: string) => void
   signalEditorLoaded: () => void
 }
 
@@ -89,8 +90,8 @@ const mapDispatchToProps = (dispatch, ownProps: IProps): IActionsFromRedux => ({
     file: Partial<IEditableFileProperties>,
   ) => dispatch(actions.solutions.edit({ id: solutionId, fileId, file })),
   openSettings: () => dispatch(actions.settings.open()),
-  editSettings: (currentSettings: IFile, newSettings: IFile) =>
-    dispatch(actions.settings.editFile({ currentSettings, newSettings })),
+  editSettings: (newSettings: string) =>
+    dispatch(actions.settings.editFile({ newSettings, showMessageBar: true })),
   signalEditorLoaded: () => dispatch(actions.editor.signalHasLoaded()),
 })
 
@@ -113,10 +114,6 @@ class Editor extends Component<IProps, IState> {
   state = { isSaveSettingsDialogVisible: false }
   resizeInterval: any
   resizeListener: any
-
-  constructor(props) {
-    super(props)
-  }
 
   componentDidUpdate(prevProps) {
     if (prevProps.activeFile.id !== this.props.activeFile.id) {
@@ -183,15 +180,6 @@ class Editor extends Component<IProps, IState> {
         this.handleChange()
       })
     })
-
-    editor.addCommand(
-      monaco.KeyMod.CtrlCmd | monaco.KeyMod.Shift | monaco.KeyCode.KEY_F,
-      () => {
-        editor.getAction('editor.action.format').run()
-      },
-
-      '',
-    )
 
     editor.addAction({
       id: 'trigger-suggest',
@@ -296,21 +284,22 @@ class Editor extends Component<IProps, IState> {
   closeSaveSettingsDialog = () => this.setState({ isSaveSettingsDialogVisible: false })
 
   applySettingsUpdate = () => {
-    const copy = this.props.settingsFile
-    copy.content = getModel(this.monaco, copy).model.getValue()
-    this.props.editSettings(this.props.settingsFile, copy)
+    this.props.editSettings(
+      getModel(this.monaco, this.props.settingsFile).model.getValue(),
+    )
     this.closeSaveSettingsDialog()
   }
 
   resetSettings = () => {
-    const copy = this.props.settingsFile
-    copy.content = JSON.stringify(
+    const newSettings = JSON.stringify(
       defaultSettings,
       null,
       this.props.editorSettings.tabSize,
     )
-    this.props.editSettings(this.props.settingsFile, copy)
-    getModel(this.monaco, this.props.settingsFile).model.setValue(copy.content)
+
+    this.props.editSettings(newSettings)
+
+    getModel(this.monaco, this.props.settingsFile).model.setValue(newSettings)
   }
 
   cancelSettingsUpdate = () => {
@@ -331,6 +320,7 @@ class Editor extends Component<IProps, IState> {
     const {
       activeFiles,
       activeSolution,
+      backgroundColor,
       editorSettings,
       isSettingsView,
       theme,
@@ -369,7 +359,7 @@ class Editor extends Component<IProps, IState> {
           cancel={this.cancelSettingsUpdate}
         />
 
-        <Layout style={{ backgroundColor: theme.neutralDark }}>
+        <Layout style={{ backgroundColor }}>
           <Monaco
             theme={monacoTheme}
             options={options}
