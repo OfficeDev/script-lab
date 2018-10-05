@@ -7,10 +7,11 @@ import WidthMonitor from '../WidthMonitor'
 
 export default ({ store, history }) => (
   <Provider store={store}>
-    <ConnectedRouter history={history}>
-      <WidthMonitor>
+    <>
+      <WidthMonitor />
+      <ConnectedRouter history={history}>
         <App />
-      </WidthMonitor>
-    </ConnectedRouter>
+      </ConnectedRouter>
+    </>
   </Provider>
 )

@@ -26,7 +26,7 @@ export class WidthMonitor extends React.Component<IProps> {
   handleResize = () => this.props.updateWidth(window.innerWidth)
 
   render() {
-    return this.props.children
+    return null
   }
 }
 
