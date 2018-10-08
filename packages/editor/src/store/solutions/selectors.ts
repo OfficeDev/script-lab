@@ -4,8 +4,11 @@ import { getObjectValues } from '../../utils'
 import { SETTINGS_SOLUTION_ID } from '../../constants'
 
 // solutions
-export const get = (state: IState, id: string): ISolution => {
+export const get = (state: IState, id: string): ISolution | null => {
   const solutionMetadata = state.solutions.metadata[id]
+  if (!solutionMetadata) {
+    return null
+  }
   const files = solutionMetadata.files.map(fileId => getFile(state, fileId))
   return { ...solutionMetadata, files }
 }

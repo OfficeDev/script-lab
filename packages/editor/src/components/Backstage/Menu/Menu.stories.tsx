@@ -1,6 +1,7 @@
 import React from 'react'
 
-import Menu, { IMenuItem } from './'
+import Menu from './'
+import IMenuItem from './IMenuItem'
 
 import { storiesOf } from '@storybook/react'
 import { action } from '@storybook/addon-actions'

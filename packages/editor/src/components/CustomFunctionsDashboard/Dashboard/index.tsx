@@ -8,7 +8,7 @@ import { MessageBar, MessageBarType } from 'office-ui-fabric-react/lib/MessageBa
 import { DefaultButton } from 'office-ui-fabric-react/lib/Button'
 import { CommandBar, ICommandBarItemProps } from 'office-ui-fabric-react/lib/CommandBar'
 import { ITheme as IFabricTheme } from '@uifabric/styling'
-import { getHeaderFabricTheme } from '../../../theme'
+import { getCommandBarFabricTheme } from '../../../theme'
 
 import { connect } from 'react-redux'
 import { IState as IReduxState } from '../../../store/reducer'
@@ -18,12 +18,12 @@ import { goBack } from 'connected-react-router'
 import Only from '../../Only'
 
 interface IPropsFromRedux {
-  headerFabricTheme: IFabricTheme
+  commandBarFabricTheme: IFabricTheme
   isStandalone: boolean
 }
 
 const mapStateToProps = (state: IReduxState): IPropsFromRedux => ({
-  headerFabricTheme: getHeaderFabricTheme(selectors.host.get(state)),
+  commandBarFabricTheme: getCommandBarFabricTheme(selectors.host.get(state)),
   isStandalone: selectors.customFunctions.getIsStandalone(state),
 })
 
@@ -71,7 +71,7 @@ class DashboardWithoutTheme extends React.Component<IProps, IState> {
       items,
       theme,
       isStandalone,
-      headerFabricTheme,
+      commandBarFabricTheme,
       goBack,
       shouldPromptRefresh,
     } = this.props
@@ -94,7 +94,7 @@ class DashboardWithoutTheme extends React.Component<IProps, IState> {
     return (
       <Layout>
         <Header>
-          <Customizer settings={{ theme: headerFabricTheme }}>
+          <Customizer settings={{ theme: commandBarFabricTheme }}>
             <CommandBar
               items={headerItems}
               styles={{ root: { paddingLeft: 0, paddingRight: 0 } }}

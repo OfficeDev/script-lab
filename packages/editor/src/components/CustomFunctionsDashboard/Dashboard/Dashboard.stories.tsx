@@ -4,15 +4,15 @@ import { Dashboard } from './'
 import { BasicSummary } from '../Summary/Summary.stories'
 import { BasicConsole } from '../Console/Console.stories'
 import { storiesOf } from '@storybook/react'
-import { getHeaderFabricTheme } from '../../../theme'
+import { getCommandBarFabricTheme } from '../../../theme'
 
-const headerFabricTheme = getHeaderFabricTheme('EXCEL')
+const commandBarFabricTheme = getCommandBarFabricTheme('EXCEL')
 const Dummy = ({ letter }) => <div>I AM {letter}</div>
 
 storiesOf('Custom Functions|Dashboard', module)
   .add('basic', () => (
     <Dashboard
-      headerFabricTheme={headerFabricTheme}
+      commandBarFabricTheme={commandBarFabricTheme}
       items={{
         Alpha: <Dummy letter="A" />,
         Bravo: <Dummy letter="B" />,
@@ -24,7 +24,7 @@ storiesOf('Custom Functions|Dashboard', module)
   ))
   .add('with actual tabs', () => (
     <Dashboard
-      headerFabricTheme={headerFabricTheme}
+      commandBarFabricTheme={commandBarFabricTheme}
       items={{ Summary: <BasicSummary />, Console: <BasicConsole /> }}
       shouldPromptRefresh={false}
       isStandalone={false}
@@ -32,7 +32,7 @@ storiesOf('Custom Functions|Dashboard', module)
   ))
   .add('with refresh', () => (
     <Dashboard
-      headerFabricTheme={headerFabricTheme}
+      commandBarFabricTheme={commandBarFabricTheme}
       items={{ Summary: <BasicSummary />, Console: <BasicConsole /> }}
       shouldPromptRefresh={true}
       isStandalone={false}
@@ -40,7 +40,7 @@ storiesOf('Custom Functions|Dashboard', module)
   ))
   .add('as standalone', () => (
     <Dashboard
-      headerFabricTheme={headerFabricTheme}
+      commandBarFabricTheme={commandBarFabricTheme}
       items={{ Summary: <BasicSummary />, Console: <BasicConsole /> }}
       shouldPromptRefresh={true}
       isStandalone={true}

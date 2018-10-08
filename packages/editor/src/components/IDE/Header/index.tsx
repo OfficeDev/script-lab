@@ -12,13 +12,19 @@ import YAML from 'js-yaml'
 
 import SolutionSettings from './SolutionSettings'
 import { ITheme as IFabricTheme } from 'office-ui-fabric-react/lib/Styling'
-import { NULL_SOLUTION_ID, SETTINGS_SOLUTION_ID, PATHS } from '../../../constants'
+import {
+  NULL_SOLUTION_ID,
+  SETTINGS_SOLUTION_ID,
+  PATHS,
+  IS_TASK_PANE_WIDTH,
+} from '../../../constants'
+import { getPlatform, PlatformType } from '../../../environment'
 
 import { connect } from 'react-redux'
 import actions from '../../../store/actions'
 import selectors from '../../../store/selectors'
 
-import { getHeaderFabricTheme } from '../../../theme'
+import { getCommandBarFabricTheme } from '../../../theme'
 import { push } from 'connected-react-router'
 
 const HeaderWrapper = styled.header`
@@ -32,7 +38,8 @@ interface IPropsFromRedux {
   isSettingsView: boolean
   isCustomFunctionsView: boolean
   isLoggedIn: boolean
-  headerFabricTheme: IFabricTheme
+  commandBarFabricTheme: IFabricTheme
+  screenWidth: number
 }
 
 const mapStateToProps = (state): IPropsFromRedux => ({
@@ -41,7 +48,8 @@ const mapStateToProps = (state): IPropsFromRedux => ({
   isLoggedIn: !!selectors.github.getToken(state),
   isRunnableOnThisHost: selectors.host.getIsRunnableOnThisHost(state),
   profilePicUrl: selectors.github.getProfilePicUrl(state),
-  headerFabricTheme: getHeaderFabricTheme(selectors.host.get(state)),
+  commandBarFabricTheme: getCommandBarFabricTheme(selectors.host.get(state)),
+  screenWidth: selectors.screen.getWidth(state),
 })
 
 interface IActionsFromRedux {
@@ -135,8 +143,9 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
       profilePicUrl,
       isRunnableOnThisHost,
       isLoggedIn,
+      screenWidth,
       theme,
-      headerFabricTheme,
+      commandBarFabricTheme,
       logout,
       login,
       closeSettings,
@@ -202,6 +211,13 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
       },
       {
         hidden: isNullSolution,
+        key: 'delete',
+        text: 'Delete',
+        iconProps: { iconName: 'Delete' },
+        onClick: deleteSolution,
+      },
+      {
+        hidden: isNullSolution,
         key: 'share',
         text: 'Share',
         iconProps: { iconName: 'Share' },
@@ -209,18 +225,11 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
           items: shareOptions,
         },
       },
-      {
-        hidden: isNullSolution,
-        key: 'delete',
-        text: 'Delete',
-        iconProps: { iconName: 'Delete' },
-        onClick: deleteSolution,
-      },
     ]
       .filter(({ hidden }) => !hidden)
       .map(option => {
         const { hidden, ...rest } = option
-        return rest
+        return { ...rest, iconOnly: screenWidth < IS_TASK_PANE_WIDTH }
       })
 
     const name = {
@@ -228,6 +237,15 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
       key: 'solution-name',
       text: solutionName,
       onClick: isSettingsView ? undefined : this.openSolutionSettings,
+      style: { paddingRight: '3rem' },
+      iconProps: {},
+      iconOnly: false,
+    }
+
+    if (screenWidth < IS_TASK_PANE_WIDTH) {
+      name.style.paddingRight = '0'
+      name.iconProps = { iconName: 'OfficeAddinsLogo' }
+      name.iconOnly = true
     }
 
     const nav = {
@@ -292,14 +310,22 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
 
     return (
       <>
-        <Customizer settings={{ theme: headerFabricTheme }}>
+        <Customizer settings={{ theme: commandBarFabricTheme }}>
           <HeaderWrapper>
             <CommandBar
               items={items}
               styles={{
-                root: { paddingLeft: 0, paddingRight: 0 },
+                root: {
+                  paddingLeft: 0,
+                  paddingRight: {
+                    [PlatformType.PC]: '20px',
+                    [PlatformType.Mac]: '40px',
+                    [PlatformType.OfficeOnline]: '0px',
+                  }[getPlatform()],
+                },
               }}
               farItems={[profilePic]}
+              ariaLabel={'Use left and right arrow keys to navigate between commands'}
             />
           </HeaderWrapper>
         </Customizer>

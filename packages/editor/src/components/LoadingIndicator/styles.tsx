@@ -26,5 +26,4 @@ export const Ball = styled.div`
   border-radius: 100%;
   display: inline-block;
   animation: ${MovingBalls} 1.4s infinite ease-in-out both;
-  ${MovingBalls};
 `

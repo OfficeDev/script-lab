@@ -2,7 +2,7 @@
   "name": "script-lab-server",
   "version": "1.0.0",
   "scripts": {
-    "start": "webpack --mode development",
+    "start": "node index.ts",
     "build": "webpack --mode production",
     "lint:tslint": "tslint 'src/**/*.ts?(x)'",
     "lint:prettier": "prettier --list-different './**/*.ts?(x)'",

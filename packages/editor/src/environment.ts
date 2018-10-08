@@ -28,11 +28,26 @@ export const editorUrls = {
   production: 'https://script-lab.azureedge.net',
 }
 
-export function getCurrentEnv(): 'local' | 'alpha' | 'beta' | 'production' {
+export function getCurrentEnv(): 'local' | 'alpha' | 'beta' | 'prod' {
   return {
     'https://localhost:3000': 'local',
     'https://script-lab-react-alpha.azurewebsites.net': 'alpha',
     'https://script-lab-react-beta.azurewebsites.net': 'beta',
-    'https://script-lab-react.azurewebsites.net': 'production',
+    'https://script-lab-react.azurewebsites.net': 'prod',
   }[window.location.origin]
+}
+
+export enum PlatformType {
+  PC = 'PC',
+  OfficeOnline = 'OfficeOnline',
+  Mac = 'Mac',
+  iOS = 'iOS',
+  Android = 'Android',
+  Universal = 'Universal',
+}
+
+export function getPlatform(): PlatformType {
+  const w = window as any
+  return ((w.Office && w.context && w.context.platform) ||
+    PlatformType.OfficeOnline) as PlatformType
 }

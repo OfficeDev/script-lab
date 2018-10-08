@@ -6,6 +6,7 @@ var commands = [
   `export REACT_APP_COMMIT='${TRAVIS_COMMIT}'`,
   `export REACT_APP_LAST_UPDATED='${new Date().toUTCString()}'`,
   'yarn react-scripts-ts:build',
+  'yarn build:storybook',
 ].join(' && ')
 
 shell.exec(commands)

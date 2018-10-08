@@ -13,6 +13,7 @@ export const Layout = styled.div`
 `
 
 export const ContentWrapper = styled.div`
+  z-index: 1000;
   flex: 1;
 
   overflow: hidden;

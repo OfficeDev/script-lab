@@ -4,8 +4,10 @@ import { mount } from 'enzyme'
 import { Header, IProps } from '.'
 import { getBoilerplate } from '../../../newSolutionData'
 import { ITheme as IFabricTheme } from '@uifabric/styling'
-import { getHeaderFabricTheme } from '../../../theme'
+import { getCommandBarFabricTheme } from '../../../theme'
 import { ICommandBarProps } from 'office-ui-fabric-react/lib/CommandBar'
+
+const host = 'EXCEL'
 
 const actionProps = {
   showBackstage: () => {},
@@ -26,7 +28,7 @@ const actionProps = {
 }
 
 describe('Header should render properly in basic case', () => {
-  const normalExample = getBoilerplate('EXCEL')
+  const normalExample = getBoilerplate(host)
 
   const solution = normalExample
   const headerProps = {
@@ -36,7 +38,8 @@ describe('Header should render properly in basic case', () => {
     isSettingsView: false,
     isCustomFunctionsView: false,
     profilePicUrl: undefined,
-    headerFabricTheme: getHeaderFabricTheme('WEB') as IFabricTheme,
+    screenWidth: 700,
+    commandBarFabricTheme: getCommandBarFabricTheme(host) as IFabricTheme,
     ...actionProps,
   }
 
@@ -54,8 +57,8 @@ describe('Header should render properly in basic case', () => {
       'nav',
       'solution-name',
       'run',
-      'share',
       'delete',
+      'share',
     ])
   })
 
@@ -73,7 +76,7 @@ describe('Header should render properly in basic case', () => {
 })
 
 describe("Header shouldn't show run button if isn't runnable", () => {
-  const normalExample = getBoilerplate('EXCEL')
+  const normalExample = getBoilerplate(host)
 
   const solution = normalExample
   const headerProps = {
@@ -83,7 +86,8 @@ describe("Header shouldn't show run button if isn't runnable", () => {
     isSettingsView: false,
     isCustomFunctionsView: false,
     profilePicUrl: undefined,
-    headerFabricTheme: getHeaderFabricTheme('WEB') as IFabricTheme,
+    screenWidth: 800,
+    commandBarFabricTheme: getCommandBarFabricTheme(host) as IFabricTheme,
     ...actionProps,
   }
 
@@ -95,8 +99,8 @@ describe("Header shouldn't show run button if isn't runnable", () => {
     expect(commandBarProps.items.map(({ key }) => key)).toEqual([
       'nav',
       'solution-name',
-      'share',
       'delete',
+      'share',
     ])
   })
 })
