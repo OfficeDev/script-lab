@@ -3,7 +3,7 @@ import { mount } from 'enzyme'
 
 import { Header, IProps } from '.'
 import { getBoilerplate } from '../../../newSolutionData'
-import { ITheme as IFabricTheme } from '@uifabric/styling'
+import { ITheme as IFabricTheme } from 'office-ui-fabric-react/lib/Styling'
 import { getCommandBarFabricTheme } from '../../../theme'
 import { ICommandBarProps } from 'office-ui-fabric-react/lib/CommandBar'
 
