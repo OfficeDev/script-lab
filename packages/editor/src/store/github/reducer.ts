@@ -10,7 +10,7 @@ const profile = (state: IState = {}, action: IGithubAction): IState => {
   switch (action.type) {
     case getType(github.login.success):
       return action.payload
-    case getType(github.logout):
+    case getType(github.logout.success):
       return {}
     default:
       return state

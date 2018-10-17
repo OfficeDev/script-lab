@@ -77,7 +77,7 @@ interface IActionsFromRedux {
 
 const mapDispatchToProps = (dispatch, ownProps: IProps): IActionsFromRedux => ({
   login: () => dispatch(actions.github.login.request()),
-  logout: () => dispatch(actions.github.logout()),
+  logout: () => dispatch(actions.github.logout.request()),
 
   showBackstage: () => dispatch(push(PATHS.BACKSTAGE)),
   closeSettings: () => dispatch(actions.settings.close()),
