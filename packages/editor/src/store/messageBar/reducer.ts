@@ -59,14 +59,6 @@ const messageBarReducer = (
         },
       }
 
-    case getType(solutions.remove):
-      return {
-        isVisible: true,
-        style: MessageBarType.info,
-        text: `The snippet '${action.payload.name}' has been deleted.`,
-        link: null,
-      }
-
     case getType(settings.edit.success):
       return {
         isVisible: action.payload.showMessageBar,
