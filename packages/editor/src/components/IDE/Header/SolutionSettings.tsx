@@ -1,8 +1,12 @@
 import React from 'react'
 
+import Only from '../../Only'
+
 import { Dialog, DialogType, DialogFooter } from 'office-ui-fabric-react/lib/Dialog'
 import { TextField } from 'office-ui-fabric-react/lib/TextField'
 import { PrimaryButton, DefaultButton } from 'office-ui-fabric-react/lib/Button'
+import { Label } from 'office-ui-fabric-react/lib/Label'
+import { Link } from 'office-ui-fabric-react/lib/Link'
 
 interface ISolutionSettings {
   isOpen: boolean
@@ -38,7 +42,7 @@ class SolutionSettings extends React.Component<ISolutionSettings, IState> {
   }
 
   render() {
-    const { isOpen, closeSolutionSettings } = this.props
+    const { solution, isOpen, closeSolutionSettings } = this.props
     const { name, description } = this.state
     return (
       <Dialog
@@ -55,6 +59,15 @@ class SolutionSettings extends React.Component<ISolutionSettings, IState> {
           onChanged={this.updateSolutionDescription}
           value={description}
         />
+        <Only when={solution.source && solution.source.origin === 'gist'}>
+          <Label>Gist URL</Label>
+          <Link
+            target="_blank"
+            href={solution.source && `https://gist.github.com/${solution.source.id}`}
+          >
+            Open in browser
+          </Link>
+        </Only>
         <DialogFooter>
           <DefaultButton
             text="Cancel"
