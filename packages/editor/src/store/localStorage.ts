@@ -7,9 +7,12 @@ import {
   NULL_SOLUTION_ID,
   localStorageKeys,
 } from '../constants'
-import { getSettingsSolutionAndFiles, defaultSettings } from '../defaultSettings'
+import {
+  getSettingsSolutionAndFiles,
+  defaultSettings,
+  allowedSettings,
+} from '../settings'
 import { merge } from './settings/sagas'
-import { allowedSettings } from '../SettingsJSONSchema'
 
 const getCFPostData = (state: IState): IRunnerCustomFunctionsPostData => {
   const cfSolutions = selectors.customFunctions.getSolutions(state)

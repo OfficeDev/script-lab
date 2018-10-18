@@ -1,6 +1,5 @@
 import { merge } from '../sagas'
-import { allowedSettings } from '../../../SettingsJSONSchema'
-import { defaultSettings } from '../../../defaultSettings'
+import { allowedSettings, defaultSettings } from '../../../settings'
 
 describe('settings merge', () => {
   test('basic test', () => {
@@ -55,17 +54,11 @@ describe('settings merge', () => {
     const parsed = {
       editor: {
         theme: 'light',
-        font: { family: 'Consolas', size: 17, lineHeight: 32 },
-        linter: { mode: 'warning' },
+        font: { family: 'Consolas', size: 17 },
         tabSize: 4,
         prettier: {
           enabled: false,
           autoFormat: false,
-        },
-      },
-      hostSpecific: {
-        officeOnline: {
-          openEditorInNewTab: 'always',
         },
       },
     }
@@ -74,10 +67,8 @@ describe('settings merge', () => {
     expected.editor.theme = 'light'
     expected.editor.font.family = 'Consolas'
     expected.editor.font.size = 17
-    expected.editor.font.lineHeight = 32
     expected.editor.tabSize = 4
     expected.editor.prettier = { enabled: false, autoFormat: false }
-    expected.hostSpecific.officeOnline.openEditorInNewTab = 'always'
 
     expect(merge(current, parsed, allowedSettings)).toEqual(expected)
   })

@@ -11,7 +11,7 @@ import selectors from '../selectors'
 
 import { environmentName, editorUrls } from '../../environment'
 
-import { allowedSettings } from '../../SettingsJSONSchema'
+import { allowedSettings } from '../../settings'
 
 import { SETTINGS_SOLUTION_ID, SETTINGS_FILE_ID } from '../../constants'
 

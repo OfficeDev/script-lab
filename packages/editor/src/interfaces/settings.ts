@@ -1,11 +1,9 @@
-// settings
 // Note: this must be kept in sync with the src/SettingsJSONSchema.ts
 interface IEditorSettings {
   theme: string
   font: {
     family: string
     size: number
-    lineHeight: number
   }
   minimap: boolean
   tabSize: 2 | 4
@@ -14,11 +12,10 @@ interface IEditorSettings {
     autoFormat: boolean
   }
   folding: boolean
-  linter: {
-    mode: string
-  }
-  wordWrap: 'on' | 'off' | 'bounded' | 'wordWrapColumn'
-  wordWrapColumn: number
+  // linter: {
+  //   mode: string
+  // }
+  wordWrap: 'on' | 'off' | 'bounded'
 }
 
 interface IHostSpecificSettings {
@@ -34,7 +31,7 @@ interface IDefaultActions {
 
 interface ISettings {
   editor: IEditorSettings
-  hostSpecific: IHostSpecificSettings
-  defaultActions: IDefaultActions
+  // hostSpecific: IHostSpecificSettings
+  // defaultActions: IDefaultActions
   environment: string
 }
