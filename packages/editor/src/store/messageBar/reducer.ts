@@ -79,7 +79,7 @@ const messageBarReducer = (
       return {
         isVisible: true,
         style: MessageBarType.error,
-        text: `Error in settings. ${action.payload}`,
+        text: `Settings ${action.payload}`,
         link: null,
       }
 

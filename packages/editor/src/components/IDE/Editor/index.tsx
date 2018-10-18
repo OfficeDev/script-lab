@@ -309,7 +309,12 @@ class Editor extends Component<IProps, IState> {
 
   checkIfUnsaved = (file: IFile) => {
     if (this.monaco) {
-      return file.content !== getModel(this.monaco, file).model.getValue()
+      return (
+        file.content.trim() !==
+        getModel(this.monaco, file)
+          .model.getValue()
+          .trim()
+      )
     }
     return false
   }
