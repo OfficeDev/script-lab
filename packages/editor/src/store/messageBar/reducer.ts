@@ -46,6 +46,14 @@ const messageBarReducer = (
         },
       }
 
+    case getType(gists.update.failure):
+      return {
+        isVisible: true,
+        style: MessageBarType.error,
+        text: `Error in updating gist: ${action.payload}`,
+        link: null,
+      }
+
     case getType(gists.update.success):
       return {
         isVisible: true,

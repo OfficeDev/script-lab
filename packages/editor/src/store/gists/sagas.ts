@@ -58,6 +58,21 @@ export function* fetchAllGistMetadataSaga() {
   }
 }
 
+function* onFetchGistMetadataSuccessSaga(
+  action: ActionType<typeof gists.fetchMetadata.success>,
+) {
+  const metadataIds = action.payload.map(metadata => metadata.id)
+  const allSolutions: ISolution[] = yield select(selectors.solutions.getAll)
+  console.log({ allSolutions, metadataIds })
+  const solutionsToClean = allSolutions.filter(
+    solution => solution.source && !metadataIds.includes(solution.source.id),
+  )
+  console.log({ solutionsToClean })
+  for (const solution of solutionsToClean) {
+    yield put(solutions.edit({ id: solution.id, solution: { source: undefined } }))
+  }
+}
+
 function* getGistSaga(action: ActionType<typeof gists.get.request>) {
   if (action.payload.conflictResolution) {
     switch (action.payload.conflictResolution.type) {
@@ -175,6 +190,8 @@ function* updateGistSaga(action: ActionType<typeof gists.update.request>) {
       }),
     })
 
+    console.log({ response, error })
+
     if (response) {
       yield put(gists.update.success({ gist: response }))
     } else {
@@ -218,6 +235,7 @@ function* handleImportSnippetSuccessSaga(
 
 export default function* gistsWatcher() {
   yield takeEvery(getType(gists.fetchMetadata.request), fetchAllGistMetadataSaga)
+  yield takeEvery(getType(gists.fetchMetadata.success), onFetchGistMetadataSuccessSaga)
 
   yield takeEvery(getType(gists.get.request), getGistSaga)
   yield takeEvery(getType(gists.get.success), handleGetGistSuccessSaga)
