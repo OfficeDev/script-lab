@@ -63,11 +63,11 @@ function* onFetchGistMetadataSuccessSaga(
 ) {
   const metadataIds = action.payload.map(metadata => metadata.id)
   const allSolutions: ISolution[] = yield select(selectors.solutions.getAll)
-  console.log({ allSolutions, metadataIds })
+
   const solutionsToClean = allSolutions.filter(
     solution => solution.source && !metadataIds.includes(solution.source.id),
   )
-  console.log({ solutionsToClean })
+
   for (const solution of solutionsToClean) {
     yield put(solutions.edit({ id: solution.id, solution: { source: undefined } }))
   }
