@@ -11,6 +11,17 @@ interface IRequest {
   jsonPayload?: string
 }
 
+const auth = new Authenticator()
+
+auth.endpoints.add('GitHub', {
+  clientId: githubAppClientId,
+  baseUrl: 'https://github.com/login',
+  authorizeUrl: '/oauth/authorize',
+  scope: 'gist',
+  state: true,
+  tokenUrl: `${authServerUrl}/auth`,
+})
+
 export const request = ({
   method,
   path,
@@ -20,17 +31,6 @@ export const request = ({
   generalRequest({ url: `${baseApiUrl}/${path}`, method, token, jsonPayload })
 
 export const login = async (): Promise<{ token?: string; profilePicUrl?: string }> => {
-  const auth = new Authenticator()
-
-  auth.endpoints.add('GitHub', {
-    clientId: githubAppClientId,
-    baseUrl: 'https://github.com/login',
-    authorizeUrl: '/oauth/authorize',
-    scope: 'gist',
-    state: true,
-    tokenUrl: `${authServerUrl}/auth`,
-  })
-
   const token: IToken = await auth.authenticate('GitHub')
   const { response, error } = await request({
     method: 'GET',
@@ -40,3 +40,5 @@ export const login = async (): Promise<{ token?: string; profilePicUrl?: string 
 
   return { token: token.access_token, profilePicUrl: response!.avatar_url }
 }
+
+export const logout = (token: string) => auth.tokens.clear()

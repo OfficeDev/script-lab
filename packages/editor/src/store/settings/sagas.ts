@@ -104,11 +104,13 @@ function* openSettingsSaga(action: ActionType<typeof settingsActions.open>) {
   const { editor } = yield select()
   const { active } = editor
   const { solutionId, fileId } = active
-  yield put(settingsActions.setLastActive({ solutionId, fileId }))
+  if (solutionId !== SETTINGS_SOLUTION_ID) {
+    yield put(settingsActions.setLastActive({ solutionId, fileId }))
 
-  yield put(
-    editorActions.open({ solutionId: SETTINGS_SOLUTION_ID, fileId: SETTINGS_FILE_ID }),
-  )
+    yield put(
+      editorActions.open({ solutionId: SETTINGS_SOLUTION_ID, fileId: SETTINGS_FILE_ID }),
+    )
+  }
 }
 
 function* closeSettingsSaga(action: ActionType<typeof settingsActions.close>) {
