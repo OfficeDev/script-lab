@@ -190,8 +190,6 @@ function* updateGistSaga(action: ActionType<typeof gists.update.request>) {
       }),
     })
 
-    console.log({ response, error })
-
     if (response) {
       yield put(gists.update.success({ gist: response }))
     } else {
