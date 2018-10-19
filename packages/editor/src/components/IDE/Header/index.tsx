@@ -5,6 +5,7 @@ import { Customizer } from 'office-ui-fabric-react/lib/Utilities'
 import { CommandBar, ICommandBarItemProps } from 'office-ui-fabric-react/lib/CommandBar'
 import { PersonaSize, PersonaCoin } from 'office-ui-fabric-react/lib/Persona'
 import { MessageBarType } from 'office-ui-fabric-react/lib/MessageBar'
+import { Spinner, SpinnerSize } from 'office-ui-fabric-react/lib/Spinner'
 
 import Clipboard from 'clipboard'
 import { convertSolutionToSnippet } from '../../../utils'
@@ -14,12 +15,7 @@ import DeleteConfirmationDialog from './DeleteConfirmationDialog'
 import SolutionSettings from './SolutionSettings'
 
 import { ITheme as IFabricTheme } from 'office-ui-fabric-react/lib/Styling'
-import {
-  NULL_SOLUTION_ID,
-  SETTINGS_SOLUTION_ID,
-  PATHS,
-  IS_TASK_PANE_WIDTH,
-} from '../../../constants'
+import { NULL_SOLUTION_ID, PATHS, IS_TASK_PANE_WIDTH } from '../../../constants'
 import { getPlatform, PlatformType } from '../../../environment'
 
 import { connect } from 'react-redux'
@@ -35,11 +31,12 @@ const HeaderWrapper = styled.header`
 `
 
 interface IPropsFromRedux {
-  profilePicUrl?: string
+  profilePicUrl: string | null
   isRunnableOnThisHost: boolean
   isSettingsView: boolean
   isCustomFunctionsView: boolean
   isLoggedIn: boolean
+  isLoggingInOrOut: boolean
   commandBarFabricTheme: IFabricTheme
   screenWidth: number
 }
@@ -48,6 +45,7 @@ const mapStateToProps = (state): IPropsFromRedux => ({
   isSettingsView: selectors.settings.getIsOpen(state),
   isCustomFunctionsView: selectors.customFunctions.getIsCurrentSolutionCF(state),
   isLoggedIn: !!selectors.github.getToken(state),
+  isLoggingInOrOut: selectors.github.getIsLoggingInOrOut(state),
   isRunnableOnThisHost: selectors.host.getIsRunnableOnThisHost(state),
   profilePicUrl: selectors.github.getProfilePicUrl(state),
   commandBarFabricTheme: getCommandBarFabricTheme(selectors.host.get(state)),
@@ -79,7 +77,7 @@ interface IActionsFromRedux {
 
 const mapDispatchToProps = (dispatch, ownProps: IProps): IActionsFromRedux => ({
   login: () => dispatch(actions.github.login.request()),
-  logout: () => dispatch(actions.github.logout()),
+  logout: () => dispatch(actions.github.logout.request()),
 
   showBackstage: () => dispatch(push(PATHS.BACKSTAGE)),
   closeSettings: () => dispatch(actions.settings.close()),
@@ -156,6 +154,7 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
       profilePicUrl,
       isRunnableOnThisHost,
       isLoggedIn,
+      isLoggingInOrOut,
       screenWidth,
       theme,
       commandBarFabricTheme,
@@ -293,16 +292,20 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
       key: 'account',
       onRenderIcon: () => (
         <div style={{ width: '28px', overflow: 'hidden' }}>
-          <PersonaCoin
-            imageUrl={profilePicUrl}
-            size={PersonaSize.size28}
-            initialsColor="white"
-            styles={{
-              initials: {
-                color: (theme && theme.primary) || 'black',
-              },
-            }}
-          />
+          {isLoggingInOrOut ? (
+            <Spinner size={SpinnerSize.medium} />
+          ) : (
+            <PersonaCoin
+              imageUrl={profilePicUrl || undefined}
+              size={PersonaSize.size28}
+              initialsColor="white"
+              styles={{
+                initials: {
+                  color: (theme && theme.primary) || 'black',
+                },
+              }}
+            />
+          )}
         </div>
       ),
       ariaLabel: isLoggedIn ? 'Logout' : 'Login',
@@ -318,7 +321,7 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
           }
         : undefined,
       iconOnly: true,
-      onClick: login,
+      onClick: isLoggingInOrOut ? () => {} : login,
     }
 
     return (

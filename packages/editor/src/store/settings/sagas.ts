@@ -11,7 +11,7 @@ import selectors from '../selectors'
 
 import { environmentName, editorUrls } from '../../environment'
 
-import { allowedSettings } from '../../SettingsJSONSchema'
+import { allowedSettings } from '../../settings'
 
 import { SETTINGS_SOLUTION_ID, SETTINGS_FILE_ID } from '../../constants'
 
@@ -28,7 +28,7 @@ export const merge = (valid, parsed, allowed) => {
 
   return Object.keys(valid)
     .map(setting => {
-      if (parsed && parsed[setting]) {
+      if (parsed !== undefined && parsed[setting] !== undefined) {
         /* if there is more settings to compare inside the valid schema
            then recursively call merge */
         if (valid[setting] instanceof Object) {
@@ -60,6 +60,7 @@ function* editSettingsCheckSaga(action: ActionType<typeof settingsActions.editFi
   try {
     const parsed = JSON.parse(action.payload.newSettings)
     const newSettings = merge(settings, parsed, allowedSettings)
+
     const currentSettingsFile = yield select(
       selectors.solutions.getFile,
       SETTINGS_FILE_ID,

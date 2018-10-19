@@ -7,9 +7,12 @@ import {
   NULL_SOLUTION_ID,
   localStorageKeys,
 } from '../constants'
-import { getSettingsSolutionAndFiles, defaultSettings } from '../defaultSettings'
+import {
+  getSettingsSolutionAndFiles,
+  defaultSettings,
+  allowedSettings,
+} from '../settings'
 import { merge } from './settings/sagas'
-import { allowedSettings } from '../SettingsJSONSchema'
 
 const getCFPostData = (state: IState): IRunnerCustomFunctionsPostData => {
   const cfSolutions = selectors.customFunctions.getSolutions(state)
@@ -44,9 +47,11 @@ const getCFPostData = (state: IState): IRunnerCustomFunctionsPostData => {
 export const saveState = (state: IState) => {
   try {
     const { solutions, github, settings } = state
+    const { profilePicUrl, token } = github
+
+    const serializedGithub = JSON.stringify({ profilePicUrl, token })
     const serializedSolutions = JSON.stringify(solutions.metadata)
     const serializedFiles = JSON.stringify(solutions.files)
-    const serializedGithub = JSON.stringify(github)
     const serializedValidSettings = JSON.stringify(settings.values)
 
     localStorage.setItem('solutions', serializedSolutions)

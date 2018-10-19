@@ -413,6 +413,13 @@
     "@uifabric/merge-styles" ">=6.9.1 <7.0.0"
     "@uifabric/set-version" ">=1.1.0 <2.0.0"
 
+"@uifabric/merge-styles@>=6.10.1 <7.0.0", "@uifabric/merge-styles@>=6.9.3 <7.0.0", "@uifabric/merge-styles@>=6.9.4 <7.0.0":
+  version "6.10.1"
+  resolved "https://registry.yarnpkg.com/@uifabric/merge-styles/-/merge-styles-6.10.1.tgz#9b44ea9017b8e3684cb57f9ecc943ea0a1e90026"
+  dependencies:
+    "@uifabric/set-version" ">=1.1.3 <2.0.0"
+    tslib "^1.7.1"
+
 "@uifabric/merge-styles@>=6.9.1 <7.0.0":
   version "6.9.1"
   resolved "https://registry.yarnpkg.com/@uifabric/merge-styles/-/merge-styles-6.9.1.tgz#da173b7a978f22bae2a899ff29c7131355d4c122"
@@ -426,6 +433,12 @@
   dependencies:
     tslib "^1.7.1"
 
+"@uifabric/set-version@>=1.1.1 <2.0.0", "@uifabric/set-version@>=1.1.3 <2.0.0":
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/@uifabric/set-version/-/set-version-1.1.3.tgz#8d1137df1406f38828e597e81122077a16c8da8b"
+  dependencies:
+    tslib "^1.7.1"
+
 "@uifabric/styling@>=6.27.0 <7.0.0":
   version "6.27.0"
   resolved "https://registry.yarnpkg.com/@uifabric/styling/-/styling-6.27.0.tgz#5e6804997e6dbfe7db2ccfff80bf2cb455f43ee0"
@@ -436,12 +449,31 @@
     "@uifabric/utilities" ">=6.21.0 <7.0.0"
     tslib "^1.7.1"
 
+"@uifabric/styling@>=6.29.1 <7.0.0":
+  version "6.30.0"
+  resolved "https://registry.yarnpkg.com/@uifabric/styling/-/styling-6.30.0.tgz#df9a5a42dcd08d89d2cc0929e0f15c762a769409"
+  dependencies:
+    "@microsoft/load-themed-styles" "^1.7.13"
+    "@uifabric/merge-styles" ">=6.9.4 <7.0.0"
+    "@uifabric/set-version" ">=1.1.3 <2.0.0"
+    "@uifabric/utilities" ">=6.21.2 <7.0.0"
+    tslib "^1.7.1"
+
 "@uifabric/utilities@>=6.21.0 <7.0.0":
   version "6.21.0"
   resolved "https://registry.yarnpkg.com/@uifabric/utilities/-/utilities-6.21.0.tgz#37a4cdbf0eb8554877f8d05fc4f985babfeb7873"
   dependencies:
     "@uifabric/merge-styles" ">=6.9.1 <7.0.0"
     "@uifabric/set-version" ">=1.1.0 <2.0.0"
+    prop-types "^15.5.10"
+    tslib "^1.7.1"
+
+"@uifabric/utilities@>=6.21.1 <7.0.0", "@uifabric/utilities@>=6.21.2 <7.0.0":
+  version "6.23.0"
+  resolved "https://registry.yarnpkg.com/@uifabric/utilities/-/utilities-6.23.0.tgz#2e9a9f7ef851314706be6c4f9b1ecf06b08bc7b6"
+  dependencies:
+    "@uifabric/merge-styles" ">=6.10.1 <7.0.0"
+    "@uifabric/set-version" ">=1.1.3 <2.0.0"
     prop-types "^15.5.10"
     tslib "^1.7.1"
 
@@ -6819,22 +6851,22 @@ obuf@^1.0.0, obuf@^1.1.1:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/obuf/-/obuf-1.1.2.tgz#09bea3343d41859ebd446292d11c9d4db619084e"
 
-office-ui-fabric-react@^6.69.0:
-  version "6.72.1"
-  resolved "https://registry.yarnpkg.com/office-ui-fabric-react/-/office-ui-fabric-react-6.72.1.tgz#defbcc9fea740dace93acecd318c23c83eaafef6"
+office-ui-fabric-react@6.79.0:
+  version "6.79.0"
+  resolved "https://registry.yarnpkg.com/office-ui-fabric-react/-/office-ui-fabric-react-6.79.0.tgz#f8b8b99e290f772086c45de3b7bfb06ed94142f5"
   dependencies:
     "@microsoft/load-themed-styles" "^1.7.13"
     "@uifabric/icons" ">=6.1.1 <7.0.0"
-    "@uifabric/merge-styles" ">=6.9.1 <7.0.0"
-    "@uifabric/set-version" ">=1.1.0 <2.0.0"
-    "@uifabric/styling" ">=6.27.0 <7.0.0"
-    "@uifabric/utilities" ">=6.21.0 <7.0.0"
+    "@uifabric/merge-styles" ">=6.9.3 <7.0.0"
+    "@uifabric/set-version" ">=1.1.1 <2.0.0"
+    "@uifabric/styling" ">=6.29.1 <7.0.0"
+    "@uifabric/utilities" ">=6.21.1 <7.0.0"
     prop-types "^15.5.10"
     tslib "^1.7.1"
 
-office-ui-fabric-react@^6.73.0:
-  version "6.73.0"
-  resolved "https://registry.yarnpkg.com/office-ui-fabric-react/-/office-ui-fabric-react-6.73.0.tgz#3364f13c915c3ee444403635e635480583a4203e"
+office-ui-fabric-react@^6.69.0:
+  version "6.72.1"
+  resolved "https://registry.yarnpkg.com/office-ui-fabric-react/-/office-ui-fabric-react-6.72.1.tgz#defbcc9fea740dace93acecd318c23c83eaafef6"
   dependencies:
     "@microsoft/load-themed-styles" "^1.7.13"
     "@uifabric/icons" ">=6.1.1 <7.0.0"
@@ -7116,10 +7148,6 @@ path-to-regexp@^1.0.1, path-to-regexp@^1.7.0:
   resolved "https://registry.yarnpkg.com/path-to-regexp/-/path-to-regexp-1.7.0.tgz#59fde0f435badacba103a84e9d3bc64e96b9937d"
   dependencies:
     isarray "0.0.1"
-
-path-to-regexp@^2.2.1:
-  version "2.4.0"
-  resolved "https://registry.yarnpkg.com/path-to-regexp/-/path-to-regexp-2.4.0.tgz#35ce7f333d5616f1c1e1bfe266c3aba2e5b2e704"
 
 path-type@^1.0.0:
   version "1.1.0"

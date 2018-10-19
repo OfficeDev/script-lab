@@ -30,20 +30,18 @@ import { connect } from 'react-redux'
 import { withTheme } from 'styled-components'
 import actions from '../../../store/actions'
 import selectors from '../../../store/selectors'
-import { defaultSettings } from 'src/defaultSettings'
+import { defaultSettings } from '../../../settings'
 
 interface IEditorSettings {
   monacoTheme: string
   fontFamily: string
   fontSize: number
   tabSize: number
-  lineHeight: number
   isMinimapEnabled: boolean
   isFoldingEnabled: boolean
   isPrettierEnabled: boolean
   isAutoFormatEnabled: boolean
-  wordWrap: 'on' | 'off' | 'bounded' | 'wordWrapColumn'
-  wordWrapColumn: number
+  wordWrap: 'on' | 'off' | 'bounded'
 }
 
 interface IPropsFromRedux {
@@ -62,13 +60,11 @@ const mapStateToProps = (state, ownProps: IProps): IPropsFromRedux => ({
     fontFamily: selectors.settings.getFontFamily(state),
     fontSize: selectors.settings.getFontSize(state),
     tabSize: selectors.settings.getTabSize(state),
-    lineHeight: selectors.settings.getLineHeight(state),
     isMinimapEnabled: selectors.settings.getIsMinimapEnabled(state),
     isFoldingEnabled: selectors.settings.getIsFoldingEnabled(state),
     isPrettierEnabled: selectors.settings.getIsPrettierEnabled(state),
     isAutoFormatEnabled: selectors.settings.getIsAutoFormatEnabled(state),
     wordWrap: selectors.settings.getWordWrap(state),
-    wordWrapColumn: selectors.settings.getWordWrapColumn(state),
   },
 })
 
@@ -216,11 +212,9 @@ class Editor extends Component<IProps, IState> {
     const {
       fontFamily,
       fontSize,
-      lineHeight,
       isMinimapEnabled,
       isFoldingEnabled,
       wordWrap,
-      wordWrapColumn,
     } = editorSettings
 
     return {
@@ -242,13 +236,13 @@ class Editor extends Component<IProps, IState> {
         arrowSize: 15,
       },
       formatOnPaste: true,
-      lineHeight,
+      lineHeight: fontSize * 1.35,
       folding: isFoldingEnabled,
       glyphMargin: false,
       fixedOverflowWidgets: true,
       ariaLabel: 'editor',
       wordWrap,
-      wordWrapColumn,
+      wordWrapColumn: 120,
       wrappingIndent: 'indent',
       readOnly:
         this.props.activeSolution.id === NULL_SOLUTION_ID ||
@@ -316,7 +310,12 @@ class Editor extends Component<IProps, IState> {
 
   checkIfUnsaved = (file: IFile) => {
     if (this.monaco) {
-      return file.content !== getModel(this.monaco, file).model.getValue()
+      return (
+        file.content.trim() !==
+        getModel(this.monaco, file)
+          .model.getValue()
+          .trim()
+      )
     }
     return false
   }

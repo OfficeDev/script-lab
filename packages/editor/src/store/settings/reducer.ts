@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux'
 import { getType } from 'typesafe-actions'
-import { defaultSettings } from '../../defaultSettings'
+import { defaultSettings } from '../../settings'
 import { settings as settingsActions, ISettingsAction } from '../actions'
 
 const values = (state: ISettings = defaultSettings, action: ISettingsAction) => {
