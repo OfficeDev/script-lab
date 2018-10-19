@@ -1,5 +1,5 @@
 {
-  "name": "ide",
+  "name": "editor",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -12,7 +12,7 @@
     "lodash": "^4.17.10",
     "monaco-editor": "^0.13.1",
     "normalizr": "^3.2.4",
-    "office-ui-fabric-react": "^6.73.0",
+    "office-ui-fabric-react": "6.79.0",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
     "react-redux": "^5.0.7",

@@ -12,6 +12,8 @@ const defaultHeaderProps = {
   isSettingsView: false,
   isCustomFunctionsView: false,
   isLoggedIn: false,
+  isLoggingInOrOut: false,
+  profilePicUrl: null,
   screenWidth: 700,
   commandBarFabricTheme: getCommandBarFabricTheme('EXCEL'),
 
@@ -42,4 +44,7 @@ storiesOf('IDE|Header', module)
   ))
   .add('settings view', () => (
     <Header {...{ ...defaultHeaderProps, isSettingsView: true }} />
+  ))
+  .add('logging in', () => (
+    <Header {...{ ...defaultHeaderProps, isLoggingInOrOut: true }} />
   ))
