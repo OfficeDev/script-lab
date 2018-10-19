@@ -17878,7 +17878,7 @@ exports[`Storyshots IDE|Header custom functions view 1`] = `
               padding-right: 0px;
               padding-top: 0;
             }
-        data-focuszone-id="FocusZone214"
+        data-focuszone-id="FocusZone216"
         onFocus={[Function]}
         onKeyDown={[Function]}
         onMouseDownCapture={[Function]}
@@ -18188,7 +18188,7 @@ exports[`Storyshots IDE|Header custom functions view 1`] = `
                           margin-top: 0;
                           white-space: nowrap;
                         }
-                    id="id__218"
+                    id="id__220"
                   >
                     Blank Snippet
                   </div>
@@ -18351,7 +18351,7 @@ exports[`Storyshots IDE|Header custom functions view 1`] = `
                           margin-top: 0;
                           white-space: nowrap;
                         }
-                    id="id__221"
+                    id="id__223"
                   >
                     Register
                   </div>
@@ -18514,7 +18514,7 @@ exports[`Storyshots IDE|Header custom functions view 1`] = `
                           margin-top: 0;
                           white-space: nowrap;
                         }
-                    id="id__224"
+                    id="id__226"
                   >
                     Delete
                   </div>
@@ -18680,7 +18680,7 @@ exports[`Storyshots IDE|Header custom functions view 1`] = `
                           margin-top: 0;
                           white-space: nowrap;
                         }
-                    id="id__227"
+                    id="id__229"
                   >
                     Share
                   </div>
@@ -18968,7 +18968,7 @@ exports[`Storyshots IDE|Header logging in 1`] = `
               padding-right: 0px;
               padding-top: 0;
             }
-        data-focuszone-id="FocusZone247"
+        data-focuszone-id="FocusZone253"
         onFocus={[Function]}
         onKeyDown={[Function]}
         onMouseDownCapture={[Function]}
@@ -19278,7 +19278,7 @@ exports[`Storyshots IDE|Header logging in 1`] = `
                           margin-top: 0;
                           white-space: nowrap;
                         }
-                    id="id__251"
+                    id="id__257"
                   >
                     Blank Snippet
                   </div>
@@ -19441,7 +19441,7 @@ exports[`Storyshots IDE|Header logging in 1`] = `
                           margin-top: 0;
                           white-space: nowrap;
                         }
-                    id="id__254"
+                    id="id__260"
                   >
                     Run
                   </div>
@@ -19604,7 +19604,7 @@ exports[`Storyshots IDE|Header logging in 1`] = `
                           margin-top: 0;
                           white-space: nowrap;
                         }
-                    id="id__257"
+                    id="id__263"
                   >
                     Delete
                   </div>
@@ -19770,7 +19770,7 @@ exports[`Storyshots IDE|Header logging in 1`] = `
                           margin-top: 0;
                           white-space: nowrap;
                         }
-                    id="id__260"
+                    id="id__266"
                   >
                     Share
                   </div>
@@ -20020,7 +20020,7 @@ exports[`Storyshots IDE|Header settings view 1`] = `
               padding-right: 0px;
               padding-top: 0;
             }
-        data-focuszone-id="FocusZone235"
+        data-focuszone-id="FocusZone239"
         onFocus={[Function]}
         onKeyDown={[Function]}
         onMouseDownCapture={[Function]}
@@ -20330,7 +20330,7 @@ exports[`Storyshots IDE|Header settings view 1`] = `
                           margin-top: 0;
                           white-space: nowrap;
                         }
-                    id="id__239"
+                    id="id__243"
                   >
                     Blank Snippet
                   </div>
@@ -20668,7 +20668,7 @@ exports[`Storyshots IDE|MessageBar basic error 1`] = `
               margin-right: 0px;
               margin-top: 8px;
             }
-        id="MessageBar280"
+        id="MessageBar288"
       >
         <span
           aria-live="assertive"
@@ -20952,7 +20952,7 @@ exports[`Storyshots IDE|MessageBar basic info 1`] = `
               margin-right: 0px;
               margin-top: 8px;
             }
-        id="MessageBar268"
+        id="MessageBar276"
       >
         <span
           aria-live="polite"
@@ -21237,7 +21237,7 @@ exports[`Storyshots IDE|MessageBar basic success 1`] = `
               margin-right: 0px;
               margin-top: 8px;
             }
-        id="MessageBar272"
+        id="MessageBar280"
       >
         <span
           aria-live="polite"
@@ -21522,7 +21522,7 @@ exports[`Storyshots IDE|MessageBar basic warning 1`] = `
               margin-right: 0px;
               margin-top: 8px;
             }
-        id="MessageBar276"
+        id="MessageBar284"
       >
         <span
           aria-live="polite"

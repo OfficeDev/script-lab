@@ -11,7 +11,9 @@ import Clipboard from 'clipboard'
 import { convertSolutionToSnippet } from '../../../utils'
 import YAML from 'js-yaml'
 
+import DeleteConfirmationDialog from './DeleteConfirmationDialog'
 import SolutionSettings from './SolutionSettings'
+
 import { ITheme as IFabricTheme } from 'office-ui-fabric-react/lib/Styling'
 import { NULL_SOLUTION_ID, PATHS, IS_TASK_PANE_WIDTH } from '../../../constants'
 import { getPlatform, PlatformType } from '../../../environment'
@@ -115,10 +117,11 @@ export interface IProps extends IPropsFromRedux, IActionsFromRedux {
 
 interface IState {
   showSolutionSettings: boolean
+  isDeleteConfirmationDialogVisible: boolean
 }
 
 class HeaderWithoutTheme extends React.Component<IProps, IState> {
-  state = { showSolutionSettings: false }
+  state = { showSolutionSettings: false, isDeleteConfirmationDialogVisible: false }
   clipboard
 
   constructor(props: IProps) {
@@ -129,6 +132,16 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
   }
 
   getSnippetYaml = (): string => YAML.dump(convertSolutionToSnippet(this.props.solution))
+
+  openDeleteConfirmationDialog = () =>
+    this.setState({ isDeleteConfirmationDialogVisible: true })
+  closeDeleteConfirmationDialog = () =>
+    this.setState({ isDeleteConfirmationDialogVisible: false })
+
+  onConfirmDelete = () => {
+    this.closeDeleteConfirmationDialog()
+    this.props.deleteSolution()
+  }
 
   render() {
     const {
@@ -213,7 +226,7 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
         key: 'delete',
         text: 'Delete',
         iconProps: { iconName: 'Delete' },
-        onClick: deleteSolution,
+        onClick: this.openDeleteConfirmationDialog,
       },
       {
         hidden: isNullSolution,
@@ -333,14 +346,19 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
           </HeaderWrapper>
         </Customizer>
 
-        {solution && (
-          <SolutionSettings
-            isOpen={this.state.showSolutionSettings}
-            closeSolutionSettings={this.closeSolutionSettings}
-            solution={solution}
-            editSolutionMetadata={editSolution}
-          />
-        )}
+        <SolutionSettings
+          isOpen={this.state.showSolutionSettings}
+          closeSolutionSettings={this.closeSolutionSettings}
+          solution={solution}
+          editSolutionMetadata={editSolution}
+        />
+
+        <DeleteConfirmationDialog
+          isVisible={this.state.isDeleteConfirmationDialogVisible}
+          solutionName={solution.name}
+          onYes={this.onConfirmDelete}
+          onCancel={this.closeDeleteConfirmationDialog}
+        />
       </>
     )
   }

@@ -5,6 +5,7 @@ import { DefaultButton } from 'office-ui-fabric-react/lib/Button'
 
 import Monaco from './Monaco'
 import Only from '../../Only'
+
 import SettingsNotAppliedDialog from './SettingsNotAppliedDialog'
 
 import { Layout } from './styles'

@@ -48,6 +48,6 @@ export enum PlatformType {
 
 export function getPlatform(): PlatformType {
   const w = window as any
-  return ((w.Office && w.context && w.context.platform) ||
+  return ((w.Office && w.Office.context && w.Office.context.platform) ||
     PlatformType.OfficeOnline) as PlatformType
 }
