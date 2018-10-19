@@ -56,9 +56,6 @@
     "coverageReporters": [
       "json",
       "lcov"
-    ],
-    "snapshotSerializers": [
-      "@uifabric/jest-serializer-merge-styles"
     ]
   },
   "devDependencies": {
