@@ -12,26 +12,10 @@ interface IEditorSettings {
     autoFormat: boolean
   }
   folding: boolean
-  // linter: {
-  //   mode: string
-  // }
   wordWrap: 'on' | 'off' | 'bounded'
-}
-
-interface IHostSpecificSettings {
-  officeOnline: {
-    openEditorInNewTab: string
-  }
-}
-
-interface IDefaultActions {
-  applySettings: string
-  gistImport: string
 }
 
 interface ISettings {
   editor: IEditorSettings
-  // hostSpecific: IHostSpecificSettings
-  // defaultActions: IDefaultActions
   environment: string
 }

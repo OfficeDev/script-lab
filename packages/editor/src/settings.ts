@@ -18,11 +18,8 @@ export const defaultSettings: ISettings = {
       autoFormat: true,
     },
     folding: true,
-    // linter: { mode: 'warning' },
     wordWrap: 'bounded',
   },
-  // hostSpecific: { officeOnline: { openEditorInNewTab: 'prompt' } },
-  // defaultActions: { applySettings: 'prompt', gistImport: 'prompt' },
   environment: environmentName,
 }
 
@@ -88,11 +85,6 @@ export const allowedSettings = {
     font: { family: ['Menlo', 'Consolas', 'Courier New', 'Source Code Pro'] },
     wordWrap: ['bounded', 'on', 'off'],
   },
-  // hostSpecific: { officeOnline: { openEditorInNewTab: ['prompt', 'always', 'never'] } },
-  // defaultActions: {
-  //   applySettings: ['prompt', 'immediate'],
-  //   gistImport: ['prompt', 'open', 'copy', 'overwrite'],
-  // },
   environment: ['production', 'beta', 'alpha', 'react-beta', 'react-alpha', 'local'],
 }
 
@@ -183,19 +175,6 @@ export const schema = {
           default: defaultSettings.editor.folding,
           examples: [true, false],
         },
-        // linter: {
-        //   $id: '/properties/editor/properties/linter',
-        //   type: 'object',
-        //   additionalProperties: false,
-        //   properties: {
-        //     mode: {
-        //       $id: '/properties/editor/properties/linter/properties/mode',
-        //       type: 'string',
-        //       default: defaultSettings.editor.linter.mode,
-        //       enum: allowedSettings.editor.linter.mode,
-        //     },
-        //   },
-        // },
         wordWrap: {
           $id: '/properties/editor/properties/wordWrap',
           type: 'string',
@@ -205,45 +184,6 @@ export const schema = {
         },
       },
     },
-    // hostSpecific: {
-    //   $id: '/properties/hostSpecific',
-    //   type: 'object',
-    //   additionalProperties: false,
-    //   properties: {
-    //     officeOnline: {
-    //       $id: '/properties/hostSpecific/properties/officeOnline',
-    //       type: 'object',
-    //       properties: {
-    //         openEditorInNewTab: {
-    //           $id:
-    //             '/properties/hostSpecific/properties/officeOnline/properties/openEditorInNewTab',
-    //           type: 'string',
-    //           default: allowedSettings.hostSpecific.officeOnline.openEditorInNewTab[0],
-    //           enum: allowedSettings.hostSpecific.officeOnline.openEditorInNewTab,
-    //         },
-    //       },
-    //     },
-    //   },
-    // },
-    // defaultActions: {
-    //   $id: '/properties/defaultActions',
-    //   type: 'object',
-    //   additionalProperties: false,
-    //   properties: {
-    //     applySettings: {
-    //       $id: '/properties/defaultActions/properties/applySettings',
-    //       type: 'string',
-    //       default: allowedSettings.defaultActions.applySettings[0],
-    //       enum: allowedSettings.defaultActions.applySettings,
-    //     },
-    //     gistImport: {
-    //       $id: '/properties/defaultActions/properties/gistImport',
-    //       type: 'string',
-    //       default: allowedSettings.defaultActions.gistImport[0],
-    //       enum: allowedSettings.defaultActions.gistImport,
-    //     },
-    //   },
-    // },
     environment: {
       $id: 'properties/environment',
       type: 'string',
