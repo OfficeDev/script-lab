@@ -4,7 +4,7 @@ import isEqual from 'lodash/isEqual'
 import { setOptions } from './monaco-models'
 
 import librariesIntellisenseJSON from './libraryIntellisense'
-import SettingsSchema from '../../../../SettingsJSONSchema'
+import { schema as SettingsSchema } from '../../../../settings'
 import { SETTINGS_FILE_ID } from '../../../../constants'
 interface IDisposableFile {
   url: string

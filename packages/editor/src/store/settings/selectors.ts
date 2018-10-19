@@ -39,8 +39,6 @@ export const getFontSize = (state: IState): number =>
   state.settings.values.editor.font.size
 export const getFontFamily = (state: IState): string =>
   state.settings.values.editor.font.family
-export const getLineHeight = (state: IState): number =>
-  state.settings.values.editor.font.lineHeight
 
 export const getIsMinimapEnabled = (state: IState): boolean =>
   state.settings.values.editor.minimap
@@ -53,7 +51,5 @@ export const getIsAutoFormatEnabled = (state: IState): boolean =>
 
 export const getTabSize = (state: IState): number => state.settings.values.editor.tabSize
 
-export const getWordWrap = (state: IState): 'on' | 'off' | 'bounded' | 'wordWrapColumn' =>
+export const getWordWrap = (state: IState): 'on' | 'off' | 'bounded' =>
   state.settings.values.editor.wordWrap
-export const getWordWrapColumn = (state: IState): number =>
-  state.settings.values.editor.wordWrapColumn
