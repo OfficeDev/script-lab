@@ -165,7 +165,7 @@ exports[`Storyshots Backstage|All basic 1`] = `
             onMouseDownCapture={[Function]}
             role="presentation"
           >
-            <div
+            <ul
               className=
                   ms-Pivot
                   ms-Pivot--tabs
@@ -1071,7 +1071,7 @@ exports[`Storyshots Backstage|All basic 1`] = `
                   </span>
                 </div>
               </button>
-            </div>
+            </ul>
           </div>
           <div
             aria-labelledby="Pivot20-Tab2"
@@ -1197,7 +1197,6 @@ exports[`Storyshots Backstage|All basic 1`] = `
                   margin-left: 0px;
                   margin-right: 0px;
                   margin-top: 0px;
-                  min-width: 0px;
                   outline: none;
                   overflow: hidden;
                   padding-bottom: 0.5px;
@@ -4282,7 +4281,6 @@ exports[`Storyshots Backstage|MySolutions basic 1`] = `
             margin-left: 0px;
             margin-right: 0px;
             margin-top: 0px;
-            min-width: 0px;
             outline: none;
             overflow: hidden;
             padding-bottom: 0.5px;
@@ -8208,7 +8206,7 @@ exports[`Storyshots Custom Functions|Dashboard as standalone 1`] = `
           onMouseDownCapture={[Function]}
           role="presentation"
         >
-          <div
+          <ul
             className=
                 ms-Pivot
                 ms-Pivot--tabs
@@ -8577,7 +8575,7 @@ exports[`Storyshots Custom Functions|Dashboard as standalone 1`] = `
                 </span>
               </div>
             </button>
-          </div>
+          </ul>
         </div>
         <div
           aria-labelledby="Pivot127-Tab0"
@@ -9628,7 +9626,7 @@ exports[`Storyshots Custom Functions|Dashboard basic 1`] = `
           onMouseDownCapture={[Function]}
           role="presentation"
         >
-          <div
+          <ul
             className=
                 ms-Pivot
                 ms-Pivot--tabs
@@ -10166,7 +10164,7 @@ exports[`Storyshots Custom Functions|Dashboard basic 1`] = `
                 </span>
               </div>
             </button>
-          </div>
+          </ul>
         </div>
         <div
           aria-labelledby="Pivot78-Tab0"
@@ -10608,7 +10606,7 @@ exports[`Storyshots Custom Functions|Dashboard with actual tabs 1`] = `
           onMouseDownCapture={[Function]}
           role="presentation"
         >
-          <div
+          <ul
             className=
                 ms-Pivot
                 ms-Pivot--tabs
@@ -10977,7 +10975,7 @@ exports[`Storyshots Custom Functions|Dashboard with actual tabs 1`] = `
                 </span>
               </div>
             </button>
-          </div>
+          </ul>
         </div>
         <div
           aria-labelledby="Pivot96-Tab0"
@@ -11770,7 +11768,7 @@ exports[`Storyshots Custom Functions|Dashboard with refresh 1`] = `
           onMouseDownCapture={[Function]}
           role="presentation"
         >
-          <div
+          <ul
             className=
                 ms-Pivot
                 ms-Pivot--tabs
@@ -12139,7 +12137,7 @@ exports[`Storyshots Custom Functions|Dashboard with refresh 1`] = `
                 </span>
               </div>
             </button>
-          </div>
+          </ul>
         </div>
         <div
           aria-labelledby="Pivot111-Tab0"
