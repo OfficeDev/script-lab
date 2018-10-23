@@ -3,7 +3,7 @@ interface ICachedModel {
   cursorPos?: monaco.IPosition
 }
 
-const cache = {}
+let cache: { [id: string]: ICachedModel } = {}
 
 interface IModelOptions {
   tabSize: number
@@ -50,4 +50,11 @@ export function removeModelFromCache(fileId: string) {
 
 export function setOptions(options: IModelOptions) {
   globalOptions = options
+}
+
+export function clearCache() {
+  Object.keys(cache).forEach(id => {
+    cache[id].model.dispose()
+  })
+  cache = {}
 }

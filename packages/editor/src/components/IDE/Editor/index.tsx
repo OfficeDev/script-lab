@@ -22,6 +22,7 @@ import {
   setPosForModel,
   getModelByIdIfExists,
   removeModelFromCache,
+  clearCache,
 } from './Monaco/monaco-models'
 
 import debounce from 'lodash/debounce'
@@ -115,6 +116,10 @@ class Editor extends Component<IProps, IState> {
   resizeListener: any
 
   componentDidUpdate(prevProps) {
+    if (prevProps.activeSolution.id !== this.props.activeSolution.id) {
+      clearCache()
+    }
+
     if (prevProps.activeFile.id !== this.props.activeFile.id) {
       this.changeActiveFile(prevProps.activeFile, this.props.activeFile)
     }
