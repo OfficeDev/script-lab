@@ -1,7 +1,11 @@
 const fs = require('fs-extra')
 
-// const fromPath = '../../node_modules/monaco-editor/min/vs'
-const fromPath = '../../node_modules/monaco-editor/dev/vs'
-const toPath = './public/vs'
+const packageFromPath = '../../node_modules/monaco-editor/min/vs'
+const packageToPath = './public/vs'
 
-fs.remove(toPath).then(() => fs.copy(fromPath, toPath))
+fs.remove(packageToPath).then(() => fs.copy(packageFromPath, packageToPath))
+
+const typesFromPath = '../../node_modules/monaco-editor/monaco.d.ts'
+const typesToPath = './src/interfaces/monaco.d.ts'
+
+fs.remove(typesToPath).then(() => fs.copy(typesFromPath, typesToPath))

@@ -1,21 +1,22 @@
-import React from 'react'
-
+import React, { Component } from 'react'
+import { withTheme } from 'styled-components'
 import debounce from 'lodash/debounce'
+
+import { actions, selectors } from '../../../store'
 
 export interface IProps {
   solutionId: string
   file: IFile
 
-  options: Partial<monaco.editor.IEditorConstructionOptions>
-
   editorDidMount: (editor, monaco) => void
   onValueChange: (solutionId: string, fileId: string, value: string) => void
 }
+
 interface IState {
   models: { [id: string]: any }
 }
 
-export class Monaco extends React.Component<IProps, IState> {
+export class ReactMonaco extends Component<IProps, IState> {
   editor
   container
   state = { models: {} }
@@ -66,9 +67,9 @@ export class Monaco extends React.Component<IProps, IState> {
 
   initializeMonaco = () => {
     console.log('initializing monaco')
-    const { solutionId, file, options } = this.props
+    const { solutionId, file } = this.props
 
-    this.editor = monaco.editor.create(this.container.current, options)
+    this.editor = monaco.editor.create(this.container.current, {})
 
     const model = this.getModel()
     this.editor.setModel(model)
@@ -120,4 +121,4 @@ export class Monaco extends React.Component<IProps, IState> {
   }
 }
 
-export default Monaco
+export default ReactMonaco
