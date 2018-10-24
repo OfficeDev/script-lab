@@ -61,10 +61,9 @@ export class Monaco extends React.Component<IProps, IState> {
         console.log('file changed!')
         const newModel = this.getModel()
         console.log({ newModel })
-        try {
-          this.editor.setModel(null)
-          this.editor.setModel(newModel)
-        } catch (e) {}
+        console.log(newModel.getValue())
+        // this.editor.setModel(null)
+        this.editor.setModel(newModel)
       }
 
       // const model = this.editor.getModel()
@@ -81,7 +80,7 @@ export class Monaco extends React.Component<IProps, IState> {
     }
   }
 
-  private initializeMonaco() {
+  initializeMonaco = () => {
     console.log('initializing monaco')
     const { solutionId, file, options } = this.props
 
@@ -110,31 +109,32 @@ export class Monaco extends React.Component<IProps, IState> {
     })
 
   private getModel = () => {
-    if (Object.keys(this.state.models).includes(this.props.file.id)) {
-      return this.state.models[this.props.file.id]
-    } else {
-      const model = monaco.editor.createModel(
-        this.props.file.content,
-        this.props.file.language.toLowerCase(),
-        this.getUri(),
-      )
-      this.setState({ models: { ...this.state.models, [this.props.file.id]: model } })
-      return model
-    }
-    // const model = monaco.editor.getModel(uri)
-    // console.log({ uri, model })
-    // if (model) {
-    //   console.log('returning cached model')
-    //   return model
+    // if (Object.keys(this.state.models).includes(this.props.file.id)) {
+    //   return this.state.models[this.props.file.id]
     // } else {
-    //   console.log('returning newly created model')
     //   const model = monaco.editor.createModel(
     //     this.props.file.content,
-    //     this.props.file.language,
+    //     this.props.file.language.toLowerCase(),
     //     this.getUri(),
     //   )
+    //   this.setState({ models: { ...this.state.models, [this.props.file.id]: model } })
     //   return model
     // }
+    const uri = this.getUri()
+    const model = monaco.editor.getModel(uri)
+    console.log({ uri, model })
+    if (model) {
+      console.log('returning cached model')
+      return model
+    } else {
+      console.log('returning newly created model')
+      const model = monaco.editor.createModel(
+        this.props.file.content,
+        this.props.file.language,
+        this.getUri(),
+      )
+      return model
+    }
     // // return model
     // //   ? model
     // //   :
