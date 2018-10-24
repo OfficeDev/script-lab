@@ -1,7 +1,10 @@
 import React, { Component } from 'react'
 import prettier from 'prettier/standalone'
+
 import isEqual from 'lodash/isEqual'
-import { setOptions } from './monaco-models'
+import flatten from 'lodash/flatten'
+
+// import { setOptions } from './monaco-models'
 
 import librariesIntellisenseJSON from './libraryIntellisense'
 import { schema as SettingsSchema } from '../../../../settings'
@@ -17,31 +20,76 @@ const Regex = {
   ENDS_WITH_CSS: /.*\.css$/i,
   ENDS_WITH_DTS: /.*\.d\.ts$/i,
   GLOBAL: /^.*/i,
+  TRIPLE_SLASH_REF: /\/\/\/\s*<reference\spath="([\w\.\d]+\.d\.ts)"\s*\/>/gm,
 }
 
-function parse(libraries: string): string[] {
-  return libraries
-    .split('\n')
-    .map(library => {
-      library = library.trim()
+async function parseTripleSlashRefs(url: string) {
+  const content = await fetch(url).then(resp => resp.text())
 
-      if (/^@types/.test(library)) {
-        return `https://unpkg.com/${library}/index.d.ts`
-      } else if (/^dt~/.test(library)) {
-        const libName = library.split('dt~')[1]
-        return `https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/master/types/${libName}/index.d.ts`
-      } else if (/\.d\.ts$/i.test(library)) {
-        if (/^https?:/i.test(library)) {
-          return library
-        } else {
-          return `https://unpkg.com/${library}`
-        }
+  let match = Regex.TRIPLE_SLASH_REF.exec(content)
+  Regex.TRIPLE_SLASH_REF.lastIndex = 0
+  if (!match) {
+    return []
+  }
+  // console.log({ match, content })
+  // console.log(content)
+
+  let copyContent = content
+  // console.log(url)
+  const splitUrl = url.split('/')
+  const baseUrl = splitUrl.slice(0, splitUrl.length - 1).join('/')
+  // console.log(baseUrl)
+
+  const additionalUrls: string[] = []
+
+  while (match) {
+    const [ref, path] = match
+
+    const newUrl = `${baseUrl}/${path}`
+    // const value = await fetch(newUrl).then(resp => resp.text())
+    // const disposable = monaco.languages.typescript.typescriptDefaults.addExtraLib(
+    //   value,
+    //   newUrl,
+    // )
+    // console.log({ value, newUrl })
+    additionalUrls.push(newUrl)
+    copyContent = copyContent.replace(ref, '')
+    match = Regex.TRIPLE_SLASH_REF.exec(copyContent)
+    Regex.TRIPLE_SLASH_REF.lastIndex = 0
+  }
+
+  console.log(additionalUrls)
+
+  return additionalUrls
+}
+
+async function parse(libraries: string): Promise<string[]> {
+  let urls: string[] = []
+
+  await libraries.split('\n').forEach(async library => {
+    library = library.trim()
+
+    if (/^@types/.test(library)) {
+      const url = `https://unpkg.com/${library}/index.d.ts`
+      urls.push(url)
+      urls = [...urls, ...(await parseTripleSlashRefs(url))]
+    } else if (/^dt~/.test(library)) {
+      const libName = library.split('dt~')[1]
+      const url = `https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/master/types/${libName}/index.d.ts`
+      urls.push(url)
+      urls = [...urls, ...(await parseTripleSlashRefs(url))]
+    } else if (/\.d\.ts$/i.test(library)) {
+      if (/^https?:/i.test(library)) {
+        urls.push(library)
       } else {
-        return null
+        urls.push(`https://unpkg.com/${library}`)
       }
-    })
-    .filter(x => x !== null)
-    .map(x => x!)
+    }
+  })
+
+  console.log({ urls })
+
+  return urls
 }
 
 interface IProps {
@@ -103,7 +151,7 @@ class ReactMonaco extends Component<IProps, IState> {
     }
 
     if (prevProps.tabSize !== this.props.tabSize) {
-      setOptions({ tabSize: this.props.tabSize })
+      // setOptions({ tabSize: this.props.tabSize })
     }
   }
 
@@ -205,7 +253,7 @@ class ReactMonaco extends Component<IProps, IState> {
         })
       }
 
-      setOptions({ tabSize: this.props.tabSize })
+      // setOptions({ tabSize: this.props.tabSize })
       this.editorDidMount(this.editor, monaco)
       this.updateIntellisense()
     }
@@ -225,7 +273,7 @@ class ReactMonaco extends Component<IProps, IState> {
     this.setState({ intellisenseFiles: [] })
   }
 
-  updateIntellisense() {
+  async updateIntellisense() {
     const win = window as any
     if (this.container.current && win.monaco) {
       const oldLibs = this.state.intellisenseFiles.map(file => file.url)
@@ -235,8 +283,8 @@ class ReactMonaco extends Component<IProps, IState> {
         !(oldLibs.length === newLibs.length && oldLibs.every((v, i) => v === newLibs[i]))
       ) {
         const oldIntellisenseFiles = this.state.intellisenseFiles
-        const newIntellisenseUrls = parse(newLibs)
-
+        const newIntellisenseUrls = await parse(newLibs)
+        console.log({ newIntellisenseUrls })
         const filesToDispose = this.state.intellisenseFiles.filter(
           ({ url }) => !newIntellisenseUrls.includes(url),
         )

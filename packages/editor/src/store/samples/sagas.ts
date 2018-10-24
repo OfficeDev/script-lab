@@ -11,7 +11,7 @@ function* fetchAllSamplesMetadetaSaga() {
   const host: string = yield select(selectors.host.get)
   const { content, error } = yield call(
     fetchYaml,
-    `https://raw.githubusercontent.com/OfficeDev/office-js-snippets/master/playlists/${host.toLowerCase()}.yaml`,
+    `https://raw.githubusercontent.com/OfficeDev/office-js-snippets/deploy-beta/playlists/${host.toLowerCase()}.yaml`,
   )
   if (content) {
     yield put(samples.fetchMetadata.success(content.map(sample => ({ ...sample, host }))))
@@ -21,10 +21,7 @@ function* fetchAllSamplesMetadetaSaga() {
 }
 
 function* openSampleSaga(action: ActionType<typeof samples.get.request>) {
-  let url = action.payload.rawUrl
-  url = url.replace('<ACCOUNT>', 'OfficeDev')
-  url = url.replace('<REPO>', 'office-js-snippets')
-  url = url.replace('<BRANCH>', 'master')
+  const url = action.payload.rawUrl
 
   const { content, error } = yield call(fetchYaml, url)
   if (content) {
