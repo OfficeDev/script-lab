@@ -17,14 +17,6 @@ import {
   ABOUT_FILE_ID,
 } from '../../../constants'
 
-// import {
-//   getModel,
-//   setPosForModel,
-//   getModelByIdIfExists,
-//   removeModelFromCache,
-//   clearCache,
-// } from './Monaco/monaco-models'
-
 import debounce from 'lodash/debounce'
 
 import { connect } from 'react-redux'
@@ -372,13 +364,6 @@ class Editor extends Component<IProps, IState> {
             options={options}
             onValueChange={this.onValueChange}
             editorDidMount={this.setupEditor}
-
-            // theme={monacoTheme}
-            // options={options}
-            // tabSize={editorSettings.tabSize}
-            // isPrettierEnabled={editorSettings.isPrettierEnabled}
-            // editorDidMount={this.setupEditor}
-            // libraries={libraries && libraries.content}
           />
         </Layout>
       </>
