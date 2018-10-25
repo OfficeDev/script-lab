@@ -80,12 +80,15 @@ export class ReactMonaco extends Component<IProps, IState> {
     this.props.editorDidMount(this.editor)
   }
 
-  onValueChange = () =>
-    this.props.onValueChange(
-      this.props.solutionId,
-      this.props.file.id,
-      this.editor.getModel().getValue(),
-    )
+  onValueChange = debounce(
+    () =>
+      this.props.onValueChange(
+        this.props.solutionId,
+        this.props.file.id,
+        this.editor.getModel().getValue(),
+      ),
+    250,
+  )
 
   private getUri = () =>
     new monaco.Uri().with({
