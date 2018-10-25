@@ -15,6 +15,8 @@ import {
 } from './utilities'
 import { fetchAllGistMetadataSaga } from '../gists/sagas'
 
+let monacoEditor
+
 export function* openSolutionSaga(action: ActionType<typeof editor.open>) {
   yield put(push(PATHS.EDITOR))
   if (doesMonacoExist()) {
@@ -33,6 +35,7 @@ export function* hasLoadedSaga(action: ActionType<typeof editor.onLoadComplete>)
 }
 
 function* initializeMonacoSaga(action: ActionType<typeof editor.onMount>) {
+  monacoEditor = action.payload
   const theme = yield select(selectors.settings.getMonacoTheme)
   if (theme) {
     monaco.editor.setTheme(theme)
@@ -52,11 +55,9 @@ function* initializeMonacoSaga(action: ActionType<typeof editor.onMount>) {
 
 function* applyMonacoOptionsSaga() {
   const monacoOptions = yield select(selectors.settings.getMonacoOptions)
-  const editor: monaco.editor.IStandaloneCodeEditor | null = yield select(
-    selectors.editor.getMonacoEditor,
-  )
-  if (editor) {
-    editor.updateOptions(monacoOptions)
+
+  if (monacoEditor) {
+    monacoEditor.updateOptions(monacoOptions)
   }
 }
 
@@ -89,18 +90,21 @@ function* makeAddIntellisenseRequestSaga() {
     }
   })
   let urlsToFetch = urls.filter(url => /^.*\/index\.d\.ts$/.test(url))
+  console.log({ urls, urlsToFetch })
 
   while (urlsToFetch.length > 0) {
-    const urlContents = yield call(
-      () => urlsToFetch.map(url => fetch(url).then(resp => resp.text())), // TODO: error handling
-    )
+    const urlContents = yield urlsToFetch.map(url => fetch(url).then(resp => resp.text())) // TODO: error handling
+
     const urlContentPairing = zip(urlsToFetch, urlContents)
+    console.log({ urlContents, urlContentPairing })
 
     urlsToFetch = flatten(
       urlContentPairing.map(([url, content]) => parseTripleSlashRefs(url, content)),
     )
     urls = [...urls, ...urlsToFetch]
   }
+
+  console.log({ urls })
 
   yield put(editor.setIntellisenseFiles.request({ urls }))
 }
@@ -111,12 +115,9 @@ function* setIntellisenseFilesSaga(
   const existingIntellisenseFiles = yield select(selectors.editor.getIntellisenseFiles)
   const existingUrls = Object.keys(existingIntellisenseFiles)
   const currentUrls = action.payload.urls
-
   const urlsToDispose = existingUrls.filter(url => !currentUrls.includes(url))
   urlsToDispose.forEach(url => existingIntellisenseFiles[url].dispose())
-
   const urlsToFetch = currentUrls.filter(url => !existingUrls.includes(url))
-
   const newIntellisenseFiles = yield call(() =>
     Promise.all(
       urlsToFetch.map(url =>
@@ -132,7 +133,6 @@ function* setIntellisenseFilesSaga(
       ),
     ),
   )
-
   yield put(
     editor.setIntellisenseFiles.success(
       newIntellisenseFiles.reduce(
