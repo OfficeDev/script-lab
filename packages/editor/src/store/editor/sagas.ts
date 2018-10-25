@@ -90,21 +90,17 @@ function* makeAddIntellisenseRequestSaga() {
     }
   })
   let urlsToFetch = urls.filter(url => /^.*\/index\.d\.ts$/.test(url))
-  console.log({ urls, urlsToFetch })
 
   while (urlsToFetch.length > 0) {
     const urlContents = yield urlsToFetch.map(url => fetch(url).then(resp => resp.text())) // TODO: error handling
 
     const urlContentPairing = zip(urlsToFetch, urlContents)
-    console.log({ urlContents, urlContentPairing })
 
     urlsToFetch = flatten(
       urlContentPairing.map(([url, content]) => parseTripleSlashRefs(url, content)),
     )
     urls = [...urls, ...urlsToFetch]
   }
-
-  console.log({ urls })
 
   yield put(editor.setIntellisenseFiles.request({ urls }))
 }
