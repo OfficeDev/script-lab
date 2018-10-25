@@ -30,11 +30,6 @@ const hasLoaded = (state: IHasLoadedState = false, action) => {
   }
 }
 
-type IMonacoEditorState = monaco.editor.IStandaloneCodeEditor | null
-
-const monacoEditor = (state: IMonacoEditorState = null, action: IEditorAction) =>
-  getType(editor.onMount) === action.type ? action.payload : state
-
 interface IIntellisenseFilesState {
   [url: string]: monaco.IDisposable
 }
@@ -47,7 +42,7 @@ const intellisenseFiles = (
     case getType(editor.setIntellisenseFiles.success):
       return { ...state, ...action.payload }
     case getType(editor.removeIntellisenseFiles):
-      return omit(state, action.payload)
+      return omit({ ...state }, action.payload)
     default:
       return state
   }
@@ -73,7 +68,6 @@ const active = (
 export interface IState {
   isVisible: IIsVisibleState
   hasLoaded: IHasLoadedState
-  monacoEditor: IMonacoEditorState
   intellisenseFiles: IIntellisenseFilesState
   active: IActiveState
 }
@@ -81,7 +75,6 @@ export interface IState {
 export default combineReducers({
   isVisible,
   hasLoaded,
-  monacoEditor,
   intellisenseFiles,
   active,
 })
