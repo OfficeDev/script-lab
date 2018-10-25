@@ -61,6 +61,9 @@ export function* fetchAllGistMetadataSaga() {
 function* onFetchGistMetadataSuccessSaga(
   action: ActionType<typeof gists.fetchMetadata.success>,
 ) {
+  /* This saga gets executed whenever fetchGistMetadata.success is dispatched
+     The code below goes through the resulting metadata and ensures that no local
+     solution is still pointing to a non-existing gist. */
   const metadataIds = action.payload.map(metadata => metadata.id)
   const allSolutions: ISolution[] = yield select(selectors.solutions.getAll)
 
