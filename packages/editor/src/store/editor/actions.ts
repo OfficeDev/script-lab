@@ -4,6 +4,10 @@ export const open = createAction('EDITOR_OPEN', resolve => {
   return (props: { solutionId: string; fileId: string }) => resolve(props)
 })
 
+export const setActive = createAction('EDITOR_SET_ACTIVE', resolve => {
+  return (props: { solutionId: string; fileId: string }) => resolve(props)
+})
+
 export const onMount = createAction('EDITOR_ON_MOUNT', resolve => {
   return (editor: monaco.editor.IStandaloneCodeEditor) => resolve(editor)
 })

@@ -13,16 +13,31 @@ import {
   parseTripleSlashRefs,
   doesMonacoExist,
 } from './utilities'
-import { fetchAllGistMetadataSaga } from '../gists/sagas'
 
 let monacoEditor
 
-export function* openSolutionSaga(action: ActionType<typeof editor.open>) {
+export function* onEditorOpenSaga(action: ActionType<typeof editor.open>) {
+  const activeSolution = yield select(selectors.editor.getActiveSolution)
+  const activeFile = yield select(selectors.editor.getActiveFile)
+  yield put(editor.setActive(action.payload))
   yield put(push(PATHS.EDITOR))
+
+  if (activeSolution.id !== action.payload.solutionId) {
+    yield call(onSolutionOpenSaga)
+  }
+
+  if (activeFile.id !== action.payload.fileId) {
+    yield call(onFileOpenSaga)
+  }
+}
+
+function* onSolutionOpenSaga() {
   if (doesMonacoExist()) {
     yield call(makeAddIntellisenseRequestSaga)
   }
 }
+
+function* onFileOpenSaga() {}
 
 export function* hasLoadedSaga(action: ActionType<typeof editor.onLoadComplete>) {
   const loadingIndicator = document.getElementById('loading')
@@ -140,7 +155,7 @@ function* setIntellisenseFilesSaga(
 }
 
 export default function* editorWatcher() {
-  yield takeEvery(getType(editor.open), openSolutionSaga)
+  yield takeEvery(getType(editor.open), onEditorOpenSaga)
   yield takeEvery(getType(editor.onMount), initializeMonacoSaga)
   yield takeEvery(getType(editor.onLoadComplete), hasLoadedSaga)
   yield takeEvery(getType(editor.applyMonacoOptions), applyMonacoOptionsSaga)

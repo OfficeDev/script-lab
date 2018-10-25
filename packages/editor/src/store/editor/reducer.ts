@@ -58,7 +58,7 @@ const active = (
   action: IEditorAction,
 ) => {
   switch (action.type) {
-    case getType(editor.open):
+    case getType(editor.setActive):
       return action.payload
     default:
       return state
