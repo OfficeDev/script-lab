@@ -1,4 +1,5 @@
 import uuidv4 from 'uuid'
+import { LIBRARIES_FILE_NAME } from './constants'
 
 export const getBoilerplateFiles = (timestamp: number): IFile[] =>
   [
@@ -34,7 +35,7 @@ async function tryCatch(callback) {
     },
     { name: 'index.css', language: 'CSS', content: '' },
     {
-      name: 'libraries.txt',
+      name: LIBRARIES_FILE_NAME,
       language: 'libraries',
       content: `https://appsforoffice.microsoft.com/lib/1/hosted/office.js
 https://appsforoffice.microsoft.com/lib/1/hosted/office.d.ts

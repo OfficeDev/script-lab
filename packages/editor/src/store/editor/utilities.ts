@@ -131,3 +131,30 @@ export function enablePrettierInMonaco() {
     )
   })
 }
+
+export function parseTripleSlashRefs(url: string, content: string) {
+  let match = Regex.TRIPLE_SLASH_REF.exec(content)
+  Regex.TRIPLE_SLASH_REF.lastIndex = 0
+  if (!match) {
+    return []
+  }
+  let copyContent = content
+
+  const splitUrl = url.split('/')
+  const baseUrl = splitUrl.slice(0, splitUrl.length - 1).join('/')
+
+  const additionalUrls: string[] = []
+
+  while (match) {
+    const [ref, path] = match
+
+    const newUrl = `${baseUrl}/${path}`
+    additionalUrls.push(newUrl)
+    copyContent = copyContent.replace(ref, '')
+
+    match = Regex.TRIPLE_SLASH_REF.exec(copyContent)
+    Regex.TRIPLE_SLASH_REF.lastIndex = 0
+  }
+
+  return additionalUrls
+}
