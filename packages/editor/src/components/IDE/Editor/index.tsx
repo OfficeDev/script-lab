@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import { Layout } from './styles'
+import ReactMonaco from './ReactMonaco'
+
 import { connect } from 'react-redux'
 import { actions, selectors } from '../../../store'
-import ReactMonaco from './ReactMonaco'
 
 interface IPropsFromRedux {
   backgroundColor: string
@@ -30,8 +31,7 @@ const mapDispatchToProps = dispatch => ({
     fileId: string,
     file: Partial<IEditableFileProperties>,
   ) => dispatch(actions.solutions.edit({ id: solutionId, fileId, file })),
-  signalEditorLoaded: (monaco: any, editor: any) =>
-    dispatch(actions.editor.signalHasLoaded()),
+  signalEditorLoaded: (editor: any) => dispatch(actions.editor.onMount(editor)),
 })
 
 export interface IProps extends IPropsFromRedux, IActionsFromRedux {}

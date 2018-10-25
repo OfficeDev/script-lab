@@ -22,12 +22,17 @@ type IHasLoadedState = boolean
 
 const hasLoaded = (state: IHasLoadedState = false, action) => {
   switch (action.type) {
-    case getType(editor.signalHasLoaded):
+    case getType(editor.onMount):
       return true
     default:
       return state
   }
 }
+
+type IMonacoEditorState = monaco.editor.IStandaloneCodeEditor | null
+
+const monacoEditor = (state: IMonacoEditorState = null, action: IEditorAction) =>
+  getType(editor.onMount) === action.type ? action.payload : state
 
 interface IActiveState {
   solutionId: string | null
@@ -49,11 +54,13 @@ const active = (
 export interface IState {
   isVisible: IIsVisibleState
   hasLoaded: IHasLoadedState
+  monacoEditor: IMonacoEditorState
   active: IActiveState
 }
 
 export default combineReducers({
   isVisible,
   hasLoaded,
+  monacoEditor,
   active,
 })

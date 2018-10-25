@@ -8,7 +8,7 @@ export interface IProps {
   solutionId: string
   file: IFile
 
-  editorDidMount: (editor, monaco) => void
+  editorDidMount: (editor: monaco.editor.IStandaloneCodeEditor) => void
   onValueChange: (solutionId: string, fileId: string, value: string) => void
 }
 
@@ -19,7 +19,6 @@ interface IState {
 export class ReactMonaco extends Component<IProps, IState> {
   editor
   container
-  state = { models: {} }
 
   constructor(props) {
     super(props)
@@ -78,7 +77,7 @@ export class ReactMonaco extends Component<IProps, IState> {
       this.onValueChange()
     })
 
-    this.props.editorDidMount(this.editor, monaco)
+    this.props.editorDidMount(this.editor)
   }
 
   onValueChange = () =>
@@ -108,10 +107,7 @@ export class ReactMonaco extends Component<IProps, IState> {
   }
 
   clearAllModels = () => {
-    monaco.editor
-      .getModels()
-      .filter(model => !model.isDisposed)
-      .forEach(model => model.dispose())
+    monaco.editor.getModels().forEach(model => model.dispose())
   }
 
   render() {

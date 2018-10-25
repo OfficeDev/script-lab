@@ -1,7 +1,7 @@
 import { IState } from '../reducer'
-import { getActiveSolution } from '../editor/selectors'
+import { getActiveSolution, getActiveFile } from '../editor/selectors'
 import { get as getHost } from '../host/selectors'
-import { SETTINGS_SOLUTION_ID } from '../../constants'
+import { SETTINGS_SOLUTION_ID, READ_ONLY_FILE_IDS, ABOUT_FILE_ID } from '../../constants'
 import { getTheme } from '../../theme'
 
 export const getIsOpen = (state: IState): boolean =>
@@ -53,3 +53,37 @@ export const getTabSize = (state: IState): number => state.settings.values.edito
 
 export const getWordWrap = (state: IState): 'on' | 'off' | 'bounded' =>
   state.settings.values.editor.wordWrap
+
+export const getMonacoOptions = (
+  state: IState,
+): monaco.editor.IEditorConstructionOptions => {
+  const editorSettings = state.settings.values.editor
+  return {
+    theme: getMonacoTheme(state),
+    selectOnLineNumbers: true,
+    fontSize: editorSettings.font.size,
+    fontFamily: [
+      editorSettings.font.family,
+      'Menlo',
+      'Source Code Pro',
+      'Consolas',
+      'Courier New',
+      'monospace',
+    ]
+      .map(fontName => (fontName.includes(' ') ? JSON.stringify(fontName) : fontName))
+      .join(', '),
+    minimap: { enabled: editorSettings.minimap },
+    scrollbar: { vertical: 'visible', arrowSize: 15 },
+    formatOnPaste: true,
+    lineHeight: editorSettings.font.size * 1.35,
+    folding: editorSettings.folding,
+    glyphMargin: false,
+    fixedOverflowWidgets: true,
+    ariaLabel: 'editor',
+    wordWrap: editorSettings.wordWrap,
+    wordWrapColumn: 120,
+    wrappingIndent: 'indent',
+    readOnly: READ_ONLY_FILE_IDS.includes(getActiveFile(state).id),
+    lineNumbers: getActiveFile(state).id !== ABOUT_FILE_ID ? 'on' : 'off',
+  }
+}

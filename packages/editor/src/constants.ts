@@ -23,6 +23,8 @@ export const NULL_SOLUTION: ISolution = {
   files: [],
 }
 
+export const READ_ONLY_FILE_IDS = [NULL_FILE_ID, ABOUT_FILE_ID]
+
 export const RUNNER_URL = 'https://bornholm-runner-insiders.azurewebsites.net'
 
 export const localStorageKeys = {

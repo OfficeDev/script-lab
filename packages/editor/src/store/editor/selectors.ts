@@ -41,3 +41,7 @@ export const getActiveFile = (state: IState): IFile => {
     return NULL_FILE
   }
 }
+
+export const getMonacoEditor = (
+  state: IState,
+): monaco.editor.IStandaloneCodeEditor | null => state.editor.monacoEditor
