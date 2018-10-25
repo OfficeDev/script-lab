@@ -3,7 +3,7 @@ import librariesIntellisenseJSON from './librariesIntellisense'
 import { schema as SettingsSchema } from '../../settings'
 import { SETTINGS_FILE_ID } from '../../constants'
 
-function doesMonacoExist() {
+export function doesMonacoExist() {
   const w = window as any
   return !!w.monaco
 }

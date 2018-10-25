@@ -2,6 +2,7 @@ import { combineReducers } from 'redux'
 import { getType } from 'typesafe-actions'
 import { editor, IEditorAction } from '../actions'
 import { PATHS } from '../../constants'
+import omit from 'lodash/omit'
 
 type IIsVisibleState = boolean
 
@@ -34,6 +35,24 @@ type IMonacoEditorState = monaco.editor.IStandaloneCodeEditor | null
 const monacoEditor = (state: IMonacoEditorState = null, action: IEditorAction) =>
   getType(editor.onMount) === action.type ? action.payload : state
 
+interface IIntellisenseFilesState {
+  [url: string]: monaco.IDisposable
+}
+
+const intellisenseFiles = (
+  state: IIntellisenseFilesState = {},
+  action: IEditorAction,
+) => {
+  switch (action.type) {
+    case getType(editor.setIntellisenseFiles.success):
+      return { ...state, ...action.payload }
+    case getType(editor.removeIntellisenseFiles):
+      return omit(state, action.payload)
+    default:
+      return state
+  }
+}
+
 interface IActiveState {
   solutionId: string | null
   fileId: string | null
@@ -55,6 +74,7 @@ export interface IState {
   isVisible: IIsVisibleState
   hasLoaded: IHasLoadedState
   monacoEditor: IMonacoEditorState
+  intellisenseFiles: IIntellisenseFilesState
   active: IActiveState
 }
 
@@ -62,5 +82,6 @@ export default combineReducers({
   isVisible,
   hasLoaded,
   monacoEditor,
+  intellisenseFiles,
   active,
 })

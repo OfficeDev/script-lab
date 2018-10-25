@@ -11,11 +11,15 @@ import {
   registerSettingsMonacoLanguage,
   enablePrettierInMonaco,
   parseTripleSlashRefs,
+  doesMonacoExist,
 } from './utilities'
+import { fetchAllGistMetadataSaga } from '../gists/sagas'
 
 export function* openSolutionSaga(action: ActionType<typeof editor.open>) {
   yield put(push(PATHS.EDITOR))
-  yield call(makeAddIntellisenseRequestSaga)
+  if (doesMonacoExist()) {
+    yield call(makeAddIntellisenseRequestSaga)
+  }
 }
 
 export function* hasLoadedSaga(action: ActionType<typeof editor.onLoadComplete>) {
@@ -98,7 +102,45 @@ function* makeAddIntellisenseRequestSaga() {
     urls = [...urls, ...urlsToFetch]
   }
 
-  yield put(editor.addIntellisenseFiles.request({ urls }))
+  yield put(editor.setIntellisenseFiles.request({ urls }))
+}
+
+function* setIntellisenseFilesSaga(
+  action: ActionType<typeof editor.setIntellisenseFiles.request>,
+) {
+  const existingIntellisenseFiles = yield select(selectors.editor.getIntellisenseFiles)
+  const existingUrls = Object.keys(existingIntellisenseFiles)
+  const currentUrls = action.payload.urls
+
+  const urlsToDispose = existingUrls.filter(url => !currentUrls.includes(url))
+  urlsToDispose.forEach(url => existingIntellisenseFiles[url].dispose())
+
+  const urlsToFetch = currentUrls.filter(url => !existingUrls.includes(url))
+
+  const newIntellisenseFiles = yield call(() =>
+    Promise.all(
+      urlsToFetch.map(url =>
+        fetch(url)
+          .then(resp => resp.text())
+          .then(content => {
+            const disposable = monaco.languages.typescript.typescriptDefaults.addExtraLib(
+              content,
+              url,
+            )
+            return { url, disposable }
+          }),
+      ),
+    ),
+  )
+
+  yield put(
+    editor.setIntellisenseFiles.success(
+      newIntellisenseFiles.reduce(
+        (acc, { url, disposable }) => ({ ...acc, [url]: disposable }),
+        {},
+      ),
+    ),
+  )
 }
 
 export default function* editorWatcher() {
@@ -106,4 +148,5 @@ export default function* editorWatcher() {
   yield takeEvery(getType(editor.onMount), initializeMonacoSaga)
   yield takeEvery(getType(editor.onLoadComplete), hasLoadedSaga)
   yield takeEvery(getType(editor.applyMonacoOptions), applyMonacoOptionsSaga)
+  yield takeEvery(getType(editor.setIntellisenseFiles.request), setIntellisenseFilesSaga)
 }

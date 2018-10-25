@@ -12,14 +12,15 @@ export const onLoadComplete = createAction('EDITOR_ON_LOAD_COMPLETE')
 
 export const applyMonacoOptions = createAction('EDITOR_APPLY_MONACO_OPTIONS')
 
-export const addIntellisenseFiles = createAsyncAction(
-  'EDITOR_ADD_INTELLISENSE_FILES_REQUEST',
-  'EDITOR_ADD_INTELLISENSE_FILES_SUCCESS',
-  'EDITOR_ADD_INTELLISENSE_FILES_FAILURE',
-)<{ urls: string[] }, void, Error>()
+export const setIntellisenseFiles = createAsyncAction(
+  'EDITOR_SET_INTELLISENSE_FILES_REQUEST',
+  'EDITOR_SET_INTELLISENSE_FILES_SUCCESS',
+  'EDITOR_SET_INTELLISENSE_FILES_FAILURE',
+)<{ urls: string[] }, { [url: string]: monaco.IDisposable }, Error>()
 
-export const removeIntellisenseFiles = createAsyncAction(
-  'EDITOR_REMOVE_INTELLISENSE_FILES_REQUEST',
-  'EDITOR_REMOVE_INTELLISENSE_FILES_SUCCESS',
-  'EDITOR_REMOVE_INTELLISENSE_FILES_FAILURE',
-)<{ urls: string[] }, void, Error>()
+export const removeIntellisenseFiles = createAction(
+  'EDITOR_REMOVE_INTELLISENSE_FILES',
+  resolve => {
+    return (urls: string[]) => resolve(urls)
+  },
+)
