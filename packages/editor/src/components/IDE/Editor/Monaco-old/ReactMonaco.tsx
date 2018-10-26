@@ -8,7 +8,7 @@ import flatten from 'lodash/flatten'
 
 import librariesIntellisenseJSON from './libraryIntellisense'
 import { schema as SettingsSchema } from '../../../../settings'
-import { SETTINGS_FILE_ID } from '../../../../constants'
+import { USER_SETTINGS_FILE_ID } from '../../../../constants'
 interface IDisposableFile {
   url: string
   disposable: monaco.IDisposable
@@ -213,7 +213,7 @@ class ReactMonaco extends Component<IProps, IState> {
               new monaco.Uri()
                 .with({
                   scheme: 'file',
-                  path: SETTINGS_FILE_ID,
+                  path: USER_SETTINGS_FILE_ID,
                 })
                 .toString(),
             ],

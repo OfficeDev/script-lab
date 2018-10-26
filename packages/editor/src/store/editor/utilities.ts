@@ -1,7 +1,7 @@
 import prettier from 'prettier/standalone'
 import librariesIntellisenseJSON from './librariesIntellisense'
 import { schema as SettingsSchema } from '../../settings'
-import { SETTINGS_FILE_ID } from '../../constants'
+import { USER_SETTINGS_FILE_ID } from '../../constants'
 
 export function doesMonacoExist() {
   const w = window as any
@@ -91,7 +91,7 @@ export function registerSettingsMonacoLanguage() {
           new monaco.Uri()
             .with({
               scheme: 'file',
-              path: SETTINGS_FILE_ID,
+              path: USER_SETTINGS_FILE_ID,
             })
             .toString(),
         ],

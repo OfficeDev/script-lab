@@ -4,7 +4,7 @@ export const edit = createAsyncAction(
   'SETTINGS_EDIT_REQUEST_NOT_USED',
   'SETTINGS_EDIT_SUCCESS',
   'SETTINGS_EDIT_FAILURE',
-)<void, { settings: ISettings; showMessageBar: boolean }, Error>()
+)<void, { userSettings: Partial<ISettings> }, Error>()
 
 export const setLastActive = createAction('SETTINGS_SET_LAST_ACTIVE', resolve => {
   return (props: { solutionId: string; fileId: string }) => resolve(props)

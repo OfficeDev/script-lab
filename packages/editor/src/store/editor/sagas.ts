@@ -1,7 +1,7 @@
 import { put, takeEvery, select, call } from 'redux-saga/effects'
 import { getType, ActionType } from 'typesafe-actions'
 import selectors from '../selectors'
-import { editor } from '../actions'
+import { editor, settings } from '../actions'
 import zip from 'lodash/zip'
 import flatten from 'lodash/flatten'
 import { push } from 'connected-react-router'
@@ -37,7 +37,11 @@ function* onSolutionOpenSaga() {
   }
 }
 
-function* onFileOpenSaga() {}
+function* onFileOpenSaga() {
+  if (doesMonacoExist()) {
+    yield put(editor.applyMonacoOptions())
+  }
+}
 
 export function* hasLoadedSaga(action: ActionType<typeof editor.onLoadComplete>) {
   const loadingIndicator = document.getElementById('loading')
@@ -69,10 +73,12 @@ function* initializeMonacoSaga(action: ActionType<typeof editor.onMount>) {
 }
 
 function* applyMonacoOptionsSaga() {
-  const monacoOptions = yield select(selectors.settings.getMonacoOptions)
-
   if (monacoEditor) {
+    const monacoOptions = yield select(selectors.settings.getMonacoOptions)
+    const { theme } = monacoOptions
+
     monacoEditor.updateOptions(monacoOptions)
+    monaco.editor.setTheme(theme)
   }
 }
 
@@ -159,5 +165,6 @@ export default function* editorWatcher() {
   yield takeEvery(getType(editor.onMount), initializeMonacoSaga)
   yield takeEvery(getType(editor.onLoadComplete), hasLoadedSaga)
   yield takeEvery(getType(editor.applyMonacoOptions), applyMonacoOptionsSaga)
+  yield takeEvery(getType(settings.edit.success), applyMonacoOptionsSaga)
   yield takeEvery(getType(editor.setIntellisenseFiles.request), setIntellisenseFilesSaga)
 }

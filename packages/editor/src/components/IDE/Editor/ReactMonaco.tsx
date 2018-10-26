@@ -1,8 +1,4 @@
 import React, { Component } from 'react'
-import { withTheme } from 'styled-components'
-import debounce from 'lodash/debounce'
-
-import { actions, selectors } from '../../../store'
 
 export interface IProps {
   solutionId: string
@@ -39,19 +35,14 @@ export class ReactMonaco extends Component<IProps, IState> {
   }
 
   componentDidUpdate(prevProps: IProps) {
-    console.log('componentDidUpdate')
-    console.log({ prevProps, props: this.props })
-
     if (this.editor) {
       const { solutionId, file } = this.props
 
       if (solutionId !== prevProps.solutionId) {
-        console.log('solution changed!')
         this.clearAllModels()
       }
 
       if (file.id !== prevProps.file.id) {
-        console.log('file changed!')
         const newModel = this.getModel()
         this.editor.setModel(newModel)
       }
@@ -65,7 +56,6 @@ export class ReactMonaco extends Component<IProps, IState> {
   }
 
   initializeMonaco = () => {
-    console.log('initializing monaco')
     const { solutionId, file } = this.props
 
     this.editor = monaco.editor.create(this.container.current, {})
@@ -80,15 +70,12 @@ export class ReactMonaco extends Component<IProps, IState> {
     this.props.editorDidMount(this.editor)
   }
 
-  onValueChange = debounce(
-    () =>
-      this.props.onValueChange(
-        this.props.solutionId,
-        this.props.file.id,
-        this.editor.getModel().getValue(),
-      ),
-    250,
-  )
+  onValueChange = () =>
+    this.props.onValueChange(
+      this.props.solutionId,
+      this.props.file.id,
+      this.editor.getModel().getValue(),
+    )
 
   private getUri = () =>
     new monaco.Uri().with({

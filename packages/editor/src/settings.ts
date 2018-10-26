@@ -1,6 +1,7 @@
 import {
   SETTINGS_SOLUTION_ID,
-  SETTINGS_FILE_ID,
+  USER_SETTINGS_FILE_ID,
+  DEFAULT_SETTINGS_FILE_ID,
   SETTINGS_JSON_LANGUAGE,
   ABOUT_FILE_ID,
 } from './constants'
@@ -8,26 +9,30 @@ import {
 import { environmentName } from './environment'
 
 export const defaultSettings: ISettings = {
-  editor: {
-    theme: 'dark',
-    font: { family: 'Menlo', size: 14 },
-    minimap: false,
-    tabSize: 2,
-    prettier: {
-      enabled: true,
-      autoFormat: true,
-    },
-    folding: true,
-    wordWrap: 'bounded',
-  },
-  environment: environmentName,
+  'editor.theme': 'dark',
+  'editor.fontFamily': 'Menlo',
+  'editor.fontSize': 14,
+  'editor.minimap': false,
+  'editor.tabSize': 2,
+  'editor.prettier': true,
+  'editor.prettier.autoFormat': true,
+  'editor.folding': true,
+  'editor.wordWrap': 'bounded',
 }
 
-const getSettingsContent = (settings?: ISettings): string => {
-  const settingsToSet = settings !== undefined ? settings : defaultSettings
-  settingsToSet.environment = environmentName
-  const { tabSize } = settingsToSet.editor
-  return JSON.stringify(settingsToSet, null, tabSize) + '\n'
+const getTabSize = (userSettings: Partial<ISettings>): number =>
+  userSettings && userSettings['editor.tabSize']
+    ? userSettings['editor.tabSize']!
+    : defaultSettings['editor.tabSize']
+
+const getDefaultSettingsContent = (userSettings: Partial<ISettings>): string => {
+  const tabSize = getTabSize(userSettings)
+  return JSON.stringify(defaultSettings, null, tabSize) + '\n'
+}
+
+const getUserSettingsContent = (userSettings: Partial<ISettings>): string => {
+  const tabSize = getTabSize(userSettings)
+  return JSON.stringify(userSettings, null, tabSize) + '\n'
 }
 
 const getAboutContent = (): string => {
@@ -36,14 +41,25 @@ const getAboutContent = (): string => {
   return `Last Updated: ${lastUpdated}\nCommit: ${commit}\nEnvironment: ${environmentName}`
 }
 
-const getSettingsFiles = (timestamp: number, settings?: ISettings): IFile[] => [
+const getSettingsFiles = (
+  timestamp: number,
+  userSettings: Partial<ISettings>,
+): IFile[] => [
   {
-    id: SETTINGS_FILE_ID,
-    name: 'Settings',
+    id: USER_SETTINGS_FILE_ID,
+    name: 'User Settings',
     dateCreated: timestamp,
     dateLastModified: timestamp,
     language: SETTINGS_JSON_LANGUAGE,
-    content: getSettingsContent(settings),
+    content: getUserSettingsContent(userSettings),
+  },
+  {
+    id: DEFAULT_SETTINGS_FILE_ID,
+    name: 'Default Settings',
+    dateCreated: timestamp,
+    dateLastModified: timestamp,
+    language: SETTINGS_JSON_LANGUAGE,
+    content: getDefaultSettingsContent(userSettings),
   },
   {
     id: ABOUT_FILE_ID,
@@ -60,7 +76,7 @@ const getSettingsSolution = (
   timestamp: number,
 ): ISolutionWithFileIds => ({
   id: SETTINGS_SOLUTION_ID,
-  name: 'User Settings',
+  name: 'Settings',
   dateCreated: timestamp,
   dateLastModified: timestamp,
   host: 'ALL',
@@ -68,24 +84,22 @@ const getSettingsSolution = (
 })
 
 export const getSettingsSolutionAndFiles = (
-  settings?: ISettings,
+  userSettings: Partial<ISettings> = {},
 ): {
   solution: ISolutionWithFileIds
   files: IFile[]
 } => {
   const now = Date.now()
-  const files = getSettingsFiles(now, settings)
+  const files = getSettingsFiles(now, userSettings)
   const solution = getSettingsSolution(files, now)
   return { solution, files }
 }
 
 export const allowedSettings = {
-  editor: {
-    theme: ['dark', 'light', 'high-contrast'],
-    font: { family: ['Menlo', 'Consolas', 'Courier New', 'Source Code Pro'] },
-    wordWrap: ['bounded', 'on', 'off'],
-  },
-  environment: ['production', 'beta', 'alpha', 'react-beta', 'react-alpha', 'local'],
+  'editor.theme': ['dark', 'light', 'high-contrast'],
+  'editor.fontFamily': ['Menlo', 'Consolas', 'Courier New', 'Source Code Pro'],
+  'editor.wordWrap': ['bounded', 'on', 'off'],
+  'editor.tabSize': [2, 4],
 }
 
 // Note: this must be kept in sync with the interfaces in src/interfaces/index.d.ts
@@ -96,100 +110,72 @@ export const schema = {
   definitions: {},
   $schema: 'http://json-schema.org/draft-07/schema#',
   additionalProperties: false,
+  // required: [
+  //   'editor.theme',
+  //   'editor.fontFamily',
+  //   'editor.fontSize',
+  //   'editor.minimap',
+  //   'editor.tabSize',
+  //   'editor.prettier',
+  //   'editor.prettier.autoFormat',
+  //   'editor.folding',
+  //   'editor.wordWrap',
+  // ],
   properties: {
-    editor: {
-      $id: '/properties/editor',
-      type: 'object',
-      additionalProperties: false,
-      required: true,
-      properties: {
-        theme: {
-          $id: '/properties/editor/properties/theme',
-          type: 'string',
-          required: true,
-          default: defaultSettings.editor.theme,
-          enum: allowedSettings.editor.theme,
-        },
-        font: {
-          $id: '/properties/editor/properties/font',
-          type: 'object',
-          required: true,
-          additionalProperties: false,
-          properties: {
-            family: {
-              $id: '/properties/editor/properties/font/properties/family',
-              type: 'string',
-              required: true,
-              default: defaultSettings.editor.font.family,
-              enum: allowedSettings.editor.font.family,
-            },
-            size: {
-              $id: '/properties/editor/properties/font/properties/size',
-              type: 'integer',
-              required: true,
-              default: defaultSettings.editor.font.size,
-              examples: [12, 14, 16, 18, 24],
-            },
-          },
-        },
-        minimap: {
-          $id: '/properties/editor/properties/minimap',
-          type: 'boolean',
-          required: true,
-          default: defaultSettings.editor.minimap,
-          examples: [false, true],
-        },
-        tabSize: {
-          $id: '/properties/editor/properties/tabSize',
-          type: 'integer',
-          required: true,
-          default: defaultSettings.editor.tabSize,
-          examples: [2, 4],
-        },
-        prettier: {
-          $id: '/properties/editor/properties/prettier',
-          type: 'object',
-          required: true,
-          additionalProperties: false,
-          properties: {
-            enabled: {
-              $id: '/properties/editor/properties/prettier/properties/enabled',
-              type: 'boolean',
-              required: true,
-              default: defaultSettings.editor.prettier.enabled,
-              examples: [true, false],
-            },
-            autoFormat: {
-              $id: '/properties/editor/properties/prettier/properties/autoFormat',
-              type: 'boolean',
-              required: true,
-              default: defaultSettings.editor.prettier.autoFormat,
-              examples: [true, false],
-            },
-          },
-        },
-        folding: {
-          $id: '/properties/editor/properties/folding',
-          type: 'boolean',
-          required: true,
-          default: defaultSettings.editor.folding,
-          examples: [true, false],
-        },
-        wordWrap: {
-          $id: '/properties/editor/properties/wordWrap',
-          type: 'string',
-          required: true,
-          default: defaultSettings.editor.wordWrap,
-          enum: allowedSettings.editor.wordWrap,
-        },
-      },
-    },
-    environment: {
-      $id: 'properties/environment',
+    'editor.theme': {
+      $id: '#/properties/editor.theme',
       type: 'string',
-      required: true,
-      default: defaultSettings.environment,
-      enum: allowedSettings.environment.filter(value => value !== 'local'),
+      default: defaultSettings['editor.theme'],
+      enum: allowedSettings['editor.theme'],
+    },
+    'editor.fontFamily': {
+      $id: '#/properties/editor.fontFamily',
+      type: 'string',
+      default: defaultSettings['editor.fontFamily'],
+      enum: allowedSettings['editor.fontFamily'],
+    },
+    'editor.fontSize': {
+      $id: '#/properties/editor.fontSize',
+      type: 'integer',
+      default: defaultSettings['editor.fontSize'],
+      examples: [14, 16, 20],
+    },
+    'editor.minimap': {
+      $id: '#/properties/editor.minimap',
+      type: 'boolean',
+      default: defaultSettings['editor.minimap'],
+      examples: [false, true],
+    },
+    'editor.tabSize': {
+      $id: '#/properties/editor.tabSize',
+      type: 'integer',
+      default: defaultSettings['editor.tabSize'],
+      enum: allowedSettings['editor.tabSize'],
+    },
+    'editor.prettier': {
+      $id: '#/properties/editor.prettier',
+      type: 'boolean',
+      default: defaultSettings['editor.prettier'],
+      examples: [true, false],
+    },
+    'editor.prettier.autoFormat': {
+      $id: '#/properties/editor.prettier.autoFormat',
+      type: 'boolean',
+      title: 'The Editor.prettier.autoformat Schema',
+      default: defaultSettings['editor.prettier.autoFormat'],
+      examples: [true, false],
+    },
+    'editor.folding': {
+      $id: '#/properties/editor.folding',
+      type: 'boolean',
+      default: defaultSettings['editor.folding'],
+      examples: [true, false],
+    },
+    'editor.wordWrap': {
+      $id: '#/properties/editor.wordWrap',
+      type: 'string',
+      default: defaultSettings['editor.wordWrap'],
+      enum: allowedSettings['editor.wordWrap'],
     },
   },
 }
