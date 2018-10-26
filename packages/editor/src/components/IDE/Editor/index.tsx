@@ -14,6 +14,7 @@ import {
 
 interface IPropsFromRedux {
   backgroundColor: string
+  tabSize: number
 
   activeSolution: ISolution
   activeFile: IFile
@@ -21,6 +22,9 @@ interface IPropsFromRedux {
 
 const mapStateToProps = state => ({
   backgroundColor: selectors.settings.getBackgroundColor(state),
+  activeSolution: selectors.editor.getActiveSolution(state),
+  activeFile: selectors.editor.getActiveFile(state),
+  tabSize: selectors.settings.getTabSize(state),
 })
 
 interface IActionsFromRedux {
@@ -76,13 +80,14 @@ export class Editor extends Component<IProps> {
   }
 
   render() {
-    const { backgroundColor } = this.props
+    const { backgroundColor, tabSize } = this.props
 
     return (
       <Layout style={{ backgroundColor }}>
         <ReactMonaco
           solutionId={this.props.activeSolution.id}
           file={this.props.activeFile}
+          tabSize={tabSize}
           onValueChange={this.onValueChange}
           editorDidMount={this.signalEditorLoaded}
         />

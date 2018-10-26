@@ -51,12 +51,11 @@ function* onSolutionOpenSaga() {
 function* onFileOpenSaga() {
   if (doesMonacoExist()) {
     yield put(editor.applyMonacoOptions())
-
-    const isPrettierEnabled = yield select(selectors.settings.getIsPrettierEnabled)
-    const isAutoFormatEnabled = yield select(selectors.settings.getIsAutoFormatEnabled)
-    if (isPrettierEnabled && isAutoFormatEnabled) {
-      yield put(editor.applyFormatting())
-    }
+  }
+  const isPrettierEnabled = yield select(selectors.settings.getIsPrettierEnabled)
+  const isAutoFormatEnabled = yield select(selectors.settings.getIsAutoFormatEnabled)
+  if (isPrettierEnabled && isAutoFormatEnabled) {
+    yield put(editor.applyFormatting())
   }
 }
 
@@ -79,11 +78,6 @@ function* initializeMonacoSaga(action: ActionType<typeof editor.onMount>) {
 
   registerLibrariesMonacoLanguage()
   registerSettingsMonacoLanguage()
-
-  const isPrettierEnabled = yield select(selectors.settings.getIsPrettierEnabled)
-  if (isPrettierEnabled) {
-    enablePrettierInMonaco()
-  }
 
   monacoEditor.addAction({
     id: 'trigger-suggest',
@@ -111,6 +105,11 @@ function* applyMonacoOptionsSaga() {
 
     monacoEditor.updateOptions(monacoOptions)
     monaco.editor.setTheme(theme)
+  }
+  const isPrettierEnabled = yield select(selectors.settings.getIsPrettierEnabled)
+  if (isPrettierEnabled) {
+    const tabWidth = yield select(selectors.settings.getTabSize)
+    enablePrettierInMonaco({ tabWidth })
   }
 }
 

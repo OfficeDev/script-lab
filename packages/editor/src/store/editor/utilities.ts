@@ -101,7 +101,10 @@ export function registerSettingsMonacoLanguage() {
   })
 }
 
-export function enablePrettierInMonaco() {
+export interface IPrettierSettings {
+  tabWidth: number
+}
+export function enablePrettierInMonaco(prettierSettings: IPrettierSettings) {
   import('prettier/parser-typescript').then(prettierTypeScript => {
     /* Adds Prettier Formatting to Monaco for TypeScript */
     const PrettierTypeScriptFormatter: monaco.languages.DocumentFormattingEditProvider = {
@@ -114,6 +117,7 @@ export function enablePrettierInMonaco() {
         const formatted = prettier.format(text, {
           parser: 'typescript',
           plugins: [prettierTypeScript],
+          tabWidth: prettierSettings.tabWidth,
         })
 
         return [

@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 export interface IProps {
   solutionId: string
   file: IFile
+  tabSize: number
 
   editorDidMount: (editor: monaco.editor.IStandaloneCodeEditor) => void
   onValueChange: (solutionId: string, fileId: string, value: string) => void
@@ -22,8 +23,6 @@ export class ReactMonaco extends Component<IProps, IState> {
   }
 
   componentDidMount() {
-    console.log('componentDidMount')
-
     const win = window as any
     if (win.monaco !== undefined) {
       this.initializeMonaco()
@@ -44,6 +43,7 @@ export class ReactMonaco extends Component<IProps, IState> {
 
       if (file.id !== prevProps.file.id) {
         const newModel = this.getModel()
+        newModel.updateOptions({ tabSize: this.props.tabSize })
         this.editor.setModel(newModel)
       }
     }
@@ -61,6 +61,7 @@ export class ReactMonaco extends Component<IProps, IState> {
     this.editor = monaco.editor.create(this.container.current, {})
 
     const model = this.getModel()
+    model.updateOptions({ tabSize: this.props.tabSize })
     this.editor.setModel(model)
 
     this.editor.onDidChangeModelContent(event => {
