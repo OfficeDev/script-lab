@@ -28,3 +28,5 @@ export const removeIntellisenseFiles = createAction(
     return (urls: string[]) => resolve(urls)
   },
 )
+
+export const applyFormatting = createAction('APPLY_FORMATTING')

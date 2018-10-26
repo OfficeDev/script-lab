@@ -1,7 +1,7 @@
 import { put, takeEvery, select, call } from 'redux-saga/effects'
 import { getType, ActionType } from 'typesafe-actions'
 import selectors from '../selectors'
-import { editor, settings } from '../actions'
+import { editor, settings, screen } from '../actions'
 import zip from 'lodash/zip'
 import flatten from 'lodash/flatten'
 import { push } from 'connected-react-router'
@@ -15,6 +15,17 @@ import {
 } from './utilities'
 
 let monacoEditor
+
+export default function* editorWatcher() {
+  yield takeEvery(getType(editor.open), onEditorOpenSaga)
+  yield takeEvery(getType(editor.onMount), initializeMonacoSaga)
+  yield takeEvery(getType(editor.onLoadComplete), hasLoadedSaga)
+  yield takeEvery(getType(editor.applyMonacoOptions), applyMonacoOptionsSaga)
+  yield takeEvery(getType(settings.edit.success), applyMonacoOptionsSaga)
+  yield takeEvery(getType(editor.setIntellisenseFiles.request), setIntellisenseFilesSaga)
+  yield takeEvery(getType(screen.updateSize), resizeEditorSaga)
+  yield takeEvery(getType(editor.applyFormatting), applyFormattingSaga)
+}
 
 export function* onEditorOpenSaga(action: ActionType<typeof editor.open>) {
   const activeSolution = yield select(selectors.editor.getActiveSolution)
@@ -40,6 +51,12 @@ function* onSolutionOpenSaga() {
 function* onFileOpenSaga() {
   if (doesMonacoExist()) {
     yield put(editor.applyMonacoOptions())
+
+    const isPrettierEnabled = yield select(selectors.settings.getIsPrettierEnabled)
+    const isAutoFormatEnabled = yield select(selectors.settings.getIsAutoFormatEnabled)
+    if (isPrettierEnabled && isAutoFormatEnabled) {
+      yield put(editor.applyFormatting())
+    }
   }
 }
 
@@ -67,6 +84,21 @@ function* initializeMonacoSaga(action: ActionType<typeof editor.onMount>) {
   if (isPrettierEnabled) {
     enablePrettierInMonaco()
   }
+
+  monacoEditor.addAction({
+    id: 'trigger-suggest',
+    label: 'Trigger suggestion',
+    keybindings: [monaco.KeyCode.F2],
+    contextMenuGroupId: 'navigation',
+    contextMenuOrder: 0 /* put at top of context menu */,
+    run: () =>
+      monacoEditor.trigger(
+        'editor' /* source, unused */,
+        'editor.action.triggerSuggest',
+        {},
+      ),
+  })
+
   yield put(editor.applyMonacoOptions())
   yield put(editor.onLoadComplete())
   yield call(makeAddIntellisenseRequestSaga)
@@ -160,11 +192,18 @@ function* setIntellisenseFilesSaga(
   )
 }
 
-export default function* editorWatcher() {
-  yield takeEvery(getType(editor.open), onEditorOpenSaga)
-  yield takeEvery(getType(editor.onMount), initializeMonacoSaga)
-  yield takeEvery(getType(editor.onLoadComplete), hasLoadedSaga)
-  yield takeEvery(getType(editor.applyMonacoOptions), applyMonacoOptionsSaga)
-  yield takeEvery(getType(settings.edit.success), applyMonacoOptionsSaga)
-  yield takeEvery(getType(editor.setIntellisenseFiles.request), setIntellisenseFilesSaga)
+function* resizeEditorSaga() {
+  if (monacoEditor) {
+    monacoEditor.layout()
+  }
+}
+
+function* applyFormattingSaga() {
+  if (monacoEditor) {
+    monacoEditor.trigger(
+      'editor' /* source, unused */,
+      'editor.action.formatDocument',
+      '',
+    )
+  }
 }

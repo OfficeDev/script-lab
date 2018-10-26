@@ -30,7 +30,8 @@ interface IActionsFromRedux {
     file: Partial<IEditableFileProperties>,
   ) => void
   editSettings: (newSettings: string) => void
-  signalEditorLoaded: () => void
+  openSettings: () => void
+  signalEditorLoaded: (editor: monaco.editor.IStandaloneCodeEditor) => void
 }
 
 const mapDispatchToProps = dispatch => ({
@@ -41,7 +42,9 @@ const mapDispatchToProps = dispatch => ({
   ) => dispatch(actions.solutions.edit({ id: solutionId, fileId, file })),
   editSettings: (newSettings: string) =>
     dispatch(actions.settings.editFile({ newSettings, showMessageBar: true })),
-  signalEditorLoaded: (editor: any) => dispatch(actions.editor.onMount(editor)),
+  openSettings: () => dispatch(actions.settings.open()),
+  signalEditorLoaded: (editor: monaco.editor.IStandaloneCodeEditor) =>
+    dispatch(actions.editor.onMount(editor)),
 })
 
 export interface IProps extends IPropsFromRedux, IActionsFromRedux {}
@@ -63,6 +66,15 @@ export class Editor extends Component<IProps> {
       ? this.editSettings(content)
       : this.editFile(solutionId, fileId, content)
 
+  signalEditorLoaded = (editor: monaco.editor.IStandaloneCodeEditor) => {
+    editor.addCommand(
+      monaco.KeyMod.CtrlCmd | monaco.KeyCode.US_COMMA,
+      this.props.openSettings,
+      '',
+    )
+    this.props.signalEditorLoaded(editor)
+  }
+
   render() {
     const { backgroundColor } = this.props
 
@@ -72,7 +84,7 @@ export class Editor extends Component<IProps> {
           solutionId={this.props.activeSolution.id}
           file={this.props.activeFile}
           onValueChange={this.onValueChange}
-          editorDidMount={this.props.signalEditorLoaded}
+          editorDidMount={this.signalEditorLoaded}
         />
       </Layout>
     )
