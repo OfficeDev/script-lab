@@ -45,7 +45,7 @@ const mapDispatchToProps = dispatch => ({
     file: Partial<IEditableFileProperties>,
   ) => dispatch(actions.solutions.edit({ id: solutionId, fileId, file })),
   editSettings: (newSettings: string) =>
-    dispatch(actions.settings.editFile({ newSettings, showMessageBar: true })),
+    dispatch(actions.settings.editFile({ newSettings })),
   openSettings: () => dispatch(actions.settings.open()),
   signalEditorLoaded: (editor: monaco.editor.IStandaloneCodeEditor) =>
     dispatch(actions.editor.onMount(editor)),

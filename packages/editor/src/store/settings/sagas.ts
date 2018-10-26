@@ -122,18 +122,19 @@ function* cycleEditorThemeSaga() {
   const settings = yield select(selectors.settings.get)
   const themes = allowedSettings['editor.theme']
 
-  const currentTheme = settings.editor.theme
+  const currentTheme = settings['editor.theme']
   const currentThemeIndex = themes.indexOf(currentTheme)
   const nextThemeIndex = (currentThemeIndex + 1) % themes.length
   const nextTheme = themes[nextThemeIndex]
 
-  const newSettings = settings
-  newSettings.editor.theme = nextTheme
+  const newUserSettings = yield select(selectors.settings.getUser)
+  newUserSettings['editor.theme'] = nextTheme
+
+  const tabSize = settings['editor.tabSize']
 
   yield put(
     settingsActions.editFile({
-      newSettings: JSON.stringify(newSettings),
-      showMessageBar: false,
+      newSettings: JSON.stringify(newUserSettings, null, tabSize),
     }),
   )
 }

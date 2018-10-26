@@ -37,6 +37,7 @@ interface IPropsFromRedux {
   hasCustomFunctions: boolean
   commandBarFabricTheme: IFabricTheme
   currentEditorTheme: string
+  isSettingsView: boolean
 }
 
 const mapStateToProps = (state, ownProps: IProps): IPropsFromRedux => ({
@@ -46,6 +47,7 @@ const mapStateToProps = (state, ownProps: IProps): IPropsFromRedux => ({
   hasCustomFunctions: selectors.customFunctions.getHasCustomFunctions(state),
   commandBarFabricTheme: getCommandBarFabricTheme(selectors.host.get(state)),
   currentEditorTheme: selectors.settings.getPrettyEditorTheme(state),
+  isSettingsView: selectors.settings.getIsOpen(state),
 })
 
 interface IActionsFromRedux {
@@ -79,6 +81,7 @@ const FooterWithoutTheme = ({
   commandBarFabricTheme,
   currentEditorTheme,
   cycleEditorTheme,
+  isSettingsView,
 }: IProps) => {
   const iconStyles = { root: { fontSize: '1.4rem' } }
   const items = [
@@ -137,6 +140,7 @@ const FooterWithoutTheme = ({
       text: languageMap[language.toLowerCase()],
     },
     {
+      hidden: isSettingsView,
       key: 'cycle-theme',
       iconProps: { iconName: 'Color', styles: { root: { fontSize: '1.2rem' } } },
       text: currentEditorTheme,

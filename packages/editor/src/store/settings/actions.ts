@@ -14,7 +14,7 @@ export const open = createAction('SETTINGS_OPEN')
 export const close = createAction('SETTINGS_CLOSE')
 
 export const editFile = createAction('SETTINGS_EDIT', resolve => {
-  return (props: { newSettings: string; showMessageBar: boolean }) => resolve(props)
+  return (props: { newSettings: string }) => resolve(props)
 })
 
 export const cycleEditorTheme = createAction('SETTINGS_CYCLE_EDITOR_THEME')
