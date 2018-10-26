@@ -45,12 +45,12 @@ export function* onEditorOpenSaga(action: ActionType<typeof editor.open>) {
 function* onSolutionOpenSaga() {
   if (doesMonacoExist()) {
     yield call(makeAddIntellisenseRequestSaga)
+    yield put(editor.applyMonacoOptions())
   }
 }
 
 function* onFileOpenSaga() {
   if (doesMonacoExist()) {
-    yield put(editor.applyMonacoOptions())
   }
   const isPrettierEnabled = yield select(selectors.settings.getIsPrettierEnabled)
   const isAutoFormatEnabled = yield select(selectors.settings.getIsAutoFormatEnabled)
@@ -198,11 +198,17 @@ function* resizeEditorSaga() {
 }
 
 function* applyFormattingSaga() {
+  console.log('trying to apply formatting')
   if (monacoEditor) {
-    monacoEditor.trigger(
-      'editor' /* source, unused */,
-      'editor.action.formatDocument',
-      '',
+    console.log('applying formatting')
+    setTimeout(
+      () =>
+        monacoEditor.trigger(
+          'editor' /* source, unused */,
+          'editor.action.formatDocument',
+          '',
+        ),
+      200,
     )
   }
 }

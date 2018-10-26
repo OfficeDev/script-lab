@@ -113,7 +113,7 @@ function* createGistSaga(action: ActionType<typeof gists.create.request>) {
     action.payload.solutionId,
   )
 
-  const snippet = YAML.dump(convertSolutionToSnippet(solution))
+  const snippet = YAML.safeDump(convertSolutionToSnippet(solution))
 
   const { response, error } = yield call(github.request, {
     method: 'POST',
@@ -155,7 +155,7 @@ function* updateGistSaga(action: ActionType<typeof gists.update.request>) {
   }
 
   const solution = yield select(selectors.solutions.get, action.payload.solutionId)
-  const snippet = YAML.dump(convertSolutionToSnippet(solution))
+  const snippet = YAML.safeDump(convertSolutionToSnippet(solution))
   const gistId = solution.source.id
 
   if (!gistId) {
@@ -192,14 +192,14 @@ function* importSnippetSaga(action: ActionType<typeof gists.importSnippet.reques
       })
       if (response) {
         const gistFiles = response.files
-        const snippet = YAML.load(gistFiles[Object.keys(gistFiles)[0]].content)
+        const snippet = YAML.safeLoad(gistFiles[Object.keys(gistFiles)[0]].content)
         const solution = convertSnippetToSolution(snippet)
         yield put(gists.importSnippet.success({ solution }))
       } else {
         throw error
       }
     } else if (action.payload.gist) {
-      const snippet = YAML.load(action.payload.gist)
+      const snippet = YAML.safeLoad(action.payload.gist)
       const solution = convertSnippetToSolution(snippet)
       yield put(gists.importSnippet.success({ solution }))
     } else {

@@ -131,7 +131,8 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
     this.clipboard.on('error', props.notifyClipboardCopyFailure)
   }
 
-  getSnippetYaml = (): string => YAML.dump(convertSolutionToSnippet(this.props.solution))
+  getSnippetYaml = (): string =>
+    YAML.safeDump(convertSolutionToSnippet(this.props.solution))
 
   openDeleteConfirmationDialog = () =>
     this.setState({ isDeleteConfirmationDialogVisible: true })
