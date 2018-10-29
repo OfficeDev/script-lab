@@ -5,13 +5,9 @@ import { Customizer } from 'office-ui-fabric-react/lib/Utilities'
 import { CommandBar, ICommandBarItemProps } from 'office-ui-fabric-react/lib/CommandBar'
 import { ITheme as IFabricTheme } from 'office-ui-fabric-react/lib/Styling'
 
-import { getCurrentEnv } from '../../../environment'
+import { getCurrentEnv, allowedEnvs } from '../../../environment'
 import { PATHS } from '../../../constants'
 
-import {
-  DirectionalHint,
-  ContextualMenuItemType,
-} from 'office-ui-fabric-react/lib/ContextualMenu'
 import { getCommandBarFabricTheme } from '../../../theme'
 
 import { HostType } from '@microsoft/office-js-helpers'
@@ -128,6 +124,17 @@ const FooterWithoutTheme = ({
       key: 'custom-functions-dashboard',
       text: 'Custom Functions Dashboard',
       onClick: navigateToCustomFunctionsDashboard,
+    },
+    {
+      hidden: !isSettingsView,
+      key: 'environment-switcher',
+      text: getCurrentEnv(),
+      subMenuProps: {
+        items: allowedEnvs.map(env => ({
+          key: env,
+          text: env.charAt(0).toUpperCase() + env.slice(1),
+        })),
+      },
     },
   ]
     .filter(({ hidden }) => !hidden)

@@ -52,3 +52,13 @@ export function getPlatform(): PlatformType {
   return ((w.Office && w.Office.context && w.Office.context.platform) ||
     PlatformType.OfficeOnline) as PlatformType
 }
+
+export const allowedEnvs = [
+  'local',
+  'react-alpha',
+  'react-beta',
+  'react',
+  'alpha',
+  'beta',
+  'production',
+]

@@ -6,6 +6,7 @@ import zip from 'lodash/zip'
 import flatten from 'lodash/flatten'
 import { push } from 'connected-react-router'
 import { PATHS, LIBRARIES_FILE_NAME } from '../../constants'
+
 import {
   registerLibrariesMonacoLanguage,
   registerSettingsMonacoLanguage,
@@ -45,12 +46,12 @@ export function* onEditorOpenSaga(action: ActionType<typeof editor.open>) {
 function* onSolutionOpenSaga() {
   if (doesMonacoExist()) {
     yield call(makeAddIntellisenseRequestSaga)
-    yield put(editor.applyMonacoOptions())
   }
 }
 
 function* onFileOpenSaga() {
   if (doesMonacoExist()) {
+    yield put(editor.applyMonacoOptions())
   }
   const isPrettierEnabled = yield select(selectors.settings.getIsPrettierEnabled)
   const isAutoFormatEnabled = yield select(selectors.settings.getIsAutoFormatEnabled)
