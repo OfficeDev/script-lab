@@ -3,7 +3,7 @@ import { getActiveSolution, getActiveFile } from '../editor/selectors'
 import { get as getHost } from '../host/selectors'
 import { SETTINGS_SOLUTION_ID, READ_ONLY_FILE_IDS, ABOUT_FILE_ID } from '../../constants'
 import { getTheme } from '../../theme'
-import { defaultSettings } from 'src/settings'
+import { defaultSettings } from '../../settings'
 
 export const getIsOpen = (state: IState): boolean =>
   getActiveSolution(state).id === SETTINGS_SOLUTION_ID

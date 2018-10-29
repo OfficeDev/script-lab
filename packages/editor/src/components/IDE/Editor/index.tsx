@@ -10,7 +10,7 @@ import {
   SETTINGS_SOLUTION_ID,
   EDIT_FILE_DEBOUNCE_MS,
   EDIT_SETTINGS_DEBOUNCE_MS,
-} from 'src/constants'
+} from '../../../constants'
 
 interface IPropsFromRedux {
   backgroundColor: string

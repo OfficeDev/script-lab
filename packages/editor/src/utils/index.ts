@@ -1,5 +1,5 @@
 import uuidv4 from 'uuid'
-import { LIBRARIES_FILE_NAME } from 'src/constants'
+import { LIBRARIES_FILE_NAME } from '../constants'
 
 export const getObjectValues = (dict: object): any[] =>
   Object.keys(dict).map(key => dict[key])
