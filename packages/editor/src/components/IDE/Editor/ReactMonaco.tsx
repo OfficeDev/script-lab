@@ -28,7 +28,6 @@ export class ReactMonaco extends Component<IProps, IState> {
       this.initializeMonaco()
     } else {
       win.require.config({ baseUrl: '/' })
-
       win.require(['vs/editor/editor.main'], () => this.initializeMonaco())
     }
   }
@@ -56,8 +55,6 @@ export class ReactMonaco extends Component<IProps, IState> {
   }
 
   initializeMonaco = () => {
-    const { solutionId, file } = this.props
-
     this.editor = monaco.editor.create(this.container.current, {})
 
     const model = this.getModel()
