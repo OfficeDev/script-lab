@@ -110,17 +110,6 @@ export const schema = {
   definitions: {},
   $schema: 'http://json-schema.org/draft-07/schema#',
   additionalProperties: false,
-  // required: [
-  //   'editor.theme',
-  //   'editor.fontFamily',
-  //   'editor.fontSize',
-  //   'editor.minimap',
-  //   'editor.tabSize',
-  //   'editor.prettier',
-  //   'editor.prettier.autoFormat',
-  //   'editor.folding',
-  //   'editor.wordWrap',
-  // ],
   properties: {
     'editor.theme': {
       $id: '#/properties/editor.theme',

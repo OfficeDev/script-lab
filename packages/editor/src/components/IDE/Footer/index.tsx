@@ -15,8 +15,8 @@ import { HostType } from '@microsoft/office-js-helpers'
 import { Wrapper } from './styles'
 
 import { connect } from 'react-redux'
-import selectors from '../../../store/selectors'
-import actions from '../../../store/actions'
+
+import { actions, selectors } from '../../../store'
 
 const languageMap = {
   typescript: 'TypeScript',
@@ -51,6 +51,7 @@ interface IActionsFromRedux {
   changeHost: (host: string) => void
   navigateToCustomFunctionsDashboard: () => void
   cycleEditorTheme: () => void
+  switchEnvironment: (env: string) => void
 }
 
 const mapDispatchToProps = (dispatch): IActionsFromRedux => ({
@@ -59,6 +60,7 @@ const mapDispatchToProps = (dispatch): IActionsFromRedux => ({
   navigateToCustomFunctionsDashboard: () =>
     dispatch(actions.customFunctions.openDashboard()),
   cycleEditorTheme: () => dispatch(actions.settings.cycleEditorTheme()),
+  switchEnvironment: (env: string) => dispatch(actions.misc.switchEnvironment(env)),
 })
 
 export interface IProps extends IPropsFromRedux, IActionsFromRedux {
@@ -77,6 +79,7 @@ const FooterWithoutTheme = ({
   commandBarFabricTheme,
   currentEditorTheme,
   cycleEditorTheme,
+  switchEnvironment,
   isSettingsView,
 }: IProps) => {
   const iconStyles = { root: { fontSize: '1.4rem' } }
@@ -133,6 +136,7 @@ const FooterWithoutTheme = ({
         items: allowedEnvs.map(env => ({
           key: env,
           text: env.charAt(0).toUpperCase() + env.slice(1),
+          onClick: () => switchEnvironment(env),
         })),
       },
     },
