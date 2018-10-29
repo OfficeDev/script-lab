@@ -17,6 +17,8 @@ const defaultProps = {
   commandBarFabricTheme: getCommandBarFabricTheme('EXCEL'),
   currentEditorTheme: 'Dark',
   cycleEditorTheme: voidFunc,
+  switchEnvironment: (env: string) => {},
+  isSettingsView: false,
 }
 
 storiesOf('IDE|Footer', module)
