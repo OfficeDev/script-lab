@@ -63,7 +63,7 @@ function* editSettingsCheckSaga(action: ActionType<typeof settingsActions.editFi
     )
     return
   }
-  const currentUserSettings = yield select(selectors.settings.getUser)
+
   try {
     const parsed = JSON.parse(action.payload.newSettings)
 

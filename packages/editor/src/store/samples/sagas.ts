@@ -6,12 +6,14 @@ import { samples } from '../actions'
 import { fetchYaml } from '../../services/general'
 import { convertSnippetToSolution } from '../../utils'
 import { createSolutionSaga } from '../solutions/sagas'
+import { getCurrentEnv } from '../../environment'
 
 function* fetchAllSamplesMetadetaSaga() {
   const host: string = yield select(selectors.host.get)
+  const deploymentSlot = getCurrentEnv() === 'prod' ? 'deploy-prod' : 'deploy-beta'
   const { content, error } = yield call(
     fetchYaml,
-    `https://raw.githubusercontent.com/OfficeDev/office-js-snippets/deploy-beta/playlists/${host.toLowerCase()}.yaml`,
+    `https://raw.githubusercontent.com/OfficeDev/office-js-snippets/${deploymentSlot}/playlists/${host.toLowerCase()}.yaml`,
   )
   if (content) {
     yield put(samples.fetchMetadata.success(content.map(sample => ({ ...sample, host }))))
