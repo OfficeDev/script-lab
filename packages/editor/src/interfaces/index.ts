@@ -8,3 +8,13 @@ interface IMessageBar {
 interface IGithubGistPayload {
   id: string
 }
+
+interface IDefaultFunctionRunMetadata {
+  name: string
+  status: 'Idle' | 'Running' | 'Success' | 'Failure'
+}
+
+interface IDefaultSnippetRunMetadata {
+  name: string
+  functions: IDefaultFunctionRunMetadata[]
+}

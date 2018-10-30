@@ -1,31 +1,30 @@
 import styled from 'styled-components'
 
-export const RunButton = styled.a`
-  width: 2rem;
-  height: 2rem;
-  margin-right: 1rem;
-  border-style: solid;
-  border-width: 1rem 0px 1rem 2rem;
-  border-color: transparent transparent transparent green;
+export const RunGalleryItemWrapper = styled.div``
+
+export const RunGalleryItemLabel = styled.span.attrs({ className: 'ms-font-xl' })`
+  position: relative;
+  left: 0.6rem;
+  bottom: 0.3rem;
 `
 
-export const FunctionName = styled.h2.attrs({ className: 'ms-font-xl' })`
-  line-height: 2rem;
-`
-
-export const FunctionWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  border: 0.1rem solid gray;
+export const RunGalleryItemContentWrapper = styled.div`
+  min-height: 20rem;
+  /* max-height: 30vh; */
+  overflow: auto;
   padding: 2rem;
-  background-color: papayawhip;
+  border: .1rem solid gray;
+  background-color: white
+  box-shadow: 0px .5rem 1rem hsla(0, 0%, 0%, .15);
 `
 
-export const RunPane = styled.div`
+export const RunGallery = styled.main`
   overflow-y: auto;
+  box-sizing: border-box;
   height: 100%;
-  padding: 4rem;
-  & ${FunctionWrapper} {
+  padding: 2rem 4rem;
+  background-color: #ddd;
+  & ${RunGalleryItemWrapper} {
     margin-bottom: 4rem;
   }
 `

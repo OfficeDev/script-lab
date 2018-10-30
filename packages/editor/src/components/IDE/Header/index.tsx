@@ -6,6 +6,7 @@ import { CommandBar, ICommandBarItemProps } from 'office-ui-fabric-react/lib/Com
 import { PersonaSize, PersonaCoin } from 'office-ui-fabric-react/lib/Persona'
 import { MessageBarType } from 'office-ui-fabric-react/lib/MessageBar'
 import { Spinner, SpinnerSize } from 'office-ui-fabric-react/lib/Spinner'
+import { ContextualMenuItemType } from 'office-ui-fabric-react/lib/ContextualMenu'
 
 import Clipboard from 'clipboard'
 import { convertSolutionToSnippet } from '../../../utils'
@@ -35,6 +36,8 @@ interface IPropsFromRedux {
   isRunnableOnThisHost: boolean
   isSettingsView: boolean
   isCustomFunctionsView: boolean
+  isDefaultRunSolution: boolean
+  runnableFunctions: IDefaultFunctionRunMetadata[]
   isLoggedIn: boolean
   isLoggingInOrOut: boolean
   commandBarFabricTheme: IFabricTheme
@@ -44,6 +47,8 @@ interface IPropsFromRedux {
 const mapStateToProps = (state): IPropsFromRedux => ({
   isSettingsView: selectors.settings.getIsOpen(state),
   isCustomFunctionsView: selectors.customFunctions.getIsCurrentSolutionCF(state),
+  isDefaultRunSolution: selectors.defaultRun.getIsDefaultRunSolution(state),
+  runnableFunctions: selectors.defaultRun.getMetadataForActiveSolution(state),
   isLoggedIn: !!selectors.github.getToken(state),
   isLoggingInOrOut: selectors.github.getIsLoggingInOrOut(state),
   isRunnableOnThisHost: selectors.host.getIsRunnableOnThisHost(state),
@@ -156,6 +161,8 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
       isRunnableOnThisHost,
       isLoggedIn,
       isLoggingInOrOut,
+      isDefaultRunSolution,
+      runnableFunctions,
       screenWidth,
       theme,
       commandBarFabricTheme,
@@ -209,7 +216,11 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
 
     const nonSettingsButtons: ICommandBarItemProps[] = [
       {
-        hidden: !isRunnableOnThisHost || isNullSolution || isCustomFunctionsView,
+        hidden:
+          !isRunnableOnThisHost ||
+          isNullSolution ||
+          isCustomFunctionsView ||
+          isDefaultRunSolution,
         key: 'run',
         text: 'Run',
         iconProps: { iconName: 'Play' },
@@ -221,6 +232,45 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
         text: 'Register',
         iconProps: { iconName: 'Play' },
         onClick: navigateToCustomFunctions,
+      },
+      {
+        hidden: !isRunnableOnThisHost || !isDefaultRunSolution,
+        key: 'default-run-functions',
+        text: 'Run',
+        iconProps: { iconName: 'Play' },
+        subMenuProps: {
+          items: [
+            {
+              key: 'functions-section',
+              itemType: ContextualMenuItemType.Section,
+              sectionProps: {
+                title: 'Functions',
+                items: runnableFunctions.map(({ name }) => ({
+                  key: name,
+                  text: name,
+                  iconProps: { iconName: 'Play' },
+                  onClick: event => event.preventDefault(),
+                })),
+              },
+            },
+            {
+              key: 'divider',
+              itemType: ContextualMenuItemType.Divider,
+              itemProps: {
+                styles: {
+                  divider: {
+                    backgroundColor: theme.neutralSecondaryLight,
+                  },
+                },
+              },
+            },
+            {
+              key: 'terminate-all',
+              text: 'Terminate All',
+              iconProps: { iconName: 'Cancel' },
+            },
+          ],
+        },
       },
       {
         hidden: isNullSolution,

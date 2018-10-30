@@ -1,15 +1,30 @@
 import React from 'react'
-import { RunPane, RunButton, FunctionName, FunctionWrapper } from './styles'
+import SnippetFunctionGallery from './SnippetFunctionGallery'
+import {
+  RunGallery,
+  RunGalleryItemContentWrapper,
+  RunGalleryItemLabel,
+  RunGalleryItemWrapper,
+} from './styles'
 
-export class DefaultRunGallery extends React.Component {
+interface IProps {
+  snippets?: IDefaultSnippetRunMetadata[]
+}
+
+export class DefaultRunGallery extends React.Component<IProps> {
   render() {
     return (
-      <RunPane>
-        <FunctionWrapper>
-          <RunButton />
-          <FunctionName>Foo</FunctionName>
-        </FunctionWrapper>
-      </RunPane>
+      <RunGallery>
+        {this.props.snippets &&
+          this.props.snippets.map(({ name, functions }) => (
+            <RunGalleryItemWrapper key={name}>
+              <RunGalleryItemLabel>{name}</RunGalleryItemLabel>
+              <RunGalleryItemContentWrapper>
+                <SnippetFunctionGallery functions={functions} />
+              </RunGalleryItemContentWrapper>
+            </RunGalleryItemWrapper>
+          ))}
+      </RunGallery>
     )
   }
 }

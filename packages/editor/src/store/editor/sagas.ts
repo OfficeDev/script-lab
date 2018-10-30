@@ -19,6 +19,8 @@ let monacoEditor
 
 export default function* editorWatcher() {
   yield takeEvery(getType(editor.open), onEditorOpenSaga)
+  yield takeEvery(getType(editor.newSolutionOpened), onSolutionOpenSaga)
+  yield takeEvery(getType(editor.newFileOpened), onFileOpenSaga)
   yield takeEvery(getType(editor.onMount), initializeMonacoSaga)
   yield takeEvery(getType(editor.onLoadComplete), hasLoadedSaga)
   yield takeEvery(getType(editor.applyMonacoOptions), applyMonacoOptionsSaga)
@@ -35,11 +37,11 @@ export function* onEditorOpenSaga(action: ActionType<typeof editor.open>) {
   yield put(push(PATHS.EDITOR))
 
   if (activeSolution.id !== action.payload.solutionId) {
-    yield call(onSolutionOpenSaga)
+    yield put(editor.newSolutionOpened(action.payload.solutionId))
   }
 
   if (activeFile.id !== action.payload.fileId) {
-    yield call(onFileOpenSaga)
+    yield put(editor.newFileOpened(action.payload.solutionId, action.payload.fileId))
   }
 }
 

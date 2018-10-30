@@ -3,6 +3,7 @@ import { RouterState } from 'connected-react-router'
 
 // reducers
 import customFunctions, { IState as ICFState } from './customFunctions/reducer'
+import defaultRun, { IState as IDefaultRunState } from './defaultRun/reducer'
 import editor, { IState as IEditorState } from './editor/reducer'
 import github, { IState as IGithubState } from './github/reducer'
 import messageBar, { IState as IMessageBarState } from './messageBar/reducer'
@@ -15,6 +16,7 @@ import screen, { IState as IScreenState } from './screen/reducer'
 
 export interface IState {
   customFunctions: ICFState
+  defaultRun: IDefaultRunState
   editor: IEditorState
   github: IGithubState
   messageBar: IMessageBarState
@@ -29,6 +31,7 @@ export interface IState {
 
 const root = combineReducers({
   customFunctions,
+  defaultRun,
   editor,
   github,
   messageBar,
