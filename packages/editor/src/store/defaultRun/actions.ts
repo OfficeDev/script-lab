@@ -7,7 +7,7 @@ export const fetchMetadata = createAsyncAction(
 )<void, IDefaultSnippetRunMetadata[], Error>()
 
 export const updateActiveSolutionMetadata = createAction(
-  'UPDATE_ACTIVE_SOLUTION_METADATA',
+  'DEFAULT_RUN_UPDATE_ACTIVE_SOLUTION_METADATA',
   resolve => {
     return (metadata: IDefaultFunctionRunMetadata[]) => resolve(metadata)
   },
@@ -22,3 +22,9 @@ export const runFunction = createAsyncAction(
   { functionName: string; result: any },
   { functionName: string; error: Error }
 >()
+
+export const terminateAll = createAsyncAction(
+  'DEFAULT_RUN_TERMINATE_ALL_REQUEST',
+  'DEFAULT_RUN_TERMINATE_ALL_SUCCESS',
+  'DEFAULT_RUN_TERMINATE_ALL_FAILURE',
+)<void, void, Error>()

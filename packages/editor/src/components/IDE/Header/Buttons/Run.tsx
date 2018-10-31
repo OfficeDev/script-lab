@@ -15,6 +15,7 @@ interface IProps {
 
   navigateToCustomFunctions: () => void
   defaultRunFunction: (solutionId: string, fileId: string, funcName: string) => void
+  terminateAllDefaultRunFunctions: () => void
 
   theme: ITheme // from withTheme
 }
@@ -27,6 +28,7 @@ export const getRunButton = ({
   isDefaultRunSolution,
   runnableFunctions,
   defaultRunFunction,
+  terminateAllDefaultRunFunctions,
   solution,
   file,
   theme,
@@ -112,6 +114,12 @@ export const getRunButton = ({
             key: 'terminate-all',
             text: 'Terminate All',
             iconProps: { iconName: 'Cancel' },
+            onClick: event => {
+              if (event) {
+                event.preventDefault()
+              }
+              terminateAllDefaultRunFunctions()
+            },
             itemProps: {
               styles: {
                 icon: {

@@ -9,6 +9,7 @@ export default function* defaultRunWatcher() {
   yield takeEvery(getType(editor.newSolutionOpened), fetchMetadataForSolutionSaga)
   yield takeEvery(getType(solutions.edit), fetchMetadataForSolutionSaga)
   yield takeEvery(getType(defaultRun.runFunction.request), defaultRunFunctionSaga)
+  yield takeEvery(getType(defaultRun.terminateAll.request), terminateAllSaga)
 }
 
 function* fetchMetadataSaga() {
@@ -85,4 +86,8 @@ function* defaultRunFunctionSaga(
   } catch (error) {
     yield put(defaultRun.runFunction.failure({ error, functionName }))
   }
+}
+
+function* terminateAllSaga() {
+  yield put(defaultRun.terminateAll.success())
 }

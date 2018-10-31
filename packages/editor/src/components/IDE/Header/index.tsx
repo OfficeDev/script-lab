@@ -83,6 +83,7 @@ interface IActionsFromRedux {
   navigateToCustomFunctions: () => void
 
   defaultRunFunction: (solutionId: string, fileId: string, funcName: string) => void
+  terminateAllDefaultRunFunctions: () => void
 }
 
 const mapDispatchToProps = (dispatch, ownProps: IProps): IActionsFromRedux => ({
@@ -123,6 +124,8 @@ const mapDispatchToProps = (dispatch, ownProps: IProps): IActionsFromRedux => ({
     dispatch(
       actions.defaultRun.runFunction.request({ solutionId, fileId, functionName }),
     ),
+  terminateAllDefaultRunFunctions: () =>
+    dispatch(actions.defaultRun.terminateAll.request()),
 })
 
 export interface IProps extends IPropsFromRedux, IActionsFromRedux {

@@ -26,10 +26,23 @@ const metadataForActiveSolution = (
       return setStatus(state, action, 'Running')
 
     case getType(defaultRun.runFunction.success):
-      return setStatus(state, action, 'Success')
+      if (state[action.payload.functionName].status === 'Running') {
+        return setStatus(state, action, 'Success')
+      } else {
+        return state
+      }
 
     case getType(defaultRun.runFunction.failure):
-      return setStatus(state, action, 'Failure')
+      if (state[action.payload.functionName].status === 'Running') {
+        return setStatus(state, action, 'Success')
+      } else {
+        return state
+      }
+
+    case getType(defaultRun.terminateAll.success):
+      return Object.keys(state)
+        .map(funcName => ({ ...state[funcName], status: 'Idle' }))
+        .reduce((acc, item) => ({ ...acc, [item.name]: item }), {})
 
     default:
       return state
