@@ -14633,7 +14633,7 @@ exports[`Storyshots IDE|Footer basic 1`] = `
                   }
               data-is-focusable={true}
               disabled={undefined}
-              hidden={undefined}
+              hidden={false}
               onClick={[Function]}
               onKeyDown={[Function]}
               onKeyPress={[Function]}
@@ -15508,7 +15508,7 @@ exports[`Storyshots IDE|Footer isWeb 1`] = `
                   }
               data-is-focusable={true}
               disabled={undefined}
-              hidden={undefined}
+              hidden={false}
               onClick={[Function]}
               onKeyDown={[Function]}
               onKeyPress={[Function]}
@@ -16351,7 +16351,7 @@ exports[`Storyshots IDE|Footer with Custom Function Solutions 1`] = `
                   }
               data-is-focusable={true}
               disabled={undefined}
-              hidden={undefined}
+              hidden={false}
               onClick={[Function]}
               onKeyDown={[Function]}
               onKeyPress={[Function]}
