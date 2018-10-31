@@ -65,7 +65,7 @@ class IDE extends Component<IIDE> {
             : { visibility: 'hidden', opacity: hasLoaded ? 1 : 0 }
         }
       >
-        <Header solution={activeSolution} />
+        <Header solution={activeSolution} file={activeFile} />
         <PivotBar
           items={activeSolution.files.map(file => ({
             key: file.id,

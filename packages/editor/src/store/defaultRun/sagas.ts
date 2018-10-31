@@ -2,12 +2,13 @@ import { put, takeEvery, call, select } from 'redux-saga/effects'
 import { getType, ActionType } from 'typesafe-actions'
 import { defaultRun, editor, solutions } from '../actions'
 import selectors from '../selectors'
-import { findAllNoUIFunctions } from './utilities'
+import { findAllNoUIFunctions, execute } from './utilities'
 
 export default function* defaultRunWatcher() {
   yield takeEvery(getType(defaultRun.fetchMetadata.request), fetchMetadataSaga)
   yield takeEvery(getType(editor.newSolutionOpened), fetchMetadataForSolutionSaga)
   yield takeEvery(getType(solutions.edit), fetchMetadataForSolutionSaga)
+  yield takeEvery(getType(defaultRun.runFunction.request), defaultRunFunctionSaga)
 }
 
 function* fetchMetadataSaga() {
@@ -64,4 +65,24 @@ function* fetchMetadataForSolutionSaga(
       } as IDefaultFunctionRunMetadata),
   )
   yield put(defaultRun.updateActiveSolutionMetadata(noUIFunctionMetadata))
+}
+
+function* defaultRunFunctionSaga(
+  action: ActionType<typeof defaultRun.runFunction.request>,
+) {
+  const { solutionId, fileId, functionName } = action.payload
+  const file: IFile = yield select(selectors.solutions.getFile, fileId)
+
+  try {
+    const result = yield call(
+      execute,
+      solutionId,
+      file.content,
+      functionName,
+      file.dateLastModified,
+    )
+    yield put(defaultRun.runFunction.success({ functionName, result }))
+  } catch (error) {
+    yield put(defaultRun.runFunction.failure({ error, functionName }))
+  }
 }

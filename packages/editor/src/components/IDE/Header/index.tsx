@@ -81,6 +81,8 @@ interface IActionsFromRedux {
   notifyClipboardCopyFailure: () => void
 
   navigateToCustomFunctions: () => void
+
+  defaultRunFunction: (solutionId: string, fileId: string, funcName: string) => void
 }
 
 const mapDispatchToProps = (dispatch, ownProps: IProps): IActionsFromRedux => ({
@@ -116,6 +118,11 @@ const mapDispatchToProps = (dispatch, ownProps: IProps): IActionsFromRedux => ({
     ),
 
   navigateToCustomFunctions: () => dispatch(actions.customFunctions.openDashboard()),
+
+  defaultRunFunction: (solutionId: string, fileId: string, functionName: string) =>
+    dispatch(
+      actions.defaultRun.runFunction.request({ solutionId, fileId, functionName }),
+    ),
 })
 
 export interface IProps extends IPropsFromRedux, IActionsFromRedux {

@@ -30,3 +30,14 @@ export function findAllNoUIFunctions(content: string): string[] {
     }
   }
 }
+
+export async function execute(
+  solutionId: string,
+  code: string,
+  functionName: string,
+  lastUpdated: number,
+): Promise<any> {
+  return new Promise((resolve, reject) =>
+    setTimeout(Math.random() > 0.5 ? resolve : reject, 2000),
+  )
+}

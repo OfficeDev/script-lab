@@ -14,6 +14,7 @@ interface IProps {
   file: IFile
 
   navigateToCustomFunctions: () => void
+  defaultRunFunction: (solutionId: string, fileId: string, funcName: string) => void
 
   theme: ITheme // from withTheme
 }
@@ -25,6 +26,7 @@ export const getRunButton = ({
   navigateToCustomFunctions,
   isDefaultRunSolution,
   runnableFunctions,
+  defaultRunFunction,
   solution,
   file,
   theme,
@@ -47,23 +49,36 @@ export const getRunButton = ({
       subMenuProps: {
         items: [
           {
-            key: 'functions-setion',
+            key: 'functions-section',
             itemType: ContextualMenuItemType.Section,
             sectionProps: {
               // title: 'Functions',
+
+              // TODO: There's a react duplicate keys error being thrown here, but I don't know why. Might be fabric bug?
               items: runnableFunctions.map(({ name, status }) => ({
-                key: name,
+                key: `function-${name}`,
                 text: name,
                 iconProps: { iconName: 'Play' },
                 onRenderIcon: (props, defaultRender) => {
-                  const inner =
-                    status === 'Idle' ? (
-                      <Spinner size={SpinnerSize.small} />
-                    ) : (
-                      <Icon iconName="Play" style={{ color: '#98fb98' }} />
-                    )
+                  const inner = {
+                    Idle: <Icon iconName="Play" style={{ color: '#98fb98' }} />,
+                    Running: (
+                      <Spinner size={SpinnerSize.xSmall} style={{ padding: '.1rem' }} />
+                    ),
+                    Success: <Icon iconName="Accept" style={{ color: '#98fb98' }} />,
+                    Failure: <Icon iconName="Error" style={{ color: '#fd1532' }} />,
+                  }[status]
+
                   return (
-                    <div style={{ marginLeft: '4px', marginRight: '4px' }}>{inner}</div>
+                    <div
+                      style={{
+                        marginLeft: '.4rem',
+                        marginRight: '.4rem',
+                        marginTop: '.2rem',
+                      }}
+                    >
+                      {inner}
+                    </div>
                   )
                 },
                 itemProps: {
@@ -73,7 +88,12 @@ export const getRunButton = ({
                     },
                   },
                 },
-                onClick: event => event.preventDefault(),
+                onClick: event => {
+                  event.preventDefault()
+                  if (status !== 'Running') {
+                    defaultRunFunction(solution.id, file.id, name)
+                  }
+                },
               })),
             },
           },

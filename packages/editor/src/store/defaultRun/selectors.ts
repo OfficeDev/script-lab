@@ -5,6 +5,9 @@ export const getMetadata = (state: IState): IDefaultSnippetRunMetadata[] =>
 
 export const getMetadataForActiveSolution = (
   state: IState,
-): IDefaultFunctionRunMetadata[] => state.defaultRun.metadataForActiveSolution
+): IDefaultFunctionRunMetadata[] =>
+  Object.keys(state.defaultRun.metadataForActiveSolution).map(
+    funcName => state.defaultRun.metadataForActiveSolution[funcName],
+  )
 export const getIsDefaultRunSolution = (state: IState): boolean =>
   getMetadataForActiveSolution(state).length > 0

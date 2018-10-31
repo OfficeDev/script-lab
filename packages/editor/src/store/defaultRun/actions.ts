@@ -13,7 +13,12 @@ export const updateActiveSolutionMetadata = createAction(
   },
 )
 
-export const runFunction = createAction('DEFAULT_RUN_RUN_FUNCTION', resolve => {
-  return (props: { solutionId: string; fileId: string; functionName: string }) =>
-    resolve(props)
-})
+export const runFunction = createAsyncAction(
+  'DEFAULT_RUN_RUN_FUNCTION_REQUEST',
+  'DEFAULT_RUN_RUN_FUNCTION_SUCCESS',
+  'DEFAULT_RUN_RUN_FUNCTION_FAILURE',
+)<
+  { solutionId: string; fileId: string; functionName: string },
+  { functionName: string; result: any },
+  { functionName: string; error: Error }
+>()

@@ -25,6 +25,7 @@ const actionProps = {
   notifyClipboardCopySuccess: () => {},
   notifyClipboardCopyFailure: () => {},
   navigateToCustomFunctions: () => {},
+  defaultRunFunction: (solutionId: string, fileId: string, functionName: string) => {},
 }
 
 describe('Header should render properly in basic case', () => {
