@@ -60,7 +60,7 @@ export default class WebRuntime implements IRuntime {
       )}${scriptId}.${options.serviceUrl.substr(index)}`
     } else {
       // TODO: Change into real service url
-      this.origin = `http://${scriptId}.scripting1.com`
+      this.origin = `http://scripting1.com`
     }
     this.lastUpdatedTime = lastUpdatedTime
     this.iframe = document.createElement('iframe')
