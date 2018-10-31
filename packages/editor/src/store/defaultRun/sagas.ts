@@ -2,7 +2,7 @@ import { put, takeEvery, call, select } from 'redux-saga/effects'
 import { getType, ActionType } from 'typesafe-actions'
 import { defaultRun, editor, solutions } from '../actions'
 import selectors from '../selectors'
-import { findAllNoUIFunctions, execute } from './utilities'
+import { findAllNoUIFunctions, execute, terminateAll } from './utilities'
 
 export default function* defaultRunWatcher() {
   yield takeEvery(getType(defaultRun.fetchMetadata.request), fetchMetadataSaga)
@@ -89,5 +89,6 @@ function* defaultRunFunctionSaga(
 }
 
 function* terminateAllSaga() {
+  yield call(terminateAll)
   yield put(defaultRun.terminateAll.success())
 }

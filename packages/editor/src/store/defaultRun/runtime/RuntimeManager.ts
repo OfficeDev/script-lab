@@ -50,6 +50,10 @@ export default class RuntimeManager {
     return this.runtimeMap.keys()
   }
 
+  async terminateAll(): Promise<boolean[]> {
+    return Promise.all(this.getRuntimeIds().map(id => this.terminateRuntime(id)))
+  }
+
   async terminateRuntime(scriptId: string): Promise<boolean> {
     return new Promise<boolean>(async resolve => {
       if (this.runtimeMap.keyExists(scriptId)) {
