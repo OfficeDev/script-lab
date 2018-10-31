@@ -26,6 +26,7 @@ interface IPropsFromRedux {
   hasLoaded: boolean
   activeSolution: ISolution
   activeFile: IFile
+  isCustomFunctionsSolution: boolean
 }
 
 const mapStateToProps = (state: IReduxState): Partial<IPropsFromRedux> => ({
@@ -33,6 +34,7 @@ const mapStateToProps = (state: IReduxState): Partial<IPropsFromRedux> => ({
   hasLoaded: state.editor.hasLoaded,
   activeSolution: selectors.editor.getActiveSolution(state),
   activeFile: selectors.editor.getActiveFile(state),
+  isCustomFunctionsSolution: selectors.customFunctions.getIsCurrentSolutionCF(state),
 })
 
 interface IActionsFromRedux {
@@ -56,7 +58,13 @@ class IDE extends Component<IIDE> {
     this.props.openFile(this.props.activeSolution.id, fileId)
 
   render() {
-    const { isVisible, hasLoaded, activeSolution, activeFile } = this.props
+    const {
+      isVisible,
+      hasLoaded,
+      activeSolution,
+      activeFile,
+      isCustomFunctionsSolution,
+    } = this.props
     return (
       <Layout
         style={
@@ -67,10 +75,22 @@ class IDE extends Component<IIDE> {
       >
         <Header solution={activeSolution} file={activeFile} />
         <PivotBar
-          items={activeSolution.files.map(file => ({
-            key: file.id,
-            text: FILE_NAME_MAP[file.name] || file.name,
-          }))}
+          items={activeSolution.files
+            .filter(file => {
+              if (activeSolution.isDefaultRunSolution || isCustomFunctionsSolution) {
+                if (['index.ts', LIBRARIES_FILE_NAME].includes(file.name)) {
+                  return true
+                } else {
+                  return false
+                }
+              } else {
+                return true
+              }
+            })
+            .map(file => ({
+              key: file.id,
+              text: FILE_NAME_MAP[file.name] || file.name,
+            }))}
           selectedKey={activeFile.id}
           onSelect={this.changeActiveFile}
         />
