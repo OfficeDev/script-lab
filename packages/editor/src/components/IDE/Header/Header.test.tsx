@@ -33,11 +33,13 @@ describe('Header should render properly in basic case', () => {
   const solution = normalExample
   const headerProps = {
     solution,
+    file: solution.files.find(file => file.name === 'index.ts')!,
     isLoggedIn: true,
     isLoggingInOrOut: false,
     isRunnableOnThisHost: true,
     isSettingsView: false,
     isCustomFunctionsView: false,
+    isNullSolution: false,
     isDefaultRunSolution: false,
     runnableFunctions: [],
     profilePicUrl: null,
@@ -84,11 +86,13 @@ describe("Header shouldn't show run button if isn't runnable", () => {
   const solution = normalExample
   const headerProps = {
     solution,
+    file: solution.files.find(file => file.name === 'index.ts')!,
     isLoggedIn: true,
     isLoggingInOrOut: false,
     isRunnableOnThisHost: false,
     isSettingsView: false,
     isCustomFunctionsView: false,
+    isNullSolution: false,
     isDefaultRunSolution: false,
     runnableFunctions: [],
     profilePicUrl: null,

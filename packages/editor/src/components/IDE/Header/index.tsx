@@ -14,6 +14,7 @@ import YAML from 'js-yaml'
 
 import DeleteConfirmationDialog from './DeleteConfirmationDialog'
 import SolutionSettings from './SolutionSettings'
+import { getRunButton } from './Buttons/Run'
 
 import { ITheme as IFabricTheme } from 'office-ui-fabric-react/lib/Styling'
 import { NULL_SOLUTION_ID, PATHS, IS_TASK_PANE_WIDTH } from '../../../constants'
@@ -33,6 +34,7 @@ const HeaderWrapper = styled.header`
 
 interface IPropsFromRedux {
   profilePicUrl: string | null
+  isNullSolution: boolean
   isRunnableOnThisHost: boolean
   isSettingsView: boolean
   isCustomFunctionsView: boolean
@@ -45,6 +47,7 @@ interface IPropsFromRedux {
 }
 
 const mapStateToProps = (state): IPropsFromRedux => ({
+  isNullSolution: selectors.editor.getActiveSolution(state).id === NULL_SOLUTION_ID,
   isSettingsView: selectors.settings.getIsOpen(state),
   isCustomFunctionsView: selectors.customFunctions.getIsCurrentSolutionCF(state),
   isDefaultRunSolution: selectors.defaultRun.getIsDefaultRunSolution(state),
@@ -117,6 +120,7 @@ const mapDispatchToProps = (dispatch, ownProps: IProps): IActionsFromRedux => ({
 
 export interface IProps extends IPropsFromRedux, IActionsFromRedux {
   solution: ISolution
+  file: IFile
   theme: ITheme // from withTheme
 }
 
@@ -156,6 +160,7 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
       editSolution,
       deleteSolution,
       isSettingsView,
+      isNullSolution,
       isCustomFunctionsView,
       profilePicUrl,
       isRunnableOnThisHost,
@@ -174,7 +179,6 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
       createSecretGist,
       navigateToCustomFunctions,
     } = this.props
-    const isNullSolution = solution.id === NULL_SOLUTION_ID
     const solutionName = solution ? solution.name : 'Solution Name'
 
     const shareOptions = [
@@ -215,63 +219,6 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
       })
 
     const nonSettingsButtons: ICommandBarItemProps[] = [
-      {
-        hidden:
-          !isRunnableOnThisHost ||
-          isNullSolution ||
-          isCustomFunctionsView ||
-          isDefaultRunSolution,
-        key: 'run',
-        text: 'Run',
-        iconProps: { iconName: 'Play' },
-        href: '/run.html',
-      },
-      {
-        hidden: !isRunnableOnThisHost || !isCustomFunctionsView,
-        key: 'register-cf',
-        text: 'Register',
-        iconProps: { iconName: 'Play' },
-        onClick: navigateToCustomFunctions,
-      },
-      {
-        hidden: !isRunnableOnThisHost || !isDefaultRunSolution,
-        key: 'default-run-functions',
-        text: 'Run',
-        iconProps: { iconName: 'Play' },
-        subMenuProps: {
-          items: [
-            {
-              key: 'functions-section',
-              itemType: ContextualMenuItemType.Section,
-              sectionProps: {
-                title: 'Functions',
-                items: runnableFunctions.map(({ name }) => ({
-                  key: name,
-                  text: name,
-                  iconProps: { iconName: 'Play' },
-                  onClick: event => event.preventDefault(),
-                })),
-              },
-            },
-            {
-              key: 'divider',
-              itemType: ContextualMenuItemType.Divider,
-              itemProps: {
-                styles: {
-                  divider: {
-                    backgroundColor: theme.neutralSecondaryLight,
-                  },
-                },
-              },
-            },
-            {
-              key: 'terminate-all',
-              text: 'Terminate All',
-              iconProps: { iconName: 'Cancel' },
-            },
-          ],
-        },
-      },
       {
         hidden: isNullSolution,
         key: 'delete',
@@ -336,8 +283,8 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
 
     const items: ICommandBarItemProps[] = [
       ...commonItems,
-      ...(isSettingsView ? [] : nonSettingsButtons),
-    ].filter(item => item !== null)
+      ...(isSettingsView ? [] : [getRunButton(this.props), ...nonSettingsButtons]),
+    ].filter(item => item !== null) as ICommandBarItemProps[]
 
     const profilePic = {
       key: 'account',
