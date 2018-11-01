@@ -58,6 +58,24 @@ export function* fetchAllGistMetadataSaga() {
   }
 }
 
+function* onFetchGistMetadataSuccessSaga(
+  action: ActionType<typeof gists.fetchMetadata.success>,
+) {
+  /* This saga gets executed whenever fetchGistMetadata.success is dispatched
+     The code below goes through the resulting metadata and ensures that no local
+     solution is still pointing to a non-existing gist. */
+  const metadataIds = action.payload.map(metadata => metadata.id)
+  const allSolutions: ISolution[] = yield select(selectors.solutions.getAll)
+
+  const solutionsToClean = allSolutions.filter(
+    solution => solution.source && !metadataIds.includes(solution.source.id),
+  )
+
+  for (const solution of solutionsToClean) {
+    yield put(solutions.edit({ id: solution.id, solution: { source: undefined } }))
+  }
+}
+
 function* getGistSaga(action: ActionType<typeof gists.get.request>) {
   if (action.payload.conflictResolution) {
     switch (action.payload.conflictResolution.type) {
@@ -218,6 +236,7 @@ function* handleImportSnippetSuccessSaga(
 
 export default function* gistsWatcher() {
   yield takeEvery(getType(gists.fetchMetadata.request), fetchAllGistMetadataSaga)
+  yield takeEvery(getType(gists.fetchMetadata.success), onFetchGistMetadataSuccessSaga)
 
   yield takeEvery(getType(gists.get.request), getGistSaga)
   yield takeEvery(getType(gists.get.success), handleGetGistSuccessSaga)

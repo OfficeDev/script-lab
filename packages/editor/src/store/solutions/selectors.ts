@@ -1,4 +1,3 @@
-import pathToRegexp from 'path-to-regexp'
 import { IState } from '../reducer'
 import { getObjectValues } from '../../utils'
 import { SETTINGS_SOLUTION_ID } from '../../constants'
