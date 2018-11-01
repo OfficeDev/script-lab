@@ -7,7 +7,7 @@ import Editor from './Editor'
 import Footer from './Footer'
 
 import { Layout, ContentWrapper } from './styles'
-import { NULL_SOLUTION, NULL_FILE } from '../../constants'
+import { NULL_SOLUTION, NULL_FILE, LIBRARIES_FILE_NAME } from '../../constants'
 
 import { connect } from 'react-redux'
 import { IState as IReduxState } from '../../store/reducer'
@@ -18,7 +18,7 @@ const FILE_NAME_MAP = {
   'index.ts': 'Script',
   'index.html': 'HTML',
   'index.css': 'CSS',
-  'libraries.txt': 'Libraries',
+  [LIBRARIES_FILE_NAME]: 'Libraries',
 }
 
 interface IPropsFromRedux {

@@ -1,12 +1,14 @@
 import {
   gists,
   messageBar,
+  editor,
   solutions,
   settings,
   IGistsAction,
   IMessageBarAction,
   ISolutionsAction,
   ISettingsAction,
+  IEditorAction,
 } from '../actions'
 import { getType } from 'typesafe-actions'
 import { MessageBarType } from 'office-ui-fabric-react/lib/MessageBar'
@@ -30,7 +32,12 @@ const defaultState: IState = {
 
 const messageBarReducer = (
   state: IState = defaultState,
-  action: IGistsAction | IMessageBarAction | ISolutionsAction | ISettingsAction,
+  action:
+    | IGistsAction
+    | IMessageBarAction
+    | ISolutionsAction
+    | ISettingsAction
+    | IEditorAction,
 ): IState => {
   switch (action.type) {
     case getType(gists.create.success):
@@ -59,14 +66,6 @@ const messageBarReducer = (
         },
       }
 
-    case getType(settings.edit.success):
-      return {
-        isVisible: action.payload.showMessageBar,
-        style: MessageBarType.success,
-        text: 'Settings successfully applied.',
-        link: null,
-      }
-
     case getType(settings.edit.failure):
       return {
         isVisible: true,
@@ -83,6 +82,8 @@ const messageBarReducer = (
         link: null,
       }
 
+    case getType(editor.open):
+    case getType(settings.edit.success):
     case getType(messageBar.dismiss):
       return defaultState
 

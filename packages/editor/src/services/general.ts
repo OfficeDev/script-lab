@@ -21,7 +21,7 @@ export const fetchYaml = (url: string): Promise<{ content?: object; error?: Erro
       }
       return resp.text()
     })
-    .then(value => ({ content: YAML.load(value) }))
+    .then(value => ({ content: YAML.safeLoad(value) }))
     .catch(error => ({ error }))
 
 export const request = ({

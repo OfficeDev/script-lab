@@ -4,16 +4,17 @@ import { connect } from 'react-redux'
 import actions from '../../store/actions'
 
 interface IActionsFromRedux {
-  updateWidth: (width: number) => void
+  updateSize: (width: number, height: number) => void
 }
 
 const mapDispatchToProps = (dispatch): IActionsFromRedux => ({
-  updateWidth: (width: number) => dispatch(actions.screen.updateWidth(width)),
+  updateSize: (width: number, height: number) =>
+    dispatch(actions.screen.updateSize({ width, height })),
 })
 
 interface IProps extends IActionsFromRedux {}
 
-export class WidthMonitor extends React.Component<IProps> {
+export class ScreenSizeMonitor extends React.Component<IProps> {
   componentDidMount() {
     this.handleResize()
     window.addEventListener('resize', this.handleResize)
@@ -23,7 +24,7 @@ export class WidthMonitor extends React.Component<IProps> {
     window.removeEventListener('resize', this.handleResize)
   }
 
-  handleResize = () => this.props.updateWidth(window.innerWidth)
+  handleResize = () => this.props.updateSize(window.innerWidth, window.innerHeight)
 
   render() {
     return null
@@ -33,4 +34,4 @@ export class WidthMonitor extends React.Component<IProps> {
 export default connect(
   null,
   mapDispatchToProps,
-)(WidthMonitor)
+)(ScreenSizeMonitor)

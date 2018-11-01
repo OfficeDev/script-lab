@@ -30,6 +30,7 @@ export const editorUrls = {
 
 export function getCurrentEnv(): 'local' | 'alpha' | 'beta' | 'prod' {
   return {
+    'http://localhost:3000': 'local',
     'https://localhost:3000': 'local',
     'https://script-lab-react-alpha.azurewebsites.net': 'alpha',
     'https://script-lab-react-beta.azurewebsites.net': 'beta',
@@ -51,3 +52,13 @@ export function getPlatform(): PlatformType {
   return ((w.Office && w.Office.context && w.Office.context.platform) ||
     PlatformType.OfficeOnline) as PlatformType
 }
+
+export const allowedEnvs = [
+  'local',
+  'react-alpha',
+  'react-beta',
+  'react',
+  'alpha',
+  'beta',
+  'production',
+]
