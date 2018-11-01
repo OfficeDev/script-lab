@@ -6,6 +6,8 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const request = require("request");
 const path = require("path");
+const https = require("https");
+const fs = require("fs");
 
 const {
   GITHUB_CLIENT_ID,
@@ -69,5 +71,11 @@ app.post("/auth", (req, res) => {
     }
   );
 });
+const httpsOptions = {
+  key: fs.readFileSync("./key.pem"),
+  cert: fs.readFileSync("./cert.pem")
+};
 
-app.listen(port, () => console.log(`Listening on port ${port}`));
+const server = https
+  .createServer(httpsOptions, app)
+  .listen(port, () => console.log(`Listening on port ${port}`));
