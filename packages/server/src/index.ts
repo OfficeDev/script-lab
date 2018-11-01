@@ -5,6 +5,7 @@ const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const request = require("request");
+const path = require("path");
 
 const {
   GITHUB_CLIENT_ID,
@@ -22,6 +23,18 @@ app.use(bodyParser.json());
 // routes
 app.get("/hello", (req, res) => {
   res.send({ express: "Hello From Express" });
+});
+
+app.get("/iframe.html", function(req, res) {
+  res.sendFile(path.join(__dirname, "../public", "iframe.html"));
+});
+
+app.get("/worker.js", function(req, res) {
+  res.sendFile(path.join(__dirname, "../public", "worker.js"));
+});
+
+app.get("/iframe.js", function(req, res) {
+  res.sendFile(path.join(__dirname, "../public", "iframe.js"));
 });
 
 app.post("/auth", (req, res) => {

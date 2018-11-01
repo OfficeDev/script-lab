@@ -39,7 +39,7 @@ export default class RuntimeManager {
         await this.terminateRuntime(scriptId)
       }
 
-      runtime = await createRuntime(scriptId, scriptCode, lastUpdatedTime, this.options)
+      runtime = await createRuntime(scriptId, scriptCode, lastUpdatedTime)
       this.runtimeMap.create(scriptId, runtime)
       const result = await runtime.executeFunction(functionName, functionArgs)
       return resolve(result)

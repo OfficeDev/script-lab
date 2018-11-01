@@ -3,7 +3,7 @@ const path = require("path");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 module.exports = {
-  entry: "./index.ts",
+  entry: "./src/index.ts",
   output: {
     path: path.resolve("./build"),
     filename: "index.js"
@@ -15,5 +15,8 @@ module.exports = {
   module: {
     rules: [{ test: /\.ts$/, loader: "ts-loader" }]
   },
-  plugins: [new CopyWebpackPlugin(["web.config"])]
+  plugins: [
+    new CopyWebpackPlugin(["web.config"]),
+    new CopyWebpackPlugin([{ from: "public", to: "public/" }])
+  ]
 };

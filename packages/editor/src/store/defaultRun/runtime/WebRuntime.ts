@@ -3,6 +3,7 @@ import ObjectStore from './util/ObjectStore'
 import { RuntimeState } from './RuntimeState'
 import IRuntime from './IRuntime'
 import uuidV4 from 'uuid/v4'
+import { serverUrl } from 'src/environment'
 
 interface IPromiseObject {
   resolve: (value?: any) => void
@@ -23,10 +24,9 @@ export default class WebRuntime implements IRuntime {
     scriptId: string,
     scriptCode: string,
     lastUpdatedTime: number,
-    options?: { serviceUrl: string },
   ): Promise<WebRuntime> {
     return new Promise<WebRuntime>((resolve, reject) => {
-      const runtime: WebRuntime = new WebRuntime(scriptId, lastUpdatedTime, options)
+      const runtime: WebRuntime = new WebRuntime(scriptId, lastUpdatedTime)
       const eventId = uuidV4()
       runtime.callBackList.create(eventId, { resolve, reject })
 
@@ -41,31 +41,18 @@ export default class WebRuntime implements IRuntime {
     })
   }
 
-  private constructor(
-    scriptId: string,
-    lastUpdatedTime: number,
-    options?: { serviceUrl: string },
-  ) {
+  private constructor(scriptId: string, lastUpdatedTime: number) {
     this.state = RuntimeState.Ready
     this.messageHandler = this.handleMessage.bind(this)
     window.addEventListener('message', this.messageHandler, false)
     this.callBackList = new ObjectStore<IPromiseObject>()
     this.id = scriptId
     this.creationTime = Date.now()
-    if (options && options.serviceUrl) {
-      const index = options.serviceUrl.indexOf('://') + 3
-      this.origin = `${options.serviceUrl.substring(
-        0,
-        index,
-      )}${scriptId}.${options.serviceUrl.substr(index)}`
-    } else {
-      // TODO: Change into real service url
-      this.origin = `http://scripting1.com`
-    }
+    this.origin = serverUrl
     this.lastUpdatedTime = lastUpdatedTime
     this.iframe = document.createElement('iframe')
     this.iframe.setAttribute('id', scriptId)
-    this.iframe.src = this.origin
+    this.iframe.src = `${this.origin}/iframe.html`
     this.iframe.style.display = 'none'
   }
 
