@@ -1,7 +1,12 @@
 import ts from 'typescript'
 import RuntimeManager from './runtime/RuntimeManager'
 
-const runtimeManager = RuntimeManager.getInstance()
+let runtimeManager
+try {
+  runtimeManager = RuntimeManager.getInstance()
+} catch (error) {
+  console.error(error)
+}
 
 export function findAllNoUIFunctions(content: string): string[] {
   const sourceFile = ts.createSourceFile(
@@ -26,7 +31,9 @@ export function findAllNoUIFunctions(content: string): string[] {
 }
 
 export async function terminateAll() {
-  runtimeManager.terminateAll()
+  if (runtimeManager) {
+    runtimeManager.terminateAll()
+  }
 }
 
 export async function execute(
@@ -35,15 +42,16 @@ export async function execute(
   functionName: string,
   lastUpdated: number,
 ): Promise<any> {
-  const result = runtimeManager.executeScript(
-    solutionId,
-    compileScript('typescript', code),
-    functionName,
-    [],
-    lastUpdated,
-  )
-  console.log(result)
-  return result
+  if (runtimeManager) {
+    return runtimeManager.executeScript(
+      solutionId,
+      compileScript('typescript', code),
+      functionName,
+      [],
+      lastUpdated,
+    )
+  }
+  return null
 }
 
 export function compileScript(language: string, content: string): string {
