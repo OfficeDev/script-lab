@@ -10,7 +10,7 @@
     "core-js": "^2.5.7",
     "js-yaml": "^3.12.0",
     "lodash": "^4.17.10",
-    "monaco-editor": "^0.13.1",
+    "monaco-editor": "^0.14.3",
     "normalizr": "^3.2.4",
     "office-ui-fabric-react": "6.79.0",
     "react": "^16.5.2",
