@@ -3,7 +3,7 @@ import ObjectStore from './util/ObjectStore'
 import { RuntimeState } from './RuntimeState'
 import IRuntime from './IRuntime'
 import uuidV4 from 'uuid/v4'
-import { serverUrl } from 'src/environment'
+import { serverUrl } from '../../../environment'
 
 interface IPromiseObject {
   resolve: (value?: any) => void
