@@ -39,7 +39,7 @@ interface IPropsFromRedux {
   isSettingsView: boolean
   isCustomFunctionsView: boolean
   isDirectScriptExecutionSolution: boolean
-  runnableFunctions: IDefaultFunctionRunMetadata[]
+  runnableFunctions: IDirectScriptExecutionFunctionMetadata[]
   isLoggedIn: boolean
   isLoggingInOrOut: boolean
   commandBarFabricTheme: IFabricTheme

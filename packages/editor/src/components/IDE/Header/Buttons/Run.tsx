@@ -9,7 +9,7 @@ interface IProps {
   isNullSolution: boolean
   isCustomFunctionsView: boolean
   isDirectScriptExecutionSolution: boolean
-  runnableFunctions: IDefaultFunctionRunMetadata[]
+  runnableFunctions: IDirectScriptExecutionFunctionMetadata[]
   solution: ISolution
   file: IFile
 

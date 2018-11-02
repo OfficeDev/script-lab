@@ -26,6 +26,7 @@
     "semver": "^5.5.1",
     "styled-components": "^3.4.2",
     "typesafe-actions": "^2.0.4",
+    "typescript": "3.0.1",
     "uuid": "^3.2.1"
   },
   "scripts": {
@@ -88,7 +89,6 @@
     "redux-devtools": "^3.4.1",
     "shelljs": "^0.8.2",
     "source-map-explorer": "^1.6.0",
-    "source-map-support": "0.4.3",
     "ts-jest": "^22.4.6",
     "tslint": "^5.11.0",
     "typescript": "^3.0.1"

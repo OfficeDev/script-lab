@@ -9,12 +9,12 @@ interface IGithubGistPayload {
   id: string
 }
 
-interface IDefaultFunctionRunMetadata {
+interface IDirectScriptExecutionFunctionMetadata {
   name: string
   status: 'Idle' | 'Running' | 'Success' | 'Failure'
 }
 
 interface IDefaultSnippetRunMetadata {
   name: string
-  functions: IDefaultFunctionRunMetadata[]
+  functions: IDirectScriptExecutionFunctionMetadata[]
 }

@@ -59,16 +59,13 @@ function* fetchMetadataForSolutionSaga(
     return
   }
 
-  const noUIFunctionMetadata: IDefaultFunctionRunMetadata[] = findAllNoUIFunctions(
-    script.content,
-  ).map(
-    name =>
-      ({
-        name,
-        status: 'Idle',
-      } as IDefaultFunctionRunMetadata),
-  )
-  yield put(directScriptExecution.updateActiveSolutionMetadata(noUIFunctionMetadata))
+  const noUIFunctionMetadata: string[] = yield call(findAllNoUIFunctions, script.content)
+
+  const formattedMetadata = noUIFunctionMetadata.map(name => ({
+    name,
+    status: 'Idle' as 'Idle',
+  }))
+  yield put(directScriptExecution.updateActiveSolutionMetadata(formattedMetadata))
 }
 
 function* directScriptExecutionFunctionSaga(

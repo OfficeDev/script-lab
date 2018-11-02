@@ -6,7 +6,7 @@ export const getMetadata = (state: IState): IDefaultSnippetRunMetadata[] =>
 
 export const getMetadataForActiveSolution = (
   state: IState,
-): IDefaultFunctionRunMetadata[] =>
+): IDirectScriptExecutionFunctionMetadata[] =>
   Object.keys(state.directScriptExecution.metadataForActiveSolution).map(
     funcName => state.directScriptExecution.metadataForActiveSolution[funcName],
   )
