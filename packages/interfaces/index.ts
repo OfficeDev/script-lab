@@ -37,14 +37,17 @@ interface IEditableSolutionProperties {
   name: string;
   description?: string;
   source?: ISourceInformation;
+  isDirectScriptExecutionSolution?: boolean;
 }
 
 interface ISourceInformation {
   id: string;
-  origin: 'gist';
+  origin: "gist";
 }
 
-interface ISolutionWithoutFiles extends IEditableSolutionProperties, ITimestamps {
+interface ISolutionWithoutFiles
+  extends IEditableSolutionProperties,
+    ITimestamps {
   id: string;
   host: string;
 }

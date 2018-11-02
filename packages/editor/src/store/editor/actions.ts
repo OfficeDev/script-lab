@@ -30,3 +30,10 @@ export const removeIntellisenseFiles = createAction(
 )
 
 export const applyFormatting = createAction('APPLY_FORMATTING')
+
+export const newSolutionOpened = createAction('NEW_SOLUTION_OPENED', resolve => {
+  return (solutionId: string) => resolve(solutionId)
+})
+export const newFileOpened = createAction('NEW_FILE_OPENED', resolve => {
+  return (solutionId: string, fileId: string) => resolve(solutionId, fileId)
+})

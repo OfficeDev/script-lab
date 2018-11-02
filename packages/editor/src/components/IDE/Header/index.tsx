@@ -6,6 +6,7 @@ import { CommandBar, ICommandBarItemProps } from 'office-ui-fabric-react/lib/Com
 import { PersonaSize, PersonaCoin } from 'office-ui-fabric-react/lib/Persona'
 import { MessageBarType } from 'office-ui-fabric-react/lib/MessageBar'
 import { Spinner, SpinnerSize } from 'office-ui-fabric-react/lib/Spinner'
+import { ContextualMenuItemType } from 'office-ui-fabric-react/lib/ContextualMenu'
 
 import Clipboard from 'clipboard'
 import { convertSolutionToSnippet } from '../../../utils'
@@ -13,6 +14,7 @@ import YAML from 'js-yaml'
 
 import DeleteConfirmationDialog from './DeleteConfirmationDialog'
 import SolutionSettings from './SolutionSettings'
+import { getRunButton } from './Buttons/Run'
 
 import { ITheme as IFabricTheme } from 'office-ui-fabric-react/lib/Styling'
 import { NULL_SOLUTION_ID, PATHS, IS_TASK_PANE_WIDTH } from '../../../constants'
@@ -32,9 +34,12 @@ const HeaderWrapper = styled.header`
 
 interface IPropsFromRedux {
   profilePicUrl: string | null
+  isNullSolution: boolean
   isRunnableOnThisHost: boolean
   isSettingsView: boolean
   isCustomFunctionsView: boolean
+  isDirectScriptExecutionSolution: boolean
+  runnableFunctions: IDefaultFunctionRunMetadata[]
   isLoggedIn: boolean
   isLoggingInOrOut: boolean
   commandBarFabricTheme: IFabricTheme
@@ -42,8 +47,13 @@ interface IPropsFromRedux {
 }
 
 const mapStateToProps = (state): IPropsFromRedux => ({
+  isNullSolution: selectors.editor.getActiveSolution(state).id === NULL_SOLUTION_ID,
   isSettingsView: selectors.settings.getIsOpen(state),
   isCustomFunctionsView: selectors.customFunctions.getIsCurrentSolutionCF(state),
+  isDirectScriptExecutionSolution: selectors.directScriptExecution.getIsDirectScriptExecutionSolution(
+    state,
+  ),
+  runnableFunctions: selectors.directScriptExecution.getMetadataForActiveSolution(state),
   isLoggedIn: !!selectors.github.getToken(state),
   isLoggingInOrOut: selectors.github.getIsLoggingInOrOut(state),
   isRunnableOnThisHost: selectors.host.getIsRunnableOnThisHost(state),
@@ -73,6 +83,13 @@ interface IActionsFromRedux {
   notifyClipboardCopyFailure: () => void
 
   navigateToCustomFunctions: () => void
+
+  directScriptExecutionFunction: (
+    solutionId: string,
+    fileId: string,
+    funcName: string,
+  ) => void
+  terminateAllDirectScriptExecutionFunctions: () => void
 }
 
 const mapDispatchToProps = (dispatch, ownProps: IProps): IActionsFromRedux => ({
@@ -108,10 +125,26 @@ const mapDispatchToProps = (dispatch, ownProps: IProps): IActionsFromRedux => ({
     ),
 
   navigateToCustomFunctions: () => dispatch(actions.customFunctions.openDashboard()),
+
+  directScriptExecutionFunction: (
+    solutionId: string,
+    fileId: string,
+    functionName: string,
+  ) =>
+    dispatch(
+      actions.directScriptExecution.runFunction.request({
+        solutionId,
+        fileId,
+        functionName,
+      }),
+    ),
+  terminateAllDirectScriptExecutionFunctions: () =>
+    dispatch(actions.directScriptExecution.terminateAll.request()),
 })
 
 export interface IProps extends IPropsFromRedux, IActionsFromRedux {
   solution: ISolution
+  file: IFile
   theme: ITheme // from withTheme
 }
 
@@ -151,11 +184,14 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
       editSolution,
       deleteSolution,
       isSettingsView,
+      isNullSolution,
       isCustomFunctionsView,
       profilePicUrl,
       isRunnableOnThisHost,
       isLoggedIn,
       isLoggingInOrOut,
+      isDirectScriptExecutionSolution,
+      runnableFunctions,
       screenWidth,
       theme,
       commandBarFabricTheme,
@@ -167,7 +203,6 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
       createSecretGist,
       navigateToCustomFunctions,
     } = this.props
-    const isNullSolution = solution.id === NULL_SOLUTION_ID
     const solutionName = solution ? solution.name : 'Solution Name'
 
     const shareOptions = [
@@ -208,20 +243,6 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
       })
 
     const nonSettingsButtons: ICommandBarItemProps[] = [
-      {
-        hidden: !isRunnableOnThisHost || isNullSolution || isCustomFunctionsView,
-        key: 'run',
-        text: 'Run',
-        iconProps: { iconName: 'Play' },
-        href: '/run.html',
-      },
-      {
-        hidden: !isRunnableOnThisHost || !isCustomFunctionsView,
-        key: 'register-cf',
-        text: 'Register',
-        iconProps: { iconName: 'Play' },
-        onClick: navigateToCustomFunctions,
-      },
       {
         hidden: isNullSolution,
         key: 'delete',
@@ -286,8 +307,8 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
 
     const items: ICommandBarItemProps[] = [
       ...commonItems,
-      ...(isSettingsView ? [] : nonSettingsButtons),
-    ].filter(item => item !== null)
+      ...(isSettingsView ? [] : [getRunButton(this.props), ...nonSettingsButtons]),
+    ].filter(item => item !== null) as ICommandBarItemProps[]
 
     const profilePic = {
       key: 'account',

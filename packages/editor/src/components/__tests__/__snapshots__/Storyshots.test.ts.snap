@@ -14328,6 +14328,24 @@ exports[`Storyshots Custom Functions|Welcome basic 1`] = `
 </div>
 `;
 
+exports[`Storyshots Default Run Gallery basic 1`] = `
+.c0 {
+  overflow-y: auto;
+  box-sizing: border-box;
+  height: 100%;
+  padding: 2rem 4rem;
+  background-color: #ddd;
+}
+
+.c0 .c1 {
+  margin-bottom: 4rem;
+}
+
+<main
+  className="c0"
+/>
+`;
+
 exports[`Storyshots IDE|Footer basic 1`] = `
 .c0 {
   overflow: hidden;
