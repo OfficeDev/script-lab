@@ -7,7 +7,7 @@ export default [
   },
   {
     label: 'office-js',
-    value: 'https://appsforoffice.microsoft.com/lib/1.1/hosted/office.js',
+    value: 'https://appsforoffice.microsoft.com/lib/1/hosted/Office.js',
     typings: '@types/office-js',
     description: 'JavaScript framework used to build Office Add-ins.',
   },
