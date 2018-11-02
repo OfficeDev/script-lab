@@ -11,7 +11,7 @@ interface IProps {
   snippets?: IDefaultSnippetRunMetadata[]
 }
 
-export class DefaultRunGallery extends React.Component<IProps> {
+export class DirectScriptExecutionGallery extends React.Component<IProps> {
   render() {
     return (
       <RunGallery>
@@ -29,4 +29,4 @@ export class DefaultRunGallery extends React.Component<IProps> {
   }
 }
 
-export default DefaultRunGallery
+export default DirectScriptExecutionGallery

@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux'
 import { getType } from 'typesafe-actions'
-import { defaultRun, IDefaultRunAction } from '../actions'
+import { directScriptExecution, IDirectScriptExecutionAction } from '../actions'
 
 interface IMetadataForActiveState {
   [funcName: string]: IDefaultFunctionRunMetadata
@@ -16,30 +16,30 @@ const setStatus = (state: IMetadataForActiveState, action, status) => ({
 
 const metadataForActiveSolution = (
   state: IMetadataForActiveState = {},
-  action: IDefaultRunAction,
+  action: IDirectScriptExecutionAction,
 ) => {
   switch (action.type) {
-    case getType(defaultRun.updateActiveSolutionMetadata):
+    case getType(directScriptExecution.updateActiveSolutionMetadata):
       return action.payload.reduce((acc, item) => ({ ...acc, [item.name]: item }), {})
 
-    case getType(defaultRun.runFunction.request):
+    case getType(directScriptExecution.runFunction.request):
       return setStatus(state, action, 'Running')
 
-    case getType(defaultRun.runFunction.success):
+    case getType(directScriptExecution.runFunction.success):
       if (state[action.payload.functionName].status === 'Running') {
         return setStatus(state, action, 'Success')
       } else {
         return state
       }
 
-    case getType(defaultRun.runFunction.failure):
+    case getType(directScriptExecution.runFunction.failure):
       if (state[action.payload.functionName].status === 'Running') {
         return setStatus(state, action, 'Success')
       } else {
         return state
       }
 
-    case getType(defaultRun.terminateAll.success):
+    case getType(directScriptExecution.terminateAll.success):
       return Object.keys(state)
         .map(funcName => ({ ...state[funcName], status: 'Idle' }))
         .reduce((acc, item) => ({ ...acc, [item.name]: item }), {})
@@ -51,9 +51,9 @@ const metadataForActiveSolution = (
 
 type IMetadataState = IDefaultSnippetRunMetadata[]
 
-const metadata = (state: IMetadataState = [], action: IDefaultRunAction) => {
+const metadata = (state: IMetadataState = [], action: IDirectScriptExecutionAction) => {
   switch (action.type) {
-    case getType(defaultRun.fetchMetadata.success):
+    case getType(directScriptExecution.fetchMetadata.success):
       return action.payload
 
     default:

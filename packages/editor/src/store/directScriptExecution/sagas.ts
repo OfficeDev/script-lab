@@ -1,15 +1,18 @@
 import { put, takeEvery, call, select } from 'redux-saga/effects'
 import { getType, ActionType } from 'typesafe-actions'
-import { defaultRun, editor, solutions } from '../actions'
+import { directScriptExecution, editor, solutions } from '../actions'
 import selectors from '../selectors'
 import { findAllNoUIFunctions, execute, terminateAll } from './utilities'
 
-export default function* defaultRunWatcher() {
-  yield takeEvery(getType(defaultRun.fetchMetadata.request), fetchMetadataSaga)
+export default function* directScriptExecutionWatcher() {
+  yield takeEvery(getType(directScriptExecution.fetchMetadata.request), fetchMetadataSaga)
   yield takeEvery(getType(editor.newSolutionOpened), fetchMetadataForSolutionSaga)
   yield takeEvery(getType(solutions.edit), fetchMetadataForSolutionSaga)
-  yield takeEvery(getType(defaultRun.runFunction.request), defaultRunFunctionSaga)
-  yield takeEvery(getType(defaultRun.terminateAll.request), terminateAllSaga)
+  yield takeEvery(
+    getType(directScriptExecution.runFunction.request),
+    directScriptExecutionFunctionSaga,
+  )
+  yield takeEvery(getType(directScriptExecution.terminateAll.request), terminateAllSaga)
 }
 
 function* fetchMetadataSaga() {
@@ -65,11 +68,11 @@ function* fetchMetadataForSolutionSaga(
         status: 'Idle',
       } as IDefaultFunctionRunMetadata),
   )
-  yield put(defaultRun.updateActiveSolutionMetadata(noUIFunctionMetadata))
+  yield put(directScriptExecution.updateActiveSolutionMetadata(noUIFunctionMetadata))
 }
 
-function* defaultRunFunctionSaga(
-  action: ActionType<typeof defaultRun.runFunction.request>,
+function* directScriptExecutionFunctionSaga(
+  action: ActionType<typeof directScriptExecution.runFunction.request>,
 ) {
   const { solutionId, fileId, functionName } = action.payload
   const file: IFile = yield select(selectors.solutions.getFile, fileId)
@@ -82,13 +85,13 @@ function* defaultRunFunctionSaga(
       functionName,
       file.dateLastModified,
     )
-    yield put(defaultRun.runFunction.success({ functionName, result }))
+    yield put(directScriptExecution.runFunction.success({ functionName, result }))
   } catch (error) {
-    yield put(defaultRun.runFunction.failure({ error, functionName }))
+    yield put(directScriptExecution.runFunction.failure({ error, functionName }))
   }
 }
 
 function* terminateAllSaga() {
   yield call(terminateAll)
-  yield put(defaultRun.terminateAll.success())
+  yield put(directScriptExecution.terminateAll.success())
 }

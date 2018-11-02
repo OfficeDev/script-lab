@@ -1,7 +1,7 @@
 import { all } from 'redux-saga/effects'
 
 import customFunctionsWatcher from './customFunctions/sagas'
-import defaultRunWatcher from './defaultRun/sagas'
+import directScriptExecutionWatcher from './directScriptExecution/sagas'
 import editorWatcher from './editor/sagas'
 import gistsWatcher from './gists/sagas'
 import githubWatcher from './github/sagas'
@@ -14,7 +14,7 @@ import solutionsWatcher from './solutions/sagas'
 export default function* rootSaga() {
   yield all([
     customFunctionsWatcher(),
-    defaultRunWatcher(),
+    directScriptExecutionWatcher(),
     editorWatcher(),
     gistsWatcher(),
     githubWatcher(),

@@ -25,8 +25,12 @@ const actionProps = {
   notifyClipboardCopySuccess: () => {},
   notifyClipboardCopyFailure: () => {},
   navigateToCustomFunctions: () => {},
-  defaultRunFunction: (solutionId: string, fileId: string, functionName: string) => {},
-  terminateAllDefaultRunFunctions: () => {},
+  directScriptExecutionFunction: (
+    solutionId: string,
+    fileId: string,
+    functionName: string,
+  ) => {},
+  terminateAllDirectScriptExecutionFunctions: () => {},
 }
 
 describe('Header should render properly in basic case', () => {
@@ -42,7 +46,7 @@ describe('Header should render properly in basic case', () => {
     isSettingsView: false,
     isCustomFunctionsView: false,
     isNullSolution: false,
-    isDefaultRunSolution: false,
+    isDirectScriptExecutionSolution: false,
     runnableFunctions: [],
     profilePicUrl: null,
     screenWidth: 700,
@@ -95,7 +99,7 @@ describe("Header shouldn't show run button if isn't runnable", () => {
     isSettingsView: false,
     isCustomFunctionsView: false,
     isNullSolution: false,
-    isDefaultRunSolution: false,
+    isDirectScriptExecutionSolution: false,
     runnableFunctions: [],
     profilePicUrl: null,
     screenWidth: 800,

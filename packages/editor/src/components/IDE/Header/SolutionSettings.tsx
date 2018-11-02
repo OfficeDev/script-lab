@@ -29,18 +29,18 @@ interface ISolutionSettings {
 interface IState {
   name: string
   description: string
-  isDefaultRunSolution?: boolean
+  isDirectScriptExecutionSolution?: boolean
 }
 
 class SolutionSettings extends React.Component<ISolutionSettings, IState> {
-  state = { name: '', description: '', isDefaultRunSolution: undefined }
+  state = { name: '', description: '', isDirectScriptExecutionSolution: undefined }
 
   setupForm = () => {
     const { solution } = this.props
     const { name } = solution
     const description = solution.description || ''
-    const isDefaultRunSolution = solution.isDefaultRunSolution
-    this.setState({ name, description, isDefaultRunSolution })
+    const isDirectScriptExecutionSolution = solution.isDirectScriptExecutionSolution
+    this.setState({ name, description, isDirectScriptExecutionSolution })
   }
 
   componentWillMount() {
@@ -53,7 +53,7 @@ class SolutionSettings extends React.Component<ISolutionSettings, IState> {
 
   render() {
     const { solution, isOpen, closeSolutionSettings } = this.props
-    const { name, description, isDefaultRunSolution } = this.state
+    const { name, description, isDirectScriptExecutionSolution } = this.state
     return (
       <Dialog
         hidden={!isOpen}
@@ -72,7 +72,7 @@ class SolutionSettings extends React.Component<ISolutionSettings, IState> {
           />
           <Checkbox
             label="No Custom UI"
-            checked={isDefaultRunSolution || false}
+            checked={isDirectScriptExecutionSolution || false}
             onChange={this.updateSolutionNoCustomUI}
           />
           <Only when={solution.source && solution.source.origin === 'gist'}>
@@ -117,9 +117,9 @@ class SolutionSettings extends React.Component<ISolutionSettings, IState> {
     isChecked: boolean,
   ) => {
     if (isChecked) {
-      this.setState({ isDefaultRunSolution: true })
+      this.setState({ isDirectScriptExecutionSolution: true })
     } else {
-      this.setState({ isDefaultRunSolution: undefined })
+      this.setState({ isDirectScriptExecutionSolution: undefined })
     }
   }
 

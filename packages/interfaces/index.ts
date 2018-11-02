@@ -37,7 +37,7 @@ interface IEditableSolutionProperties {
   name: string;
   description?: string;
   source?: ISourceInformation;
-  isDefaultRunSolution?: boolean;
+  isDirectScriptExecutionSolution?: boolean;
 }
 
 interface ISourceInformation {

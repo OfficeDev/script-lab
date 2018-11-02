@@ -1,5 +1,5 @@
 import * as customFunctions from './customFunctions/selectors'
-import * as defaultRun from './defaultRun/selectors'
+import * as directScriptExecution from './directScriptExecution/selectors'
 import * as editor from './editor/selectors'
 import * as gists from './gists/selectors'
 import * as github from './github/selectors'
@@ -10,7 +10,7 @@ import * as settings from './settings/selectors'
 import * as solutions from './solutions/selectors'
 
 export { customFunctions }
-export { defaultRun }
+export { directScriptExecution }
 export { editor }
 export { gists }
 export { github }
@@ -22,7 +22,7 @@ export { solutions }
 
 export default {
   customFunctions,
-  defaultRun,
+  directScriptExecution,
   editor,
   gists,
   github,

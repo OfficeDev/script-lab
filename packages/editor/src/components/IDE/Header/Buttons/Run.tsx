@@ -8,14 +8,18 @@ interface IProps {
   isRunnableOnThisHost: boolean
   isNullSolution: boolean
   isCustomFunctionsView: boolean
-  isDefaultRunSolution: boolean
+  isDirectScriptExecutionSolution: boolean
   runnableFunctions: IDefaultFunctionRunMetadata[]
   solution: ISolution
   file: IFile
 
   navigateToCustomFunctions: () => void
-  defaultRunFunction: (solutionId: string, fileId: string, funcName: string) => void
-  terminateAllDefaultRunFunctions: () => void
+  directScriptExecutionFunction: (
+    solutionId: string,
+    fileId: string,
+    funcName: string,
+  ) => void
+  terminateAllDirectScriptExecutionFunctions: () => void
 
   theme: ITheme // from withTheme
 }
@@ -25,10 +29,10 @@ export const getRunButton = ({
   isNullSolution,
   isCustomFunctionsView,
   navigateToCustomFunctions,
-  isDefaultRunSolution,
+  isDirectScriptExecutionSolution,
   runnableFunctions,
-  defaultRunFunction,
-  terminateAllDefaultRunFunctions,
+  directScriptExecutionFunction,
+  terminateAllDirectScriptExecutionFunctions,
   solution,
   file,
   theme,
@@ -43,7 +47,7 @@ export const getRunButton = ({
       iconProps: { iconName: 'Play' },
       onClick: navigateToCustomFunctions,
     }
-  } else if (isDefaultRunSolution) {
+  } else if (isDirectScriptExecutionSolution) {
     return {
       key: 'default-run-functions',
       text: 'Run',
@@ -93,7 +97,7 @@ export const getRunButton = ({
                 onClick: event => {
                   event.preventDefault()
                   if (status !== 'Running') {
-                    defaultRunFunction(solution.id, file.id, name)
+                    directScriptExecutionFunction(solution.id, file.id, name)
                   }
                 },
               })),
@@ -118,7 +122,7 @@ export const getRunButton = ({
               if (event) {
                 event.preventDefault()
               }
-              terminateAllDefaultRunFunctions()
+              terminateAllDirectScriptExecutionFunctions()
             },
             itemProps: {
               styles: {

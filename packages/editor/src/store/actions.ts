@@ -1,7 +1,7 @@
 import { ActionType } from 'typesafe-actions'
 
 import * as customFunctions from './customFunctions/actions'
-import * as defaultRun from './defaultRun/actions'
+import * as directScriptExecution from './directScriptExecution/actions'
 import * as editor from './editor/actions'
 import * as gists from './gists/actions'
 import * as github from './github/actions'
@@ -14,7 +14,7 @@ import * as settings from './settings/actions'
 import * as solutions from './solutions/actions'
 
 export { customFunctions }
-export { defaultRun }
+export { directScriptExecution }
 export { editor }
 export { gists }
 export { github }
@@ -28,7 +28,7 @@ export { solutions }
 
 export default {
   customFunctions,
-  defaultRun,
+  directScriptExecution,
   editor,
   gists,
   github,
@@ -42,7 +42,7 @@ export default {
 }
 
 export type ICustomFunctionsAction = ActionType<typeof customFunctions>
-export type IDefaultRunAction = ActionType<typeof defaultRun>
+export type IDirectScriptExecutionAction = ActionType<typeof directScriptExecution>
 export type IEditorAction = ActionType<typeof editor>
 export type IGistsAction = ActionType<typeof gists>
 export type IGithubAction = ActionType<typeof github>

@@ -77,7 +77,10 @@ class IDE extends Component<IIDE> {
         <PivotBar
           items={activeSolution.files
             .filter(file => {
-              if (activeSolution.isDefaultRunSolution || isCustomFunctionsSolution) {
+              if (
+                activeSolution.isDirectScriptExecutionSolution ||
+                isCustomFunctionsSolution
+              ) {
                 if (['index.ts', LIBRARIES_FILE_NAME].includes(file.name)) {
                   return true
                 } else {

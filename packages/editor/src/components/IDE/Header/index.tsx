@@ -38,7 +38,7 @@ interface IPropsFromRedux {
   isRunnableOnThisHost: boolean
   isSettingsView: boolean
   isCustomFunctionsView: boolean
-  isDefaultRunSolution: boolean
+  isDirectScriptExecutionSolution: boolean
   runnableFunctions: IDefaultFunctionRunMetadata[]
   isLoggedIn: boolean
   isLoggingInOrOut: boolean
@@ -50,8 +50,10 @@ const mapStateToProps = (state): IPropsFromRedux => ({
   isNullSolution: selectors.editor.getActiveSolution(state).id === NULL_SOLUTION_ID,
   isSettingsView: selectors.settings.getIsOpen(state),
   isCustomFunctionsView: selectors.customFunctions.getIsCurrentSolutionCF(state),
-  isDefaultRunSolution: selectors.defaultRun.getIsDefaultRunSolution(state),
-  runnableFunctions: selectors.defaultRun.getMetadataForActiveSolution(state),
+  isDirectScriptExecutionSolution: selectors.directScriptExecution.getIsDirectScriptExecutionSolution(
+    state,
+  ),
+  runnableFunctions: selectors.directScriptExecution.getMetadataForActiveSolution(state),
   isLoggedIn: !!selectors.github.getToken(state),
   isLoggingInOrOut: selectors.github.getIsLoggingInOrOut(state),
   isRunnableOnThisHost: selectors.host.getIsRunnableOnThisHost(state),
@@ -82,8 +84,12 @@ interface IActionsFromRedux {
 
   navigateToCustomFunctions: () => void
 
-  defaultRunFunction: (solutionId: string, fileId: string, funcName: string) => void
-  terminateAllDefaultRunFunctions: () => void
+  directScriptExecutionFunction: (
+    solutionId: string,
+    fileId: string,
+    funcName: string,
+  ) => void
+  terminateAllDirectScriptExecutionFunctions: () => void
 }
 
 const mapDispatchToProps = (dispatch, ownProps: IProps): IActionsFromRedux => ({
@@ -120,12 +126,20 @@ const mapDispatchToProps = (dispatch, ownProps: IProps): IActionsFromRedux => ({
 
   navigateToCustomFunctions: () => dispatch(actions.customFunctions.openDashboard()),
 
-  defaultRunFunction: (solutionId: string, fileId: string, functionName: string) =>
+  directScriptExecutionFunction: (
+    solutionId: string,
+    fileId: string,
+    functionName: string,
+  ) =>
     dispatch(
-      actions.defaultRun.runFunction.request({ solutionId, fileId, functionName }),
+      actions.directScriptExecution.runFunction.request({
+        solutionId,
+        fileId,
+        functionName,
+      }),
     ),
-  terminateAllDefaultRunFunctions: () =>
-    dispatch(actions.defaultRun.terminateAll.request()),
+  terminateAllDirectScriptExecutionFunctions: () =>
+    dispatch(actions.directScriptExecution.terminateAll.request()),
 })
 
 export interface IProps extends IPropsFromRedux, IActionsFromRedux {
@@ -176,7 +190,7 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
       isRunnableOnThisHost,
       isLoggedIn,
       isLoggingInOrOut,
-      isDefaultRunSolution,
+      isDirectScriptExecutionSolution,
       runnableFunctions,
       screenWidth,
       theme,
