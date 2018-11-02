@@ -1,4 +1,5 @@
 import { IState } from '../reducer'
+import { getActiveSolution } from '../editor/selectors'
 
 export const getMetadata = (state: IState): IDefaultSnippetRunMetadata[] =>
   state.directScriptExecution.metadata
@@ -10,4 +11,6 @@ export const getMetadataForActiveSolution = (
     funcName => state.directScriptExecution.metadataForActiveSolution[funcName],
   )
 export const getIsDirectScriptExecutionSolution = (state: IState): boolean =>
-  getMetadataForActiveSolution(state).length > 0
+  getActiveSolution(state)
+    ? getActiveSolution(state).isDirectScriptExecutionSolution || false
+    : false
