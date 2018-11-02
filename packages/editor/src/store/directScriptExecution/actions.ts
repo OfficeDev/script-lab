@@ -9,7 +9,7 @@ export const fetchMetadata = createAsyncAction(
 export const updateActiveSolutionMetadata = createAction(
   'DEFAULT_RUN_UPDATE_ACTIVE_SOLUTION_METADATA',
   resolve => {
-    return (metadata: IDefaultFunctionRunMetadata[]) => resolve(metadata)
+    return (metadata: IDirectScriptExecutionFunctionMetadata[]) => resolve(metadata)
   },
 )
 

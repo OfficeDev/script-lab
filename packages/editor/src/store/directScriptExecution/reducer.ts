@@ -3,7 +3,7 @@ import { getType } from 'typesafe-actions'
 import { directScriptExecution, IDirectScriptExecutionAction } from '../actions'
 
 interface IMetadataForActiveState {
-  [funcName: string]: IDefaultFunctionRunMetadata
+  [funcName: string]: IDirectScriptExecutionFunctionMetadata
 }
 
 const setStatus = (state: IMetadataForActiveState, action, status) => ({

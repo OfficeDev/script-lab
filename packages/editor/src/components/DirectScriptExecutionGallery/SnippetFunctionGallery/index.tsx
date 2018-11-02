@@ -4,7 +4,7 @@ import { IconButton } from 'office-ui-fabric-react/lib/Button'
 import { FunctionList, FunctionName, FunctionWrapper } from './styles'
 
 export interface IProps {
-  functions: IDefaultFunctionRunMetadata[]
+  functions: IDirectScriptExecutionFunctionMetadata[]
 }
 
 export class SnippetFunctionGallery extends React.Component<IProps> {
