@@ -17,7 +17,7 @@ export const Layout = styled.div`
 `
 
 export const ContentContainer = styled.div`
-  flex: 1;
+  flex: 1 0 0;
   overflow: hidden;
 `
 

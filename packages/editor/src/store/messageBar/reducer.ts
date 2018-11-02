@@ -1,12 +1,14 @@
 import {
   gists,
   messageBar,
+  editor,
   solutions,
   settings,
   IGistsAction,
   IMessageBarAction,
   ISolutionsAction,
   ISettingsAction,
+  IEditorAction,
 } from '../actions'
 import { getType } from 'typesafe-actions'
 import { MessageBarType } from 'office-ui-fabric-react/lib/MessageBar'
@@ -30,7 +32,12 @@ const defaultState: IState = {
 
 const messageBarReducer = (
   state: IState = defaultState,
-  action: IGistsAction | IMessageBarAction | ISolutionsAction | ISettingsAction,
+  action:
+    | IGistsAction
+    | IMessageBarAction
+    | ISolutionsAction
+    | ISettingsAction
+    | IEditorAction,
 ): IState => {
   switch (action.type) {
     case getType(gists.create.success):
@@ -46,6 +53,14 @@ const messageBarReducer = (
         },
       }
 
+    case getType(gists.update.failure):
+      return {
+        isVisible: true,
+        style: MessageBarType.error,
+        text: `Error in updating gist: ${action.payload}`,
+        link: null,
+      }
+
     case getType(gists.update.success):
       return {
         isVisible: true,
@@ -59,27 +74,11 @@ const messageBarReducer = (
         },
       }
 
-    case getType(solutions.remove):
-      return {
-        isVisible: true,
-        style: MessageBarType.info,
-        text: `The snippet '${action.payload.name}' has been deleted.`,
-        link: null,
-      }
-
-    case getType(settings.edit.success):
-      return {
-        isVisible: action.payload.showMessageBar,
-        style: MessageBarType.success,
-        text: 'Settings successfully applied.',
-        link: null,
-      }
-
     case getType(settings.edit.failure):
       return {
         isVisible: true,
         style: MessageBarType.error,
-        text: `Error in settings. ${action.payload}`,
+        text: `Settings ${action.payload}`,
         link: null,
       }
 
@@ -91,6 +90,8 @@ const messageBarReducer = (
         link: null,
       }
 
+    case getType(editor.open):
+    case getType(settings.edit.success):
     case getType(messageBar.dismiss):
       return defaultState
 

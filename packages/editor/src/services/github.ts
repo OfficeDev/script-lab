@@ -1,6 +1,6 @@
 import { Authenticator, IToken } from '@microsoft/office-js-helpers'
 import { request as generalRequest, IResponseOrError } from './general'
-import { authServerUrl, githubAppClientId } from '../environment'
+import { serverUrl, githubAppClientId } from '../environment'
 
 const baseApiUrl = 'https://api.github.com'
 
@@ -19,7 +19,7 @@ auth.endpoints.add('GitHub', {
   authorizeUrl: '/oauth/authorize',
   scope: 'gist',
   state: true,
-  tokenUrl: `${authServerUrl}/auth`,
+  tokenUrl: `${serverUrl}/auth`,
 })
 
 export const request = ({

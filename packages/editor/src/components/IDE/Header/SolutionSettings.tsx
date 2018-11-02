@@ -1,8 +1,20 @@
 import React from 'react'
+import styled from 'styled-components'
+
+import Only from '../../Only'
 
 import { Dialog, DialogType, DialogFooter } from 'office-ui-fabric-react/lib/Dialog'
+import { Checkbox } from 'office-ui-fabric-react/lib/Checkbox'
 import { TextField } from 'office-ui-fabric-react/lib/TextField'
 import { PrimaryButton, DefaultButton } from 'office-ui-fabric-react/lib/Button'
+import { Label } from 'office-ui-fabric-react/lib/Label'
+import { Link } from 'office-ui-fabric-react/lib/Link'
+
+const DialogBodyWrapper = styled.div`
+  & > * {
+    margin-bottom: 1.5rem;
+  }
+`
 
 interface ISolutionSettings {
   isOpen: boolean
@@ -17,16 +29,18 @@ interface ISolutionSettings {
 interface IState {
   name: string
   description: string
+  isDirectScriptExecutionSolution?: boolean
 }
 
 class SolutionSettings extends React.Component<ISolutionSettings, IState> {
-  state = { name: '', description: '' }
+  state = { name: '', description: '', isDirectScriptExecutionSolution: undefined }
 
   setupForm = () => {
     const { solution } = this.props
     const { name } = solution
     const description = solution.description || ''
-    this.setState({ name, description })
+    const isDirectScriptExecutionSolution = solution.isDirectScriptExecutionSolution
+    this.setState({ name, description, isDirectScriptExecutionSolution })
   }
 
   componentWillMount() {
@@ -38,8 +52,8 @@ class SolutionSettings extends React.Component<ISolutionSettings, IState> {
   }
 
   render() {
-    const { isOpen, closeSolutionSettings } = this.props
-    const { name, description } = this.state
+    const { solution, isOpen, closeSolutionSettings } = this.props
+    const { name, description, isDirectScriptExecutionSolution } = this.state
     return (
       <Dialog
         hidden={!isOpen}
@@ -47,14 +61,32 @@ class SolutionSettings extends React.Component<ISolutionSettings, IState> {
         dialogContentProps={{ type: DialogType.largeHeader, title: 'Info' }}
         modalProps={{ isBlocking: false }}
       >
-        <TextField label="Name" onChanged={this.updateSolutionName} value={name} />
-        <TextField
-          label="Description"
-          multiline={true}
-          rows={4}
-          onChanged={this.updateSolutionDescription}
-          value={description}
-        />
+        <DialogBodyWrapper>
+          <TextField label="Name" onChange={this.updateSolutionName} value={name} />
+          <TextField
+            label="Description"
+            multiline={true}
+            rows={4}
+            onChange={this.updateSolutionDescription}
+            value={description}
+          />
+          <Checkbox
+            label="No Custom UI"
+            checked={isDirectScriptExecutionSolution || false}
+            onChange={this.updateSolutionNoCustomUI}
+          />
+          <Only when={solution.source && solution.source.origin === 'gist'}>
+            <div>
+              <Label>Gist URL</Label>
+              <Link
+                target="_blank"
+                href={solution.source && `https://gist.github.com/${solution.source.id}`}
+              >
+                Open in browser
+              </Link>
+            </div>
+          </Only>
+        </DialogBodyWrapper>
         <DialogFooter>
           <DefaultButton
             text="Cancel"
@@ -70,10 +102,26 @@ class SolutionSettings extends React.Component<ISolutionSettings, IState> {
       </Dialog>
     )
   }
-  private updateSolutionName = (newName: string) => this.setState({ name: newName })
+  private updateSolutionName = (
+    nevent: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
+    newValue?: string | undefined,
+  ) => this.setState({ name: newValue! })
 
-  private updateSolutionDescription = (newDesc: string) =>
-    this.setState({ description: newDesc })
+  private updateSolutionDescription = (
+    event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
+    newValue?: string | undefined,
+  ) => this.setState({ description: newValue! })
+
+  private updateSolutionNoCustomUI = (
+    event: React.FormEvent<HTMLElement>,
+    isChecked: boolean,
+  ) => {
+    if (isChecked) {
+      this.setState({ isDirectScriptExecutionSolution: true })
+    } else {
+      this.setState({ isDirectScriptExecutionSolution: undefined })
+    }
+  }
 
   private updateSolutionMetadata = () => {
     this.props.editSolutionMetadata(this.props.solution.id, this.state)

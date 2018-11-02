@@ -1,4 +1,5 @@
 import uuidv4 from 'uuid'
+import { LIBRARIES_FILE_NAME } from '../constants'
 
 export const getObjectValues = (dict: object): any[] =>
   Object.keys(dict).map(key => dict[key])
@@ -54,7 +55,7 @@ export const convertSnippetToSolution = (snippet: ISnippet): ISolution => {
     createFile('index.ts', script),
     createFile('index.html', template),
     createFile('index.css', style),
-    createFile('libraries.txt', { content: libraries, language: 'libraries' }),
+    createFile(LIBRARIES_FILE_NAME, { content: libraries, language: 'libraries' }),
   ]
 
   const solution = {
@@ -76,7 +77,7 @@ export const convertSolutionToSnippet = (solution: ISolution): ISnippet => {
   const script: IFile = files.find(file => file.name === 'index.ts')!
   const template: IFile = files.find(file => file.name === 'index.html')!
   const style: IFile = files.find(file => file.name === 'index.css')!
-  const libraries: IFile = files.find(file => file.name === 'libraries.txt')!
+  const libraries: IFile = files.find(file => file.name === LIBRARIES_FILE_NAME)!
 
   return {
     id,

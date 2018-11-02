@@ -10,7 +10,7 @@
     "core-js": "^2.5.7",
     "js-yaml": "^3.12.0",
     "lodash": "^4.17.10",
-    "monaco-editor": "^0.13.1",
+    "monaco-editor": "^0.14.3",
     "normalizr": "^3.2.4",
     "office-ui-fabric-react": "6.79.0",
     "react": "^16.5.2",
@@ -26,6 +26,7 @@
     "semver": "^5.5.1",
     "styled-components": "^3.4.2",
     "typesafe-actions": "^2.0.4",
+    "typescript": "3.0.1",
     "uuid": "^3.2.1"
   },
   "scripts": {
@@ -34,8 +35,8 @@
     "start": "set HTTPS=true&&react-scripts-ts start",
     "build": "node scripts/build.js",
     "build:storybook": "build-storybook -c .storybook -o build-storybook",
-    "lint:tslint": "tslint 'src/**/*.ts?(x)'",
-    "lint:prettier": "prettier --list-different './**/*.ts?(x)'",
+    "lint:tslint": "tslint \"src/**/*.ts?(x)\"",
+    "lint:prettier": "prettier --list-different \"./**/*(^.?|.[^d]|[^.]d|[^.][^d]).ts?(x)\"",
     "lint": "yarn lint:tslint && yarn lint:prettier",
     "react-scripts-ts:build": "react-scripts-ts build",
     "test": "react-scripts-ts test --env=jsdom",

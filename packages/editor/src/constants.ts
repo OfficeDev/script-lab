@@ -1,5 +1,6 @@
 export const SETTINGS_SOLUTION_ID = 'user-settings'
-export const SETTINGS_FILE_ID = 'settings'
+export const USER_SETTINGS_FILE_ID = 'user-settings-file'
+export const DEFAULT_SETTINGS_FILE_ID = 'default-settings-file'
 export const SETTINGS_JSON_LANGUAGE = 'JSON'
 export const ABOUT_FILE_ID = 'about'
 
@@ -22,6 +23,10 @@ export const NULL_SOLUTION: ISolution = {
   dateLastModified: 0,
   files: [],
 }
+
+export const LIBRARIES_FILE_NAME = 'libraries.txt'
+
+export const READ_ONLY_FILE_IDS = [NULL_FILE_ID, ABOUT_FILE_ID, DEFAULT_SETTINGS_FILE_ID]
 
 export const RUNNER_URL = 'https://bornholm-runner-insiders.azurewebsites.net'
 
@@ -48,3 +53,6 @@ export const PATHS = {
 } // stand alone page with no back button
 
 export const IS_TASK_PANE_WIDTH = 475
+
+export const EDIT_FILE_DEBOUNCE_MS = 250
+export const EDIT_SETTINGS_DEBOUNCE_MS = 450

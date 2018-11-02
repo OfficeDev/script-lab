@@ -1,5 +1,5 @@
-export const authServerUrl = {
-  local: 'http://localhost:5000',
+export const serverUrl = {
+  local: 'https://localhost:5000',
   alpha: 'https://script-lab-react-server-alpha.azurewebsites.net',
   beta: 'https://script-lab-react-server-beta.azurewebsites.net',
   prod: 'https://script-lab-react-server.azurewebsites.net',
@@ -30,6 +30,7 @@ export const editorUrls = {
 
 export function getCurrentEnv(): 'local' | 'alpha' | 'beta' | 'prod' {
   return {
+    'http://localhost:3000': 'local',
     'https://localhost:3000': 'local',
     'https://script-lab-react-alpha.azurewebsites.net': 'alpha',
     'https://script-lab-react-beta.azurewebsites.net': 'beta',
@@ -48,6 +49,16 @@ export enum PlatformType {
 
 export function getPlatform(): PlatformType {
   const w = window as any
-  return ((w.Office && w.context && w.context.platform) ||
+  return ((w.Office && w.Office.context && w.Office.context.platform) ||
     PlatformType.OfficeOnline) as PlatformType
 }
+
+export const allowedEnvs = [
+  'local',
+  'react-alpha',
+  'react-beta',
+  'react',
+  'alpha',
+  'beta',
+  'production',
+]

@@ -58,6 +58,24 @@ export function* fetchAllGistMetadataSaga() {
   }
 }
 
+function* onFetchGistMetadataSuccessSaga(
+  action: ActionType<typeof gists.fetchMetadata.success>,
+) {
+  /* This saga gets executed whenever fetchGistMetadata.success is dispatched
+     The code below goes through the resulting metadata and ensures that no local
+     solution is still pointing to a non-existing gist. */
+  const metadataIds = action.payload.map(metadata => metadata.id)
+  const allSolutions: ISolution[] = yield select(selectors.solutions.getAll)
+
+  const solutionsToClean = allSolutions.filter(
+    solution => solution.source && !metadataIds.includes(solution.source.id),
+  )
+
+  for (const solution of solutionsToClean) {
+    yield put(solutions.edit({ id: solution.id, solution: { source: undefined } }))
+  }
+}
+
 function* getGistSaga(action: ActionType<typeof gists.get.request>) {
   if (action.payload.conflictResolution) {
     switch (action.payload.conflictResolution.type) {
@@ -113,7 +131,7 @@ function* createGistSaga(action: ActionType<typeof gists.create.request>) {
     action.payload.solutionId,
   )
 
-  const snippet = YAML.dump(convertSolutionToSnippet(solution))
+  const snippet = YAML.safeDump(convertSolutionToSnippet(solution))
 
   const { response, error } = yield call(github.request, {
     method: 'POST',
@@ -155,7 +173,7 @@ function* updateGistSaga(action: ActionType<typeof gists.update.request>) {
   }
 
   const solution = yield select(selectors.solutions.get, action.payload.solutionId)
-  const snippet = YAML.dump(convertSolutionToSnippet(solution))
+  const snippet = YAML.safeDump(convertSolutionToSnippet(solution))
   const gistId = solution.source.id
 
   if (!gistId) {
@@ -192,14 +210,14 @@ function* importSnippetSaga(action: ActionType<typeof gists.importSnippet.reques
       })
       if (response) {
         const gistFiles = response.files
-        const snippet = YAML.load(gistFiles[Object.keys(gistFiles)[0]].content)
+        const snippet = YAML.safeLoad(gistFiles[Object.keys(gistFiles)[0]].content)
         const solution = convertSnippetToSolution(snippet)
         yield put(gists.importSnippet.success({ solution }))
       } else {
         throw error
       }
     } else if (action.payload.gist) {
-      const snippet = YAML.load(action.payload.gist)
+      const snippet = YAML.safeLoad(action.payload.gist)
       const solution = convertSnippetToSolution(snippet)
       yield put(gists.importSnippet.success({ solution }))
     } else {
@@ -218,6 +236,7 @@ function* handleImportSnippetSuccessSaga(
 
 export default function* gistsWatcher() {
   yield takeEvery(getType(gists.fetchMetadata.request), fetchAllGistMetadataSaga)
+  yield takeEvery(getType(gists.fetchMetadata.success), onFetchGistMetadataSuccessSaga)
 
   yield takeEvery(getType(gists.get.request), getGistSaga)
   yield takeEvery(getType(gists.get.success), handleGetGistSuccessSaga)

@@ -41,3 +41,7 @@ export const getActiveFile = (state: IState): IFile => {
     return NULL_FILE
   }
 }
+
+export const getIntellisenseFiles = (
+  state: IState,
+): { [url: string]: monaco.IDisposable } => state.editor.intellisenseFiles

@@ -1,40 +1,14 @@
-// settings
 // Note: this must be kept in sync with the src/SettingsJSONSchema.ts
 interface IEditorSettings {
-  theme: string
-  font: {
-    family: string
-    size: number
-    lineHeight: number
-  }
-  minimap: boolean
-  tabSize: 2 | 4
-  prettier: {
-    enabled: boolean
-    autoFormat: boolean
-  }
-  folding: boolean
-  linter: {
-    mode: string
-  }
-  wordWrap: 'on' | 'off' | 'bounded' | 'wordWrapColumn'
-  wordWrapColumn: number
+  'editor.theme': string
+  'editor.fontFamily': string
+  'editor.fontSize': number
+  'editor.minimap': boolean
+  'editor.tabSize': 2 | 4
+  'editor.prettier': boolean
+  'editor.prettier.autoFormat': boolean
+  'editor.folding': boolean
+  'editor.wordWrap': 'on' | 'off' | 'bounded'
 }
 
-interface IHostSpecificSettings {
-  officeOnline: {
-    openEditorInNewTab: string
-  }
-}
-
-interface IDefaultActions {
-  applySettings: string
-  gistImport: string
-}
-
-interface ISettings {
-  editor: IEditorSettings
-  hostSpecific: IHostSpecificSettings
-  defaultActions: IDefaultActions
-  environment: string
-}
+interface ISettings extends IEditorSettings {}

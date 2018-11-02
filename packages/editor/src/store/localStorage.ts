@@ -3,13 +3,16 @@ import selectors from './selectors'
 import { convertSolutionToSnippet } from '../utils'
 import {
   SETTINGS_SOLUTION_ID,
-  SETTINGS_FILE_ID,
+  USER_SETTINGS_FILE_ID,
   NULL_SOLUTION_ID,
   localStorageKeys,
 } from '../constants'
-import { getSettingsSolutionAndFiles, defaultSettings } from '../defaultSettings'
-import { merge } from './settings/sagas'
-import { allowedSettings } from '../SettingsJSONSchema'
+import {
+  getSettingsSolutionAndFiles,
+  defaultSettings,
+  allowedSettings,
+} from '../settings'
+import { verifySettings } from './settings/sagas'
 
 const getCFPostData = (state: IState): IRunnerCustomFunctionsPostData => {
   const cfSolutions = selectors.customFunctions.getSolutions(state)
@@ -43,18 +46,20 @@ const getCFPostData = (state: IState): IRunnerCustomFunctionsPostData => {
 
 export const saveState = (state: IState) => {
   try {
-    const { solutions, github, settings } = state
+    const { solutions, github } = state
     const { profilePicUrl, token } = github
+
+    const userSettings = selectors.settings.getUser(state)
 
     const serializedGithub = JSON.stringify({ profilePicUrl, token })
     const serializedSolutions = JSON.stringify(solutions.metadata)
     const serializedFiles = JSON.stringify(solutions.files)
-    const serializedValidSettings = JSON.stringify(settings.values)
+    const serializedUserSettings = JSON.stringify(userSettings)
 
     localStorage.setItem('solutions', serializedSolutions)
     localStorage.setItem('files', serializedFiles)
     localStorage.setItem('github', serializedGithub)
-    localStorage.setItem('validSettings', serializedValidSettings)
+    localStorage.setItem('userSettings', serializedUserSettings)
 
     const activeSolution = selectors.editor.getActiveSolution(state)
     if (
@@ -92,14 +97,12 @@ export const loadState = (): Partial<IState> => {
 
     let solutions = JSON.parse(localStorage.getItem('solutions') || '{}')
     let files = JSON.parse(localStorage.getItem('files') || '{}')
-    let settings = JSON.parse(localStorage.getItem('validSettings') || 'null')
+    const userSettings = JSON.parse(localStorage.getItem('userSettings') || '{}')
     const github = JSON.parse(localStorage.getItem('github') || '{}')
 
-    const presetSettings = settings
-      ? merge(defaultSettings, settings, allowedSettings)
-      : defaultSettings
+    const verifiedUserSettings = verifySettings(userSettings)
 
-    const settingsSolAndFiles = getSettingsSolutionAndFiles(presetSettings)
+    const settingsSolAndFiles = getSettingsSolutionAndFiles(verifiedUserSettings)
     solutions = { ...solutions, [SETTINGS_SOLUTION_ID]: settingsSolAndFiles.solution }
     files = {
       ...files,
@@ -109,22 +112,12 @@ export const loadState = (): Partial<IState> => {
       ),
     }
 
-    // get initial settings
-    const settingsFile = files[SETTINGS_FILE_ID]
-
-    try {
-      settings = {
-        values: presetSettings,
-        lastActive: { solutionId: null, fileId: null },
-      }
-    } catch (e) {
-      settings = {
-        values: presetSettings,
-        lastActive: { solutionId: null, fileId: null },
-      }
+    const settingsState = {
+      userSettings: verifiedUserSettings,
+      lastActive: { solutionId: null, fileId: null },
     }
 
-    return { solutions: { metadata: solutions, files }, github, settings }
+    return { solutions: { metadata: solutions, files }, github, settings: settingsState }
   } catch (err) {
     const settings = getSettingsSolutionAndFiles()
 

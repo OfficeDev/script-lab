@@ -2,7 +2,7 @@
   "rulesDirectory": "warning",
   "extends": ["tslint:recommended", "tslint-react", "tslint-config-prettier"],
   "linterOptions": {
-    "exclude": ["config/**/*.js", "node_modules/**/*.ts"]
+    "exclude": ["config/**/*.js", "node_modules/**/*.ts", "src/interfaces/monaco.d.ts"]
   },
   "rules": {
     "member-access": [true, "no-public"],

@@ -5,13 +5,9 @@ import { Customizer } from 'office-ui-fabric-react/lib/Utilities'
 import { CommandBar, ICommandBarItemProps } from 'office-ui-fabric-react/lib/CommandBar'
 import { ITheme as IFabricTheme } from 'office-ui-fabric-react/lib/Styling'
 
-import { getCurrentEnv } from '../../../environment'
+import { getCurrentEnv, allowedEnvs } from '../../../environment'
 import { PATHS } from '../../../constants'
 
-import {
-  DirectionalHint,
-  ContextualMenuItemType,
-} from 'office-ui-fabric-react/lib/ContextualMenu'
 import { getCommandBarFabricTheme } from '../../../theme'
 
 import { HostType } from '@microsoft/office-js-helpers'
@@ -19,8 +15,8 @@ import { HostType } from '@microsoft/office-js-helpers'
 import { Wrapper } from './styles'
 
 import { connect } from 'react-redux'
-import selectors from '../../../store/selectors'
-import actions from '../../../store/actions'
+
+import { actions, selectors } from '../../../store'
 
 const languageMap = {
   typescript: 'TypeScript',
@@ -37,6 +33,7 @@ interface IPropsFromRedux {
   hasCustomFunctions: boolean
   commandBarFabricTheme: IFabricTheme
   currentEditorTheme: string
+  isSettingsView: boolean
 }
 
 const mapStateToProps = (state, ownProps: IProps): IPropsFromRedux => ({
@@ -46,6 +43,7 @@ const mapStateToProps = (state, ownProps: IProps): IPropsFromRedux => ({
   hasCustomFunctions: selectors.customFunctions.getHasCustomFunctions(state),
   commandBarFabricTheme: getCommandBarFabricTheme(selectors.host.get(state)),
   currentEditorTheme: selectors.settings.getPrettyEditorTheme(state),
+  isSettingsView: selectors.settings.getIsOpen(state),
 })
 
 interface IActionsFromRedux {
@@ -53,6 +51,7 @@ interface IActionsFromRedux {
   changeHost: (host: string) => void
   navigateToCustomFunctionsDashboard: () => void
   cycleEditorTheme: () => void
+  switchEnvironment: (env: string) => void
 }
 
 const mapDispatchToProps = (dispatch): IActionsFromRedux => ({
@@ -61,6 +60,7 @@ const mapDispatchToProps = (dispatch): IActionsFromRedux => ({
   navigateToCustomFunctionsDashboard: () =>
     dispatch(actions.customFunctions.openDashboard()),
   cycleEditorTheme: () => dispatch(actions.settings.cycleEditorTheme()),
+  switchEnvironment: (env: string) => dispatch(actions.misc.switchEnvironment(env)),
 })
 
 export interface IProps extends IPropsFromRedux, IActionsFromRedux {
@@ -79,6 +79,8 @@ const FooterWithoutTheme = ({
   commandBarFabricTheme,
   currentEditorTheme,
   cycleEditorTheme,
+  switchEnvironment,
+  isSettingsView,
 }: IProps) => {
   const iconStyles = { root: { fontSize: '1.4rem' } }
   const items = [
@@ -126,6 +128,18 @@ const FooterWithoutTheme = ({
       text: 'Custom Functions Dashboard',
       onClick: navigateToCustomFunctionsDashboard,
     },
+    {
+      hidden: !isSettingsView,
+      key: 'environment-switcher',
+      text: getCurrentEnv(),
+      subMenuProps: {
+        items: allowedEnvs.map(env => ({
+          key: env,
+          text: env.charAt(0).toUpperCase() + env.slice(1),
+          onClick: () => switchEnvironment(env),
+        })),
+      },
+    },
   ]
     .filter(({ hidden }) => !hidden)
     .map(item => ({ ...item, style: { fontSize: '1.2rem' } }))
@@ -137,6 +151,7 @@ const FooterWithoutTheme = ({
       text: languageMap[language.toLowerCase()],
     },
     {
+      hidden: isSettingsView,
       key: 'cycle-theme',
       iconProps: { iconName: 'Color', styles: { root: { fontSize: '1.2rem' } } },
       text: currentEditorTheme,
