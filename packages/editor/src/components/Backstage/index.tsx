@@ -16,7 +16,8 @@ import { ConflictResolutionOptions } from '../../interfaces/enums'
 import { connect } from 'react-redux'
 import selectors from '../../store/selectors'
 import { editor, solutions, samples, gists } from '../../store/actions'
-import { goBack } from 'connected-react-router'
+import { push } from 'connected-react-router'
+import { PATHS } from '../../constants'
 import Only from '../Only'
 
 interface IBackstageItem {
@@ -67,7 +68,7 @@ const mapDispatchToProps = (dispatch): IActionsFromRedux => ({
   ) => dispatch(gists.get.request({ rawUrl, gistId, conflictResolution })),
   importGist: (gistId?: string, gist?: string) =>
     dispatch(gists.importSnippet.request({ gistId, gist })),
-  goBack: () => dispatch(goBack()),
+  goBack: () => dispatch(push(PATHS.EDITOR)),
 })
 
 export interface IProps extends IPropsFromRedux, IActionsFromRedux {}

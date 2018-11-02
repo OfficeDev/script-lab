@@ -21,7 +21,15 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
   <script type="text/javascript" src='https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js'></script>
-  <script src="https://officedev.github.io/custom-functions/lib/office.js"></script>
+
+  <script src="https://appsforoffice.microsoft.com/lib/1/hosted/Office.js"></script>
+  <script>
+    // For now, set Office.initialize to an empty function, to work around an issue with onReady
+    // (As of Nov 1st 2018, onReady works, but requires Office.initialize to still be set).
+    // See the note at https://docs.microsoft.com/en-us/office/dev/add-ins/develop/understanding-the-javascript-api-for-office
+    Office.initialize = function () { };
+  </script>
+
   <link rel="stylesheet" href="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-core/9.6.0/css/fabric.min.css">
 
   <style>
