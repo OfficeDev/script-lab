@@ -69,6 +69,7 @@ export const getBoilerplateSolution = (
   host,
   dateCreated: timestamp,
   dateLastModified: timestamp,
+  options: {},
   files,
 })
 

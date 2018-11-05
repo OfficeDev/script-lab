@@ -50,9 +50,8 @@ const mapStateToProps = (state): IPropsFromRedux => ({
   isNullSolution: selectors.editor.getActiveSolution(state).id === NULL_SOLUTION_ID,
   isSettingsView: selectors.settings.getIsOpen(state),
   isCustomFunctionsView: selectors.customFunctions.getIsCurrentSolutionCF(state),
-  isDirectScriptExecutionSolution: selectors.directScriptExecution.getIsDirectScriptExecutionSolution(
-    state,
-  ),
+  isDirectScriptExecutionSolution: !!selectors.editor.getActiveSolution(state).options
+    .isDirectScriptExecution,
   runnableFunctions: selectors.directScriptExecution.getMetadataForActiveSolution(state),
   isLoggedIn: !!selectors.github.getToken(state),
   isLoggingInOrOut: selectors.github.getIsLoggingInOrOut(state),

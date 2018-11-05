@@ -37,11 +37,11 @@ export function* onEditorOpenSaga(action: ActionType<typeof editor.open>) {
   yield put(push(PATHS.EDITOR))
 
   if (activeSolution.id !== action.payload.solutionId) {
-    yield put(editor.newSolutionOpened(action.payload.solutionId))
+    yield put(editor.newSolutionOpened(activeSolution))
   }
 
   if (activeFile.id !== action.payload.fileId) {
-    yield put(editor.newFileOpened(action.payload.solutionId, action.payload.fileId))
+    yield put(editor.newFileOpened(activeSolution, activeFile))
   }
 }
 

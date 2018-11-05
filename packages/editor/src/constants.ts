@@ -21,6 +21,7 @@ export const NULL_SOLUTION: ISolution = {
   host: 'NULL',
   dateCreated: 0,
   dateLastModified: 0,
+  options: {},
   files: [],
 }
 

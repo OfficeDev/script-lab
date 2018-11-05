@@ -63,6 +63,7 @@ export const convertSnippetToSolution = (snippet: ISnippet): ISolution => {
     name,
     host,
     description,
+    options: {},
     files,
     dateCreated: Date.now(),
     dateLastModified: Date.now(),

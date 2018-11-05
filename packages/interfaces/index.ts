@@ -33,11 +33,17 @@ interface ITimestamps {
   dateLastModified: number;
 }
 
+interface ISolutionOptions {
+  isDirectScriptExecution: boolean;
+  isCustomFunctionsSolution: boolean;
+  isTrusted: boolean;
+}
+
 interface IEditableSolutionProperties {
   name: string;
   description?: string;
   source?: ISourceInformation;
-  isDirectScriptExecutionSolution?: boolean;
+  options: Partial<ISolutionOptions>;
 }
 
 interface ISourceInformation {

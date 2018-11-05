@@ -21,6 +21,7 @@ export interface IState {
     url: string
     text: string
   } | null
+  actions?: React.ReactNode
 }
 
 const defaultState: IState = {
@@ -89,6 +90,9 @@ const messageBarReducer = (
         text: action.payload.text,
         link: null,
       }
+
+    // case getType(editor.newSolutionOpened):
+    //   if (action.payload.)
 
     case getType(editor.open):
     case getType(settings.edit.success):

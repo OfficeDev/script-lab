@@ -39,7 +39,7 @@ class SolutionSettings extends React.Component<ISolutionSettings, IState> {
     const { solution } = this.props
     const { name } = solution
     const description = solution.description || ''
-    const isDirectScriptExecutionSolution = solution.isDirectScriptExecutionSolution
+    const isDirectScriptExecutionSolution = solution.options.isDirectScriptExecution
     this.setState({ name, description, isDirectScriptExecutionSolution })
   }
 
@@ -124,7 +124,15 @@ class SolutionSettings extends React.Component<ISolutionSettings, IState> {
   }
 
   private updateSolutionMetadata = () => {
-    this.props.editSolutionMetadata(this.props.solution.id, this.state)
+    const { name, description, isDirectScriptExecutionSolution } = this.state
+    this.props.editSolutionMetadata(this.props.solution.id, {
+      name,
+      description,
+      options: {
+        ...this.props.solution.options,
+        isDirectScriptExecution: isDirectScriptExecutionSolution,
+      },
+    })
     this.props.closeSolutionSettings()
   }
 }
