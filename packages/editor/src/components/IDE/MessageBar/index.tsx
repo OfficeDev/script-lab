@@ -8,6 +8,7 @@ import { messageBar } from '../../../store/actions'
 import { getMessageBarStyle } from './helpers'
 
 import './animations.css'
+import { MessageBarButton, DefaultButton } from 'office-ui-fabric-react/lib/Button'
 
 interface IPropsFromRedux {
   messageBarProps: IMessageBarState
@@ -18,22 +19,38 @@ const mapStateToProps = state => ({
 })
 
 interface IActionsFromRedux {
+  buttonOnClick: () => void
   dismiss: () => void
 }
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  buttonOnClick: ownProps.messageBarProps.button
+    ? () => dispatch(ownProps.messageBarProps.button.action)
+    : () => {},
   dismiss: () => dispatch(messageBar.dismiss()),
 })
 
 export interface IProps extends IPropsFromRedux, IActionsFromRedux {}
 
-export const MessageBar = ({ messageBarProps, dismiss }: IProps) => (
+export const MessageBar = ({ messageBarProps, buttonOnClick, dismiss }: IProps) => (
   <div className={`message-bar ${messageBarProps.isVisible ? 'active' : ''}`}>
     <FabricMessageBar
       dismissButtonAriaLabel="Close"
       messageBarType={messageBarProps.style}
       onDismiss={dismiss}
       styles={getMessageBarStyle(messageBarProps.style)}
+      isMultiline={false}
+      actions={
+        messageBarProps.button ? (
+          <div>
+            <DefaultButton primary onClick={buttonOnClick}>
+              {messageBarProps.button.text}
+            </DefaultButton>
+          </div>
+        ) : (
+          undefined
+        )
+      }
     >
       {messageBarProps.text}
       {messageBarProps.link && (
@@ -45,7 +62,14 @@ export const MessageBar = ({ messageBarProps, dismiss }: IProps) => (
   </div>
 )
 
+const mapEmptyToProps = dispatch => ({})
+
 export default connect(
   mapStateToProps,
-  mapDispatchToProps,
-)(MessageBar)
+  mapEmptyToProps,
+)(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  )(MessageBar),
+)

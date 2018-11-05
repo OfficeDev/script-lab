@@ -67,14 +67,6 @@ function* fetchMetadataForSolutionSaga(
   }))
 
   yield put(directScriptExecution.updateActiveSolutionMetadata(formattedMetadata))
-  if (formattedMetadata.length > 0) {
-    yield put(
-      solutions.edit({
-        id: solutionId,
-        solution: { options: { ...solution.options, isDirectScriptExecution: true } },
-      }),
-    )
-  }
 }
 
 function* directScriptExecutionFunctionSaga(

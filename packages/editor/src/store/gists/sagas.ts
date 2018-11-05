@@ -12,6 +12,23 @@ import { ConflictResolutionOptions } from '../../interfaces/enums'
 
 import { createSolutionSaga } from '../solutions/sagas'
 
+export default function* gistsWatcher() {
+  yield takeEvery(getType(gists.fetchMetadata.request), fetchAllGistMetadataSaga)
+  yield takeEvery(getType(gists.fetchMetadata.success), onFetchGistMetadataSuccessSaga)
+
+  yield takeEvery(getType(gists.get.request), getGistSaga)
+  yield takeEvery(getType(gists.get.success), handleGetGistSuccessSaga)
+
+  yield takeEvery(getType(gists.create.request), createGistSaga)
+  yield takeEvery(getType(gists.create.success), handleCreateGistSuccessSaga)
+  yield takeEvery(getType(gists.create.success), fetchAllGistMetadataSaga)
+
+  yield takeEvery(getType(gists.update.request), updateGistSaga)
+
+  yield takeEvery(getType(gists.importSnippet.request), importSnippetSaga)
+  yield takeEvery(getType(gists.importSnippet.success), handleImportSnippetSuccessSaga)
+}
+
 export function* fetchAllGistMetadataSaga() {
   const token = yield select(selectors.github.getToken)
   if (!token) {
@@ -231,22 +248,7 @@ function* importSnippetSaga(action: ActionType<typeof gists.importSnippet.reques
 function* handleImportSnippetSuccessSaga(
   action: ActionType<typeof gists.importSnippet.success>,
 ) {
-  yield call(createSolutionSaga, action.payload.solution)
-}
-
-export default function* gistsWatcher() {
-  yield takeEvery(getType(gists.fetchMetadata.request), fetchAllGistMetadataSaga)
-  yield takeEvery(getType(gists.fetchMetadata.success), onFetchGistMetadataSuccessSaga)
-
-  yield takeEvery(getType(gists.get.request), getGistSaga)
-  yield takeEvery(getType(gists.get.success), handleGetGistSuccessSaga)
-
-  yield takeEvery(getType(gists.create.request), createGistSaga)
-  yield takeEvery(getType(gists.create.success), handleCreateGistSuccessSaga)
-  yield takeEvery(getType(gists.create.success), fetchAllGistMetadataSaga)
-
-  yield takeEvery(getType(gists.update.request), updateGistSaga)
-
-  yield takeEvery(getType(gists.importSnippet.request), importSnippetSaga)
-  yield takeEvery(getType(gists.importSnippet.success), handleImportSnippetSuccessSaga)
+  const { solution } = action.payload
+  solution.options.isUntrusted = true
+  yield call(createSolutionSaga, solution)
 }

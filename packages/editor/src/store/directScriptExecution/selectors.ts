@@ -1,5 +1,4 @@
 import { IState } from '../reducer'
-import { getActiveSolution } from '../editor/selectors'
 
 export const getMetadata = (state: IState): IDefaultSnippetRunMetadata[] =>
   state.directScriptExecution.metadata

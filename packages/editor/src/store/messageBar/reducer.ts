@@ -21,7 +21,10 @@ export interface IState {
     url: string
     text: string
   } | null
-  actions?: React.ReactNode
+  button?: {
+    text: string
+    action: { type: string; payload: any }
+  }
 }
 
 const defaultState: IState = {
@@ -91,8 +94,24 @@ const messageBarReducer = (
         link: null,
       }
 
-    // case getType(editor.newSolutionOpened):
-    //   if (action.payload.)
+    case getType(editor.newSolutionOpened):
+      if (action.payload.options.isUntrusted) {
+        return {
+          isVisible: true,
+          style: MessageBarType.warning,
+          text: 'Would you like to trust this snippet?',
+          link: null,
+          button: {
+            text: 'Trust',
+            action: solutions.updateOptions({
+              solution: action.payload,
+              options: { isUntrusted: false },
+            }),
+          },
+        }
+      } else {
+        return defaultState
+      }
 
     case getType(editor.open):
     case getType(settings.edit.success):

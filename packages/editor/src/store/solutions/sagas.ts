@@ -1,11 +1,21 @@
 import { put, takeEvery, call, select } from 'redux-saga/effects'
 import { getType, ActionType } from 'typesafe-actions'
 
-import { solutions, editor } from '../actions'
+import { messageBar, solutions, editor } from '../actions'
 import { fetchYaml } from '../../services/general'
 import selectors from '../selectors'
 import { convertSnippetToSolution } from '../../utils'
 import { getBoilerplate } from '../../newSolutionData'
+
+export default function* solutionsWatcher() {
+  yield takeEvery(getType(solutions.create), getDefaultSaga)
+  yield takeEvery(getType(solutions.getDefault.success), handleGetDefaultSuccessSaga)
+  yield takeEvery(getType(solutions.getDefault.failure), handleGetDefaultFailureSaga)
+
+  yield takeEvery(getType(solutions.updateOptions), updateOptionsSaga)
+
+  yield takeEvery(getType(solutions.remove), removeSolutionSaga)
+}
 
 export function* getDefaultSaga() {
   const host: string = yield select(selectors.host.get)
@@ -42,6 +52,23 @@ export function* createSolutionSaga(solution: ISolution) {
   yield put(editor.open({ solutionId: solution.id, fileId: solution.files[0].id }))
 }
 
+function* removeSolutionSaga(action: ActionType<typeof solutions.remove>) {
+  yield call(openLastModifiedOrDefaultSolutionSaga)
+}
+
+function* updateOptionsSaga(action: ActionType<typeof solutions.updateOptions>) {
+  const { solution, options } = action.payload
+  if (!options.isUntrusted) {
+    yield put(messageBar.dismiss())
+  }
+  yield put(
+    solutions.edit({
+      id: solution.id,
+      solution: { options: { ...solution.options, ...options } },
+    }),
+  )
+}
+
 export function* openLastModifiedOrDefaultSolutionSaga() {
   const solutions = yield select(selectors.solutions.getInLastModifiedOrder)
 
@@ -52,16 +79,4 @@ export function* openLastModifiedOrDefaultSolutionSaga() {
       editor.open({ solutionId: solutions[0].id, fileId: solutions[0].files[0].id }),
     )
   }
-}
-
-function* removeSolutionSaga(action: ActionType<typeof solutions.remove>) {
-  yield call(openLastModifiedOrDefaultSolutionSaga)
-}
-
-export default function* solutionsWatcher() {
-  yield takeEvery(getType(solutions.create), getDefaultSaga)
-  yield takeEvery(getType(solutions.getDefault.success), handleGetDefaultSuccessSaga)
-  yield takeEvery(getType(solutions.getDefault.failure), handleGetDefaultFailureSaga)
-
-  yield takeEvery(getType(solutions.remove), removeSolutionSaga)
 }

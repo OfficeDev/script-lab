@@ -36,7 +36,7 @@ interface ITimestamps {
 interface ISolutionOptions {
   isDirectScriptExecution: boolean;
   isCustomFunctionsSolution: boolean;
-  isTrusted: boolean;
+  isUntrusted: boolean;
 }
 
 interface IEditableSolutionProperties {

@@ -17,6 +17,25 @@ import {
 } from '../../store/localStorage'
 import { fetchLogsAndHeartbeat, updateEngineStatus, openDashboard } from './actions'
 import { push } from 'connected-react-router'
+
+export default function* customFunctionsWatcher() {
+  yield takeEvery(
+    getType(customFunctions.fetchMetadata.request),
+    fetchCustomFunctionsMetadataSaga,
+  )
+  yield takeEvery(
+    getType(customFunctions.fetchMetadata.success),
+    registerCustomFunctionsMetadataSaga,
+  )
+
+  yield takeEvery(
+    getType(customFunctions.fetchLogsAndHeartbeat),
+    fetchLogsAndHeartbeatSaga,
+  )
+
+  yield takeEvery(getType(customFunctions.openDashboard), openDashboardSaga)
+}
+
 export function* fetchCustomFunctionsMetadataSaga() {
   const solutions = yield select(selectors.customFunctions.getSolutions)
 
@@ -66,22 +85,4 @@ function* fetchHeartbeatSaga() {
 
 function* openDashboardSaga() {
   yield put(push(PATHS.CUSTOM_FUNCTIONS))
-}
-
-export default function* customFunctionsWatcher() {
-  yield takeEvery(
-    getType(customFunctions.fetchMetadata.request),
-    fetchCustomFunctionsMetadataSaga,
-  )
-  yield takeEvery(
-    getType(customFunctions.fetchMetadata.success),
-    registerCustomFunctionsMetadataSaga,
-  )
-
-  yield takeEvery(
-    getType(customFunctions.fetchLogsAndHeartbeat),
-    fetchLogsAndHeartbeatSaga,
-  )
-
-  yield takeEvery(getType(customFunctions.openDashboard), openDashboardSaga)
 }
