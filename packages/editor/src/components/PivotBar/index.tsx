@@ -86,7 +86,7 @@ class PivotBar extends React.Component<IProps> {
 
   onLinkClick = (item: PivotItem): void => {
     const key = item.props.itemKey
-    if (key) {
+    if (key && key !== this.props.selectedKey) {
       this.props.onSelect(key)
     }
   }
