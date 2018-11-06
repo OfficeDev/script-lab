@@ -4,7 +4,7 @@ export const login = createAsyncAction(
   'GITHUB_LOGIN_REQUEST',
   'GITHUB_LOGIN_SUCCESS',
   'GITHUB_LOGIN_FAILURE',
-)<void, { token: string; profilePicUrl: string }, Error>()
+)<void, { token: string; profilePicUrl: string; username: string }, Error>()
 
 export const logout = createAsyncAction(
   'GITHUB_LOGOUT_REQUEST',

@@ -14,34 +14,52 @@ import {
 } from '../settings'
 import { verifySettings } from './settings/sagas'
 
-const getCFPostData = (state: IState): IRunnerCustomFunctionsPostData => {
-  const cfSolutions = selectors.customFunctions.getSolutions(state)
+const SCRIPT_LAB_STORAGE_VERSION_KEY = 'storage_version'
+const LATEST_SCRIPT_LAB_STORAGE_VERSION_NUMBER = 1
+const CURRENT_SCRIPT_LAB_STORAGE_VERSION_NUMBER = JSON.parse(
+  localStorage.getItem(SCRIPT_LAB_STORAGE_VERSION_KEY) || '0',
+)
 
-  const snippets = cfSolutions.map(solution => {
-    const snippet = convertSolutionToSnippet(solution)
-    const { name, id, libraries, script } = snippet
+const SOLUTION_ROOT = 'solution'
+
+export const loadState = (): Partial<IState> => {
+  try {
+    // In order to fix the IE cross-tab issue (#147)
+    localStorage.setItem('playground_dummy_key', 'null')
+
+    let { solutions, files } = loadAllSolutionsAndFiles()
+
+    const userSettings = JSON.parse(localStorage.getItem('userSettings') || '{}')
+    const github = JSON.parse(localStorage.getItem('github') || '{}')
+
+    const verifiedUserSettings = verifySettings(userSettings)
+
+    const settingsSolAndFiles = getSettingsSolutionAndFiles(verifiedUserSettings)
+    solutions = { ...solutions, [SETTINGS_SOLUTION_ID]: settingsSolAndFiles.solution }
+    files = {
+      ...files,
+      ...settingsSolAndFiles.files.reduce(
+        (all, file) => ({ ...all, [file.id]: file }),
+        {},
+      ),
+    }
+
+    const settingsState = {
+      userSettings: verifiedUserSettings,
+      lastActive: { solutionId: null, fileId: null },
+    }
+
+    return { solutions: { metadata: solutions, files }, github, settings: settingsState }
+  } catch (err) {
+    const settings = getSettingsSolutionAndFiles()
 
     return {
-      name,
-      id,
-      libraries,
-      script,
-      metadata: undefined,
+      solutions: {
+        metadata: { [SETTINGS_SOLUTION_ID]: settings.solution },
+        files: settings.files.reduce((all, file) => ({ ...all, [file.id]: file }), {}),
+      },
     }
-  })
-
-  const result = {
-    snippets,
-    loadFromOfficeJsPreviewCachedCopy: false,
-    displayLanguage: 'en-us',
-    heartbeatParams: {
-      clientTimestamp: Date.now(),
-      loadFromOfficeJsPreviewCachedCopy: false,
-    },
-    experimentationFlags: {},
   }
-
-  return result
 }
 
 export const saveState = (state: IState) => {
@@ -90,44 +108,42 @@ export const saveState = (state: IState) => {
   }
 }
 
-export const loadState = (): Partial<IState> => {
-  try {
-    // In order to fix the IE cross-tab issue (#147)
-    localStorage.setItem('playground_dummy_key', 'null')
+// solutions
+function loadAllSolutionsAndFiles(): {
+  solutions: { [id: string]: ISolutionWithFileIds }
+  files: { [id: string]: IFile }
+} {
+  const solutions: { [id: string]: ISolutionWithFileIds } = {}
+  const files: { [id: string]: IFile } = {}
 
-    let solutions = JSON.parse(localStorage.getItem('solutions') || '{}')
-    let files = JSON.parse(localStorage.getItem('files') || '{}')
-    const userSettings = JSON.parse(localStorage.getItem('userSettings') || '{}')
-    const github = JSON.parse(localStorage.getItem('github') || '{}')
+  getAllLocalStorageKeys()
+    .filter(key => key.startsWith(SOLUTION_ROOT))
+    .map(key => key.replace(SOLUTION_ROOT, ''))
+    .map(id => loadSolution(id))
+    .forEach(solution => {
+      solution.files.forEach(file => {
+        files[file.id] = file
+      })
+      const solutionWithFileIds: ISolutionWithFileIds = (solutions[solution.id] = {
+        ...solution,
+        files: solution.files.map(({ id }) => id),
+      })
+    })
 
-    const verifiedUserSettings = verifySettings(userSettings)
+  return { solutions, files }
+}
 
-    const settingsSolAndFiles = getSettingsSolutionAndFiles(verifiedUserSettings)
-    solutions = { ...solutions, [SETTINGS_SOLUTION_ID]: settingsSolAndFiles.solution }
-    files = {
-      ...files,
-      ...settingsSolAndFiles.files.reduce(
-        (all, file) => ({ ...all, [file.id]: file }),
-        {},
-      ),
-    }
+function loadSolution(id: string): ISolution {
+  const solution = readItem(SOLUTION_ROOT, id)
 
-    const settingsState = {
-      userSettings: verifiedUserSettings,
-      lastActive: { solutionId: null, fileId: null },
-    }
-
-    return { solutions: { metadata: solutions, files }, github, settings: settingsState }
-  } catch (err) {
-    const settings = getSettingsSolutionAndFiles()
-
-    return {
-      solutions: {
-        metadata: { [SETTINGS_SOLUTION_ID]: settings.solution },
-        files: settings.files.reduce((all, file) => ({ ...all, [file.id]: file }), {}),
-      },
-    }
+  switch (CURRENT_SCRIPT_LAB_STORAGE_VERSION_NUMBER) {
+    case 0:
+      solution.options = {}
+    default:
+      break
   }
+
+  return solution
 }
 
 // custom functions
@@ -168,4 +184,53 @@ export const getCustomFunctionLogs = (): ILogData[] | null => {
   } else {
     return null
   }
+}
+
+const getCFPostData = (state: IState): IRunnerCustomFunctionsPostData => {
+  const cfSolutions = selectors.customFunctions.getSolutions(state)
+
+  const snippets = cfSolutions.map(solution => {
+    const snippet = convertSolutionToSnippet(solution)
+    const { name, id, libraries, script } = snippet
+
+    return {
+      name,
+      id,
+      libraries,
+      script,
+      metadata: undefined,
+    }
+  })
+
+  const result = {
+    snippets,
+    loadFromOfficeJsPreviewCachedCopy: false,
+    displayLanguage: 'en-us',
+    heartbeatParams: {
+      clientTimestamp: Date.now(),
+      loadFromOfficeJsPreviewCachedCopy: false,
+    },
+    experimentationFlags: {},
+  }
+
+  return result
+}
+
+// Helpers
+function getAllLocalStorageKeys(): string[] {
+  const keys: string[] = []
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i)
+    if (key) {
+      keys.push(key)
+    }
+  }
+  return keys
+}
+function writeItem(root: string, id: string, object: any) {
+  localStorage.setItem(`${root}${id}`, JSON.stringify(object))
+}
+
+function readItem(root: string, id: string) {
+  return JSON.parse(localStorage.getItem(`${root}${id}`) || 'null')
 }

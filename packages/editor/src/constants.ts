@@ -57,3 +57,5 @@ export const IS_TASK_PANE_WIDTH = 475
 
 export const EDIT_FILE_DEBOUNCE_MS = 250
 export const EDIT_SETTINGS_DEBOUNCE_MS = 450
+
+export const SCRIPT_LAB_STORAGE_VERSION_NUMBER = 1

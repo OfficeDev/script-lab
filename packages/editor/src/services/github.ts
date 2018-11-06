@@ -30,7 +30,11 @@ export const request = ({
 }: IRequest): Promise<IResponseOrError> =>
   generalRequest({ url: `${baseApiUrl}/${path}`, method, token, jsonPayload })
 
-export const login = async (): Promise<{ token?: string; profilePicUrl?: string }> => {
+export const login = async (): Promise<{
+  token?: string
+  profilePicUrl?: string
+  username?: string
+}> => {
   const token: IToken = await auth.authenticate('GitHub')
   const { response, error } = await request({
     method: 'GET',
@@ -38,7 +42,11 @@ export const login = async (): Promise<{ token?: string; profilePicUrl?: string 
     token: token.access_token,
   })
 
-  return { token: token.access_token, profilePicUrl: response!.avatar_url }
+  return {
+    token: token.access_token,
+    profilePicUrl: response!.avatar_url,
+    username: response!.login,
+  }
 }
 
 export const logout = (token: string) => auth.tokens.clear()

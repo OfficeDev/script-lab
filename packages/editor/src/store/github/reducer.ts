@@ -29,6 +29,21 @@ const profilePicUrl = (
   }
 }
 
+type IUsernameState = string | null
+const username = (
+  state: IUsernameState = null,
+  action: IGithubAction,
+): IUsernameState => {
+  switch (action.type) {
+    case getType(github.login.success):
+      return action.payload.username
+    case getType(github.logout.success):
+      return null
+    default:
+      return state
+  }
+}
+
 type IIsLoggingInOrOutState = boolean
 const isLoggingInOrOut = (
   state: IIsLoggingInOrOutState = false,
@@ -51,7 +66,8 @@ const isLoggingInOrOut = (
 export interface IState {
   token: ITokenState
   profilePicUrl: IProfilePicUrlState
+  username: IUsernameState
   isLoggingInOrOut: IIsLoggingInOrOutState
 }
 
-export default combineReducers({ token, profilePicUrl, isLoggingInOrOut })
+export default combineReducers({ token, profilePicUrl, username, isLoggingInOrOut })

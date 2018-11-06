@@ -229,6 +229,12 @@ function* importSnippetSaga(action: ActionType<typeof gists.importSnippet.reques
         const gistFiles = response.files
         const snippet = YAML.safeLoad(gistFiles[Object.keys(gistFiles)[0]].content)
         const solution = convertSnippetToSolution(snippet)
+
+        const username = yield select(selectors.github.getUsername)
+        if (response.owner.login !== username) {
+          solution.options.isUntrusted = true
+        }
+
         yield put(gists.importSnippet.success({ solution }))
       } else {
         throw error
@@ -236,6 +242,7 @@ function* importSnippetSaga(action: ActionType<typeof gists.importSnippet.reques
     } else if (action.payload.gist) {
       const snippet = YAML.safeLoad(action.payload.gist)
       const solution = convertSnippetToSolution(snippet)
+      solution.options.isUntrusted = true
       yield put(gists.importSnippet.success({ solution }))
     } else {
       throw new Error('Either a gistId or gist must be specified')
@@ -248,7 +255,5 @@ function* importSnippetSaga(action: ActionType<typeof gists.importSnippet.reques
 function* handleImportSnippetSuccessSaga(
   action: ActionType<typeof gists.importSnippet.success>,
 ) {
-  const { solution } = action.payload
-  solution.options.isUntrusted = true
-  yield call(createSolutionSaga, solution)
+  yield call(createSolutionSaga, action.payload.solution)
 }
