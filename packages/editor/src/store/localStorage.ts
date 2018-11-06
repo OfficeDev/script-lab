@@ -6,8 +6,9 @@ import { convertSolutionToSnippet } from '../utils'
 import { SETTINGS_SOLUTION_ID, NULL_SOLUTION_ID, localStorageKeys } from '../constants'
 import { getSettingsSolutionAndFiles } from '../settings'
 import { verifySettings } from './settings/sagas'
+import { getBoilerplate } from '../newSolutionData'
 
-const SOLUTION_ROOT = 'solution'
+const SOLUTION_ROOT = 'solution#'
 let lastSavedState: IState
 
 export const loadState = (): Partial<IState> => {
@@ -121,27 +122,27 @@ export const saveState = (state: IState) => {
     )
 
     // versions
-    if (
-      LATEST_SOLUTION_VERSION_NUMBER !== CURRENT_SOLUTION_VERSION_NUMBER ||
-      LATEST_SOLUTIONS_AND_FILES_VERSION_NUMBER !==
-        CURRENT_SOLUTIONS_AND_FILES_VERSION_NUMBER
-    ) {
-      selectors.solutions.getAll(state).map(solution => {
-        writeItem(SOLUTION_ROOT, solution.id, solution)
-      })
+    // if (
+    //   LATEST_SOLUTION_VERSION_NUMBER !== CURRENT_SOLUTION_VERSION_NUMBER ||
+    //   LATEST_SOLUTIONS_AND_FILES_VERSION_NUMBER !==
+    //     CURRENT_SOLUTIONS_AND_FILES_VERSION_NUMBER
+    // ) {
+    //   selectors.solutions.getAll(state).map(solution => {
+    //     writeItem(SOLUTION_ROOT, solution.id, solution)
+    //   })
 
-      localStorage.setItem(
-        SOLUTIONS_AND_FILES_VERSION_KEY,
-        LATEST_SOLUTIONS_AND_FILES_VERSION_NUMBER.toString(),
-      )
-      CURRENT_SOLUTIONS_AND_FILES_VERSION_NUMBER = LATEST_SOLUTIONS_AND_FILES_VERSION_NUMBER
+    //   localStorage.setItem(
+    //     SOLUTIONS_AND_FILES_VERSION_KEY,
+    //     LATEST_SOLUTIONS_AND_FILES_VERSION_NUMBER.toString(),
+    //   )
+    //   CURRENT_SOLUTIONS_AND_FILES_VERSION_NUMBER = LATEST_SOLUTIONS_AND_FILES_VERSION_NUMBER
 
-      localStorage.setItem(
-        SOLUTION_VERSION_KEY,
-        LATEST_SOLUTION_VERSION_NUMBER.toString(),
-      )
-      CURRENT_SOLUTION_VERSION_NUMBER = LATEST_SOLUTION_VERSION_NUMBER
-    }
+    //   localStorage.setItem(
+    //     SOLUTION_VERSION_KEY,
+    //     LATEST_SOLUTION_VERSION_NUMBER.toString(),
+    //   )
+    //   CURRENT_SOLUTION_VERSION_NUMBER = LATEST_SOLUTION_VERSION_NUMBER
+    // }
 
     lastSavedState = state
   } catch (err) {
@@ -149,12 +150,6 @@ export const saveState = (state: IState) => {
     console.error(err)
   }
 }
-
-const SOLUTIONS_AND_FILES_VERSION_KEY = 'solutions-and-files-version'
-const LATEST_SOLUTIONS_AND_FILES_VERSION_NUMBER = 1
-let CURRENT_SOLUTIONS_AND_FILES_VERSION_NUMBER = JSON.parse(
-  localStorage.getItem(SOLUTIONS_AND_FILES_VERSION_KEY) || '0',
-)
 
 // solutions
 function loadAllSolutionsAndFiles(): {
@@ -164,49 +159,62 @@ function loadAllSolutionsAndFiles(): {
   let solutions: { [id: string]: ISolutionWithFileIds } = {}
   let files: { [id: string]: IFile } = {}
 
-  switch (CURRENT_SOLUTIONS_AND_FILES_VERSION_NUMBER) {
-    case 0:
-      solutions = JSON.parse(localStorage.getItem('solutions') || '{}')
-      files = JSON.parse(localStorage.getItem('files') || '{}')
-      break
-    case 1:
-      getAllLocalStorageKeys()
-        .filter(key => key.startsWith(SOLUTION_ROOT))
-        .map(key => key.replace(SOLUTION_ROOT, ''))
-        .map(id => loadSolution(id))
-        .forEach(solution => {
-          solution.files.forEach(file => {
-            files[file.id] = file
-          })
-          const solutionWithFileIds: ISolutionWithFileIds = (solutions[solution.id] = {
-            ...solution,
-            files: solution.files.map(({ id }) => id),
-          })
+  // checking for newest storage format
+  const solutionKeys = getAllLocalStorageKeys().filter(key =>
+    key.startsWith(SOLUTION_ROOT),
+  )
+  if (solutionKeys.length > 0) {
+    solutionKeys
+      .map(key => key.replace(SOLUTION_ROOT, ''))
+      .map(id => loadSolution(id))
+      .forEach(solution => {
+        // add files
+        solution.files.forEach(file => {
+          files[file.id] = file
         })
-      break
+        // add solution with file-ids
+        solutions[solution.id] = {
+          ...solution,
+          files: solution.files.map(({ id }) => id),
+        }
+      })
+  } else {
+    // No solutions detected in above format, attempting to look for legacy format
+    console.log('trying to get legacy format!')
+    // parsing for the load
+    solutions = JSON.parse(localStorage.getItem('solutions') || '{}')
+    files = JSON.parse(localStorage.getItem('files') || '{}')
+
+    // normalizing solutions
+    const defaults = getBoilerplate('')
+    solutions = Object.keys(solutions)
+      .map(key => solutions[key])
+      .reduce(
+        (newSolutions, solution) => ({
+          ...newSolutions,
+          [solution.id]: { ...defaults, ...solution },
+        }),
+        {},
+      )
+
+    // writing those back for subsequent loads
+    Object.keys(solutions)
+      .map(key => solutions[key])
+      .map(solution => ({
+        ...solution,
+        files: solution.files.map(fileId => files[fileId]),
+      }))
+      .map(solution => writeItem(SOLUTION_ROOT, solution.id, solution))
   }
 
   return { solutions, files }
 }
 
-const SOLUTION_VERSION_KEY = 'solution_version'
-const LATEST_SOLUTION_VERSION_NUMBER = 1
-let CURRENT_SOLUTION_VERSION_NUMBER = JSON.parse(
-  localStorage.getItem(SOLUTION_VERSION_KEY) || '0',
-)
-
 function loadSolution(id: string): ISolution {
   const solution = readItem(SOLUTION_ROOT, id)
+  const defaults = getBoilerplate('')
 
-  switch (CURRENT_SOLUTION_VERSION_NUMBER) {
-    case 0:
-      solution.options = {}
-    case 1:
-    default:
-      break
-  }
-
-  return solution
+  return { ...defaults, ...solution }
 }
 
 // custom functions
