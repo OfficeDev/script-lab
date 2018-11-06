@@ -1,26 +1,14 @@
+import isEqual from 'lodash/isEqual'
+
 import { IState } from './reducer'
 import selectors from './selectors'
 import { convertSolutionToSnippet } from '../utils'
-import {
-  SETTINGS_SOLUTION_ID,
-  USER_SETTINGS_FILE_ID,
-  NULL_SOLUTION_ID,
-  localStorageKeys,
-} from '../constants'
-import {
-  getSettingsSolutionAndFiles,
-  defaultSettings,
-  allowedSettings,
-} from '../settings'
+import { SETTINGS_SOLUTION_ID, NULL_SOLUTION_ID, localStorageKeys } from '../constants'
+import { getSettingsSolutionAndFiles } from '../settings'
 import { verifySettings } from './settings/sagas'
 
-const SCRIPT_LAB_STORAGE_VERSION_KEY = 'storage_version'
-const LATEST_SCRIPT_LAB_STORAGE_VERSION_NUMBER = 1
-const CURRENT_SCRIPT_LAB_STORAGE_VERSION_NUMBER = JSON.parse(
-  localStorage.getItem(SCRIPT_LAB_STORAGE_VERSION_KEY) || '0',
-)
-
 const SOLUTION_ROOT = 'solution'
+let lastSavedState: IState
 
 export const loadState = (): Partial<IState> => {
   try {
@@ -30,10 +18,7 @@ export const loadState = (): Partial<IState> => {
     let { solutions, files } = loadAllSolutionsAndFiles()
 
     const userSettings = JSON.parse(localStorage.getItem('userSettings') || '{}')
-    const github = JSON.parse(localStorage.getItem('github') || '{}')
-
     const verifiedUserSettings = verifySettings(userSettings)
-
     const settingsSolAndFiles = getSettingsSolutionAndFiles(verifiedUserSettings)
     solutions = { ...solutions, [SETTINGS_SOLUTION_ID]: settingsSolAndFiles.solution }
     files = {
@@ -48,8 +33,9 @@ export const loadState = (): Partial<IState> => {
       userSettings: verifiedUserSettings,
       lastActive: { solutionId: null, fileId: null },
     }
+    const github = JSON.parse(localStorage.getItem('github') || '{}')
 
-    return { solutions: { metadata: solutions, files }, github, settings: settingsState }
+    return { solutions: { metadata: solutions, files }, settings: settingsState, github }
   } catch (err) {
     const settings = getSettingsSolutionAndFiles()
 
@@ -64,29 +50,60 @@ export const loadState = (): Partial<IState> => {
 
 export const saveState = (state: IState) => {
   try {
-    const { solutions, github } = state
-    const { profilePicUrl, token } = github
+    // save solution
+    writeIfChanged(
+      selectors.editor.getActiveSolution,
+      (solution: ISolution) => solution.id,
+      state,
+      lastSavedState,
+      SOLUTION_ROOT,
+    )
 
-    const userSettings = selectors.settings.getUser(state)
+    // save github
+    writeIfChanged(
+      selectors.github.getProfilePicUrl,
+      () => 'github-profile-pic-url',
+      state,
+      lastSavedState,
+    )
 
-    const serializedGithub = JSON.stringify({ profilePicUrl, token })
-    const serializedSolutions = JSON.stringify(solutions.metadata)
-    const serializedFiles = JSON.stringify(solutions.files)
-    const serializedUserSettings = JSON.stringify(userSettings)
+    writeIfChanged(
+      selectors.github.getToken,
+      () => 'github-access-token',
+      state,
+      lastSavedState,
+    )
 
-    localStorage.setItem('solutions', serializedSolutions)
-    localStorage.setItem('files', serializedFiles)
-    localStorage.setItem('github', serializedGithub)
-    localStorage.setItem('userSettings', serializedUserSettings)
+    writeIfChanged(
+      selectors.github.getUsername,
+      () => 'github-username',
+      state,
+      lastSavedState,
+    )
+
+    // save settings
+    writeIfChanged(
+      selectors.settings.getUser,
+      () => 'userSettings',
+      state,
+      lastSavedState,
+    )
 
     const activeSolution = selectors.editor.getActiveSolution(state)
     if (
       activeSolution.id !== NULL_SOLUTION_ID &&
       activeSolution.id !== SETTINGS_SOLUTION_ID
     ) {
+      // for new runner
+      writeIfChanged(
+        selectors.editor.getActiveSolution,
+        () => 'activeSolution',
+        state,
+        lastSavedState,
+      )
+      // for old runner
       const activeSnippet = convertSolutionToSnippet(activeSolution)
       localStorage.setItem('activeSnippet', JSON.stringify(activeSnippet))
-      localStorage.setItem('activeSolution', JSON.stringify(activeSolution))
     } else {
       localStorage.setItem('activeSnippet', 'null')
       localStorage.setItem('activeSolution', 'null')
@@ -102,43 +119,89 @@ export const saveState = (state: IState) => {
       localStorageKeys.customFunctionsLastUpdatedCodeTimestamp,
       selectors.customFunctions.getLastModifiedDate(state).toString(),
     )
+
+    // versions
+    if (
+      LATEST_SOLUTION_VERSION_NUMBER !== CURRENT_SOLUTION_VERSION_NUMBER ||
+      LATEST_SOLUTIONS_AND_FILES_VERSION_NUMBER !==
+        CURRENT_SOLUTIONS_AND_FILES_VERSION_NUMBER
+    ) {
+      selectors.solutions.getAll(state).map(solution => {
+        writeItem(SOLUTION_ROOT, solution.id, solution)
+      })
+
+      localStorage.setItem(
+        SOLUTIONS_AND_FILES_VERSION_KEY,
+        LATEST_SOLUTIONS_AND_FILES_VERSION_NUMBER.toString(),
+      )
+      CURRENT_SOLUTIONS_AND_FILES_VERSION_NUMBER = LATEST_SOLUTIONS_AND_FILES_VERSION_NUMBER
+
+      localStorage.setItem(
+        SOLUTION_VERSION_KEY,
+        LATEST_SOLUTION_VERSION_NUMBER.toString(),
+      )
+      CURRENT_SOLUTION_VERSION_NUMBER = LATEST_SOLUTION_VERSION_NUMBER
+    }
+
+    lastSavedState = state
   } catch (err) {
     // TODO
     console.error(err)
   }
 }
 
+const SOLUTIONS_AND_FILES_VERSION_KEY = 'solutions-and-files-version'
+const LATEST_SOLUTIONS_AND_FILES_VERSION_NUMBER = 1
+let CURRENT_SOLUTIONS_AND_FILES_VERSION_NUMBER = JSON.parse(
+  localStorage.getItem(SOLUTIONS_AND_FILES_VERSION_KEY) || '0',
+)
+
 // solutions
 function loadAllSolutionsAndFiles(): {
   solutions: { [id: string]: ISolutionWithFileIds }
   files: { [id: string]: IFile }
 } {
-  const solutions: { [id: string]: ISolutionWithFileIds } = {}
-  const files: { [id: string]: IFile } = {}
+  let solutions: { [id: string]: ISolutionWithFileIds } = {}
+  let files: { [id: string]: IFile } = {}
 
-  getAllLocalStorageKeys()
-    .filter(key => key.startsWith(SOLUTION_ROOT))
-    .map(key => key.replace(SOLUTION_ROOT, ''))
-    .map(id => loadSolution(id))
-    .forEach(solution => {
-      solution.files.forEach(file => {
-        files[file.id] = file
-      })
-      const solutionWithFileIds: ISolutionWithFileIds = (solutions[solution.id] = {
-        ...solution,
-        files: solution.files.map(({ id }) => id),
-      })
-    })
+  switch (CURRENT_SOLUTIONS_AND_FILES_VERSION_NUMBER) {
+    case 0:
+      solutions = JSON.parse(localStorage.getItem('solutions') || '{}')
+      files = JSON.parse(localStorage.getItem('files') || '{}')
+      break
+    case 1:
+      getAllLocalStorageKeys()
+        .filter(key => key.startsWith(SOLUTION_ROOT))
+        .map(key => key.replace(SOLUTION_ROOT, ''))
+        .map(id => loadSolution(id))
+        .forEach(solution => {
+          solution.files.forEach(file => {
+            files[file.id] = file
+          })
+          const solutionWithFileIds: ISolutionWithFileIds = (solutions[solution.id] = {
+            ...solution,
+            files: solution.files.map(({ id }) => id),
+          })
+        })
+      break
+  }
 
   return { solutions, files }
 }
 
+const SOLUTION_VERSION_KEY = 'solution_version'
+const LATEST_SOLUTION_VERSION_NUMBER = 1
+let CURRENT_SOLUTION_VERSION_NUMBER = JSON.parse(
+  localStorage.getItem(SOLUTION_VERSION_KEY) || '0',
+)
+
 function loadSolution(id: string): ISolution {
   const solution = readItem(SOLUTION_ROOT, id)
 
-  switch (CURRENT_SCRIPT_LAB_STORAGE_VERSION_NUMBER) {
+  switch (CURRENT_SOLUTION_VERSION_NUMBER) {
     case 0:
       solution.options = {}
+    case 1:
     default:
       break
   }
@@ -227,6 +290,21 @@ function getAllLocalStorageKeys(): string[] {
   }
   return keys
 }
+
+function writeIfChanged(
+  selector: (state: IState) => any,
+  getKey: (selectionResult: any) => string,
+  currentState: IState,
+  lastState: IState | undefined,
+  root: string = '',
+) {
+  const current = selector(currentState)
+  const last = lastState ? selector(lastState) : null
+  if (current && (!last || !isEqual(current, last))) {
+    writeItem(root, getKey(current), current)
+  }
+}
+
 function writeItem(root: string, id: string, object: any) {
   localStorage.setItem(`${root}${id}`, JSON.stringify(object))
 }
