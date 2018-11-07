@@ -121,29 +121,6 @@ export const saveState = (state: IState) => {
       selectors.customFunctions.getLastModifiedDate(state).toString(),
     )
 
-    // versions
-    // if (
-    //   LATEST_SOLUTION_VERSION_NUMBER !== CURRENT_SOLUTION_VERSION_NUMBER ||
-    //   LATEST_SOLUTIONS_AND_FILES_VERSION_NUMBER !==
-    //     CURRENT_SOLUTIONS_AND_FILES_VERSION_NUMBER
-    // ) {
-    //   selectors.solutions.getAll(state).map(solution => {
-    //     writeItem(SOLUTION_ROOT, solution.id, solution)
-    //   })
-
-    //   localStorage.setItem(
-    //     SOLUTIONS_AND_FILES_VERSION_KEY,
-    //     LATEST_SOLUTIONS_AND_FILES_VERSION_NUMBER.toString(),
-    //   )
-    //   CURRENT_SOLUTIONS_AND_FILES_VERSION_NUMBER = LATEST_SOLUTIONS_AND_FILES_VERSION_NUMBER
-
-    //   localStorage.setItem(
-    //     SOLUTION_VERSION_KEY,
-    //     LATEST_SOLUTION_VERSION_NUMBER.toString(),
-    //   )
-    //   CURRENT_SOLUTION_VERSION_NUMBER = LATEST_SOLUTION_VERSION_NUMBER
-    // }
-
     lastSavedState = state
   } catch (err) {
     // TODO
