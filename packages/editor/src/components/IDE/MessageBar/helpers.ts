@@ -12,7 +12,12 @@ export const getMessageBarStyle = (style: MessageBarType) => {
       return { root: { background: '#FACFD3' } }
 
     case MessageBarType.warning:
-      return { root: { background: '#FFF1CC' } }
+      return {
+        root: { background: '#FFF1CC' },
+        icon: {
+          color: 'darkgray',
+        },
+      }
 
     default:
       return { root: {} }
