@@ -20572,17 +20572,17 @@ exports[`Storyshots IDE|MessageBar basic error 1`] = `
   className="message-bar active"
 >
   <div
-    aria-live="assertive"
+    aria-expanded={undefined}
     className=
         ms-MessageBar
         ms-MessageBar--error
-        ms-MessageBar-multiline
+        ms-MessageBar-singleline
+        ms-MessageBar-dismissalSingleLine
         {
           background: #FACFD3;
           box-sizing: border-box;
           color: #333;
           display: flex;
-          flex-direction: column;
           min-height: 32px;
           position: relative;
           width: 100%;
@@ -20596,6 +20596,9 @@ exports[`Storyshots IDE|MessageBar basic error 1`] = `
           font-size: 12px;
           font-weight: 400;
         }
+        @media only screen and (min-width: 0px) and (max-width: 479px){& {
+          flex-direction: column;
+        }
   >
     <div
       className=
@@ -20603,7 +20606,6 @@ exports[`Storyshots IDE|MessageBar basic error 1`] = `
           {
             box-sizing: border-box;
             display: flex;
-            flex-direction: row;
             line-height: normal;
             width: 100%;
           }
@@ -20622,6 +20624,9 @@ exports[`Storyshots IDE|MessageBar basic error 1`] = `
           @media screen and (-ms-high-contrast: active){&:before {
             border: 1px solid WindowText;
             content:  ;
+          }
+          @media only screen and (min-width: 0px) and (max-width: 479px){& {
+            flex-direction: row;
           }
     >
       <div
@@ -20697,89 +20702,25 @@ exports[`Storyshots IDE|MessageBar basic error 1`] = `
               ms-MessageBar-innerText
               {
                 line-height: 16px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
               }
               & a {
                 padding-left: 4px;
               }
+              @media only screen and (min-width: 0px) and (max-width: 479px){& {
+                overflow: visible;
+                white-space: pre-wrap;
+              }
           role="status"
         />
       </div>
-      <button
-        aria-describedby={undefined}
-        aria-disabled={undefined}
-        aria-label="Close"
-        aria-labelledby={undefined}
-        aria-pressed={undefined}
+      <div
         className=
-            ms-Button
-            ms-Button--icon
-            ms-MessageBar-dismissal
+            ms-MessageBar-dismissSingleLine
             {
-              -moz-osx-font-smoothing: grayscale;
-              -webkit-font-smoothing: antialiased;
-              background-color: transparent;
-              border-radius: 0px;
-              border: none;
-              box-sizing: border-box;
-              cursor: pointer;
-              display: inline-block;
-              flex-shrink: 0;
-              font-family: 'Segoe UI', 'Segoe UI Web (West European)', 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', sans-serif;
-              font-size: 14px;
-              font-weight: 400;
-              height: 32px;
-              margin-bottom: 8px;
-              margin-left: 0px;
-              margin-right: 8px;
-              margin-top: 8px;
-              outline: transparent;
-              padding-bottom: 0;
-              padding-left: 4px;
-              padding-right: 4px;
-              padding-top: 0;
-              position: relative;
-              text-align: center;
-              text-decoration: none;
-              user-select: none;
-              vertical-align: top;
-              width: 32px;
-            }
-            &::-moz-focus-inner {
-              border: 0;
-            }
-            .ms-Fabric--isFocusVisible &:focus:after {
-              border: 1px solid #1d1d1d;
-              bottom: 1px;
-              content: "";
-              left: 1px;
-              outline: 1px solid #858585;
-              position: absolute;
-              right: 1px;
-              top: 1px;
-              z-index: 1;
-            }
-            @media screen and (-ms-high-contrast: active){.ms-Fabric--isFocusVisible &:focus:after {
-              border: none;
-              bottom: -2px;
-              left: -2px;
-              outline-color: ButtonText;
-              right: -2px;
-              top: -2px;
-            }
-            &:active > * {
-              left: 0px;
-              position: relative;
-              top: 0px;
-            }
-            &:hover {
-              color: #0D2E1C;
-            }
-            @media screen and (-ms-high-contrast: active){&:hover {
-              border-color: Highlight;
-              color: Highlight;
-            }
-            &:active {
-              color: #217346;
+              display: flex;
             }
             & .ms-Button-icon {
               color: #333;
@@ -20787,66 +20728,151 @@ exports[`Storyshots IDE|MessageBar basic error 1`] = `
               height: 12px;
               line-height: 12px;
             }
-            @media only screen and (min-width: 0px) and (max-width: 479px){& {
-              margin-bottom: 0px;
-              margin-left: 8px;
-              margin-right: 0px;
-              margin-top: 0px;
-            }
-            @media screen and (-ms-high-contrast: active){& {
-              -ms-high-contrast-adjust: none;
-            }
-        data-is-focusable={true}
-        disabled={undefined}
-        onClick={[Function]}
-        onKeyDown={[Function]}
-        onKeyPress={[Function]}
-        onKeyUp={[Function]}
-        onMouseDown={[Function]}
-        onMouseUp={[Function]}
-        type="button"
       >
-        <div
+        <button
+          aria-describedby={undefined}
+          aria-disabled={undefined}
+          aria-label="Close"
+          aria-labelledby={undefined}
+          aria-pressed={undefined}
           className=
-              ms-Button-flexContainer
+              ms-Button
+              ms-Button--icon
+              ms-MessageBar-dismissal
               {
-                align-items: center;
-                display: flex;
-                flex-wrap: nowrap;
-                height: 100%;
-                justify-content: center;
+                -moz-osx-font-smoothing: grayscale;
+                -webkit-font-smoothing: antialiased;
+                background-color: transparent;
+                border-radius: 0px;
+                border: none;
+                box-sizing: border-box;
+                cursor: pointer;
+                display: inline-block;
+                flex-shrink: 0;
+                font-family: 'Segoe UI', 'Segoe UI Web (West European)', 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', sans-serif;
+                font-size: 14px;
+                font-weight: 400;
+                height: 32px;
+                margin-bottom: 8px;
+                margin-left: 0px;
+                margin-right: 8px;
+                margin-top: 8px;
+                outline: transparent;
+                padding-bottom: 0;
+                padding-left: 4px;
+                padding-right: 4px;
+                padding-top: 0;
+                position: relative;
+                text-align: center;
+                text-decoration: none;
+                user-select: none;
+                vertical-align: top;
+                width: 32px;
               }
+              &::-moz-focus-inner {
+                border: 0;
+              }
+              .ms-Fabric--isFocusVisible &:focus:after {
+                border: 1px solid #1d1d1d;
+                bottom: 1px;
+                content: "";
+                left: 1px;
+                outline: 1px solid #858585;
+                position: absolute;
+                right: 1px;
+                top: 1px;
+                z-index: 1;
+              }
+              @media screen and (-ms-high-contrast: active){.ms-Fabric--isFocusVisible &:focus:after {
+                border: none;
+                bottom: -2px;
+                left: -2px;
+                outline-color: ButtonText;
+                right: -2px;
+                top: -2px;
+              }
+              &:active > * {
+                left: 0px;
+                position: relative;
+                top: 0px;
+              }
+              &:hover {
+                color: #0D2E1C;
+              }
+              @media screen and (-ms-high-contrast: active){&:hover {
+                border-color: Highlight;
+                color: Highlight;
+              }
+              &:active {
+                color: #217346;
+              }
+              & .ms-Button-icon {
+                color: #333;
+                font-size: 12px;
+                height: 12px;
+                line-height: 12px;
+              }
+              @media only screen and (min-width: 0px) and (max-width: 479px){& {
+                margin-bottom: 0px;
+                margin-left: 8px;
+                margin-right: 0px;
+                margin-top: 0px;
+              }
+              @media screen and (-ms-high-contrast: active){& {
+                -ms-high-contrast-adjust: none;
+              }
+          data-is-focusable={true}
+          disabled={undefined}
+          onClick={[Function]}
+          onKeyDown={[Function]}
+          onKeyPress={[Function]}
+          onKeyUp={[Function]}
+          onMouseDown={[Function]}
+          onMouseUp={[Function]}
+          type="button"
         >
-          <i
-            aria-hidden={true}
+          <div
             className=
-                ms-Button-icon
+                ms-Button-flexContainer
                 {
-                  -moz-osx-font-smoothing: grayscale;
-                  -webkit-font-smoothing: antialiased;
-                  display: inline-block;
-                  flex-shrink: 0;
-                  font-family: "FabricMDL2Icons";
-                  font-size: 16px;
-                  font-style: normal;
-                  font-weight: normal;
-                  height: 16px;
-                  line-height: 16px;
-                  margin-bottom: 0;
-                  margin-left: 4px;
-                  margin-right: 4px;
-                  margin-top: 0;
-                  speak: none;
-                  text-align: center;
-                  vertical-align: middle;
+                  align-items: center;
+                  display: flex;
+                  flex-wrap: nowrap;
+                  height: 100%;
+                  justify-content: center;
                 }
-            data-icon-name="Clear"
-            role="presentation"
           >
-            
-          </i>
-        </div>
-      </button>
+            <i
+              aria-hidden={true}
+              className=
+                  ms-Button-icon
+                  {
+                    -moz-osx-font-smoothing: grayscale;
+                    -webkit-font-smoothing: antialiased;
+                    display: inline-block;
+                    flex-shrink: 0;
+                    font-family: "FabricMDL2Icons";
+                    font-size: 16px;
+                    font-style: normal;
+                    font-weight: normal;
+                    height: 16px;
+                    line-height: 16px;
+                    margin-bottom: 0;
+                    margin-left: 4px;
+                    margin-right: 4px;
+                    margin-top: 0;
+                    speak: none;
+                    text-align: center;
+                    vertical-align: middle;
+                  }
+              data-icon-name="Clear"
+              role="presentation"
+            >
+              
+            </i>
+          </div>
+        </button>
+      </div>
     </div>
   </div>
 </div>
@@ -20857,16 +20883,16 @@ exports[`Storyshots IDE|MessageBar basic info 1`] = `
   className="message-bar active"
 >
   <div
-    aria-live="polite"
+    aria-expanded={undefined}
     className=
         ms-MessageBar
-        ms-MessageBar-multiline
+        ms-MessageBar-singleline
+        ms-MessageBar-dismissalSingleLine
         {
           background: #F4F4F4;
           box-sizing: border-box;
           color: #333;
           display: flex;
-          flex-direction: column;
           min-height: 32px;
           position: relative;
           width: 100%;
@@ -20880,6 +20906,9 @@ exports[`Storyshots IDE|MessageBar basic info 1`] = `
           font-size: 12px;
           font-weight: 400;
         }
+        @media only screen and (min-width: 0px) and (max-width: 479px){& {
+          flex-direction: column;
+        }
   >
     <div
       className=
@@ -20887,7 +20916,6 @@ exports[`Storyshots IDE|MessageBar basic info 1`] = `
           {
             box-sizing: border-box;
             display: flex;
-            flex-direction: row;
             line-height: normal;
             width: 100%;
           }
@@ -20906,6 +20934,9 @@ exports[`Storyshots IDE|MessageBar basic info 1`] = `
           @media screen and (-ms-high-contrast: active){&:before {
             border: 1px solid WindowText;
             content:  ;
+          }
+          @media only screen and (min-width: 0px) and (max-width: 479px){& {
+            flex-direction: row;
           }
     >
       <div
@@ -20981,89 +21012,25 @@ exports[`Storyshots IDE|MessageBar basic info 1`] = `
               ms-MessageBar-innerText
               {
                 line-height: 16px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
               }
               & a {
                 padding-left: 4px;
               }
+              @media only screen and (min-width: 0px) and (max-width: 479px){& {
+                overflow: visible;
+                white-space: pre-wrap;
+              }
           role="status"
         />
       </div>
-      <button
-        aria-describedby={undefined}
-        aria-disabled={undefined}
-        aria-label="Close"
-        aria-labelledby={undefined}
-        aria-pressed={undefined}
+      <div
         className=
-            ms-Button
-            ms-Button--icon
-            ms-MessageBar-dismissal
+            ms-MessageBar-dismissSingleLine
             {
-              -moz-osx-font-smoothing: grayscale;
-              -webkit-font-smoothing: antialiased;
-              background-color: transparent;
-              border-radius: 0px;
-              border: none;
-              box-sizing: border-box;
-              cursor: pointer;
-              display: inline-block;
-              flex-shrink: 0;
-              font-family: 'Segoe UI', 'Segoe UI Web (West European)', 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', sans-serif;
-              font-size: 14px;
-              font-weight: 400;
-              height: 32px;
-              margin-bottom: 8px;
-              margin-left: 0px;
-              margin-right: 8px;
-              margin-top: 8px;
-              outline: transparent;
-              padding-bottom: 0;
-              padding-left: 4px;
-              padding-right: 4px;
-              padding-top: 0;
-              position: relative;
-              text-align: center;
-              text-decoration: none;
-              user-select: none;
-              vertical-align: top;
-              width: 32px;
-            }
-            &::-moz-focus-inner {
-              border: 0;
-            }
-            .ms-Fabric--isFocusVisible &:focus:after {
-              border: 1px solid #1d1d1d;
-              bottom: 1px;
-              content: "";
-              left: 1px;
-              outline: 1px solid #858585;
-              position: absolute;
-              right: 1px;
-              top: 1px;
-              z-index: 1;
-            }
-            @media screen and (-ms-high-contrast: active){.ms-Fabric--isFocusVisible &:focus:after {
-              border: none;
-              bottom: -2px;
-              left: -2px;
-              outline-color: ButtonText;
-              right: -2px;
-              top: -2px;
-            }
-            &:active > * {
-              left: 0px;
-              position: relative;
-              top: 0px;
-            }
-            &:hover {
-              color: #0D2E1C;
-            }
-            @media screen and (-ms-high-contrast: active){&:hover {
-              border-color: Highlight;
-              color: Highlight;
-            }
-            &:active {
-              color: #217346;
+              display: flex;
             }
             & .ms-Button-icon {
               color: #333;
@@ -21071,66 +21038,151 @@ exports[`Storyshots IDE|MessageBar basic info 1`] = `
               height: 12px;
               line-height: 12px;
             }
-            @media only screen and (min-width: 0px) and (max-width: 479px){& {
-              margin-bottom: 0px;
-              margin-left: 8px;
-              margin-right: 0px;
-              margin-top: 0px;
-            }
-            @media screen and (-ms-high-contrast: active){& {
-              -ms-high-contrast-adjust: none;
-            }
-        data-is-focusable={true}
-        disabled={undefined}
-        onClick={[Function]}
-        onKeyDown={[Function]}
-        onKeyPress={[Function]}
-        onKeyUp={[Function]}
-        onMouseDown={[Function]}
-        onMouseUp={[Function]}
-        type="button"
       >
-        <div
+        <button
+          aria-describedby={undefined}
+          aria-disabled={undefined}
+          aria-label="Close"
+          aria-labelledby={undefined}
+          aria-pressed={undefined}
           className=
-              ms-Button-flexContainer
+              ms-Button
+              ms-Button--icon
+              ms-MessageBar-dismissal
               {
-                align-items: center;
-                display: flex;
-                flex-wrap: nowrap;
-                height: 100%;
-                justify-content: center;
+                -moz-osx-font-smoothing: grayscale;
+                -webkit-font-smoothing: antialiased;
+                background-color: transparent;
+                border-radius: 0px;
+                border: none;
+                box-sizing: border-box;
+                cursor: pointer;
+                display: inline-block;
+                flex-shrink: 0;
+                font-family: 'Segoe UI', 'Segoe UI Web (West European)', 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', sans-serif;
+                font-size: 14px;
+                font-weight: 400;
+                height: 32px;
+                margin-bottom: 8px;
+                margin-left: 0px;
+                margin-right: 8px;
+                margin-top: 8px;
+                outline: transparent;
+                padding-bottom: 0;
+                padding-left: 4px;
+                padding-right: 4px;
+                padding-top: 0;
+                position: relative;
+                text-align: center;
+                text-decoration: none;
+                user-select: none;
+                vertical-align: top;
+                width: 32px;
               }
+              &::-moz-focus-inner {
+                border: 0;
+              }
+              .ms-Fabric--isFocusVisible &:focus:after {
+                border: 1px solid #1d1d1d;
+                bottom: 1px;
+                content: "";
+                left: 1px;
+                outline: 1px solid #858585;
+                position: absolute;
+                right: 1px;
+                top: 1px;
+                z-index: 1;
+              }
+              @media screen and (-ms-high-contrast: active){.ms-Fabric--isFocusVisible &:focus:after {
+                border: none;
+                bottom: -2px;
+                left: -2px;
+                outline-color: ButtonText;
+                right: -2px;
+                top: -2px;
+              }
+              &:active > * {
+                left: 0px;
+                position: relative;
+                top: 0px;
+              }
+              &:hover {
+                color: #0D2E1C;
+              }
+              @media screen and (-ms-high-contrast: active){&:hover {
+                border-color: Highlight;
+                color: Highlight;
+              }
+              &:active {
+                color: #217346;
+              }
+              & .ms-Button-icon {
+                color: #333;
+                font-size: 12px;
+                height: 12px;
+                line-height: 12px;
+              }
+              @media only screen and (min-width: 0px) and (max-width: 479px){& {
+                margin-bottom: 0px;
+                margin-left: 8px;
+                margin-right: 0px;
+                margin-top: 0px;
+              }
+              @media screen and (-ms-high-contrast: active){& {
+                -ms-high-contrast-adjust: none;
+              }
+          data-is-focusable={true}
+          disabled={undefined}
+          onClick={[Function]}
+          onKeyDown={[Function]}
+          onKeyPress={[Function]}
+          onKeyUp={[Function]}
+          onMouseDown={[Function]}
+          onMouseUp={[Function]}
+          type="button"
         >
-          <i
-            aria-hidden={true}
+          <div
             className=
-                ms-Button-icon
+                ms-Button-flexContainer
                 {
-                  -moz-osx-font-smoothing: grayscale;
-                  -webkit-font-smoothing: antialiased;
-                  display: inline-block;
-                  flex-shrink: 0;
-                  font-family: "FabricMDL2Icons";
-                  font-size: 16px;
-                  font-style: normal;
-                  font-weight: normal;
-                  height: 16px;
-                  line-height: 16px;
-                  margin-bottom: 0;
-                  margin-left: 4px;
-                  margin-right: 4px;
-                  margin-top: 0;
-                  speak: none;
-                  text-align: center;
-                  vertical-align: middle;
+                  align-items: center;
+                  display: flex;
+                  flex-wrap: nowrap;
+                  height: 100%;
+                  justify-content: center;
                 }
-            data-icon-name="Clear"
-            role="presentation"
           >
-            
-          </i>
-        </div>
-      </button>
+            <i
+              aria-hidden={true}
+              className=
+                  ms-Button-icon
+                  {
+                    -moz-osx-font-smoothing: grayscale;
+                    -webkit-font-smoothing: antialiased;
+                    display: inline-block;
+                    flex-shrink: 0;
+                    font-family: "FabricMDL2Icons";
+                    font-size: 16px;
+                    font-style: normal;
+                    font-weight: normal;
+                    height: 16px;
+                    line-height: 16px;
+                    margin-bottom: 0;
+                    margin-left: 4px;
+                    margin-right: 4px;
+                    margin-top: 0;
+                    speak: none;
+                    text-align: center;
+                    vertical-align: middle;
+                  }
+              data-icon-name="Clear"
+              role="presentation"
+            >
+              
+            </i>
+          </div>
+        </button>
+      </div>
     </div>
   </div>
 </div>
@@ -21141,17 +21193,17 @@ exports[`Storyshots IDE|MessageBar basic success 1`] = `
   className="message-bar active"
 >
   <div
-    aria-live="polite"
+    aria-expanded={undefined}
     className=
         ms-MessageBar
         ms-MessageBar--success
-        ms-MessageBar-multiline
+        ms-MessageBar-singleline
+        ms-MessageBar-dismissalSingleLine
         {
           background: #F1F7CE;
           box-sizing: border-box;
           color: #333;
           display: flex;
-          flex-direction: column;
           min-height: 32px;
           position: relative;
           width: 100%;
@@ -21165,6 +21217,9 @@ exports[`Storyshots IDE|MessageBar basic success 1`] = `
           font-size: 12px;
           font-weight: 400;
         }
+        @media only screen and (min-width: 0px) and (max-width: 479px){& {
+          flex-direction: column;
+        }
   >
     <div
       className=
@@ -21172,7 +21227,6 @@ exports[`Storyshots IDE|MessageBar basic success 1`] = `
           {
             box-sizing: border-box;
             display: flex;
-            flex-direction: row;
             line-height: normal;
             width: 100%;
           }
@@ -21191,6 +21245,9 @@ exports[`Storyshots IDE|MessageBar basic success 1`] = `
           @media screen and (-ms-high-contrast: active){&:before {
             border: 1px solid WindowText;
             content:  ;
+          }
+          @media only screen and (min-width: 0px) and (max-width: 479px){& {
+            flex-direction: row;
           }
     >
       <div
@@ -21266,89 +21323,25 @@ exports[`Storyshots IDE|MessageBar basic success 1`] = `
               ms-MessageBar-innerText
               {
                 line-height: 16px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
               }
               & a {
                 padding-left: 4px;
               }
+              @media only screen and (min-width: 0px) and (max-width: 479px){& {
+                overflow: visible;
+                white-space: pre-wrap;
+              }
           role="status"
         />
       </div>
-      <button
-        aria-describedby={undefined}
-        aria-disabled={undefined}
-        aria-label="Close"
-        aria-labelledby={undefined}
-        aria-pressed={undefined}
+      <div
         className=
-            ms-Button
-            ms-Button--icon
-            ms-MessageBar-dismissal
+            ms-MessageBar-dismissSingleLine
             {
-              -moz-osx-font-smoothing: grayscale;
-              -webkit-font-smoothing: antialiased;
-              background-color: transparent;
-              border-radius: 0px;
-              border: none;
-              box-sizing: border-box;
-              cursor: pointer;
-              display: inline-block;
-              flex-shrink: 0;
-              font-family: 'Segoe UI', 'Segoe UI Web (West European)', 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', sans-serif;
-              font-size: 14px;
-              font-weight: 400;
-              height: 32px;
-              margin-bottom: 8px;
-              margin-left: 0px;
-              margin-right: 8px;
-              margin-top: 8px;
-              outline: transparent;
-              padding-bottom: 0;
-              padding-left: 4px;
-              padding-right: 4px;
-              padding-top: 0;
-              position: relative;
-              text-align: center;
-              text-decoration: none;
-              user-select: none;
-              vertical-align: top;
-              width: 32px;
-            }
-            &::-moz-focus-inner {
-              border: 0;
-            }
-            .ms-Fabric--isFocusVisible &:focus:after {
-              border: 1px solid #1d1d1d;
-              bottom: 1px;
-              content: "";
-              left: 1px;
-              outline: 1px solid #858585;
-              position: absolute;
-              right: 1px;
-              top: 1px;
-              z-index: 1;
-            }
-            @media screen and (-ms-high-contrast: active){.ms-Fabric--isFocusVisible &:focus:after {
-              border: none;
-              bottom: -2px;
-              left: -2px;
-              outline-color: ButtonText;
-              right: -2px;
-              top: -2px;
-            }
-            &:active > * {
-              left: 0px;
-              position: relative;
-              top: 0px;
-            }
-            &:hover {
-              color: #0D2E1C;
-            }
-            @media screen and (-ms-high-contrast: active){&:hover {
-              border-color: Highlight;
-              color: Highlight;
-            }
-            &:active {
-              color: #217346;
+              display: flex;
             }
             & .ms-Button-icon {
               color: #333;
@@ -21356,66 +21349,151 @@ exports[`Storyshots IDE|MessageBar basic success 1`] = `
               height: 12px;
               line-height: 12px;
             }
-            @media only screen and (min-width: 0px) and (max-width: 479px){& {
-              margin-bottom: 0px;
-              margin-left: 8px;
-              margin-right: 0px;
-              margin-top: 0px;
-            }
-            @media screen and (-ms-high-contrast: active){& {
-              -ms-high-contrast-adjust: none;
-            }
-        data-is-focusable={true}
-        disabled={undefined}
-        onClick={[Function]}
-        onKeyDown={[Function]}
-        onKeyPress={[Function]}
-        onKeyUp={[Function]}
-        onMouseDown={[Function]}
-        onMouseUp={[Function]}
-        type="button"
       >
-        <div
+        <button
+          aria-describedby={undefined}
+          aria-disabled={undefined}
+          aria-label="Close"
+          aria-labelledby={undefined}
+          aria-pressed={undefined}
           className=
-              ms-Button-flexContainer
+              ms-Button
+              ms-Button--icon
+              ms-MessageBar-dismissal
               {
-                align-items: center;
-                display: flex;
-                flex-wrap: nowrap;
-                height: 100%;
-                justify-content: center;
+                -moz-osx-font-smoothing: grayscale;
+                -webkit-font-smoothing: antialiased;
+                background-color: transparent;
+                border-radius: 0px;
+                border: none;
+                box-sizing: border-box;
+                cursor: pointer;
+                display: inline-block;
+                flex-shrink: 0;
+                font-family: 'Segoe UI', 'Segoe UI Web (West European)', 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', sans-serif;
+                font-size: 14px;
+                font-weight: 400;
+                height: 32px;
+                margin-bottom: 8px;
+                margin-left: 0px;
+                margin-right: 8px;
+                margin-top: 8px;
+                outline: transparent;
+                padding-bottom: 0;
+                padding-left: 4px;
+                padding-right: 4px;
+                padding-top: 0;
+                position: relative;
+                text-align: center;
+                text-decoration: none;
+                user-select: none;
+                vertical-align: top;
+                width: 32px;
               }
+              &::-moz-focus-inner {
+                border: 0;
+              }
+              .ms-Fabric--isFocusVisible &:focus:after {
+                border: 1px solid #1d1d1d;
+                bottom: 1px;
+                content: "";
+                left: 1px;
+                outline: 1px solid #858585;
+                position: absolute;
+                right: 1px;
+                top: 1px;
+                z-index: 1;
+              }
+              @media screen and (-ms-high-contrast: active){.ms-Fabric--isFocusVisible &:focus:after {
+                border: none;
+                bottom: -2px;
+                left: -2px;
+                outline-color: ButtonText;
+                right: -2px;
+                top: -2px;
+              }
+              &:active > * {
+                left: 0px;
+                position: relative;
+                top: 0px;
+              }
+              &:hover {
+                color: #0D2E1C;
+              }
+              @media screen and (-ms-high-contrast: active){&:hover {
+                border-color: Highlight;
+                color: Highlight;
+              }
+              &:active {
+                color: #217346;
+              }
+              & .ms-Button-icon {
+                color: #333;
+                font-size: 12px;
+                height: 12px;
+                line-height: 12px;
+              }
+              @media only screen and (min-width: 0px) and (max-width: 479px){& {
+                margin-bottom: 0px;
+                margin-left: 8px;
+                margin-right: 0px;
+                margin-top: 0px;
+              }
+              @media screen and (-ms-high-contrast: active){& {
+                -ms-high-contrast-adjust: none;
+              }
+          data-is-focusable={true}
+          disabled={undefined}
+          onClick={[Function]}
+          onKeyDown={[Function]}
+          onKeyPress={[Function]}
+          onKeyUp={[Function]}
+          onMouseDown={[Function]}
+          onMouseUp={[Function]}
+          type="button"
         >
-          <i
-            aria-hidden={true}
+          <div
             className=
-                ms-Button-icon
+                ms-Button-flexContainer
                 {
-                  -moz-osx-font-smoothing: grayscale;
-                  -webkit-font-smoothing: antialiased;
-                  display: inline-block;
-                  flex-shrink: 0;
-                  font-family: "FabricMDL2Icons";
-                  font-size: 16px;
-                  font-style: normal;
-                  font-weight: normal;
-                  height: 16px;
-                  line-height: 16px;
-                  margin-bottom: 0;
-                  margin-left: 4px;
-                  margin-right: 4px;
-                  margin-top: 0;
-                  speak: none;
-                  text-align: center;
-                  vertical-align: middle;
+                  align-items: center;
+                  display: flex;
+                  flex-wrap: nowrap;
+                  height: 100%;
+                  justify-content: center;
                 }
-            data-icon-name="Clear"
-            role="presentation"
           >
-            
-          </i>
-        </div>
-      </button>
+            <i
+              aria-hidden={true}
+              className=
+                  ms-Button-icon
+                  {
+                    -moz-osx-font-smoothing: grayscale;
+                    -webkit-font-smoothing: antialiased;
+                    display: inline-block;
+                    flex-shrink: 0;
+                    font-family: "FabricMDL2Icons";
+                    font-size: 16px;
+                    font-style: normal;
+                    font-weight: normal;
+                    height: 16px;
+                    line-height: 16px;
+                    margin-bottom: 0;
+                    margin-left: 4px;
+                    margin-right: 4px;
+                    margin-top: 0;
+                    speak: none;
+                    text-align: center;
+                    vertical-align: middle;
+                  }
+              data-icon-name="Clear"
+              role="presentation"
+            >
+              
+            </i>
+          </div>
+        </button>
+      </div>
     </div>
   </div>
 </div>
@@ -21426,17 +21504,17 @@ exports[`Storyshots IDE|MessageBar basic warning 1`] = `
   className="message-bar active"
 >
   <div
-    aria-live="polite"
+    aria-expanded={undefined}
     className=
         ms-MessageBar
         ms-MessageBar--warning
-        ms-MessageBar-multiline
+        ms-MessageBar-singleline
+        ms-MessageBar-dismissalSingleLine
         {
           background: #FFF1CC;
           box-sizing: border-box;
           color: #333;
           display: flex;
-          flex-direction: column;
           min-height: 32px;
           position: relative;
           width: 100%;
@@ -21450,6 +21528,9 @@ exports[`Storyshots IDE|MessageBar basic warning 1`] = `
           font-size: 12px;
           font-weight: 400;
         }
+        @media only screen and (min-width: 0px) and (max-width: 479px){& {
+          flex-direction: column;
+        }
   >
     <div
       className=
@@ -21457,7 +21538,6 @@ exports[`Storyshots IDE|MessageBar basic warning 1`] = `
           {
             box-sizing: border-box;
             display: flex;
-            flex-direction: row;
             line-height: normal;
             width: 100%;
           }
@@ -21476,6 +21556,9 @@ exports[`Storyshots IDE|MessageBar basic warning 1`] = `
           @media screen and (-ms-high-contrast: active){&:before {
             border: 1px solid WindowText;
             content:  ;
+          }
+          @media only screen and (min-width: 0px) and (max-width: 479px){& {
+            flex-direction: row;
           }
     >
       <div
@@ -21507,7 +21590,7 @@ exports[`Storyshots IDE|MessageBar basic warning 1`] = `
               {
                 -moz-osx-font-smoothing: grayscale;
                 -webkit-font-smoothing: antialiased;
-                color: #ffffff;
+                color: darkgray;
                 display: inline-block;
                 font-family: "FabricMDL2Icons";
                 font-style: normal;
@@ -21551,89 +21634,25 @@ exports[`Storyshots IDE|MessageBar basic warning 1`] = `
               ms-MessageBar-innerText
               {
                 line-height: 16px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
               }
               & a {
                 padding-left: 4px;
               }
+              @media only screen and (min-width: 0px) and (max-width: 479px){& {
+                overflow: visible;
+                white-space: pre-wrap;
+              }
           role="status"
         />
       </div>
-      <button
-        aria-describedby={undefined}
-        aria-disabled={undefined}
-        aria-label="Close"
-        aria-labelledby={undefined}
-        aria-pressed={undefined}
+      <div
         className=
-            ms-Button
-            ms-Button--icon
-            ms-MessageBar-dismissal
+            ms-MessageBar-dismissSingleLine
             {
-              -moz-osx-font-smoothing: grayscale;
-              -webkit-font-smoothing: antialiased;
-              background-color: transparent;
-              border-radius: 0px;
-              border: none;
-              box-sizing: border-box;
-              cursor: pointer;
-              display: inline-block;
-              flex-shrink: 0;
-              font-family: 'Segoe UI', 'Segoe UI Web (West European)', 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', sans-serif;
-              font-size: 14px;
-              font-weight: 400;
-              height: 32px;
-              margin-bottom: 8px;
-              margin-left: 0px;
-              margin-right: 8px;
-              margin-top: 8px;
-              outline: transparent;
-              padding-bottom: 0;
-              padding-left: 4px;
-              padding-right: 4px;
-              padding-top: 0;
-              position: relative;
-              text-align: center;
-              text-decoration: none;
-              user-select: none;
-              vertical-align: top;
-              width: 32px;
-            }
-            &::-moz-focus-inner {
-              border: 0;
-            }
-            .ms-Fabric--isFocusVisible &:focus:after {
-              border: 1px solid #1d1d1d;
-              bottom: 1px;
-              content: "";
-              left: 1px;
-              outline: 1px solid #858585;
-              position: absolute;
-              right: 1px;
-              top: 1px;
-              z-index: 1;
-            }
-            @media screen and (-ms-high-contrast: active){.ms-Fabric--isFocusVisible &:focus:after {
-              border: none;
-              bottom: -2px;
-              left: -2px;
-              outline-color: ButtonText;
-              right: -2px;
-              top: -2px;
-            }
-            &:active > * {
-              left: 0px;
-              position: relative;
-              top: 0px;
-            }
-            &:hover {
-              color: #0D2E1C;
-            }
-            @media screen and (-ms-high-contrast: active){&:hover {
-              border-color: Highlight;
-              color: Highlight;
-            }
-            &:active {
-              color: #217346;
+              display: flex;
             }
             & .ms-Button-icon {
               color: #333;
@@ -21641,66 +21660,151 @@ exports[`Storyshots IDE|MessageBar basic warning 1`] = `
               height: 12px;
               line-height: 12px;
             }
-            @media only screen and (min-width: 0px) and (max-width: 479px){& {
-              margin-bottom: 0px;
-              margin-left: 8px;
-              margin-right: 0px;
-              margin-top: 0px;
-            }
-            @media screen and (-ms-high-contrast: active){& {
-              -ms-high-contrast-adjust: none;
-            }
-        data-is-focusable={true}
-        disabled={undefined}
-        onClick={[Function]}
-        onKeyDown={[Function]}
-        onKeyPress={[Function]}
-        onKeyUp={[Function]}
-        onMouseDown={[Function]}
-        onMouseUp={[Function]}
-        type="button"
       >
-        <div
+        <button
+          aria-describedby={undefined}
+          aria-disabled={undefined}
+          aria-label="Close"
+          aria-labelledby={undefined}
+          aria-pressed={undefined}
           className=
-              ms-Button-flexContainer
+              ms-Button
+              ms-Button--icon
+              ms-MessageBar-dismissal
               {
-                align-items: center;
-                display: flex;
-                flex-wrap: nowrap;
-                height: 100%;
-                justify-content: center;
+                -moz-osx-font-smoothing: grayscale;
+                -webkit-font-smoothing: antialiased;
+                background-color: transparent;
+                border-radius: 0px;
+                border: none;
+                box-sizing: border-box;
+                cursor: pointer;
+                display: inline-block;
+                flex-shrink: 0;
+                font-family: 'Segoe UI', 'Segoe UI Web (West European)', 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', sans-serif;
+                font-size: 14px;
+                font-weight: 400;
+                height: 32px;
+                margin-bottom: 8px;
+                margin-left: 0px;
+                margin-right: 8px;
+                margin-top: 8px;
+                outline: transparent;
+                padding-bottom: 0;
+                padding-left: 4px;
+                padding-right: 4px;
+                padding-top: 0;
+                position: relative;
+                text-align: center;
+                text-decoration: none;
+                user-select: none;
+                vertical-align: top;
+                width: 32px;
               }
+              &::-moz-focus-inner {
+                border: 0;
+              }
+              .ms-Fabric--isFocusVisible &:focus:after {
+                border: 1px solid #1d1d1d;
+                bottom: 1px;
+                content: "";
+                left: 1px;
+                outline: 1px solid #858585;
+                position: absolute;
+                right: 1px;
+                top: 1px;
+                z-index: 1;
+              }
+              @media screen and (-ms-high-contrast: active){.ms-Fabric--isFocusVisible &:focus:after {
+                border: none;
+                bottom: -2px;
+                left: -2px;
+                outline-color: ButtonText;
+                right: -2px;
+                top: -2px;
+              }
+              &:active > * {
+                left: 0px;
+                position: relative;
+                top: 0px;
+              }
+              &:hover {
+                color: #0D2E1C;
+              }
+              @media screen and (-ms-high-contrast: active){&:hover {
+                border-color: Highlight;
+                color: Highlight;
+              }
+              &:active {
+                color: #217346;
+              }
+              & .ms-Button-icon {
+                color: #333;
+                font-size: 12px;
+                height: 12px;
+                line-height: 12px;
+              }
+              @media only screen and (min-width: 0px) and (max-width: 479px){& {
+                margin-bottom: 0px;
+                margin-left: 8px;
+                margin-right: 0px;
+                margin-top: 0px;
+              }
+              @media screen and (-ms-high-contrast: active){& {
+                -ms-high-contrast-adjust: none;
+              }
+          data-is-focusable={true}
+          disabled={undefined}
+          onClick={[Function]}
+          onKeyDown={[Function]}
+          onKeyPress={[Function]}
+          onKeyUp={[Function]}
+          onMouseDown={[Function]}
+          onMouseUp={[Function]}
+          type="button"
         >
-          <i
-            aria-hidden={true}
+          <div
             className=
-                ms-Button-icon
+                ms-Button-flexContainer
                 {
-                  -moz-osx-font-smoothing: grayscale;
-                  -webkit-font-smoothing: antialiased;
-                  display: inline-block;
-                  flex-shrink: 0;
-                  font-family: "FabricMDL2Icons";
-                  font-size: 16px;
-                  font-style: normal;
-                  font-weight: normal;
-                  height: 16px;
-                  line-height: 16px;
-                  margin-bottom: 0;
-                  margin-left: 4px;
-                  margin-right: 4px;
-                  margin-top: 0;
-                  speak: none;
-                  text-align: center;
-                  vertical-align: middle;
+                  align-items: center;
+                  display: flex;
+                  flex-wrap: nowrap;
+                  height: 100%;
+                  justify-content: center;
                 }
-            data-icon-name="Clear"
-            role="presentation"
           >
-            
-          </i>
-        </div>
-      </button>
+            <i
+              aria-hidden={true}
+              className=
+                  ms-Button-icon
+                  {
+                    -moz-osx-font-smoothing: grayscale;
+                    -webkit-font-smoothing: antialiased;
+                    display: inline-block;
+                    flex-shrink: 0;
+                    font-family: "FabricMDL2Icons";
+                    font-size: 16px;
+                    font-style: normal;
+                    font-weight: normal;
+                    height: 16px;
+                    line-height: 16px;
+                    margin-bottom: 0;
+                    margin-left: 4px;
+                    margin-right: 4px;
+                    margin-top: 0;
+                    speak: none;
+                    text-align: center;
+                    vertical-align: middle;
+                  }
+              data-icon-name="Clear"
+              role="presentation"
+            >
+              
+            </i>
+          </div>
+        </button>
+      </div>
     </div>
   </div>
 </div>
