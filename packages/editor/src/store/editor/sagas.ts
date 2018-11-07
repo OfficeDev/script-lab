@@ -147,7 +147,13 @@ function* makeAddIntellisenseRequestSaga() {
   let urlsToFetch = urls.filter(url => /^.*\/index\.d\.ts$/.test(url))
 
   while (urlsToFetch.length > 0) {
-    const urlContents = yield urlsToFetch.map(url => fetch(url).then(resp => resp.text())) // TODO: error handling
+    const urlContents = yield urlsToFetch
+      .map(url =>
+        fetch(url)
+          .then(resp => (resp.ok ? resp.text() : Promise.reject(resp.statusText)))
+          .catch(err => null),
+      )
+      .filter(x => x !== null)
 
     const urlContentPairing = zip(urlsToFetch, urlContents)
 
