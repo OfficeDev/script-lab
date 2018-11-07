@@ -17,9 +17,6 @@ interface ISnippet {
   api_set?: {
     [index: string]: number;
   };
-  platform: string;
-  created_at: number;
-  modified_at: number;
   order?: number;
 
   script: IContentLanguagePair;
