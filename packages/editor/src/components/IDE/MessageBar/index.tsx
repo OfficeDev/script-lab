@@ -8,7 +8,7 @@ import { messageBar } from '../../../store/actions'
 import { getMessageBarStyle } from './helpers'
 
 import './animations.css'
-import { MessageBarButton, DefaultButton } from 'office-ui-fabric-react/lib/Button'
+import { DefaultButton } from 'office-ui-fabric-react/lib/Button'
 
 interface IPropsFromRedux {
   messageBarProps: IMessageBarState
