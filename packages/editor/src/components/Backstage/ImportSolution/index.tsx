@@ -4,17 +4,21 @@ import Content from '../Content'
 import { TextField } from 'office-ui-fabric-react/lib/TextField'
 import { PrimaryButton } from 'office-ui-fabric-react/lib/Button'
 
+import YAML from 'js-yaml'
+import { convertSnippetToSolution } from '../../../utils'
+
 interface IProps {
   importGist: (gistId?: string, gist?: string) => void
 }
 
 interface IState {
   importFieldText: string
+  errorMessage: string | undefined
 }
 
 // TODO: incorp. localization
 class ImportSolution extends Component<IProps, IState> {
-  state = { importFieldText: '' }
+  state = { importFieldText: '', errorMessage: undefined }
 
   render() {
     return (
@@ -26,8 +30,9 @@ class ImportSolution extends Component<IProps, IState> {
         <TextField
           multiline={true}
           rows={8}
-          onChanged={this.updateImportFieldText}
+          onChange={this.updateImportFieldText}
           placeholder="e.g.: https://gist.github.com/sampleGistId"
+          errorMessage={this.state.errorMessage}
         />
         <PrimaryButton
           style={{ marginTop: '1.5rem', float: 'right' }}
@@ -38,22 +43,31 @@ class ImportSolution extends Component<IProps, IState> {
     )
   }
 
-  private updateImportFieldText = (importFieldText: string) =>
-    this.setState({ importFieldText })
+  private updateImportFieldText = (event: any, newValue?: string | undefined) =>
+    this.setState({ importFieldText: newValue || '' })
 
   private onImportClick = () => {
     const input = this.state.importFieldText.trim()
     let gistId
     let gist
+    try {
+      if (input.startsWith('https://gist.github.com/')) {
+        gistId = input.split('/').pop()
+      } else {
+        gist = input
+        const content = YAML.safeLoad(input)
+        const solutionTest = convertSnippetToSolution(content)
+        console.log({ content, solutionTest })
+      }
 
-    if (input.startsWith('https://gist.github.com/')) {
-      gistId = input.split('/').pop()
-    } else {
-      gist = input
+      this.props.importGist(gistId, gist)
+      this.setState({ importFieldText: '', errorMessage: undefined })
+    } catch (err) {
+      console.error('catchign errro')
+      this.setState({
+        errorMessage: 'You must provide valid gist YAML or a valid gist url.',
+      })
     }
-
-    this.props.importGist(gistId, gist)
-    this.setState({ importFieldText: '' })
   }
 }
 
