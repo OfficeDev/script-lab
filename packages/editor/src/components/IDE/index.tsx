@@ -31,7 +31,6 @@ interface IPropsFromRedux {
   hasLoaded: boolean
   activeSolution: ISolution
   activeFile: IFile
-  isCustomFunctionsSolution: boolean
 }
 
 const mapStateToProps = (state: IReduxState): Partial<IPropsFromRedux> => ({
@@ -39,7 +38,6 @@ const mapStateToProps = (state: IReduxState): Partial<IPropsFromRedux> => ({
   hasLoaded: state.editor.hasLoaded,
   activeSolution: selectors.editor.getActiveSolution(state),
   activeFile: selectors.editor.getActiveFile(state),
-  isCustomFunctionsSolution: selectors.customFunctions.getIsCurrentSolutionCF(state),
 })
 
 interface IActionsFromRedux {
@@ -63,13 +61,7 @@ class IDE extends Component<IIDE> {
     this.props.openFile(this.props.activeSolution.id, fileId)
 
   render() {
-    const {
-      isVisible,
-      hasLoaded,
-      activeSolution,
-      activeFile,
-      isCustomFunctionsSolution,
-    } = this.props
+    const { isVisible, hasLoaded, activeSolution, activeFile } = this.props
     return (
       <Layout
         style={
