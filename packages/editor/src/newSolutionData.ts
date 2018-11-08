@@ -1,10 +1,10 @@
 import uuidv4 from 'uuid'
-import { LIBRARIES_FILE_NAME } from './constants'
+import { LIBRARIES_FILE_NAME, SCRIPT_FILE_NAME } from './constants'
 
 export const getBoilerplateFiles = (timestamp: number): IFile[] =>
   [
     {
-      name: 'index.ts',
+      name: SCRIPT_FILE_NAME,
       language: 'TypeScript',
       content: `$("#run").click(() => tryCatch(run));
 
@@ -69,6 +69,7 @@ export const getBoilerplateSolution = (
   host,
   dateCreated: timestamp,
   dateLastModified: timestamp,
+  options: {},
   files,
 })
 

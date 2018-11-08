@@ -77,6 +77,7 @@ const getSettingsSolution = (
 ): ISolutionWithFileIds => ({
   id: SETTINGS_SOLUTION_ID,
   name: 'Settings',
+  options: {},
   dateCreated: timestamp,
   dateLastModified: timestamp,
   host: 'ALL',

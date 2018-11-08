@@ -28,6 +28,6 @@
 
 .message-bar.active {
   top: 0;
-  height: 4.8rem;
+  height: auto;
   opacity: 1;
 }

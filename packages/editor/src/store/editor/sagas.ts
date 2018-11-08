@@ -31,17 +31,20 @@ export default function* editorWatcher() {
 }
 
 export function* onEditorOpenSaga(action: ActionType<typeof editor.open>) {
-  const activeSolution = yield select(selectors.editor.getActiveSolution)
-  const activeFile = yield select(selectors.editor.getActiveFile)
+  const currentOpenSolution = yield select(selectors.editor.getActiveSolution)
+  const currentOpenFile = yield select(selectors.editor.getActiveFile)
   yield put(editor.setActive(action.payload))
   yield put(push(PATHS.EDITOR))
 
-  if (activeSolution.id !== action.payload.solutionId) {
-    yield put(editor.newSolutionOpened(action.payload.solutionId))
+  const solutionToOpen = yield select(selectors.solutions.get, action.payload.solutionId)
+  const fileToOpen = yield select(selectors.solutions.getFile, action.payload.fileId)
+
+  if (currentOpenSolution.id !== action.payload.solutionId) {
+    yield put(editor.newSolutionOpened(solutionToOpen))
   }
 
-  if (activeFile.id !== action.payload.fileId) {
-    yield put(editor.newFileOpened(action.payload.solutionId, action.payload.fileId))
+  if (currentOpenFile.id !== action.payload.fileId) {
+    yield put(editor.newFileOpened(solutionToOpen, fileToOpen))
   }
 }
 

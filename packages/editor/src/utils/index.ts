@@ -1,5 +1,5 @@
 import uuidv4 from 'uuid'
-import { LIBRARIES_FILE_NAME } from '../constants'
+import { LIBRARIES_FILE_NAME, SCRIPT_FILE_NAME } from '../constants'
 
 export const getObjectValues = (dict: object): any[] =>
   Object.keys(dict).map(key => dict[key])
@@ -52,7 +52,7 @@ export const convertSnippetToSolution = (snippet: ISnippet): ISolution => {
   const { name, description, script, template, style, libraries, host } = snippet
 
   const files = [
-    createFile('index.ts', script),
+    createFile(SCRIPT_FILE_NAME, script),
     createFile('index.html', template),
     createFile('index.css', style),
     createFile(LIBRARIES_FILE_NAME, { content: libraries, language: 'libraries' }),
@@ -63,6 +63,7 @@ export const convertSnippetToSolution = (snippet: ISnippet): ISolution => {
     name,
     host,
     description,
+    options: {},
     files,
     dateCreated: Date.now(),
     dateLastModified: Date.now(),
@@ -74,7 +75,7 @@ export const convertSnippetToSolution = (snippet: ISnippet): ISolution => {
 export const convertSolutionToSnippet = (solution: ISolution): ISnippet => {
   const { id, name, description, dateCreated, dateLastModified, host, files } = solution
 
-  const script: IFile = files.find(file => file.name === 'index.ts')!
+  const script: IFile = files.find(file => file.name === SCRIPT_FILE_NAME)!
   const template: IFile = files.find(file => file.name === 'index.html')!
   const style: IFile = files.find(file => file.name === 'index.css')!
   const libraries: IFile = files.find(file => file.name === LIBRARIES_FILE_NAME)!

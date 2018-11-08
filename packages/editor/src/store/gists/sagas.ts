@@ -12,6 +12,23 @@ import { ConflictResolutionOptions } from '../../interfaces/enums'
 
 import { createSolutionSaga } from '../solutions/sagas'
 
+export default function* gistsWatcher() {
+  yield takeEvery(getType(gists.fetchMetadata.request), fetchAllGistMetadataSaga)
+  yield takeEvery(getType(gists.fetchMetadata.success), onFetchGistMetadataSuccessSaga)
+
+  yield takeEvery(getType(gists.get.request), getGistSaga)
+  yield takeEvery(getType(gists.get.success), handleGetGistSuccessSaga)
+
+  yield takeEvery(getType(gists.create.request), createGistSaga)
+  yield takeEvery(getType(gists.create.success), handleCreateGistSuccessSaga)
+  yield takeEvery(getType(gists.create.success), fetchAllGistMetadataSaga)
+
+  yield takeEvery(getType(gists.update.request), updateGistSaga)
+
+  yield takeEvery(getType(gists.importSnippet.request), importSnippetSaga)
+  yield takeEvery(getType(gists.importSnippet.success), handleImportSnippetSuccessSaga)
+}
+
 export function* fetchAllGistMetadataSaga() {
   const token = yield select(selectors.github.getToken)
   if (!token) {
@@ -212,6 +229,12 @@ function* importSnippetSaga(action: ActionType<typeof gists.importSnippet.reques
         const gistFiles = response.files
         const snippet = YAML.safeLoad(gistFiles[Object.keys(gistFiles)[0]].content)
         const solution = convertSnippetToSolution(snippet)
+
+        const username = yield select(selectors.github.getUsername)
+        if (response.owner.login !== username) {
+          solution.options.isUntrusted = true
+        }
+
         yield put(gists.importSnippet.success({ solution }))
       } else {
         throw error
@@ -219,6 +242,7 @@ function* importSnippetSaga(action: ActionType<typeof gists.importSnippet.reques
     } else if (action.payload.gist) {
       const snippet = YAML.safeLoad(action.payload.gist)
       const solution = convertSnippetToSolution(snippet)
+      solution.options.isUntrusted = true
       yield put(gists.importSnippet.success({ solution }))
     } else {
       throw new Error('Either a gistId or gist must be specified')
@@ -232,21 +256,4 @@ function* handleImportSnippetSuccessSaga(
   action: ActionType<typeof gists.importSnippet.success>,
 ) {
   yield call(createSolutionSaga, action.payload.solution)
-}
-
-export default function* gistsWatcher() {
-  yield takeEvery(getType(gists.fetchMetadata.request), fetchAllGistMetadataSaga)
-  yield takeEvery(getType(gists.fetchMetadata.success), onFetchGistMetadataSuccessSaga)
-
-  yield takeEvery(getType(gists.get.request), getGistSaga)
-  yield takeEvery(getType(gists.get.success), handleGetGistSuccessSaga)
-
-  yield takeEvery(getType(gists.create.request), createGistSaga)
-  yield takeEvery(getType(gists.create.success), handleCreateGistSuccessSaga)
-  yield takeEvery(getType(gists.create.success), fetchAllGistMetadataSaga)
-
-  yield takeEvery(getType(gists.update.request), updateGistSaga)
-
-  yield takeEvery(getType(gists.importSnippet.request), importSnippetSaga)
-  yield takeEvery(getType(gists.importSnippet.success), handleImportSnippetSuccessSaga)
 }

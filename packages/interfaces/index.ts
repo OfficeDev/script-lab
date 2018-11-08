@@ -1,9 +1,4 @@
 // script-lab
-interface IContentLanguagePair {
-  content: string;
-  language: string;
-}
-
 interface ISnippet {
   id: string;
   gist?: string;
@@ -28,21 +23,18 @@ interface ISnippet {
   libraries: string;
 }
 
-interface ITimestamps {
-  dateCreated: number;
-  dateLastModified: number;
+interface IContentLanguagePair {
+  content: string;
+  language: string;
 }
 
-interface IEditableSolutionProperties {
-  name: string;
-  description?: string;
-  source?: ISourceInformation;
-  isDirectScriptExecutionSolution?: boolean;
+// SOLUTION
+interface ISolution extends ISolutionWithoutFiles {
+  files: IFile[];
 }
 
-interface ISourceInformation {
-  id: string;
-  origin: "gist";
+interface ISolutionWithFileIds extends ISolutionWithoutFiles {
+  files: string[];
 }
 
 interface ISolutionWithoutFiles
@@ -52,12 +44,26 @@ interface ISolutionWithoutFiles
   host: string;
 }
 
-interface ISolutionWithFileIds extends ISolutionWithoutFiles {
-  files: string[];
+interface IEditableSolutionProperties {
+  name: string;
+  description?: string;
+  source?: ISourceInformation;
+  options: Partial<ISolutionOptions>;
 }
 
-interface ISolution extends ISolutionWithoutFiles {
-  files: IFile[];
+interface ISolutionOptions {
+  isDirectScriptExecution: boolean;
+  isCustomFunctionsSolution: boolean;
+  isUntrusted: boolean;
+}
+
+interface ISourceInformation {
+  id: string;
+  origin: "gist";
+}
+
+interface IFile extends IEditableFileProperties, ITimestamps {
+  id: string;
 }
 
 interface IEditableFileProperties {
@@ -66,10 +72,12 @@ interface IEditableFileProperties {
   content: string;
 }
 
-interface IFile extends IEditableFileProperties, ITimestamps {
-  id: string;
+interface ITimestamps {
+  dateCreated: number;
+  dateLastModified: number;
 }
 
+// SAMPLES
 interface ISampleMetadata {
   id: string;
   host: string;
@@ -85,6 +93,7 @@ interface ISampleMetadataByGroup {
   [group: string]: ISampleMetadata[];
 }
 
+// GIST
 interface ISharedGistMetadata {
   id: string;
   host: string;
@@ -94,6 +103,7 @@ interface ISharedGistMetadata {
   isPublic: boolean;
 }
 
+// THEME
 interface IThemePrimaryColors {
   primaryDarkest: string;
   primaryDarker: string;

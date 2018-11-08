@@ -16,6 +16,7 @@ export const getExampleSolution = (i: number): ISolution => ({
   host: 'WEB',
   dateCreated: i,
   dateLastModified: 2 * i,
+  options: {},
   files: [getExampleFile(i + 1)],
 })
 

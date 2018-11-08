@@ -29,3 +29,15 @@ export const getDefault = createAsyncAction(
   'GET_DEFAULT_SAMPLE_SUCCESS',
   'GET_DEFAULT_SAMPLE_FAILURE',
 )<void, { solution: ISolution }, Error>()
+
+export const updateOptions = createAction('SOLUTIONS_UPDATE_OPTIONS', resolve => {
+  return (props: { solution: ISolution; options: Partial<ISolutionOptions> }) =>
+    resolve(props)
+})
+
+export const scriptNeedsParsing = createAction(
+  'SOLUTION_SCRIPT_NEEDS_PARSING',
+  resolve => {
+    return (props: { solution: ISolution; file: IFile }) => resolve(props)
+  },
+)
