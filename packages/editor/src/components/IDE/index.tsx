@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import Header from './Header'
 import PivotBar from '../PivotBar'
 import MessageBar from './MessageBar'
+import Dialog from './Dialog'
 import Editor from './Editor'
 import Footer from './Footer'
 
@@ -80,6 +81,7 @@ class IDE extends Component<IIDE> {
           onSelect={this.changeActiveFile}
         />
         <MessageBar />
+        <Dialog />
         <ContentWrapper>
           <Editor
             activeSolution={activeSolution}
