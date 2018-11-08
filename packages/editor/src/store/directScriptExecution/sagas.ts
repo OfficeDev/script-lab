@@ -7,8 +7,9 @@ import { SCRIPT_FILE_NAME } from '../../constants'
 
 export default function* directScriptExecutionWatcher() {
   yield takeEvery(getType(directScriptExecution.fetchMetadata.request), fetchMetadataSaga)
-  yield takeEvery(getType(editor.newSolutionOpened), fetchMetadataForSolutionSaga)
-  yield takeEvery(getType(solutions.edit), fetchMetadataForSolutionSaga)
+
+  yield takeEvery(getType(solutions.scriptNeedsParsing), fetchMetadataForSolutionSaga)
+
   yield takeEvery(
     getType(directScriptExecution.runFunction.request),
     directScriptExecutionFunctionSaga,
@@ -28,39 +29,11 @@ function* fetchMetadataSaga() {
 }
 
 function* fetchMetadataForSolutionSaga(
-  action: ActionType<typeof editor.newSolutionOpened> | ActionType<typeof solutions.edit>,
+  action: ActionType<typeof solutions.scriptNeedsParsing>,
 ) {
-  let solutionId
-  switch (action.type) {
-    case getType(editor.newSolutionOpened):
-      solutionId = action.payload
-      break
-    case getType(solutions.edit):
-      if (!action.payload.fileId) {
-        return
-      }
-      const file: IFile = yield select(selectors.solutions.getFile, action.payload.fileId)
-      if (file.language === 'typescript') {
-        solutionId = action.payload.id
-        break
-      } else {
-        return
-      }
-    default:
-      throw new Error(`Unrecognized type.`)
-  }
+  const { file } = action.payload
 
-  const solution = yield select(selectors.solutions.get, solutionId)
-  if (!solution) {
-    return
-  }
-
-  const script = solution.files.find(file => file.name === SCRIPT_FILE_NAME)
-  if (!script) {
-    return
-  }
-
-  const noUIFunctionMetadata: string[] = yield call(findAllNoUIFunctions, script.content)
+  const noUIFunctionMetadata: string[] = yield call(findAllNoUIFunctions, file.content)
 
   const formattedMetadata = noUIFunctionMetadata.map(name => ({
     name,

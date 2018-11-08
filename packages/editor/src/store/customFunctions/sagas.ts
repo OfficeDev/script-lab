@@ -2,11 +2,14 @@ import { put, takeEvery, call, select } from 'redux-saga/effects'
 import { getType, ActionType } from 'typesafe-actions'
 
 import { request } from '../../services/general'
-import { customFunctions } from '../actions'
+import { customFunctions, solutions } from '../actions'
 import selectors from '../selectors'
 
 import { convertSolutionToSnippet } from '../../utils'
-import { getCustomFunctionEngineStatus } from '../../utils/customFunctions'
+import {
+  getCustomFunctionEngineStatus,
+  isCustomFunctionScript,
+} from '../../utils/customFunctions'
 import { registerMetadata } from '../../utils/customFunctions'
 
 import { RUNNER_URL, PATHS } from '../../constants'
@@ -34,6 +37,8 @@ export default function* customFunctionsWatcher() {
   )
 
   yield takeEvery(getType(customFunctions.openDashboard), openDashboardSaga)
+
+  yield takeEvery(getType(solutions.scriptNeedsParsing), checkIfIsCustomFunctionSaga)
 }
 
 export function* fetchCustomFunctionsMetadataSaga() {
@@ -85,4 +90,14 @@ function* fetchHeartbeatSaga() {
 
 function* openDashboardSaga() {
   yield put(push(PATHS.CUSTOM_FUNCTIONS))
+}
+
+function* checkIfIsCustomFunctionSaga(
+  action: ActionType<typeof solutions.scriptNeedsParsing>,
+) {
+  const { solution, file } = action.payload
+
+  const isCustomFunctionsSolution = isCustomFunctionScript(file.content)
+
+  yield put(solutions.updateOptions({ solution, options: { isCustomFunctionsSolution } }))
 }

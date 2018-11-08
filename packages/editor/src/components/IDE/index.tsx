@@ -80,20 +80,10 @@ class IDE extends Component<IIDE> {
       >
         <Header solution={activeSolution} file={activeFile} />
         <PivotBar
-          items={activeSolution.files
-            .filter(file => {
-              if (isCustomFunctionsSolution) {
-                return [SCRIPT_FILE_NAME, LIBRARIES_FILE_NAME].includes(file.name)
-              } else if (activeSolution.options.isDirectScriptExecution) {
-                return file.name === SCRIPT_FILE_NAME
-              } else {
-                return true
-              }
-            })
-            .map(file => ({
-              key: file.id,
-              text: FILE_NAME_MAP[file.name] || file.name,
-            }))}
+          items={activeSolution.files.map(file => ({
+            key: file.id,
+            text: FILE_NAME_MAP[file.name] || file.name,
+          }))}
           selectedKey={activeFile.id}
           onSelect={this.changeActiveFile}
         />

@@ -1,6 +1,10 @@
 import { IState } from '../reducer'
 import { getObjectValues } from '../../utils'
-import { SETTINGS_SOLUTION_ID } from '../../constants'
+import {
+  SETTINGS_SOLUTION_ID,
+  SCRIPT_FILE_NAME,
+  LIBRARIES_FILE_NAME,
+} from '../../constants'
 
 // solutions
 export const get = (state: IState, id: string): ISolution | null => {
@@ -8,7 +12,20 @@ export const get = (state: IState, id: string): ISolution | null => {
   if (!solutionMetadata) {
     return null
   }
-  const files = solutionMetadata.files.map(fileId => getFile(state, fileId))
+
+  const { isCustomFunctionsSolution, isDirectScriptExecution } = solutionMetadata.options
+  const files = solutionMetadata.files
+    .map(fileId => getFile(state, fileId))
+    .filter(file => {
+      if (isCustomFunctionsSolution) {
+        return [SCRIPT_FILE_NAME, LIBRARIES_FILE_NAME].includes(file.name)
+      } else if (isDirectScriptExecution) {
+        return file.name === SCRIPT_FILE_NAME
+      } else {
+        return true
+      }
+    })
+
   return { ...solutionMetadata, files }
 }
 

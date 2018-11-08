@@ -6,8 +6,12 @@ import { fetchYaml } from '../../services/general'
 import selectors from '../selectors'
 import { convertSnippetToSolution } from '../../utils'
 import { getBoilerplate } from '../../newSolutionData'
+import { SCRIPT_FILE_NAME } from '../../constants'
 
 export default function* solutionsWatcher() {
+  yield takeEvery(getType(solutions.edit), onSolutionOpenOrFileEditSaga)
+  yield takeEvery(getType(editor.newSolutionOpened), onSolutionOpenOrFileEditSaga)
+
   yield takeEvery(getType(solutions.create), getDefaultSaga)
   yield takeEvery(getType(solutions.getDefault.success), handleGetDefaultSuccessSaga)
   yield takeEvery(getType(solutions.getDefault.failure), handleGetDefaultFailureSaga)
@@ -15,6 +19,43 @@ export default function* solutionsWatcher() {
   yield takeEvery(getType(solutions.updateOptions), updateOptionsSaga)
 
   yield takeEvery(getType(solutions.remove), removeSolutionSaga)
+}
+
+function* onSolutionOpenOrFileEditSaga(
+  action: ActionType<typeof solutions.edit> | ActionType<typeof editor.newSolutionOpened>,
+) {
+  let solutionId
+  switch (action.type) {
+    case getType(editor.newSolutionOpened):
+      solutionId = action.payload
+      break
+
+    case getType(solutions.edit):
+      if (!action.payload.fileId) {
+        return
+      }
+      const file: IFile = yield select(selectors.solutions.getFile, action.payload.fileId)
+      if (file.language === 'typescript') {
+        solutionId = action.payload.id
+        break
+      } else {
+        return
+      }
+    default:
+      throw new Error(`Unrecognized type.`)
+  }
+
+  const solution = yield select(selectors.solutions.get, solutionId)
+  if (!solution) {
+    return
+  }
+
+  const file = solution.files.find(file => file.name === SCRIPT_FILE_NAME)
+  if (!file) {
+    return
+  }
+
+  yield put(solutions.scriptNeedsParsing({ solution, file }))
 }
 
 export function* getDefaultSaga() {

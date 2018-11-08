@@ -59,12 +59,8 @@ export const getIsCurrentSolutionCF = (state: IState): boolean => {
   if (!solution) {
     return false
   }
-  const script = solution.files.find(file => file.name === SCRIPT_FILE_NAME)
-  if (script) {
-    return isCustomFunctionScript(script.content)
-  } else {
-    return false
-  }
+
+  return !!solution.options.isCustomFunctionsSolution
 }
 
 const filterCustomFunctions = (solutions: ISolution[]): ISolution[] => {
