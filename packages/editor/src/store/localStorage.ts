@@ -63,32 +63,22 @@ export const saveState = (state: IState) => {
     // save github
     writeIfChanged(
       selectors.github.getProfilePicUrl,
-      () => 'github-profile-pic-url',
+      'github-profile-pic-url',
       state,
       lastSavedState,
     )
 
     writeIfChanged(
       selectors.github.getToken,
-      () => 'github-access-token',
+      'github-access-token',
       state,
       lastSavedState,
     )
 
-    writeIfChanged(
-      selectors.github.getUsername,
-      () => 'github-username',
-      state,
-      lastSavedState,
-    )
+    writeIfChanged(selectors.github.getUsername, 'github-username', state, lastSavedState)
 
     // save settings
-    writeIfChanged(
-      selectors.settings.getUser,
-      () => 'userSettings',
-      state,
-      lastSavedState,
-    )
+    writeIfChanged(selectors.settings.getUser, 'userSettings', state, lastSavedState)
 
     const activeSolution = selectors.editor.getActiveSolution(state)
     if (
@@ -155,24 +145,15 @@ function loadAllSolutionsAndFiles(): {
           files: solution.files.map(({ id }) => id),
         }
       })
+
+    solutions = normalizeSolutions(solutions)
   } else {
     // No solutions detected in above format, attempting to look for legacy format
-    console.log('trying to get legacy format!')
     // parsing for the load
     solutions = JSON.parse(localStorage.getItem('solutions') || '{}')
     files = JSON.parse(localStorage.getItem('files') || '{}')
 
-    // normalizing solutions
-    const defaults = getBoilerplate('')
-    solutions = Object.keys(solutions)
-      .map(key => solutions[key])
-      .reduce(
-        (newSolutions, solution) => ({
-          ...newSolutions,
-          [solution.id]: { ...defaults, ...solution },
-        }),
-        {},
-      )
+    solutions = normalizeSolutions(solutions)
 
     // writing those back for subsequent loads
     Object.keys(solutions)
@@ -185,6 +166,21 @@ function loadAllSolutionsAndFiles(): {
   }
 
   return { solutions, files }
+}
+
+function normalizeSolutions(solutions: {
+  [id: string]: ISolutionWithFileIds
+}): { [id: string]: ISolutionWithFileIds } {
+  const defaults = getBoilerplate('')
+  return Object.keys(solutions)
+    .map(key => solutions[key])
+    .reduce(
+      (newSolutions, solution) => ({
+        ...newSolutions,
+        [solution.id]: { ...defaults, ...solution },
+      }),
+      {},
+    )
 }
 
 function loadSolution(id: string): ISolution {
@@ -278,15 +274,16 @@ function getAllLocalStorageKeys(): string[] {
 
 function writeIfChanged(
   selector: (state: IState) => any,
-  getKey: (selectionResult: any) => string,
+  getKey: ((selectionResult: any) => string) | string,
   currentState: IState,
   lastState: IState | undefined,
   root: string = '',
 ) {
   const current = selector(currentState)
   const last = lastState ? selector(lastState) : null
+  const key = typeof getKey === 'string' ? getKey : getKey(current)
   if (current && (!last || !isEqual(current, last))) {
-    writeItem(root, getKey(current), current)
+    writeItem(root, key, current)
   }
 }
 
