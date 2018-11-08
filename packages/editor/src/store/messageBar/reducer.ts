@@ -86,6 +86,14 @@ const messageBarReducer = (
         link: null,
       }
 
+    case getType(gists.importSnippet.failure):
+      return {
+        isVisible: true,
+        style: MessageBarType.error,
+        text: `Failed to import gist!`,
+        link: null,
+      }
+
     case getType(messageBar.show):
       return {
         isVisible: true,

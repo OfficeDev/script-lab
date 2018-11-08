@@ -11,6 +11,8 @@ import { convertSnippetToSolution, convertSolutionToSnippet } from '../../utils'
 import { ConflictResolutionOptions } from '../../interfaces/enums'
 
 import { createSolutionSaga } from '../solutions/sagas'
+import { push } from 'connected-react-router'
+import { PATHS } from '../../constants'
 
 export default function* gistsWatcher() {
   yield takeEvery(getType(gists.fetchMetadata.request), fetchAllGistMetadataSaga)
@@ -249,6 +251,7 @@ function* importSnippetSaga(action: ActionType<typeof gists.importSnippet.reques
     }
   } catch (e) {
     yield put(gists.importSnippet.failure(e))
+    yield put(push(PATHS.EDITOR))
   }
 }
 
