@@ -150,7 +150,16 @@ function* makeAddIntellisenseRequestSaga() {
   let urlsToFetch = urls.filter(url => /^.*\/index\.d\.ts$/.test(url))
 
   while (urlsToFetch.length > 0) {
-    const urlContents = yield urlsToFetch.map(url => fetch(url).then(resp => resp.text())) // TODO: error handling
+    const urlContents = yield urlsToFetch
+      .map(url =>
+        fetch(url)
+          .then(resp => (resp.ok ? resp.text() : Promise.reject(resp.statusText)))
+          .catch(err => {
+            console.error(err)
+            return null
+          }),
+      )
+      .filter(x => x !== null)
 
     const urlContentPairing = zip(urlsToFetch, urlContents)
 
@@ -204,9 +213,7 @@ function* resizeEditorSaga() {
 }
 
 function* applyFormattingSaga() {
-  console.log('trying to apply formatting')
   if (monacoEditor) {
-    console.log('applying formatting')
     setTimeout(
       () =>
         monacoEditor.trigger(
