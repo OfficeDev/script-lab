@@ -6,6 +6,7 @@ import { getBoilerplate } from '../../../newSolutionData'
 import { ITheme as IFabricTheme } from 'office-ui-fabric-react/lib/Styling'
 import { getCommandBarFabricTheme } from '../../../theme'
 import { ICommandBarProps } from 'office-ui-fabric-react/lib/CommandBar'
+import { SCRIPT_FILE_NAME } from '../../../constants'
 
 const host = 'EXCEL'
 
@@ -39,7 +40,7 @@ describe('Header should render properly in basic case', () => {
   const solution = normalExample
   const headerProps = {
     solution,
-    file: solution.files.find(file => file.name === 'index.ts')!,
+    file: solution.files.find(file => file.name === SCRIPT_FILE_NAME)!,
     isLoggedIn: true,
     isLoggingInOrOut: false,
     isRunnableOnThisHost: true,
@@ -92,7 +93,7 @@ describe("Header shouldn't show run button if isn't runnable", () => {
   const solution = normalExample
   const headerProps = {
     solution,
-    file: solution.files.find(file => file.name === 'index.ts')!,
+    file: solution.files.find(file => file.name === SCRIPT_FILE_NAME)!,
     isLoggedIn: true,
     isLoggingInOrOut: false,
     isRunnableOnThisHost: false,

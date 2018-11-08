@@ -3,6 +3,7 @@ import { getType, ActionType } from 'typesafe-actions'
 import { directScriptExecution, editor, solutions } from '../actions'
 import selectors from '../selectors'
 import { findAllNoUIFunctions, execute, terminateAll } from './utilities'
+import { SCRIPT_FILE_NAME } from '../../constants'
 
 export default function* directScriptExecutionWatcher() {
   yield takeEvery(getType(directScriptExecution.fetchMetadata.request), fetchMetadataSaga)
@@ -20,7 +21,7 @@ function* fetchMetadataSaga() {
 
   const solutionNamesAndScripts = solutions.map(solution => ({
     name: solution.name,
-    script: solution.files.find(file => file.name === 'index.ts'),
+    script: solution.files.find(file => file.name === SCRIPT_FILE_NAME),
   }))
 
   // TODO:!!!
@@ -54,7 +55,7 @@ function* fetchMetadataForSolutionSaga(
     return
   }
 
-  const script = solution.files.find(file => file.name === 'index.ts')
+  const script = solution.files.find(file => file.name === SCRIPT_FILE_NAME)
   if (!script) {
     return
   }

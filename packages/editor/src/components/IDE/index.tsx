@@ -7,7 +7,12 @@ import Editor from './Editor'
 import Footer from './Footer'
 
 import { Layout, ContentWrapper } from './styles'
-import { NULL_SOLUTION, NULL_FILE, LIBRARIES_FILE_NAME } from '../../constants'
+import {
+  NULL_SOLUTION,
+  NULL_FILE,
+  LIBRARIES_FILE_NAME,
+  SCRIPT_FILE_NAME,
+} from '../../constants'
 
 import { connect } from 'react-redux'
 import { IState as IReduxState } from '../../store/reducer'
@@ -15,7 +20,7 @@ import selectors from '../../store/selectors'
 import { editor as editorActions } from '../../store/actions'
 
 const FILE_NAME_MAP = {
-  'index.ts': 'Script',
+  [SCRIPT_FILE_NAME]: 'Script',
   'index.html': 'HTML',
   'index.css': 'CSS',
   [LIBRARIES_FILE_NAME]: 'Libraries',
@@ -78,9 +83,9 @@ class IDE extends Component<IIDE> {
           items={activeSolution.files
             .filter(file => {
               if (isCustomFunctionsSolution) {
-                return ['index.ts', LIBRARIES_FILE_NAME].includes(file.name)
+                return [SCRIPT_FILE_NAME, LIBRARIES_FILE_NAME].includes(file.name)
               } else if (activeSolution.options.isDirectScriptExecution) {
-                return file.name === 'index.ts'
+                return file.name === SCRIPT_FILE_NAME
               } else {
                 return true
               }

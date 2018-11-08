@@ -9,7 +9,7 @@ import {
 } from '../solutions/selectors'
 
 import { isCustomFunctionScript } from '../../utils/customFunctions'
-import { PATHS } from '../../constants'
+import { PATHS, SCRIPT_FILE_NAME } from '../../constants'
 
 export const getMetadata = (state: IState) => state.customFunctions.metadata
 export const getMetadataSummaryItems: (
@@ -59,7 +59,7 @@ export const getIsCurrentSolutionCF = (state: IState): boolean => {
   if (!solution) {
     return false
   }
-  const script = solution.files.find(file => file.name === 'index.ts')
+  const script = solution.files.find(file => file.name === SCRIPT_FILE_NAME)
   if (script) {
     return isCustomFunctionScript(script.content)
   } else {
@@ -70,7 +70,7 @@ export const getIsCurrentSolutionCF = (state: IState): boolean => {
 const filterCustomFunctions = (solutions: ISolution[]): ISolution[] => {
   return solutions
     .map(solution => {
-      const script = solution.files.find(file => file.name === 'index.ts')
+      const script = solution.files.find(file => file.name === SCRIPT_FILE_NAME)
       return { solution, script }
     })
     .filter(({ script }) => script && isCustomFunctionScript(script.content))

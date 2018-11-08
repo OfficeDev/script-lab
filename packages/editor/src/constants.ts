@@ -26,6 +26,7 @@ export const NULL_SOLUTION: ISolution = {
 }
 
 export const LIBRARIES_FILE_NAME = 'libraries.txt'
+export const SCRIPT_FILE_NAME = SCRIPT_FILE_NAME
 
 export const READ_ONLY_FILE_IDS = [NULL_FILE_ID, ABOUT_FILE_ID, DEFAULT_SETTINGS_FILE_ID]
 

@@ -4,6 +4,7 @@ import { storiesOf } from '@storybook/react'
 import { Header } from './'
 import { getCommandBarFabricTheme } from '../../../theme'
 import { getBoilerplate, getBoilerplateSolution } from '../../../newSolutionData'
+import { SCRIPT_FILE_NAME } from '../../../constants'
 
 const voidFunc = () => {}
 const solution = getBoilerplate('EXCEL')
@@ -36,7 +37,7 @@ const defaultHeaderProps = {
   navigateToCustomFunctions: voidFunc,
 
   solution,
-  file: solution.files.find(file => file.name === 'index.ts')!,
+  file: solution.files.find(file => file.name === SCRIPT_FILE_NAME)!,
   isDirectScriptExecutionSolution: false,
   runnableFunctions: [],
   directScriptExecutionFunction: (
