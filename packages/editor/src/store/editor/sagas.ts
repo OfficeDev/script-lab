@@ -151,7 +151,10 @@ function* makeAddIntellisenseRequestSaga() {
       .map(url =>
         fetch(url)
           .then(resp => (resp.ok ? resp.text() : Promise.reject(resp.statusText)))
-          .catch(err => null),
+          .catch(err => {
+            console.error(err)
+            return null
+          }),
       )
       .filter(x => x !== null)
 
@@ -207,9 +210,7 @@ function* resizeEditorSaga() {
 }
 
 function* applyFormattingSaga() {
-  console.log('trying to apply formatting')
   if (monacoEditor) {
-    console.log('applying formatting')
     setTimeout(
       () =>
         monacoEditor.trigger(
