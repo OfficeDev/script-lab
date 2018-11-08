@@ -21,7 +21,7 @@ import { NULL_SOLUTION_ID, PATHS, IS_TASK_PANE_WIDTH } from '../../../constants'
 import { getPlatform, PlatformType } from '../../../environment'
 
 import { connect } from 'react-redux'
-import actions from '../../../store/actions'
+import actions, { dialog } from '../../../store/actions'
 import selectors from '../../../store/selectors'
 
 import { getCommandBarFabricTheme } from '../../../theme'
@@ -90,6 +90,16 @@ interface IActionsFromRedux {
     funcName: string,
   ) => void
   terminateAllDirectScriptExecutionFunctions: () => void
+
+  showDialog: (
+    title: string,
+    subText: string,
+    buttons: Array<{
+      text: string
+      action: { type: string; payload?: any }
+      isPrimary: boolean
+    }>,
+  ) => void
 }
 
 const mapDispatchToProps = (dispatch, ownProps: IProps): IActionsFromRedux => ({
@@ -140,6 +150,16 @@ const mapDispatchToProps = (dispatch, ownProps: IProps): IActionsFromRedux => ({
     ),
   terminateAllDirectScriptExecutionFunctions: () =>
     dispatch(actions.directScriptExecution.terminateAll.request()),
+
+  showDialog: (
+    title: string,
+    subText: string,
+    buttons: Array<{
+      text: string
+      action: { type: string; payload?: any }
+      isPrimary: boolean
+    }>,
+  ) => dispatch(dialog.show(title, subText, buttons)),
 })
 
 export interface IProps extends IPropsFromRedux, IActionsFromRedux {
@@ -176,6 +196,16 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
     this.closeDeleteConfirmationDialog()
     this.props.deleteSolution()
   }
+
+  showNotLoggedIntoGitHubDialog = () =>
+    this.props.showDialog(
+      'Please sign in to GitHub',
+      'In order to use the gist functionality, you must first sign in to GitHub.',
+      [
+        { text: 'Sign in', action: actions.github.login.request(), isPrimary: true },
+        { text: 'Cancel', action: dialog.dismiss(), isPrimary: false },
+      ],
+    )
 
   render() {
     const {
@@ -214,18 +244,16 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
         onClick: updateGist,
       },
       {
-        hidden: !isLoggedIn,
         key: 'new-public-gist',
         text: 'New public gist',
         iconProps: { iconName: 'PageCheckedIn' },
-        onClick: createPublicGist,
+        onClick: isLoggedIn ? createPublicGist : this.showNotLoggedIntoGitHubDialog,
       },
       {
-        hidden: !isLoggedIn,
         key: 'new-secret-gist',
         text: 'New secret gist',
         iconProps: { iconName: 'ProtectedDocument' },
-        onClick: createSecretGist,
+        onClick: isLoggedIn ? createSecretGist : this.showNotLoggedIntoGitHubDialog,
       },
       {
         key: 'export-to-clipboard',

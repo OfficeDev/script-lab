@@ -31,6 +31,15 @@ const actionProps = {
     functionName: string,
   ) => {},
   terminateAllDirectScriptExecutionFunctions: () => {},
+  showDialog: (
+    title: string,
+    subText: string,
+    buttons: Array<{
+      text: string
+      action: { type: string; payload: any }
+      isPrimary: boolean
+    }>,
+  ) => {},
 }
 
 describe('Header should render properly in basic case', () => {
