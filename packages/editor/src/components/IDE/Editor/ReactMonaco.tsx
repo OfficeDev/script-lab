@@ -2,15 +2,15 @@ import React, { Component } from 'react';
 
 export interface IProps {
   solutionId: string;
-  file: IFile;
-  tabSize: number;
+  file: IFile
+  tabSize: number
 
   editorDidMount: (editor: monaco.editor.IStandaloneCodeEditor) => void;
   onValueChange: (solutionId: string, fileId: string, value: string) => void;
 }
 
 interface IState {
-  models: { [id: string]: any };
+  models: { [id: string]: any }
 }
 
 export class ReactMonaco extends Component<IProps, IState> {
