@@ -99,7 +99,7 @@ function* removeSolutionSaga(action: ActionType<typeof solutions.remove>) {
 
 function* updateOptionsSaga(action: ActionType<typeof solutions.updateOptions>) {
   const { solution, options } = action.payload
-  if (!options.isUntrusted) {
+  if (solution.options.isUntrusted && options.isUntrusted === false) {
     yield put(messageBar.dismiss())
   }
   yield put(

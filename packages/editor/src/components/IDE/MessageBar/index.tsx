@@ -9,13 +9,16 @@ import { getMessageBarStyle } from './helpers'
 
 import './animations.css'
 import { DefaultButton } from 'office-ui-fabric-react/lib/Button'
+import selectors from '../../../store/selectors'
 
 interface IPropsFromRedux {
   messageBarProps: IMessageBarState
+  screenWidth: number
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state): IPropsFromRedux => ({
   messageBarProps: state.messageBar,
+  screenWidth: selectors.screen.getWidth(state),
 })
 
 interface IActionsFromRedux {
@@ -32,14 +35,19 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 
 export interface IProps extends IPropsFromRedux, IActionsFromRedux {}
 
-export const MessageBar = ({ messageBarProps, buttonOnClick, dismiss }: IProps) => (
+export const MessageBar = ({
+  messageBarProps,
+  screenWidth,
+  buttonOnClick,
+  dismiss,
+}: IProps) => (
   <div className={`message-bar ${messageBarProps.isVisible ? 'active' : ''}`}>
     <FabricMessageBar
       dismissButtonAriaLabel="Close"
       messageBarType={messageBarProps.style}
       onDismiss={dismiss}
       styles={getMessageBarStyle(messageBarProps.style)}
-      isMultiline={false}
+      isMultiline={screenWidth < 400}
       actions={
         messageBarProps.button ? (
           <div>
