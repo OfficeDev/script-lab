@@ -1,11 +1,11 @@
-import React from 'react'
+import React from 'react';
 
-import Menu from './'
-import IMenuItem from './IMenuItem'
+import Menu from './';
+import IMenuItem from './IMenuItem';
 
-import { storiesOf } from '@storybook/react'
-import { action } from '@storybook/addon-actions'
-import { boolean } from '@storybook/addon-knobs'
+import { storiesOf } from '@storybook/react';
+import { action } from '@storybook/addon-actions';
+import { boolean } from '@storybook/addon-knobs';
 
 const menuItems: IMenuItem[] = [
   {
@@ -37,7 +37,7 @@ const menuItems: IMenuItem[] = [
     icon: 'Download',
     onClick: action('import-clicked'),
   },
-]
+];
 
 storiesOf('Backstage|Menu', module).add('basic', () => (
   <Menu
@@ -45,4 +45,4 @@ storiesOf('Backstage|Menu', module).add('basic', () => (
     items={menuItems}
     selectedKey={menuItems[2].key}
   />
-))
+));

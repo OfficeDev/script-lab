@@ -35,9 +35,6 @@
     "start": "set HTTPS=true&&react-scripts-ts start",
     "build": "node scripts/build.js",
     "build:storybook": "build-storybook -c .storybook -o build-storybook",
-    "lint:tslint": "tslint \"src/**/*.ts?(x)\"",
-    "lint:prettier": "prettier --list-different \"./**/*(^.?|.[^d]|[^.]d|[^.][^d]).ts?(x)\"",
-    "lint": "yarn lint:tslint && yarn lint:prettier",
     "react-scripts-ts:build": "react-scripts-ts build",
     "test": "react-scripts-ts test --env=jsdom",
     "test-coverage": "yarn test -- --coverage",
@@ -84,13 +81,11 @@
     "fs-extra": "^6.0.1",
     "jest": "^22.4.3",
     "jest-styled-components": "^6.2.1",
-    "prettier": "1.13.6",
     "react-test-renderer": "^16.3.2",
     "redux-devtools": "^3.4.1",
     "shelljs": "^0.8.2",
     "source-map-explorer": "^1.6.0",
     "ts-jest": "^22.4.6",
-    "tslint": "^5.11.0",
     "typescript": "^3.0.1"
   }
 }

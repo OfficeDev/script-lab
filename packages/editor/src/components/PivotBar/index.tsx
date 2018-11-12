@@ -1,38 +1,38 @@
-import React from 'react'
-import styled, { withTheme } from 'styled-components'
+import React from 'react';
+import styled, { withTheme } from 'styled-components';
 import {
   Pivot,
   PivotItem,
   PivotLinkFormat,
   PivotLinkSize,
-} from 'office-ui-fabric-react/lib/Pivot'
+} from 'office-ui-fabric-react/lib/Pivot';
 
 const PivotBarWrapper = styled.div`
   background-color: ${props => props.theme.primaryDarker};
   z-index: 1000;
-`
+`;
 
 export interface IPivotBarItem {
-  key: string
-  text?: string
-  iconName?: string
+  key: string;
+  text?: string;
+  iconName?: string;
 }
 
 export interface IProps {
-  items: IPivotBarItem[]
-  selectedKey: string | null
-  onSelect: (selectedKey: string) => void
-  theme: ITheme // from withTheme
+  items: IPivotBarItem[];
+  selectedKey: string | null;
+  onSelect: (selectedKey: string) => void;
+  theme: ITheme; // from withTheme
 
-  backgroundColor?: string
-  selectedColor?: string
-  hideUnderline?: boolean
+  backgroundColor?: string;
+  selectedColor?: string;
+  hideUnderline?: boolean;
 }
 
 class PivotBar extends React.Component<IProps> {
   static defaultProps: Partial<IProps> = {
     hideUnderline: false,
-  }
+  };
 
   render() {
     const {
@@ -42,7 +42,7 @@ class PivotBar extends React.Component<IProps> {
       backgroundColor,
       selectedColor,
       hideUnderline,
-    } = this.props
+    } = this.props;
 
     return (
       <PivotBarWrapper>
@@ -81,15 +81,15 @@ class PivotBar extends React.Component<IProps> {
           ))}
         </Pivot>
       </PivotBarWrapper>
-    )
+    );
   }
 
   onLinkClick = (item: PivotItem): void => {
-    const key = item.props.itemKey
+    const key = item.props.itemKey;
     if (key && key !== this.props.selectedKey) {
-      this.props.onSelect(key)
+      this.props.onSelect(key);
     }
-  }
+  };
 }
 
-export default withTheme(PivotBar)
+export default withTheme(PivotBar);

@@ -1,5 +1,5 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from 'react';
+import styled from 'styled-components';
 
 export const BackstageWrapper = styled.div`
   display: flex;
@@ -15,7 +15,7 @@ export const BackstageWrapper = styled.div`
   @media (max-width: 500px) {
     flex-direction: column;
   }
-`
+`;
 
 export const ContentWrapper = styled.div`
   height: 100%;
@@ -23,21 +23,21 @@ export const ContentWrapper = styled.div`
   padding: 1rem;
   font-size: 1.6rem;
   overflow-y: auto;
-`
+`;
 
 export const ContentTitle = styled.h1.attrs({ className: 'ms-font-xxl' })`
   margin-bottom: 2rem;
-`
+`;
 
 export const ContentDescription = styled.h2.attrs({ className: 'ms-font-l' })`
   margin-top: 1.5rem;
   margin-bottom: 1.5rem;
-`
+`;
 
 export const ContentContainer = styled.div`
   flex: 1;
   position: relative;
-`
+`;
 
 export const LoadingContainer = styled.div`
   position: absolute;
@@ -53,4 +53,4 @@ export const LoadingContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-`
+`;

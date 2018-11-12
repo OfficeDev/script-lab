@@ -1,1 +1,1 @@
-export default ({ when, children }) => (when ? children : null)
+export default ({ when, children }) => (when ? children : null);

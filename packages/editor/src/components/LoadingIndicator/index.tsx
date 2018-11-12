@@ -1,5 +1,5 @@
-import React from 'react'
-import { CenteringContainer, BallContainer, Ball } from './styles'
+import React from 'react';
+import { CenteringContainer, BallContainer, Ball } from './styles';
 
 const LoadingIndicator = ({ numBalls, ballSize, ballColor, delay = 0.16 }) => (
   <CenteringContainer>
@@ -17,6 +17,6 @@ const LoadingIndicator = ({ numBalls, ballSize, ballColor, delay = 0.16 }) => (
       ))}
     </BallContainer>
   </CenteringContainer>
-)
+);
 
-export default LoadingIndicator
+export default LoadingIndicator;

@@ -1,7 +1,7 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from 'react';
+import styled from 'styled-components';
 
-import { Icon } from 'office-ui-fabric-react/lib/Icon'
+import { Icon } from 'office-ui-fabric-react/lib/Icon';
 
 const Wrapper = styled.div`
   position: relative;
@@ -9,7 +9,7 @@ const Wrapper = styled.div`
 
   border-top: 0.5px solid ${props => props.theme.neutralLight};
   border-bottom: 0.5px solid ${props => props.theme.neutralLight};
-`
+`;
 
 const FunctionNameWrapper = styled.div`
   display: flex;
@@ -17,14 +17,14 @@ const FunctionNameWrapper = styled.div`
 
   min-height: 4.25rem;
   line-height: 4.25rem;
-`
+`;
 
-const FunctionName = styled.h4.attrs({ className: 'ms-font-s' })``
+const FunctionName = styled.h4.attrs({ className: 'ms-font-s' })``;
 
 const AdditionalInfo = styled.div.attrs({ className: 'ms-font-xs' })`
   color: red;
   margin-top: 0.8rem;
-`
+`;
 
 const AdditionalInfoContainer = styled.div`
   padding: 0rem 2rem 2rem 2.5rem;
@@ -32,7 +32,7 @@ const AdditionalInfoContainer = styled.div`
   & > ${AdditionalInfo}:first-child {
     margin-top: 0;
   }
-`
+`;
 
 const SnippetName = styled.div.attrs({ className: 'ms-font-xs' })`
   position: absolute;
@@ -44,7 +44,7 @@ const SnippetName = styled.div.attrs({ className: 'ms-font-xs' })`
   color: ${props => props.theme.neutralSecondaryLight};
 
   font-variant: small-caps;
-`
+`;
 
 const SummaryItem = ({
   status,
@@ -57,7 +57,7 @@ const SummaryItem = ({
     ['skipped']: { iconName: 'Warning', color: '#F0C784' },
     ['error']: { iconName: 'ErrorBadge', color: 'red' },
     ['untrusted']: { iconName: 'ReportHacked', color: 'gray' },
-  }[status]
+  }[status];
 
   return (
     <Wrapper>
@@ -84,7 +84,7 @@ const SummaryItem = ({
         (...)
       </SnippetName>
     </Wrapper>
-  )
-}
+  );
+};
 
-export default SummaryItem
+export default SummaryItem;

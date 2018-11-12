@@ -9,22 +9,22 @@ import {
   ISolutionsAction,
   ISettingsAction,
   IEditorAction,
-} from '../actions'
-import { getType } from 'typesafe-actions'
-import { MessageBarType } from 'office-ui-fabric-react/lib/MessageBar'
+} from '../actions';
+import { getType } from 'typesafe-actions';
+import { MessageBarType } from 'office-ui-fabric-react/lib/MessageBar';
 
 export interface IState {
-  isVisible: boolean
-  style: MessageBarType
-  text: string
+  isVisible: boolean;
+  style: MessageBarType;
+  text: string;
   link: {
-    url: string
-    text: string
-  } | null
+    url: string;
+    text: string;
+  } | null;
   button?: {
-    text: string
-    action: { type: string; payload: any }
-  }
+    text: string;
+    action: { type: string; payload: any };
+  };
 }
 
 const defaultState: IState = {
@@ -32,7 +32,7 @@ const defaultState: IState = {
   style: MessageBarType.info,
   text: '',
   link: null,
-}
+};
 
 const messageBarReducer = (
   state: IState = defaultState,
@@ -55,7 +55,7 @@ const messageBarReducer = (
           text: 'View on GitHub',
           url: `https://gist.github.com/${action.payload.gist.id}`,
         },
-      }
+      };
 
     case getType(gists.update.failure):
       return {
@@ -63,7 +63,7 @@ const messageBarReducer = (
         style: MessageBarType.error,
         text: `Error in updating gist: ${action.payload}`,
         link: null,
-      }
+      };
 
     case getType(gists.update.success):
       return {
@@ -76,7 +76,7 @@ const messageBarReducer = (
           text: 'View on GitHub',
           url: `https://gist.github.com/${action.payload.gist.id}`,
         },
-      }
+      };
 
     case getType(settings.edit.failure):
       return {
@@ -84,7 +84,7 @@ const messageBarReducer = (
         style: MessageBarType.error,
         text: `Settings ${action.payload}`,
         link: null,
-      }
+      };
 
     case getType(gists.importSnippet.failure):
       return {
@@ -92,7 +92,7 @@ const messageBarReducer = (
         style: MessageBarType.error,
         text: `Failed to import gist!`,
         link: null,
-      }
+      };
 
     case getType(messageBar.show):
       return {
@@ -100,7 +100,7 @@ const messageBarReducer = (
         style: action.payload.style,
         text: action.payload.text,
         link: null,
-      }
+      };
 
     case getType(editor.newSolutionOpened):
       if (action.payload.options.isUntrusted) {
@@ -116,19 +116,19 @@ const messageBarReducer = (
               options: { isUntrusted: false },
             }),
           },
-        }
+        };
       } else {
-        return defaultState
+        return defaultState;
       }
 
     case getType(editor.open):
     case getType(settings.edit.success):
     case getType(messageBar.dismiss):
-      return defaultState
+      return defaultState;
 
     default:
-      return state
+      return state;
   }
-}
+};
 
-export default messageBarReducer
+export default messageBarReducer;

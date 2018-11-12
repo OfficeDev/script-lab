@@ -1,12 +1,12 @@
-import React from 'react'
-import styled, { ThemeProvider } from 'styled-components'
+import React from 'react';
+import styled, { ThemeProvider } from 'styled-components';
 
-import { getTheme } from '../../theme'
+import { getTheme } from '../../theme';
 
-import Header from './Header'
-import MessageBar from './MessageBar'
+import Header from './Header';
+import MessageBar from './MessageBar';
 
-import Snippet from '../Snippet'
+import Snippet from '../Snippet';
 
 export const Layout = styled.div`
   height: 100vh;
@@ -14,12 +14,12 @@ export const Layout = styled.div`
 
   display: flex;
   flex-direction: column;
-`
+`;
 
 export const ContentContainer = styled.div`
   flex: 1 0 0;
   overflow: hidden;
-`
+`;
 
 const RefreshBar = props => (
   <MessageBar
@@ -27,46 +27,46 @@ const RefreshBar = props => (
     acceptMessage="Refresh"
     {...props}
   />
-)
+);
 
 interface IState {
-  solution: ISolution | null
+  solution: ISolution | null;
 }
 
 export class App extends React.Component<{}, IState> {
-  heartbeat: HTMLIFrameElement | null
-  pollingInterval
-  state = { solution: null }
+  heartbeat: HTMLIFrameElement | null;
+  pollingInterval;
+  state = { solution: null };
 
   componentDidMount() {
     this.pollingInterval = setInterval(() => {
-      this.requestActiveSolution()
-    }, 1000)
+      this.requestActiveSolution();
+    }, 1000);
 
-    this.setActiveSolutionListener()
+    this.setActiveSolutionListener();
   }
 
   componentWillUnmount() {
-    clearInterval(this.pollingInterval)
-    window.onmessage = null
+    clearInterval(this.pollingInterval);
+    window.onmessage = null;
   }
 
   requestActiveSolution = () => {
     if (this.heartbeat) {
-      this.heartbeat.contentWindow!.postMessage('GET_ACTIVE_SOLUTION', '*')
+      this.heartbeat.contentWindow!.postMessage('GET_ACTIVE_SOLUTION', '*');
     }
-  }
+  };
 
   setActiveSolutionListener = () => {
     window.onmessage = ({ origin, data }) => {
       if (origin === 'http://localhost:3000') {
-        this.setState({ solution: JSON.parse(data) })
+        this.setState({ solution: JSON.parse(data) });
       }
-    }
-  }
+    };
+  };
 
   render() {
-    console.log({ state: this.state })
+    console.log({ state: this.state });
     return (
       <ThemeProvider theme={getTheme('EXCEL')}>
         <>
@@ -88,8 +88,8 @@ export class App extends React.Component<{}, IState> {
           />
         </>
       </ThemeProvider>
-    )
+    );
   }
 }
 
-export default App
+export default App;

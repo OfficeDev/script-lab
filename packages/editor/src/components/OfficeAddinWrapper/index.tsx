@@ -1,21 +1,21 @@
-import React from 'react'
+import React from 'react';
 
 interface IProps {
-  children: any
+  children: any;
 }
 
 interface IState {
-  isOfficeReady: boolean
+  isOfficeReady: boolean;
 }
 
 class OfficeAddinWrapper extends React.Component<IProps, IState> {
-  state = { isOfficeReady: false }
+  state = { isOfficeReady: false };
 
   componentDidMount() {
-    Office.onReady(() => this.setState({ isOfficeReady: true }))
+    Office.onReady(() => this.setState({ isOfficeReady: true }));
   }
 
   render() {
-    return <div />
+    return <div />;
   }
 }

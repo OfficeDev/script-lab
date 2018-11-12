@@ -1,20 +1,20 @@
-import { combineReducers } from 'redux'
-import { getType } from 'typesafe-actions'
+import { combineReducers } from 'redux';
+import { getType } from 'typesafe-actions';
 
-import { customFunctions, ICustomFunctionsAction } from '../actions'
+import { customFunctions, ICustomFunctionsAction } from '../actions';
 
-type IMetadataState = ICFVisualSnippetMetadata[]
+type IMetadataState = ICFVisualSnippetMetadata[];
 
 const metadata = (state: IMetadataState = [], action: ICustomFunctionsAction) => {
   switch (action.type) {
     case getType(customFunctions.fetchMetadata.success):
-      return action.payload.visual.snippets
+      return action.payload.visual.snippets;
 
     default:
-      return state
+      return state;
   }
-}
-type IIsFetchingMetadataState = boolean
+};
+type IIsFetchingMetadataState = boolean;
 
 const isFetchingMetadata = (
   state: IIsFetchingMetadataState = false,
@@ -22,32 +22,32 @@ const isFetchingMetadata = (
 ) => {
   switch (action.type) {
     case getType(customFunctions.fetchMetadata.request):
-      return true
+      return true;
 
     case getType(customFunctions.fetchMetadata.success):
     case getType(customFunctions.fetchMetadata.failure):
-      return false
+      return false;
 
     default:
-      return state
+      return state;
   }
-}
+};
 
-type ILogsState = ILogData[]
+type ILogsState = ILogData[];
 
-const initialLogs = []
+const initialLogs = [];
 const logs = (state: ILogsState = initialLogs, action: ICustomFunctionsAction) => {
   switch (action.type) {
     case getType(customFunctions.pushLogs):
-      return [...state, ...action.payload]
+      return [...state, ...action.payload];
 
     case getType(customFunctions.clearLogs):
-      return initialLogs
+      return initialLogs;
 
     default:
-      return state
+      return state;
   }
-}
+};
 
 const runner = (
   state: IRunnerState = { isAlive: false, lastUpdated: 0 },
@@ -55,12 +55,12 @@ const runner = (
 ) => {
   switch (action.type) {
     case getType(customFunctions.updateRunner):
-      return action.payload
+      return action.payload;
 
     default:
-      return state
+      return state;
   }
-}
+};
 
 const engineStatus = (
   state: ICustomFunctionEngineStatus = { enabled: false },
@@ -68,19 +68,19 @@ const engineStatus = (
 ) => {
   switch (action.type) {
     case getType(customFunctions.updateEngineStatus):
-      return action.payload
+      return action.payload;
 
     default:
-      return state
+      return state;
   }
-}
+};
 
 export interface IState {
-  metadata: IMetadataState
-  isFetchingMetadata: IIsFetchingMetadataState
-  logs: ILogsState
-  runner: IRunnerState
-  engineStatus: ICustomFunctionEngineStatus
+  metadata: IMetadataState;
+  isFetchingMetadata: IIsFetchingMetadataState;
+  logs: ILogsState;
+  runner: IRunnerState;
+  engineStatus: ICustomFunctionEngineStatus;
 }
 
 export default combineReducers({
@@ -89,4 +89,4 @@ export default combineReducers({
   logs,
   runner,
   engineStatus,
-})
+});

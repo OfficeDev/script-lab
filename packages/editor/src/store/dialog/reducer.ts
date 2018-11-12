@@ -1,18 +1,18 @@
-import actions, { IDialogAction } from '../actions'
-import { getType } from 'typesafe-actions'
-import { Dialog, DialogType, DialogFooter } from 'office-ui-fabric-react/lib/Dialog'
+import actions, { IDialogAction } from '../actions';
+import { getType } from 'typesafe-actions';
+import { Dialog, DialogType, DialogFooter } from 'office-ui-fabric-react/lib/Dialog';
 
 export interface IState {
-  isVisible: boolean
-  style: DialogType
-  title: string
-  subText: string
-  isBlocking: boolean
+  isVisible: boolean;
+  style: DialogType;
+  title: string;
+  subText: string;
+  isBlocking: boolean;
   buttons: Array<{
-    text: string
-    action: { type: string; payload?: any }
-    isPrimary: boolean
-  }>
+    text: string;
+    action: { type: string; payload?: any };
+    isPrimary: boolean;
+  }>;
 }
 
 const defaultState: IState = {
@@ -22,7 +22,7 @@ const defaultState: IState = {
   subText: '',
   isBlocking: false,
   buttons: [],
-}
+};
 
 const dialogReducer = (state: IState = defaultState, action: IDialogAction): IState => {
   switch (action.type) {
@@ -34,17 +34,17 @@ const dialogReducer = (state: IState = defaultState, action: IDialogAction): ISt
         subText: action.payload.subText,
         isBlocking: action.payload.isBlocking,
         buttons: action.payload.buttons,
-      }
+      };
 
     case getType(actions.dialog.hide):
-      return { ...state, isVisible: false }
+      return { ...state, isVisible: false };
 
     case getType(actions.dialog.reset):
-      return defaultState
+      return defaultState;
 
     default:
-      return state
+      return state;
   }
-}
+};
 
-export default dialogReducer
+export default dialogReducer;

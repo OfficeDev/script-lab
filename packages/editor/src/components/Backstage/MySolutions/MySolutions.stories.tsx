@@ -1,12 +1,12 @@
-import React from 'react'
+import React from 'react';
 
-import MySolutions from './'
+import MySolutions from './';
 
-import { storiesOf } from '@storybook/react'
-import { action } from '@storybook/addon-actions'
-import { object } from '@storybook/addon-knobs'
+import { storiesOf } from '@storybook/react';
+import { action } from '@storybook/addon-actions';
+import { object } from '@storybook/addon-knobs';
 
-import { SCRIPT_FILE_NAME } from '../../../constants'
+import { SCRIPT_FILE_NAME } from '../../../constants';
 
 export const exampleSolutions = [
   {
@@ -468,7 +468,7 @@ export const exampleSolutions = [
     dateCreated: 1536392599100,
     dateLastModified: 1536392599100,
   },
-]
+];
 
 export const exampleGistMetadata = [
   {
@@ -516,10 +516,10 @@ export const exampleGistMetadata = [
     dateLastModified: '2018-09-09T07:22:18Z',
     isPublic: true,
   },
-]
+];
 
-const solutionsKnob = object('solutions', exampleSolutions)
-const gistKnob = object('gist-metadata', exampleGistMetadata)
+const solutionsKnob = object('solutions', exampleSolutions);
+const gistKnob = object('gist-metadata', exampleGistMetadata);
 
 export const BasicMySolutions = () => (
   <MySolutions
@@ -528,6 +528,6 @@ export const BasicMySolutions = () => (
     openSolution={action('open-solution')}
     openGist={action('open-gist')}
   />
-)
+);
 
-storiesOf('Backstage|MySolutions', module).add('basic', () => <BasicMySolutions />)
+storiesOf('Backstage|MySolutions', module).add('basic', () => <BasicMySolutions />);

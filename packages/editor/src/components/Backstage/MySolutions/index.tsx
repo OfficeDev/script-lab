@@ -1,32 +1,38 @@
-import React from 'react'
-import { SearchBox } from 'office-ui-fabric-react/lib/SearchBox'
+import React from 'react';
+import { SearchBox } from 'office-ui-fabric-react/lib/SearchBox';
 
-import Content from '../Content'
-import GalleryList from '../GalleryList'
+import Content from '../Content';
+import GalleryList from '../GalleryList';
 
 interface IProps {
-  solutions: ISolution[]
-  openSolution: (solutionId: string) => void
-  activeSolution?: ISolution
-  gistMetadata: ISharedGistMetadata[]
-  openGist: (gistMetadata: ISharedGistMetadata) => void
+  solutions: ISolution[];
+  openSolution: (solutionId: string) => void;
+  activeSolution?: ISolution;
+  gistMetadata: ISharedGistMetadata[];
+  openGist: (gistMetadata: ISharedGistMetadata) => void;
 }
 
 interface IState {
-  filterQuery: string
+  filterQuery: string;
 }
 
 class MySolutions extends React.Component<IProps> {
-  state = { filterQuery: '' }
+  state = { filterQuery: '' };
 
   componentWillMount() {
-    this.setFilterQuery('')
+    this.setFilterQuery('');
   }
 
-  setFilterQuery = filterQuery => this.setState({ filterQuery })
+  setFilterQuery = filterQuery => this.setState({ filterQuery });
 
   render() {
-    const { solutions, openSolution, activeSolution, gistMetadata, openGist } = this.props
+    const {
+      solutions,
+      openSolution,
+      activeSolution,
+      gistMetadata,
+      openGist,
+    } = this.props;
 
     return (
       <Content title="My Snippets" description="Choose a snippet that you have saved">
@@ -36,7 +42,7 @@ class MySolutions extends React.Component<IProps> {
           items={solutions
             .filter(solution => {
               if (this.state.filterQuery === '') {
-                return true
+                return true;
               }
 
               const megastring = [
@@ -45,9 +51,9 @@ class MySolutions extends React.Component<IProps> {
                 ...solution.files.map(file => file.content),
               ]
                 .filter(Boolean)
-                .join(' ')
+                .join(' ');
 
-              return megastring.includes(this.state.filterQuery)
+              return megastring.includes(this.state.filterQuery);
             })
             .map(sol => ({
               key: sol.id,
@@ -69,8 +75,8 @@ class MySolutions extends React.Component<IProps> {
           />
         )}
       </Content>
-    )
+    );
   }
 }
 
-export default MySolutions
+export default MySolutions;
