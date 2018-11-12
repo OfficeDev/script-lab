@@ -63,4 +63,4 @@ To fix it:
 3. Press `a` to run all tests. Wait for the failure to happen. Then press `w` for more options.
 4. From the more options, press `i`, as in `› Press i to update failing snapshots interactively.`.
 5. Once it runs, press `u`, as in `> Press u to update failing snapshots for this test.`.
-6. Quite and commit.
+6. Quit and commit.
