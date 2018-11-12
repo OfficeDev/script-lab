@@ -1,8 +1,8 @@
-import React from 'react'
+import React from 'react';
 
-import ComingSoon from './'
-import { storiesOf } from '@storybook/react'
+import ComingSoon from './';
+import { storiesOf } from '@storybook/react';
 
-const stories = storiesOf('Custom Functions|Coming Soon', module)
+const stories = storiesOf('Custom Functions|Coming Soon', module);
 
-stories.add('basic', () => <ComingSoon />)
+stories.add('basic', () => <ComingSoon />);

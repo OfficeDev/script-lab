@@ -1,16 +1,16 @@
-import React from 'react'
+import React from 'react';
 
-import { Customizer } from 'office-ui-fabric-react/lib/Utilities'
-import { CommandBar, ICommandBarItemProps } from 'office-ui-fabric-react/lib/CommandBar'
+import { Customizer } from 'office-ui-fabric-react/lib/Utilities';
+import { CommandBar, ICommandBarItemProps } from 'office-ui-fabric-react/lib/CommandBar';
 
-import { getCommandBarFabricTheme } from '../../../theme'
+import { getCommandBarFabricTheme } from '../../../theme';
 
-const theme = getCommandBarFabricTheme('EXCEL')
+const theme = getCommandBarFabricTheme('EXCEL');
 
 interface IProps {
-  solutionName: string
-  refresh: () => void
-  goBack?: () => void
+  solutionName: string;
+  refresh: () => void;
+  goBack?: () => void;
 }
 
 const Header = ({ solutionName, refresh, goBack }: IProps) => {
@@ -33,13 +33,13 @@ const Header = ({ solutionName, refresh, goBack }: IProps) => {
     },
   ]
     .filter(({ hidden }) => !hidden)
-    .map(({ item }) => item)
+    .map(({ item }) => item);
 
   return (
     <Customizer settings={{ theme }}>
       <CommandBar items={items} styles={{ root: { paddingLeft: 0, paddingRight: 0 } }} />
     </Customizer>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;

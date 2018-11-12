@@ -1,27 +1,27 @@
-import React from 'react'
-import { ContextualMenuItemType } from 'office-ui-fabric-react/lib/ContextualMenu'
-import { ICommandBarItemProps } from 'office-ui-fabric-react/lib/CommandBar'
-import { Spinner, SpinnerSize } from 'office-ui-fabric-react/lib/Spinner'
-import { Icon } from 'office-ui-fabric-react/lib/Icon'
+import React from 'react';
+import { ContextualMenuItemType } from 'office-ui-fabric-react/lib/ContextualMenu';
+import { ICommandBarItemProps } from 'office-ui-fabric-react/lib/CommandBar';
+import { Spinner, SpinnerSize } from 'office-ui-fabric-react/lib/Spinner';
+import { Icon } from 'office-ui-fabric-react/lib/Icon';
 
 interface IProps {
-  isRunnableOnThisHost: boolean
-  isNullSolution: boolean
-  isCustomFunctionsView: boolean
-  isDirectScriptExecutionSolution: boolean
-  runnableFunctions: IDirectScriptExecutionFunctionMetadata[]
-  solution: ISolution
-  file: IFile
+  isRunnableOnThisHost: boolean;
+  isNullSolution: boolean;
+  isCustomFunctionsView: boolean;
+  isDirectScriptExecutionSolution: boolean;
+  runnableFunctions: IDirectScriptExecutionFunctionMetadata[];
+  solution: ISolution;
+  file: IFile;
 
-  navigateToCustomFunctions: () => void
+  navigateToCustomFunctions: () => void;
   directScriptExecutionFunction: (
     solutionId: string,
     fileId: string,
     funcName: string,
-  ) => void
-  terminateAllDirectScriptExecutionFunctions: () => void
+  ) => void;
+  terminateAllDirectScriptExecutionFunctions: () => void;
 
-  theme: ITheme // from withTheme
+  theme: ITheme; // from withTheme
 }
 
 export const getRunButton = ({
@@ -38,7 +38,7 @@ export const getRunButton = ({
   theme,
 }: IProps): ICommandBarItemProps | null => {
   if (!isRunnableOnThisHost || isNullSolution) {
-    return null
+    return null;
   }
   if (isCustomFunctionsView) {
     return {
@@ -46,7 +46,7 @@ export const getRunButton = ({
       text: 'Register',
       iconProps: { iconName: 'Play' },
       onClick: navigateToCustomFunctions,
-    }
+    };
   } else if (isDirectScriptExecutionSolution) {
     return {
       key: 'default-run-functions',
@@ -73,7 +73,7 @@ export const getRunButton = ({
                     ),
                     Success: <Icon iconName="Accept" style={{ color: '#98fb98' }} />,
                     Failure: <Icon iconName="Error" style={{ color: '#fd1532' }} />,
-                  }[status]
+                  }[status];
 
                   return (
                     <div
@@ -85,7 +85,7 @@ export const getRunButton = ({
                     >
                       {inner}
                     </div>
-                  )
+                  );
                 },
                 itemProps: {
                   styles: {
@@ -95,9 +95,9 @@ export const getRunButton = ({
                   },
                 },
                 onClick: event => {
-                  event.preventDefault()
+                  event.preventDefault();
                   if (status !== 'Running') {
-                    directScriptExecutionFunction(solution.id, file.id, name)
+                    directScriptExecutionFunction(solution.id, file.id, name);
                   }
                 },
               })),
@@ -120,9 +120,9 @@ export const getRunButton = ({
             iconProps: { iconName: 'Cancel' },
             onClick: event => {
               if (event) {
-                event.preventDefault()
+                event.preventDefault();
               }
-              terminateAllDirectScriptExecutionFunctions()
+              terminateAllDirectScriptExecutionFunctions();
             },
             itemProps: {
               styles: {
@@ -134,13 +134,13 @@ export const getRunButton = ({
           },
         ],
       },
-    }
+    };
   } else {
     return {
       key: 'run',
       text: 'Run',
       iconProps: { iconName: 'Play' },
       href: '/run.html',
-    }
+    };
   }
-}
+};

@@ -4,9 +4,9 @@ import {
   DEFAULT_SETTINGS_FILE_ID,
   SETTINGS_JSON_LANGUAGE,
   ABOUT_FILE_ID,
-} from './constants'
+} from './constants';
 
-import { environmentName } from './environment'
+import { environmentName } from './environment';
 
 export const defaultSettings: ISettings = {
   'editor.theme': 'dark',
@@ -18,28 +18,28 @@ export const defaultSettings: ISettings = {
   'editor.prettier.autoFormat': true,
   'editor.folding': true,
   'editor.wordWrap': 'bounded',
-}
+};
 
 const getTabSize = (userSettings: Partial<ISettings>): number =>
   userSettings && userSettings['editor.tabSize']
     ? userSettings['editor.tabSize']!
-    : defaultSettings['editor.tabSize']
+    : defaultSettings['editor.tabSize'];
 
 const getDefaultSettingsContent = (userSettings: Partial<ISettings>): string => {
-  const tabSize = getTabSize(userSettings)
-  return JSON.stringify(defaultSettings, null, tabSize) + '\n'
-}
+  const tabSize = getTabSize(userSettings);
+  return JSON.stringify(defaultSettings, null, tabSize) + '\n';
+};
 
 const getUserSettingsContent = (userSettings: Partial<ISettings>): string => {
-  const tabSize = getTabSize(userSettings)
-  return JSON.stringify(userSettings, null, tabSize) + '\n'
-}
+  const tabSize = getTabSize(userSettings);
+  return JSON.stringify(userSettings, null, tabSize) + '\n';
+};
 
 const getAboutContent = (): string => {
-  const commit = process.env.REACT_APP_COMMIT
-  const lastUpdated = process.env.REACT_APP_LAST_UPDATED
-  return `Last Updated: ${lastUpdated}\nCommit: ${commit}\nEnvironment: ${environmentName}`
-}
+  const commit = process.env.REACT_APP_COMMIT;
+  const lastUpdated = process.env.REACT_APP_LAST_UPDATED;
+  return `Last Updated: ${lastUpdated}\nCommit: ${commit}\nEnvironment: ${environmentName}`;
+};
 
 const getSettingsFiles = (
   timestamp: number,
@@ -69,7 +69,7 @@ const getSettingsFiles = (
     language: 'plaintext',
     content: getAboutContent(),
   },
-]
+];
 
 const getSettingsSolution = (
   files: IFile[],
@@ -82,26 +82,26 @@ const getSettingsSolution = (
   dateLastModified: timestamp,
   host: 'ALL',
   files: files.map(f => f.id),
-})
+});
 
 export const getSettingsSolutionAndFiles = (
   userSettings: Partial<ISettings> = {},
 ): {
-  solution: ISolutionWithFileIds
-  files: IFile[]
+  solution: ISolutionWithFileIds;
+  files: IFile[];
 } => {
-  const now = Date.now()
-  const files = getSettingsFiles(now, userSettings)
-  const solution = getSettingsSolution(files, now)
-  return { solution, files }
-}
+  const now = Date.now();
+  const files = getSettingsFiles(now, userSettings);
+  const solution = getSettingsSolution(files, now);
+  return { solution, files };
+};
 
 export const allowedSettings = {
   'editor.theme': ['dark', 'light', 'high-contrast'],
   'editor.fontFamily': ['Menlo', 'Consolas', 'Courier New', 'Source Code Pro'],
   'editor.wordWrap': ['bounded', 'on', 'off'],
   'editor.tabSize': [2, 4],
-}
+};
 
 // Note: this must be kept in sync with the interfaces in src/interfaces/index.d.ts
 export const schema = {
@@ -168,4 +168,4 @@ export const schema = {
       enum: allowedSettings['editor.wordWrap'],
     },
   },
-}
+};

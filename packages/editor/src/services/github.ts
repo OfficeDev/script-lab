@@ -1,17 +1,17 @@
-import { Authenticator, IToken } from '@microsoft/office-js-helpers'
-import { request as generalRequest, IResponseOrError } from './general'
-import { serverUrl, githubAppClientId } from '../environment'
+import { Authenticator, IToken } from '@microsoft/office-js-helpers';
+import { request as generalRequest, IResponseOrError } from './general';
+import { serverUrl, githubAppClientId } from '../environment';
 
-const baseApiUrl = 'https://api.github.com'
+const baseApiUrl = 'https://api.github.com';
 
 interface IRequest {
-  method: string
-  path: string
-  token?: string
-  jsonPayload?: string
+  method: string;
+  path: string;
+  token?: string;
+  jsonPayload?: string;
 }
 
-const auth = new Authenticator()
+const auth = new Authenticator();
 
 auth.endpoints.add('GitHub', {
   clientId: githubAppClientId,
@@ -20,7 +20,7 @@ auth.endpoints.add('GitHub', {
   scope: 'gist',
   state: true,
   tokenUrl: `${serverUrl}/auth`,
-})
+});
 
 export const request = ({
   method,
@@ -28,25 +28,25 @@ export const request = ({
   token,
   jsonPayload,
 }: IRequest): Promise<IResponseOrError> =>
-  generalRequest({ url: `${baseApiUrl}/${path}`, method, token, jsonPayload })
+  generalRequest({ url: `${baseApiUrl}/${path}`, method, token, jsonPayload });
 
 export const login = async (): Promise<{
-  token?: string
-  profilePicUrl?: string
-  username?: string
+  token?: string;
+  profilePicUrl?: string;
+  username?: string;
 }> => {
-  const token: IToken = await auth.authenticate('GitHub')
+  const token: IToken = await auth.authenticate('GitHub');
   const { response, error } = await request({
     method: 'GET',
     path: 'user',
     token: token.access_token,
-  })
+  });
 
   return {
     token: token.access_token,
     profilePicUrl: response!.avatar_url,
     username: response!.login,
-  }
-}
+  };
+};
 
-export const logout = (token: string) => auth.tokens.clear()
+export const logout = (token: string) => auth.tokens.clear();

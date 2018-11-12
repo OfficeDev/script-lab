@@ -34,9 +34,7 @@ interface ISolutionWithFileIds extends ISolutionWithoutFiles {
   files: string[];
 }
 
-interface ISolutionWithoutFiles
-  extends IEditableSolutionProperties,
-    ITimestamps {
+interface ISolutionWithoutFiles extends IEditableSolutionProperties, ITimestamps {
   id: string;
   host: string;
 }
@@ -56,7 +54,7 @@ interface ISolutionOptions {
 
 interface ISourceInformation {
   id: string;
-  origin: "gist";
+  origin: 'gist';
 }
 
 interface IFile extends IEditableFileProperties, ITimestamps {

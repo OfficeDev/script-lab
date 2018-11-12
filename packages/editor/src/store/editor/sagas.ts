@@ -1,11 +1,11 @@
-import { put, takeEvery, select, call } from 'redux-saga/effects'
-import { getType, ActionType } from 'typesafe-actions'
-import selectors from '../selectors'
-import { editor, settings, screen } from '../actions'
-import zip from 'lodash/zip'
-import flatten from 'lodash/flatten'
-import { push } from 'connected-react-router'
-import { PATHS, LIBRARIES_FILE_NAME } from '../../constants'
+import { put, takeEvery, select, call } from 'redux-saga/effects';
+import { getType, ActionType } from 'typesafe-actions';
+import selectors from '../selectors';
+import { editor, settings, screen } from '../actions';
+import zip from 'lodash/zip';
+import flatten from 'lodash/flatten';
+import { push } from 'connected-react-router';
+import { PATHS, LIBRARIES_FILE_NAME } from '../../constants';
 
 import {
   registerLibrariesMonacoLanguage,
@@ -13,77 +13,77 @@ import {
   enablePrettierInMonaco,
   parseTripleSlashRefs,
   doesMonacoExist,
-} from './utilities'
+} from './utilities';
 
-let monacoEditor
+let monacoEditor;
 
 export default function* editorWatcher() {
-  yield takeEvery(getType(editor.open), onEditorOpenSaga)
-  yield takeEvery(getType(editor.newSolutionOpened), onSolutionOpenSaga)
-  yield takeEvery(getType(editor.newFileOpened), onFileOpenSaga)
-  yield takeEvery(getType(editor.onMount), initializeMonacoSaga)
-  yield takeEvery(getType(editor.onLoadComplete), hasLoadedSaga)
-  yield takeEvery(getType(editor.applyMonacoOptions), applyMonacoOptionsSaga)
-  yield takeEvery(getType(settings.edit.success), applyMonacoOptionsSaga)
-  yield takeEvery(getType(editor.setIntellisenseFiles.request), setIntellisenseFilesSaga)
-  yield takeEvery(getType(screen.updateSize), resizeEditorSaga)
-  yield takeEvery(getType(editor.applyFormatting), applyFormattingSaga)
+  yield takeEvery(getType(editor.open), onEditorOpenSaga);
+  yield takeEvery(getType(editor.newSolutionOpened), onSolutionOpenSaga);
+  yield takeEvery(getType(editor.newFileOpened), onFileOpenSaga);
+  yield takeEvery(getType(editor.onMount), initializeMonacoSaga);
+  yield takeEvery(getType(editor.onLoadComplete), hasLoadedSaga);
+  yield takeEvery(getType(editor.applyMonacoOptions), applyMonacoOptionsSaga);
+  yield takeEvery(getType(settings.edit.success), applyMonacoOptionsSaga);
+  yield takeEvery(getType(editor.setIntellisenseFiles.request), setIntellisenseFilesSaga);
+  yield takeEvery(getType(screen.updateSize), resizeEditorSaga);
+  yield takeEvery(getType(editor.applyFormatting), applyFormattingSaga);
 }
 
 export function* onEditorOpenSaga(action: ActionType<typeof editor.open>) {
-  const currentOpenSolution = yield select(selectors.editor.getActiveSolution)
-  const currentOpenFile = yield select(selectors.editor.getActiveFile)
-  yield put(editor.setActive(action.payload))
-  yield put(push(PATHS.EDITOR))
+  const currentOpenSolution = yield select(selectors.editor.getActiveSolution);
+  const currentOpenFile = yield select(selectors.editor.getActiveFile);
+  yield put(editor.setActive(action.payload));
+  yield put(push(PATHS.EDITOR));
 
-  const solutionToOpen = yield select(selectors.solutions.get, action.payload.solutionId)
-  const fileToOpen = yield select(selectors.solutions.getFile, action.payload.fileId)
+  const solutionToOpen = yield select(selectors.solutions.get, action.payload.solutionId);
+  const fileToOpen = yield select(selectors.solutions.getFile, action.payload.fileId);
 
   if (currentOpenSolution.id !== action.payload.solutionId) {
-    yield put(editor.newSolutionOpened(solutionToOpen))
+    yield put(editor.newSolutionOpened(solutionToOpen));
   }
 
   if (currentOpenFile.id !== action.payload.fileId) {
-    yield put(editor.newFileOpened(solutionToOpen, fileToOpen))
+    yield put(editor.newFileOpened(solutionToOpen, fileToOpen));
   }
 }
 
 function* onSolutionOpenSaga() {
   if (doesMonacoExist()) {
-    yield call(makeAddIntellisenseRequestSaga)
+    yield call(makeAddIntellisenseRequestSaga);
   }
 }
 
 function* onFileOpenSaga() {
   if (doesMonacoExist()) {
-    yield put(editor.applyMonacoOptions())
+    yield put(editor.applyMonacoOptions());
   }
-  const isPrettierEnabled = yield select(selectors.settings.getIsPrettierEnabled)
-  const isAutoFormatEnabled = yield select(selectors.settings.getIsAutoFormatEnabled)
+  const isPrettierEnabled = yield select(selectors.settings.getIsPrettierEnabled);
+  const isAutoFormatEnabled = yield select(selectors.settings.getIsAutoFormatEnabled);
   if (isPrettierEnabled && isAutoFormatEnabled) {
-    yield put(editor.applyFormatting())
+    yield put(editor.applyFormatting());
   }
 }
 
 export function* hasLoadedSaga(action: ActionType<typeof editor.onLoadComplete>) {
-  const loadingIndicator = document.getElementById('loading')
+  const loadingIndicator = document.getElementById('loading');
   if (loadingIndicator) {
-    const { parentNode } = loadingIndicator
+    const { parentNode } = loadingIndicator;
     if (parentNode) {
-      parentNode.removeChild(loadingIndicator)
+      parentNode.removeChild(loadingIndicator);
     }
   }
 }
 
 function* initializeMonacoSaga(action: ActionType<typeof editor.onMount>) {
-  monacoEditor = action.payload
-  const theme = yield select(selectors.settings.getMonacoTheme)
+  monacoEditor = action.payload;
+  const theme = yield select(selectors.settings.getMonacoTheme);
   if (theme) {
-    monaco.editor.setTheme(theme)
+    monaco.editor.setTheme(theme);
   }
 
-  registerLibrariesMonacoLanguage()
-  registerSettingsMonacoLanguage()
+  registerLibrariesMonacoLanguage();
+  registerSettingsMonacoLanguage();
 
   monacoEditor.addAction({
     id: 'trigger-suggest',
@@ -97,57 +97,57 @@ function* initializeMonacoSaga(action: ActionType<typeof editor.onMount>) {
         'editor.action.triggerSuggest',
         {},
       ),
-  })
+  });
 
-  yield put(editor.applyMonacoOptions())
-  yield put(editor.onLoadComplete())
-  yield call(makeAddIntellisenseRequestSaga)
+  yield put(editor.applyMonacoOptions());
+  yield put(editor.onLoadComplete());
+  yield call(makeAddIntellisenseRequestSaga);
 }
 
 function* applyMonacoOptionsSaga() {
   if (monacoEditor) {
-    const monacoOptions = yield select(selectors.settings.getMonacoOptions)
-    const { theme } = monacoOptions
+    const monacoOptions = yield select(selectors.settings.getMonacoOptions);
+    const { theme } = monacoOptions;
 
-    monacoEditor.updateOptions(monacoOptions)
-    monaco.editor.setTheme(theme)
+    monacoEditor.updateOptions(monacoOptions);
+    monaco.editor.setTheme(theme);
   }
-  const isPrettierEnabled = yield select(selectors.settings.getIsPrettierEnabled)
+  const isPrettierEnabled = yield select(selectors.settings.getIsPrettierEnabled);
   if (isPrettierEnabled) {
-    const tabWidth = yield select(selectors.settings.getTabSize)
-    enablePrettierInMonaco({ tabWidth })
+    const tabWidth = yield select(selectors.settings.getTabSize);
+    enablePrettierInMonaco({ tabWidth });
   }
 }
 
 function* makeAddIntellisenseRequestSaga() {
-  const solution = yield select(selectors.editor.getActiveSolution)
-  const libraries = solution.files.find(file => file.name === LIBRARIES_FILE_NAME)
-  let urls: string[] = []
+  const solution = yield select(selectors.editor.getActiveSolution);
+  const libraries = solution.files.find(file => file.name === LIBRARIES_FILE_NAME);
+  let urls: string[] = [];
 
   if (!libraries) {
-    return
+    return;
   }
 
-  const { content } = libraries
+  const { content } = libraries;
 
   content.split('\n').forEach(library => {
-    library = library.trim()
+    library = library.trim();
     if (/^@types/.test(library)) {
-      const url = `https://unpkg.com/${library}/index.d.ts`
-      urls.push(url)
+      const url = `https://unpkg.com/${library}/index.d.ts`;
+      urls.push(url);
     } else if (/^dt~/.test(library)) {
-      const libName = library.split('dt~')[1]
-      const url = `https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/master/types/${libName}/index.d.ts`
-      urls.push(url)
+      const libName = library.split('dt~')[1];
+      const url = `https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/master/types/${libName}/index.d.ts`;
+      urls.push(url);
     } else if (/\.d\.ts$/i.test(library)) {
       if (/^https?:/i.test(library)) {
-        urls.push(library)
+        urls.push(library);
       } else {
-        urls.push(`https://unpkg.com/${library}`)
+        urls.push(`https://unpkg.com/${library}`);
       }
     }
-  })
-  let urlsToFetch = urls.filter(url => /^.*\/index\.d\.ts$/.test(url))
+  });
+  let urlsToFetch = urls.filter(url => /^.*\/index\.d\.ts$/.test(url));
 
   while (urlsToFetch.length > 0) {
     const urlContents = yield urlsToFetch
@@ -155,32 +155,32 @@ function* makeAddIntellisenseRequestSaga() {
         fetch(url)
           .then(resp => (resp.ok ? resp.text() : Promise.reject(resp.statusText)))
           .catch(err => {
-            console.error(err)
-            return null
+            console.error(err);
+            return null;
           }),
       )
-      .filter(x => x !== null)
+      .filter(x => x !== null);
 
-    const urlContentPairing = zip(urlsToFetch, urlContents)
+    const urlContentPairing = zip(urlsToFetch, urlContents);
 
     urlsToFetch = flatten(
       urlContentPairing.map(([url, content]) => parseTripleSlashRefs(url, content)),
-    )
-    urls = [...urls, ...urlsToFetch]
+    );
+    urls = [...urls, ...urlsToFetch];
   }
 
-  yield put(editor.setIntellisenseFiles.request({ urls }))
+  yield put(editor.setIntellisenseFiles.request({ urls }));
 }
 
 function* setIntellisenseFilesSaga(
   action: ActionType<typeof editor.setIntellisenseFiles.request>,
 ) {
-  const existingIntellisenseFiles = yield select(selectors.editor.getIntellisenseFiles)
-  const existingUrls = Object.keys(existingIntellisenseFiles)
-  const currentUrls = action.payload.urls
-  const urlsToDispose = existingUrls.filter(url => !currentUrls.includes(url))
-  urlsToDispose.forEach(url => existingIntellisenseFiles[url].dispose())
-  const urlsToFetch = currentUrls.filter(url => !existingUrls.includes(url))
+  const existingIntellisenseFiles = yield select(selectors.editor.getIntellisenseFiles);
+  const existingUrls = Object.keys(existingIntellisenseFiles);
+  const currentUrls = action.payload.urls;
+  const urlsToDispose = existingUrls.filter(url => !currentUrls.includes(url));
+  urlsToDispose.forEach(url => existingIntellisenseFiles[url].dispose());
+  const urlsToFetch = currentUrls.filter(url => !existingUrls.includes(url));
   const newIntellisenseFiles = yield call(() =>
     Promise.all(
       urlsToFetch.map(url =>
@@ -190,12 +190,12 @@ function* setIntellisenseFilesSaga(
             const disposable = monaco.languages.typescript.typescriptDefaults.addExtraLib(
               content,
               url,
-            )
-            return { url, disposable }
+            );
+            return { url, disposable };
           }),
       ),
     ),
-  )
+  );
   yield put(
     editor.setIntellisenseFiles.success(
       newIntellisenseFiles.reduce(
@@ -203,12 +203,12 @@ function* setIntellisenseFilesSaga(
         {},
       ),
     ),
-  )
+  );
 }
 
 function* resizeEditorSaga() {
   if (monacoEditor) {
-    monacoEditor.layout()
+    monacoEditor.layout();
   }
 }
 
@@ -222,6 +222,6 @@ function* applyFormattingSaga() {
           '',
         ),
       200,
-    )
+    );
   }
 }

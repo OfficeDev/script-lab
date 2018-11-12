@@ -1,19 +1,19 @@
-import React from 'react'
-import { PrimaryButton } from 'office-ui-fabric-react/lib/Button'
+import React from 'react';
+import { PrimaryButton } from 'office-ui-fabric-react/lib/Button';
 
 import {
   MessageBar as FabricMessageBar,
   MessageBarType,
-} from 'office-ui-fabric-react/lib/MessageBar'
+} from 'office-ui-fabric-react/lib/MessageBar';
 
-import './animations.css'
+import './animations.css';
 
 export interface IProps {
-  isVisible: boolean
-  message: string
-  accept: () => void
-  acceptMessage: string
-  dismiss: () => void
+  isVisible: boolean;
+  message: string;
+  accept: () => void;
+  acceptMessage: string;
+  dismiss: () => void;
 }
 
 const MessageBar = ({ isVisible, message, accept, acceptMessage, dismiss }: IProps) => (
@@ -32,6 +32,6 @@ const MessageBar = ({ isVisible, message, accept, acceptMessage, dismiss }: IPro
       {message}
     </FabricMessageBar>
   </div>
-)
+);
 
-export default MessageBar
+export default MessageBar;

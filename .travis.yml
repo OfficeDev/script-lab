@@ -16,16 +16,17 @@ install:
 
 before_script:
   - yarn copy-monaco
+  - yarn lint
 
 matrix:
   include:
-    - name: "Editor Pipeline"
+    - name: 'Editor Pipeline'
       env:
         - PACKAGE_LOCATION=packages/editor
         - PACKAGE_NAME=editor
         - SITE_NAME=script-lab-react
 
-    - name: "Server Pipeline"
+    - name: 'Server Pipeline'
       env:
         - PACKAGE_LOCATION=packages/server
         - PACKAGE_NAME=server
@@ -33,7 +34,6 @@ matrix:
 
 script:
   - cd $PACKAGE_LOCATION
-  - yarn lint || travis_terminate 1
   - yarn test || travis_terminate 1
   - yarn build || travis_terminate 1
   - cd $TRAVIS_BUILD_DIR

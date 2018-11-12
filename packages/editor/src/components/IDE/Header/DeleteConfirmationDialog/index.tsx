@@ -1,12 +1,12 @@
-import React from 'react'
-import { Dialog, DialogType, DialogFooter } from 'office-ui-fabric-react/lib/Dialog'
-import { PrimaryButton, DefaultButton } from 'office-ui-fabric-react/lib/Button'
+import React from 'react';
+import { Dialog, DialogType, DialogFooter } from 'office-ui-fabric-react/lib/Dialog';
+import { PrimaryButton, DefaultButton } from 'office-ui-fabric-react/lib/Button';
 
 interface IProps {
-  isVisible: boolean
-  solutionName: string
-  onYes: () => void
-  onCancel: () => void
+  isVisible: boolean;
+  solutionName: string;
+  onYes: () => void;
+  onCancel: () => void;
 }
 
 const DeleteConfirmationDialog = (props: IProps) => (
@@ -26,6 +26,6 @@ const DeleteConfirmationDialog = (props: IProps) => (
       <DefaultButton text="No" onClick={props.onCancel} />
     </DialogFooter>
   </Dialog>
-)
+);
 
-export default DeleteConfirmationDialog
+export default DeleteConfirmationDialog;

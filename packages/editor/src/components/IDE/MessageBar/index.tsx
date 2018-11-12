@@ -1,26 +1,26 @@
-import React from 'react'
-import { MessageBar as FabricMessageBar } from 'office-ui-fabric-react/lib/MessageBar'
-import { Link } from 'office-ui-fabric-react/lib/Link'
-import { IState as IMessageBarState } from '../../../store/messageBar/reducer'
+import React from 'react';
+import { MessageBar as FabricMessageBar } from 'office-ui-fabric-react/lib/MessageBar';
+import { Link } from 'office-ui-fabric-react/lib/Link';
+import { IState as IMessageBarState } from '../../../store/messageBar/reducer';
 
-import { connect } from 'react-redux'
-import { messageBar } from '../../../store/actions'
-import { getMessageBarStyle } from './helpers'
+import { connect } from 'react-redux';
+import { messageBar } from '../../../store/actions';
+import { getMessageBarStyle } from './helpers';
 
-import './animations.css'
-import { DefaultButton } from 'office-ui-fabric-react/lib/Button'
+import './animations.css';
+import { DefaultButton } from 'office-ui-fabric-react/lib/Button';
 
 interface IPropsFromRedux {
-  messageBarProps: IMessageBarState
+  messageBarProps: IMessageBarState;
 }
 
 const mapStateToProps = state => ({
   messageBarProps: state.messageBar,
-})
+});
 
 interface IActionsFromRedux {
-  buttonOnClick: () => void
-  dismiss: () => void
+  buttonOnClick: () => void;
+  dismiss: () => void;
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
@@ -28,7 +28,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     ? () => dispatch(ownProps.messageBarProps.button.action)
     : () => {},
   dismiss: () => dispatch(messageBar.dismiss()),
-})
+});
 
 export interface IProps extends IPropsFromRedux, IActionsFromRedux {}
 
@@ -60,7 +60,7 @@ export const MessageBar = ({ messageBarProps, buttonOnClick, dismiss }: IProps) 
       )}
     </FabricMessageBar>
   </div>
-)
+);
 /* This is a bit weird, i'll admit... but it is needed.
    Basically what I'm doing is making a wrapper component
    with the first connect that gets the action object I
@@ -70,7 +70,7 @@ export const MessageBar = ({ messageBarProps, buttonOnClick, dismiss }: IProps) 
    via ownProps and therefore dispatch that action upon clicking
    the button. This allows for the action to dispatch to also
    be set via the MessageBar reducer. */
-const mapEmptyToProps = dispatch => ({})
+const mapEmptyToProps = dispatch => ({});
 
 export default connect(
   mapStateToProps,
@@ -80,4 +80,4 @@ export default connect(
     mapStateToProps,
     mapDispatchToProps,
   )(MessageBar),
-)
+);

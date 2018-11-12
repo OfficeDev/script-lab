@@ -1,5 +1,5 @@
-import uuidv4 from 'uuid'
-import { LIBRARIES_FILE_NAME, SCRIPT_FILE_NAME } from './constants'
+import uuidv4 from 'uuid';
+import { LIBRARIES_FILE_NAME, SCRIPT_FILE_NAME } from './constants';
 
 export const getBoilerplateFiles = (timestamp: number): IFile[] =>
   [
@@ -57,7 +57,7 @@ jquery@3.1.1
     id: uuidv4(),
     dateCreated: timestamp,
     dateLastModified: timestamp,
-  }))
+  }));
 
 export const getBoilerplateSolution = (
   host: string,
@@ -71,13 +71,13 @@ export const getBoilerplateSolution = (
   dateLastModified: timestamp,
   options: {},
   files,
-})
+});
 
 export const getBoilerplate = (host: string): ISolution => {
-  const timestamp = Date.now()
+  const timestamp = Date.now();
 
-  const files = getBoilerplateFiles(timestamp)
-  const solution = getBoilerplateSolution(host, files, timestamp)
+  const files = getBoilerplateFiles(timestamp);
+  const solution = getBoilerplateSolution(host, files, timestamp);
 
-  return solution
-}
+  return solution;
+};

@@ -1,5 +1,5 @@
-import React from 'react'
-import Snippet from './components/Snippet'
+import React from 'react';
+import Snippet from './components/Snippet';
 
 const exampleSolution = {
   id: 'ec3bc646-e174-4635-8ced-e9da85155073',
@@ -44,7 +44,7 @@ const exampleSolution = {
   ],
   dateCreated: 1535175129365,
   dateLastModified: 1535175129365,
-}
+};
 
 const exampleSolution2 = {
   id: '0cc8749f-e334-4d9b-816c-43f8ca83a2d1',
@@ -90,7 +90,7 @@ const exampleSolution2 = {
   ],
   dateCreated: 1536125352086,
   dateLastModified: 1536823129072,
-}
+};
 
 const Solution = ({ solution }: { solution: ISolution }) => {
   // const html = solution.files.find(file => file.name === 'index.html')!.content
@@ -103,7 +103,7 @@ const Solution = ({ solution }: { solution: ISolution }) => {
   // const script = solution.files.find(file => file.name === 'index.ts')!.content
   // console.log({ linkReferences, scriptReferences, officeJS })
   // return <Frame />
-}
+};
 // <Frame
 //   contentDidMount={(...args) => console.log(args)}
 //   head={
@@ -168,17 +168,17 @@ const Foo = ({ n }) => (
       <li>{n + 3}</li>
     </ul>
   </>
-)
+);
 
 class App extends React.Component {
-  state = { count: 0, something: 0 }
+  state = { count: 0, something: 0 };
 
   componentDidMount() {
     // setInterval(() => this.setState({ something: this.state.something + 1 }), 100)
-    setInterval(() => this.setState({ count: this.state.count + 1 }), 10000)
+    setInterval(() => this.setState({ count: this.state.count + 1 }), 10000);
   }
   render() {
-    console.log(this.state.something)
+    console.log(this.state.something);
     return (
       <div className="App">
         <header className="App-header">
@@ -191,8 +191,8 @@ class App extends React.Component {
         <Snippet solution={exampleSolution2} />
         {/* <Solution solution={exampleSolution} /> */}
       </div>
-    )
+    );
   }
 }
 
-export default App
+export default App;

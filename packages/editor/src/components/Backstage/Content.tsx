@@ -1,5 +1,5 @@
-import React from 'react'
-import { ContentWrapper, ContentTitle, ContentDescription } from './styles'
+import React from 'react';
+import { ContentWrapper, ContentTitle, ContentDescription } from './styles';
 
 export default ({ title, description, children }) => (
   <ContentWrapper>
@@ -7,4 +7,4 @@ export default ({ title, description, children }) => (
     <ContentDescription>{description}</ContentDescription>
     {children}
   </ContentWrapper>
-)
+);

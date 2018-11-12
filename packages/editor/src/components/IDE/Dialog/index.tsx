@@ -1,43 +1,43 @@
-import React from 'react'
-import { dialog } from '../../../store/actions'
-import { IState as IDialogState } from '../../../store/dialog/reducer'
+import React from 'react';
+import { dialog } from '../../../store/actions';
+import { IState as IDialogState } from '../../../store/dialog/reducer';
 import {
   Dialog as FabricDialog,
   DialogType,
   DialogFooter,
-} from 'office-ui-fabric-react/lib/Dialog'
-import { DefaultButton } from 'office-ui-fabric-react/lib/Button'
+} from 'office-ui-fabric-react/lib/Dialog';
+import { DefaultButton } from 'office-ui-fabric-react/lib/Button';
 
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 
 interface IPropsFromRedux {
-  dialogProps: IDialogState
+  dialogProps: IDialogState;
 }
 
 const mapStateToProps = state => ({
   dialogProps: state.dialog,
-})
+});
 
 interface IActionsFromRedux {
-  dismiss: () => void
+  dismiss: () => void;
 }
 
 const mapDispatchToProps = dispatch => ({
   dismiss: () => dispatch(dialog.dismiss()),
-})
+});
 
 export interface IProps extends IPropsFromRedux, IActionsFromRedux {
-  dispatch: any // from connect
+  dispatch: any; // from connect
 }
 
 export class Dialog extends React.Component<IProps> {
   getDispatchFunctionForOnClick = (action: { type: string; payload?: any }) => () => {
-    this.props.dispatch(action)
-    this.props.dispatch(dialog.dismiss())
-  }
+    this.props.dispatch(action);
+    this.props.dispatch(dialog.dismiss());
+  };
 
   render() {
-    const { dialogProps, dismiss, dispatch } = this.props
+    const { dialogProps, dismiss, dispatch } = this.props;
 
     return (
       <FabricDialog
@@ -62,11 +62,11 @@ export class Dialog extends React.Component<IProps> {
           ))}
         </DialogFooter>
       </FabricDialog>
-    )
+    );
   }
 }
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(connect()(Dialog))
+)(connect()(Dialog));

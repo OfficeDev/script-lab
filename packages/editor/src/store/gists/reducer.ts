@@ -1,25 +1,25 @@
-import { getType } from 'typesafe-actions'
+import { getType } from 'typesafe-actions';
 
 import {
   gists as gistActions,
   IGistsAction,
   github as githubActions,
   IGithubAction,
-} from '../actions'
+} from '../actions';
 
 export interface IState {
-  [id: string]: ISharedGistMetadata
+  [id: string]: ISharedGistMetadata;
 }
 
 const gists = (state: IState = {}, action: IGistsAction | IGithubAction): IState => {
   switch (action.type) {
     case getType(gistActions.fetchMetadata.success):
-      return action.payload.reduce((all, gist) => ({ ...all, [gist.id]: gist }), {})
+      return action.payload.reduce((all, gist) => ({ ...all, [gist.id]: gist }), {});
     case getType(githubActions.logout.success):
-      return {}
+      return {};
     default:
-      return state
+      return state;
   }
-}
+};
 
-export default gists
+export default gists;

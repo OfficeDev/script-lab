@@ -1,11 +1,10 @@
-import prettier from 'prettier/standalone'
-import librariesIntellisenseJSON from './librariesIntellisense'
-import { schema as SettingsSchema } from '../../settings'
-import { USER_SETTINGS_FILE_ID } from '../../constants'
+import prettier from 'prettier/standalone';
+import librariesIntellisenseJSON from './librariesIntellisense';
+import { schema as SettingsSchema } from '../../settings';
+import { USER_SETTINGS_FILE_ID } from '../../constants';
 
 export function doesMonacoExist() {
-  const w = window as any
-  return !!w.monaco
+  return !!(window as any).monaco;
 }
 
 const Regex = {
@@ -15,14 +14,14 @@ const Regex = {
   ENDS_WITH_DTS: /.*\.d\.ts$/i,
   GLOBAL: /^.*/i,
   TRIPLE_SLASH_REF: /\/\/\/\s*<reference\spath="([\w\.\d]+\.d\.ts)"\s*\/>/gm,
-}
+};
 
 export function registerLibrariesMonacoLanguage() {
   if (!doesMonacoExist()) {
-    return
+    return;
   }
 
-  monaco.languages.register({ id: 'libraries' })
+  monaco.languages.register({ id: 'libraries' });
   monaco.languages.setMonarchTokensProvider('libraries', {
     tokenizer: {
       root: [
@@ -34,7 +33,7 @@ export function registerLibrariesMonacoLanguage() {
       ],
     },
     tokenPostfix: '',
-  })
+  });
 
   monaco.languages.registerCompletionItemProvider('libraries', {
     provideCompletionItems: (model, position) => {
@@ -43,28 +42,28 @@ export function registerLibrariesMonacoLanguage() {
         endLineNumber: position.lineNumber,
         startColumn: 1,
         endColumn: position.column,
-      })
+      });
 
       if (Regex.STARTS_WITH_COMMENT.test(currentLine)) {
-        return []
+        return [];
       }
 
       if (currentLine === '') {
         return librariesIntellisenseJSON.map(library => {
-          let insertText = ''
+          let insertText = '';
 
           if (Array.isArray(library.value)) {
-            insertText += library.value.join('\n')
+            insertText += library.value.join('\n');
           } else {
-            insertText += library.value || ''
-            insertText += '\n'
+            insertText += library.value || '';
+            insertText += '\n';
           }
 
           if (Array.isArray(library.typings)) {
-            insertText += (library.typings as string[]).join('\n')
+            insertText += (library.typings as string[]).join('\n');
           } else {
-            insertText += library.typings || ''
-            insertText += '\n'
+            insertText += library.typings || '';
+            insertText += '\n';
           }
 
           return {
@@ -72,13 +71,13 @@ export function registerLibrariesMonacoLanguage() {
             documentation: library.description,
             kind: monaco.languages.CompletionItemKind.Module,
             insertText,
-          }
-        })
+          };
+        });
       }
 
-      return Promise.resolve([])
+      return Promise.resolve([]);
     },
-  })
+  });
 }
 
 export function registerSettingsMonacoLanguage() {
@@ -98,11 +97,11 @@ export function registerSettingsMonacoLanguage() {
         schema: SettingsSchema,
       },
     ],
-  })
+  });
 }
 
 export interface IPrettierSettings {
-  tabWidth: number
+  tabWidth: number;
 }
 export function enablePrettierInMonaco(prettierSettings: IPrettierSettings) {
   import('prettier/parser-typescript').then(prettierTypeScript => {
@@ -113,52 +112,52 @@ export function enablePrettierInMonaco(prettierSettings: IPrettierSettings) {
         options: monaco.languages.FormattingOptions,
         token: monaco.CancellationToken,
       ): monaco.languages.TextEdit[] => {
-        const text = document.getValue()
+        const text = document.getValue();
         const formatted = prettier.format(text, {
           parser: 'typescript',
           plugins: [prettierTypeScript],
           tabWidth: prettierSettings.tabWidth,
-        })
+        });
 
         return [
           {
             range: document.getFullModelRange(),
             text: formatted,
           },
-        ]
+        ];
       },
-    }
+    };
 
     monaco.languages.registerDocumentFormattingEditProvider(
       'typescript',
       PrettierTypeScriptFormatter,
-    )
-  })
+    );
+  });
 }
 
 export function parseTripleSlashRefs(url: string, content: string) {
-  let match = Regex.TRIPLE_SLASH_REF.exec(content)
-  Regex.TRIPLE_SLASH_REF.lastIndex = 0
+  let match = Regex.TRIPLE_SLASH_REF.exec(content);
+  Regex.TRIPLE_SLASH_REF.lastIndex = 0;
   if (!match) {
-    return []
+    return [];
   }
-  let copyContent = content
+  let copyContent = content;
 
-  const splitUrl = url.split('/')
-  const baseUrl = splitUrl.slice(0, splitUrl.length - 1).join('/')
+  const splitUrl = url.split('/');
+  const baseUrl = splitUrl.slice(0, splitUrl.length - 1).join('/');
 
-  const additionalUrls: string[] = []
+  const additionalUrls: string[] = [];
 
   while (match) {
-    const [ref, path] = match
+    const [ref, path] = match;
 
-    const newUrl = `${baseUrl}/${path}`
-    additionalUrls.push(newUrl)
-    copyContent = copyContent.replace(ref, '')
+    const newUrl = `${baseUrl}/${path}`;
+    additionalUrls.push(newUrl);
+    copyContent = copyContent.replace(ref, '');
 
-    match = Regex.TRIPLE_SLASH_REF.exec(copyContent)
-    Regex.TRIPLE_SLASH_REF.lastIndex = 0
+    match = Regex.TRIPLE_SLASH_REF.exec(copyContent);
+    Regex.TRIPLE_SLASH_REF.lastIndex = 0;
   }
 
-  return additionalUrls
+  return additionalUrls;
 }

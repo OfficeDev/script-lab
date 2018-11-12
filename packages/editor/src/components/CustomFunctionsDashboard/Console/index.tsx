@@ -1,10 +1,10 @@
-import React from 'react'
-import { withTheme } from 'styled-components'
-import moment from 'moment'
+import React from 'react';
+import { withTheme } from 'styled-components';
+import moment from 'moment';
 
-import { MessageBar, MessageBarType } from 'office-ui-fabric-react/lib/MessageBar'
-import { Icon } from 'office-ui-fabric-react/lib/Icon'
-import { Checkbox } from 'office-ui-fabric-react/lib/Checkbox'
+import { MessageBar, MessageBarType } from 'office-ui-fabric-react/lib/MessageBar';
+import { Icon } from 'office-ui-fabric-react/lib/Icon';
+import { Checkbox } from 'office-ui-fabric-react/lib/Checkbox';
 
 import {
   RunnerLastUpdatedWrapper,
@@ -17,13 +17,13 @@ import {
   LogsArea,
   LogsList,
   Log,
-} from './styles'
+} from './styles';
 
-import { setUpMomentJsDurationDefaults } from '../../../utils'
-import Only from '../../Only'
-import { connect } from 'react-redux'
-import { IState as IReduxState } from '../../../store/reducer'
-import actions from '../../../store/actions'
+import { setUpMomentJsDurationDefaults } from '../../../utils';
+import Only from '../../Only';
+import { connect } from 'react-redux';
+import { IState as IReduxState } from '../../../store/reducer';
+import actions from '../../../store/actions';
 
 export enum ConsoleLogTypes {
   Info = 'info',
@@ -33,10 +33,10 @@ export enum ConsoleLogTypes {
 }
 
 interface IPropsFromRedux {
-  logs: ILogData[]
-  runnerLastUpdated: number
-  runnerIsAlive: boolean
-  engineStatus: ICustomFunctionEngineStatus
+  logs: ILogData[];
+  runnerLastUpdated: number;
+  runnerIsAlive: boolean;
+  engineStatus: ICustomFunctionEngineStatus;
 }
 
 const mapStateToProps = (state: IReduxState): IPropsFromRedux => ({
@@ -44,62 +44,61 @@ const mapStateToProps = (state: IReduxState): IPropsFromRedux => ({
   runnerLastUpdated: state.customFunctions.runner.lastUpdated,
   runnerIsAlive: state.customFunctions.runner.isAlive,
   engineStatus: state.customFunctions.engineStatus,
-})
+});
 
 interface IActionsFromRedux {
-  fetchLogs: () => void
-  clearLogs: () => void
+  fetchLogs: () => void;
+  clearLogs: () => void;
 }
 
 const mapDispatchToProps = (dispatch): IActionsFromRedux => ({
   fetchLogs: () => dispatch(actions.customFunctions.fetchLogsAndHeartbeat()),
   clearLogs: () => dispatch(actions.customFunctions.clearLogs()),
-})
+});
 
 interface IConsole extends IPropsFromRedux, IActionsFromRedux {
-  theme: ITheme // from withTheme
+  theme: ITheme; // from withTheme
 }
 
 interface IState {
-  shouldScrollToBottom: boolean
-  filterQuery: string
+  shouldScrollToBottom: boolean;
+  filterQuery: string;
 }
 
 class ConsoleWithoutTheme extends React.Component<IConsole, IState> {
-  private logFetchInterval
-  state = { shouldScrollToBottom: true, filterQuery: '' }
+  private logFetchInterval;
+  state = { shouldScrollToBottom: true, filterQuery: '' };
 
   constructor(props: IConsole) {
-    super(props)
+    super(props);
 
-    setUpMomentJsDurationDefaults(moment)
+    setUpMomentJsDurationDefaults(moment);
   }
 
   componentDidMount() {
-    this.scrollToBottom()
-    this.logFetchInterval = setInterval(this.props.fetchLogs, 300)
+    this.scrollToBottom();
+    this.logFetchInterval = setInterval(this.props.fetchLogs, 300);
   }
 
   componentWillUnmount() {
-    clearInterval(this.logFetchInterval)
+    clearInterval(this.logFetchInterval);
   }
 
   componentDidUpdate() {
-    this.scrollToBottom()
+    this.scrollToBottom();
   }
 
   setShouldScrollToBottom = (ev: React.FormEvent<HTMLElement>, checked: boolean) =>
-    this.setState({ shouldScrollToBottom: checked })
+    this.setState({ shouldScrollToBottom: checked });
 
   updateFilterQuery = () =>
     this.setState({
       filterQuery: (this.refs.filterTextInput as any).value.toLowerCase(),
-    })
+    });
 
   scrollToBottom() {
     if (this.state.shouldScrollToBottom && this.refs.lastLog) {
-      const lastLogRef = this.refs.lastLog as any
-      lastLogRef.scrollIntoView()
+      (this.refs.lastLog as any).scrollIntoView();
     }
   }
 
@@ -111,11 +110,11 @@ class ConsoleWithoutTheme extends React.Component<IConsole, IState> {
       runnerLastUpdated,
       engineStatus,
       clearLogs,
-    } = this.props
+    } = this.props;
 
     const runnerLastUpdatedText = runnerIsAlive
       ? moment(new Date(runnerLastUpdated)).fromNow()
-      : ''
+      : '';
 
     return (
       <Wrapper>
@@ -189,7 +188,7 @@ class ConsoleWithoutTheme extends React.Component<IConsole, IState> {
                         color: theme.black,
                         icon: { name: 'Error', color: 'red' },
                       },
-                    }[log.severity]
+                    }[log.severity];
                     return (
                       <Log
                         key={`${log.severity}-${i}`}
@@ -208,7 +207,7 @@ class ConsoleWithoutTheme extends React.Component<IConsole, IState> {
                         )}
                         {log.message}
                       </Log>
-                    )
+                    );
                   })}
               </LogsList>
               <div ref="lastLog" />
@@ -246,13 +245,13 @@ class ConsoleWithoutTheme extends React.Component<IConsole, IState> {
           </NoLogsPlaceholderContainer>
         )}
       </Wrapper>
-    )
+    );
   }
 }
 
-export const Console = withTheme(ConsoleWithoutTheme)
+export const Console = withTheme(ConsoleWithoutTheme);
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(Console)
+)(Console);
