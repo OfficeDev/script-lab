@@ -21,6 +21,7 @@ exports[`Storyshots Backstage|All basic 1`] = `
   height: 100%;
   width: 100%;
   padding: 1rem;
+  box-sizing: border-box;
   font-size: 1.6rem;
   overflow-y: auto;
 }
@@ -94,6 +95,7 @@ exports[`Storyshots Backstage|All basic 1`] = `
 
 .c11 {
   padding: 1rem 1.5rem;
+  box-sizing: border-box;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -113,6 +115,7 @@ exports[`Storyshots Backstage|All basic 1`] = `
 
 .c13 {
   padding: 1rem 1.5rem;
+  box-sizing: border-box;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -1596,6 +1599,7 @@ exports[`Storyshots Backstage|GalleryList basic 1`] = `
 
 .c4 {
   padding: 1rem 1.5rem;
+  box-sizing: border-box;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -1792,6 +1796,7 @@ exports[`Storyshots Backstage|GalleryList multiple 1`] = `
 
 .c4 {
   padding: 1rem 1.5rem;
+  box-sizing: border-box;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -2502,6 +2507,7 @@ exports[`Storyshots Backstage|GalleryList with an active 1`] = `
 
 .c4 {
   padding: 1rem 1.5rem;
+  box-sizing: border-box;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -2521,6 +2527,7 @@ exports[`Storyshots Backstage|GalleryList with an active 1`] = `
 
 .c6 {
   padding: 1rem 1.5rem;
+  box-sizing: border-box;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -2645,6 +2652,7 @@ exports[`Storyshots Backstage|GalleryList with an active 1`] = `
 exports[`Storyshots Backstage|GalleryList/Item active 1`] = `
 .c0 {
   padding: 1rem 1.5rem;
+  box-sizing: border-box;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -2689,6 +2697,7 @@ exports[`Storyshots Backstage|GalleryList/Item active 1`] = `
 exports[`Storyshots Backstage|GalleryList/Item basic 1`] = `
 .c0 {
   padding: 1rem 1.5rem;
+  box-sizing: border-box;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -2733,6 +2742,7 @@ exports[`Storyshots Backstage|ImportSolution basic 1`] = `
   height: 100%;
   width: 100%;
   padding: 1rem;
+  box-sizing: border-box;
   font-size: 1.6rem;
   overflow-y: auto;
 }
@@ -4092,6 +4102,7 @@ exports[`Storyshots Backstage|MySolutions basic 1`] = `
   height: 100%;
   width: 100%;
   padding: 1rem;
+  box-sizing: border-box;
   font-size: 1.6rem;
   overflow-y: auto;
 }
@@ -4149,6 +4160,7 @@ exports[`Storyshots Backstage|MySolutions basic 1`] = `
 
 .c7 {
   padding: 1rem 1.5rem;
+  box-sizing: border-box;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -4638,6 +4650,7 @@ exports[`Storyshots Backstage|Samples basic 1`] = `
   height: 100%;
   width: 100%;
   padding: 1rem;
+  box-sizing: border-box;
   font-size: 1.6rem;
   overflow-y: auto;
 }
@@ -4695,6 +4708,7 @@ exports[`Storyshots Backstage|Samples basic 1`] = `
 
 .c7 {
   padding: 1rem 1.5rem;
+  box-sizing: border-box;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;

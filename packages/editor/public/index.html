@@ -32,12 +32,14 @@
 
   <link rel="stylesheet" href="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-core/9.6.0/css/fabric.min.css">
 
+  <!-- Note: these styles must be run through autoprefixer manually, anytime you make a change -->
   <style>
     *,
     *::before,
     *::after {
       padding: 0;
       margin: 0;
+      -webkit-box-sizing: inherit;
       box-sizing: inherit;
     }
 
@@ -47,10 +49,11 @@
 
     body {
       font-family: sans-serif;
+      -webkit-box-sizing: border-box;
       box-sizing: border-box;
       overscroll-behavior-y: none;
       background-color: #212121;
-
+      overflow: hidden;
     }
 
     #loading {
@@ -58,14 +61,24 @@
       color: white;
       height: 100%;
       width: 100%;
+      display: -webkit-box;
+      display: -ms-flexbox;
       display: flex;
+      -webkit-box-orient: vertical;
+      -webkit-box-direction: normal;
+      -ms-flex-direction: column;
       flex-direction: column;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
       align-items: center;
+      -webkit-box-pack: center;
+      -ms-flex-pack: center;
       justify-content: center;
     }
 
     .loading-indicator {
       margin: 20px auto 0;
+      -webkit-box-sizing: border-box;
       box-sizing: border-box;
       width: 140px;
       text-align: center;
@@ -76,6 +89,7 @@
       height: 18px;
       background-color: #d83b01;
       margin: 3px;
+      -webkit-box-sizing: border-box;
       box-sizing: border-box;
 
       border-radius: 100%;
