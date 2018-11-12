@@ -21,6 +21,7 @@ export const ContentWrapper = styled.div`
   height: 100%;
   width: 100%;
   padding: 1rem;
+  box-sizing: border-box;
   font-size: 1.6rem;
   overflow-y: auto;
 `

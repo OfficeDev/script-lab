@@ -14,7 +14,8 @@ export const RunGalleryItemContentWrapper = styled.div`
   overflow: auto;
   padding: 2rem;
   border: .1rem solid gray;
-  background-color: white
+  box-sizing: border-box;
+  background-color: white;
   box-shadow: 0px .5rem 1rem hsla(0, 0%, 0%, .15);
 `
 
