@@ -13,5 +13,6 @@ export const FunctionList = styled.div`
   height: 100%;
   & ${FunctionWrapper} {
     margin-bottom: 1rem;
+    box-sizing: border-box;
   }
 `
