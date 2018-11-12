@@ -327,10 +327,12 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
       onClick: closeSettings,
     };
 
-    const commonItems = [back, nav, name].filter(({ hidden }) => !hidden).map(option => {
-      const { hidden, ...rest } = option;
-      return rest;
-    });
+    const commonItems = [back, nav, name]
+      .filter(({ hidden }) => !hidden)
+      .map(option => {
+        const { hidden, ...rest } = option;
+        return rest;
+      });
 
     const items: ICommandBarItemProps[] = [
       ...commonItems,

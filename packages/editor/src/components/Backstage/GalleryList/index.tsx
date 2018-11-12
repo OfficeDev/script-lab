@@ -38,7 +38,9 @@ class GalleryList extends Component<IProps, IState> {
             </ArrowWrapper>
           </TitleBar>
           <Only when={isExpanded}>
-            {items.map(item => <GalleryListItem key={item.key} {...item} />)}
+            {items.map(item => (
+              <GalleryListItem key={item.key} {...item} />
+            ))}
           </Only>
         </FocusZone>
       </GalleryListWrapper>

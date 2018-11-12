@@ -40,10 +40,10 @@ function processLibraries(libraries: string, isInsideOffice: boolean) {
 
     if (/\.ts$|\.js$/i.test(resolvedUrlPath)) {
       /*
-            * Don't add Office.js to the rest of the script references --
-            * it is special because of how it needs to be *outside* of the iframe,
-            * whereas the rest of the script references need to be inside the iframe.
-            */
+       * Don't add Office.js to the rest of the script references --
+       * it is special because of how it needs to be *outside* of the iframe,
+       * whereas the rest of the script references need to be inside the iframe.
+       */
       if (/(?:office|office.debug).js$/.test(resolvedUrlPath.toLowerCase())) {
         officeJS = resolvedUrlPath;
         return null;

@@ -229,15 +229,14 @@ export class Backstage extends Component<IProps, IState> {
               </LoadingContainer>
             </Only>
           </ContentContainer>
-          {conflictingGist &&
-            existingSolutionsConflicting && (
-              <ConflictResolutionDialog
-                conflictingGist={conflictingGist}
-                existingSolutions={existingSolutionsConflicting}
-                closeDialog={this.hideGistConflictDialog}
-                openGist={this.props.openGist}
-              />
-            )}
+          {conflictingGist && existingSolutionsConflicting && (
+            <ConflictResolutionDialog
+              conflictingGist={conflictingGist}
+              existingSolutions={existingSolutionsConflicting}
+              closeDialog={this.hideGistConflictDialog}
+              openGist={this.props.openGist}
+            />
+          )}
         </BackstageWrapper>
       </div>
     );

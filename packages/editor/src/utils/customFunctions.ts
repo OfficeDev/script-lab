@@ -18,16 +18,18 @@ export async function registerMetadata(
   const functions = flatten(visual.snippets.map(snippet => snippet.functions));
 
   const registrationPayload: ICustomFunctionsRegistrationApiMetadata = {
-    functions: functions.filter(func => func.status === 'good').map(func => {
-      const schemaFunc: ICFSchemaFunctionMetadata = {
-        name: func.nonCapitalizedFullName.toUpperCase(),
-        description: func.description,
-        options: func.options,
-        result: func.result,
-        parameters: func.parameters,
-      };
-      return schemaFunc;
-    }),
+    functions: functions
+      .filter(func => func.status === 'good')
+      .map(func => {
+        const schemaFunc: ICFSchemaFunctionMetadata = {
+          name: func.nonCapitalizedFullName.toUpperCase(),
+          description: func.description,
+          options: func.options,
+          result: func.result,
+          parameters: func.parameters,
+        };
+        return schemaFunc;
+      }),
   };
 
   if (Office.context.requirements.isSetSupported('CustomFunctions', 1.3)) {

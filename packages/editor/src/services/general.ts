@@ -42,8 +42,8 @@ export const request = ({
     headers,
     body: jsonPayload,
   })
-    .then(
-      response => (response.ok ? response.json() : Promise.reject(response.statusText)),
+    .then(response =>
+      response.ok ? response.json() : Promise.reject(response.statusText),
     )
     .then(response => ({ response }))
     .catch(error => ({ error }));

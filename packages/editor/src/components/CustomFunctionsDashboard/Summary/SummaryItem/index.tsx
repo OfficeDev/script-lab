@@ -75,7 +75,9 @@ const SummaryItem = ({
       </FunctionNameWrapper>
       {additionalInfo && (
         <AdditionalInfoContainer>
-          {additionalInfo.map(info => <AdditionalInfo key={info}>{info}</AdditionalInfo>)}
+          {additionalInfo.map(info => (
+            <AdditionalInfo key={info}>{info}</AdditionalInfo>
+          ))}
         </AdditionalInfoContainer>
       )}
       <SnippetName>
