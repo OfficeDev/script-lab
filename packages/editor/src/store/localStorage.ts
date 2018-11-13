@@ -155,14 +155,14 @@ function loadAllSolutionsAndFiles(): {
 
     solutions = normalizeSolutions(solutions);
   } else {
-    // No solutions detected in above format, attempting to look for older formats
+    // No solutions detected in above format, attempting to look for older (circa Nov 2018) format
     // parsing for the load
     solutions = JSON.parse(localStorage.getItem('solutions') || '{}');
     files = JSON.parse(localStorage.getItem('files') || '{}');
 
     if (Object.keys(solutions).length === 0) {
       // the above format was not found
-      // checking for Script Lab Legacy snippets
+      // checking for Script Lab 2017 format snippets
 
       loadLegacyScriptLabSnippets().forEach(solution => {
         // add files
