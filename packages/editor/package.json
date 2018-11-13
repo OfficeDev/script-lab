@@ -10,6 +10,7 @@
     "core-js": "^2.5.7",
     "js-yaml": "^3.12.0",
     "lodash": "^4.17.10",
+    "moment": "^2.22.2",
     "monaco-editor": "^0.14.3",
     "normalizr": "^3.2.4",
     "office-ui-fabric-react": "6.79.0",
@@ -34,44 +35,29 @@
     "start": "set HTTPS=true&&react-scripts start",
     "build": "node scripts/build.js",
     "build:storybook": "build-storybook -c .storybook -o build-storybook",
-    "react-scripts-ts:build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
+    "react-scripts:build": "react-scripts build",
+    "test": "jest --env=jsdom",
     "test-coverage": "yarn test -- --coverage",
     "show-coverage": "yarn test-coverage && coverage\\lcov-report\\index.html",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },
-  "jest": {
-    "moduleNameMapper": {
-      "office-ui-fabric-react/lib/": "office-ui-fabric-react/lib-commonjs/"
-    },
-    "collectCoverageFrom": [
-      "src/**/*.ts",
-      "src/**/*.tsx",
-      "!src/**/*.d.ts"
-    ],
-    "coverageReporters": [
-      "json",
-      "lcov"
-    ]
-  },
   "devDependencies": {
-    "@storybook/addon-a11y": "^3.4.8",
-    "@storybook/addon-actions": "^3.4.4",
-    "@storybook/addon-knobs": "^3.4.6",
-    "@storybook/addon-links": "^3.4.4",
-    "@storybook/addon-options": "^3.4.10",
-    "@storybook/addon-storyshots": "^3.4.4",
-    "@storybook/addons": "^3.4.4",
-    "@storybook/react": "^3.4.4",
+    "@storybook/addon-a11y": "^4.0.6",
+    "@storybook/addon-actions": "^4.0.6",
+    "@storybook/addon-knobs": "^4.0.6",
+    "@storybook/addon-links": "^4.0.6",
+    "@storybook/addon-options": "^4.0.6",
+    "@storybook/addons": "^4.0.6",
+    "@storybook/react": "^4.0.6",
     "@types/jest": "^22.2.3",
     "@types/node": "^10.0.9",
     "@types/office-js": "^0.0.87",
     "@types/react": "^16.3.14",
     "@types/react-dom": "^16.0.5",
-    "@types/storybook__addon-storyshots": "^3.4.1",
-    "@types/storybook__react": "^3.0.7",
+    "@types/storybook__react": "^4.0.0",
     "@uifabric/jest-serializer-merge-styles": "^6.0.5",
+    "awesome-typescript-loader": "^5.2.1",
     "enzyme": "^3.4.1",
     "enzyme-adapter-react-16": "^1.2.0",
     "enzyme-to-json": "^3.3.4",
@@ -82,6 +68,7 @@
     "redux-devtools": "^3.4.1",
     "shelljs": "^0.8.2",
     "source-map-explorer": "^1.6.0",
+    "ts-jest": "^23.10.4",
     "typescript": "^3.0.1"
   },
   "browserslist": [

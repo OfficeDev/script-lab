@@ -68,6 +68,7 @@ const mapDispatchToProps = (dispatch): IActionsFromRedux => ({
   ) => dispatch(gists.get.request({ rawUrl, gistId, conflictResolution })),
   importGist: (gistId?: string, gist?: string) =>
     dispatch(gists.importSnippet.request({ gistId, gist })),
+  // goBack: () => dispatch(push(PATHS.EDITOR))
   goBack: () => dispatch(push(PATHS.EDITOR)),
 });
 
@@ -161,7 +162,7 @@ export class Backstage extends Component<IProps, IState> {
         key: 'back',
         ariaLabel: 'Back',
         icon: 'GlobalNavButton',
-        onClick: this.props.goBack,
+        onClick: () => this.props.goBack(),
       },
       {
         key: 'new',
