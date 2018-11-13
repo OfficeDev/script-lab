@@ -20,6 +20,15 @@ import { push } from 'connected-react-router';
 import { PATHS } from '../../constants';
 import Only from '../Only';
 
+interface IBackstageItem {
+  key: string;
+  icon: string;
+  label?: string;
+  onClick?: any;
+  content?: JSX.Element;
+  ariaLabel?: string;
+}
+
 interface IPropsFromRedux {
   solutions: ISolution[];
   activeSolution?: ISolution;
@@ -147,12 +156,12 @@ export class Backstage extends Component<IProps, IState> {
     });
 
   render() {
-    const items = [
+    const originalItems: IBackstageItem[] = [
       {
         key: 'back',
         ariaLabel: 'Back',
         icon: 'GlobalNavButton',
-        onClick: () => this.props.goBack(),
+        onClick: this.props.goBack,
       },
       {
         key: 'new',
@@ -193,10 +202,12 @@ export class Backstage extends Component<IProps, IState> {
         icon: 'Download',
         content: <ImportSolution importGist={this.props.importGist} />,
       },
-    ].map(item => ({
+    ];
+    const items = originalItems.map((item: IBackstageItem) => ({
       onClick: () => this.setState({ selectedKey: item.key }),
       ...item,
     }));
+
     const {
       selectedKey,
       conflictingGist,
