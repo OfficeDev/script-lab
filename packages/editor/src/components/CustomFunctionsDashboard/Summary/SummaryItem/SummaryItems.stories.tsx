@@ -1,9 +1,9 @@
-import React from 'react'
+import React from 'react';
 
-import SummaryItem from './'
+import SummaryItem from './';
 
-import { checkA11y } from '@storybook/addon-a11y'
-import { storiesOf } from '@storybook/react'
+import { checkA11y } from '@storybook/addon-a11y';
+import { storiesOf } from '@storybook/react';
 
 enum Status {
   Good = 'good',
@@ -12,7 +12,7 @@ enum Status {
   Untrusted = 'untrusted',
 }
 
-const stories = storiesOf('Custom Functions|Summary/Items', module)
+const stories = storiesOf('Custom Functions|Summary/Items', module);
 
 stories.add('basic', () => (
   <div>
@@ -29,4 +29,4 @@ stories.add('basic', () => (
     />
     <SummaryItem status={Status.Untrusted} snippetName="SnippetName" funcName="foo4" />
   </div>
-))
+));

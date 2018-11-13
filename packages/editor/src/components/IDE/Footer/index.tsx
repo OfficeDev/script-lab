@@ -1,22 +1,22 @@
-import React from 'react'
-import { withTheme } from 'styled-components'
+import React from 'react';
+import { withTheme } from 'styled-components';
 
-import { Customizer } from 'office-ui-fabric-react/lib/Utilities'
-import { CommandBar, ICommandBarItemProps } from 'office-ui-fabric-react/lib/CommandBar'
-import { ITheme as IFabricTheme } from 'office-ui-fabric-react/lib/Styling'
+import { Customizer } from 'office-ui-fabric-react/lib/Utilities';
+import { CommandBar, ICommandBarItemProps } from 'office-ui-fabric-react/lib/CommandBar';
+import { ITheme as IFabricTheme } from 'office-ui-fabric-react/lib/Styling';
 
-import { getCurrentEnv, allowedEnvs } from '../../../environment'
-import { PATHS } from '../../../constants'
+import { getCurrentEnv, allowedEnvs } from '../../../environment';
+import { PATHS } from '../../../constants';
 
-import { getCommandBarFabricTheme } from '../../../theme'
+import { getCommandBarFabricTheme } from '../../../theme';
 
-import { HostType } from '@microsoft/office-js-helpers'
+import { HostType } from '@microsoft/office-js-helpers';
 
-import { Wrapper } from './styles'
+import { Wrapper } from './styles';
 
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 
-import { actions, selectors } from '../../../store'
+import { actions, selectors } from '../../../store';
 
 const languageMap = {
   typescript: 'TypeScript',
@@ -24,16 +24,16 @@ const languageMap = {
   css: 'CSS',
   html: 'HTML',
   json: 'JSON',
-}
+};
 
 interface IPropsFromRedux {
-  language: string
-  currentHost: string
-  isWeb: boolean
-  hasCustomFunctions: boolean
-  commandBarFabricTheme: IFabricTheme
-  currentEditorTheme: string
-  isSettingsView: boolean
+  language: string;
+  currentHost: string;
+  isWeb: boolean;
+  hasCustomFunctions: boolean;
+  commandBarFabricTheme: IFabricTheme;
+  currentEditorTheme: string;
+  isSettingsView: boolean;
 }
 
 const mapStateToProps = (state, ownProps: IProps): IPropsFromRedux => ({
@@ -44,14 +44,14 @@ const mapStateToProps = (state, ownProps: IProps): IPropsFromRedux => ({
   commandBarFabricTheme: getCommandBarFabricTheme(selectors.host.get(state)),
   currentEditorTheme: selectors.settings.getPrettyEditorTheme(state),
   isSettingsView: selectors.settings.getIsOpen(state),
-})
+});
 
 interface IActionsFromRedux {
-  onSettingsIconClick: () => void
-  changeHost: (host: string) => void
-  navigateToCustomFunctionsDashboard: () => void
-  cycleEditorTheme: () => void
-  switchEnvironment: (env: string) => void
+  onSettingsIconClick: () => void;
+  changeHost: (host: string) => void;
+  navigateToCustomFunctionsDashboard: () => void;
+  cycleEditorTheme: () => void;
+  switchEnvironment: (env: string) => void;
 }
 
 const mapDispatchToProps = (dispatch): IActionsFromRedux => ({
@@ -61,10 +61,10 @@ const mapDispatchToProps = (dispatch): IActionsFromRedux => ({
     dispatch(actions.customFunctions.openDashboard()),
   cycleEditorTheme: () => dispatch(actions.settings.cycleEditorTheme()),
   switchEnvironment: (env: string) => dispatch(actions.misc.switchEnvironment(env)),
-})
+});
 
 export interface IProps extends IPropsFromRedux, IActionsFromRedux {
-  theme: ITheme // from withTheme
+  theme: ITheme; // from withTheme
 }
 
 const FooterWithoutTheme = ({
@@ -82,7 +82,7 @@ const FooterWithoutTheme = ({
   switchEnvironment,
   isSettingsView,
 }: IProps) => {
-  const iconStyles = { root: { fontSize: '1.4rem' } }
+  const iconStyles = { root: { fontSize: '1.4rem' } };
   const items = [
     {
       hidden: !isWeb,
@@ -142,7 +142,7 @@ const FooterWithoutTheme = ({
     },
   ]
     .filter(({ hidden }) => !hidden)
-    .map(item => ({ ...item, style: { fontSize: '1.2rem' } }))
+    .map(item => ({ ...item, style: { fontSize: '1.2rem' } }));
 
   const farItems = [
     {
@@ -179,7 +179,7 @@ const FooterWithoutTheme = ({
     },
   ]
     .filter(({ hidden }) => !hidden)
-    .map(item => ({ ...item, style: { fontSize: '1.2rem' } }))
+    .map(item => ({ ...item, style: { fontSize: '1.2rem' } }));
 
   return (
     <Customizer settings={{ theme: commandBarFabricTheme }}>
@@ -198,12 +198,12 @@ const FooterWithoutTheme = ({
         />
       </Wrapper>
     </Customizer>
-  )
-}
+  );
+};
 
-export const Footer = withTheme(FooterWithoutTheme)
+export const Footer = withTheme(FooterWithoutTheme);
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(withTheme(Footer))
+)(withTheme(Footer));

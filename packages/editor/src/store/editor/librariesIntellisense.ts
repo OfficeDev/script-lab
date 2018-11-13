@@ -45,4 +45,4 @@ export default [
     typings: ['@types/whatwg-fetch', '@types/whatwg-streams'],
     description: 'A window.fetch polyfill.',
   },
-]
+];

@@ -1,13 +1,13 @@
-import React from 'react'
+import React from 'react';
 
-import { Dashboard } from './'
-import { BasicSummary } from '../Summary/Summary.stories'
-import { BasicConsole } from '../Console/Console.stories'
-import { storiesOf } from '@storybook/react'
-import { getCommandBarFabricTheme } from '../../../theme'
+import { Dashboard } from './';
+import { BasicSummary } from '../Summary/Summary.stories';
+import { BasicConsole } from '../Console/Console.stories';
+import { storiesOf } from '@storybook/react';
+import { getCommandBarFabricTheme } from '../../../theme';
 
-const commandBarFabricTheme = getCommandBarFabricTheme('EXCEL')
-const Dummy = ({ letter }) => <div>I AM {letter}</div>
+const commandBarFabricTheme = getCommandBarFabricTheme('EXCEL');
+const Dummy = ({ letter }) => <div>I AM {letter}</div>;
 
 storiesOf('Custom Functions|Dashboard', module)
   .add('basic', () => (
@@ -45,4 +45,4 @@ storiesOf('Custom Functions|Dashboard', module)
       shouldPromptRefresh={true}
       isStandalone={true}
     />
-  ))
+  ));

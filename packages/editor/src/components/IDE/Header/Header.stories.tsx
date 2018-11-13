@@ -1,13 +1,13 @@
-import React from 'react'
-import { storiesOf } from '@storybook/react'
+import React from 'react';
+import { storiesOf } from '@storybook/react';
 
-import { Header } from './'
-import { getCommandBarFabricTheme } from '../../../theme'
-import { getBoilerplate, getBoilerplateSolution } from '../../../newSolutionData'
-import { SCRIPT_FILE_NAME } from '../../../constants'
+import { Header } from './';
+import { getCommandBarFabricTheme } from '../../../theme';
+import { getBoilerplate, getBoilerplateSolution } from '../../../newSolutionData';
+import { SCRIPT_FILE_NAME } from '../../../constants';
 
-const voidFunc = () => {}
-const solution = getBoilerplate('EXCEL')
+const voidFunc = () => {};
+const solution = getBoilerplate('EXCEL');
 const defaultHeaderProps = {
   isRunnableOnThisHost: true,
   isSettingsView: false,
@@ -46,7 +46,7 @@ const defaultHeaderProps = {
     functionName: string,
   ) => {},
   terminateAllDirectScriptExecutionFunctions: () => {},
-}
+};
 
 storiesOf('IDE|Header', module)
   .add('basic', () => <Header {...defaultHeaderProps} />)
@@ -58,4 +58,4 @@ storiesOf('IDE|Header', module)
   ))
   .add('logging in', () => (
     <Header {...{ ...defaultHeaderProps, isLoggingInOrOut: true }} />
-  ))
+  ));

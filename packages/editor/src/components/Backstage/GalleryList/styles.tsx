@@ -1,5 +1,5 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from 'react';
+import styled from 'styled-components';
 
 export const GalleryListWrapper = styled.section`
   margin: 1.2rem 0;
@@ -7,7 +7,7 @@ export const GalleryListWrapper = styled.section`
   &:focus {
     outline-color: ${props => props.theme.primary};
   }
-`
+`;
 
 export const TitleBar = styled.div.attrs({ className: 'ms-font-m' })`
   display: flex;
@@ -16,12 +16,12 @@ export const TitleBar = styled.div.attrs({ className: 'ms-font-m' })`
   background-color: ${props => props.theme.neutralLight};
   white-space: nowrap;
   overflow: hidden;
-`
+`;
 
 export const Title = styled.span`
   padding: 1.2rem;
   flex: 1;
-`
+`;
 
 export const ArrowWrapper = styled.div`
   padding: 1.2rem;
@@ -35,4 +35,4 @@ export const ArrowWrapper = styled.div`
   &:focus {
     outline-color: ${props => props.theme.primary};
   }
-`
+`;

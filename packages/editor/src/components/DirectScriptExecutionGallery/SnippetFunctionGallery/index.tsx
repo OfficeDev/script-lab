@@ -1,15 +1,15 @@
-import React from 'react'
-import { IconButton } from 'office-ui-fabric-react/lib/Button'
+import React from 'react';
+import { IconButton } from 'office-ui-fabric-react/lib/Button';
 
-import { FunctionList, FunctionName, FunctionWrapper } from './styles'
+import { FunctionList, FunctionName, FunctionWrapper } from './styles';
 
 export interface IProps {
-  functions: IDirectScriptExecutionFunctionMetadata[]
+  functions: IDirectScriptExecutionFunctionMetadata[];
 }
 
 export class SnippetFunctionGallery extends React.Component<IProps> {
   render() {
-    const { functions } = this.props
+    const { functions } = this.props;
     return (
       <FunctionList>
         {functions.map(({ name }) => (
@@ -19,8 +19,8 @@ export class SnippetFunctionGallery extends React.Component<IProps> {
           </FunctionWrapper>
         ))}
       </FunctionList>
-    )
+    );
   }
 }
 
-export default SnippetFunctionGallery
+export default SnippetFunctionGallery;

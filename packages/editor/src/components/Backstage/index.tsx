@@ -1,39 +1,39 @@
-import React, { Component } from 'react'
-import { withTheme } from 'styled-components'
-import { BackstageWrapper, ContentContainer, LoadingContainer } from './styles'
-import debounce from 'lodash/debounce'
+import React, { Component } from 'react';
+import { withTheme } from 'styled-components';
+import { BackstageWrapper, ContentContainer, LoadingContainer } from './styles';
+import debounce from 'lodash/debounce';
 
-import { Spinner, SpinnerSize } from 'office-ui-fabric-react/lib/Spinner'
+import { Spinner, SpinnerSize } from 'office-ui-fabric-react/lib/Spinner';
 
-import Menu from './Menu'
-import MySolutions from './MySolutions'
-import Samples from './Samples'
-import ImportSolution from './ImportSolution'
+import Menu from './Menu';
+import MySolutions from './MySolutions';
+import Samples from './Samples';
+import ImportSolution from './ImportSolution';
 
-import ConflictResolutionDialog from './ConflictResolutionDialog/ConflictResolutionDialog'
-import { ConflictResolutionOptions } from '../../interfaces/enums'
+import ConflictResolutionDialog from './ConflictResolutionDialog/ConflictResolutionDialog';
+import { ConflictResolutionOptions } from '../../interfaces/enums';
 
-import { connect } from 'react-redux'
-import selectors from '../../store/selectors'
-import { editor, solutions, samples, gists } from '../../store/actions'
-import { push } from 'connected-react-router'
-import { PATHS } from '../../constants'
-import Only from '../Only'
+import { connect } from 'react-redux';
+import selectors from '../../store/selectors';
+import { editor, solutions, samples, gists } from '../../store/actions';
+import { push } from 'connected-react-router';
+import { PATHS } from '../../constants';
+import Only from '../Only';
 
 interface IBackstageItem {
-  key: string
-  icon: string
-  label?: string
-  onClick?: () => void
-  content?: JSX.Element
-  ariaLabel?: string
+  key: string;
+  icon: string;
+  label?: string;
+  onClick?: () => void;
+  content?: JSX.Element;
+  ariaLabel?: string;
 }
 
 interface IPropsFromRedux {
-  solutions: ISolution[]
-  activeSolution?: ISolution
-  sharedGistMetadata: ISharedGistMetadata[]
-  samplesByGroup: { [group: string]: ISampleMetadata[] }
+  solutions: ISolution[];
+  activeSolution?: ISolution;
+  sharedGistMetadata: ISharedGistMetadata[];
+  samplesByGroup: { [group: string]: ISampleMetadata[] };
 }
 
 const mapStateToProps = (state): IPropsFromRedux => ({
@@ -41,19 +41,19 @@ const mapStateToProps = (state): IPropsFromRedux => ({
   activeSolution: selectors.editor.getActiveSolution(state),
   sharedGistMetadata: selectors.gists.getGistMetadata(state),
   samplesByGroup: selectors.samples.getMetadataByGroup(state),
-})
+});
 
 interface IActionsFromRedux {
-  createNewSolution: () => void
-  openSolution: (solutionId: string, fileId: string) => void
-  openSample: (rawUrl: string) => void
+  createNewSolution: () => void;
+  openSolution: (solutionId: string, fileId: string) => void;
+  openSample: (rawUrl: string) => void;
   openGist: (
     rawUrl: string,
     gistId: string,
     conflictResolution?: { type: ConflictResolutionOptions; existingSolution: ISolution },
-  ) => void
-  importGist: (gistId?: string, gist?: string) => void
-  goBack: () => void
+  ) => void;
+  importGist: (gistId?: string, gist?: string) => void;
+  goBack: () => void;
 }
 
 const mapDispatchToProps = (dispatch): IActionsFromRedux => ({
@@ -69,16 +69,16 @@ const mapDispatchToProps = (dispatch): IActionsFromRedux => ({
   importGist: (gistId?: string, gist?: string) =>
     dispatch(gists.importSnippet.request({ gistId, gist })),
   goBack: () => dispatch(push(PATHS.EDITOR)),
-})
+});
 
 export interface IProps extends IPropsFromRedux, IActionsFromRedux {}
 
 interface IState {
-  isLoading: boolean
-  selectedKey: string
-  conflictingGist: ISharedGistMetadata | null
-  existingSolutionsConflicting: ISolution[] | null
-  width: number
+  isLoading: boolean;
+  selectedKey: string;
+  conflictingGist: ISharedGistMetadata | null;
+  existingSolutionsConflicting: ISolution[] | null;
+  width: number;
 }
 
 export class Backstage extends Component<IProps, IState> {
@@ -88,72 +88,72 @@ export class Backstage extends Component<IProps, IState> {
     conflictingGist: null,
     existingSolutionsConflicting: null,
     width: 0,
-  }
-  containerDomNode
-  resizeListener
+  };
+  containerDomNode;
+  resizeListener;
 
   constructor(props) {
-    super(props)
-    this.containerDomNode = React.createRef()
+    super(props);
+    this.containerDomNode = React.createRef();
   }
 
   componentDidMount() {
-    this.resizeListener = window.addEventListener('resize', debounce(this.setWidth, 100))
-    this.setWidth()
+    this.resizeListener = window.addEventListener('resize', debounce(this.setWidth, 100));
+    this.setWidth();
   }
 
   setWidth = () => {
-    const { current } = this.containerDomNode
+    const { current } = this.containerDomNode;
     if (current) {
-      const { width } = current.getBoundingClientRect()
+      const { width } = current.getBoundingClientRect();
       if (this.state.width !== width) {
-        this.setState({ width })
+        this.setState({ width });
       }
     }
-  }
+  };
 
   componentWillUnmount() {
-    this.setState({ selectedKey: 'my-solutions', isLoading: false })
+    this.setState({ selectedKey: 'my-solutions', isLoading: false });
   }
 
   openSolution = (solutionId: string) => {
-    const solution = this.props.solutions.find(solution => solution.id === solutionId)
-    this.props.openSolution(solutionId, solution!.files[0].id)
-    this.setState({ isLoading: true })
-  }
+    const solution = this.props.solutions.find(solution => solution.id === solutionId);
+    this.props.openSolution(solutionId, solution!.files[0].id);
+    this.setState({ isLoading: true });
+  };
 
   openSample = (rawUrl: string) => {
-    this.props.openSample(rawUrl)
-    this.setState({ isLoading: true })
-  }
+    this.props.openSample(rawUrl);
+    this.setState({ isLoading: true });
+  };
 
   openSharedGist = (gistMeta: ISharedGistMetadata) => {
-    const { solutions, openGist } = this.props
-    const { id, url } = gistMeta
+    const { solutions, openGist } = this.props;
+    const { id, url } = gistMeta;
     const existingSolutions = solutions.filter(
       s => s.source && s.source.origin === 'gist' && s.source.id === id,
-    )
+    );
 
     if (existingSolutions.length > 0) {
       // version of this gist already exists locally in solutions
-      this.showGistConflictDialog(gistMeta, existingSolutions)
+      this.showGistConflictDialog(gistMeta, existingSolutions);
     } else {
-      openGist(url, id)
+      openGist(url, id);
     }
-    this.setState({ isLoading: true })
-  }
+    this.setState({ isLoading: true });
+  };
 
   showGistConflictDialog = (
     conflictingGist: ISharedGistMetadata,
     existingSolutionsConflicting: ISolution[],
-  ) => this.setState({ conflictingGist, existingSolutionsConflicting })
+  ) => this.setState({ conflictingGist, existingSolutionsConflicting });
 
   hideGistConflictDialog = () =>
     this.setState({
       conflictingGist: null,
       existingSolutionsConflicting: null,
       isLoading: false,
-    })
+    });
 
   render() {
     const items = [
@@ -168,7 +168,7 @@ export class Backstage extends Component<IProps, IState> {
         label: 'New Snippet',
         icon: 'Add',
         onClick: () => {
-          this.props.createNewSolution()
+          this.props.createNewSolution();
         },
       },
       {
@@ -205,14 +205,14 @@ export class Backstage extends Component<IProps, IState> {
     ].map((item: IBackstageItem) => ({
       onClick: () => this.setState({ selectedKey: item.key }),
       ...item,
-    }))
+    }));
     const {
       selectedKey,
       conflictingGist,
       existingSolutionsConflicting,
       width,
-    } = this.state
-    const activeItem = items.find(item => item.key === selectedKey)
+    } = this.state;
+    const activeItem = items.find(item => item.key === selectedKey);
     return (
       <div ref={this.containerDomNode}>
         <BackstageWrapper>
@@ -229,22 +229,21 @@ export class Backstage extends Component<IProps, IState> {
               </LoadingContainer>
             </Only>
           </ContentContainer>
-          {conflictingGist &&
-            existingSolutionsConflicting && (
-              <ConflictResolutionDialog
-                conflictingGist={conflictingGist}
-                existingSolutions={existingSolutionsConflicting}
-                closeDialog={this.hideGistConflictDialog}
-                openGist={this.props.openGist}
-              />
-            )}
+          {conflictingGist && existingSolutionsConflicting && (
+            <ConflictResolutionDialog
+              conflictingGist={conflictingGist}
+              existingSolutions={existingSolutionsConflicting}
+              closeDialog={this.hideGistConflictDialog}
+              openGist={this.props.openGist}
+            />
+          )}
         </BackstageWrapper>
       </div>
-    )
+    );
   }
 }
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(Backstage)
+)(Backstage);

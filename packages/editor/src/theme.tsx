@@ -1,6 +1,6 @@
-import { HostType } from '@microsoft/office-js-helpers'
-import Color from 'color'
-import { loadTheme, createTheme } from 'office-ui-fabric-react/lib/Styling'
+import { HostType } from '@microsoft/office-js-helpers';
+import Color from 'color';
+import { loadTheme, createTheme } from 'office-ui-fabric-react/lib/Styling';
 
 const neutralColors: IThemeNeutralColors = {
   black: '#000000',
@@ -12,10 +12,10 @@ const neutralColors: IThemeNeutralColors = {
   neutralLight: '#eaeaea',
   neutralLighter: '#f4f4f4',
   white: '#ffffff',
-}
+};
 
 export const getCommandBarFabricTheme = (host: string) => {
-  const theme = getTheme(host)
+  const theme = getTheme(host);
   return createTheme({
     palette: {
       themePrimary: theme.white, // color used for icons in context menu
@@ -29,12 +29,12 @@ export const getCommandBarFabricTheme = (host: string) => {
       black: theme.white, // color of text on hover
       white: theme.neutralSecondary, // '#515151', // color of context menu background
     },
-  })
-}
+  });
+};
 
 export const getTheme = (host: string): ITheme => {
-  const primary = primaryColors[host] || primaryColors[HostType.WEB]
-  const primaryColor = Color(primary)
+  const primary = primaryColors[host] || primaryColors[HostType.WEB];
+  const primaryColor = Color(primary);
   return {
     primaryDarkest: primaryColor.darken(0.6).hex(),
     primaryDarker: primaryColor.darken(0.5).hex(),
@@ -44,8 +44,8 @@ export const getTheme = (host: string): ITheme => {
     primaryLighter: primaryColor.lighten(0.5).hex(),
     primaryLightest: primaryColor.lighten(0.6).hex(),
     ...neutralColors,
-  }
-}
+  };
+};
 
 const primaryColors: { [key: string]: string } = {
   [HostType.WEB]: '#0078d4',
@@ -56,7 +56,7 @@ const primaryColors: { [key: string]: string } = {
   [HostType.POWERPOINT]: '#B7472A',
   [HostType.PROJECT]: '#217346',
   [HostType.WORD]: '#2B579A',
-}
+};
 
 // todo reconcile these two
 export const fabricTheme = {
@@ -88,10 +88,10 @@ export const fabricTheme = {
   bodyText: '#333',
   disabledBackground: '#f4f4f4',
   disabledText: '#c8c8c8',
-}
+};
 
 export const setupFabricTheme = (host: string) => {
-  const theme = getTheme(host)
+  const theme = getTheme(host);
 
   const fabricTheme = {
     themePrimary: theme.primary,
@@ -122,7 +122,7 @@ export const setupFabricTheme = (host: string) => {
     bodyText: '#333',
     disabledBackground: '#f4f4f4',
     disabledText: '#c8c8c8',
-  }
+  };
 
-  loadTheme({ palette: fabricTheme, isInverted: true })
-}
+  loadTheme({ palette: fabricTheme, isInverted: true });
+};
