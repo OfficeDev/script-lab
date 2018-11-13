@@ -1,10 +1,10 @@
-import { put, takeEvery, select, call } from 'redux-saga/effects';
+import { put, takeEvery, select, call, all } from 'redux-saga/effects';
 import { getType, ActionType } from 'typesafe-actions';
 import selectors from '../selectors';
 import { editor, settings, screen } from '../actions';
 import zip from 'lodash/zip';
 import flatten from 'lodash/flatten';
-import { push } from 'connected-react-router';
+import { push, RouterState } from 'connected-react-router';
 import { PATHS, LIBRARIES_FILE_NAME } from '../../constants';
 
 import {
@@ -19,6 +19,7 @@ let monacoEditor;
 
 export default function* editorWatcher() {
   yield takeEvery(getType(editor.open), onEditorOpenSaga);
+  yield takeEvery(getType(editor.openFile), onEditorOpenFileSaga);
   yield takeEvery(getType(editor.newSolutionOpened), onSolutionOpenSaga);
   yield takeEvery(getType(editor.newFileOpened), onFileOpenSaga);
   yield takeEvery(getType(editor.onMount), initializeMonacoSaga);
@@ -30,11 +31,18 @@ export default function* editorWatcher() {
   yield takeEvery(getType(editor.applyFormatting), applyFormattingSaga);
 }
 
-export function* onEditorOpenSaga(action: ActionType<typeof editor.open>) {
+function* onEditorOpenSaga() {
+  const { router } = yield select();
+  if (router.location.pathname !== PATHS.EDITOR) {
+    yield put(push(PATHS.EDITOR));
+  }
+}
+
+export function* onEditorOpenFileSaga(action: ActionType<typeof editor.openFile>) {
   const currentOpenSolution = yield select(selectors.editor.getActiveSolution);
   const currentOpenFile = yield select(selectors.editor.getActiveFile);
   yield put(editor.setActive(action.payload));
-  yield put(push(PATHS.EDITOR));
+  yield call(onEditorOpenSaga);
 
   const solutionToOpen = yield select(selectors.solutions.get, action.payload.solutionId);
   const fileToOpen = yield select(selectors.solutions.getFile, action.payload.fileId);
@@ -150,16 +158,18 @@ function* makeAddIntellisenseRequestSaga() {
   let urlsToFetch = urls.filter(url => /^.*\/index\.d\.ts$/.test(url));
 
   while (urlsToFetch.length > 0) {
-    const urlContents = yield urlsToFetch
-      .map(url =>
-        fetch(url)
-          .then(resp => (resp.ok ? resp.text() : Promise.reject(resp.statusText)))
-          .catch(err => {
-            console.error(err);
-            return null;
-          }),
-      )
-      .filter(x => x !== null);
+    const urlContents = yield all(
+      urlsToFetch
+        .map(url =>
+          fetch(url)
+            .then(resp => (resp.ok ? resp.text() : Promise.reject(resp.statusText)))
+            .catch(err => {
+              console.error(err);
+              return null;
+            }),
+        )
+        .filter(x => x !== null),
+    );
 
     const urlContentPairing = zip(urlsToFetch, urlContents);
 

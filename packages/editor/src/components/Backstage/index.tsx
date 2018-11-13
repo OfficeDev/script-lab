@@ -15,7 +15,7 @@ import { ConflictResolutionOptions } from '../../interfaces/enums';
 
 import { connect } from 'react-redux';
 import selectors from '../../store/selectors';
-import { editor, solutions, samples, gists } from '../../store/actions';
+import { editor, solutions, samples, gists, github } from '../../store/actions';
 import { push } from 'connected-react-router';
 import { PATHS } from '../../constants';
 import Only from '../Only';
@@ -54,12 +54,13 @@ interface IActionsFromRedux {
   ) => void;
   importGist: (gistId?: string, gist?: string) => void;
   goBack: () => void;
+  signIn: () => void;
 }
 
 const mapDispatchToProps = (dispatch): IActionsFromRedux => ({
   createNewSolution: () => dispatch(solutions.create()),
   openSolution: (solutionId: string, fileId: string) =>
-    dispatch(editor.open({ solutionId, fileId })),
+    dispatch(editor.openFile({ solutionId, fileId })),
   openSample: (rawUrl: string) => dispatch(samples.get.request({ rawUrl })),
   openGist: (
     rawUrl: string,
@@ -69,6 +70,7 @@ const mapDispatchToProps = (dispatch): IActionsFromRedux => ({
   importGist: (gistId?: string, gist?: string) =>
     dispatch(gists.importSnippet.request({ gistId, gist })),
   goBack: () => dispatch(push(PATHS.EDITOR)),
+  signIn: () => dispatch(github.login.request()),
 });
 
 export interface IProps extends IPropsFromRedux, IActionsFromRedux {}
@@ -155,6 +157,11 @@ export class Backstage extends Component<IProps, IState> {
       isLoading: false,
     });
 
+  signIn = () => {
+    this.props.signIn();
+    this.setState({ isLoading: true });
+  };
+
   render() {
     const originalItems: IBackstageItem[] = [
       {
@@ -182,6 +189,7 @@ export class Backstage extends Component<IProps, IState> {
             activeSolution={this.props.activeSolution}
             gistMetadata={this.props.sharedGistMetadata}
             openGist={this.openSharedGist}
+            signIn={this.props.signIn}
           />
         ),
       },

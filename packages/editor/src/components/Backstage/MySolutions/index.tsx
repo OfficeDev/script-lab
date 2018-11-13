@@ -3,6 +3,8 @@ import { SearchBox } from 'office-ui-fabric-react/lib/SearchBox';
 
 import Content from '../Content';
 import GalleryList from '../GalleryList';
+import { DefaultButton } from 'office-ui-fabric-react/lib/Button';
+import { Label } from 'office-ui-fabric-react/lib/Label';
 
 interface IProps {
   solutions: ISolution[];
@@ -10,6 +12,7 @@ interface IProps {
   activeSolution?: ISolution;
   gistMetadata: ISharedGistMetadata[];
   openGist: (gistMetadata: ISharedGistMetadata) => void;
+  signIn: () => void;
 }
 
 interface IState {
@@ -63,16 +66,24 @@ class MySolutions extends React.Component<IProps> {
               isActive: activeSolution && activeSolution.id === sol.id,
             }))}
         />
-        {gistMetadata.length > 0 && (
-          <GalleryList
-            title="My shared gists on GitHub"
-            items={gistMetadata.map(gist => ({
-              key: gist.id,
-              title: gist.title,
-              description: gist.description,
-              onClick: () => openGist(gist),
-            }))}
-          />
+        <GalleryList
+          title="My shared gists on GitHub"
+          items={gistMetadata.map(gist => ({
+            key: gist.id,
+            title: gist.title,
+            description: gist.description,
+            onClick: () => openGist(gist),
+          }))}
+        />
+        {gistMetadata.length === 0 && (
+          <div style={{ margin: '1rem', marginLeft: '2rem' }}>
+            <Label>You must be logged in to see your gists</Label>
+            <DefaultButton
+              text="Sign In"
+              label="You must be logged in to see your gists"
+              onClick={this.props.signIn}
+            />
+          </div>
         )}
       </Content>
     );
