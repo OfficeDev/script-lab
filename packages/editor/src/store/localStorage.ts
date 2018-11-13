@@ -1,12 +1,14 @@
 import isEqual from 'lodash/isEqual';
+import flatten from 'lodash/flatten';
 
 import { IState } from './reducer';
 import selectors from './selectors';
-import { convertSolutionToSnippet } from '../utils';
+import { convertSolutionToSnippet, convertSnippetToSolution } from '../utils';
 import { SETTINGS_SOLUTION_ID, NULL_SOLUTION_ID, localStorageKeys } from '../constants';
 import { getSettingsSolutionAndFiles } from '../settings';
 import { verifySettings } from './settings/sagas';
 import { getBoilerplate } from '../newSolutionData';
+import { HostType } from '@microsoft/office-js-helpers';
 
 const SOLUTION_ROOT = 'solution#';
 let lastSavedState: IState;
@@ -153,10 +155,27 @@ function loadAllSolutionsAndFiles(): {
 
     solutions = normalizeSolutions(solutions);
   } else {
-    // No solutions detected in above format, attempting to look for legacy format
+    // No solutions detected in above format, attempting to look for older formats
     // parsing for the load
     solutions = JSON.parse(localStorage.getItem('solutions') || '{}');
     files = JSON.parse(localStorage.getItem('files') || '{}');
+
+    if (Object.keys(solutions).length === 0) {
+      // the above format was not found
+      // checking for Script Lab Legacy snippets
+
+      loadLegacyScriptLabSnippets().forEach(solution => {
+        // add files
+        solution.files.forEach(file => {
+          files[file.id] = file;
+        });
+        // add solution with file-ids
+        solutions[solution.id] = {
+          ...solution,
+          files: solution.files.map(({ id }) => id),
+        };
+      });
+    }
 
     solutions = normalizeSolutions(solutions);
 
@@ -193,6 +212,21 @@ function loadSolution(id: string): ISolution {
   const defaults = getBoilerplate('');
 
   return { ...defaults, ...solution };
+}
+
+function loadLegacyScriptLabSnippets(): ISolution[] {
+  return flatten(
+    Object.keys(HostType)
+      .map(key => HostType[key])
+      .map(host => {
+        const snippets = JSON.parse(
+          localStorage.getItem(`playground_${host}_snippets`) || '{}',
+        );
+        return Object.keys(snippets)
+          .map(id => snippets[id])
+          .map(snippet => convertSnippetToSolution(snippet));
+      }),
+  );
 }
 
 // custom functions
