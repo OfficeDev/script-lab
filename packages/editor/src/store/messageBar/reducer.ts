@@ -90,7 +90,7 @@ const messageBarReducer = (
       return {
         isVisible: true,
         style: MessageBarType.error,
-        text: `Failed to import gist!`,
+        text: `${action.payload}`,
         link: null,
       };
 

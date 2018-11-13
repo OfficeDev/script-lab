@@ -231,6 +231,13 @@ function* importSnippetSaga(action: ActionType<typeof gists.importSnippet.reques
         const gistFiles = response.files;
         const snippet = YAML.safeLoad(gistFiles[Object.keys(gistFiles)[0]].content);
         const solution = convertSnippetToSolution(snippet);
+        const host = yield select(selectors.host.get);
+
+        if (solution.host !== host) {
+          throw new Error(
+            `Cannot import a snippet created for ${solution.host} in ${host}.`,
+          );
+        }
 
         const username = yield select(selectors.github.getUsername);
         if (response.owner.login !== username) {
