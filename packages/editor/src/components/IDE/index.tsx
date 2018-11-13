@@ -47,7 +47,7 @@ interface IActionsFromRedux {
 
 const mapDispatchToProps = (dispatch): IActionsFromRedux => ({
   openFile: (solutionId: string, fileId: string) =>
-    dispatch(editorActions.open({ solutionId, fileId })),
+    dispatch(editorActions.openFile({ solutionId, fileId })),
 });
 
 export interface IIDE extends IPropsFromRedux, IActionsFromRedux {}

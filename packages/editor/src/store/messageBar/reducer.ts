@@ -121,7 +121,7 @@ const messageBarReducer = (
         return defaultState;
       }
 
-    case getType(editor.open):
+    case getType(editor.openFile):
     case getType(settings.edit.success):
     case getType(messageBar.dismiss):
       return defaultState;
