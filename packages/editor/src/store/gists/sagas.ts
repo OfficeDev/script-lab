@@ -100,7 +100,9 @@ function* getGistSaga(action: ActionType<typeof gists.get.request>) {
     switch (action.payload.conflictResolution.type) {
       case ConflictResolutionOptions.Open:
         const solution = action.payload.conflictResolution.existingSolution;
-        yield put(editor.open({ solutionId: solution.id, fileId: solution.files[0].id }));
+        yield put(
+          editor.openFile({ solutionId: solution.id, fileId: solution.files[0].id }),
+        );
         return;
 
       case ConflictResolutionOptions.Overwrite:
@@ -251,7 +253,7 @@ function* importSnippetSaga(action: ActionType<typeof gists.importSnippet.reques
     }
   } catch (e) {
     yield put(gists.importSnippet.failure(e));
-    yield put(push(PATHS.EDITOR));
+    yield put(editor.open());
   }
 }
 

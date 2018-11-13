@@ -102,6 +102,7 @@ class ConflictResolutionDialog extends Component<IGistConflictDialog, IState> {
         modalProps={{
           isBlocking: true,
           containerClassName: 'ms-dialogMainOverride',
+          isDarkOverlay: true,
         }}
       >
         <ChoiceGroup

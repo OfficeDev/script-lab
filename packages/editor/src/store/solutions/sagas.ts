@@ -93,7 +93,7 @@ function* handleGetDefaultFailureSaga(
 
 export function* createSolutionSaga(solution: ISolution) {
   yield put(solutions.add(solution));
-  yield put(editor.open({ solutionId: solution.id, fileId: solution.files[0].id }));
+  yield put(editor.openFile({ solutionId: solution.id, fileId: solution.files[0].id }));
 }
 
 function* removeSolutionSaga(action: ActionType<typeof solutions.remove>) {
@@ -122,7 +122,7 @@ export function* openLastModifiedOrDefaultSolutionSaga() {
     yield call(getDefaultSaga);
   } else {
     yield put(
-      editor.open({ solutionId: solutions[0].id, fileId: solutions[0].files[0].id }),
+      editor.openFile({ solutionId: solutions[0].id, fileId: solutions[0].files[0].id }),
     );
   }
 }
