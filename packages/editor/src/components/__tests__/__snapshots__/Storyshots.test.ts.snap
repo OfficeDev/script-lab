@@ -114,25 +114,8 @@ exports[`Storyshots Backstage|All basic 1`] = `
 }
 
 .c13 {
-  padding: 1rem 1.5rem;
-  box-sizing: border-box;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
   background-color: #113A23;
   color: #ffffff;
-}
-
-.c13:hover,
-.c13:focus {
-  background-color: #217346;
-  color: #ffffff;
-  cursor: pointer;
-}
-
-.c13:focus {
-  outline-color: #217346;
 }
 
 .c12 {
@@ -1307,7 +1290,7 @@ exports[`Storyshots Backstage|All basic 1`] = `
               </div>
             </article>
             <article
-              className="ms-font-m c13"
+              className="c13 ms-font-m c11"
               data-is-focusable="true"
               onClick={[Function]}
             >
@@ -2526,25 +2509,8 @@ exports[`Storyshots Backstage|GalleryList with an active 1`] = `
 }
 
 .c6 {
-  padding: 1rem 1.5rem;
-  box-sizing: border-box;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
   background-color: #113A23;
   color: #ffffff;
-}
-
-.c6:hover,
-.c6:focus {
-  background-color: #217346;
-  color: #ffffff;
-  cursor: pointer;
-}
-
-.c6:focus {
-  outline-color: #217346;
 }
 
 .c5 {
@@ -2630,7 +2596,7 @@ exports[`Storyshots Backstage|GalleryList with an active 1`] = `
       </div>
     </article>
     <article
-      className="ms-font-m c6"
+      className="c6 ms-font-m c4"
       data-is-focusable="true"
       onClick={undefined}
     >
@@ -2650,34 +2616,37 @@ exports[`Storyshots Backstage|GalleryList with an active 1`] = `
 `;
 
 exports[`Storyshots Backstage|GalleryList/Item active 1`] = `
-.c0 {
+.c1 {
   padding: 1rem 1.5rem;
   box-sizing: border-box;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  background-color: #113A23;
-  color: #ffffff;
 }
 
-.c0:hover,
-.c0:focus {
+.c1:hover,
+.c1:focus {
   background-color: #217346;
   color: #ffffff;
   cursor: pointer;
 }
 
-.c0:focus {
+.c1:focus {
   outline-color: #217346;
 }
 
-.c1 {
+.c0 {
+  background-color: #113A23;
+  color: #ffffff;
+}
+
+.c2 {
   opacity: 0.75;
 }
 
 <article
-  className="ms-font-m c0"
+  className="c0 ms-font-m c1"
   data-is-focusable="true"
   onClick={undefined}
 >
@@ -2687,7 +2656,7 @@ exports[`Storyshots Backstage|GalleryList/Item active 1`] = `
     Example Title 1 for a Gallery List Item 1
   </div>
   <div
-    className="c1"
+    className="c2"
   >
     This is a description for gallery list item 1
   </div>
