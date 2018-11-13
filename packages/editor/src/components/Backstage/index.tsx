@@ -20,14 +20,14 @@ import { push } from 'connected-react-router';
 import { PATHS } from '../../constants';
 import Only from '../Only';
 
-// interface IBackstageItem {
-//   key: string;
-//   icon: string;
-//   label?: string;
-//   onClick?: () => any;
-//   content?: JSX.Element;
-//   ariaLabel?: string;
-// }
+interface IBackstageItem {
+  key: string;
+  icon: string;
+  label?: string;
+  onClick?: () => any;
+  content?: JSX.Element;
+  ariaLabel?: string;
+}
 
 interface IPropsFromRedux {
   solutions: ISolution[];
@@ -68,7 +68,6 @@ const mapDispatchToProps = (dispatch): IActionsFromRedux => ({
   ) => dispatch(gists.get.request({ rawUrl, gistId, conflictResolution })),
   importGist: (gistId?: string, gist?: string) =>
     dispatch(gists.importSnippet.request({ gistId, gist })),
-  // goBack: () => dispatch(push(PATHS.EDITOR))
   goBack: () => dispatch(push(PATHS.EDITOR)),
 });
 
@@ -203,7 +202,7 @@ export class Backstage extends Component<IProps, IState> {
         icon: 'Download',
         content: <ImportSolution importGist={this.props.importGist} />,
       },
-    ].map(item => ({
+    ].map((item: IBackstageItem) => ({
       onClick: () => this.setState({ selectedKey: item.key }),
       ...item,
     }));
