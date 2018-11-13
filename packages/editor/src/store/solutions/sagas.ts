@@ -102,7 +102,9 @@ function* removeSolutionSaga(action: ActionType<typeof solutions.remove>) {
 
 function* updateOptionsSaga(action: ActionType<typeof solutions.updateOptions>) {
   const { solution, options } = action.payload;
-  if (!options.isUntrusted) {
+  // If the solution options show it as untrusted, but the newly-received options set untrusted to false,
+  // go ahead and dismiss the message bar.
+  if (solution.options.isUntrusted && options.isUntrusted === false) {
     yield put(messageBar.dismiss());
   }
   yield put(
