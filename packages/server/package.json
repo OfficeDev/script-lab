@@ -4,6 +4,7 @@
   "scripts": {
     "start": "node src/index.ts",
     "build": "webpack --mode production",
+    "lint": "tslint \"src/**/*.ts?(x)\"",
     "test": "echo 'no tests'"
   },
   "dependencies": {

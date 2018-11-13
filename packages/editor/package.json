@@ -33,6 +33,7 @@
     "analyze": "source-map-explorer build/static/js/main.*",
     "copy-monaco": "node scripts/copy-monaco.js",
     "start": "set HTTPS=true&&react-scripts start",
+    "lint": "tslint \"src/**/*.ts?(x)\"",
     "build": "node scripts/build.js",
     "build:storybook": "build-storybook -c .storybook -o build-storybook",
     "react-scripts:build": "react-scripts build",

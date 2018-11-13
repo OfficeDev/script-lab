@@ -8,10 +8,8 @@
   "scripts": {
     "copy-monaco": "cd packages/editor && yarn copy-monaco",
     "build": "cd packages/editor && yarn build && cd ../server && yarn build",
-    "lint:tslint": "tslint \"src/**/*.ts?(x)\"",
-    "lint:prettier": "prettier --list-different \"./**/*.@(ts|tsx|js|jsx|html)\"",
-    "lint:prettier-write": "prettier --write \"./**/*.@(ts|tsx|js|jsx|html)\"",
-    "lint": "yarn lint:tslint && yarn lint:prettier",
+    "prettier": "prettier --list-different \"./**/*.@(ts|tsx|js|jsx|html)\"",
+    "prettier-write": "prettier --write \"./**/*.@(ts|tsx|js|jsx|html)\"",
     "deploy": "node scripts/deploy.js",
     "editor": "cd packages/editor && yarn start",
     "server": "cd packages/server && yarn start",
