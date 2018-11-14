@@ -18,12 +18,12 @@
     "eject": "react-scripts eject"
   },
   "devDependencies": {
-    "react-scripts": "^2.1.0",
     "@types/jest": "^23.3.2",
     "@types/node": "^10.9.4",
     "@types/office-js": "^0.0.111",
     "@types/react": "^16.4.14",
     "@types/react-dom": "^16.0.7",
+    "react-scripts": "^2.1.0",
     "typescript": "^3.0.3"
   }
 }
