@@ -14,6 +14,7 @@ import {
   parseTripleSlashRefs,
   doesMonacoExist,
 } from './utilities';
+import { convertSolutionToSnippet } from '../../utils';
 
 let monacoEditor;
 
@@ -29,6 +30,7 @@ export default function* editorWatcher() {
   yield takeEvery(getType(editor.setIntellisenseFiles.request), setIntellisenseFilesSaga);
   yield takeEvery(getType(screen.updateSize), resizeEditorSaga);
   yield takeEvery(getType(editor.applyFormatting), applyFormattingSaga);
+  yield takeEvery(getType(editor.navigateToRun), navigateToRunSaga);
 }
 
 function* onEditorOpenSaga() {
@@ -234,4 +236,48 @@ function* applyFormattingSaga() {
       200,
     );
   }
+}
+
+function* navigateToRunSaga() {
+  const currentOpenSolution: ISolution = yield select(selectors.editor.getActiveSolution);
+  const snippet = convertSolutionToSnippet(currentOpenSolution);
+
+  const state = {
+    snippet,
+    displayLanguage: 'en-us',
+    isInsideOfficeApp: (yield call(Office.onReady)).host,
+    returnUrl: window.location.href,
+    refreshUrl: window.location.origin + '/run.html',
+    hideSyncWithEditorButton: true,
+  };
+
+  const data = JSON.stringify(state);
+  const params = {
+    data /*FIXME*/,
+    isTrustedSnippet: !currentOpenSolution.options.isUntrusted,
+  }; // FIXME
+
+  const useAlphaRunner =
+    /^http(s?):\/\/script-lab-react-alpha\./.test(window.location.href) ||
+    /^http(s?):\/\/localhost/.test(window.location.href);
+  const path =
+    'https://bornholm-runner-' +
+    (useAlphaRunner ? 'edge' : 'insiders') +
+    '.azurewebsites.net/compile/page';
+  const form = document.createElement('form');
+  form.setAttribute('method', 'post');
+  form.setAttribute('action', path);
+
+  for (const key in params) {
+    if (params.hasOwnProperty(key)) {
+      const hiddenField = document.createElement('input');
+      hiddenField.setAttribute('type', 'hidden');
+      hiddenField.setAttribute('name', key);
+      hiddenField.setAttribute('value', params[key]);
+      form.appendChild(hiddenField);
+    }
+  }
+
+  document.body.appendChild(form);
+  form.submit();
 }

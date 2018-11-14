@@ -14,6 +14,7 @@ interface IProps {
   file: IFile;
 
   navigateToCustomFunctions: () => void;
+  navigateToRun: () => void;
   directScriptExecutionFunction: (
     solutionId: string,
     fileId: string,
@@ -29,6 +30,7 @@ export const getRunButton = ({
   isNullSolution,
   isCustomFunctionsView,
   navigateToCustomFunctions,
+  navigateToRun,
   isDirectScriptExecutionSolution,
   runnableFunctions,
   directScriptExecutionFunction,
@@ -140,7 +142,7 @@ export const getRunButton = ({
       key: 'run',
       text: 'Run',
       iconProps: { iconName: 'Play' },
-      href: '/run.html',
+      onClick: navigateToRun,
     };
   }
 };

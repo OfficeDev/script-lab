@@ -26,6 +26,7 @@ const actionProps = {
   notifyClipboardCopySuccess: () => {},
   notifyClipboardCopyFailure: () => {},
   navigateToCustomFunctions: () => {},
+  navigateToRun: () => {},
   directScriptExecutionFunction: (
     solutionId: string,
     fileId: string,

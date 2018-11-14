@@ -6,7 +6,6 @@ import { CommandBar, ICommandBarItemProps } from 'office-ui-fabric-react/lib/Com
 import { PersonaSize, PersonaCoin } from 'office-ui-fabric-react/lib/Persona';
 import { MessageBarType } from 'office-ui-fabric-react/lib/MessageBar';
 import { Spinner, SpinnerSize } from 'office-ui-fabric-react/lib/Spinner';
-import { ContextualMenuItemType } from 'office-ui-fabric-react/lib/ContextualMenu';
 
 import Clipboard from 'clipboard';
 import { convertSolutionToSnippet } from '../../../utils';
@@ -82,6 +81,7 @@ interface IActionsFromRedux {
   notifyClipboardCopyFailure: () => void;
 
   navigateToCustomFunctions: () => void;
+  navigateToRun: () => void;
 
   directScriptExecutionFunction: (
     solutionId: string,
@@ -134,6 +134,7 @@ const mapDispatchToProps = (dispatch, ownProps: IProps): IActionsFromRedux => ({
     ),
 
   navigateToCustomFunctions: () => dispatch(actions.customFunctions.openDashboard()),
+  navigateToRun: () => dispatch(actions.editor.navigateToRun()),
 
   directScriptExecutionFunction: (
     solutionId: string,
@@ -211,16 +212,11 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
       solution,
       showBackstage,
       editSolution,
-      deleteSolution,
       isSettingsView,
       isNullSolution,
-      isCustomFunctionsView,
       profilePicUrl,
-      isRunnableOnThisHost,
       isLoggedIn,
       isLoggingInOrOut,
-      isDirectScriptExecutionSolution,
-      runnableFunctions,
       screenWidth,
       theme,
       commandBarFabricTheme,
@@ -230,7 +226,6 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
       updateGist,
       createPublicGist,
       createSecretGist,
-      navigateToCustomFunctions,
     } = this.props;
     const solutionName = solution ? solution.name : 'Solution Name';
 
