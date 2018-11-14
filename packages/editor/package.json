@@ -15,6 +15,7 @@
     "normalizr": "^3.2.4",
     "office-ui-fabric-react": "6.79.0",
     "react": "^16.5.2",
+    "react-app-polyfill": "^0.1.3",
     "react-dom": "^16.5.2",
     "react-redux": "^5.0.7",
     "react-router": "^4.2.0",
