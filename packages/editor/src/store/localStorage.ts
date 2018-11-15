@@ -61,7 +61,6 @@ export const saveState = (state: IState) => {
       lastSavedState,
       SOLUTION_ROOT,
     );
-    ``;
 
     // save github
     writeIfChanged(
