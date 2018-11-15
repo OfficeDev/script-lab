@@ -1,6 +1,6 @@
-var shell = require('shelljs')
+var shell = require('shelljs');
 
-var { TRAVIS_COMMIT } = process.env // from travis
+var { TRAVIS_COMMIT } = process.env; // from travis
 
 var commands = [
   `export REACT_APP_COMMIT='${TRAVIS_COMMIT}'`,
@@ -12,8 +12,8 @@ var commands = [
   // I believe this is being caused by the introduction of typescript as a non-dev dependency for the fhl stuff
   // something about them using source-map-support is messing things up
   // By setting this env var, the warning will not make travis fail and stop deployment
-  'yarn react-scripts-ts:build',
+  'yarn react-scripts:build',
   'yarn build:storybook',
-].join(' && ')
+].join(' && ');
 
-shell.exec(commands)
+shell.exec(commands);

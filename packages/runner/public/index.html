@@ -1,33 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="theme-color" content="#000000">
-  <!--
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="theme-color" content="#000000" />
+    <!--
       manifest.json provides metadata used when your web app is added to the
       homescreen on Android. See https://developers.google.com/web/fundamentals/engage-and-retain/web-app-manifest/
     -->
-  <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
-  <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
 
-  <title>React App</title>
-  <script src="https://appsforoffice.microsoft.com/lib/1/hosted/Office.js"></script>
-  <script>
-    // For now, set Office.initialize to an empty function, to work around an issue with onReady
-    // (As of Nov 1st 2018, onReady works, but requires Office.initialize to still be set).
-    // See the note at https://docs.microsoft.com/en-us/office/dev/add-ins/develop/understanding-the-javascript-api-for-office
-    Office.initialize = function () { };
-  </script>
-</head>
+    <title>React App</title>
+    <script src="https://appsforoffice.microsoft.com/lib/1/hosted/Office.js"></script>
+    <script>
+      // For now, set Office.initialize to an empty function, to work around an issue with onReady
+      // (As of Nov 1st 2018, onReady works, but requires Office.initialize to still be set).
+      // See the note at https://docs.microsoft.com/en-us/office/dev/add-ins/develop/understanding-the-javascript-api-for-office
+      Office.initialize = function() {};
+    </script>
+  </head>
 
-<body>
-  <noscript>
-    You need to enable JavaScript to run this app.
-  </noscript>
-  <div id="root"></div>
-  <!--
+  <body>
+    <noscript> You need to enable JavaScript to run this app. </noscript>
+    <div id="root"></div>
+    <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
 
@@ -37,6 +37,5 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
-</body>
-
+  </body>
 </html>

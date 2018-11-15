@@ -19,6 +19,7 @@ const defaultBackstageProps: IProps = {
   openGist: action('open-gist'),
   openSample: action('open-sample'),
   openSolution: action('open-solution'),
+  signIn: action('sign-in'),
 };
 
 storiesOf('Backstage|All', module).add('basic', () => (
