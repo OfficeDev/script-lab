@@ -14,8 +14,7 @@
     "express": "^4.16.2",
     "https": "^1.0.0",
     "path": "^0.12.7",
-    "request": "^2.87.0",
-    "webpack-cli": "^3.1.2"
+    "request": "^2.87.0"
   },
   "devDependencies": {
     "@types/express": "^4.16.0",
@@ -26,6 +25,7 @@
     "ts-loader": "^5.2.0",
     "tslint": "^5.11.0",
     "typescript": "^2.9.2",
-    "webpack": "^4.19.1"
+    "webpack": "^4.19.1",
+    "webpack-cli": "^3.1.2"
   }
 }
