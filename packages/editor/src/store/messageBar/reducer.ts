@@ -108,12 +108,7 @@ const messageBarReducer = (
       };
 
     case getType(messageBar.show):
-      return {
-        isVisible: true,
-        style: action.payload.style,
-        text: action.payload.text,
-        link: null,
-      };
+      return action.payload;
 
     case getType(editor.newSolutionOpened):
       if (action.payload.options.isUntrusted) {

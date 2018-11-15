@@ -14,8 +14,11 @@ export interface IProps {
   file: IFile;
 
   navigateToCustomFunctions: () => void;
+
   navigateToRun: () => void;
   isNavigatingAwayToRun: boolean;
+  showTrustError: () => void;
+
   directScriptExecutionFunction: (
     solutionId: string,
     fileId: string,
@@ -40,6 +43,7 @@ export const getRunButton = ({
   file,
   theme,
   isNavigatingAwayToRun,
+  showTrustError,
 }: IProps): ICommandBarItemProps | null => {
   if (!isRunnableOnThisHost || isNullSolution) {
     return null;
@@ -144,9 +148,7 @@ export const getRunButton = ({
       key: 'run',
       text: 'Run',
       iconProps: { iconName: 'Play' },
-      onClick: () => {
-        navigateToRun();
-      },
+      onClick: () => (solution.options.isUntrusted ? showTrustError : navigateToRun)(),
       onRenderIcon: () => {
         return (
           <div

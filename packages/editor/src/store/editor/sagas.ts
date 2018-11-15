@@ -244,23 +244,6 @@ function* navigateToRunSaga() {
   const activeSolution: ISolution = yield select(selectors.editor.getActiveSolution);
   const snippet = convertSolutionToSnippet(activeSolution);
 
-  if (activeSolution.options.isUntrusted) {
-    yield put(
-      actions.messageBar.show({
-        style: MessageBarType.error,
-        text: 'You must trust the snippet before you can run it.',
-        button: {
-          text: 'Trust',
-          action: actions.solutions.updateOptions({
-            solution: activeSolution,
-            options: { isUntrusted: false },
-          }),
-        },
-      }),
-    );
-    return;
-  }
-
   const state = {
     snippet: snippet,
     displayLanguage: 'en-us',

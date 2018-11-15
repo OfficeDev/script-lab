@@ -82,6 +82,7 @@ interface IActionsFromRedux {
 
   navigateToCustomFunctions: () => void;
   navigateToRun: () => void;
+  showTrustError: () => void;
 
   directScriptExecutionFunction: (
     solutionId: string,
@@ -135,6 +136,20 @@ const mapDispatchToProps = (dispatch, ownProps: IProps): IActionsFromRedux => ({
 
   navigateToCustomFunctions: () => dispatch(actions.customFunctions.openDashboard()),
   navigateToRun: () => dispatch(actions.editor.navigateToRun()),
+  showTrustError: () =>
+    dispatch(
+      actions.messageBar.show({
+        style: MessageBarType.error,
+        text: 'You must trust the snippet before you can run it.',
+        button: {
+          text: 'Trust',
+          action: actions.solutions.updateOptions({
+            solution: ownProps.solution,
+            options: { isUntrusted: false },
+          }),
+        },
+      }),
+    ),
 
   directScriptExecutionFunction: (
     solutionId: string,
