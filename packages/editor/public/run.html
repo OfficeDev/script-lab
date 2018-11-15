@@ -49,51 +49,63 @@
     </div>
     <noscript> You need to enable JavaScript to run this app. </noscript>
     <script>
-      // In order to fix the IE cross-tab issue (#147)
-      localStorage.setItem('playground_dummy_key', 'null');
+      (function() {
+        // In order to fix the IE cross-tab issue (#147)
+        localStorage.setItem('playground_dummy_key', 'null');
 
-      var snippet = JSON.parse(localStorage.getItem('activeSnippet'));
-      // FIXME trust
-      if (snippet) {
-        const state = {
-          snippet: snippet,
-          displayLanguage: 'en-us',
-          isInsideOfficeApp: true,
-          returnUrl: 'NONE',
-          refreshUrl: window.location.origin + '/run.html',
-          hideSyncWithEditorButton: true,
-        };
+        var snippet = JSON.parse(localStorage.getItem('activeSnippet'));
+        var isUntrusted = JSON.parse(localStorage.getItem('activeSolution')).options
+          .isUntrusted;
 
-        const data = JSON.stringify(state);
-        const params = { data: data, isTrustedSnippet: true };
-
-        var useAlphaRunner =
-          /^http(s?):\/\/script-lab-react-alpha\./.test(window.location.href) ||
-          /^http(s?):\/\/localhost/.test(window.location.href);
-        var path =
-          'https://bornholm-runner-' +
-          (useAlphaRunner ? 'edge' : 'insiders') +
-          '.azurewebsites.net/compile/page';
-        let form = document.createElement('form');
-        form.setAttribute('method', 'post');
-        form.setAttribute('action', path);
-
-        for (let key in params) {
-          if (params.hasOwnProperty(key)) {
-            let hiddenField = document.createElement('input');
-            hiddenField.setAttribute('type', 'hidden');
-            hiddenField.setAttribute('name', key);
-            hiddenField.setAttribute('value', params[key]);
-            form.appendChild(hiddenField);
-          }
+        if (isUntrusted) {
+          document.getElementById('message').innerHTML = [
+            "The snippet isn't trusted.",
+            'Please trust it in the editor.',
+          ].join('<br/>');
+          return;
         }
 
-        document.body.appendChild(form);
-        form.submit();
-      } else {
-        document.getElementById('message').innerHTML =
-          'Error: No snippet found.<br>Please open the editor to create a snippet.';
-      }
+        if (snippet) {
+          const state = {
+            snippet: snippet,
+            displayLanguage: 'en-us',
+            isInsideOfficeApp: true,
+            returnUrl: 'NONE',
+            refreshUrl: window.location.origin + '/run.html',
+            hideSyncWithEditorButton: true,
+          };
+
+          const data = JSON.stringify(state);
+          const params = { data: data, isTrustedSnippet: true };
+
+          var useAlphaRunner =
+            /^http(s?):\/\/script-lab-react-alpha\./.test(window.location.href) ||
+            /^http(s?):\/\/localhost/.test(window.location.href);
+          var path =
+            'https://bornholm-runner-' +
+            (useAlphaRunner ? 'edge' : 'insiders') +
+            '.azurewebsites.net/compile/page';
+          let form = document.createElement('form');
+          form.setAttribute('method', 'post');
+          form.setAttribute('action', path);
+
+          for (let key in params) {
+            if (params.hasOwnProperty(key)) {
+              let hiddenField = document.createElement('input');
+              hiddenField.setAttribute('type', 'hidden');
+              hiddenField.setAttribute('name', key);
+              hiddenField.setAttribute('value', params[key]);
+              form.appendChild(hiddenField);
+            }
+          }
+
+          document.body.appendChild(form);
+          form.submit();
+        } else {
+          document.getElementById('message').innerHTML =
+            'Error: No snippet found.<br>Please open the editor to create a snippet.';
+        }
+      })();
     </script>
   </body>
 </html>

@@ -15,6 +15,8 @@ import {
   doesMonacoExist,
 } from './utilities';
 import { convertSolutionToSnippet } from '../../utils';
+import { actions } from '..';
+import { MessageBarType } from 'office-ui-fabric-react/lib/MessageBar';
 
 let monacoEditor;
 
@@ -239,11 +241,24 @@ function* applyFormattingSaga() {
 }
 
 function* navigateToRunSaga() {
-  const currentOpenSolution: ISolution = yield select(selectors.editor.getActiveSolution);
-  const snippet = convertSolutionToSnippet(currentOpenSolution);
+  const activeSolution: ISolution = yield select(selectors.editor.getActiveSolution);
+  const snippet = convertSolutionToSnippet(activeSolution);
 
-  if (currentOpenSolution.options.isUntrusted) {
-    // FIXME show dialog
+  if (activeSolution.options.isUntrusted) {
+    yield put(
+      actions.messageBar.show({
+        style: MessageBarType.error,
+        text: 'You must trust the snippet before you can run it.',
+        button: {
+          text: 'Trust',
+          action: actions.solutions.updateOptions({
+            solution: activeSolution,
+            options: { isUntrusted: false },
+          }),
+        },
+      }),
+    );
+    return;
   }
 
   const state = {

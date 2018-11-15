@@ -27,6 +27,19 @@ export interface IState {
   };
 }
 
+export interface IShowMessageBarParams {
+  style?: MessageBarType;
+  text: string;
+  link?: {
+    url: string;
+    text: string;
+  };
+  button?: {
+    text: string;
+    action: { type: string; payload: any };
+  };
+}
+
 const defaultState: IState = {
   isVisible: false,
   style: MessageBarType.info,

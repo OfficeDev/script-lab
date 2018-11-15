@@ -124,13 +124,13 @@ const mapDispatchToProps = (dispatch, ownProps: IProps): IActionsFromRedux => ({
     dispatch(actions.gists.update.request({ solutionId: ownProps.solution.id })),
 
   notifyClipboardCopySuccess: () =>
-    dispatch(actions.messageBar.show('Snippet copied to clipboard.')),
+    dispatch(actions.messageBar.show({ text: 'Snippet copied to clipboard.' })),
   notifyClipboardCopyFailure: () =>
     dispatch(
-      actions.messageBar.show(
-        'Snippet failed to copy to clipboard.',
-        MessageBarType.error,
-      ),
+      actions.messageBar.show({
+        text: 'Snippet failed to copy to clipboard.',
+        style: MessageBarType.error,
+      }),
     ),
 
   navigateToCustomFunctions: () => dispatch(actions.customFunctions.openDashboard()),
