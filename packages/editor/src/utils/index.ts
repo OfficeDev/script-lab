@@ -85,6 +85,7 @@ export const convertSolutionToSnippet = (solution: ISolution): ISnippet => {
     name,
     description,
     host,
+    api_set: {},
     script: {
       content: script.content,
       language: script.language,

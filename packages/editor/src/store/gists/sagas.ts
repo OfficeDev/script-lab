@@ -13,6 +13,7 @@ import { ConflictResolutionOptions } from '../../interfaces/enums';
 import { createSolutionSaga } from '../solutions/sagas';
 import { push } from 'connected-react-router';
 import { PATHS } from '../../constants';
+import { checkForUnsupportedAPIsIfRelevant } from './utilities';
 
 export default function* gistsWatcher() {
   yield takeEvery(getType(gists.fetchMetadata.request), fetchAllGistMetadataSaga);
@@ -240,6 +241,8 @@ function* importSnippetSaga(action: ActionType<typeof gists.importSnippet.reques
             `Cannot import a snippet created for ${solution.host} in ${host}.`,
           );
         }
+
+        yield call(checkForUnsupportedAPIsIfRelevant, host, snippet);
 
         const username = yield select(selectors.github.getUsername);
         if (response.owner.login !== username) {
