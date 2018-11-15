@@ -1,3 +1,4 @@
+import 'react-app-polyfill/ie11';
 import 'core-js/fn/symbol/iterator.js';
 import 'core-js/es6/symbol.js';
 import 'core-js/fn/array/from';

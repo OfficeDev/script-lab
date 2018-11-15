@@ -93,7 +93,7 @@ function* handleGetDefaultFailureSaga(
 
 export function* createSolutionSaga(solution: ISolution) {
   yield put(solutions.add(solution));
-  yield put(editor.open({ solutionId: solution.id, fileId: solution.files[0].id }));
+  yield put(editor.openFile({ solutionId: solution.id, fileId: solution.files[0].id }));
 }
 
 function* removeSolutionSaga(action: ActionType<typeof solutions.remove>) {
@@ -102,7 +102,9 @@ function* removeSolutionSaga(action: ActionType<typeof solutions.remove>) {
 
 function* updateOptionsSaga(action: ActionType<typeof solutions.updateOptions>) {
   const { solution, options } = action.payload;
-  if (!options.isUntrusted) {
+  // If the solution options show it as untrusted, but the newly-received options set untrusted to false,
+  // go ahead and dismiss the message bar.
+  if (solution.options.isUntrusted && options.isUntrusted === false) {
     yield put(messageBar.dismiss());
   }
   yield put(
@@ -120,7 +122,7 @@ export function* openLastModifiedOrDefaultSolutionSaga() {
     yield call(getDefaultSaga);
   } else {
     yield put(
-      editor.open({ solutionId: solutions[0].id, fileId: solutions[0].files[0].id }),
+      editor.openFile({ solutionId: solutions[0].id, fileId: solutions[0].files[0].id }),
     );
   }
 }

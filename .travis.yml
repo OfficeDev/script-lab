@@ -16,7 +16,7 @@ install:
 
 before_script:
   - yarn copy-monaco
-  - yarn lint
+  - yarn prettier
 
 matrix:
   include:
@@ -34,6 +34,7 @@ matrix:
 
 script:
   - cd $PACKAGE_LOCATION
+  - yarn lint || travis_terminate 1
   - yarn test || travis_terminate 1
   - yarn build || travis_terminate 1
   - cd $TRAVIS_BUILD_DIR

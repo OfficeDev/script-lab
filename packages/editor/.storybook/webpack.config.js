@@ -1,15 +1,13 @@
 // load the default config generator.
-const genDefaultConfig = require('@storybook/react/dist/server/config/defaults/webpack.config.js')
+const path = require('path');
 
-module.exports = (baseConfig, env) => {
-  const config = genDefaultConfig(baseConfig, env)
-  // Extend it as you need.
-  // For example, add typescript loader:
+module.exports = (baseConfig, env, config) => {
   config.module.rules.push({
     test: /\.(ts|tsx)$/,
-    loader: require.resolve('ts-loader'),
-  })
+    loader: require.resolve('awesome-typescript-loader'),
+    options: { configFileName: path.resolve(__dirname, './tsconfig.json') },
+  });
 
-  config.resolve.extensions.push('.ts', '.tsx')
-  return config
-}
+  config.resolve.extensions.push('.ts', '.tsx');
+  return config;
+};

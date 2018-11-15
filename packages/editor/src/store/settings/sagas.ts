@@ -56,7 +56,7 @@ export const verifySettings = parsed => {
 function* editSettingsCheckSaga(action: ActionType<typeof settingsActions.editFile>) {
   if (action.payload.newSettings.trim() === '') {
     yield put(
-      editorActions.open({
+      editorActions.openFile({
         solutionId: SETTINGS_SOLUTION_ID,
         fileId: DEFAULT_SETTINGS_FILE_ID,
       }),
@@ -103,7 +103,7 @@ function* openSettingsSaga(action: ActionType<typeof settingsActions.open>) {
       : USER_SETTINGS_FILE_ID;
 
     yield put(
-      editorActions.open({
+      editorActions.openFile({
         solutionId: SETTINGS_SOLUTION_ID,
         fileId: fileIdToOpen,
       }),
@@ -115,7 +115,7 @@ function* closeSettingsSaga(action: ActionType<typeof settingsActions.close>) {
   const { settings } = yield select();
   const { lastActive } = settings;
   const { solutionId, fileId } = lastActive;
-  yield put(editorActions.open({ solutionId, fileId }));
+  yield put(editorActions.openFile({ solutionId, fileId }));
 }
 
 function* cycleEditorThemeSaga() {
