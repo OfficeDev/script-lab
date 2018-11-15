@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "start": "node src/index.ts",
-    "build": "webpack --mode production",
+    "build": "webpack-cli",
     "lint": "tslint \"src/**/*.ts?(x)\"",
     "test": "echo 'no tests'"
   },
