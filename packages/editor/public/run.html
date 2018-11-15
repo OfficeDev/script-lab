@@ -53,6 +53,7 @@
       localStorage.setItem('playground_dummy_key', 'null');
 
       var snippet = JSON.parse(localStorage.getItem('activeSnippet'));
+      // FIXME trust
       if (snippet) {
         const state = {
           snippet: snippet,

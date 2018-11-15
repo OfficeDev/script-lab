@@ -242,8 +242,12 @@ function* navigateToRunSaga() {
   const currentOpenSolution: ISolution = yield select(selectors.editor.getActiveSolution);
   const snippet = convertSolutionToSnippet(currentOpenSolution);
 
+  if (currentOpenSolution.options.isUntrusted) {
+    // FIXME show dialog
+  }
+
   const state = {
-    snippet,
+    snippet: snippet,
     displayLanguage: 'en-us',
     isInsideOfficeApp: (yield call(Office.onReady)).host,
     returnUrl: window.location.href,
@@ -253,9 +257,9 @@ function* navigateToRunSaga() {
 
   const data = JSON.stringify(state);
   const params = {
-    data /*FIXME*/,
-    isTrustedSnippet: !currentOpenSolution.options.isUntrusted,
-  }; // FIXME
+    data: data,
+    isTrustedSnippet: true,
+  };
 
   const useAlphaRunner =
     /^http(s?):\/\/script-lab-react-alpha\./.test(window.location.href) ||
