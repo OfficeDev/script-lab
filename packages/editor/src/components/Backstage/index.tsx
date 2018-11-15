@@ -24,7 +24,7 @@ interface IBackstageItem {
   key: string;
   icon: string;
   label?: string;
-  onClick?: () => void;
+  onClick?: any;
   content?: JSX.Element;
   ariaLabel?: string;
 }
@@ -163,7 +163,7 @@ export class Backstage extends Component<IProps, IState> {
   };
 
   render() {
-    const items = [
+    const originalItems: IBackstageItem[] = [
       {
         key: 'back',
         ariaLabel: 'Back',
@@ -210,10 +210,12 @@ export class Backstage extends Component<IProps, IState> {
         icon: 'Download',
         content: <ImportSolution importGist={this.props.importGist} />,
       },
-    ].map((item: IBackstageItem) => ({
+    ];
+    const items = originalItems.map((item: IBackstageItem) => ({
       onClick: () => this.setState({ selectedKey: item.key }),
       ...item,
     }));
+
     const {
       selectedKey,
       conflictingGist,

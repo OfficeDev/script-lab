@@ -53,6 +53,7 @@ export const exampleSolutions = [
     ],
     dateCreated: 1535175129365,
     dateLastModified: 1535175129365,
+    options: {},
   },
   {
     id: '6af21993-5a90-408f-bf79-62044992a9e4',
@@ -99,6 +100,7 @@ export const exampleSolutions = [
     ],
     dateCreated: 1535595731846,
     dateLastModified: 1535595731846,
+    options: {},
   },
   {
     id: '36a405aa-ccfa-4bf6-bcb3-d7eb1834ecf0',
@@ -145,6 +147,7 @@ export const exampleSolutions = [
     ],
     dateCreated: 1535595994636,
     dateLastModified: 1535595994636,
+    options: {},
   },
   {
     id: '2c32044d-c6eb-4a3f-8906-b33ddc5eb927',
@@ -190,6 +193,7 @@ export const exampleSolutions = [
     ],
     dateCreated: 1535596188347,
     dateLastModified: 1535596188347,
+    options: {},
   },
   {
     id: '36624f5e-3388-48a5-bb4f-c22dc60530e3',
@@ -237,6 +241,7 @@ export const exampleSolutions = [
     ],
     dateCreated: 1535606895638,
     dateLastModified: 1535606895638,
+    options: {},
   },
   {
     id: '3a7628b2-b111-4417-a667-e0a1c8efc786',
@@ -282,6 +287,7 @@ export const exampleSolutions = [
     ],
     dateCreated: 1535607528758,
     dateLastModified: 1535607528758,
+    options: {},
   },
   {
     id: 'a520a09d-5b5e-4126-8772-1c7c7488b42c',
@@ -328,6 +334,7 @@ export const exampleSolutions = [
     ],
     dateCreated: 1535694542561,
     dateLastModified: 1535694542561,
+    options: {},
   },
   {
     id: '9ab2c0c0-26e7-4362-a8d1-5978230e9b9e',
@@ -373,6 +380,7 @@ export const exampleSolutions = [
     ],
     dateCreated: 1536391158476,
     dateLastModified: 1536391158476,
+    options: {},
   },
   {
     id: '7e0f1bd6-f942-4cde-9066-c80f58828aab',
@@ -420,6 +428,7 @@ export const exampleSolutions = [
     ],
     dateCreated: 1536391163666,
     dateLastModified: 1536391163666,
+    options: {},
   },
   {
     id: '0f4a84c4-d0e1-491b-af8f-22e3fc96ea4b',
@@ -467,6 +476,7 @@ export const exampleSolutions = [
     ],
     dateCreated: 1536392599100,
     dateLastModified: 1536392599100,
+    options: {},
   },
 ];
 
@@ -527,6 +537,7 @@ export const BasicMySolutions = () => (
     gistMetadata={gistKnob}
     openSolution={action('open-solution')}
     openGist={action('open-gist')}
+    signIn={action('sign-in')}
   />
 );
 
