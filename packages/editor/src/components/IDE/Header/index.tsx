@@ -13,7 +13,7 @@ import YAML from 'js-yaml';
 
 import DeleteConfirmationDialog from './DeleteConfirmationDialog';
 import SolutionSettings from './SolutionSettings';
-import { getRunButton } from './Buttons/Run';
+import { getRunButton, IProps as IRunButtonProps } from './Buttons/Run';
 
 import { ITheme as IFabricTheme } from 'office-ui-fabric-react/lib/Styling';
 import { NULL_SOLUTION_ID, PATHS, IS_TASK_PANE_WIDTH } from '../../../constants';
@@ -171,10 +171,15 @@ export interface IProps extends IPropsFromRedux, IActionsFromRedux {
 interface IState {
   showSolutionSettings: boolean;
   isDeleteConfirmationDialogVisible: boolean;
+  isNavigatingAwayToRun: boolean;
 }
 
 class HeaderWithoutTheme extends React.Component<IProps, IState> {
-  state = { showSolutionSettings: false, isDeleteConfirmationDialogVisible: false };
+  state = {
+    showSolutionSettings: false,
+    isDeleteConfirmationDialogVisible: false,
+    isNavigatingAwayToRun: false,
+  };
   clipboard;
 
   constructor(props: IProps) {
@@ -195,6 +200,11 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
   onConfirmDelete = () => {
     this.closeDeleteConfirmationDialog();
     this.props.deleteSolution();
+  };
+
+  navigateToRun = () => {
+    this.setState({ isNavigatingAwayToRun: true });
+    this.props.navigateToRun();
   };
 
   showNotLoggedIntoGitHubDialog = () =>
@@ -331,7 +341,16 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
 
     const items: ICommandBarItemProps[] = [
       ...commonItems,
-      ...(isSettingsView ? [] : [getRunButton(this.props), ...nonSettingsButtons]),
+      ...(isSettingsView
+        ? []
+        : [
+            getRunButton({
+              ...this.props,
+              navigateToRun: this.navigateToRun,
+              isNavigatingAwayToRun: this.state.isNavigatingAwayToRun,
+            } as IRunButtonProps),
+            ...nonSettingsButtons,
+          ]),
     ].filter(item => item !== null) as ICommandBarItemProps[];
 
     const profilePic = {

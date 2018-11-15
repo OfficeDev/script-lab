@@ -4,7 +4,7 @@ import { ICommandBarItemProps } from 'office-ui-fabric-react/lib/CommandBar';
 import { Spinner, SpinnerSize } from 'office-ui-fabric-react/lib/Spinner';
 import { Icon } from 'office-ui-fabric-react/lib/Icon';
 
-interface IProps {
+export interface IProps {
   isRunnableOnThisHost: boolean;
   isNullSolution: boolean;
   isCustomFunctionsView: boolean;
@@ -15,6 +15,7 @@ interface IProps {
 
   navigateToCustomFunctions: () => void;
   navigateToRun: () => void;
+  isNavigatingAwayToRun: boolean;
   directScriptExecutionFunction: (
     solutionId: string,
     fileId: string,
@@ -38,6 +39,7 @@ export const getRunButton = ({
   solution,
   file,
   theme,
+  isNavigatingAwayToRun,
 }: IProps): ICommandBarItemProps | null => {
   if (!isRunnableOnThisHost || isNullSolution) {
     return null;
@@ -142,7 +144,26 @@ export const getRunButton = ({
       key: 'run',
       text: 'Run',
       iconProps: { iconName: 'Play' },
-      onClick: navigateToRun,
+      onClick: () => {
+        navigateToRun();
+      },
+      onRenderIcon: () => {
+        return (
+          <div
+            style={{
+              marginLeft: '.4rem',
+              marginRight: '.4rem',
+              marginTop: '.2rem',
+            }}
+          >
+            {isNavigatingAwayToRun ? (
+              <Spinner size={SpinnerSize.xSmall} style={{ padding: '.1rem' }} />
+            ) : (
+              <Icon iconName="Play" />
+            )}
+          </div>
+        );
+      },
     };
   }
 };
