@@ -130,6 +130,10 @@ export const saveState = (state: IState) => {
 };
 
 // solutions
+export function deleteSolutionFromStorage(id: string) {
+  deleteItem(SOLUTION_ROOT, id);
+}
+
 function loadAllSolutionsAndFiles(): {
   solutions: { [id: string]: ISolutionWithFileIds };
   files: { [id: string]: IFile };
@@ -192,6 +196,10 @@ function loadAllSolutionsAndFiles(): {
       }))
       .map(solution => writeItem(SOLUTION_ROOT, solution.id, solution));
   }
+
+  // removing legacy format after successful write of the data in the new format
+  localStorage.removeItem('solutions');
+  localStorage.removeItem('files');
 
   return { solutions, files };
 }
@@ -283,8 +291,8 @@ const getCFPostData = (state: IState): IRunnerCustomFunctionsPostData => {
     return {
       name,
       id,
-      libraries,
-      script,
+      libraries: libraries || '',
+      script: script ? script : { content: '', language: 'typescript' },
       metadata: undefined,
     };
   });
@@ -336,4 +344,8 @@ function writeItem(root: string, id: string, object: any) {
 
 function readItem(root: string, id: string) {
   return JSON.parse(localStorage.getItem(`${root}${id}`) || 'null');
+}
+
+function deleteItem(root: string, id: string) {
+  localStorage.removeItem(`${root}${id}`);
 }

@@ -7,6 +7,7 @@ import selectors from '../selectors';
 import { convertSnippetToSolution } from '../../utils';
 import { getBoilerplate } from '../../newSolutionData';
 import { SCRIPT_FILE_NAME } from '../../constants';
+import { deleteSolutionFromStorage } from '../localStorage';
 
 export default function* solutionsWatcher() {
   yield takeEvery(getType(solutions.edit), onSolutionOpenOrFileEditSaga);
@@ -116,6 +117,7 @@ export function* createSolutionSaga(solution: ISolution) {
 }
 
 function* removeSolutionSaga(action: ActionType<typeof solutions.remove>) {
+  yield call(deleteSolutionFromStorage, action.payload.id);
   yield call(openLastModifiedOrDefaultSolutionSaga);
 }
 
