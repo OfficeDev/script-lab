@@ -55,12 +55,13 @@ export const saveState = (state: IState) => {
   try {
     // save solution
     writeIfChanged(
-      selectors.editor.getActiveSolution,
+      state => selectors.editor.getActiveSolution(state, true),
       (solution: ISolution) => solution.id,
       state,
       lastSavedState,
       SOLUTION_ROOT,
     );
+    ``;
 
     // save github
     writeIfChanged(
@@ -87,15 +88,19 @@ export const saveState = (state: IState) => {
     // save settings
     writeIfChanged(selectors.settings.getUser, 'userSettings', state, lastSavedState);
 
-    const activeSolution = selectors.editor.getActiveSolution(state);
+    const activeSolution = selectors.editor.getActiveSolution(state, true);
     if (
       activeSolution.id !== NULL_SOLUTION_ID &&
-      activeSolution.id !== SETTINGS_SOLUTION_ID
+      activeSolution.id !== SETTINGS_SOLUTION_ID &&
+      !(
+        activeSolution.options.isDirectScriptExecution ||
+        activeSolution.options.isCustomFunctionsSolution
+      )
     ) {
       // for new runner
       writeIfChanged(
-        selectors.editor.getActiveSolution,
-        () => 'activeSolution',
+        state => selectors.editor.getActiveSolution(state, true),
+        'activeSolution',
         state,
         lastSavedState,
       );

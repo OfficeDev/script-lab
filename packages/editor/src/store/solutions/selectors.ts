@@ -29,6 +29,19 @@ export const get = (state: IState, id: string): ISolution | null => {
   return { ...solutionMetadata, files };
 };
 
+export const getSolutionWithHiddenFiles = (
+  state: IState,
+  id: string,
+): ISolution | null => {
+  const solutionMetadata = state.solutions.metadata[id];
+  if (!solutionMetadata) {
+    return null;
+  }
+  const files = solutionMetadata.files.map(fileId => getFile(state, fileId));
+
+  return { ...solutionMetadata, files };
+};
+
 export const getAll = (state: IState): ISolution[] =>
   getObjectValues(state.solutions.metadata)
     .filter(solution => solution.host === state.host || solution.host === 'ALL')
