@@ -537,6 +537,7 @@ export const BasicMySolutions = () => (
     gistMetadata={gistKnob}
     openSolution={action('open-solution')}
     openGist={action('open-gist')}
+    signIn={action('sign-in')}
   />
 );
 

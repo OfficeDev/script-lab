@@ -5,7 +5,7 @@ module.exports = {
     'office-ui-fabric-react/lib/': 'office-ui-fabric-react/lib-commonjs/',
   },
   transform: {
-    '\\.(jsx?|tsx?)$': '<rootDir>/../../node_modules/ts-jest/preprocessor.js',
+    '\\.(jsx?|tsx?)$': 'ts-jest',
   },
   testMatch: ['<rootDir>/src/**/?(*.)+(spec|test).ts?(x)'],
   setupTestFrameworkScriptFile: '<rootDir>/src/setupTests.ts',
