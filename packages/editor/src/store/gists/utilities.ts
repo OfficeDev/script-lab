@@ -7,7 +7,7 @@ export async function checkForUnsupportedAPIsIfRelevant(snippet: ISnippet) {
   }
 
   const desiredOfficeJS =
-    processLibraries(snippet.libraries, isInsideOfficeApp).officeJS || '';
+    processLibraries(snippet.libraries || '', isInsideOfficeApp).officeJS || '';
   if (
     desiredOfficeJS
       .toLowerCase()

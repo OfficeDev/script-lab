@@ -3,5 +3,6 @@
     "**/.git": true, // this is a default value
     "**/.DS_Store": true // this is a default value
   },
-  "editor.formatOnSave": true
+  "editor.formatOnSave": true,
+  "typescript.tsdk": "node_modules\\typescript\\lib"
 }
