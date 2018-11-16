@@ -17,12 +17,14 @@ export interface IPivotBarItem {
 export interface IProps {
   items: IPivotBarItem[];
   selectedKey: string | null;
-  onSelect: (selectedKey: string) => void;
-  theme: ITheme; // from withTheme
 
   backgroundColor?: string;
   selectedColor?: string;
   hideUnderline?: boolean;
+
+  onSelect: (selectedKey: string) => void;
+
+  theme: ITheme; // from withTheme
 }
 
 class PivotBar extends React.Component<IProps> {

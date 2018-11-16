@@ -6,9 +6,9 @@ import { withKnobs } from '@storybook/addon-knobs';
 import { ThemeProvider } from 'styled-components';
 import React from 'react';
 
-// import '../src/index.css';
-// import { getTheme, setupFabricTheme } from '../src/theme';
-// import { initializeIcons } from 'office-ui-fabric-react/lib-commonjs/Icons';
+import '../index.css';
+import { getTheme, setupFabricTheme } from '../theme';
+import { initializeIcons } from 'office-ui-fabric-react/lib-commonjs/Icons';
 import { setOptions } from '@storybook/addon-options';
 
 setOptions({
@@ -20,8 +20,8 @@ configureActions({
   limit: 20,
 });
 
-// setupFabricTheme('EXCEL');
-// initializeIcons();
+setupFabricTheme('EXCEL');
+initializeIcons();
 
 const scThemeProvider = storyFn => (
   <ThemeProvider theme={getTheme('EXCEL')}>{storyFn()}</ThemeProvider>
