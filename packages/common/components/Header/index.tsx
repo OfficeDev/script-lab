@@ -1,5 +1,7 @@
 import React from 'react';
 
+import merge from 'lodash/merge';
+
 import { Customizer } from 'office-ui-fabric-react/lib/Utilities';
 import { CommandBar, ICommandBarProps } from 'office-ui-fabric-react/lib/CommandBar';
 
@@ -10,22 +12,21 @@ export interface IProps extends ICommandBarProps {
   host: string;
 }
 
-const Header = props => (
+const Header = (props: IProps) => (
   <Customizer settings={{ theme: getCommandBarFabricTheme(props.host) }}>
     <CommandBar
-      {...props}
-      styles={{
-        ...(props.styles || {}),
-        root: {
-          ...(props.styles ? props.styles.root || {} : {}),
-          paddingLeft: 0,
-          paddingRight: {
-            [PlatformType.PC]: '20px',
-            [PlatformType.Mac]: '40px',
-            [PlatformType.OfficeOnline]: '0px',
-          }[getPlatform()],
+      {...merge(props, {
+        styles: {
+          root: {
+            paddingLeft: 0,
+            paddingRight: {
+              [PlatformType.PC]: '20px',
+              [PlatformType.Mac]: '40px',
+              [PlatformType.OfficeOnline]: '0px',
+            }[getPlatform()],
+          },
         },
-      }}
+      })}
     />
   </Customizer>
 );
