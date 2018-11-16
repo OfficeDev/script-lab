@@ -12,7 +12,7 @@ branches:
 cache: yarn
 
 install:
-  - yarn install
+  - yarn install --frozen-lockfile
 
 before_script:
   - yarn prettier

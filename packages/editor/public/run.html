@@ -49,11 +49,27 @@
     </div>
     <noscript> You need to enable JavaScript to run this app. </noscript>
     <script>
-      // In order to fix the IE cross-tab issue (#147)
-      localStorage.setItem('playground_dummy_key', 'null');
+      (function() {
+        // In order to fix the IE cross-tab issue (#147)
+        localStorage.setItem('playground_dummy_key', 'null');
 
-      var snippet = JSON.parse(localStorage.getItem('activeSnippet'));
-      if (snippet) {
+        var snippet = JSON.parse(localStorage.getItem('activeSnippet'));
+        if (!snippet) {
+          showMessage([
+            'Error: No snippet found.',
+            'Please open the editor to create a snippet.',
+          ]);
+          return;
+        }
+
+        var isUntrusted = JSON.parse(localStorage.getItem('activeSolution')).options
+          .isUntrusted;
+
+        if (isUntrusted) {
+          showMessage(["The snippet isn't trusted.", 'Please trust it in the editor.']);
+          return;
+        }
+
         const state = {
           snippet: snippet,
           displayLanguage: 'en-us',
@@ -89,10 +105,12 @@
 
         document.body.appendChild(form);
         form.submit();
-      } else {
-        document.getElementById('message').innerHTML =
-          'Error: No snippet found.<br>Please open the editor to create a snippet.';
-      }
+
+        // Helpers:
+        function showMessage(messages) {
+          document.getElementById('message').innerHTML = messages.join('<br/>');
+        }
+      })();
     </script>
   </body>
 </html>
