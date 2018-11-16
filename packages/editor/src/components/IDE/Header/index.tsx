@@ -6,7 +6,6 @@ import { CommandBar, ICommandBarItemProps } from 'office-ui-fabric-react/lib/Com
 import { PersonaSize, PersonaCoin } from 'office-ui-fabric-react/lib/Persona';
 import { MessageBarType } from 'office-ui-fabric-react/lib/MessageBar';
 import { Spinner, SpinnerSize } from 'office-ui-fabric-react/lib/Spinner';
-import { ContextualMenuItemType } from 'office-ui-fabric-react/lib/ContextualMenu';
 
 import Clipboard from 'clipboard';
 import { convertSolutionToSnippet } from '../../../utils';
@@ -14,7 +13,7 @@ import YAML from 'js-yaml';
 
 import DeleteConfirmationDialog from './DeleteConfirmationDialog';
 import SolutionSettings from './SolutionSettings';
-import { getRunButton } from './Buttons/Run';
+import { getRunButton, IProps as IRunButtonProps } from './Buttons/Run';
 
 import { ITheme as IFabricTheme } from 'office-ui-fabric-react/lib/Styling';
 import { NULL_SOLUTION_ID, PATHS, IS_TASK_PANE_WIDTH } from '../../../constants';
@@ -82,6 +81,8 @@ interface IActionsFromRedux {
   notifyClipboardCopyFailure: () => void;
 
   navigateToCustomFunctions: () => void;
+  navigateToRun: () => void;
+  showTrustError: () => void;
 
   directScriptExecutionFunction: (
     solutionId: string,
@@ -124,16 +125,31 @@ const mapDispatchToProps = (dispatch, ownProps: IProps): IActionsFromRedux => ({
     dispatch(actions.gists.update.request({ solutionId: ownProps.solution.id })),
 
   notifyClipboardCopySuccess: () =>
-    dispatch(actions.messageBar.show('Snippet copied to clipboard.')),
+    dispatch(actions.messageBar.show({ text: 'Snippet copied to clipboard.' })),
   notifyClipboardCopyFailure: () =>
     dispatch(
-      actions.messageBar.show(
-        'Snippet failed to copy to clipboard.',
-        MessageBarType.error,
-      ),
+      actions.messageBar.show({
+        text: 'Snippet failed to copy to clipboard.',
+        style: MessageBarType.error,
+      }),
     ),
 
   navigateToCustomFunctions: () => dispatch(actions.customFunctions.openDashboard()),
+  navigateToRun: () => dispatch(actions.editor.navigateToRun()),
+  showTrustError: () =>
+    dispatch(
+      actions.messageBar.show({
+        style: MessageBarType.error,
+        text: 'You must trust the snippet before you can run it.',
+        button: {
+          text: 'Trust',
+          action: actions.solutions.updateOptions({
+            solution: ownProps.solution,
+            options: { isUntrusted: false },
+          }),
+        },
+      }),
+    ),
 
   directScriptExecutionFunction: (
     solutionId: string,
@@ -170,10 +186,15 @@ export interface IProps extends IPropsFromRedux, IActionsFromRedux {
 interface IState {
   showSolutionSettings: boolean;
   isDeleteConfirmationDialogVisible: boolean;
+  isNavigatingAwayToRun: boolean;
 }
 
 class HeaderWithoutTheme extends React.Component<IProps, IState> {
-  state = { showSolutionSettings: false, isDeleteConfirmationDialogVisible: false };
+  state = {
+    showSolutionSettings: false,
+    isDeleteConfirmationDialogVisible: false,
+    isNavigatingAwayToRun: false,
+  };
   clipboard;
 
   constructor(props: IProps) {
@@ -196,6 +217,11 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
     this.props.deleteSolution();
   };
 
+  navigateToRun = () => {
+    this.setState({ isNavigatingAwayToRun: true });
+    this.props.navigateToRun();
+  };
+
   showNotLoggedIntoGitHubDialog = () =>
     this.props.showDialog(
       'Please sign in to GitHub',
@@ -211,16 +237,11 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
       solution,
       showBackstage,
       editSolution,
-      deleteSolution,
       isSettingsView,
       isNullSolution,
-      isCustomFunctionsView,
       profilePicUrl,
-      isRunnableOnThisHost,
       isLoggedIn,
       isLoggingInOrOut,
-      isDirectScriptExecutionSolution,
-      runnableFunctions,
       screenWidth,
       theme,
       commandBarFabricTheme,
@@ -230,7 +251,6 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
       updateGist,
       createPublicGist,
       createSecretGist,
-      navigateToCustomFunctions,
     } = this.props;
     const solutionName = solution ? solution.name : 'Solution Name';
 
@@ -336,7 +356,16 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
 
     const items: ICommandBarItemProps[] = [
       ...commonItems,
-      ...(isSettingsView ? [] : [getRunButton(this.props), ...nonSettingsButtons]),
+      ...(isSettingsView
+        ? []
+        : [
+            getRunButton({
+              ...this.props,
+              navigateToRun: this.navigateToRun,
+              isNavigatingAwayToRun: this.state.isNavigatingAwayToRun,
+            } as IRunButtonProps),
+            ...nonSettingsButtons,
+          ]),
     ].filter(item => item !== null) as ICommandBarItemProps[];
 
     const profilePic = {
