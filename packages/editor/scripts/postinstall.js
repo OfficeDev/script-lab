@@ -8,10 +8,6 @@ const filesToCopy = [
     from: '../../node_modules/monaco-editor/monaco.d.ts',
     to: './src/interfaces/monaco.d.ts',
   },
-  {
-    from: '../../node_modules/office-ui-fabric-core/dist/css/fabric.min.css',
-    to: './public/external/office-ui-fabric-core/fabric.min.css',
-  },
 ];
 filesToCopy.forEach(pair => {
   fs.removeSync(pair.to);
