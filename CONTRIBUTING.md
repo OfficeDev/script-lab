@@ -34,14 +34,7 @@ From the root of the repo:
 
 1. Go to <https://github.com/settings/developers>, and click "[Register new application](https://github.com/settings/applications/new)" if you haven't done it before for your own dev copy of ScriptLab.
 2. Give it a name like "ScriptLab Local Dev", with a Homepage and Auth callback URL of `https://localhost:3000`.
-3. Create a `.env` file within the `packages/server/src` folder.
-   Set its contents to the following (substituting `XXXXX` and `YYYYY` with their respective values from the registered app)
-
-```
-GITHUB_CLIENT_ID=XXXXX
-GITHUB_CLIENT_SECRET=YYYYY
-GITHUB_REDIRECT_URL=https://localhost:3000/
-```
+3. Plumb this client ID and secret through (instructions TBD -- TODO).
 
 # Manual-testing scenarios
 
