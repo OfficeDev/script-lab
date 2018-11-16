@@ -90,7 +90,17 @@ export const convertSolutionToSnippet = (solution: ISolution): ISnippet => {
   })
     .map(([fileName, fileSelector]) => [fileName, files.find(fileSelector)])
     .filter(([fileName, file]) => file !== undefined)
-    .reduce((obj, [fileName, file]) => ({ ...obj, [fileName as string]: file }), {});
+    .reduce((obj, [fileName, file]) => {
+      const name = fileName as string;
+      const f = file as IFile;
+      return {
+        ...obj,
+        [name]:
+          f.name === LIBRARIES_FILE_NAME
+            ? f.content
+            : { content: f.content, language: f.language },
+      };
+    }, {});
 
   return {
     id,
