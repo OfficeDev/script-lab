@@ -9,11 +9,12 @@ const theme = getCommandBarFabricTheme('EXCEL');
 
 interface IProps {
   solutionName: string;
+  host: string;
   refresh: () => void;
   goBack?: () => void;
 }
 
-const Header = ({ solutionName, refresh, goBack }: IProps) => {
+const Header = ({ solutionName, host, refresh, goBack }: IProps) => {
   const items = [
     {
       hidden: !goBack,
@@ -36,7 +37,7 @@ const Header = ({ solutionName, refresh, goBack }: IProps) => {
     .map(({ item }) => item);
 
   return (
-    <Customizer settings={{ theme }}>
+    <Customizer settings={{ theme: getCommandBarFabricTheme(host) }}>
       <CommandBar items={items} styles={{ root: { paddingLeft: 0, paddingRight: 0 } }} />
     </Customizer>
   );

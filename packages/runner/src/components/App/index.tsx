@@ -36,12 +36,14 @@ interface IState {
 export class App extends React.Component<{}, IState> {
   heartbeat;
   pollingInterval;
-  state = { solution: null };
 
   constructor(props) {
     super(props);
     this.heartbeat = React.createRef();
+
+    this.state = { solution: null };
   }
+
   componentDidMount() {
     this.pollingInterval = setInterval(() => {
       this.requestActiveSolution();
@@ -72,11 +74,14 @@ export class App extends React.Component<{}, IState> {
   render() {
     console.log({ state: this.state });
     return (
-      <ThemeProvider theme={getTheme('EXCEL')}>
+      <ThemeProvider
+        theme={getTheme(this.state.solution ? this.state.solution.host : 'POWERPOINT')}
+      >
         <>
           <Layout>
             <Header
               solutionName="example"
+              host={this.state.solution ? this.state.solution.host : 'EXCEL'}
               goBack={() => {}}
               refresh={this.requestActiveSolution}
             />
