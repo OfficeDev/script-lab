@@ -39,3 +39,5 @@ export const newSolutionOpened = createAction('NEW_SOLUTION_OPENED', resolve => 
 export const newFileOpened = createAction('NEW_FILE_OPENED', resolve => {
   return (solution: ISolution, file: IFile) => resolve(solution, file);
 });
+
+export const navigateToRun = createAction('NAVIGATE_TO_RUN');

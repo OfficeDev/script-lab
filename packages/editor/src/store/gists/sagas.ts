@@ -161,7 +161,7 @@ function* createGistSaga(action: ActionType<typeof gists.create.request>) {
     token,
     jsonPayload: JSON.stringify({
       public: action.payload.isPublic,
-      host: snippet.host,
+      host: solution.host,
       description: `${solution.description}`,
       files: {
         [`${solution.name}.${solution.host}.yaml`]: {

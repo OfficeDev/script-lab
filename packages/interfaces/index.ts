@@ -14,10 +14,10 @@ interface ISnippet {
   };
   order?: number;
 
-  script: IContentLanguagePair;
-  template: IContentLanguagePair;
-  style: IContentLanguagePair;
-  libraries: string;
+  script?: IContentLanguagePair;
+  template?: IContentLanguagePair;
+  style?: IContentLanguagePair;
+  libraries?: string;
 }
 
 interface IContentLanguagePair {
