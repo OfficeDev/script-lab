@@ -117,6 +117,8 @@ export function enablePrettierInMonaco(prettierSettings: IPrettierSettings) {
           parser: 'typescript',
           plugins: [prettierTypeScript],
           tabWidth: prettierSettings.tabWidth,
+          arrowParens: 'always',
+          printWidth: 120,
         });
 
         return [
