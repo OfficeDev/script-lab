@@ -6,7 +6,7 @@
     "packages/*"
   ],
   "scripts": {
-    "copy-monaco": "cd packages/editor && yarn copy-monaco",
+    "postinstall": "cd packages/editor && yarn postinstall",
     "build": "cd packages/editor && yarn build && cd ../server && yarn build",
     "prettier": "prettier --list-different \"./**/*.@(ts|tsx|js|jsx|html)\"",
     "prettier-write": "prettier --write \"./**/*.@(ts|tsx|js|jsx|html)\"",

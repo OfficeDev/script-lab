@@ -1,0 +1,2 @@
+# Don't store monaco.d.ts, since it's copied over via the postinstall script from node_modules
+# monaco.d.ts

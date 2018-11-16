@@ -32,7 +32,7 @@
   },
   "scripts": {
     "analyze": "source-map-explorer build/static/js/main.*",
-    "copy-monaco": "node scripts/copy-monaco.js",
+    "postinstall": "node scripts/postinstall.js",
     "start": "set HTTPS=true&&react-scripts start",
     "lint": "tslint \"src/**/*.ts?(x)\"",
     "build": "node scripts/build.js",
