@@ -41,7 +41,7 @@ const menuItems: IMenuItem[] = [
 
 storiesOf('Backstage|Menu', module).add('basic', () => (
   <Menu
-    isCompact={boolean('isCompact')}
+    isCompact={boolean('isCompact', false)}
     items={menuItems}
     selectedKey={menuItems[2].key}
   />
