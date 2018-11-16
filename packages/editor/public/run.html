@@ -54,56 +54,61 @@
         localStorage.setItem('playground_dummy_key', 'null');
 
         var snippet = JSON.parse(localStorage.getItem('activeSnippet'));
+        if (!snippet) {
+          showMessage([
+            'Error: No snippet found.',
+            'Please open the editor to create a snippet.',
+          ]);
+          return;
+        }
+
         var isUntrusted = JSON.parse(localStorage.getItem('activeSolution')).options
           .isUntrusted;
 
         if (isUntrusted) {
-          document.getElementById('message').innerHTML = [
-            "The snippet isn't trusted.",
-            'Please trust it in the editor.',
-          ].join('<br/>');
+          showMessage(["The snippet isn't trusted.", 'Please trust it in the editor.']);
           return;
         }
 
-        if (snippet) {
-          const state = {
-            snippet: snippet,
-            displayLanguage: 'en-us',
-            isInsideOfficeApp: true,
-            returnUrl: 'NONE',
-            refreshUrl: window.location.origin + '/run.html',
-            hideSyncWithEditorButton: true,
-          };
+        const state = {
+          snippet: snippet,
+          displayLanguage: 'en-us',
+          isInsideOfficeApp: true,
+          returnUrl: 'NONE',
+          refreshUrl: window.location.origin + '/run.html',
+          hideSyncWithEditorButton: true,
+        };
 
-          const data = JSON.stringify(state);
-          const params = { data: data, isTrustedSnippet: true };
+        const data = JSON.stringify(state);
+        const params = { data: data, isTrustedSnippet: true };
 
-          var useAlphaRunner =
-            /^http(s?):\/\/script-lab-react-alpha\./.test(window.location.href) ||
-            /^http(s?):\/\/localhost/.test(window.location.href);
-          var path =
-            'https://bornholm-runner-' +
-            (useAlphaRunner ? 'edge' : 'insiders') +
-            '.azurewebsites.net/compile/page';
-          let form = document.createElement('form');
-          form.setAttribute('method', 'post');
-          form.setAttribute('action', path);
+        var useAlphaRunner =
+          /^http(s?):\/\/script-lab-react-alpha\./.test(window.location.href) ||
+          /^http(s?):\/\/localhost/.test(window.location.href);
+        var path =
+          'https://bornholm-runner-' +
+          (useAlphaRunner ? 'edge' : 'insiders') +
+          '.azurewebsites.net/compile/page';
+        let form = document.createElement('form');
+        form.setAttribute('method', 'post');
+        form.setAttribute('action', path);
 
-          for (let key in params) {
-            if (params.hasOwnProperty(key)) {
-              let hiddenField = document.createElement('input');
-              hiddenField.setAttribute('type', 'hidden');
-              hiddenField.setAttribute('name', key);
-              hiddenField.setAttribute('value', params[key]);
-              form.appendChild(hiddenField);
-            }
+        for (let key in params) {
+          if (params.hasOwnProperty(key)) {
+            let hiddenField = document.createElement('input');
+            hiddenField.setAttribute('type', 'hidden');
+            hiddenField.setAttribute('name', key);
+            hiddenField.setAttribute('value', params[key]);
+            form.appendChild(hiddenField);
           }
+        }
 
-          document.body.appendChild(form);
-          form.submit();
-        } else {
-          document.getElementById('message').innerHTML =
-            'Error: No snippet found.<br>Please open the editor to create a snippet.';
+        document.body.appendChild(form);
+        form.submit();
+
+        // Helpers:
+        function showMessage(messages) {
+          document.getElementById('message').innerHTML = messages.join('<br/>');
         }
       })();
     </script>
