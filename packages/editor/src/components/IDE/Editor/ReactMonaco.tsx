@@ -26,7 +26,12 @@ export class ReactMonaco extends Component<IProps, IState> {
     if ((window as any).monaco !== undefined) {
       this.initializeMonaco();
     } else {
-      (window as any).require.config({ baseUrl: '/' });
+      (window as any).require.config({
+        baseUrl: '/',
+        paths: {
+          vs: 'external/vs',
+        },
+      });
       (window as any).require(['vs/editor/editor.main'], () => this.initializeMonaco());
     }
   }

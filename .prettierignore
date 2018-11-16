@@ -1,4 +1,4 @@
 monaco.d.ts
 packages/**/build/*
-packages/**/public/vs/*
+packages/**/public/external/*
 packages/**/public/assets/*

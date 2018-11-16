@@ -15,7 +15,6 @@ install:
   - yarn install --frozen-lockfile
 
 before_script:
-  - yarn copy-monaco
   - yarn prettier
 
 matrix:
