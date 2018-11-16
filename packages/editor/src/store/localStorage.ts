@@ -55,7 +55,7 @@ export const saveState = (state: IState) => {
   try {
     // save solution
     writeIfChanged(
-      state => selectors.editor.getActiveSolution(state, true),
+      state => selectors.editor.getActiveSolution(state, { withHiddenFiles: true }),
       (solution: ISolution) => solution.id,
       state,
       lastSavedState,
@@ -87,18 +87,13 @@ export const saveState = (state: IState) => {
     // save settings
     writeIfChanged(selectors.settings.getUser, 'userSettings', state, lastSavedState);
 
-    const activeSolution = selectors.editor.getActiveSolution(state, true);
-    if (
-      activeSolution.id !== NULL_SOLUTION_ID &&
-      activeSolution.id !== SETTINGS_SOLUTION_ID &&
-      !(
-        activeSolution.options.isDirectScriptExecution ||
-        activeSolution.options.isCustomFunctionsSolution
-      )
-    ) {
+    const activeSolution = selectors.editor.getActiveSolution(state, {
+      withHiddenFiles: true,
+    });
+    if (isRealSolution(activeSolution) && isStandaloneRunnable(activeSolution)) {
       // for new runner
       writeIfChanged(
-        state => selectors.editor.getActiveSolution(state, true),
+        state => selectors.editor.getActiveSolution(state, { withHiddenFiles: true }),
         'activeSolution',
         state,
         lastSavedState,
@@ -321,6 +316,16 @@ function getAllLocalStorageKeys(): string[] {
     }
   }
   return keys;
+}
+
+function isRealSolution(solution: ISolution) {
+  return solution.id !== NULL_SOLUTION_ID && solution.id !== SETTINGS_SOLUTION_ID;
+}
+
+function isStandaloneRunnable(solution: ISolution) {
+  return !(
+    solution.options.isDirectScriptExecution || solution.options.isCustomFunctionsSolution
+  );
 }
 
 function writeIfChanged(

@@ -8,11 +8,11 @@ import { NULL_SOLUTION, NULL_SOLUTION_ID, NULL_FILE } from '../../constants';
 
 export const getActiveSolution = (
   state: IState,
-  withHiddenFiles: boolean = false,
+  options: { withHiddenFiles: boolean } = { withHiddenFiles: false },
 ): ISolution => {
   const activeSolutionId = state.editor.active.solutionId;
   if (activeSolutionId) {
-    const getter = withHiddenFiles ? getSolution : getSolutionWithHiddenFiles;
+    const getter = options.withHiddenFiles ? getSolution : getSolutionWithHiddenFiles;
     const solution = getter(state, activeSolutionId);
     if (solution) {
       return solution;
