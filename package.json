@@ -11,9 +11,10 @@
     "prettier": "prettier --list-different \"./**/*.@(ts|tsx|js|jsx|html)\"",
     "prettier-write": "prettier --write \"./**/*.@(ts|tsx|js|jsx|html)\"",
     "deploy": "node scripts/deploy.js",
-    "editor": "cd packages/editor && yarn start",
-    "server": "cd packages/server && yarn start",
-    "start": "npm-run-all --parallel editor server"
+    "editor": "yarn workspace editor start",
+    "runner": "yarn workspace runner start",
+    "server": "yarn workspace server start",
+    "start": "npm-run-all --parallel editor runner server"
   },
   "devDependencies": {
     "npm-run-all": "^4.1.3",
