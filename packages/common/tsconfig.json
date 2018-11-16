@@ -1,11 +1,7 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "typeRoots": [
-      "./src/interfaces",
-      "node_modules/@types",
-      "../../node_modules/@types"
-    ],
+    "typeRoots": ["./interfaces", "node_modules/@types", "../../node_modules/@types"],
     "skipLibCheck": true,
     "esModuleInterop": true,
     "strict": false,
@@ -17,10 +13,7 @@
     "strictFunctionTypes": false,
     "strictPropertyInitialization": false
   },
-  "include": [
-    "../interfaces/*",
-    "./src/**/*"
-  ],
+  "include": ["../interfaces/*", "./src/**/*"],
   "exclude": [
     "node_modules",
     "build",

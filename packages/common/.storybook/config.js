@@ -23,11 +23,11 @@ configureActions({
 // setupFabricTheme('EXCEL');
 // initializeIcons();
 
-// const scThemeProvider = storyFn => (
-//   <ThemeProvider theme={getTheme('EXCEL')}>{storyFn()}</ThemeProvider>
-// );
+const scThemeProvider = storyFn => (
+  <ThemeProvider theme={getTheme('EXCEL')}>{storyFn()}</ThemeProvider>
+);
 
-// addDecorator(scThemeProvider);
+addDecorator(scThemeProvider);
 addDecorator(withKnobs);
 addDecorator(checkA11y);
 

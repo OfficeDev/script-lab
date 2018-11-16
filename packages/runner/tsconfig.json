@@ -1,6 +1,12 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
+    "typeRoots": [
+      "../common/interfaces",
+      "./src/interfaces",
+      "node_modules/@types",
+      "../../node_modules/@types"
+    ],
     "outDir": "build/dist",
     "skipLibCheck": true,
     "esModuleInterop": true,
