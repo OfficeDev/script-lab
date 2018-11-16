@@ -24,6 +24,16 @@ From the root of the repo:
 1. `yarn install`
 2. `yarn start`
 
+## Trust the certificates
+
+Trust the certificates for each of <https://localhost:3000> (editor), <https://localhost:3200> (runner), and <https://localhost:5000> (server). For purposes of running add-ins on a PC, do this within Internet Explorer. See the gif below for a step-by-step animation:
+
+![](.github/images/trust-ssl-internet-explorer.gif).
+
+This is a particularly critical step for loading the Add-in inside of Office on a PC. If you fail to trust the certificates, you might see the following error:
+
+![](.github/images/add-in-loading-error.png).
+
 ## Testing inside of an add-in
 
 1. Locate the add-in manifest (which you'll find in the `manifests` folder in the root of the repo). For purposes of running against localhost, use `localhost.xml`.
