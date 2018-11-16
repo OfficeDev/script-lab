@@ -34,10 +34,14 @@ interface IState {
 }
 
 export class App extends React.Component<{}, IState> {
-  heartbeat: HTMLIFrameElement | null;
+  heartbeat;
   pollingInterval;
   state = { solution: null };
 
+  constructor(props) {
+    super(props);
+    this.heartbeat = React.createRef();
+  }
   componentDidMount() {
     this.pollingInterval = setInterval(() => {
       this.requestActiveSolution();
@@ -52,8 +56,8 @@ export class App extends React.Component<{}, IState> {
   }
 
   requestActiveSolution = () => {
-    if (this.heartbeat) {
-      this.heartbeat.contentWindow!.postMessage('GET_ACTIVE_SOLUTION', '*');
+    if (this.heartbeat.current) {
+      this.heartbeat.current.contentWindow!.postMessage('GET_ACTIVE_SOLUTION', '*');
     }
   };
 
@@ -84,7 +88,7 @@ export class App extends React.Component<{}, IState> {
           <iframe
             style={{ display: 'none' }}
             src="http://localhost:3000/heartbeat.html"
-            ref={heartbeat => (this.heartbeat = heartbeat)}
+            ref={this.heartbeat}
           />
         </>
       </ThemeProvider>
