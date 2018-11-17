@@ -8,7 +8,7 @@ import Console from './Console';
 import ComingSoon from './ComingSoon';
 import Welcome from './Welcome';
 
-import LoadingIndicator from 'common/components/LoadingIndicator';
+import LoadingIndicator from 'common/lib/components/LoadingIndicator';
 
 import { connect } from 'react-redux';
 import selectors from '../../store/selectors';
