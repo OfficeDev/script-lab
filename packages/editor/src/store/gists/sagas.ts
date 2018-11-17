@@ -225,6 +225,8 @@ function* updateGistSaga(action: ActionType<typeof gists.update.request>) {
 
 function* importSnippetSaga(action: ActionType<typeof gists.importSnippet.request>) {
   try {
+    let login;
+    let snippet;
     if (action.payload.gistId) {
       const { response, error } = yield call(github.request, {
         method: 'GET',
@@ -232,35 +234,30 @@ function* importSnippetSaga(action: ActionType<typeof gists.importSnippet.reques
       });
       if (response) {
         const gistFiles = response.files;
-        const snippet = YAML.safeLoad(gistFiles[Object.keys(gistFiles)[0]].content);
-        const solution = convertSnippetToSolution(snippet);
-        const host = yield select(selectors.host.get);
-
-        if (solution.host !== host) {
-          throw new Error(
-            `Cannot import a snippet created for ${solution.host} in ${host}.`,
-          );
-        }
-
-        yield call(checkForUnsupportedAPIsIfRelevant, host, snippet);
-
-        const username = yield select(selectors.github.getUsername);
-        if (response.owner.login !== username) {
-          solution.options.isUntrusted = true;
-        }
-
-        yield put(gists.importSnippet.success({ solution }));
+        login = response.owner.login;
+        snippet = YAML.safeLoad(gistFiles[Object.keys(gistFiles)[0]].content);
       } else {
         throw error;
       }
     } else if (action.payload.gist) {
-      const snippet = YAML.safeLoad(action.payload.gist);
-      const solution = convertSnippetToSolution(snippet);
-      solution.options.isUntrusted = true;
-      yield put(gists.importSnippet.success({ solution }));
+      snippet = YAML.safeLoad(action.payload.gist);
     } else {
       throw new Error('Either a gistId or gist must be specified');
     }
+
+    const solution = convertSnippetToSolution(snippet);
+    const host = yield select(selectors.host.get);
+
+    if (solution.host !== host) {
+      throw new Error(`Cannot import a snippet created for ${solution.host} in ${host}.`);
+    }
+
+    yield call(checkForUnsupportedAPIsIfRelevant, snippet);
+
+    const username = yield select(selectors.github.getUsername);
+    solution.options.isUntrusted = login !== username;
+
+    yield put(gists.importSnippet.success({ solution }));
   } catch (e) {
     yield put(gists.importSnippet.failure(e));
     yield put(editor.open());

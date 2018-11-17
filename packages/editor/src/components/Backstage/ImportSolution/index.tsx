@@ -57,13 +57,11 @@ class ImportSolution extends Component<IProps, IState> {
         gist = input;
         const content = YAML.safeLoad(input);
         const solutionTest = convertSnippetToSolution(content);
-        console.log({ content, solutionTest });
       }
 
       this.props.importGist(gistId, gist);
       this.setState({ importFieldText: '', errorMessage: undefined });
     } catch (err) {
-      console.error('catchign errro');
       this.setState({
         errorMessage: 'You must provide valid gist YAML or a valid gist url.',
       });

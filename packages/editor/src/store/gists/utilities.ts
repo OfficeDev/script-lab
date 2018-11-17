@@ -8,22 +8,18 @@ export async function checkForUnsupportedAPIsIfRelevant(snippet: ISnippet) {
 
   const desiredOfficeJS =
     processLibraries(snippet.libraries || '', isInsideOfficeApp).officeJS || '';
-  if (
-    desiredOfficeJS
-      .toLowerCase()
-      .includes('https://appsforoffice.microsoft.com/lib/1/hosted/')
-  ) {
+  const isProductionOfficeJs = desiredOfficeJS
+    .toLowerCase()
+    .includes('https://appsforoffice.microsoft.com/lib/1/hosted/');
+
+  if (!isProductionOfficeJs) {
     // Snippets using production Office.js should be checked for API set support.
     // Snippets using the beta endpoint or an NPM package don't need to.
     return;
   }
 
   const apiSet = snippet.api_set || {};
-  const apiTuples = Object.keys(apiSet).reduce(
-    (arr, key) => [...arr, [key, apiSet[key]]],
-    [],
-  );
-  apiTuples.forEach(([api, version]) => {
+  Object.entries(apiSet).forEach(([api, version]) => {
     if (!Office.context.requirements.isSetSupported(api as string, version as number)) {
       throw new Error(
         `${host} does not support the required API Set ${api} @ ${version}`,
