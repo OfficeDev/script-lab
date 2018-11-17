@@ -1,4 +1,5 @@
 var shell = require('shelljs');
+const fs = require('fs-extra');
 
 var {
   TRAVIS_BRANCH,
@@ -20,6 +21,15 @@ var deploymentSlot = {
 if (deploymentSlot !== undefined) {
   if (shell.test('-d', `${PACKAGE_LOCATION}/build`)) {
     shell.echo('starting deployment');
+
+    var possibleFilesToDelete = [`${PACKAGE_LOCATION}/build/external/.gitignore`];
+    possibleFilesToDelete.forEach(fullPath => {
+      shell.echo(`removing unnecessary "${fullPath}"`);
+      if (fs.existsSync(fullPath)) {
+        fs.removeSync(fullPath);
+      }
+    });
+
     deploy(`${PACKAGE_LOCATION}/build`, SITE_NAME, `${SITE_NAME}${deploymentSlot}`);
   } else {
     shell.echo('ERROR: No build directory found!');
