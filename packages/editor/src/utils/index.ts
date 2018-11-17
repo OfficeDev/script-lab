@@ -1,5 +1,6 @@
 import uuidv4 from 'uuid';
 import { LIBRARIES_FILE_NAME, SCRIPT_FILE_NAME } from '../constants';
+import { getBoilerplateFiles } from '../newSolutionData';
 
 export const getObjectValues = (dict: object): any[] =>
   Object.keys(dict).map(key => dict[key]);
@@ -51,12 +52,18 @@ const createFile = (name, { content, language }): IFile => ({
 export const convertSnippetToSolution = (snippet: ISnippet): ISolution => {
   const { name, description, script, template, style, libraries, host } = snippet;
 
-  const files = [
-    createFile(SCRIPT_FILE_NAME, script),
-    createFile('index.html', template),
-    createFile('index.css', style),
-    createFile(LIBRARIES_FILE_NAME, { content: libraries, language: 'libraries' }),
-  ];
+  const defaultFiles = getBoilerplateFiles(Date.now());
+
+  const files = Object.entries({
+    [SCRIPT_FILE_NAME]: script,
+    'index.html': template,
+    'index.css': style,
+    [LIBRARIES_FILE_NAME]: { content: libraries, language: 'libraries' },
+  }).map(([fileName, file]) =>
+    file
+      ? createFile(fileName, file)
+      : defaultFiles.find(file => file.name === fileName)!,
+  ) as IFile[];
 
   const solution = {
     id: uuidv4(),
@@ -75,28 +82,32 @@ export const convertSnippetToSolution = (snippet: ISnippet): ISolution => {
 export const convertSolutionToSnippet = (solution: ISolution): ISnippet => {
   const { id, name, description, host, files } = solution;
 
-  const script: IFile = files.find(file => file.name === SCRIPT_FILE_NAME)!;
-  const template: IFile = files.find(file => file.name === 'index.html')!;
-  const style: IFile = files.find(file => file.name === 'index.css')!;
-  const libraries: IFile = files.find(file => file.name === LIBRARIES_FILE_NAME)!;
+  const snippetFiles = Object.entries({
+    script: file => file.name === SCRIPT_FILE_NAME,
+    template: file => file.name === 'index.html',
+    style: file => file.name === 'index.css',
+    libraries: file => file.name === LIBRARIES_FILE_NAME,
+  })
+    .map(([fileName, fileSelector]) => [fileName, files.find(fileSelector)])
+    .filter(([fileName, file]) => file !== undefined)
+    .reduce((obj, [fileName, file]) => {
+      const name = fileName as string;
+      const f = file as IFile;
+      return {
+        ...obj,
+        [name]:
+          f.name === LIBRARIES_FILE_NAME
+            ? f.content
+            : { content: f.content, language: f.language },
+      };
+    }, {});
 
   return {
     id,
     name,
     description,
     host,
-    script: {
-      content: script.content,
-      language: script.language,
-    },
-    template: {
-      content: template.content,
-      language: template.language,
-    },
-    style: {
-      content: style.content,
-      language: style.language,
-    },
-    libraries: libraries.content,
+    api_set: {},
+    ...snippetFiles,
   };
 };

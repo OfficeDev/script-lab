@@ -7,6 +7,8 @@ import 'core-js/fn/string/trim-right';
 import 'core-js/fn/string/code-point-at';
 import 'core-js/fn/string/repeat';
 import 'core-js/fn/number/is-nan';
+import 'core-js/fn/object/entries';
+import 'core-js/fn/object/values';
 
 // string includes polyfill
 if (!String.prototype.includes) {

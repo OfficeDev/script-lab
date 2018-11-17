@@ -52,9 +52,9 @@ export class CustomFunctionsDashboard extends React.Component<IProps, IState> {
     );
   }
 
-  componentWillUnmount = () => {
+  componentWillUnmount() {
     clearInterval(this.localStorageCheckInterval);
-  };
+  }
 
   getShouldPromptRefresh = () =>
     this.state.customFunctionsLastModified > this.props.runnerLastUpdated;

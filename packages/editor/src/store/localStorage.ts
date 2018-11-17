@@ -55,7 +55,7 @@ export const saveState = (state: IState) => {
   try {
     // save solution
     writeIfChanged(
-      selectors.editor.getActiveSolution,
+      state => selectors.editor.getActiveSolution(state, { withHiddenFiles: true }),
       (solution: ISolution) => solution.id,
       state,
       lastSavedState,
@@ -87,15 +87,14 @@ export const saveState = (state: IState) => {
     // save settings
     writeIfChanged(selectors.settings.getUser, 'userSettings', state, lastSavedState);
 
-    const activeSolution = selectors.editor.getActiveSolution(state);
-    if (
-      activeSolution.id !== NULL_SOLUTION_ID &&
-      activeSolution.id !== SETTINGS_SOLUTION_ID
-    ) {
+    const activeSolution = selectors.editor.getActiveSolution(state, {
+      withHiddenFiles: true,
+    });
+    if (isRealSolution(activeSolution) && isStandaloneRunnable(activeSolution)) {
       // for new runner
       writeIfChanged(
-        selectors.editor.getActiveSolution,
-        () => 'activeSolution',
+        state => selectors.editor.getActiveSolution(state, { withHiddenFiles: true }),
+        'activeSolution',
         state,
         lastSavedState,
       );
@@ -126,6 +125,10 @@ export const saveState = (state: IState) => {
 };
 
 // solutions
+export function deleteSolutionFromStorage(id: string) {
+  deleteItem(SOLUTION_ROOT, id);
+}
+
 function loadAllSolutionsAndFiles(): {
   solutions: { [id: string]: ISolutionWithFileIds };
   files: { [id: string]: IFile };
@@ -188,6 +191,10 @@ function loadAllSolutionsAndFiles(): {
       }))
       .map(solution => writeItem(SOLUTION_ROOT, solution.id, solution));
   }
+
+  // removing legacy format after successful write of the data in the new format
+  localStorage.removeItem('solutions');
+  localStorage.removeItem('files');
 
   return { solutions, files };
 }
@@ -279,8 +286,8 @@ const getCFPostData = (state: IState): IRunnerCustomFunctionsPostData => {
     return {
       name,
       id,
-      libraries,
-      script,
+      libraries: libraries || '',
+      script: script ? script : { content: '', language: 'typescript' },
       metadata: undefined,
     };
   });
@@ -311,6 +318,16 @@ function getAllLocalStorageKeys(): string[] {
   return keys;
 }
 
+function isRealSolution(solution: ISolution) {
+  return solution.id !== NULL_SOLUTION_ID && solution.id !== SETTINGS_SOLUTION_ID;
+}
+
+function isStandaloneRunnable(solution: ISolution) {
+  return !(
+    solution.options.isDirectScriptExecution || solution.options.isCustomFunctionsSolution
+  );
+}
+
 function writeIfChanged(
   selector: (state: IState) => any,
   getKey: ((selectionResult: any) => string) | string,
@@ -332,4 +349,8 @@ function writeItem(root: string, id: string, object: any) {
 
 function readItem(root: string, id: string) {
   return JSON.parse(localStorage.getItem(`${root}${id}`) || 'null');
+}
+
+function deleteItem(root: string, id: string) {
+  localStorage.removeItem(`${root}${id}`);
 }
