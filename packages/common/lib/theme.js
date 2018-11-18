@@ -24,8 +24,8 @@ var neutralColors = {
     neutralLighter: '#f4f4f4',
     white: '#ffffff',
 };
-export var getCommandBarFabricTheme = function (host) {
-    var theme = getTheme(host);
+export var getCommandBarFabricTheme = function (hostOrTheme) {
+    var theme = typeof hostOrTheme === 'string' ? getTheme(hostOrTheme) : hostOrTheme;
     return createTheme({
         palette: {
             themePrimary: theme.white,

@@ -81,8 +81,7 @@ var Footer = function (props) {
             },
         },
     });
-    console.log(mergedProps);
-    return (React.createElement(Customizer, { settings: { theme: getCommandBarFabricTheme(props.host) } },
+    return (React.createElement(Customizer, { settings: { theme: getCommandBarFabricTheme(props.theme) } },
         React.createElement(Wrapper, null,
             React.createElement(CommandBar, __assign({}, mergedProps)))));
 };

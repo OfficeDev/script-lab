@@ -17,7 +17,7 @@ import { getCommandBarFabricTheme } from '../../theme';
 import { getPlatform, PlatformType } from '../../platform';
 var Header = function (props) {
     var _a;
-    return (React.createElement(Customizer, { settings: { theme: getCommandBarFabricTheme(props.host) } },
+    return (React.createElement(Customizer, { settings: { theme: getCommandBarFabricTheme(props.theme) } },
         React.createElement(CommandBar, __assign({}, merge(props, {
             styles: {
                 root: {

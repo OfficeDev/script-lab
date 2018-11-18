@@ -1,4 +1,4 @@
-export declare const getCommandBarFabricTheme: (host: string) => import("@uifabric/styling/lib/interfaces/ITheme").ITheme;
+export declare const getCommandBarFabricTheme: (hostOrTheme: string | ITheme) => import("@uifabric/styling/lib/interfaces/ITheme").ITheme;
 export declare const getTheme: (host: string) => ITheme;
 export declare const fabricTheme: {
     themePrimary: string;
