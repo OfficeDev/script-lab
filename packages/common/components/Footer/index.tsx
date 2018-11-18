@@ -10,8 +10,7 @@ import { getCommandBarFabricTheme } from '../../theme';
 import { Wrapper } from './styles';
 
 export interface IProps extends ICommandBarProps {
-  host: string;
-  theme: ITheme | any; // from withTheme
+  theme: ITheme | any; // from withTheme  /* TODO: find a way to do this nicer*/
 }
 
 const Footer = (props: IProps) => {
@@ -77,9 +76,8 @@ const Footer = (props: IProps) => {
     },
   );
 
-  console.log(mergedProps);
   return (
-    <Customizer settings={{ theme: getCommandBarFabricTheme(props.host) }}>
+    <Customizer settings={{ theme: getCommandBarFabricTheme(props.theme) }}>
       <Wrapper>
         <CommandBar {...mergedProps} />
       </Wrapper>

@@ -31,7 +31,6 @@ const farItems: ICommandBarItemProps[] = [
 ];
 
 const props: IProps = {
-  host: 'EXCEL',
   items,
   farItems,
 };

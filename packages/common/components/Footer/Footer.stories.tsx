@@ -13,7 +13,6 @@ const items: ICommandBarItemProps[] = [
 ];
 
 const props = {
-  host: 'EXCEL',
   items,
 };
 

@@ -9,11 +9,11 @@ import { getCommandBarFabricTheme } from '../../theme';
 import { getPlatform, PlatformType } from '../../platform';
 
 export interface IProps extends ICommandBarProps {
-  host: string;
+  theme: ITheme | any; // from withTheme  /* TODO: find a way to do this nicer*/
 }
 
 const Header = (props: IProps) => (
-  <Customizer settings={{ theme: getCommandBarFabricTheme(props.host) }}>
+  <Customizer settings={{ theme: getCommandBarFabricTheme(props.theme) }}>
     <CommandBar
       {...merge(props, {
         styles: {
