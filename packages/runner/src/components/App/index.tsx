@@ -2,7 +2,7 @@ import React from 'react';
 import styled, { ThemeProvider } from 'styled-components';
 
 import { getTheme } from '../../theme';
-
+import Heartbeat from '../Heartbeat';
 import Header from './Header';
 import MessageBar from './MessageBar';
 
@@ -34,42 +34,13 @@ interface IState {
 }
 
 export class App extends React.Component<{}, IState> {
-  heartbeat;
-  pollingInterval;
-
   constructor(props) {
     super(props);
-    this.heartbeat = React.createRef();
 
     this.state = { solution: null };
   }
 
-  componentDidMount() {
-    this.pollingInterval = setInterval(() => {
-      this.requestActiveSolution();
-    }, 1000);
-
-    this.setActiveSolutionListener();
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.pollingInterval);
-    window.onmessage = null;
-  }
-
-  requestActiveSolution = () => {
-    if (this.heartbeat.current) {
-      this.heartbeat.current.contentWindow!.postMessage('GET_ACTIVE_SOLUTION', '*');
-    }
-  };
-
-  setActiveSolutionListener = () => {
-    window.onmessage = ({ origin, data }) => {
-      if (origin === 'http://localhost:3000') {
-        this.setState({ solution: JSON.parse(data) });
-      }
-    };
-  };
+  onReceiveNewActiveSolution = (solution: ISolution) => this.setState({ solution });
 
   render() {
     console.log({ state: this.state });
@@ -79,22 +50,17 @@ export class App extends React.Component<{}, IState> {
       >
         <>
           <Layout>
-            <Header
+            {/* <Header
               solutionName="example"
               host={this.state.solution ? this.state.solution.host : 'EXCEL'}
               goBack={() => {}}
-              refresh={this.requestActiveSolution}
-            />
+            /> */}
             <RefreshBar isVisible={false} />
             <ContentContainer>
               {this.state.solution && <Snippet solution={this.state.solution!} />}
             </ContentContainer>
           </Layout>
-          <iframe
-            style={{ display: 'none' }}
-            src="http://localhost:3000/heartbeat.html"
-            ref={this.heartbeat}
-          />
+          <Heartbeat onReceiveNewActiveSolution={this.onReceiveNewActiveSolution} />
         </>
       </ThemeProvider>
     );
