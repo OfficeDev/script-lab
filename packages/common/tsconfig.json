@@ -7,16 +7,16 @@
     "strict": false,
     "outDir": "lib",
     "declaration": true,
-
+    "allowJs": false,
     // "resolveJsonModule": true,
-    "isolatedModules": true,
+    // "isolatedModules": true,
     // "noEmit": true,
     "jsx": "react",
     "alwaysStrict": false,
     "strictFunctionTypes": false,
     "strictPropertyInitialization": false
   },
-  "include": ["./components/**/*"],
+  "include": ["./components/**/*", "./interfaces/**/*"],
   "exclude": [
     "node_modules",
     "**/node_modules/**/*",

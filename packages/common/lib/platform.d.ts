@@ -4,6 +4,6 @@ export declare enum PlatformType {
     Mac = "Mac",
     iOS = "iOS",
     Android = "Android",
-    Universal = "Universal",
+    Universal = "Universal"
 }
 export declare function getPlatform(): PlatformType;
