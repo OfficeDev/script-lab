@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+const monacoEditorVersionNumber = "0-14-3";
+
 export interface IProps {
   solutionId: string;
   file: IFile;
@@ -29,7 +31,7 @@ export class ReactMonaco extends Component<IProps, IState> {
       (window as any).require.config({
         baseUrl: '/',
         paths: {
-          vs: 'external/vs',
+          vs: `external/monaco-editor-${monacoEditorVersionNumber}/vs`,
         },
       });
       (window as any).require(['vs/editor/editor.main'], () => this.initializeMonaco());
