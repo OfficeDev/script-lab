@@ -178,7 +178,9 @@ function* makeAddIntellisenseRequestSaga() {
     const urlContentPairing = zip(urlsToFetch, urlContents);
 
     urlsToFetch = flatten(
-      urlContentPairing.map(([url, content]) => parseTripleSlashRefs(url, content)),
+      urlContentPairing.map(([url, content]) =>
+        parseTripleSlashRefs(url as string, content),
+      ),
     );
     urls = [...urls, ...urlsToFetch];
   }

@@ -23,6 +23,8 @@ class Theme extends Component<IProps, IState> {
 
   componentDidUpdate(prevProps: IProps) {
     if (this.props.host !== prevProps.host) {
+      console.log('componentDidUpdate');
+      console.log(this.props.host);
       setupFabricTheme(this.props.host);
       this.setState({ theme: getTheme(this.props.host) });
     }
@@ -32,3 +34,5 @@ class Theme extends Component<IProps, IState> {
     return <ThemeProvider theme={this.state.theme}>{this.props.children}</ThemeProvider>;
   }
 }
+
+export default Theme;

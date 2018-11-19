@@ -6,15 +6,18 @@
     "@microsoft/office-js-helpers": "0.7.4",
     "color": "^3.0.0",
     "core-js": "^2.5.7",
+    "lodash": "^4.17.11",
     "office-ui-fabric-react": "^6.69.0",
     "react": "^16.5.0",
     "react-dom": "^16.5.0",
     "styled-components": "^4.1.1"
   },
   "scripts": {
-    "prepare": "tsc",
-    "start": "start-storybook -p 6006",
-    "build": "build-storybook -c .storybook -o build-storybook",
+    "prepare": "yarn build",
+    "build": "tsc",
+    "start": "tsc --watch",
+    "storybook": "start-storybook -p 6006",
+    "build:storybook": "build-storybook -c .storybook -o build-storybook",
     "test": "jest --env=jsdom"
   },
   "devDependencies": {
@@ -29,6 +32,7 @@
     "@types/enzyme": "^3.1.15",
     "@types/enzyme-adapter-react-16": "^1.0.3",
     "@types/jest": "^23.3.2",
+    "@types/lodash": "^4.14.118",
     "@types/node": "^10.9.4",
     "@types/office-js": "^0.0.111",
     "@types/react": "^16.4.14",

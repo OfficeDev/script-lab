@@ -1,6 +1,8 @@
 import React from 'react';
+import { withTheme } from 'styled-components';
 
 import merge from 'lodash/merge';
+import omit from 'lodash/omit';
 
 import { Customizer } from 'office-ui-fabric-react/lib/Utilities';
 import { CommandBar, ICommandBarProps } from 'office-ui-fabric-react/lib/CommandBar';
@@ -8,14 +10,16 @@ import { CommandBar, ICommandBarProps } from 'office-ui-fabric-react/lib/Command
 import { getCommandBarFabricTheme } from '../../theme';
 import { getPlatform, PlatformType } from '../../platform';
 
-export interface IProps extends ICommandBarProps {
-  theme: ITheme | any; // from withTheme  /* TODO: find a way to do this nicer*/
+export interface IProps extends ICommandBarProps {}
+
+interface IPrivateProps extends IProps {
+  theme: ITheme | any; // from withTheme
 }
 
-const Header = (props: IProps) => (
+const Header = (props: IPrivateProps) => (
   <Customizer settings={{ theme: getCommandBarFabricTheme(props.theme) }}>
     <CommandBar
-      {...merge(props, {
+      {...merge(omit(props, ['theme']), {
         styles: {
           root: {
             paddingLeft: 0,
@@ -31,4 +35,4 @@ const Header = (props: IProps) => (
   </Customizer>
 );
 
-export default Header;
+export default withTheme(Header);

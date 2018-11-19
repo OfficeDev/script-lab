@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 
 const LOCAL_STORAGE_POLLING_INTERVAL = 500; // ms
 const URL = 'http://localhost:3000'; // TODO: NICO UNDO THIS
-const HEARTBEAT_HTML_URL = `${URL}/heartbeat.html`
+const HEARTBEAT_HTML_URL = `${URL}/heartbeat.html`;
 const GET_ACTIVE_SOLUTION_REQUEST_MESSAGE = 'GET_ACTIVE_SOLUTION';
-
 
 export interface IProps {
   onReceiveNewActiveSolution: (solution: ISolution) => void;
@@ -30,7 +29,7 @@ class Heartbeat extends Component<IProps, IState> {
       this.requestActiveSolution();
     }, LOCAL_STORAGE_POLLING_INTERVAL);
 
-    window.onmessage = this.onWindowMessage
+    window.onmessage = this.onWindowMessage;
   }
 
   componentWillUnmount() {
@@ -40,9 +39,12 @@ class Heartbeat extends Component<IProps, IState> {
 
   private requestActiveSolution = () => {
     if (this.node.current) {
-      this.node.current.contentWindow!.postMessage(GET_ACTIVE_SOLUTION_REQUEST_MESSAGE, URL/* '*' */);
+      this.node.current.contentWindow!.postMessage(
+        GET_ACTIVE_SOLUTION_REQUEST_MESSAGE,
+        URL /* '*' */,
+      );
     }
-  }
+  };
 
   private onWindowMessage = ({ origin, data }) => {
     if (origin !== URL) {
@@ -51,7 +53,7 @@ class Heartbeat extends Component<IProps, IState> {
 
     try {
       const solutionOrNull: ISolution | null = JSON.parse(data);
-      if (solutionOrNull && this.state.activeSolutionId !== ) {
+      if (solutionOrNull && this.state.activeSolutionId !== solutionOrNull.id) {
         this.setState({ activeSolutionId: solutionOrNull.id });
         this.props.onReceiveNewActiveSolution(solutionOrNull);
       }
@@ -60,14 +62,11 @@ class Heartbeat extends Component<IProps, IState> {
     }
   };
 
-
   render() {
-    return <iframe
-      style={{ display: 'none' }}
-      src={HEARTBEAT_HTML_URL}
-      ref={this.node}
-    />
+    return (
+      <iframe style={{ display: 'none' }} src={HEARTBEAT_HTML_URL} ref={this.node} />
+    );
   }
 }
 
-export default Heartbeat
+export default Heartbeat;

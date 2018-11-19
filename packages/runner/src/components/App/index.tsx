@@ -2,9 +2,10 @@ import React from 'react';
 import styled, { ThemeProvider } from 'styled-components';
 
 import { getTheme } from '../../theme';
+import Theme from 'common/lib/components/Theme';
 import Heartbeat from '../Heartbeat';
 import Header from './Header';
-import MessageBar from './MessageBar';
+import MessageBar from '../MessageBar';
 
 import Snippet from '../Snippet';
 
@@ -45,16 +46,15 @@ export class App extends React.Component<{}, IState> {
   render() {
     console.log({ state: this.state });
     return (
-      <ThemeProvider
-        theme={getTheme(this.state.solution ? this.state.solution.host : 'POWERPOINT')}
-      >
+      <Theme host={this.state.solution ? this.state.solution.host : 'WEB'}>
         <>
           <Layout>
-            {/* <Header
-              solutionName="example"
-              host={this.state.solution ? this.state.solution.host : 'EXCEL'}
+            <Header
+              solutionName="Blank Snippet (1)"
               goBack={() => {}}
-            /> */}
+              refresh={() => {}}
+            />
+
             <RefreshBar isVisible={false} />
             <ContentContainer>
               {this.state.solution && <Snippet solution={this.state.solution!} />}
@@ -62,7 +62,12 @@ export class App extends React.Component<{}, IState> {
           </Layout>
           <Heartbeat onReceiveNewActiveSolution={this.onReceiveNewActiveSolution} />
         </>
-      </ThemeProvider>
+      </Theme>
+      // <ThemeProvider
+      //   theme={getTheme(this.state.solution ? this.state.solution.host : 'POWERPOINT')}
+      // >
+
+      // </ThemeProvider>
     );
   }
 }

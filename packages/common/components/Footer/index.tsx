@@ -9,15 +9,18 @@ import { CommandBar, ICommandBarProps } from 'office-ui-fabric-react/lib/Command
 import { getCommandBarFabricTheme } from '../../theme';
 import { Wrapper } from './styles';
 
-export interface IProps extends ICommandBarProps {
-  theme: ITheme | any; // from withTheme  /* TODO: find a way to do this nicer*/
+export interface IProps extends ICommandBarProps {}
+
+interface IPrivateProps extends IProps {
+  theme: ITheme | any; // withTheme
 }
 
-const Footer = (props: IProps) => {
+const Footer = (props: IPrivateProps) => {
   const items = props.items
     .filter(({ hidden }) => !hidden)
-    .map(item =>
-      merge(item, {
+    .map(item => {
+      console.log(item);
+      return merge(item, {
         ...(item.subMenuProps
           ? {
               subMenuProps: {
@@ -59,8 +62,8 @@ const Footer = (props: IProps) => {
           : {}),
 
         style: { fontSize: '1.2rem' },
-      }),
-    );
+      });
+    });
 
   const { theme, ...propsNoTheme } = props;
   const mergedProps = merge(

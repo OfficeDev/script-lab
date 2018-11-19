@@ -12,7 +12,7 @@ const items: ICommandBarItemProps[] = [
   { key: 'button2', text: 'Bar', iconProps: { iconName: 'Delete' } },
 ];
 
-const props = {
+const props: IProps = {
   items,
 };
 
