@@ -103,6 +103,7 @@ export function registerSettingsMonacoLanguage() {
 export interface IPrettierSettings {
   tabWidth: number;
 }
+
 export function enablePrettierInMonaco(prettierSettings: IPrettierSettings) {
   import('prettier/parser-typescript').then(prettierTypeScript => {
     /* Adds Prettier Formatting to Monaco for TypeScript */
@@ -134,6 +135,21 @@ export function enablePrettierInMonaco(prettierSettings: IPrettierSettings) {
       'typescript',
       PrettierTypeScriptFormatter,
     );
+  });
+}
+
+export async function formatTypeScriptFile(
+  content: string,
+  prettierSettings: IPrettierSettings,
+): Promise<string> {
+  return import('prettier/parser-typescript').then(prettierTypeScript => {
+    return prettier.format(content, {
+      parser: 'typescript',
+      plugins: [prettierTypeScript],
+      tabWidth: prettierSettings.tabWidth,
+      arrowParens: 'always',
+      printWidth: 120,
+    });
   });
 }
 

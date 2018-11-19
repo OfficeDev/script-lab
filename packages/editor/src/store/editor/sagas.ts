@@ -66,13 +66,17 @@ function* onSolutionOpenSaga() {
   }
 }
 
-function* onFileOpenSaga() {
+function* onFileOpenSaga(action: ActionType<typeof editor.newFileOpened>) {
   if (doesMonacoExist()) {
     yield put(editor.applyMonacoOptions());
   }
   const isPrettierEnabled = yield select(selectors.settings.getIsPrettierEnabled);
   const isAutoFormatEnabled = yield select(selectors.settings.getIsAutoFormatEnabled);
-  if (isPrettierEnabled && isAutoFormatEnabled) {
+  if (
+    isPrettierEnabled &&
+    isAutoFormatEnabled &&
+    action.payload.file.language === 'typescript'
+  ) {
     yield put(editor.applyFormatting());
   }
 }
@@ -228,14 +232,10 @@ function* resizeEditorSaga() {
 
 function* applyFormattingSaga() {
   if (monacoEditor) {
-    setTimeout(
-      () =>
-        monacoEditor.trigger(
-          'editor' /* source, unused */,
-          'editor.action.formatDocument',
-          '',
-        ),
-      200,
+    monacoEditor.trigger(
+      'editor' /* source, unused */,
+      'editor.action.formatDocument',
+      '',
     );
   }
 }

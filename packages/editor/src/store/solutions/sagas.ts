@@ -8,6 +8,7 @@ import { convertSnippetToSolution } from '../../utils';
 import { getBoilerplate } from '../../newSolutionData';
 import { SCRIPT_FILE_NAME } from '../../constants';
 import { deleteSolutionFromStorage } from '../localStorage';
+import { formatTypeScriptFile } from '../editor/utilities';
 
 export default function* solutionsWatcher() {
   yield takeEvery(getType(solutions.edit), onSolutionOpenOrFileEditSaga);
@@ -112,8 +113,25 @@ function* handleGetDefaultFailureSaga(
 }
 
 export function* createSolutionSaga(solution: ISolution) {
-  yield put(solutions.add(solution));
-  yield put(editor.openFile({ solutionId: solution.id, fileId: solution.files[0].id }));
+  // TODO: eventually run prettier on office-js snippets so we don't need to run it here.
+  // after testing it a few times, it runs anywhere from 4ms to 100ms
+  let newSolution = solution;
+  const tabWidth = yield select(selectors.settings.getTabSize);
+  const script = solution.files.find(file => file.name === SCRIPT_FILE_NAME);
+  if (script) {
+    const newContent = yield call(formatTypeScriptFile, script.content, { tabWidth });
+    newSolution = {
+      ...solution,
+      files: [
+        { ...script, content: newContent },
+        ...solution.files.filter(file => file.name !== SCRIPT_FILE_NAME),
+      ],
+    };
+  }
+  yield put(solutions.add(newSolution));
+  yield put(
+    editor.openFile({ solutionId: newSolution.id, fileId: newSolution.files[0].id }),
+  );
 }
 
 function* removeSolutionSaga(action: ActionType<typeof solutions.remove>) {

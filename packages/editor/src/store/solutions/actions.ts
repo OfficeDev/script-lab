@@ -6,18 +6,16 @@ export const add = createAction('SOLUTIONS_ADD', resolve => {
   return (solution: ISolution) => resolve(solution);
 });
 
+interface IEditProps {
+  id: string;
+  solution?: Partial<IEditableSolutionProperties>;
+  fileId?: string;
+  file?: Partial<IEditableFileProperties>;
+}
+
 export const edit = createAction('SOLUTIONS_EDIT', resolve => {
-  return ({
-    id,
-    solution,
-    fileId,
-    file,
-  }: {
-    id: string;
-    solution?: Partial<IEditableSolutionProperties>;
-    fileId?: string;
-    file?: Partial<IEditableFileProperties>;
-  }) => resolve({ id, solution, fileId, file, timestamp: Date.now() });
+  return ({ id, solution, fileId, file }: IEditProps) =>
+    resolve({ id, solution, fileId, file, timestamp: Date.now() });
 });
 
 export const remove = createAction('SOLUTIONS_REMOVE', resolve => {
