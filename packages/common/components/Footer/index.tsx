@@ -33,7 +33,7 @@ const Footer = (props: IPrivateProps) => {
                   },
                 },
                 items:
-                  item.subMenuProps !== undefined && item.submenuProps.items
+                  item.subMenuProps !== undefined && item.subMenuProps.items
                     ? item.subMenuProps.items.map(subItem =>
                         merge(subItem, {
                           itemProps: {
