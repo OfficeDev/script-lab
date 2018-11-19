@@ -175,12 +175,10 @@ function* makeAddIntellisenseRequestSaga() {
         .filter(x => x !== null),
     );
 
-    const urlContentPairing = zip(urlsToFetch, urlContents);
+    const urlContentPairing = zip(urlsToFetch, urlContents) as string[][];
 
     urlsToFetch = flatten(
-      urlContentPairing.map(([url, content]) =>
-        parseTripleSlashRefs(url as string, content),
-      ),
+      urlContentPairing.map(([url, content]) => parseTripleSlashRefs(url, content)),
     );
     urls = [...urls, ...urlsToFetch];
   }
