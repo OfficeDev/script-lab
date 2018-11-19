@@ -30,7 +30,7 @@ const Footer = (props: IProps) => {
                   },
                 },
                 items:
-                  item.subMenuProps && item.submenuProps.items
+                  item.subMenuProps !== undefined && item.submenuProps.items
                     ? item.subMenuProps.items.map(subItem =>
                         merge(subItem, {
                           itemProps: {
