@@ -7,7 +7,8 @@
 - Login to github
   - Should be able to log in
   - Should see your snippets in snippets list
-    - Note: This is currently broken on IE, and somewhat broken on EDGE. An error appears saying "The security settings in your browser prevent us from creating a dialog box..."
+    - Note: This is currently broken on IE (WAC), and somewhat broken on EDGE (WAC). An error appears saying "The security settings in your browser prevent us from creating a dialog box..."
+    - Note: Separately, there's an issue with IE on both WAC and Win32 that does not allow for consenting to GitHub OAuth apps via IE. The current workaround is to load [this](https://script-lab-react-beta.azurewebsites.net/) url in Chrome and sign-in and consent in that window. After consenting in Chrome, you should be able to use the GitHub functionality in Win32.
 - Import someone else's snippet
   - From YAML
   - From Gist
