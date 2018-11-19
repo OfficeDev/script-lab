@@ -1,7 +1,6 @@
 import React from 'react';
-import styled, { ThemeProvider } from 'styled-components';
+import styled from 'styled-components';
 
-import { getTheme } from '../../theme';
 import Theme from 'common/lib/components/Theme';
 import Heartbeat from '../Heartbeat';
 import Header from './Header';
@@ -44,7 +43,6 @@ export class App extends React.Component<{}, IState> {
   onReceiveNewActiveSolution = (solution: ISolution) => this.setState({ solution });
 
   render() {
-    console.log({ state: this.state });
     return (
       <Theme host={this.state.solution ? this.state.solution.host : 'WEB'}>
         <>
@@ -63,11 +61,6 @@ export class App extends React.Component<{}, IState> {
           <Heartbeat onReceiveNewActiveSolution={this.onReceiveNewActiveSolution} />
         </>
       </Theme>
-      // <ThemeProvider
-      //   theme={getTheme(this.state.solution ? this.state.solution.host : 'POWERPOINT')}
-      // >
-
-      // </ThemeProvider>
     );
   }
 }
