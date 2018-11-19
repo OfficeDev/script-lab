@@ -1,59 +1,59 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from 'react';
+import styled from 'styled-components';
 
-import Only from '../../Only'
+import Only from '../../Only';
 
-import { Dialog, DialogType, DialogFooter } from 'office-ui-fabric-react/lib/Dialog'
-import { Checkbox } from 'office-ui-fabric-react/lib/Checkbox'
-import { TextField } from 'office-ui-fabric-react/lib/TextField'
-import { PrimaryButton, DefaultButton } from 'office-ui-fabric-react/lib/Button'
-import { Label } from 'office-ui-fabric-react/lib/Label'
-import { Link } from 'office-ui-fabric-react/lib/Link'
+import { Dialog, DialogType, DialogFooter } from 'office-ui-fabric-react/lib/Dialog';
+import { Checkbox } from 'office-ui-fabric-react/lib/Checkbox';
+import { TextField } from 'office-ui-fabric-react/lib/TextField';
+import { PrimaryButton, DefaultButton } from 'office-ui-fabric-react/lib/Button';
+import { Label } from 'office-ui-fabric-react/lib/Label';
+import { Link } from 'office-ui-fabric-react/lib/Link';
 
 const DialogBodyWrapper = styled.div`
   & > * {
     margin-bottom: 1.5rem;
   }
-`
+`;
 
 interface ISolutionSettings {
-  isOpen: boolean
-  closeSolutionSettings: () => void
-  solution: ISolution
+  isOpen: boolean;
+  closeSolutionSettings: () => void;
+  solution: ISolution;
   editSolutionMetadata: (
     solutionId: string,
     solution: Partial<IEditableSolutionProperties>,
-  ) => void
+  ) => void;
 }
 
 interface IState {
-  name: string
-  description: string
-  isDirectScriptExecutionSolution?: boolean
+  name: string;
+  description: string;
+  isDirectScriptExecutionSolution?: boolean;
 }
 
 class SolutionSettings extends React.Component<ISolutionSettings, IState> {
-  state = { name: '', description: '', isDirectScriptExecutionSolution: undefined }
+  state = { name: '', description: '', isDirectScriptExecutionSolution: undefined };
 
   setupForm = () => {
-    const { solution } = this.props
-    const { name } = solution
-    const description = solution.description || ''
-    const isDirectScriptExecutionSolution = solution.isDirectScriptExecutionSolution
-    this.setState({ name, description, isDirectScriptExecutionSolution })
-  }
+    const { solution } = this.props;
+    const { name } = solution;
+    const description = solution.description || '';
+    const isDirectScriptExecutionSolution = solution.options.isDirectScriptExecution;
+    this.setState({ name, description, isDirectScriptExecutionSolution });
+  };
 
   componentWillMount() {
-    this.setupForm()
+    this.setupForm();
   }
 
   componentWillReceiveProps() {
-    this.setupForm()
+    this.setupForm();
   }
 
   render() {
-    const { solution, isOpen, closeSolutionSettings } = this.props
-    const { name, description, isDirectScriptExecutionSolution } = this.state
+    const { solution, isOpen, closeSolutionSettings } = this.props;
+    const { name, description, isDirectScriptExecutionSolution } = this.state;
     return (
       <Dialog
         hidden={!isOpen}
@@ -100,33 +100,41 @@ class SolutionSettings extends React.Component<ISolutionSettings, IState> {
           />
         </DialogFooter>
       </Dialog>
-    )
+    );
   }
   private updateSolutionName = (
     nevent: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
     newValue?: string | undefined,
-  ) => this.setState({ name: newValue! })
+  ) => this.setState({ name: newValue! });
 
   private updateSolutionDescription = (
     event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
     newValue?: string | undefined,
-  ) => this.setState({ description: newValue! })
+  ) => this.setState({ description: newValue! });
 
   private updateSolutionNoCustomUI = (
     event: React.FormEvent<HTMLElement>,
     isChecked: boolean,
   ) => {
     if (isChecked) {
-      this.setState({ isDirectScriptExecutionSolution: true })
+      this.setState({ isDirectScriptExecutionSolution: true });
     } else {
-      this.setState({ isDirectScriptExecutionSolution: undefined })
+      this.setState({ isDirectScriptExecutionSolution: undefined });
     }
-  }
+  };
 
   private updateSolutionMetadata = () => {
-    this.props.editSolutionMetadata(this.props.solution.id, this.state)
-    this.props.closeSolutionSettings()
-  }
+    const { name, description, isDirectScriptExecutionSolution } = this.state;
+    this.props.editSolutionMetadata(this.props.solution.id, {
+      name,
+      description,
+      options: {
+        ...this.props.solution.options,
+        isDirectScriptExecution: isDirectScriptExecutionSolution,
+      },
+    });
+    this.props.closeSolutionSettings();
+  };
 }
 
-export default SolutionSettings
+export default SolutionSettings;

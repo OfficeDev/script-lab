@@ -1,5 +1,5 @@
-import React from 'react'
-import { DefaultButton } from 'office-ui-fabric-react/lib/Button'
+import React from 'react';
+import { DefaultButton } from 'office-ui-fabric-react/lib/Button';
 import {
   CenteredContent,
   WelcomeTitle,
@@ -10,13 +10,13 @@ import {
   List,
   ListItem,
   CodeBlock,
-} from './styles'
+} from './styles';
 
 interface IProps {
-  isRefreshEnabled: boolean
+  isRefreshEnabled: boolean;
 }
 
-const refresh = () => window.location.reload()
+const refresh = () => window.location.reload();
 
 export const Welcome = ({ isRefreshEnabled }: IProps) => (
   <CenteredContent>
@@ -56,6 +56,6 @@ export const Welcome = ({ isRefreshEnabled }: IProps) => (
       />
     </Instructions>
   </CenteredContent>
-)
+);
 
-export default Welcome
+export default Welcome;

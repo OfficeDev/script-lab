@@ -1,32 +1,41 @@
-import React from 'react'
-import { SearchBox } from 'office-ui-fabric-react/lib/SearchBox'
+import React from 'react';
+import { SearchBox } from 'office-ui-fabric-react/lib/SearchBox';
 
-import Content from '../Content'
-import GalleryList from '../GalleryList'
+import Content from '../Content';
+import GalleryList from '../GalleryList';
+import { DefaultButton } from 'office-ui-fabric-react/lib/Button';
+import { Label } from 'office-ui-fabric-react/lib/Label';
 
 interface IProps {
-  solutions: ISolution[]
-  openSolution: (solutionId: string) => void
-  activeSolution?: ISolution
-  gistMetadata: ISharedGistMetadata[]
-  openGist: (gistMetadata: ISharedGistMetadata) => void
+  solutions: ISolution[];
+  openSolution: (solutionId: string) => void;
+  activeSolution?: ISolution;
+  gistMetadata: ISharedGistMetadata[];
+  openGist: (gistMetadata: ISharedGistMetadata) => void;
+  signIn: () => void;
 }
 
 interface IState {
-  filterQuery: string
+  filterQuery: string;
 }
 
 class MySolutions extends React.Component<IProps> {
-  state = { filterQuery: '' }
+  state = { filterQuery: '' };
 
   componentWillMount() {
-    this.setFilterQuery('')
+    this.setFilterQuery('');
   }
 
-  setFilterQuery = filterQuery => this.setState({ filterQuery })
+  setFilterQuery = filterQuery => this.setState({ filterQuery });
 
   render() {
-    const { solutions, openSolution, activeSolution, gistMetadata, openGist } = this.props
+    const {
+      solutions,
+      openSolution,
+      activeSolution,
+      gistMetadata,
+      openGist,
+    } = this.props;
 
     return (
       <Content title="My Snippets" description="Choose a snippet that you have saved">
@@ -36,7 +45,7 @@ class MySolutions extends React.Component<IProps> {
           items={solutions
             .filter(solution => {
               if (this.state.filterQuery === '') {
-                return true
+                return true;
               }
 
               const megastring = [
@@ -45,9 +54,9 @@ class MySolutions extends React.Component<IProps> {
                 ...solution.files.map(file => file.content),
               ]
                 .filter(Boolean)
-                .join(' ')
+                .join(' ');
 
-              return megastring.includes(this.state.filterQuery)
+              return megastring.includes(this.state.filterQuery);
             })
             .map(sol => ({
               key: sol.id,
@@ -57,20 +66,28 @@ class MySolutions extends React.Component<IProps> {
               isActive: activeSolution && activeSolution.id === sol.id,
             }))}
         />
-        {gistMetadata.length > 0 && (
-          <GalleryList
-            title="My shared gists on GitHub"
-            items={gistMetadata.map(gist => ({
-              key: gist.id,
-              title: gist.title,
-              description: gist.description,
-              onClick: () => openGist(gist),
-            }))}
-          />
+        <GalleryList
+          title="My shared gists on GitHub"
+          items={gistMetadata.map(gist => ({
+            key: gist.id,
+            title: gist.title,
+            description: gist.description,
+            onClick: () => openGist(gist),
+          }))}
+        />
+        {gistMetadata.length === 0 && (
+          <div style={{ margin: '1rem', marginLeft: '2rem' }}>
+            <Label>You must be logged in to see your gists</Label>
+            <DefaultButton
+              text="Sign In"
+              label="You must be logged in to see your gists"
+              onClick={this.props.signIn}
+            />
+          </div>
         )}
       </Content>
-    )
+    );
   }
 }
 
-export default MySolutions
+export default MySolutions;

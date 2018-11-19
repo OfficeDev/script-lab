@@ -1,32 +1,37 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 
-import Header from './Header'
-import PivotBar from '../PivotBar'
-import MessageBar from './MessageBar'
-import Editor from './Editor'
-import Footer from './Footer'
+import Header from './Header';
+import PivotBar from '../PivotBar';
+import MessageBar from './MessageBar';
+import Dialog from './Dialog';
+import Editor from './Editor';
+import Footer from './Footer';
 
-import { Layout, ContentWrapper } from './styles'
-import { NULL_SOLUTION, NULL_FILE, LIBRARIES_FILE_NAME } from '../../constants'
+import { Layout, ContentWrapper } from './styles';
+import {
+  NULL_SOLUTION,
+  NULL_FILE,
+  LIBRARIES_FILE_NAME,
+  SCRIPT_FILE_NAME,
+} from '../../constants';
 
-import { connect } from 'react-redux'
-import { IState as IReduxState } from '../../store/reducer'
-import selectors from '../../store/selectors'
-import { editor as editorActions } from '../../store/actions'
+import { connect } from 'react-redux';
+import { IState as IReduxState } from '../../store/reducer';
+import selectors from '../../store/selectors';
+import { editor as editorActions } from '../../store/actions';
 
 const FILE_NAME_MAP = {
-  'index.ts': 'Script',
+  [SCRIPT_FILE_NAME]: 'Script',
   'index.html': 'HTML',
   'index.css': 'CSS',
   [LIBRARIES_FILE_NAME]: 'Libraries',
-}
+};
 
 interface IPropsFromRedux {
-  isVisible: boolean
-  hasLoaded: boolean
-  activeSolution: ISolution
-  activeFile: IFile
-  isCustomFunctionsSolution: boolean
+  isVisible: boolean;
+  hasLoaded: boolean;
+  activeSolution: ISolution;
+  activeFile: IFile;
 }
 
 const mapStateToProps = (state: IReduxState): Partial<IPropsFromRedux> => ({
@@ -34,17 +39,16 @@ const mapStateToProps = (state: IReduxState): Partial<IPropsFromRedux> => ({
   hasLoaded: state.editor.hasLoaded,
   activeSolution: selectors.editor.getActiveSolution(state),
   activeFile: selectors.editor.getActiveFile(state),
-  isCustomFunctionsSolution: selectors.customFunctions.getIsCurrentSolutionCF(state),
-})
+});
 
 interface IActionsFromRedux {
-  openFile: (solutionId: string, fileId: string) => void
+  openFile: (solutionId: string, fileId: string) => void;
 }
 
 const mapDispatchToProps = (dispatch): IActionsFromRedux => ({
   openFile: (solutionId: string, fileId: string) =>
-    dispatch(editorActions.open({ solutionId, fileId })),
-})
+    dispatch(editorActions.openFile({ solutionId, fileId })),
+});
 
 export interface IIDE extends IPropsFromRedux, IActionsFromRedux {}
 
@@ -52,19 +56,13 @@ class IDE extends Component<IIDE> {
   static defaultProps: Partial<IIDE> = {
     activeSolution: NULL_SOLUTION,
     activeFile: NULL_FILE,
-  }
+  };
 
   changeActiveFile = (fileId: string) =>
-    this.props.openFile(this.props.activeSolution.id, fileId)
+    this.props.openFile(this.props.activeSolution.id, fileId);
 
   render() {
-    const {
-      isVisible,
-      hasLoaded,
-      activeSolution,
-      activeFile,
-      isCustomFunctionsSolution,
-    } = this.props
+    const { isVisible, hasLoaded, activeSolution, activeFile } = this.props;
     return (
       <Layout
         style={
@@ -75,29 +73,15 @@ class IDE extends Component<IIDE> {
       >
         <Header solution={activeSolution} file={activeFile} />
         <PivotBar
-          items={activeSolution.files
-            .filter(file => {
-              if (
-                activeSolution.isDirectScriptExecutionSolution ||
-                isCustomFunctionsSolution
-              ) {
-                if (['index.ts', LIBRARIES_FILE_NAME].includes(file.name)) {
-                  return true
-                } else {
-                  return false
-                }
-              } else {
-                return true
-              }
-            })
-            .map(file => ({
-              key: file.id,
-              text: FILE_NAME_MAP[file.name] || file.name,
-            }))}
+          items={activeSolution.files.map(file => ({
+            key: file.id,
+            text: FILE_NAME_MAP[file.name] || file.name,
+          }))}
           selectedKey={activeFile.id}
           onSelect={this.changeActiveFile}
         />
         <MessageBar />
+        <Dialog />
         <ContentWrapper>
           <Editor
             activeSolution={activeSolution}
@@ -108,11 +92,11 @@ class IDE extends Component<IIDE> {
         </ContentWrapper>
         <Footer />
       </Layout>
-    )
+    );
   }
 }
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(IDE)
+)(IDE);

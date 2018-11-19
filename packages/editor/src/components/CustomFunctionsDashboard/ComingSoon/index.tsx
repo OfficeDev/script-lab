@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import {
   CenteredContent,
   Logo,
@@ -6,8 +6,8 @@ import {
   CustomFunctionsTitle,
   Seperator,
   Description,
-} from './styles'
-import { CUSTOM_FUNCTIONS_INFO_URL } from '../../../constants'
+} from './styles';
+import { CUSTOM_FUNCTIONS_INFO_URL } from '../../../constants';
 
 const ComingSoon = () => (
   <CenteredContent>
@@ -27,6 +27,6 @@ const ComingSoon = () => (
       .
     </Description>
   </CenteredContent>
-)
+);
 
-export default ComingSoon
+export default ComingSoon;

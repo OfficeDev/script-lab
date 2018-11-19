@@ -1,5 +1,5 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from 'react';
+import styled from 'styled-components';
 
 export const Wrapper = styled.footer`
   overflow: hidden;
@@ -8,4 +8,4 @@ export const Wrapper = styled.footer`
 
   background-color: ${props => props.theme.primary};
   color: ${props => props.theme.white};
-`
+`;

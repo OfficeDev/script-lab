@@ -1,17 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="theme-color" content="#000000">
-  <!--
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="theme-color" content="#000000" />
+    <!--
       manifest.json provides metadata used when your web app is added to the
       homescreen on Android. See https://developers.google.com/web/fundamentals/engage-and-retain/web-app-manifest/
     -->
-  <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
-  <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
-  <!--
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
+    <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
       Only files inside the `public` folder can be referenced from the HTML.
@@ -20,147 +22,159 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-  <script type="text/javascript" src='https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js'></script>
+    <script src="%PUBLIC_URL%/external/vs/loader.js"></script>
 
-  <script src="https://appsforoffice.microsoft.com/lib/1/hosted/Office.js"></script>
-  <script>
-    // For now, set Office.initialize to an empty function, to work around an issue with onReady
-    // (As of Nov 1st 2018, onReady works, but requires Office.initialize to still be set).
-    // See the note at https://docs.microsoft.com/en-us/office/dev/add-ins/develop/understanding-the-javascript-api-for-office
-    Office.initialize = function () { };
-  </script>
+    <script src="https://appsforoffice.microsoft.com/lib/1/hosted/Office.js"></script>
+    <script>
+      // For now, set Office.initialize to an empty function, to work around an issue with onReady
+      // (As of Nov 1st 2018, onReady works, but requires Office.initialize to still be set).
+      // See the note at https://docs.microsoft.com/en-us/office/dev/add-ins/develop/understanding-the-javascript-api-for-office
+      Office.initialize = function() {};
+    </script>
 
-  <link rel="stylesheet" href="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-core/9.6.0/css/fabric.min.css">
+    <link
+      rel="stylesheet"
+      href="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-core/9.6.0/css/fabric.min.css"
+    />
 
-  <style>
-    *,
-    *::before,
-    *::after {
-      padding: 0;
-      margin: 0;
-      box-sizing: inherit;
-    }
-
-    html {
-      font-size: 62.5%;
-    }
-
-    body {
-      font-family: sans-serif;
-      box-sizing: border-box;
-      overscroll-behavior-y: none;
-      background-color: #212121;
-
-    }
-
-    #loading {
-      position: absolute;
-      color: white;
-      height: 100%;
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .loading-indicator {
-      margin: 20px auto 0;
-      box-sizing: border-box;
-      width: 140px;
-      text-align: center;
-    }
-
-    .loading-indicator>div {
-      width: 18px;
-      height: 18px;
-      background-color: #d83b01;
-      margin: 3px;
-      box-sizing: border-box;
-
-      border-radius: 100%;
-      display: inline-block;
-      -webkit-animation: loading-animation 1.4s infinite ease-in-out both;
-      animation: loading-animation 1.4s infinite ease-in-out both;
-    }
-
-
-    .loading-indicator .ball1 {
-      -webkit-animation-delay: -0.8s;
-      animation-delay: -0.8s;
-    }
-
-    .loading-indicator .ball2 {
-      -webkit-animation-delay: -0.64s;
-      animation-delay: -0.64s;
-    }
-
-    .loading-indicator .ball3 {
-      -webkit-animation-delay: -0.48s;
-      animation-delay: -0.48s;
-    }
-
-    .loading-indicator .ball4 {
-      -webkit-animation-delay: -0.32s;
-      animation-delay: -0.32s;
-    }
-
-    .loading-indicator .ball5 {
-      -webkit-animation-delay: -0.16s;
-      animation-delay: -0.16s;
-    }
-
-
-
-    @-webkit-keyframes loading-animation {
-
-      0%,
-      80%,
-      100% {
-        -webkit-transform: scale(0)
+    <!--
+      Note: these styles must be run through autoprefixer manually, anytime you make a change
+    -->
+    <style>
+      *,
+      *::before,
+      *::after {
+        padding: 0;
+        margin: 0;
+        -webkit-box-sizing: inherit;
+        box-sizing: inherit;
       }
 
-      40% {
-        -webkit-transform: scale(1.0)
-      }
-    }
-
-    @keyframes loading-animation {
-
-      0%,
-      80%,
-      100% {
-        -webkit-transform: scale(0);
-        transform: scale(0);
+      html {
+        font-size: 62.5%;
       }
 
-      40% {
-        -webkit-transform: scale(1.0);
-        transform: scale(1.0);
+      body {
+        font-family: sans-serif;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        overscroll-behavior-y: none;
+        background-color: #212121;
+        overflow: hidden;
       }
-    }
-  </style>
 
-  <title>Script Lab React</title>
-</head>
+      #loading {
+        position: absolute;
+        color: white;
+        height: 100%;
+        width: 100%;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+      }
 
-<body class="ms-Fabric">
-  <noscript>
-    You need to enable JavaScript to run this app.
-  </noscript>
-  <div id="loading">
-    <img src="assets/images/icon-large.svg" style="height: 200px; width: 200px" />
-    <h1 class="ms-font-su" style="margin-top: 2rem;">Script Lab</h1>
-    <div class="loading-indicator">
-      <div class="ball1"></div>
-      <div class="ball2"></div>
-      <div class="ball3"></div>
-      <div class="ball4"></div>
-      <div class="ball5"></div>
+      .loading-indicator {
+        margin: 20px auto 0;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        width: 140px;
+        text-align: center;
+      }
+
+      .loading-indicator > div {
+        width: 18px;
+        height: 18px;
+        background-color: #d83b01;
+        margin: 3px;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+
+        border-radius: 100%;
+        display: inline-block;
+        -webkit-animation: loading-animation 1.4s infinite ease-in-out both;
+        animation: loading-animation 1.4s infinite ease-in-out both;
+      }
+
+      .loading-indicator .ball1 {
+        -webkit-animation-delay: -0.8s;
+        animation-delay: -0.8s;
+      }
+
+      .loading-indicator .ball2 {
+        -webkit-animation-delay: -0.64s;
+        animation-delay: -0.64s;
+      }
+
+      .loading-indicator .ball3 {
+        -webkit-animation-delay: -0.48s;
+        animation-delay: -0.48s;
+      }
+
+      .loading-indicator .ball4 {
+        -webkit-animation-delay: -0.32s;
+        animation-delay: -0.32s;
+      }
+
+      .loading-indicator .ball5 {
+        -webkit-animation-delay: -0.16s;
+        animation-delay: -0.16s;
+      }
+
+      @-webkit-keyframes loading-animation {
+        0%,
+        80%,
+        100% {
+          -webkit-transform: scale(0);
+        }
+
+        40% {
+          -webkit-transform: scale(1);
+        }
+      }
+
+      @keyframes loading-animation {
+        0%,
+        80%,
+        100% {
+          -webkit-transform: scale(0);
+          transform: scale(0);
+        }
+
+        40% {
+          -webkit-transform: scale(1);
+          transform: scale(1);
+        }
+      }
+    </style>
+
+    <title>Script Lab React</title>
+  </head>
+
+  <body class="ms-Fabric">
+    <noscript> You need to enable JavaScript to run this app. </noscript>
+    <div id="loading">
+      <img src="assets/images/icon-large.svg" style="height: 200px; width: 200px" />
+      <h1 class="ms-font-su" style="margin-top: 2rem;">Script Lab</h1>
+      <div class="loading-indicator">
+        <div class="ball1"></div>
+        <div class="ball2"></div>
+        <div class="ball3"></div>
+        <div class="ball4"></div>
+        <div class="ball5"></div>
+      </div>
     </div>
-  </div>
-  <div id="root"></div>
-  <!--
+    <div id="root"></div>
+    <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
 
@@ -169,9 +183,6 @@
 
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
-
     -->
-
-</body>
-
+  </body>
 </html>

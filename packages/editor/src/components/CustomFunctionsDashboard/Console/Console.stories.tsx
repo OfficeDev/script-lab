@@ -1,26 +1,26 @@
-import React from 'react'
+import React from 'react';
 
-import { Console, ConsoleLogTypes } from './'
+import { Console, ConsoleLogTypes } from './';
 
-import { storiesOf } from '@storybook/react'
+import { storiesOf } from '@storybook/react';
 
-import { Layout, Content } from '../Dashboard/styles'
+import { Layout, Content } from '../Dashboard/styles';
 
-const stories = storiesOf('Custom Functions|Console', module)
+const stories = storiesOf('Custom Functions|Console', module);
 
 const containerWrapper = storyFn => (
   <Layout>
     <Content>{storyFn()}</Content>
   </Layout>
-)
+);
 
-stories.addDecorator(containerWrapper)
+stories.addDecorator(containerWrapper);
 
-const sampleSource1 = 'IAmSomeSource'
-const sampleSource2 = 'IAmSomeOtherSource'
+const sampleSource1 = 'IAmSomeSource';
+const sampleSource2 = 'IAmSomeOtherSource';
 
 const getSampleMessage = (x: string | number) =>
-  `I am a sample log ${x} log ${x} log log. I am such a log.`
+  `I am a sample log ${x} log ${x} log log. I am such a log.`;
 
 const sampleLogs = [
   {
@@ -48,9 +48,9 @@ const sampleLogs = [
     message: getSampleMessage('error'),
     severity: ConsoleLogTypes.Error,
   },
-]
+];
 
-const voidFunc = () => {}
+const voidFunc = () => {};
 
 export const BasicConsole = () => (
   <Console
@@ -64,7 +64,7 @@ export const BasicConsole = () => (
     fetchLogs={voidFunc}
     clearLogs={voidFunc}
   />
-)
+);
 
 stories
   .add('basic', () => <BasicConsole />)
@@ -77,4 +77,4 @@ stories
       engineStatus={{ enabled: false, nativeRuntime: false }}
       logs={[]}
     />
-  ))
+  ));

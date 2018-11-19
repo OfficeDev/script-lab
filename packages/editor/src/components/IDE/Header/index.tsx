@@ -1,58 +1,56 @@
-import React from 'react'
-import styled, { withTheme } from 'styled-components'
+import React from 'react';
+import styled, { withTheme } from 'styled-components';
 
-import { Customizer } from 'office-ui-fabric-react/lib/Utilities'
-import { CommandBar, ICommandBarItemProps } from 'office-ui-fabric-react/lib/CommandBar'
-import { PersonaSize, PersonaCoin } from 'office-ui-fabric-react/lib/Persona'
-import { MessageBarType } from 'office-ui-fabric-react/lib/MessageBar'
-import { Spinner, SpinnerSize } from 'office-ui-fabric-react/lib/Spinner'
-import { ContextualMenuItemType } from 'office-ui-fabric-react/lib/ContextualMenu'
+import { Customizer } from 'office-ui-fabric-react/lib/Utilities';
+import { CommandBar, ICommandBarItemProps } from 'office-ui-fabric-react/lib/CommandBar';
+import { PersonaSize, PersonaCoin } from 'office-ui-fabric-react/lib/Persona';
+import { MessageBarType } from 'office-ui-fabric-react/lib/MessageBar';
+import { Spinner, SpinnerSize } from 'office-ui-fabric-react/lib/Spinner';
 
-import Clipboard from 'clipboard'
-import { convertSolutionToSnippet } from '../../../utils'
-import YAML from 'js-yaml'
+import Clipboard from 'clipboard';
+import { convertSolutionToSnippet } from '../../../utils';
+import YAML from 'js-yaml';
 
-import DeleteConfirmationDialog from './DeleteConfirmationDialog'
-import SolutionSettings from './SolutionSettings'
-import { getRunButton } from './Buttons/Run'
+import DeleteConfirmationDialog from './DeleteConfirmationDialog';
+import SolutionSettings from './SolutionSettings';
+import { getRunButton, IProps as IRunButtonProps } from './Buttons/Run';
 
-import { ITheme as IFabricTheme } from 'office-ui-fabric-react/lib/Styling'
-import { NULL_SOLUTION_ID, PATHS, IS_TASK_PANE_WIDTH } from '../../../constants'
-import { getPlatform, PlatformType } from '../../../environment'
+import { ITheme as IFabricTheme } from 'office-ui-fabric-react/lib/Styling';
+import { NULL_SOLUTION_ID, PATHS, IS_TASK_PANE_WIDTH } from '../../../constants';
+import { getPlatform, PlatformType } from '../../../environment';
 
-import { connect } from 'react-redux'
-import actions from '../../../store/actions'
-import selectors from '../../../store/selectors'
+import { connect } from 'react-redux';
+import actions, { dialog } from '../../../store/actions';
+import selectors from '../../../store/selectors';
 
-import { getCommandBarFabricTheme } from '../../../theme'
-import { push } from 'connected-react-router'
+import { getCommandBarFabricTheme } from '../../../theme';
+import { push } from 'connected-react-router';
 
 const HeaderWrapper = styled.header`
   background-color: ${props => props.theme.primary};
   z-index: 1000;
-`
+`;
 
 interface IPropsFromRedux {
-  profilePicUrl: string | null
-  isNullSolution: boolean
-  isRunnableOnThisHost: boolean
-  isSettingsView: boolean
-  isCustomFunctionsView: boolean
-  isDirectScriptExecutionSolution: boolean
-  runnableFunctions: IDirectScriptExecutionFunctionMetadata[]
-  isLoggedIn: boolean
-  isLoggingInOrOut: boolean
-  commandBarFabricTheme: IFabricTheme
-  screenWidth: number
+  profilePicUrl: string | null;
+  isNullSolution: boolean;
+  isRunnableOnThisHost: boolean;
+  isSettingsView: boolean;
+  isCustomFunctionsView: boolean;
+  isDirectScriptExecutionSolution: boolean;
+  runnableFunctions: IDirectScriptExecutionFunctionMetadata[];
+  isLoggedIn: boolean;
+  isLoggingInOrOut: boolean;
+  commandBarFabricTheme: IFabricTheme;
+  screenWidth: number;
 }
 
 const mapStateToProps = (state): IPropsFromRedux => ({
   isNullSolution: selectors.editor.getActiveSolution(state).id === NULL_SOLUTION_ID,
   isSettingsView: selectors.settings.getIsOpen(state),
   isCustomFunctionsView: selectors.customFunctions.getIsCurrentSolutionCF(state),
-  isDirectScriptExecutionSolution: selectors.directScriptExecution.getIsDirectScriptExecutionSolution(
-    state,
-  ),
+  isDirectScriptExecutionSolution: !!selectors.editor.getActiveSolution(state).options
+    .isDirectScriptExecution,
   runnableFunctions: selectors.directScriptExecution.getMetadataForActiveSolution(state),
   isLoggedIn: !!selectors.github.getToken(state),
   isLoggingInOrOut: selectors.github.getIsLoggingInOrOut(state),
@@ -60,36 +58,48 @@ const mapStateToProps = (state): IPropsFromRedux => ({
   profilePicUrl: selectors.github.getProfilePicUrl(state),
   commandBarFabricTheme: getCommandBarFabricTheme(selectors.host.get(state)),
   screenWidth: selectors.screen.getWidth(state),
-})
+});
 
 interface IActionsFromRedux {
-  login: () => void
-  logout: () => void
+  login: () => void;
+  logout: () => void;
 
-  showBackstage: () => void
-  closeSettings: () => void
+  showBackstage: () => void;
+  closeSettings: () => void;
 
   editSolution: (
     solutionId: string,
     solution: Partial<IEditableSolutionProperties>,
-  ) => void
-  deleteSolution: () => void
+  ) => void;
+  deleteSolution: () => void;
 
-  createPublicGist: () => void
-  createSecretGist: () => void
-  updateGist: () => void
+  createPublicGist: () => void;
+  createSecretGist: () => void;
+  updateGist: () => void;
 
-  notifyClipboardCopySuccess: () => void
-  notifyClipboardCopyFailure: () => void
+  notifyClipboardCopySuccess: () => void;
+  notifyClipboardCopyFailure: () => void;
 
-  navigateToCustomFunctions: () => void
+  navigateToCustomFunctions: () => void;
+  navigateToRun: () => void;
+  showTrustError: () => void;
 
   directScriptExecutionFunction: (
     solutionId: string,
     fileId: string,
     funcName: string,
-  ) => void
-  terminateAllDirectScriptExecutionFunctions: () => void
+  ) => void;
+  terminateAllDirectScriptExecutionFunctions: () => void;
+
+  showDialog: (
+    title: string,
+    subText: string,
+    buttons: Array<{
+      text: string;
+      action: { type: string; payload?: any };
+      isPrimary: boolean;
+    }>,
+  ) => void;
 }
 
 const mapDispatchToProps = (dispatch, ownProps: IProps): IActionsFromRedux => ({
@@ -115,16 +125,31 @@ const mapDispatchToProps = (dispatch, ownProps: IProps): IActionsFromRedux => ({
     dispatch(actions.gists.update.request({ solutionId: ownProps.solution.id })),
 
   notifyClipboardCopySuccess: () =>
-    dispatch(actions.messageBar.show('Snippet copied to clipboard.')),
+    dispatch(actions.messageBar.show({ text: 'Snippet copied to clipboard.' })),
   notifyClipboardCopyFailure: () =>
     dispatch(
-      actions.messageBar.show(
-        'Snippet failed to copy to clipboard.',
-        MessageBarType.error,
-      ),
+      actions.messageBar.show({
+        text: 'Snippet failed to copy to clipboard.',
+        style: MessageBarType.error,
+      }),
     ),
 
   navigateToCustomFunctions: () => dispatch(actions.customFunctions.openDashboard()),
+  navigateToRun: () => dispatch(actions.editor.navigateToRun()),
+  showTrustError: () =>
+    dispatch(
+      actions.messageBar.show({
+        style: MessageBarType.error,
+        text: 'You must trust the snippet before you can run it.',
+        button: {
+          text: 'Trust',
+          action: actions.solutions.updateOptions({
+            solution: ownProps.solution,
+            options: { isUntrusted: false },
+          }),
+        },
+      }),
+    ),
 
   directScriptExecutionFunction: (
     solutionId: string,
@@ -140,58 +165,83 @@ const mapDispatchToProps = (dispatch, ownProps: IProps): IActionsFromRedux => ({
     ),
   terminateAllDirectScriptExecutionFunctions: () =>
     dispatch(actions.directScriptExecution.terminateAll.request()),
-})
+
+  showDialog: (
+    title: string,
+    subText: string,
+    buttons: Array<{
+      text: string;
+      action: { type: string; payload?: any };
+      isPrimary: boolean;
+    }>,
+  ) => dispatch(dialog.show(title, subText, buttons)),
+});
 
 export interface IProps extends IPropsFromRedux, IActionsFromRedux {
-  solution: ISolution
-  file: IFile
-  theme: ITheme // from withTheme
+  solution: ISolution;
+  file: IFile;
+  theme: ITheme; // from withTheme
 }
 
 interface IState {
-  showSolutionSettings: boolean
-  isDeleteConfirmationDialogVisible: boolean
+  showSolutionSettings: boolean;
+  isDeleteConfirmationDialogVisible: boolean;
+  isNavigatingAwayToRun: boolean;
 }
 
 class HeaderWithoutTheme extends React.Component<IProps, IState> {
-  state = { showSolutionSettings: false, isDeleteConfirmationDialogVisible: false }
-  clipboard
+  state = {
+    showSolutionSettings: false,
+    isDeleteConfirmationDialogVisible: false,
+    isNavigatingAwayToRun: false,
+  };
+  clipboard;
 
   constructor(props: IProps) {
-    super(props)
-    this.clipboard = new Clipboard('.export-to-clipboard', { text: this.getSnippetYaml })
-    this.clipboard.on('success', props.notifyClipboardCopySuccess)
-    this.clipboard.on('error', props.notifyClipboardCopyFailure)
+    super(props);
+    this.clipboard = new Clipboard('.export-to-clipboard', { text: this.getSnippetYaml });
+    this.clipboard.on('success', props.notifyClipboardCopySuccess);
+    this.clipboard.on('error', props.notifyClipboardCopyFailure);
   }
 
   getSnippetYaml = (): string =>
-    YAML.safeDump(convertSolutionToSnippet(this.props.solution))
+    YAML.safeDump(convertSolutionToSnippet(this.props.solution));
 
   openDeleteConfirmationDialog = () =>
-    this.setState({ isDeleteConfirmationDialogVisible: true })
+    this.setState({ isDeleteConfirmationDialogVisible: true });
   closeDeleteConfirmationDialog = () =>
-    this.setState({ isDeleteConfirmationDialogVisible: false })
+    this.setState({ isDeleteConfirmationDialogVisible: false });
 
   onConfirmDelete = () => {
-    this.closeDeleteConfirmationDialog()
-    this.props.deleteSolution()
-  }
+    this.closeDeleteConfirmationDialog();
+    this.props.deleteSolution();
+  };
+
+  navigateToRun = () => {
+    this.setState({ isNavigatingAwayToRun: true });
+    this.props.navigateToRun();
+  };
+
+  showNotLoggedIntoGitHubDialog = () =>
+    this.props.showDialog(
+      'Please sign in to GitHub',
+      'In order to use the gist functionality, you must first sign in to GitHub.',
+      [
+        { text: 'Sign in', action: actions.github.login.request(), isPrimary: true },
+        { text: 'Cancel', action: dialog.dismiss(), isPrimary: false },
+      ],
+    );
 
   render() {
     const {
       solution,
       showBackstage,
       editSolution,
-      deleteSolution,
       isSettingsView,
       isNullSolution,
-      isCustomFunctionsView,
       profilePicUrl,
-      isRunnableOnThisHost,
       isLoggedIn,
       isLoggingInOrOut,
-      isDirectScriptExecutionSolution,
-      runnableFunctions,
       screenWidth,
       theme,
       commandBarFabricTheme,
@@ -201,9 +251,8 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
       updateGist,
       createPublicGist,
       createSecretGist,
-      navigateToCustomFunctions,
-    } = this.props
-    const solutionName = solution ? solution.name : 'Solution Name'
+    } = this.props;
+    const solutionName = solution ? solution.name : 'Solution Name';
 
     const shareOptions = [
       {
@@ -214,18 +263,16 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
         onClick: updateGist,
       },
       {
-        hidden: !isLoggedIn,
         key: 'new-public-gist',
         text: 'New public gist',
         iconProps: { iconName: 'PageCheckedIn' },
-        onClick: createPublicGist,
+        onClick: isLoggedIn ? createPublicGist : this.showNotLoggedIntoGitHubDialog,
       },
       {
-        hidden: !isLoggedIn,
         key: 'new-secret-gist',
         text: 'New secret gist',
         iconProps: { iconName: 'ProtectedDocument' },
-        onClick: createSecretGist,
+        onClick: isLoggedIn ? createSecretGist : this.showNotLoggedIntoGitHubDialog,
       },
       {
         key: 'export-to-clipboard',
@@ -238,9 +285,9 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
     ]
       .filter(option => !option.hidden)
       .map(option => {
-        const { hidden, ...rest } = option
-        return rest
-      })
+        const { hidden, ...rest } = option;
+        return rest;
+      });
 
     const nonSettingsButtons: ICommandBarItemProps[] = [
       {
@@ -262,9 +309,9 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
     ]
       .filter(({ hidden }) => !hidden)
       .map(option => {
-        const { hidden, ...rest } = option
-        return { ...rest, iconOnly: screenWidth < IS_TASK_PANE_WIDTH }
-      })
+        const { hidden, ...rest } = option;
+        return { ...rest, iconOnly: screenWidth < IS_TASK_PANE_WIDTH };
+      });
 
     const name = {
       hidden: isNullSolution,
@@ -274,12 +321,12 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
       style: { paddingRight: '3rem' },
       iconProps: {},
       iconOnly: false,
-    }
+    };
 
     if (screenWidth < IS_TASK_PANE_WIDTH) {
-      name.style.paddingRight = '0'
-      name.iconProps = { iconName: 'OfficeAddinsLogo' }
-      name.iconOnly = true
+      name.style.paddingRight = '0';
+      name.iconProps = { iconName: 'OfficeAddinsLogo' };
+      name.iconOnly = true;
     }
 
     const nav = {
@@ -289,7 +336,7 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
       iconOnly: true,
       iconProps: { iconName: 'GlobalNavButton' },
       onClick: showBackstage,
-    }
+    };
 
     const back = {
       hidden: !isSettingsView,
@@ -298,17 +345,28 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
       iconOnly: true,
       iconProps: { iconName: 'Back' },
       onClick: closeSettings,
-    }
+    };
 
-    const commonItems = [back, nav, name].filter(({ hidden }) => !hidden).map(option => {
-      const { hidden, ...rest } = option
-      return rest
-    })
+    const commonItems = [back, nav, name]
+      .filter(({ hidden }) => !hidden)
+      .map(option => {
+        const { hidden, ...rest } = option;
+        return rest;
+      });
 
     const items: ICommandBarItemProps[] = [
       ...commonItems,
-      ...(isSettingsView ? [] : [getRunButton(this.props), ...nonSettingsButtons]),
-    ].filter(item => item !== null) as ICommandBarItemProps[]
+      ...(isSettingsView
+        ? []
+        : [
+            getRunButton({
+              ...this.props,
+              navigateToRun: this.navigateToRun,
+              isNavigatingAwayToRun: this.state.isNavigatingAwayToRun,
+            } as IRunButtonProps),
+            ...nonSettingsButtons,
+          ]),
+    ].filter(item => item !== null) as ICommandBarItemProps[];
 
     const profilePic = {
       key: 'account',
@@ -344,7 +402,7 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
         : undefined,
       iconOnly: true,
       onClick: isLoggingInOrOut ? () => {} : login,
-    }
+    };
 
     return (
       <>
@@ -382,16 +440,16 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
           onCancel={this.closeDeleteConfirmationDialog}
         />
       </>
-    )
+    );
   }
 
-  private openSolutionSettings = () => this.setState({ showSolutionSettings: true })
-  private closeSolutionSettings = () => this.setState({ showSolutionSettings: false })
+  private openSolutionSettings = () => this.setState({ showSolutionSettings: true });
+  private closeSolutionSettings = () => this.setState({ showSolutionSettings: false });
 }
 
-export const Header = withTheme(HeaderWithoutTheme)
+export const Header = withTheme(HeaderWithoutTheme);
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(Header)
+)(Header);

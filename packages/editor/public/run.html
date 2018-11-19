@@ -1,17 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="theme-color" content="#000000">
-  <!--
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="theme-color" content="#000000" />
+    <!--
       manifest.json provides metadata used when your web app is added to the
       homescreen on Android. See https://developers.google.com/web/fundamentals/engage-and-retain/web-app-manifest/
     -->
-  <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
-  <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
-  <!--
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
+    <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
       Only files inside the `public` folder can be referenced from the HTML.
@@ -20,69 +22,95 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-  <link rel="stylesheet" href="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-core/9.6.0/css/fabric.min.css">
+    <link
+      rel="stylesheet"
+      href="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-core/9.6.0/css/fabric.min.css"
+    />
 
-  <title>Script Lab React</title>
-  <style>
-    *,
-    *::before,
-    *::after {
-      padding: 0;
-      margin: 0;
-      box-sizing: inherit;
-    }
-  </style>
-</head>
+    <title>Script Lab React</title>
+    <style>
+      *,
+      *::before,
+      *::after {
+        padding: 0;
+        margin: 0;
+        box-sizing: inherit;
+      }
+    </style>
+  </head>
 
-<body class="ms-Fabric">
-  <div style="background-color: #212121; height: 100vh; width: 100vw; display: flex; align-items: center; justify-content: center;">
-    <span id="message" class="ms-font-xl" style="color: white; text-align: center;">Loading...</span>
-  </div>
-  <noscript>
-    You need to enable JavaScript to run this app.
-  </noscript>
-  <script>
-    // In order to fix the IE cross-tab issue (#147)
-    localStorage.setItem('playground_dummy_key', 'null')
+  <body class="ms-Fabric">
+    <div
+      style="background-color: #212121; height: 100vh; width: 100vw; display: flex; align-items: center; justify-content: center;"
+    >
+      <span id="message" class="ms-font-xl" style="color: white; text-align: center;"
+        >Loading...</span
+      >
+    </div>
+    <noscript> You need to enable JavaScript to run this app. </noscript>
+    <script>
+      (function() {
+        // In order to fix the IE cross-tab issue (#147)
+        localStorage.setItem('playground_dummy_key', 'null');
 
-    var snippet = JSON.parse(localStorage.getItem('activeSnippet'));
-    if (snippet) {
-      const state = {
-        snippet: snippet,
-        displayLanguage: 'en-us',
-        isInsideOfficeApp: true,
-        returnUrl: 'NONE',
-        refreshUrl: window.location.origin + '/run.html',
-        hideSyncWithEditorButton: true
-      };
+        var snippet = JSON.parse(localStorage.getItem('activeSnippet'));
+        if (!snippet) {
+          showMessage([
+            'Error: No snippet found.',
+            'Please open the editor to create a snippet.',
+          ]);
+          return;
+        }
 
-      const data = JSON.stringify(state);
-      const params = { data: data, isTrustedSnippet: true }
+        var isUntrusted = JSON.parse(localStorage.getItem('activeSolution')).options
+          .isUntrusted;
 
-      var useAlphaRunner =
+        if (isUntrusted) {
+          showMessage(["The snippet isn't trusted.", 'Please trust it in the editor.']);
+          return;
+        }
+
+        const state = {
+          snippet: snippet,
+          displayLanguage: 'en-us',
+          isInsideOfficeApp: true,
+          returnUrl: 'NONE',
+          refreshUrl: window.location.origin + '/run.html',
+          hideSyncWithEditorButton: true,
+        };
+
+        const data = JSON.stringify(state);
+        const params = { data: data, isTrustedSnippet: true };
+
+        var useAlphaRunner =
           /^http(s?):\/\/script-lab-react-alpha\./.test(window.location.href) ||
           /^http(s?):\/\/localhost/.test(window.location.href);
-      var path = 'https://bornholm-runner-' + (useAlphaRunner ? 'edge' : 'insiders') + '.azurewebsites.net/compile/page';
-      let form = document.createElement('form');
-      form.setAttribute('method', 'post');
-      form.setAttribute('action', path);
+        var path =
+          'https://bornholm-runner-' +
+          (useAlphaRunner ? 'edge' : 'insiders') +
+          '.azurewebsites.net/compile/page';
+        let form = document.createElement('form');
+        form.setAttribute('method', 'post');
+        form.setAttribute('action', path);
 
-      for (let key in params) {
-        if (params.hasOwnProperty(key)) {
-          let hiddenField = document.createElement('input');
-          hiddenField.setAttribute('type', 'hidden');
-          hiddenField.setAttribute('name', key);
-          hiddenField.setAttribute('value', params[key]);
-          form.appendChild(hiddenField);
+        for (let key in params) {
+          if (params.hasOwnProperty(key)) {
+            let hiddenField = document.createElement('input');
+            hiddenField.setAttribute('type', 'hidden');
+            hiddenField.setAttribute('name', key);
+            hiddenField.setAttribute('value', params[key]);
+            form.appendChild(hiddenField);
+          }
         }
-      }
 
-      document.body.appendChild(form);
-      form.submit();
-    } else {
-      document.getElementById('message').innerHTML = "Error: No snippet found.<br>Please open the editor to create a snippet."
-    }
-  </script>
-</body>
+        document.body.appendChild(form);
+        form.submit();
 
+        // Helpers:
+        function showMessage(messages) {
+          document.getElementById('message').innerHTML = messages.join('<br/>');
+        }
+      })();
+    </script>
+  </body>
 </html>

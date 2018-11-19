@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 export const Wrapper = styled.div`
   flex: 1;
@@ -10,7 +10,7 @@ export const Wrapper = styled.div`
 
   /* border-top: 0.5px solid ${props => props.theme.neutralLight}; */
   /* border-bottom: 0.5px solid ${props => props.theme.neutralLight}; */
-`
+`;
 export const NoLogsPlaceholderContainer = styled.div`
   display: flex;
   align-items: center;
@@ -19,12 +19,12 @@ export const NoLogsPlaceholderContainer = styled.div`
 
   height: 100%;
   width: 100%;
-`
+`;
 
 export const NoLogsPlaceholder = styled.div`
   text-align: center;
   max-width: 90%;
-`
+`;
 
 export const RunnerLastUpdatedWrapper = styled.div.attrs({ className: 'ms-font-m' })`
   padding: 0rem 1.6rem;
@@ -33,7 +33,7 @@ export const RunnerLastUpdatedWrapper = styled.div.attrs({ className: 'ms-font-m
   background: ${props => props.theme.neutralLighter};
   overflow: hidden;
   overflow-wrap: normal;
-`
+`;
 
 export const FilterWrapper = styled.div`
   display: flex;
@@ -42,23 +42,23 @@ export const FilterWrapper = styled.div`
   height: 4.8rem;
   background: ${props => props.theme.neutralLighter};
   box-sizing: border-box;
-`
+`;
 
 export const CheckboxWrapper = styled.div`
   height: 3.8rem;
   background: ${props => props.theme.neutralLighter};
   box-sizing: border-box;
   padding: 0.9rem;
-`
+`;
 
 export const LogsArea = styled.div`
   height: 100%;
   overflow-x: hidden;
   overflow-y: auto;
   flex: 1;
-`
+`;
 
-export const LogsList = styled.ul``
+export const LogsList = styled.ul``;
 
 export const Log = styled.li`
   display: flex;
@@ -70,7 +70,7 @@ export const Log = styled.li`
   word-wrap: break-word;
   border-top: 0.5px solid ${props => props.theme.neutralLight};
   border-bottom: 0.5px solid ${props => props.theme.neutralLight};
-`
+`;
 
 export const ClearButton = styled.button`
   width: 2rem;
@@ -93,4 +93,4 @@ export const ClearButton = styled.button`
   &:focus {
     outline: none;
   }
-`
+`;

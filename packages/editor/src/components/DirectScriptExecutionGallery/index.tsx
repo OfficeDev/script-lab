@@ -1,14 +1,14 @@
-import React from 'react'
-import SnippetFunctionGallery from './SnippetFunctionGallery'
+import React from 'react';
+import SnippetFunctionGallery from './SnippetFunctionGallery';
 import {
   RunGallery,
   RunGalleryItemContentWrapper,
   RunGalleryItemLabel,
   RunGalleryItemWrapper,
-} from './styles'
+} from './styles';
 
 interface IProps {
-  snippets?: IDefaultSnippetRunMetadata[]
+  snippets?: IDefaultSnippetRunMetadata[];
 }
 
 export class DirectScriptExecutionGallery extends React.Component<IProps> {
@@ -25,8 +25,8 @@ export class DirectScriptExecutionGallery extends React.Component<IProps> {
             </RunGalleryItemWrapper>
           ))}
       </RunGallery>
-    )
+    );
   }
 }
 
-export default DirectScriptExecutionGallery
+export default DirectScriptExecutionGallery;

@@ -12,20 +12,21 @@ branches:
 cache: yarn
 
 install:
-  - yarn install
+  - yarn install --frozen-lockfile
+  - yarn postinstall
 
 before_script:
-  - yarn copy-monaco
+  - yarn prettier
 
 matrix:
   include:
-    - name: "Editor Pipeline"
+    - name: 'Editor Pipeline'
       env:
         - PACKAGE_LOCATION=packages/editor
         - PACKAGE_NAME=editor
         - SITE_NAME=script-lab-react
 
-    - name: "Server Pipeline"
+    - name: 'Server Pipeline'
       env:
         - PACKAGE_LOCATION=packages/server
         - PACKAGE_NAME=server

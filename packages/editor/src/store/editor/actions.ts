@@ -1,39 +1,43 @@
-import { createAction, createAsyncAction } from 'typesafe-actions'
+import { createAction, createAsyncAction } from 'typesafe-actions';
 
-export const open = createAction('EDITOR_OPEN', resolve => {
-  return (props: { solutionId: string; fileId: string }) => resolve(props)
-})
+export const open = createAction('EDITOR_OPEN');
+
+export const openFile = createAction('EDITOR_OPEN_FILE', resolve => {
+  return (props: { solutionId: string; fileId: string }) => resolve(props);
+});
 
 export const setActive = createAction('EDITOR_SET_ACTIVE', resolve => {
-  return (props: { solutionId: string; fileId: string }) => resolve(props)
-})
+  return (props: { solutionId: string; fileId: string }) => resolve(props);
+});
 
 export const onMount = createAction('EDITOR_ON_MOUNT', resolve => {
-  return (editor: monaco.editor.IStandaloneCodeEditor) => resolve(editor)
-})
+  return (editor: monaco.editor.IStandaloneCodeEditor) => resolve(editor);
+});
 
-export const onLoadComplete = createAction('EDITOR_ON_LOAD_COMPLETE')
+export const onLoadComplete = createAction('EDITOR_ON_LOAD_COMPLETE');
 
-export const applyMonacoOptions = createAction('EDITOR_APPLY_MONACO_OPTIONS')
+export const applyMonacoOptions = createAction('EDITOR_APPLY_MONACO_OPTIONS');
 
 export const setIntellisenseFiles = createAsyncAction(
   'EDITOR_SET_INTELLISENSE_FILES_REQUEST',
   'EDITOR_SET_INTELLISENSE_FILES_SUCCESS',
   'EDITOR_SET_INTELLISENSE_FILES_FAILURE',
-)<{ urls: string[] }, { [url: string]: monaco.IDisposable }, Error>()
+)<{ urls: string[] }, { [url: string]: monaco.IDisposable }, Error>();
 
 export const removeIntellisenseFiles = createAction(
   'EDITOR_REMOVE_INTELLISENSE_FILES',
   resolve => {
-    return (urls: string[]) => resolve(urls)
+    return (urls: string[]) => resolve(urls);
   },
-)
+);
 
-export const applyFormatting = createAction('APPLY_FORMATTING')
+export const applyFormatting = createAction('APPLY_FORMATTING');
 
 export const newSolutionOpened = createAction('NEW_SOLUTION_OPENED', resolve => {
-  return (solutionId: string) => resolve(solutionId)
-})
+  return (solution: ISolution) => resolve(solution);
+});
 export const newFileOpened = createAction('NEW_FILE_OPENED', resolve => {
-  return (solutionId: string, fileId: string) => resolve(solutionId, fileId)
-})
+  return (solution: ISolution, file: IFile) => resolve(solution, file);
+});
+
+export const navigateToRun = createAction('NAVIGATE_TO_RUN');

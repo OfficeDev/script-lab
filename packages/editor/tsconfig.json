@@ -1,11 +1,26 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "baseUrl": ".",
-    "outDir": "build/dist",
-    "typeRoots": ["./src/interfaces", "node_modules/@types", "../../node_modules/@types"]
+    "typeRoots": [
+      "./src/interfaces",
+      "node_modules/@types",
+      "../../node_modules/@types"
+    ],
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "strict": false,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "preserve",
+    "alwaysStrict": false,
+    "strictFunctionTypes": false,
+    "strictPropertyInitialization": false
   },
-  "include": ["../interfaces/*", "./src/**/*"],
+  "include": [
+    "../interfaces/*",
+    "./src/**/*"
+  ],
   "exclude": [
     "node_modules",
     "build",

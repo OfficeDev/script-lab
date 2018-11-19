@@ -1,33 +1,33 @@
-import React, { Component } from 'react'
-import { GalleryListWrapper, TitleBar, Title, ArrowWrapper } from './styles'
+import React, { Component } from 'react';
+import { GalleryListWrapper, TitleBar, Title, ArrowWrapper } from './styles';
 
-import { FocusZone } from 'office-ui-fabric-react/lib/FocusZone'
-import { Icon } from 'office-ui-fabric-react/lib/Icon'
+import { FocusZone } from 'office-ui-fabric-react/lib/FocusZone';
+import { Icon } from 'office-ui-fabric-react/lib/Icon';
 
-import GalleryListItem, { IGalleryListItem } from './GalleryListItem'
-import Only from '../../Only'
+import GalleryListItem, { IGalleryListItem } from './GalleryListItem';
+import Only from '../../Only';
 
 export interface IProps {
-  title: string
-  items: IGalleryListItem[]
+  title: string;
+  items: IGalleryListItem[];
 }
 
 interface IState {
-  isExpanded: boolean
+  isExpanded: boolean;
 }
 
 class GalleryList extends Component<IProps, IState> {
-  state = { isExpanded: true }
+  state = { isExpanded: true };
 
   constructor(props) {
-    super(props)
+    super(props);
   }
 
-  toggleExpansion = () => this.setState({ isExpanded: !this.state.isExpanded })
+  toggleExpansion = () => this.setState({ isExpanded: !this.state.isExpanded });
 
   render() {
-    const { title, items } = this.props
-    const { isExpanded } = this.state
+    const { title, items } = this.props;
+    const { isExpanded } = this.state;
     return (
       <GalleryListWrapper>
         <FocusZone>
@@ -38,12 +38,14 @@ class GalleryList extends Component<IProps, IState> {
             </ArrowWrapper>
           </TitleBar>
           <Only when={isExpanded}>
-            {items.map(item => <GalleryListItem key={item.key} {...item} />)}
+            {items.map(item => (
+              <GalleryListItem key={item.key} {...item} />
+            ))}
           </Only>
         </FocusZone>
       </GalleryListWrapper>
-    )
+    );
   }
 }
 
-export default GalleryList
+export default GalleryList;

@@ -1,5 +1,5 @@
-import WebRuntime from './WebRuntime'
-import IRuntime from './IRuntime'
+import WebRuntime from './WebRuntime';
+import IRuntime from './IRuntime';
 
 export async function createRuntime(
   scriptId: string,
@@ -11,6 +11,6 @@ export async function createRuntime(
     scriptId,
     scriptCode,
     lastUpdatedTime,
-  )
-  return runtime
+  );
+  return runtime;
 }

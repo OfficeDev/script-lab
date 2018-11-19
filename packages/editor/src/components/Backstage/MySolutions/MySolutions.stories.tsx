@@ -1,10 +1,12 @@
-import React from 'react'
+import React from 'react';
 
-import MySolutions from './'
+import MySolutions from './';
 
-import { storiesOf } from '@storybook/react'
-import { action } from '@storybook/addon-actions'
-import { object } from '@storybook/addon-knobs'
+import { storiesOf } from '@storybook/react';
+import { action } from '@storybook/addon-actions';
+import { object } from '@storybook/addon-knobs';
+
+import { SCRIPT_FILE_NAME } from '../../../constants';
 
 export const exampleSolutions = [
   {
@@ -15,7 +17,7 @@ export const exampleSolutions = [
     files: [
       {
         id: '5890734a-d2b1-4e80-af99-80b4e730a4f1',
-        name: 'index.ts',
+        name: SCRIPT_FILE_NAME,
         content:
           '$("#run").click(() => tryCatch(run));\n\nasync function run() {\n    await Excel.run(async (context) => {\n\n        OfficeHelpers.UI.notify("Hello world");\n\n        await context.sync();\n    });\n}\n\n/** Default helper for invoking an action and handling errors. */\nasync function tryCatch(callback) {\n    try {\n        await callback();\n    }\n    catch (error) {\n        OfficeHelpers.UI.notify(error);\n        OfficeHelpers.Utilities.log(error);\n    }\n}\n',
         language: 'typescript',
@@ -51,6 +53,7 @@ export const exampleSolutions = [
     ],
     dateCreated: 1535175129365,
     dateLastModified: 1535175129365,
+    options: {},
   },
   {
     id: '6af21993-5a90-408f-bf79-62044992a9e4',
@@ -60,7 +63,7 @@ export const exampleSolutions = [
     files: [
       {
         id: '4ec58fec-c44f-448a-baa0-58d211bf2ed1',
-        name: 'index.ts',
+        name: SCRIPT_FILE_NAME,
         content:
           '$("#setup").click(() => tryCatch(setup));\n$("#apply-color-scale-format").click(() => tryCatch(applyColorScaleFormat));\n$("#apply-preset-format").click(() => tryCatch(applyPresetFormat));\n$("#apply-databar-format").click(() => tryCatch(applyDataBarFormat));\n$("#apply-icon-set-format").click(() => tryCatch(applyIconSetFormat));\n$("#apply-text-format").click(() => tryCatch(applyTextFormat));\n$("#apply-cell-value-format").click(() => tryCatch(applyCellValueFormat));\n$("#apply-custom-format").click(() => tryCatch(applyCustomFormat));\n$("#list-conditional-formats").click(() => tryCatch(listConditionalFormats));\n$("#clear-all-conditional-formats").click(() => tryCatch(clearAllConditionalFormats));\n\nasync function applyColorScaleFormat() {\n    await Excel.run(async (context) => {\n        const sheet = context.workbook.worksheets.getItem("Sample");\n        const range = sheet.getRange("B2:M5");\n        const conditionalFormat = range.conditionalFormats\n            .add(Excel.ConditionalFormatType.colorScale);\n        const criteria = {\n            minimum: { formula: null, type: Excel.ConditionalFormatColorCriterionType.lowestValue, color: "blue" },\n            midpoint: { formula: "50", type: Excel.ConditionalFormatColorCriterionType.percent, color: "yellow" },\n            maximum: { formula: null, type: Excel.ConditionalFormatColorCriterionType.highestValue, color: "red" }\n        };\n        conditionalFormat.colorScale.criteria = criteria;\n\n        await context.sync();\n    });\n}\n\nasync function applyPresetFormat() {\n    await Excel.run(async (context) => {\n        const sheet = context.workbook.worksheets.getItem("Sample");\n        const range = sheet.getRange("B2:M5");\n        const conditionalFormat = range.conditionalFormats\n            .add(Excel.ConditionalFormatType.presetCriteria);\n        conditionalFormat.preset.format.font.color = "white";\n        conditionalFormat.preset.rule = { criterion: Excel.ConditionalFormatPresetCriterion.oneStdDevAboveAverage };\n\n        await context.sync();\n    });\n}\n\nasync function applyDataBarFormat() {\n    await Excel.run(async (context) => {\n        const sheet = context.workbook.worksheets.getItem("Sample");\n        const range = sheet.getRange("B8:E13");\n        const conditionalFormat = range.conditionalFormats\n            .add(Excel.ConditionalFormatType.dataBar);\n        conditionalFormat.dataBar.barDirection = Excel.ConditionalDataBarDirection.leftToRight;\n\n        await context.sync();\n    });\n}\n\nasync function applyIconSetFormat() {\n    await Excel.run(async (context) => {\n        const sheet = context.workbook.worksheets.getItem("Sample");\n        const range = sheet.getRange("B8:E13");\n        const conditionalFormat = range.conditionalFormats\n            .add(Excel.ConditionalFormatType.iconSet);\n        const iconSetCF = conditionalFormat.iconSet;\n        iconSetCF.style = Excel.IconSet.threeTriangles;\n\n        /*\n            The iconSetCF.criteria array is automatically prepopulated with\n            criterion elements whose properties have been given default settings.\n            You can\'t write to each property of a criterion directly. Instead,\n            replace the whole criteria object.\n\n            With a "three*" icon set style, such as "threeTriangles", the third\n            element in the criteria array (criteria[2]) defines the "top" icon;\n            e.g., a green triangle. The second (criteria[1]) defines the "middle"\n            icon, The first (criteria[0]) defines the "low" icon, but it\n            can often be left empty as this method does below, because every\n            cell that does not match the other two criteria always gets the low\n            icon.            \n        */\n        iconSetCF.criteria = [\n            {} as any,\n            {\n                type: Excel.ConditionalFormatIconRuleType.number,\n                operator: Excel.ConditionalIconCriterionOperator.greaterThanOrEqual,\n                formula: "=700"\n            },\n            {\n                type: Excel.ConditionalFormatIconRuleType.number,\n                operator: Excel.ConditionalIconCriterionOperator.greaterThanOrEqual,\n                formula: "=1000",\n            }\n        ];\n\n        await context.sync();\n    });\n}\n\nasync function applyTextFormat() {\n    await Excel.run(async (context) => {\n        const sheet = context.workbook.worksheets.getItem("Sample");\n        const range = sheet.getRange("B16:D18");\n        const conditionalFormat = range.conditionalFormats\n            .add(Excel.ConditionalFormatType.containsText);\n        conditionalFormat.textComparison.format.font.color = "red";\n        conditionalFormat.textComparison.rule = { operator: Excel.ConditionalTextOperator.contains, text: "Delayed" };\n\n        await context.sync();\n    });\n}\n\nasync function applyCellValueFormat() {\n    await Excel.run(async (context) => {\n        const sheet = context.workbook.worksheets.getItem("Sample");\n        const range = sheet.getRange("B21:E23");\n        const conditionalFormat = range.conditionalFormats\n            .add(Excel.ConditionalFormatType.cellValue);\n        conditionalFormat.cellValue.format.font.color = "red";\n        conditionalFormat.cellValue.rule = { formula1: "=0", operator: "LessThan" };\n\n        await context.sync();\n    });\n}\n\nasync function applyCustomFormat() {\n    await Excel.run(async (context) => {\n        const sheet = context.workbook.worksheets.getItem("Sample");\n        const range = sheet.getRange("B8:E13");\n        const conditionalFormat = range.conditionalFormats.add(Excel.ConditionalFormatType.custom);\n        conditionalFormat.custom.rule.formula = \'=IF(B8>INDIRECT("RC[-1]",0),TRUE)\';\n        conditionalFormat.custom.format.font.color = "green";\n\n        await context.sync();\n    });\n}\n\nasync function listConditionalFormats() {\n    await Excel.run(async (context) => {\n        const sheet = context.workbook.worksheets.getItem("Sample");\n        const worksheetRange = sheet.getRange();\n        worksheetRange.conditionalFormats.load("type");\n\n        await context.sync();\n\n        let cfRangePairs: { cf: Excel.ConditionalFormat, range: Excel.Range }[] = [];\n        worksheetRange.conditionalFormats.items.forEach(item => {\n            cfRangePairs.push({\n                cf: item,\n                range: item.getRange().load("address")\n            });\n        });\n\n        await context.sync();\n\n        $("#conditional-formats li").remove();\n        if (cfRangePairs.length > 0) {\n            cfRangePairs.forEach(item => {\n                let $p = $("<p></p>").text(\n                    `${item.cf.type}`)\n                let $li = $(`<li></li>`);\n                $li.append($p);\n                $("#conditional-formats").append($li);\n                $(".conditional-formats").show()[0].scrollIntoView();\n            })\n        }\n        else {\n            OfficeHelpers.UI.notify("None to display", "No conditional formats in workbook", "warning");\n        }\n    });\n}\n\nasync function clearAllConditionalFormats() {\n    await Excel.run(async (context) => {\n        const sheet = context.workbook.worksheets.getItem("Sample");\n        const range = sheet.getRange();\n        range.conditionalFormats.clearAll();\n\n        await context.sync();\n\n        $(".conditional-formats").hide();\n    });\n}\n\nasync function setup() {\n    await Excel.run(async (context) => {\n        const sheet = await OfficeHelpers.ExcelUtilities\n            .forceCreateSheet(context.workbook, "Sample");\n        queueCommandsToCreateTemperatureTable(sheet);\n        queueCommandsToCreateSalesTable(sheet);\n        queueCommandsToCreateProjectTable(sheet);\n        queueCommandsToCreateProfitLossTable(sheet);\n\n        let format = sheet.getRange().format;\n        format.autofitColumns();\n        format.autofitRows();\n\n        sheet.activate();\n        await context.sync();\n    });\n}\n\nfunction queueCommandsToCreateTemperatureTable(sheet: Excel.Worksheet) {\n    let temperatureTable = sheet.tables.add(\'A1:M1\', true);\n    temperatureTable.name = "TemperatureTable";\n    temperatureTable.getHeaderRowRange().values = [["Category", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]];\n    temperatureTable.rows.add(null, [\n        ["Avg High", 40, 38, 44, 45, 51, 56, 67, 72, 79, 59, 45, 41],\n        ["Avg Low", 34, 33, 38, 41, 45, 48, 51, 55, 54, 45, 41, 38],\n        ["Record High", 61, 69, 79, 83, 95, 97, 100, 101, 94, 87, 72, 66],\n        ["Record Low", 0, 2, 9, 24, 28, 32, 36, 39, 35, 21, 12, 4]\n    ]);\n}\n\nfunction queueCommandsToCreateSalesTable(sheet: Excel.Worksheet) {\n    let salesTable = sheet.tables.add(\'A7:E7\', true);\n    salesTable.name = "SalesTable";\n    salesTable.getHeaderRowRange().values = [["Sales Team", "Qtr1", "Qtr2", "Qtr3", "Qtr4"]];\n    salesTable.rows.add(null, [\n        ["Asian Team 1", 500, 700, 654, 234],\n        ["Asian Team 2", 400, 323, 276, 345],\n        ["Asian Team 3", 1200, 876, 845, 456],\n        ["Euro Team 1", 600, 500, 854, 567],\n        ["Euro Team 2", 5001, 2232, 4763, 678],\n        ["Euro Team 3", 130, 776, 104, 789]\n    ]);\n}\n\nfunction queueCommandsToCreateProjectTable(sheet: Excel.Worksheet) {\n    let projectTable = sheet.tables.add(\'A15:D15\', true);\n    projectTable.name = "ProjectTable";\n    projectTable.getHeaderRowRange().values = [["Project", "Alpha", "Beta", "Ship"]];\n    projectTable.rows.add(null, [\n        ["Project 1", "Complete", "Ongoing", "On Schedule"],\n        ["Project 2", "Complete", "Complete", "On Schedule"],\n        ["Project 3", "Ongoing", "Not Started", "Delayed"]\n    ]);\n}\n\nfunction queueCommandsToCreateProfitLossTable(sheet: Excel.Worksheet) {\n    let profitLossTable = sheet.tables.add(\'A20:E20\', true);\n    profitLossTable.name = "ProfitLossTable";\n    profitLossTable.getHeaderRowRange().values = [["Company", "2013", "2014", "2015", "2016"]];\n    profitLossTable.rows.add(null, [\n        ["Contoso", 256.00, -55.31, 68.90, -82.13],\n        ["Fabrikam", 454.00, 75.29, -88.88, 781.87],\n        ["Northwind", -858.21, 35.33, 49.01, 112.68]\n    ]);\n    profitLossTable.getDataBodyRange().numberFormat = [["$#,##0.00"]];\n}\n\n/** Default helper for invoking an action and handling errors. */\nasync function tryCatch(callback) {\n    try {\n        await callback();\n    }\n    catch (error) {\n        OfficeHelpers.UI.notify(error);\n        OfficeHelpers.Utilities.log(error);\n    }\n}',
         language: 'typescript',
@@ -97,6 +100,7 @@ export const exampleSolutions = [
     ],
     dateCreated: 1535595731846,
     dateLastModified: 1535595731846,
+    options: {},
   },
   {
     id: '36a405aa-ccfa-4bf6-bcb3-d7eb1834ecf0',
@@ -107,7 +111,7 @@ export const exampleSolutions = [
     files: [
       {
         id: 'bc60d5c6-cefd-4ce0-9578-e1509b672beb',
-        name: 'index.ts',
+        name: SCRIPT_FILE_NAME,
         content:
           '$("#run").click(run);\n\nfunction run() {\n    Office.context.document.getSelectedDataAsync(Office.CoercionType.Text, (asyncResult) => {\n        if (asyncResult.status === Office.AsyncResultStatus.Failed) {\n            console.log(asyncResult.error.message);\n        } else {\n            console.log(`The selected data is "${asyncResult.value}".`);\n        }\n    });\n}\n',
         language: 'typescript',
@@ -143,6 +147,7 @@ export const exampleSolutions = [
     ],
     dateCreated: 1535595994636,
     dateLastModified: 1535595994636,
+    options: {},
   },
   {
     id: '2c32044d-c6eb-4a3f-8906-b33ddc5eb927',
@@ -152,7 +157,7 @@ export const exampleSolutions = [
     files: [
       {
         id: '0adf0bae-11a3-445e-b5fd-91861121a8ae',
-        name: 'index.ts',
+        name: SCRIPT_FILE_NAME,
         content:
           '$("#run").click(() => tryCatch(run));\n\nasync function run() {\n    await Excel.run(async (context) => {\n        const range = context.workbook.getSelectedRange();\n        range.format.fill.color = "yellow";\n        range.load("address");\n\n        await context.sync()\n\n        console.log(`The range address was "${range.address}".`);\n    });\n}\n\n/** Default helper for invoking an action and handling errors. */\nasync function tryCatch(callback) {\n    try {\n        await callback();\n    }\n    catch (error) {\n        OfficeHelpers.UI.notify(error);\n        OfficeHelpers.Utilities.log(error);\n    }\n}\n',
         language: 'typescript',
@@ -188,6 +193,7 @@ export const exampleSolutions = [
     ],
     dateCreated: 1535596188347,
     dateLastModified: 1535596188347,
+    options: {},
   },
   {
     id: '36624f5e-3388-48a5-bb4f-c22dc60530e3',
@@ -198,7 +204,7 @@ export const exampleSolutions = [
     files: [
       {
         id: 'a935f3d4-de8c-4c32-ac3c-fb923f527bd9',
-        name: 'index.ts',
+        name: SCRIPT_FILE_NAME,
         content:
           '$("#create-report").click(() => tryCatch(createReport));\n\n/** Load sample data into a new worksheet and create a chart */\nasync function createReport() {\n    await Excel.run(async (context) => {\n        const sheet = context.workbook.worksheets.add();\n\n        try {\n            await writeSheetData(sheet);\n            sheet.activate();\n            await context.sync();\n        }\n        catch (error) {\n                // Try to activate the new sheet regardless, to show\n                // how far the processing got before failing\n            sheet.activate();\n            await context.sync();\n\n            // Then re-throw the original error, for appropriate error-handling\n            // (in this snippet, simply showing a notification)\n            throw error;\n        }\n    });\n\n    OfficeHelpers.UI.notify("Sucess!",\n        "Report generation completed.");\n}\n\nasync function writeSheetData(sheet: Excel.Worksheet) {\n    // Set the report title in the worksheet\n    const titleCell = sheet.getCell(0, 0);\n    titleCell.values = [["Quarterly Sales Report"]];\n    titleCell.format.font.name = "Century";\n    titleCell.format.font.size = 26;\n\n    // Create an array containing sample data\n    const headerNames = ["Product", "Qtr1", "Qtr2", "Qtr3", "Qtr4"];\n    const data = [\n        ["Frames", 5000, 7000, 6544, 4377],\n        ["Saddles", 400, 323, 276, 651],\n        ["Brake levers", 12000, 8766, 8456, 9812],\n        ["Chains", 1550, 1088, 692, 853],\n        ["Mirrors", 225, 600, 923, 544],\n        ["Spokes", 6005, 7634, 4589, 8765]\n    ];\n\n    // Write the sample data to the specified range in the worksheet \n    // and bold the header row\n    const headerRow = titleCell.getOffsetRange(1, 0)\n        .getResizedRange(0, headerNames.length - 1);\n    headerRow.values = [headerNames];\n    headerRow.getRow(0).format.font.bold = true;\n\n    const dataRange = headerRow.getOffsetRange(1, 0)\n        .getResizedRange(data.length - 1, 0);\n    dataRange.values = data;\n\n\n    titleCell.getResizedRange(0, headerNames.length - 1).merge();\n    dataRange.format.autofitColumns();\n\n    const columnRanges = headerNames.map((header, index) => dataRange.getColumn(index).load("format/columnWidth"));\n    await sheet.context.sync();\n\n    // For the header (product name) column, make it a minimum of 100px;\n    const firstColumn = columnRanges.shift();\n    if (firstColumn.format.columnWidth < 100) {\n        console.log("Expanding the first column to 100px");\n        firstColumn.format.columnWidth = 100;\n    }\n\n    // For the remainder, make them identical or a minimum of 60px\n    let minColumnWidth = 60;\n    columnRanges.forEach((column, index) => {\n        console.log(`Column #${index + 1}: auto-fitted width = ${column.format.columnWidth}`);\n        minColumnWidth = Math.max(minColumnWidth, column.format.columnWidth);\n    });\n    console.log(`Setting data columns to a width of ${minColumnWidth} pixels`);\n    dataRange.getOffsetRange(0, 1).getResizedRange(0, -1)\n        .format.columnWidth = minColumnWidth;\n\n    // Add a new chart\n    const chart = sheet.charts.add(\n        Excel.ChartType.columnClustered,\n        dataRange, Excel.ChartSeriesBy.columns);\n\n    // Set the properties and format the chart\n    const chartTopRow = dataRange.getLastRow().getOffsetRange(2, 0);\n    chart.setPosition(chartTopRow, chartTopRow.getOffsetRange(14, 0));\n    chart.title.text = "Quarterly sales chart";\n    chart.legend.position = "Right"\n    chart.legend.format.fill.setSolidColor("white");\n    chart.dataLabels.format.font.size = 15;\n    chart.dataLabels.format.font.color = "black";\n\n    const points = chart.series.getItemAt(0).points;\n    points.getItemAt(0).format.fill.setSolidColor("pink");\n    points.getItemAt(1).format.fill.setSolidColor("indigo");\n}\n\n/** Default helper for invoking an action and handling errors. */\nasync function tryCatch(callback) {\n    try {\n        await callback();\n    }\n    catch (error) {\n        OfficeHelpers.UI.notify(error);\n        OfficeHelpers.Utilities.log(error);\n    }\n}\n',
         language: 'typescript',
@@ -235,6 +241,7 @@ export const exampleSolutions = [
     ],
     dateCreated: 1535606895638,
     dateLastModified: 1535606895638,
+    options: {},
   },
   {
     id: '3a7628b2-b111-4417-a667-e0a1c8efc786',
@@ -244,7 +251,7 @@ export const exampleSolutions = [
     files: [
       {
         id: 'd5c33d7e-2840-465b-b7f3-a6bdb63250b5',
-        name: 'index.ts',
+        name: SCRIPT_FILE_NAME,
         content:
           '$("#run").click(() => tryCatch(run));\n\nasync function run() {\n    await Excel.run(async (context) => {\n        const range = context.workbook.getSelectedRange();\n        range.format.fill.color = "yellow";\n        range.load("address");\n\n        await context.sync()\n\n        console.log(`The range address was "${range.address}".`);\n    });\n}\n\n/** Default helper for invoking an action and handling errors. */\nasync function tryCatch(callback) {\n    try {\n        await callback();\n    }\n    catch (error) {\n        OfficeHelpers.UI.notify(error);\n        OfficeHelpers.Utilities.log(error);\n    }\n}\n',
         language: 'typescript',
@@ -280,6 +287,7 @@ export const exampleSolutions = [
     ],
     dateCreated: 1535607528758,
     dateLastModified: 1535607528758,
+    options: {},
   },
   {
     id: 'a520a09d-5b5e-4126-8772-1c7c7488b42c',
@@ -289,7 +297,7 @@ export const exampleSolutions = [
     files: [
       {
         id: '92c86673-8fb5-46fb-b8ae-cdac62940636',
-        name: 'index.ts',
+        name: SCRIPT_FILE_NAME,
         content:
           '$("#setup").click(() => tryCatch(setup));\n$("#apply-color-scale-format").click(() => tryCatch(applyColorScaleFormat));\n$("#apply-preset-format").click(() => tryCatch(applyPresetFormat));\n$("#apply-databar-format").click(() => tryCatch(applyDataBarFormat));\n$("#apply-icon-set-format").click(() => tryCatch(applyIconSetFormat));\n$("#apply-text-format").click(() => tryCatch(applyTextFormat));\n$("#apply-cell-value-format").click(() => tryCatch(applyCellValueFormat));\n$("#apply-custom-format").click(() => tryCatch(applyCustomFormat));\n$("#list-conditional-formats").click(() => tryCatch(listConditionalFormats));\n$("#clear-all-conditional-formats").click(() => tryCatch(clearAllConditionalFormats));\n\nasync function applyColorScaleFormat() {\n    await Excel.run(async (context) => {\n        const sheet = context.workbook.worksheets.getItem("Sample");\n        const range = sheet.getRange("B2:M5");\n        const conditionalFormat = range.conditionalFormats\n            .add(Excel.ConditionalFormatType.colorScale);\n        const criteria = {\n            minimum: { formula: null, type: Excel.ConditionalFormatColorCriterionType.lowestValue, color: "blue" },\n            midpoint: { formula: "50", type: Excel.ConditionalFormatColorCriterionType.percent, color: "yellow" },\n            maximum: { formula: null, type: Excel.ConditionalFormatColorCriterionType.highestValue, color: "red" }\n        };\n        conditionalFormat.colorScale.criteria = criteria;\n\n        await context.sync();\n    });\n}\n\nasync function applyPresetFormat() {\n    await Excel.run(async (context) => {\n        const sheet = context.workbook.worksheets.getItem("Sample");\n        const range = sheet.getRange("B2:M5");\n        const conditionalFormat = range.conditionalFormats\n            .add(Excel.ConditionalFormatType.presetCriteria);\n        conditionalFormat.preset.format.font.color = "white";\n        conditionalFormat.preset.rule = { criterion: Excel.ConditionalFormatPresetCriterion.oneStdDevAboveAverage };\n\n        await context.sync();\n    });\n}\n\nasync function applyDataBarFormat() {\n    await Excel.run(async (context) => {\n        const sheet = context.workbook.worksheets.getItem("Sample");\n        const range = sheet.getRange("B8:E13");\n        const conditionalFormat = range.conditionalFormats\n            .add(Excel.ConditionalFormatType.dataBar);\n        conditionalFormat.dataBar.barDirection = Excel.ConditionalDataBarDirection.leftToRight;\n\n        await context.sync();\n    });\n}\n\nasync function applyIconSetFormat() {\n    await Excel.run(async (context) => {\n        const sheet = context.workbook.worksheets.getItem("Sample");\n        const range = sheet.getRange("B8:E13");\n        const conditionalFormat = range.conditionalFormats\n            .add(Excel.ConditionalFormatType.iconSet);\n        const iconSetCF = conditionalFormat.iconSet;\n        iconSetCF.style = Excel.IconSet.threeTriangles;\n\n        /*\n            The iconSetCF.criteria array is automatically prepopulated with\n            criterion elements whose properties have been given default settings.\n            You can\'t write to each property of a criterion directly. Instead,\n            replace the whole criteria object.\n\n            With a "three*" icon set style, such as "threeTriangles", the third\n            element in the criteria array (criteria[2]) defines the "top" icon;\n            e.g., a green triangle. The second (criteria[1]) defines the "middle"\n            icon, The first (criteria[0]) defines the "low" icon, but it\n            can often be left empty as this method does below, because every\n            cell that does not match the other two criteria always gets the low\n            icon.            \n        */\n        iconSetCF.criteria = [\n            {} as any,\n            {\n                type: Excel.ConditionalFormatIconRuleType.number,\n                operator: Excel.ConditionalIconCriterionOperator.greaterThanOrEqual,\n                formula: "=700"\n            },\n            {\n                type: Excel.ConditionalFormatIconRuleType.number,\n                operator: Excel.ConditionalIconCriterionOperator.greaterThanOrEqual,\n                formula: "=1000",\n            }\n        ];\n\n        await context.sync();\n    });\n}\n\nasync function applyTextFormat() {\n    await Excel.run(async (context) => {\n        const sheet = context.workbook.worksheets.getItem("Sample");\n        const range = sheet.getRange("B16:D18");\n        const conditionalFormat = range.conditionalFormats\n            .add(Excel.ConditionalFormatType.containsText);\n        conditionalFormat.textComparison.format.font.color = "red";\n        conditionalFormat.textComparison.rule = { operator: Excel.ConditionalTextOperator.contains, text: "Delayed" };\n\n        await context.sync();\n    });\n}\n\nasync function applyCellValueFormat() {\n    await Excel.run(async (context) => {\n        const sheet = context.workbook.worksheets.getItem("Sample");\n        const range = sheet.getRange("B21:E23");\n        const conditionalFormat = range.conditionalFormats\n            .add(Excel.ConditionalFormatType.cellValue);\n        conditionalFormat.cellValue.format.font.color = "red";\n        conditionalFormat.cellValue.rule = { formula1: "=0", operator: "LessThan" };\n\n        await context.sync();\n    });\n}\n\nasync function applyCustomFormat() {\n    await Excel.run(async (context) => {\n        const sheet = context.workbook.worksheets.getItem("Sample");\n        const range = sheet.getRange("B8:E13");\n        const conditionalFormat = range.conditionalFormats.add(Excel.ConditionalFormatType.custom);\n        conditionalFormat.custom.rule.formula = \'=IF(B8>INDIRECT("RC[-1]",0),TRUE)\';\n        conditionalFormat.custom.format.font.color = "green";\n\n        await context.sync();\n    });\n}\n\nasync function listConditionalFormats() {\n    await Excel.run(async (context) => {\n        const sheet = context.workbook.worksheets.getItem("Sample");\n        const worksheetRange = sheet.getRange();\n        worksheetRange.conditionalFormats.load("type");\n\n        await context.sync();\n\n        let cfRangePairs: { cf: Excel.ConditionalFormat, range: Excel.Range }[] = [];\n        worksheetRange.conditionalFormats.items.forEach(item => {\n            cfRangePairs.push({\n                cf: item,\n                range: item.getRange().load("address")\n            });\n        });\n\n        await context.sync();\n\n        $("#conditional-formats li").remove();\n        if (cfRangePairs.length > 0) {\n            cfRangePairs.forEach(item => {\n                let $p = $("<p></p>").text(\n                    `${item.cf.type}`)\n                let $li = $(`<li></li>`);\n                $li.append($p);\n                $("#conditional-formats").append($li);\n                $(".conditional-formats").show()[0].scrollIntoView();\n            })\n        }\n        else {\n            OfficeHelpers.UI.notify("None to display", "No conditional formats in workbook", "warning");\n        }\n    });\n}\n\nasync function clearAllConditionalFormats() {\n    await Excel.run(async (context) => {\n        const sheet = context.workbook.worksheets.getItem("Sample");\n        const range = sheet.getRange();\n        range.conditionalFormats.clearAll();\n\n        await context.sync();\n\n        $(".conditional-formats").hide();\n    });\n}\n\nasync function setup() {\n    await Excel.run(async (context) => {\n        const sheet = await OfficeHelpers.ExcelUtilities\n            .forceCreateSheet(context.workbook, "Sample");\n        queueCommandsToCreateTemperatureTable(sheet);\n        queueCommandsToCreateSalesTable(sheet);\n        queueCommandsToCreateProjectTable(sheet);\n        queueCommandsToCreateProfitLossTable(sheet);\n\n        let format = sheet.getRange().format;\n        format.autofitColumns();\n        format.autofitRows();\n\n        sheet.activate();\n        await context.sync();\n    });\n}\n\nfunction queueCommandsToCreateTemperatureTable(sheet: Excel.Worksheet) {\n    let temperatureTable = sheet.tables.add(\'A1:M1\', true);\n    temperatureTable.name = "TemperatureTable";\n    temperatureTable.getHeaderRowRange().values = [["Category", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]];\n    temperatureTable.rows.add(null, [\n        ["Avg High", 40, 38, 44, 45, 51, 56, 67, 72, 79, 59, 45, 41],\n        ["Avg Low", 34, 33, 38, 41, 45, 48, 51, 55, 54, 45, 41, 38],\n        ["Record High", 61, 69, 79, 83, 95, 97, 100, 101, 94, 87, 72, 66],\n        ["Record Low", 0, 2, 9, 24, 28, 32, 36, 39, 35, 21, 12, 4]\n    ]);\n}\n\nfunction queueCommandsToCreateSalesTable(sheet: Excel.Worksheet) {\n    let salesTable = sheet.tables.add(\'A7:E7\', true);\n    salesTable.name = "SalesTable";\n    salesTable.getHeaderRowRange().values = [["Sales Team", "Qtr1", "Qtr2", "Qtr3", "Qtr4"]];\n    salesTable.rows.add(null, [\n        ["Asian Team 1", 500, 700, 654, 234],\n        ["Asian Team 2", 400, 323, 276, 345],\n        ["Asian Team 3", 1200, 876, 845, 456],\n        ["Euro Team 1", 600, 500, 854, 567],\n        ["Euro Team 2", 5001, 2232, 4763, 678],\n        ["Euro Team 3", 130, 776, 104, 789]\n    ]);\n}\n\nfunction queueCommandsToCreateProjectTable(sheet: Excel.Worksheet) {\n    let projectTable = sheet.tables.add(\'A15:D15\', true);\n    projectTable.name = "ProjectTable";\n    projectTable.getHeaderRowRange().values = [["Project", "Alpha", "Beta", "Ship"]];\n    projectTable.rows.add(null, [\n        ["Project 1", "Complete", "Ongoing", "On Schedule"],\n        ["Project 2", "Complete", "Complete", "On Schedule"],\n        ["Project 3", "Ongoing", "Not Started", "Delayed"]\n    ]);\n}\n\nfunction queueCommandsToCreateProfitLossTable(sheet: Excel.Worksheet) {\n    let profitLossTable = sheet.tables.add(\'A20:E20\', true);\n    profitLossTable.name = "ProfitLossTable";\n    profitLossTable.getHeaderRowRange().values = [["Company", "2013", "2014", "2015", "2016"]];\n    profitLossTable.rows.add(null, [\n        ["Contoso", 256.00, -55.31, 68.90, -82.13],\n        ["Fabrikam", 454.00, 75.29, -88.88, 781.87],\n        ["Northwind", -858.21, 35.33, 49.01, 112.68]\n    ]);\n    profitLossTable.getDataBodyRange().numberFormat = [["$#,##0.00"]];\n}\n\n/** Default helper for invoking an action and handling errors. */\nasync function tryCatch(callback) {\n    try {\n        await callback();\n    }\n    catch (error) {\n        OfficeHelpers.UI.notify(error);\n        OfficeHelpers.Utilities.log(error);\n    }\n}',
         language: 'typescript',
@@ -326,6 +334,7 @@ export const exampleSolutions = [
     ],
     dateCreated: 1535694542561,
     dateLastModified: 1535694542561,
+    options: {},
   },
   {
     id: '9ab2c0c0-26e7-4362-a8d1-5978230e9b9e',
@@ -335,7 +344,7 @@ export const exampleSolutions = [
     files: [
       {
         id: '54902f87-0f27-4019-9d22-5e49e27b8c12',
-        name: 'index.ts',
+        name: SCRIPT_FILE_NAME,
         content:
           '$("#run").click(() => tryCatch(run));\n\nasync function run() {\n    await Excel.run(async (context) => {\n        const range = context.workbook.getSelectedRange();\n        range.format.fill.color = "yellow";\n        range.load("address");\n\n        await context.sync()\n\n        console.log(`The range address was "${range.address}".`);\n    });\n}\n\n/** Default helper for invoking an action and handling errors. */\nasync function tryCatch(callback) {\n    try {\n        await callback();\n    }\n    catch (error) {\n        OfficeHelpers.UI.notify(error);\n        OfficeHelpers.Utilities.log(error);\n    }\n}\n',
         language: 'typescript',
@@ -371,6 +380,7 @@ export const exampleSolutions = [
     ],
     dateCreated: 1536391158476,
     dateLastModified: 1536391158476,
+    options: {},
   },
   {
     id: '7e0f1bd6-f942-4cde-9066-c80f58828aab',
@@ -381,7 +391,7 @@ export const exampleSolutions = [
     files: [
       {
         id: '4f630c74-a5be-4553-a1b9-ba7445b5a29a',
-        name: 'index.ts',
+        name: SCRIPT_FILE_NAME,
         content:
           '$("#create-report").click(() => tryCatch(createReport));\n\n/** Load sample data into a new worksheet and create a chart */\nasync function createReport() {\n    await Excel.run(async (context) => {\n        const sheet = context.workbook.worksheets.add();\n\n        try {\n            await writeSheetData(sheet);\n            sheet.activate();\n            await context.sync();\n        }\n        catch (error) {\n                // Try to activate the new sheet regardless, to show\n                // how far the processing got before failing\n            sheet.activate();\n            await context.sync();\n\n            // Then re-throw the original error, for appropriate error-handling\n            // (in this snippet, simply showing a notification)\n            throw error;\n        }\n    });\n\n    OfficeHelpers.UI.notify("Sucess!",\n        "Report generation completed.");\n}\n\nasync function writeSheetData(sheet: Excel.Worksheet) {\n    // Set the report title in the worksheet\n    const titleCell = sheet.getCell(0, 0);\n    titleCell.values = [["Quarterly Sales Report"]];\n    titleCell.format.font.name = "Century";\n    titleCell.format.font.size = 26;\n\n    // Create an array containing sample data\n    const headerNames = ["Product", "Qtr1", "Qtr2", "Qtr3", "Qtr4"];\n    const data = [\n        ["Frames", 5000, 7000, 6544, 4377],\n        ["Saddles", 400, 323, 276, 651],\n        ["Brake levers", 12000, 8766, 8456, 9812],\n        ["Chains", 1550, 1088, 692, 853],\n        ["Mirrors", 225, 600, 923, 544],\n        ["Spokes", 6005, 7634, 4589, 8765]\n    ];\n\n    // Write the sample data to the specified range in the worksheet \n    // and bold the header row\n    const headerRow = titleCell.getOffsetRange(1, 0)\n        .getResizedRange(0, headerNames.length - 1);\n    headerRow.values = [headerNames];\n    headerRow.getRow(0).format.font.bold = true;\n\n    const dataRange = headerRow.getOffsetRange(1, 0)\n        .getResizedRange(data.length - 1, 0);\n    dataRange.values = data;\n\n\n    titleCell.getResizedRange(0, headerNames.length - 1).merge();\n    dataRange.format.autofitColumns();\n\n    const columnRanges = headerNames.map((header, index) => dataRange.getColumn(index).load("format/columnWidth"));\n    await sheet.context.sync();\n\n    // For the header (product name) column, make it a minimum of 100px;\n    const firstColumn = columnRanges.shift();\n    if (firstColumn.format.columnWidth < 100) {\n        console.log("Expanding the first column to 100px");\n        firstColumn.format.columnWidth = 100;\n    }\n\n    // For the remainder, make them identical or a minimum of 60px\n    let minColumnWidth = 60;\n    columnRanges.forEach((column, index) => {\n        console.log(`Column #${index + 1}: auto-fitted width = ${column.format.columnWidth}`);\n        minColumnWidth = Math.max(minColumnWidth, column.format.columnWidth);\n    });\n    console.log(`Setting data columns to a width of ${minColumnWidth} pixels`);\n    dataRange.getOffsetRange(0, 1).getResizedRange(0, -1)\n        .format.columnWidth = minColumnWidth;\n\n    // Add a new chart\n    const chart = sheet.charts.add(\n        Excel.ChartType.columnClustered,\n        dataRange, Excel.ChartSeriesBy.columns);\n\n    // Set the properties and format the chart\n    const chartTopRow = dataRange.getLastRow().getOffsetRange(2, 0);\n    chart.setPosition(chartTopRow, chartTopRow.getOffsetRange(14, 0));\n    chart.title.text = "Quarterly sales chart";\n    chart.legend.position = "Right"\n    chart.legend.format.fill.setSolidColor("white");\n    chart.dataLabels.format.font.size = 15;\n    chart.dataLabels.format.font.color = "black";\n\n    const points = chart.series.getItemAt(0).points;\n    points.getItemAt(0).format.fill.setSolidColor("pink");\n    points.getItemAt(1).format.fill.setSolidColor("indigo");\n}\n\n/** Default helper for invoking an action and handling errors. */\nasync function tryCatch(callback) {\n    try {\n        await callback();\n    }\n    catch (error) {\n        OfficeHelpers.UI.notify(error);\n        OfficeHelpers.Utilities.log(error);\n    }\n}\n',
         language: 'typescript',
@@ -418,6 +428,7 @@ export const exampleSolutions = [
     ],
     dateCreated: 1536391163666,
     dateLastModified: 1536391163666,
+    options: {},
   },
   {
     id: '0f4a84c4-d0e1-491b-af8f-22e3fc96ea4b',
@@ -428,7 +439,7 @@ export const exampleSolutions = [
     files: [
       {
         id: '454a1e74-ee84-467a-beb1-0915eff91023',
-        name: 'index.ts',
+        name: SCRIPT_FILE_NAME,
         content:
           '$("#setup").click(() => tryCatch(setup));\n$("#compare-current-and-previous-year").click(() => tryCatch(compareCurrentWithPreviousTax));\n$("#compare-first-and-last-year").click(()  => tryCatch(compareFirstWithMostRecentTaxRate));\n\nasync function setup() {\n    await Excel.run(async (context) => {\n        const sheets = context.workbook.worksheets;\n        sheets.load("NoPropertiesNeeded");\n\n        await context.sync();\n\n        // Make setup repeatable by deleting all worksheets,\n        // except the default. Note: DEcrement on each loop.\n        for (let i = sheets.items.length; i > 0; i--) {\n            if (sheets.items[i]) {\n                sheets.items[i].delete();\n            }            \n        }\n\n        let currentYearSheet: Excel.Worksheet;\n        let revenue = 10000;\n        let taxRate = .213;\n\n        for (let year = 2014; year < 2018; year++) {\n            let sheet = sheets.add();\n            sheet.name = `Taxes${year}`;\n            let taxDataTable = sheet.tables.add(\'A1:C1\', true);\n\n            // Table names must be unique within the whole workbook.        \n            taxDataTable.name = `TaxesCalculation${year}`;\n            taxDataTable.getHeaderRowRange().values = [["Revenue", "Tax Rate", "Tax Due"]];\n            taxDataTable.rows.add(null, [\n                [revenue, taxRate, "=A2 * B2"],\n            ]);  \n            sheet.getRange("A2").numberFormat = [["$#,##0.00"]];\n            sheet.getRange("B2").numberFormat = [["0.00%"]];\n            sheet.getRange("C2").numberFormat = [["$#,##0.00"]];\n            taxDataTable.getRange().format.autofitColumns();\n            taxDataTable.getRange().format.autofitRows();\n            currentYearSheet = sheet;\n            revenue += 150;\n            taxRate += .0025;\n        }\n        currentYearSheet.activate();\n        \n        await context.sync();\n    });\n}\n\nasync function compareCurrentWithPreviousTax() {\n    await Excel.run(async (context) => {\n        const sheets = context.workbook.worksheets;\n        const currentSheet = sheets.getActiveWorksheet();\n        const previousYearSheet = currentSheet.getPrevious();\n        const currentTaxDueRange = currentSheet.getRange("C2");\n        const previousTaxDueRange = previousYearSheet.getRange("C2");\n\n        currentSheet.load("name");\n        previousYearSheet.load("name");\n        currentTaxDueRange.load("text");\n        previousTaxDueRange.load("text");\n\n        await context.sync();\n\n        let currentYear = currentSheet.name.substr(5, 4);\n        let previousYear = previousYearSheet.name.substr(5, 4);\n        OfficeHelpers.UI.notify("Two Year Tax Due Comparison", `Tax due for ${currentYear} was ${currentTaxDueRange.text[0][0]}\\nTax due for ${previousYear} was ${previousTaxDueRange.text[0][0]}`)\n\n        await context.sync();\n    });\n}\n\nasync function compareFirstWithMostRecentTaxRate() {\n    await Excel.run(async (context) => {\n        const sheets = context.workbook.worksheets;\n\n        // We don\'t want to include the default worksheet that was created\n        // when the workbook was created, so our "firstSheet" will be the one\n        // after the literal first. Note chaining of navigation methods.\n        const firstSheet = sheets.getFirst().getNext();\n        const lastSheet = sheets.getLast();\n        const firstTaxRateRange = firstSheet.getRange("B2");\n        const lastTaxRateRange = lastSheet.getRange("B2");\n\n        firstSheet.load("name");\n        lastSheet.load("name");\n        firstTaxRateRange.load("text");\n        lastTaxRateRange.load("text");\n\n        await context.sync();\n\n        let firstYear = firstSheet.name.substr(5, 4);\n        let lastYear = lastSheet.name.substr(5, 4);\n        OfficeHelpers.UI.notify(`Tax Rate change from ${firstYear} to ${lastYear}`, `Tax rate for ${firstYear}: ${firstTaxRateRange.text[0][0]}\\nTax rate for ${lastYear}: ${lastTaxRateRange.text[0][0]}`)\n\n        await context.sync();\n    });\n}\n\n/** Default helper for invoking an action and handling errors. */\nasync function tryCatch(callback) {\n    try {\n        await callback();\n    }\n    catch (error) {\n        OfficeHelpers.UI.notify(error);\n        OfficeHelpers.Utilities.log(error);\n    }\n}\n',
         language: 'typescript',
@@ -465,8 +476,9 @@ export const exampleSolutions = [
     ],
     dateCreated: 1536392599100,
     dateLastModified: 1536392599100,
+    options: {},
   },
-]
+];
 
 export const exampleGistMetadata = [
   {
@@ -514,10 +526,10 @@ export const exampleGistMetadata = [
     dateLastModified: '2018-09-09T07:22:18Z',
     isPublic: true,
   },
-]
+];
 
-const solutionsKnob = object('solutions', exampleSolutions)
-const gistKnob = object('gist-metadata', exampleGistMetadata)
+const solutionsKnob = object('solutions', exampleSolutions);
+const gistKnob = object('gist-metadata', exampleGistMetadata);
 
 export const BasicMySolutions = () => (
   <MySolutions
@@ -525,7 +537,8 @@ export const BasicMySolutions = () => (
     gistMetadata={gistKnob}
     openSolution={action('open-solution')}
     openGist={action('open-gist')}
+    signIn={action('sign-in')}
   />
-)
+);
 
-storiesOf('Backstage|MySolutions', module).add('basic', () => <BasicMySolutions />)
+storiesOf('Backstage|MySolutions', module).add('basic', () => <BasicMySolutions />);

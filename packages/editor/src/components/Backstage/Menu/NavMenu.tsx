@@ -1,19 +1,19 @@
-import React from 'react'
-import { withTheme } from 'styled-components'
-import { Nav, INavStyleProps, INavStyles } from 'office-ui-fabric-react/lib/Nav'
-import { getFocusStyle, mergeStyles } from 'office-ui-fabric-react/lib/Styling'
-import IMenuItem from './IMenuItem'
+import React from 'react';
+import { withTheme } from 'styled-components';
+import { Nav, INavStyleProps, INavStyles } from 'office-ui-fabric-react/lib/Nav';
+import { getFocusStyle, mergeStyles } from 'office-ui-fabric-react/lib/Styling';
+import IMenuItem from './IMenuItem';
 
 export interface IProps {
-  items: IMenuItem[]
-  selectedKey: string
-  theme: ITheme // from withTheme
+  items: IMenuItem[];
+  selectedKey: string;
+  theme: ITheme; // from withTheme
 }
 
 class NavMenu extends React.Component<IProps> {
   getNavStyles = (props: INavStyleProps): Partial<INavStyles> => {
-    const { theme } = this.props
-    const { isSelected } = props
+    const { theme } = this.props;
+    const { isSelected } = props;
 
     return {
       root: { width: '22rem', height: '100vh', background: theme.primary },
@@ -52,11 +52,11 @@ class NavMenu extends React.Component<IProps> {
           },
         },
       ),
-    }
-  }
+    };
+  };
 
   render(): JSX.Element {
-    const { theme, items, selectedKey } = this.props
+    const { theme, items, selectedKey } = this.props;
 
     return (
       <Nav
@@ -81,8 +81,8 @@ class NavMenu extends React.Component<IProps> {
         ]}
         styles={this.getNavStyles}
       />
-    )
+    );
   }
 }
 
-export default withTheme(NavMenu)
+export default withTheme(NavMenu);

@@ -1,94 +1,94 @@
-import React, { Component } from 'react'
-import { Dialog, DialogType, DialogFooter } from 'office-ui-fabric-react/lib/Dialog'
-import { PrimaryButton, DefaultButton } from 'office-ui-fabric-react/lib/Button'
+import React, { Component } from 'react';
+import { Dialog, DialogType, DialogFooter } from 'office-ui-fabric-react/lib/Dialog';
+import { PrimaryButton, DefaultButton } from 'office-ui-fabric-react/lib/Button';
 import {
   ChoiceGroup,
   IChoiceGroup,
   IChoiceGroupOption,
-} from 'office-ui-fabric-react/lib/ChoiceGroup'
+} from 'office-ui-fabric-react/lib/ChoiceGroup';
 import {
   Dropdown,
   IDropdown,
   DropdownMenuItemType,
   IDropdownOption,
-} from 'office-ui-fabric-react/lib/Dropdown'
+} from 'office-ui-fabric-react/lib/Dropdown';
 
-import { ConflictResolutionOptions } from '../../../interfaces/enums'
+import { ConflictResolutionOptions } from '../../../interfaces/enums';
 
 interface IGistConflictDialog {
-  conflictingGist: ISharedGistMetadata
-  existingSolutions: ISolution[]
+  conflictingGist: ISharedGistMetadata;
+  existingSolutions: ISolution[];
   openGist: (
     rawUrl: string,
     gistId: string,
     conflictResolution: {
-      type: ConflictResolutionOptions
-      existingSolution: ISolution
+      type: ConflictResolutionOptions;
+      existingSolution: ISolution;
     },
-  ) => void
-  closeDialog: () => void
+  ) => void;
+  closeDialog: () => void;
 }
 
 interface IState {
-  selectedChoiceOption: string
-  isDropdownDisabled: boolean
+  selectedChoiceOption: string;
+  isDropdownDisabled: boolean;
 }
 
 const initialState = {
   selectedChoiceOption: ConflictResolutionOptions.CreateCopy,
   isDropdownDisabled: true,
-}
+};
 
 class ConflictResolutionDialog extends Component<IGistConflictDialog, IState> {
-  dropdownRef
-  state = initialState
+  dropdownRef;
+  state = initialState;
 
   closeDialog = () => {
-    this.props.closeDialog()
-    this.setState(initialState)
-  }
+    this.props.closeDialog();
+    this.setState(initialState);
+  };
 
   onOk = () => {
-    const { openGist, conflictingGist, existingSolutions } = this.props
+    const { openGist, conflictingGist, existingSolutions } = this.props;
 
     const existingSolution =
       existingSolutions.length > 1
         ? existingSolutions[this.dropdownRef.state.selectedIndices[0]]
-        : existingSolutions[0]
+        : existingSolutions[0];
 
     openGist(conflictingGist.url, conflictingGist.id, {
       type: this.state.selectedChoiceOption,
       existingSolution,
-    })
+    });
 
-    this.closeDialog()
-  }
+    this.closeDialog();
+  };
 
   setDropdownRef = (component: IDropdown | null) => {
-    this.dropdownRef = component
-  }
+    this.dropdownRef = component;
+  };
 
   onChoiceChange = (
     ev?: React.FormEvent<HTMLElement | HTMLInputElement>,
     option?: IChoiceGroupOption,
   ) => {
     if (option) {
-      this.setState({ selectedChoiceOption: option.key })
+      this.setState({ selectedChoiceOption: option.key });
 
       if (
         option.key === ConflictResolutionOptions.Open ||
         option.key === ConflictResolutionOptions.Overwrite
       ) {
-        this.setState({ isDropdownDisabled: false })
+        this.setState({ isDropdownDisabled: false });
       } else {
-        this.setState({ isDropdownDisabled: true })
+        this.setState({ isDropdownDisabled: true });
       }
     }
-  }
+  };
 
   render() {
-    const { selectedChoiceOption, isDropdownDisabled } = this.state
-    const { existingSolutions } = this.props
+    const { selectedChoiceOption, isDropdownDisabled } = this.state;
+    const { existingSolutions } = this.props;
     return (
       <Dialog
         hidden={false}
@@ -102,6 +102,7 @@ class ConflictResolutionDialog extends Component<IGistConflictDialog, IState> {
         modalProps={{
           isBlocking: true,
           containerClassName: 'ms-dialogMainOverride',
+          isDarkOverlay: true,
         }}
       >
         <ChoiceGroup
@@ -148,8 +149,8 @@ class ConflictResolutionDialog extends Component<IGistConflictDialog, IState> {
           <DefaultButton onClick={this.closeDialog} text="Cancel" />
         </DialogFooter>
       </Dialog>
-    )
+    );
   }
 }
 
-export default ConflictResolutionDialog
+export default ConflictResolutionDialog;
