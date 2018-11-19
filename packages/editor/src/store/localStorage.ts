@@ -10,6 +10,10 @@ import { verifySettings } from './settings/sagas';
 import { getBoilerplate } from '../newSolutionData';
 import { HostType } from '@microsoft/office-js-helpers';
 
+const GITHUB_TOKEN_KEY = 'github-token';
+const GITHUB_PROFILE_PIC_KEY = 'github-profile';
+const GITHUB_USERNAME_KEY = 'github-username';
+
 const SOLUTION_ROOT = 'solution#';
 let lastSavedState: IState;
 
@@ -36,7 +40,12 @@ export const loadState = (): Partial<IState> => {
       userSettings: verifiedUserSettings,
       lastActive: { solutionId: null, fileId: null },
     };
-    const github = JSON.parse(localStorage.getItem('github') || '{}');
+    const github = {
+      token: localStorage.getItem(GITHUB_TOKEN_KEY),
+      profilePicUrl: localStorage.getItem(GITHUB_PROFILE_PIC_KEY),
+      username: localStorage.getItem(GITHUB_USERNAME_KEY),
+      isLoggingInOrOut: false,
+    };
 
     return { solutions: { metadata: solutions, files }, settings: settingsState, github };
   } catch (err) {
@@ -65,21 +74,16 @@ export const saveState = (state: IState) => {
     // save github
     writeIfChanged(
       selectors.github.getProfilePicUrl,
-      'github-profile-pic-url',
+      GITHUB_PROFILE_PIC_KEY,
       state,
       lastSavedState,
     );
 
-    writeIfChanged(
-      selectors.github.getToken,
-      'github-access-token',
-      state,
-      lastSavedState,
-    );
+    writeIfChanged(selectors.github.getToken, GITHUB_TOKEN_KEY, state, lastSavedState);
 
     writeIfChanged(
       selectors.github.getUsername,
-      'github-username',
+      GITHUB_USERNAME_KEY,
       state,
       lastSavedState,
     );
