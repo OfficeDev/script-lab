@@ -10,10 +10,13 @@ import { verifySettings } from './settings/sagas';
 import { getBoilerplate } from '../newSolutionData';
 import { HostType } from '@microsoft/office-js-helpers';
 
-const GITHUB_TOKEN_KEY = 'github-token';
-const GITHUB_PROFILE_PIC_KEY = 'github-profile';
-const GITHUB_USERNAME_KEY = 'github-username';
+interface IStoredGitHubState {
+  token: string | null;
+  profilePicUrl: string | null;
+  username: string | null;
+}
 
+const GITHUB_KEY = 'github';
 const SOLUTION_ROOT = 'solution#';
 let lastSavedState: IState;
 
@@ -40,10 +43,9 @@ export const loadState = (): Partial<IState> => {
       userSettings: verifiedUserSettings,
       lastActive: { solutionId: null, fileId: null },
     };
+
     const github = {
-      token: localStorage.getItem(GITHUB_TOKEN_KEY),
-      profilePicUrl: localStorage.getItem(GITHUB_PROFILE_PIC_KEY),
-      username: localStorage.getItem(GITHUB_USERNAME_KEY),
+      ...JSON.parse(localStorage.getItem(GITHUB_KEY) || '{}'),
       isLoggingInOrOut: false,
     };
 
@@ -73,17 +75,12 @@ export const saveState = (state: IState) => {
 
     // save github
     writeIfChanged(
-      selectors.github.getProfilePicUrl,
-      GITHUB_PROFILE_PIC_KEY,
-      state,
-      lastSavedState,
-    );
-
-    writeIfChanged(selectors.github.getToken, GITHUB_TOKEN_KEY, state, lastSavedState);
-
-    writeIfChanged(
-      selectors.github.getUsername,
-      GITHUB_USERNAME_KEY,
+      (state: IState): IStoredGitHubState => ({
+        profilePicUrl: selectors.github.getProfilePicUrl(state),
+        username: selectors.github.getUsername(state),
+        token: selectors.github.getToken(state),
+      }),
+      GITHUB_KEY,
       state,
       lastSavedState,
     );
