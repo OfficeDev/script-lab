@@ -7,6 +7,7 @@
 - Login to github
   - Should be able to log in
   - Should see your snippets in snippets list
+    - Note: This is currently broken on IE, and somewhat broken on EDGE. An error appears saying "The security settings in your browser prevent us from creating a dialog box..."
 - Import someone else's snippet
   - From YAML
   - From Gist
