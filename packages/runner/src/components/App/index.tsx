@@ -38,6 +38,16 @@ export class App extends React.Component<{}, IState> {
     super(props);
 
     this.state = { solution: null };
+    Office.onReady(async () => {
+      const loadingIndicator = document.getElementById('loading');
+      if (loadingIndicator) {
+        const { parentNode } = loadingIndicator;
+        if (parentNode) {
+          parentNode.removeChild(loadingIndicator);
+        }
+      }
+      this.forceUpdate(); // TODO: is needed?
+    });
   }
 
   onReceiveNewActiveSolution = (solution: ISolution) => this.setState({ solution });
