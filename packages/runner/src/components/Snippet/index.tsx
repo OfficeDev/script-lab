@@ -1,4 +1,6 @@
 import React from 'react';
+import inlineScript from './templates/inlineScript';
+import { officeNamespacesForIframe } from '../../constants';
 
 function processLibraries(libraries: string, isInsideOffice: boolean) {
   const linkReferences: string[] = [];
@@ -62,6 +64,7 @@ interface IProps {
 
 class Snippet extends React.Component<IProps> {
   node; // ref to iframe node
+  // tslint:disable-next-line:variable-name
   _isMounted: boolean;
 
   constructor(props) {
@@ -97,9 +100,13 @@ class Snippet extends React.Component<IProps> {
 
   renderContents = () => {
     if (this._isMounted) {
+      this.setupIframe();
       const { solution } = this.props;
+
+      // gathering content out of solution
       const html = solution.files.find(file => file.name === 'index.html')!.content;
       const css = solution.files.find(file => file.name === 'index.css')!.content;
+      const script = solution.files.find(file => file.name === 'index.ts')!.content;
       const libraries = solution.files.find(file => file.name === 'libraries.txt')!
         .content;
       const { linkReferences, scriptReferences, officeJS } = processLibraries(
@@ -107,8 +114,7 @@ class Snippet extends React.Component<IProps> {
         false,
       );
 
-      const script = solution.files.find(file => file.name === 'index.ts')!.content;
-
+      // creating HTML of iFrame
       const scriptTags = scriptReferences
         .map(url => `<script src="${url}"></script>`)
         .join('');
@@ -117,12 +123,8 @@ class Snippet extends React.Component<IProps> {
         .join('');
 
       const inlineStyles = `<style>${css}</style>`;
-
       const head = `<head>${linkTags}${scriptTags}${inlineStyles}</head>`;
-
-      const inlineScript = `<script>${script}</script>`;
-      const body = `<body>${html}${inlineScript}</body>`;
-
+      const body = `<body>${html}${inlineScript(script)}</body>`;
       const content = `<!DOCTYPE html><html>${head}${body}</html>`;
 
       const doc = this.getContentDoc();
@@ -130,6 +132,26 @@ class Snippet extends React.Component<IProps> {
       doc.write(content);
       doc.close();
     }
+  };
+
+  setupIframe = () => {
+    if (!this._isMounted) {
+      return;
+    }
+
+    console.log('setting up iframe');
+
+    const iframe = this.node.contentWindow;
+
+    console.log(iframe);
+
+    // console logs
+    iframe.console = window.console;
+    iframe.onerror = (...args) => console.error(args);
+
+    officeNamespacesForIframe.forEach(
+      namespace => (iframe[namespace] = window.parent[namespace]),
+    );
   };
 
   handleLoad = () => {
@@ -142,6 +164,7 @@ class Snippet extends React.Component<IProps> {
     this.renderContents();
     return (
       <iframe
+        id="user-snippet"
         ref={node => (this.node = node)}
         style={{ width: '100%', height: '100%', margin: 0, border: 0 }}
       />
