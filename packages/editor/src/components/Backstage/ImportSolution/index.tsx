@@ -26,7 +26,7 @@ class ImportSolution extends Component<IProps, IState> {
         title="Import snippet"
         description="Enter the snippet's URL or paste the YAML below, then choose Import."
       >
-        <span className="ms-font-m">SNIPPET URL OR YAML</span>
+        <span className="ms-font-m">Snippet URL or YAML</span>
         <TextField
           multiline={true}
           rows={8}
