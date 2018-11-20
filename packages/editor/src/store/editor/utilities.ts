@@ -114,13 +114,11 @@ export function enablePrettierInMonaco(prettierSettings: IPrettierSettings) {
         token: monaco.CancellationToken,
       ): monaco.languages.TextEdit[] => {
         const text = document.getValue();
-        const formatted = prettier.format(text, {
-          parser: 'typescript',
-          plugins: [prettierTypeScript],
-          tabWidth: prettierSettings.tabWidth,
-          arrowParens: 'always',
-          printWidth: 120,
-        });
+        const formatted = runTypeScriptPrettier(
+          prettierTypeScript,
+          text,
+          prettierSettings,
+        );
 
         return [
           {
@@ -143,13 +141,21 @@ export async function formatTypeScriptFile(
   prettierSettings: IPrettierSettings,
 ): Promise<string> {
   return import('prettier/parser-typescript').then(prettierTypeScript => {
-    return prettier.format(content, {
-      parser: 'typescript',
-      plugins: [prettierTypeScript],
-      tabWidth: prettierSettings.tabWidth,
-      arrowParens: 'always',
-      printWidth: 120,
-    });
+    return runTypeScriptPrettier(prettierTypeScript, content, prettierSettings);
+  });
+}
+
+function runTypeScriptPrettier(
+  prettierTS: any,
+  content: string,
+  prettierSettings: IPrettierSettings,
+) {
+  return prettier.format(content, {
+    parser: 'typescript',
+    plugins: [prettierTS],
+    tabWidth: prettierSettings.tabWidth,
+    arrowParens: 'always',
+    printWidth: 120,
   });
 }
 

@@ -235,7 +235,7 @@ function* applyFormattingSaga() {
     monacoEditor.trigger(
       'editor' /* source, unused */,
       'editor.action.formatDocument',
-      '',
+      '' /* payload, unused */,
     );
   }
 }

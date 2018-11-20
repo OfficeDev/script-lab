@@ -113,7 +113,7 @@ function* handleGetDefaultFailureSaga(
 }
 
 export function* createSolutionSaga(solution: ISolution) {
-  // TODO: eventually run prettier on office-js snippets so we don't need to run it here.
+  // TODO: eventually optimize perf see https://github.com/OfficeDev/script-lab-react/issues/343
   // after testing it a few times, it runs anywhere from 4ms to 100ms
   let newSolution = solution;
   const tabWidth = yield select(selectors.settings.getTabSize);
