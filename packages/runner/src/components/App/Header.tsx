@@ -3,10 +3,10 @@ import React from 'react';
 import CommonHeader from 'common/lib/components/Header';
 
 export interface IProps {
-  solutionName: string;
+  solutionName?: string;
 
   goBack?: () => void;
-  refresh: () => void;
+  refresh?: () => void;
 }
 
 const Header = ({ solutionName, goBack, refresh }: IProps) => {
@@ -18,8 +18,8 @@ const Header = ({ solutionName, goBack, refresh }: IProps) => {
     {
       item: {
         key: 'title',
-        iconProps: { iconName: 'Refresh' },
-        text: solutionName,
+        iconProps: solutionName ? { iconName: 'Refresh' } : {},
+        text: solutionName || 'No Snippet Selected',
         onClick: refresh,
       },
     },

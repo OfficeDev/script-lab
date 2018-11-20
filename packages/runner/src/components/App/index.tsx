@@ -49,9 +49,7 @@ export class App extends React.Component<{}, IState> {
           <HeaderFooterLayout
             header={
               <Header
-                solutionName={
-                  this.state.solution ? this.state.solution.name : 'No Snippet Selected'
-                }
+                solutionName={this.state.solution ? this.state.solution.name : undefined}
                 goBack={() => {}}
                 refresh={() => window.location.reload()}
               />
