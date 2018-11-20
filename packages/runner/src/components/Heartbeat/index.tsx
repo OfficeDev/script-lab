@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
-const LOCAL_STORAGE_POLLING_INTERVAL = 500; // ms
-const URL = 'http://localhost:3000'; // TODO: NICO UNDO THIS
+const LOCAL_STORAGE_POLLING_INTERVAL = 1000; // ms
+const URL = 'https://localhost:3000'; // TODO: NICO UNDO THIS
 const HEARTBEAT_HTML_URL = `${URL}/heartbeat.html`;
 const GET_ACTIVE_SOLUTION_REQUEST_MESSAGE = 'GET_ACTIVE_SOLUTION';
 

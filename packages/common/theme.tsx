@@ -16,8 +16,6 @@ const neutralColors: IThemeNeutralColors = {
 
 export const getCommandBarFabricTheme = (hostOrTheme: string | ITheme) => {
   const theme = typeof hostOrTheme === 'string' ? getTheme(hostOrTheme) : hostOrTheme;
-  console.log(hostOrTheme);
-  console.log(theme);
   return createTheme({
     palette: {
       themePrimary: theme.white, // color used for icons in context menu

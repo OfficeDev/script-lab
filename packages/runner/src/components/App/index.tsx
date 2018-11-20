@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-
+import { Utilities } from '@microsoft/office-js-helpers';
 import Theme from 'common/lib/components/Theme';
 import Heartbeat from '../Heartbeat';
 import Header from './Header';
@@ -54,11 +54,13 @@ export class App extends React.Component<{}, IState> {
 
   render() {
     return (
-      <Theme host={this.state.solution ? this.state.solution.host : 'WEB'}>
-        <>
+      <>
+        <Theme host={this.state.solution ? this.state.solution.host : Utilities.host}>
           <Layout>
             <Header
-              solutionName="Blank Snippet (1)"
+              solutionName={
+                this.state.solution ? this.state.solution.name : 'No Snippet Selected'
+              }
               goBack={() => {}}
               refresh={() => {}}
             />
@@ -68,9 +70,9 @@ export class App extends React.Component<{}, IState> {
               {this.state.solution && <Snippet solution={this.state.solution!} />}
             </ContentContainer>
           </Layout>
-          <Heartbeat onReceiveNewActiveSolution={this.onReceiveNewActiveSolution} />
-        </>
-      </Theme>
+        </Theme>
+        <Heartbeat onReceiveNewActiveSolution={this.onReceiveNewActiveSolution} />
+      </>
     );
   }
 }

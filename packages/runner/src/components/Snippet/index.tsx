@@ -133,7 +133,9 @@ class Snippet extends React.Component<IProps> {
   };
 
   handleLoad = () => {
-    this.forceUpdate();
+    if (this._isMounted) {
+      this.forceUpdate();
+    }
   };
 
   render() {
