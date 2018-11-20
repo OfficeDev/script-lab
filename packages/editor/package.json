@@ -32,7 +32,7 @@
   },
   "scripts": {
     "analyze": "source-map-explorer build/static/js/main.*",
-    "postinstall": "node scripts/postinstall.js",
+    "postinstall": "ts-node --project ../../scripts/tsconfig.json scripts/postinstall.ts",
     "start": "set HTTPS=true&&react-scripts start",
     "lint": "tslint \"src/**/*.ts?(x)\"",
     "build": "node scripts/build.js",
@@ -46,6 +46,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.1.6",
+    "@microsoft/office-js": "1.1.10",
     "@storybook/addon-a11y": "^4.0.6",
     "@storybook/addon-actions": "^4.0.6",
     "@storybook/addon-knobs": "^4.0.6",
@@ -75,6 +76,7 @@
     "shelljs": "^0.8.2",
     "source-map-explorer": "^1.6.0",
     "ts-jest": "^23.10.4",
+    "ts-node": "^7.0.1",
     "tslint": "^5.11.0",
     "tslint-config-prettier": "^1.16.0",
     "tslint-react": "^3.6.0",

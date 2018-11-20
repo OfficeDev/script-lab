@@ -22,9 +22,15 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    <script src="%PUBLIC_URL%/external/vs/loader.js"></script>
+    <script src="%PUBLIC_URL%/external/monaco-editor-0-14-3/vs/loader.js"></script>
 
+    <!--
+      For offline office-js debugging, uncomment the local office-js below (while commenting
+      out the CDN one). Don't forget to reverse this before committing!
+    -->
+    <!-- <script src="%PUBLIC_URL%/external/office-js/office.js"></script> -->
     <script src="https://appsforoffice.microsoft.com/lib/1/hosted/Office.js"></script>
+
     <script>
       // For now, set Office.initialize to an empty function, to work around an issue with onReady
       // (As of Nov 1st 2018, onReady works, but requires Office.initialize to still be set).
