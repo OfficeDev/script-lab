@@ -4,5 +4,8 @@
     "**/.DS_Store": true // this is a default value
   },
   "editor.formatOnSave": true,
-  "typescript.tsdk": "node_modules\\typescript\\lib"
+  "typescript.tsdk": "node_modules\\typescript\\lib",
+  "cSpell.words": [
+    "uncomment"
+  ]
 }
