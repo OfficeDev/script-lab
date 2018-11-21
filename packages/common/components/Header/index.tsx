@@ -16,23 +16,28 @@ interface IPrivateProps extends IProps {
   theme: ITheme | any; // from withTheme
 }
 
-const Header = (props: IPrivateProps) => (
-  <Customizer settings={{ theme: getCommandBarFabricTheme(props.theme) }}>
-    <CommandBar
-      {...merge(omit(props, ['theme']), {
-        styles: {
-          root: {
-            paddingLeft: 0,
-            paddingRight: {
-              [PlatformType.PC]: '20px',
-              [PlatformType.Mac]: '40px',
-              [PlatformType.OfficeOnline]: '0px',
-            }[getPlatform()],
+const Header = (props: IPrivateProps) => {
+  const items = props.items.filter(({ hidden }) => !hidden);
+  const farItems = props.farItems ? props.farItems.filter(({ hidden }) => !hidden) : [];
+
+  return (
+    <Customizer settings={{ theme: getCommandBarFabricTheme(props.theme) }}>
+      <CommandBar
+        {...merge(omit({ ...props, items, farItems }, ['theme']), {
+          styles: {
+            root: {
+              paddingLeft: 0,
+              paddingRight: {
+                [PlatformType.PC]: '20px',
+                [PlatformType.Mac]: '40px',
+                [PlatformType.OfficeOnline]: '0px',
+              }[getPlatform()],
+            },
           },
-        },
-      })}
-    />
-  </Customizer>
-);
+        })}
+      />
+    </Customizer>
+  );
+};
 
 export default withTheme(Header);
