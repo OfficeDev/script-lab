@@ -4,7 +4,11 @@ import { withTheme } from 'styled-components';
 import merge from 'lodash/merge';
 
 import { Customizer } from 'office-ui-fabric-react/lib/Utilities';
-import { CommandBar, ICommandBarProps } from 'office-ui-fabric-react/lib/CommandBar';
+import {
+  CommandBar,
+  ICommandBarProps,
+  ICommandBarItemProps,
+} from 'office-ui-fabric-react/lib/CommandBar';
 
 import { getCommandBarFabricTheme } from '../../theme';
 import { Wrapper } from './styles';
@@ -16,58 +20,12 @@ interface IPrivateProps extends IProps {
 }
 
 const Footer = (props: IPrivateProps) => {
-  const items = props.items
-    .filter(({ hidden }) => !hidden)
-    .map(item => {
-      console.log(item);
-      return merge(item, {
-        ...(item.subMenuProps
-          ? {
-              subMenuProps: {
-                isBeakVisible: true,
-                shouldFocusOnMount: true,
-                styles: {
-                  root: {
-                    backgroundColor: props.theme.primary,
-                    color: props.theme.white,
-                  },
-                },
-                items:
-                  item.subMenuProps !== undefined && item.subMenuProps.items
-                    ? item.subMenuProps.items.map(subItem =>
-                        merge(subItem, {
-                          itemProps: {
-                            styles: {
-                              root: {
-                                background: props.theme.primary,
-                                selectors: {
-                                  ':hover': {
-                                    background: props.theme.primaryDark,
-                                  },
-                                  ':active': {
-                                    background: props.theme.primaryDarker,
-                                  },
-                                },
-                              },
-                              label: {
-                                color: props.theme.white,
-                              },
-                            },
-                          },
-                        }),
-                      )
-                    : [],
-              },
-            }
-          : {}),
-
-        style: { fontSize: '1.2rem' },
-      });
-    });
+  const items = normalizeItems(props.items, props.theme);
+  const farItems = props.farItems ? normalizeItems(props.farItems, props.theme) : [];
 
   const { theme, ...propsNoTheme } = props;
   const mergedProps = merge(
-    { ...propsNoTheme, items },
+    { ...propsNoTheme, items, farItems },
     {
       styles: {
         root: {
@@ -87,5 +45,58 @@ const Footer = (props: IPrivateProps) => {
     </Customizer>
   );
 };
+
+function normalizeItems(
+  items: ICommandBarItemProps[],
+  theme: ITheme,
+): ICommandBarItemProps[] {
+  return items
+    .filter(({ hidden }) => !hidden)
+    .map(item => {
+      return merge(item, {
+        ...(item.subMenuProps
+          ? {
+              subMenuProps: {
+                isBeakVisible: true,
+                shouldFocusOnMount: true,
+                styles: {
+                  root: {
+                    backgroundColor: theme.primary,
+                    color: theme.white,
+                  },
+                },
+                items:
+                  item.subMenuProps !== undefined && item.subMenuProps.items
+                    ? item.subMenuProps.items.map(subItem =>
+                        merge(subItem, {
+                          itemProps: {
+                            styles: {
+                              root: {
+                                background: theme.primary,
+                                selectors: {
+                                  ':hover': {
+                                    background: theme.primaryDark,
+                                  },
+                                  ':active': {
+                                    background: theme.primaryDarker,
+                                  },
+                                },
+                              },
+                              label: {
+                                color: theme.white,
+                              },
+                            },
+                          },
+                        }),
+                      )
+                    : [],
+              },
+            }
+          : {}),
+
+        style: { fontSize: '1.2rem' },
+      });
+    });
+}
 
 export default withTheme(Footer);

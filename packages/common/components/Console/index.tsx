@@ -24,6 +24,7 @@ export enum ConsoleLogSeverities {
 export interface IProps {
   logs: ILogData[];
   clearLogs: () => void;
+  style?: object;
 }
 
 interface IPrivateProps extends IProps {
@@ -36,6 +37,10 @@ interface IState {
 }
 
 class Console extends React.Component<IPrivateProps, IState> {
+  static defaultProps = {
+    style: {},
+  };
+
   constructor(props: IPrivateProps) {
     super(props);
     this.state = { shouldScrollToBottom: true, filterQuery: '' };
@@ -64,10 +69,10 @@ class Console extends React.Component<IPrivateProps, IState> {
   }
 
   render() {
-    const { theme, logs, clearLogs } = this.props;
+    const { theme, logs, clearLogs, style } = this.props;
 
     return (
-      <Wrapper>
+      <Wrapper style={{ ...style }}>
         <FilterWrapper>
           <ClearButton onClick={clearLogs}>
             <Icon
