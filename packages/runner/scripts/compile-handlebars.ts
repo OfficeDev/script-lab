@@ -5,9 +5,9 @@ const templatesPath = './src/components/Snippet/templates';
 const compiledTemplatesPath = `${templatesPath}/compiled`;
 
 // delete old compiled handlebars
-fs.readdirSync(compiledTemplatesPath).map(file =>
-  fs.removeSync(`${compiledTemplatesPath}/${file}`),
-);
+fs.readdirSync(compiledTemplatesPath)
+  .filter(file => file !== '.gitkeep')
+  .map(file => fs.removeSync(`${compiledTemplatesPath}/${file}`));
 
 // generate new ones
 fs.readdirSync(templatesPath)
