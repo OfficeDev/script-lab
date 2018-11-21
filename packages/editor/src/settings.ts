@@ -38,7 +38,11 @@ const getUserSettingsContent = (userSettings: Partial<ISettings>): string => {
 const getAboutContent = (): string => {
   const commit = process.env.REACT_APP_COMMIT;
   const lastUpdated = process.env.REACT_APP_LAST_UPDATED;
-  return `Last Updated: ${lastUpdated}\nCommit: ${commit}\nEnvironment: ${environmentName}`;
+  return [
+    `Last Updated: ${lastUpdated}`,
+    `Commit: https://github.com/OfficeDev/script-lab-react/commits/${commit}`,
+    `Environment: ${environmentName}`,
+  ].join('\n');
 };
 
 const getSettingsFiles = (
