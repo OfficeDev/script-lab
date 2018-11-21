@@ -1,5 +1,7 @@
 import React from 'react';
 import inlineScript from './templates/inlineScript';
+import 'handlebars/lib/handlebars.runtime';
+import './templates/compiled/newsnippet.handlebars';
 import { officeNamespacesForIframe } from '../../constants';
 
 function processLibraries(libraries: string, isInsideOffice: boolean) {
@@ -105,8 +107,9 @@ class Snippet extends React.Component<IProps> {
 
       // gathering content out of solution
       const html = solution.files.find(file => file.name === 'index.html')!.content;
-      const css = solution.files.find(file => file.name === 'index.css')!.content;
-      const script = solution.files.find(file => file.name === 'index.ts')!.content;
+      const inlineStyles = solution.files.find(file => file.name === 'index.css')!
+        .content;
+      const inlineScript = solution.files.find(file => file.name === 'index.ts')!.content;
       const libraries = solution.files.find(file => file.name === 'libraries.txt')!
         .content;
       const { linkReferences, scriptReferences, officeJS } = processLibraries(
@@ -115,21 +118,30 @@ class Snippet extends React.Component<IProps> {
       );
 
       // creating HTML of iFrame
-      const scriptTags = scriptReferences
-        .map(url => `<script src="${url}"></script>`)
-        .join('');
-      const linkTags = linkReferences
-        .map(url => `<link rel="stylesheet" href="${url}">`)
-        .join('');
+      // const scriptTags = scriptReferences
+      //   .map(url => `<script src="${url}"></script>`)
+      //   .join('');
+      // const linkTags = linkReferences
+      //   .map(url => `<link rel="stylesheet" href="${url}">`)
+      //   .join('');
 
-      const inlineStyles = `<style>${css}</style>`;
-      const head = `<head>${linkTags}${scriptTags}${inlineStyles}</head>`;
-      const body = `<body>${html}${inlineScript(script)}</body>`;
-      const content = `<!DOCTYPE html><html>${head}${body}</html>`;
+      // const inlineStyles = `<style>${css}</style>`;
+      // const head = `<head>${linkTags}${scriptTags}${inlineStyles}</head>`;
+      // const body = `<body>${html}${inlineScript(script)}</body>`;
+      // const content = `<!DOCTYPE html><html>${head}${body}</html>`;
 
+      const resultFromHandlebars = Handlebars.templates.newsnippet({
+        linkReferences,
+        scriptReferences,
+        inlineStyles,
+        html,
+        inlineScript,
+      });
+
+      console.log({ resultFromHandlebars });
       const doc = this.getContentDoc();
       doc.open('text/html', 'replace');
-      doc.write(content);
+      // doc.write(content);
       doc.close();
     }
   };
