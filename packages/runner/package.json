@@ -14,19 +14,26 @@
     "styled-components": "^3.4.6"
   },
   "scripts": {
+    "postinstall": "yarn handlebars",
     "start": "react-scripts start",
+    "handlebars": "ts-node --project ../../scripts/tsconfig.json scripts/compile-handlebars.ts",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
   "devDependencies": {
+    "@types/fs-extra": "^5.0.4",
     "@types/jest": "^23.3.2",
     "@types/lodash": "^4.14.118",
     "@types/node": "^10.9.4",
     "@types/office-js": "^0.0.111",
     "@types/react": "^16.4.14",
     "@types/react-dom": "^16.0.7",
+    "@types/shelljs": "^0.8.0",
+    "fs-extra": "^7.0.1",
     "react-scripts": "^2.1.0",
+    "shelljs": "^0.8.3",
+    "ts-node": "^7.0.1",
     "typescript": "^3.0.3"
   },
   "browserslist": [

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  {{#each linkReferences}}
+    <link rel="stylesheet" href="{{this}}" />
+  {{/each}}
+
+  {{#each scriptReferences}}
+    <script crossorigin="anonymous" src="{{this}}"></script>
+  {{/each}}
+
+  <style type="text/css">
+    {{{ inlineStyles }}}
+  </style>
+</head>
+
+<body>
+  {{{ html }}}
+
+  <script type="text/javascript">
+    Office.onReady(function () {
+      {{{ inlineScript }}}
+    });
+  </script>
+</body>
+
+</html>
