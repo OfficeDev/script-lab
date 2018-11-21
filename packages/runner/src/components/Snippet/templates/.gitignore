@@ -1,7 +1,0 @@
-# exclude all compiled handlebars templates
-compiled/*
-
-# but dont exclude the .gitkeep otherwise "yarn handlebars" will
-# fail saying that the compiled folder doesn't exist
-# and you can't check an empty directory into github
-!compiled/.gitkeep

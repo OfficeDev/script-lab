@@ -1,7 +1,8 @@
 import React from 'react';
-import inlineScript from './templates/inlineScript';
-import 'handlebars/lib/handlebars.runtime';
-import './templates/compiled/newsnippet.handlebars';
+// import inlineScript from './templates/inlineScript';
+// import 'handlebars/lib/handlebars.runtime';
+// import './templates/compiled/newsnippet.handlebars';
+import template from './template';
 import { officeNamespacesForIframe } from '../../constants';
 
 function processLibraries(libraries: string, isInsideOffice: boolean) {
@@ -117,31 +118,18 @@ class Snippet extends React.Component<IProps> {
         false,
       );
 
-      // creating HTML of iFrame
-      // const scriptTags = scriptReferences
-      //   .map(url => `<script src="${url}"></script>`)
-      //   .join('');
-      // const linkTags = linkReferences
-      //   .map(url => `<link rel="stylesheet" href="${url}">`)
-      //   .join('');
-
-      // const inlineStyles = `<style>${css}</style>`;
-      // const head = `<head>${linkTags}${scriptTags}${inlineStyles}</head>`;
-      // const body = `<body>${html}${inlineScript(script)}</body>`;
-      // const content = `<!DOCTYPE html><html>${head}${body}</html>`;
-
-      const resultFromHandlebars = Handlebars.templates.newsnippet({
+      const content = template({
         linkReferences,
         scriptReferences,
+        inlineScript,
         inlineStyles,
         html,
-        inlineScript,
       });
 
-      console.log({ resultFromHandlebars });
+      // console.log({ resultFromHandlebars });
       const doc = this.getContentDoc();
       doc.open('text/html', 'replace');
-      // doc.write(content);
+      doc.write(content);
       doc.close();
     }
   };
