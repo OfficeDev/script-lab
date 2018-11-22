@@ -3,7 +3,7 @@ import { storiesOf } from '@storybook/react';
 
 import { Header } from './';
 import { getCommandBarFabricTheme } from '../../../theme';
-import { getBoilerplate, getBoilerplateSolution } from '../../../newSolutionData';
+import { getBoilerplate } from '../../../newSolutionData';
 import { SCRIPT_FILE_NAME } from '../../../constants';
 
 const voidFunc = () => {};
@@ -55,6 +55,8 @@ const defaultHeaderProps = {
       isPrimary: boolean;
     }>,
   ) => {},
+  navigateToRun: () => {},
+  showTrustError: () => {},
 };
 
 storiesOf('IDE|Header', module)

@@ -65,6 +65,7 @@
     "@types/styled-components": "^4.1.0",
     "@uifabric/jest-serializer-merge-styles": "^6.0.5",
     "awesome-typescript-loader": "^5.2.1",
+    "babel-loader": "^8.0.4",
     "enzyme": "^3.4.1",
     "enzyme-adapter-react-16": "^1.2.0",
     "enzyme-to-json": "^3.3.4",
