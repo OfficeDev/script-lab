@@ -68,7 +68,8 @@ export class App extends React.Component<{}, IState> {
     });
   };
 
-  addLog = (log: ILogData) => this.setState({ logs: [...this.state.logs, log] });
+  addLog = (log: ILogData) =>
+    this.setState({ logs: [...this.state.logs, log], isConsoleOpen: true });
   clearLogs = () => this.setState({ logs: [] });
 
   openConsole = () => this.setState({ isConsoleOpen: true });
