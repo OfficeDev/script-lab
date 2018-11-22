@@ -80,13 +80,8 @@ function* onFileOpenSaga(action: ActionType<typeof editor.newFileOpened>) {
 }
 
 export function* hideLoadingSplashScreen() {
-  const loadingIndicator = document.getElementById('loading');
-  if (loadingIndicator) {
-    const { parentNode } = loadingIndicator;
-    if (parentNode) {
-      parentNode.removeChild(loadingIndicator);
-    }
-  }
+  const loadingIndicator = document.getElementById('loading')!;
+  loadingIndicator.style.visibility = 'hidden';
 }
 
 function* initializeMonacoSaga(action: ActionType<typeof editor.onMount>) {

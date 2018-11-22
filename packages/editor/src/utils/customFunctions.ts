@@ -57,7 +57,7 @@ export async function getCustomFunctionEngineStatus(): Promise<
   ICustomFunctionEngineStatus
 > {
   if (!Office || !Office.context || !Office.context.requirements) {
-    return { enabled: false };
+    throw new Error('This page is expected to only run inside of Excel');
   }
 
   if (Office.context.requirements.isSetSupported('CustomFunctions', 1.6)) {

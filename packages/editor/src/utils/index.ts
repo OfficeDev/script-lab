@@ -111,3 +111,121 @@ export const convertSolutionToSnippet = (solution: ISolution): ISnippet => {
     ...snippetFiles,
   };
 };
+
+export function stringifyPlusPlus(object: any): string {
+  if (object === null) {
+    return 'null';
+  }
+
+  if (typeof object === 'undefined') {
+    return 'undefined';
+  }
+
+  // Don't JSON.stringify strings, because we don't want quotes in the output
+  if (typeof object === 'string') {
+    return object;
+  }
+
+  if (object instanceof Error) {
+    try {
+      return 'Error: ' + '\n' + jsonStringify(object);
+    } catch (e) {
+      return stringifyPlusPlus(object.toString());
+    }
+  }
+  if (object.toString() !== '[object Object]') {
+    return object.toString();
+  }
+
+  // Otherwise, stringify the object
+  return jsonStringify(object);
+}
+
+function jsonStringify(object: any): string {
+  return JSON.stringify(
+    object,
+    (key, value) => {
+      if (value && typeof value === 'object' && !Array.isArray(value)) {
+        return getStringifiableSnapshot(value);
+      }
+      return value;
+    },
+    4,
+  );
+
+  function getStringifiableSnapshot(object: any) {
+    const snapshot: any = {};
+
+    try {
+      let current = object;
+
+      do {
+        Object.getOwnPropertyNames(current).forEach(tryAddName);
+        current = Object.getPrototypeOf(current);
+      } while (current);
+
+      return snapshot;
+    } catch (e) {
+      return object;
+    }
+
+    function tryAddName(name: string) {
+      const hasOwnProperty = Object.prototype.hasOwnProperty;
+      if (name.indexOf(' ') < 0 && !hasOwnProperty.call(snapshot, name)) {
+        Object.defineProperty(snapshot, name, {
+          configurable: true,
+          enumerable: true,
+          get: () => object[name],
+        });
+      }
+    }
+  }
+}
+
+export function invokeGlobalErrorHandler(error: any) {
+  console.error('Global error handler:');
+  console.error(error);
+
+  const loadingElement = document.getElementById('loading')!;
+  loadingElement.style.visibility = 'initial';
+
+  const subtitleElement = document.querySelectorAll('#loading h2')[0] as HTMLElement;
+
+  subtitleElement.innerHTML = [
+    'An unexpected error has occurred.',
+    'Click for more info.',
+  ].join('<br/>');
+  subtitleElement.style.display = 'block';
+  subtitleElement.style.cursor = 'pointer';
+  subtitleElement.style.marginTop = '10px';
+  subtitleElement.addEventListener('click', () => {
+    subtitleElement.style.display = 'none';
+    const errorMessageElement = document.createElement('pre');
+    errorMessageElement.textContent = stringifyPlusPlus(error);
+    loadingElement.insertBefore(errorMessageElement, subtitleElement);
+  });
+
+  // If this is (somehow) the second time that the event handler is ignored, do some cleanup
+  const previousErrorMessageElement: HTMLElement = document.querySelectorAll(
+    '#loading pre',
+  )[0] as HTMLElement;
+  if (previousErrorMessageElement) {
+    loadingElement.removeChild(previousErrorMessageElement);
+  }
+
+  // Remove the loading dots (surrounding with if-statement safety check in case this is invoked twice)
+  const loadingDotsElement = document.querySelectorAll(
+    '#loading .loading-indicator',
+  )[0] as HTMLElement;
+  if (loadingDotsElement) {
+    loadingDotsElement.parentNode!.removeChild(loadingDotsElement);
+  }
+
+  // Remove the root element (surrounding with if-statement safety check in case this is invoked twice)
+  const rootElement = document.getElementById('root');
+  if (rootElement) {
+    rootElement.parentNode!.removeChild(rootElement);
+  }
+
+  return true;
+}

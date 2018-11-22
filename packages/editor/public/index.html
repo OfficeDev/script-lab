@@ -29,7 +29,7 @@
       out the CDN one). Don't forget to reverse this before committing!
     -->
     <!-- <script src="%PUBLIC_URL%/external/office-js/office.js"></script> -->
-    <script src="https://appsforoffice.microsoft.com/lib/1/hosted/Office.js"></script>
+    <script src="https://appsforoffice.microsoft.com/lib/1/hosted/Office.debug.js"></script>
 
     <script>
       // For now, set Office.initialize to an empty function, to work around an issue with onReady
@@ -89,7 +89,37 @@
         justify-content: center;
       }
 
-      .loading-indicator {
+      #loading > img {
+        height: 120px;
+        margin-bottom: 15px;
+      }
+
+      #loading > h1 {
+        color: #666;
+        margin-top: 10px;
+        margin-bottom: 10px;
+      }
+
+      #loading > h2 {
+        color: #999;
+        margin-bottom: 20px;
+        max-width: 250px;
+        text-align: center;
+      }
+
+      /* Used for error display */
+      #loading > pre {
+        color: #999;
+        margin-top: 10px;
+        max-height: 50%;
+        max-width: 100%;
+        padding: 0px 80px;
+        word-break: break-all;
+        white-space: pre-wrap;
+        overflow-y: auto;
+      }
+
+      #loading > .loading-indicator {
         margin: 20px auto 0;
         -webkit-box-sizing: border-box;
         box-sizing: border-box;
@@ -97,9 +127,9 @@
         text-align: center;
       }
 
-      .loading-indicator > div {
-        width: 18px;
-        height: 18px;
+      #loading > .loading-indicator > div {
+        width: 10px;
+        height: 10px;
         background-color: #d83b01;
         margin: 3px;
         -webkit-box-sizing: border-box;
@@ -111,27 +141,27 @@
         animation: loading-animation 1.4s infinite ease-in-out both;
       }
 
-      .loading-indicator .ball1 {
+      #loading > .loading-indicator .ball1 {
         -webkit-animation-delay: -0.8s;
         animation-delay: -0.8s;
       }
 
-      .loading-indicator .ball2 {
+      #loading > .loading-indicator .ball2 {
         -webkit-animation-delay: -0.64s;
         animation-delay: -0.64s;
       }
 
-      .loading-indicator .ball3 {
+      #loading > .loading-indicator .ball3 {
         -webkit-animation-delay: -0.48s;
         animation-delay: -0.48s;
       }
 
-      .loading-indicator .ball4 {
+      #loading > .loading-indicator .ball4 {
         -webkit-animation-delay: -0.32s;
         animation-delay: -0.32s;
       }
 
-      .loading-indicator .ball5 {
+      #loading > .loading-indicator .ball5 {
         -webkit-animation-delay: -0.16s;
         animation-delay: -0.16s;
       }
@@ -169,8 +199,9 @@
   <body class="ms-Fabric">
     <noscript> You need to enable JavaScript to run this app. </noscript>
     <div id="loading">
-      <img src="assets/images/icon-large.svg" style="height: 200px; width: 200px" />
-      <h1 class="ms-font-su" style="margin-top: 2rem;">Script Lab</h1>
+      <img src="assets/images/icon-large.svg" />
+      <h1 class="ms-font-xxl">Script Lab</h1>
+      <h2 class="ms-font-m">Code ● Run ● Share</h2>
       <div class="loading-indicator">
         <div class="ball1"></div>
         <div class="ball2"></div>
@@ -180,15 +211,5 @@
       </div>
     </div>
     <div id="root"></div>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
-
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
-
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
   </body>
 </html>

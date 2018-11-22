@@ -14,6 +14,7 @@ import selectors from '../../store/selectors';
 import { localStorageKeys } from '../../constants';
 import { editor } from '../../store/actions';
 import { getCustomFunctionEngineStatus } from '../../utils/customFunctions';
+import { invokeGlobalErrorHandler } from '../../utils';
 
 interface IPropsFromRedux {
   hasCustomFunctionsInSolutions: boolean;
@@ -49,18 +50,20 @@ export class CustomFunctionsDashboard extends React.Component<IProps, IState> {
   }
 
   componentDidMount() {
-    getCustomFunctionEngineStatus().then(status => {
-      if (status) {
-        this.setState({ engineStatus: status });
+    getCustomFunctionEngineStatus()
+      .then(status => {
+        if (status) {
+          this.setState({ engineStatus: status });
 
-        this.props.hideLoadingSplashScreen();
+          this.props.hideLoadingSplashScreen();
 
-        this.localStorageCheckInterval = setInterval(
-          this.getCustomFunctionsLastModified,
-          1000,
-        );
-      }
-    });
+          this.localStorageCheckInterval = setInterval(
+            this.getCustomFunctionsLastModified,
+            1000,
+          );
+        }
+      })
+      .catch(e => invokeGlobalErrorHandler(e));
   }
 
   componentWillUnmount() {
