@@ -13,14 +13,13 @@ export default ({
   inlineStyles,
   html,
   inlineScript,
-}: IProps) => `
-<!DOCTYPE html>
+}: IProps) => `<!DOCTYPE html>
 <html>
 
 <head>
-  ${linkReferences.map(href => `<link rel="stylesheet" href="${href}" />`).join('\n')}
+  ${linkReferences.map(href => `<link rel="stylesheet" href="${href}" />`).join('\n  ')}
 
-  ${scriptReferences.map(src => `<script crossorigin="anonymous" src="${src}"></script>`).join('\n')}
+  ${scriptReferences.map(src => `<script crossorigin="anonymous" src="${src}"></script>`).join('\n  ')}
 
   <style type="text/css">
     ${inlineStyles}
@@ -37,5 +36,4 @@ export default ({
   </script>
 </body>
 
-</html>
-`;
+</html>`;
