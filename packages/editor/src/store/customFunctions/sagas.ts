@@ -22,14 +22,15 @@ import { fetchLogsAndHeartbeat, updateEngineStatus, openDashboard } from './acti
 import { push } from 'connected-react-router';
 
 export default function* customFunctionsWatcher() {
-  yield takeEvery(
-    getType(customFunctions.fetchMetadata.request),
-    fetchCustomFunctionsMetadataSaga,
-  );
-  yield takeEvery(
-    getType(customFunctions.fetchMetadata.success),
-    registerCustomFunctionsMetadataSaga,
-  );
+  // FIXME zlatkovsky
+  // yield takeEvery(
+  //   getType(customFunctions.fetchMetadata.request),
+  //   fetchCustomFunctionsMetadataSaga,
+  // );
+  // yield takeEvery(
+  //   getType(customFunctions.fetchMetadata.success),
+  //   registerCustomFunctionsMetadataSaga,
+  // );
 
   yield takeEvery(
     getType(customFunctions.fetchLogsAndHeartbeat),
@@ -46,6 +47,7 @@ export function* fetchCustomFunctionsMetadataSaga() {
 
   const snippets = solutions.map(solution => convertSolutionToSnippet(solution));
 
+  // FIXME zlatkovsky parse locally!
   const { response, error } = yield call(request, {
     method: 'POST',
     url: `${RUNNER_URL}/custom-functions/parse-metadata`,
@@ -56,22 +58,6 @@ export function* fetchCustomFunctionsMetadataSaga() {
     yield put(customFunctions.fetchMetadata.success(response));
   } else {
     yield put(customFunctions.fetchMetadata.failure(error));
-  }
-}
-
-function* registerCustomFunctionsMetadataSaga(
-  action: ActionType<typeof customFunctions.registerMetadata.request>,
-) {
-  const { visual, code } = action.payload;
-  try {
-    yield call(registerMetadata, visual, code);
-    yield put(customFunctions.registerMetadata.success());
-
-    const engineStatus = yield call(getCustomFunctionEngineStatus);
-    yield put(updateEngineStatus(engineStatus));
-    yield put(customFunctions.updateRunner({ isAlive: true, lastUpdated: Date.now() }));
-  } catch (error) {
-    yield put(customFunctions.registerMetadata.failure(error));
   }
 }
 

@@ -107,11 +107,12 @@ export const saveState = (state: IState) => {
       localStorage.setItem('activeSolution', 'null');
     }
 
-    const cfPostData = getCFPostData(state);
-    localStorage.setItem(
-      localStorageKeys.customFunctionsRunPostData,
-      JSON.stringify(cfPostData),
-    );
+    // FIXME Zlatkovsky
+    // const cfPostData = getCFPostData(state);
+    // localStorage.setItem(
+    //   localStorageKeys.customFunctionsRunPostData,
+    //   JSON.stringify(cfPostData),
+    // );
 
     localStorage.setItem(
       localStorageKeys.customFunctionsLastUpdatedCodeTimestamp,
@@ -277,35 +278,36 @@ export const getCustomFunctionLogs = (): ILogData[] | null => {
   }
 };
 
-const getCFPostData = (state: IState): IRunnerCustomFunctionsPostData => {
-  const cfSolutions = selectors.customFunctions.getSolutions(state);
+// FIXME zlatkovsky
+// const getCFPostData = (state: IState): IRunnerCustomFunctionsPostData => {
+//   const cfSolutions = selectors.customFunctions.getSolutions(state);
 
-  const snippets = cfSolutions.map(solution => {
-    const snippet = convertSolutionToSnippet(solution);
-    const { name, id, libraries, script } = snippet;
+//   const snippets = cfSolutions.map(solution => {
+//     const snippet = convertSolutionToSnippet(solution);
+//     const { name, id, libraries, script } = snippet;
 
-    return {
-      name,
-      id,
-      libraries: libraries || '',
-      script: script ? script : { content: '', language: 'typescript' },
-      metadata: undefined,
-    };
-  });
+//     return {
+//       name,
+//       id,
+//       libraries: libraries || '',
+//       script: script ? script : { content: '', language: 'typescript' },
+//       metadata: undefined,
+//     };
+//   });
 
-  const result = {
-    snippets,
-    loadFromOfficeJsPreviewCachedCopy: false,
-    displayLanguage: 'en-us',
-    heartbeatParams: {
-      clientTimestamp: Date.now(),
-      loadFromOfficeJsPreviewCachedCopy: false,
-    },
-    experimentationFlags: {},
-  };
+//   const result = {
+//     snippets,
+//     loadFromOfficeJsPreviewCachedCopy: false,
+//     displayLanguage: 'en-us',
+//     heartbeatParams: {
+//       clientTimestamp: Date.now(),
+//       loadFromOfficeJsPreviewCachedCopy: false,
+//     },
+//     experimentationFlags: {},
+//   };
 
-  return result;
-};
+//   return result;
+// };
 
 // Helpers
 function getAllLocalStorageKeys(): string[] {

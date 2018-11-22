@@ -133,7 +133,6 @@ const mapDispatchToProps = (dispatch, ownProps: IProps): IActionsFromRedux => ({
         style: MessageBarType.error,
       }),
     ),
-
   navigateToCustomFunctions: () => dispatch(actions.customFunctions.openDashboard()),
   navigateToRun: () => dispatch(actions.editor.navigateToRun()),
   showTrustError: () =>

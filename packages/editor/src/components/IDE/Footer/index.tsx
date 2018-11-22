@@ -49,7 +49,6 @@ const mapStateToProps = (state, ownProps: IProps): IPropsFromRedux => ({
 interface IActionsFromRedux {
   onSettingsIconClick: () => void;
   changeHost: (host: string) => void;
-  navigateToCustomFunctionsDashboard: () => void;
   cycleEditorTheme: () => void;
   switchEnvironment: (env: string) => void;
 }
@@ -57,8 +56,6 @@ interface IActionsFromRedux {
 const mapDispatchToProps = (dispatch): IActionsFromRedux => ({
   onSettingsIconClick: () => dispatch(actions.settings.open()),
   changeHost: (host: string) => dispatch(actions.host.change(host)),
-  navigateToCustomFunctionsDashboard: () =>
-    dispatch(actions.customFunctions.openDashboard()),
   cycleEditorTheme: () => dispatch(actions.settings.cycleEditorTheme()),
   switchEnvironment: (env: string) => dispatch(actions.misc.switchEnvironment(env)),
 });
@@ -74,7 +71,6 @@ const FooterWithoutTheme = ({
   isWeb,
   hasCustomFunctions,
   onSettingsIconClick,
-  navigateToCustomFunctionsDashboard,
   changeHost,
   commandBarFabricTheme,
   currentEditorTheme,
@@ -121,12 +117,6 @@ const FooterWithoutTheme = ({
           root: { backgroundColor: theme.primary, color: theme.white },
         }),
       },
-    },
-    {
-      hidden: !hasCustomFunctions,
-      key: 'custom-functions-dashboard',
-      text: 'Custom Functions Dashboard',
-      onClick: navigateToCustomFunctionsDashboard,
     },
     {
       hidden: !isSettingsView,

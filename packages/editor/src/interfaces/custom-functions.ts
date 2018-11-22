@@ -36,6 +36,7 @@ interface ICFVisualFunctionMetadata /* doesn't extend ICFSchemaFunctionMetadata 
 }
 
 interface ICFSchemaFunctionMetadata {
+  id: string;
   name: string;
   description?: string;
   parameters: ICFSchemaParameterMetadata[];
@@ -91,14 +92,6 @@ interface ICustomFunctionsSnippetRegistrationData {
 
 interface ICustomFunctionsMetadataRequestPostData {
   snippets: ISnippet[];
-}
-
-interface IRunnerCustomFunctionsPostData {
-  snippets: ICustomFunctionsRunnerRelevantData[];
-  loadFromOfficeJsPreviewCachedCopy: boolean;
-  displayLanguage: string;
-  heartbeatParams: ICustomFunctionsHeartbeatParams;
-  experimentationFlags: object; // TODO:
 }
 
 interface ICustomFunctionEngineStatus {

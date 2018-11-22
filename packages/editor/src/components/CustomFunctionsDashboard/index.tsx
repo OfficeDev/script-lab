@@ -8,14 +8,12 @@ import Console from './Console';
 import ComingSoon from './ComingSoon';
 import Welcome from './Welcome';
 
-import LoadingIndicator from '../LoadingIndicator';
-
 import { connect } from 'react-redux';
 import selectors from '../../store/selectors';
 
-import { getIsCustomFunctionsSupportedOnHost } from '../../utils/customFunctions';
 import { localStorageKeys } from '../../constants';
 import { customFunctions } from '../../store/actions';
+import { getCustomFunctionEngineStatus } from '../../utils/customFunctions';
 
 interface IPropsFromRedux {
   hasCustomFunctionsInSolutions: boolean;
@@ -38,29 +36,31 @@ const mapDispatchToProps = (dispatch): IActionsFromRedux => ({
 interface IProps extends IPropsFromRedux, IActionsFromRedux {}
 
 interface IState {
-  isCFSupportedOnHost: boolean | undefined;
+  engineStatus: ICustomFunctionEngineStatus | null;
   customFunctionsLastModified: number;
 }
 
 export class CustomFunctionsDashboard extends React.Component<IProps, IState> {
   localStorageCheckInterval;
-  state = { isCFSupportedOnHost: undefined, customFunctionsLastModified: 0 };
+  state: IState = { engineStatus: null, customFunctionsLastModified: 0 };
 
   constructor(props) {
     super(props);
-
-    getIsCustomFunctionsSupportedOnHost().then((isCFSupportedOnHost: boolean) => {
-      this.setState({ isCFSupportedOnHost });
-    });
   }
 
   componentDidMount() {
-    this.props.onLoadComplete();
+    getCustomFunctionEngineStatus().then(status => {
+      if (status) {
+        this.setState({ engineStatus: status });
 
-    this.localStorageCheckInterval = setInterval(
-      this.getCustomFunctionsLastModified,
-      1000,
-    );
+        this.props.onLoadComplete();
+
+        this.localStorageCheckInterval = setInterval(
+          this.getCustomFunctionsLastModified,
+          1000,
+        );
+      }
+    });
   }
 
   componentWillUnmount() {
@@ -79,16 +79,11 @@ export class CustomFunctionsDashboard extends React.Component<IProps, IState> {
     });
 
   render() {
-    const { isCFSupportedOnHost } = this.state;
     const { hasCustomFunctionsInSolutions } = this.props;
 
-    if (isCFSupportedOnHost === undefined) {
-      return (
-        <div style={{ width: '100vw', height: '100vh' }}>
-          <LoadingIndicator ballSize={32} numBalls={5} ballColor="#d83b01" delay={0.05} />
-        </div>
-      );
-    } else if (isCFSupportedOnHost) {
+    if (!this.state.engineStatus) {
+      return <></>;
+    } else if (this.state.engineStatus.enabled) {
       if (hasCustomFunctionsInSolutions) {
         return (
           <Dashboard

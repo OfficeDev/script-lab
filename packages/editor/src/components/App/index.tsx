@@ -25,7 +25,7 @@ export interface IProps extends IPropsFromRedux {}
 const App = ({ theme }: IProps) => (
   <ThemeProvider theme={theme}>
     <Switch>
-      <Route exact path={'/custom-functions/'} component={CustomFunctionsDashboard} />
+      <Route exact path={PATHS.CUSTOM_FUNCTIONS} component={CustomFunctionsDashboard} />
       <Route component={BackstageAndIDE} />
     </Switch>
   </ThemeProvider>

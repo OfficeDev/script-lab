@@ -24,7 +24,7 @@ interface IPropsFromRedux {
 
 const mapStateToProps = (state: IReduxState): IPropsFromRedux => ({
   commandBarFabricTheme: getCommandBarFabricTheme(selectors.host.get(state)),
-  isStandalone: false /*FIXME*/,
+  isStandalone: false /*FIXME zlatkovsky */,
 });
 
 interface IActionsFromRedux {

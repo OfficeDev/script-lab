@@ -9,7 +9,7 @@ import {
 } from '../solutions/selectors';
 
 import { isCustomFunctionScript } from '../../utils/customFunctions';
-import { PATHS, SCRIPT_FILE_NAME } from '../../constants';
+import { SCRIPT_FILE_NAME } from '../../constants';
 
 export const getMetadata = (state: IState) => state.customFunctions.metadata;
 export const getMetadataSummaryItems: (
@@ -46,7 +46,7 @@ export const getMetadataSummaryItems: (
             return {
               snippetName: name,
               funcName,
-              status,
+              status: status!,
               additionalInfo,
             };
           });

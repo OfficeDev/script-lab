@@ -4,7 +4,7 @@ import selectors from '../selectors';
 import { customFunctions, editor, settings, screen } from '../actions';
 import zip from 'lodash/zip';
 import flatten from 'lodash/flatten';
-import { push, RouterState } from 'connected-react-router';
+import { push } from 'connected-react-router';
 import { PATHS, LIBRARIES_FILE_NAME } from '../../constants';
 
 import {
@@ -16,8 +16,6 @@ import {
   removeLoadingIndicator,
 } from './utilities';
 import { convertSolutionToSnippet } from '../../utils';
-import { actions } from '..';
-import { MessageBarType } from 'office-ui-fabric-react/lib/MessageBar';
 
 let monacoEditor;
 
@@ -162,7 +160,7 @@ function* makeAddIntellisenseRequestSaga() {
   let urlsToFetch = urls.filter(url => /^.*\/index\.d\.ts$/.test(url));
 
   while (urlsToFetch.length > 0) {
-    const urlContents = yield all(
+    const urlContents: string[] = yield all(
       urlsToFetch
         .map(url =>
           fetch(url)
@@ -178,7 +176,7 @@ function* makeAddIntellisenseRequestSaga() {
     const urlContentPairing = zip(urlsToFetch, urlContents);
 
     urlsToFetch = flatten(
-      urlContentPairing.map(([url, content]) => parseTripleSlashRefs(url, content)),
+      urlContentPairing.map(([url, content]) => parseTripleSlashRefs(url!, content!)),
     );
     urls = [...urls, ...urlsToFetch];
   }
