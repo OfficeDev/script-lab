@@ -12,7 +12,7 @@ import { connect } from 'react-redux';
 import selectors from '../../store/selectors';
 
 import { localStorageKeys } from '../../constants';
-import { customFunctions } from '../../store/actions';
+import { editor } from '../../store/actions';
 import { getCustomFunctionEngineStatus } from '../../utils/customFunctions';
 
 interface IPropsFromRedux {
@@ -26,11 +26,11 @@ const mapStateToProps = (state): IPropsFromRedux => ({
 });
 
 interface IActionsFromRedux {
-  onLoadComplete: () => void;
+  hideLoadingSplashScreen: () => void;
 }
 
 const mapDispatchToProps = (dispatch): IActionsFromRedux => ({
-  onLoadComplete: () => dispatch(customFunctions.onLoadComplete()),
+  hideLoadingSplashScreen: () => dispatch(editor.hideLoadingSplashScreen()),
 });
 
 interface IProps extends IPropsFromRedux, IActionsFromRedux {}
@@ -53,7 +53,7 @@ export class CustomFunctionsDashboard extends React.Component<IProps, IState> {
       if (status) {
         this.setState({ engineStatus: status });
 
-        this.props.onLoadComplete();
+        this.props.hideLoadingSplashScreen();
 
         this.localStorageCheckInterval = setInterval(
           this.getCustomFunctionsLastModified,

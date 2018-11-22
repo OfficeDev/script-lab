@@ -13,7 +13,6 @@ import {
   enablePrettierInMonaco,
   parseTripleSlashRefs,
   doesMonacoExist,
-  removeLoadingIndicator,
 } from './utilities';
 import { convertSolutionToSnippet } from '../../utils';
 
@@ -25,8 +24,7 @@ export default function* editorWatcher() {
   yield takeEvery(getType(editor.newSolutionOpened), onSolutionOpenSaga);
   yield takeEvery(getType(editor.newFileOpened), onFileOpenSaga);
   yield takeEvery(getType(editor.onMount), initializeMonacoSaga);
-  yield takeEvery(getType(editor.onLoadComplete), hasLoadedSaga);
-  yield takeEvery(getType(customFunctions.onLoadComplete), hasLoadedSaga);
+  yield takeEvery(getType(editor.hideLoadingSplashScreen), hideLoadingSplashScreen);
   yield takeEvery(getType(editor.applyMonacoOptions), applyMonacoOptionsSaga);
   yield takeEvery(getType(settings.edit.success), applyMonacoOptionsSaga);
   yield takeEvery(getType(editor.setIntellisenseFiles.request), setIntellisenseFilesSaga);
@@ -81,8 +79,14 @@ function* onFileOpenSaga(action: ActionType<typeof editor.newFileOpened>) {
   }
 }
 
-export function* hasLoadedSaga() {
-  removeLoadingIndicator();
+export function* hideLoadingSplashScreen() {
+  const loadingIndicator = document.getElementById('loading');
+  if (loadingIndicator) {
+    const { parentNode } = loadingIndicator;
+    if (parentNode) {
+      parentNode.removeChild(loadingIndicator);
+    }
+  }
 }
 
 function* initializeMonacoSaga(action: ActionType<typeof editor.onMount>) {
@@ -110,7 +114,7 @@ function* initializeMonacoSaga(action: ActionType<typeof editor.onMount>) {
   });
 
   yield put(editor.applyMonacoOptions());
-  yield put(editor.onLoadComplete());
+  yield put(editor.hideLoadingSplashScreen());
   yield call(makeAddIntellisenseRequestSaga);
 }
 
