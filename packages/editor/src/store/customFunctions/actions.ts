@@ -39,3 +39,5 @@ export const fetchLogsAndHeartbeat = createAction(
 );
 
 export const openDashboard = createAction('CUSTOM_FUNCTIONS_OPEN_DASHBOARD');
+
+export const onLoadComplete = createAction('CUSTOM_FUNCTIONS_ON_LOAD_COMPLETE');

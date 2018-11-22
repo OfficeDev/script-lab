@@ -15,6 +15,7 @@ import selectors from '../../store/selectors';
 
 import { getIsCustomFunctionsSupportedOnHost } from '../../utils/customFunctions';
 import { localStorageKeys } from '../../constants';
+import { customFunctions } from '../../store/actions';
 
 interface IPropsFromRedux {
   hasCustomFunctionsInSolutions: boolean;
@@ -26,7 +27,15 @@ const mapStateToProps = (state): IPropsFromRedux => ({
   runnerLastUpdated: state.customFunctions.runner.lastUpdated,
 });
 
-interface IProps extends IPropsFromRedux {}
+interface IActionsFromRedux {
+  onLoadComplete: () => void;
+}
+
+const mapDispatchToProps = (dispatch): IActionsFromRedux => ({
+  onLoadComplete: () => dispatch(customFunctions.onLoadComplete()),
+});
+
+interface IProps extends IPropsFromRedux, IActionsFromRedux {}
 
 interface IState {
   isCFSupportedOnHost: boolean | undefined;
@@ -46,6 +55,8 @@ export class CustomFunctionsDashboard extends React.Component<IProps, IState> {
   }
 
   componentDidMount() {
+    this.props.onLoadComplete();
+
     this.localStorageCheckInterval = setInterval(
       this.getCustomFunctionsLastModified,
       1000,
@@ -94,4 +105,7 @@ export class CustomFunctionsDashboard extends React.Component<IProps, IState> {
   }
 }
 
-export default connect(mapStateToProps)(CustomFunctionsDashboard);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(CustomFunctionsDashboard);

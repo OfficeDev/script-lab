@@ -49,7 +49,6 @@ export const EDITOR_PATH = '/';
 export const PATHS = {
   EDITOR: '/',
   CUSTOM_FUNCTIONS: '/custom-functions',
-  CUSTOM_FUNCTIONS_DASHBOARD: '/custom-functions-dashboard',
   BACKSTAGE: '/backstage',
   GITHUB_ISSUE: 'https://github.com/OfficeDev/script-lab-react/issues/new/choose',
 }; // stand alone page with no back button

@@ -1,7 +1,7 @@
 import { put, takeEvery, select, call, all } from 'redux-saga/effects';
 import { getType, ActionType } from 'typesafe-actions';
 import selectors from '../selectors';
-import { editor, settings, screen } from '../actions';
+import { customFunctions, editor, settings, screen } from '../actions';
 import zip from 'lodash/zip';
 import flatten from 'lodash/flatten';
 import { push, RouterState } from 'connected-react-router';
@@ -13,6 +13,7 @@ import {
   enablePrettierInMonaco,
   parseTripleSlashRefs,
   doesMonacoExist,
+  removeLoadingIndicator,
 } from './utilities';
 import { convertSolutionToSnippet } from '../../utils';
 import { actions } from '..';
@@ -27,6 +28,7 @@ export default function* editorWatcher() {
   yield takeEvery(getType(editor.newFileOpened), onFileOpenSaga);
   yield takeEvery(getType(editor.onMount), initializeMonacoSaga);
   yield takeEvery(getType(editor.onLoadComplete), hasLoadedSaga);
+  yield takeEvery(getType(customFunctions.onLoadComplete), hasLoadedSaga);
   yield takeEvery(getType(editor.applyMonacoOptions), applyMonacoOptionsSaga);
   yield takeEvery(getType(settings.edit.success), applyMonacoOptionsSaga);
   yield takeEvery(getType(editor.setIntellisenseFiles.request), setIntellisenseFilesSaga);
@@ -81,14 +83,8 @@ function* onFileOpenSaga(action: ActionType<typeof editor.newFileOpened>) {
   }
 }
 
-export function* hasLoadedSaga(action: ActionType<typeof editor.onLoadComplete>) {
-  const loadingIndicator = document.getElementById('loading');
-  if (loadingIndicator) {
-    const { parentNode } = loadingIndicator;
-    if (parentNode) {
-      parentNode.removeChild(loadingIndicator);
-    }
-  }
+export function* hasLoadedSaga() {
+  removeLoadingIndicator();
 }
 
 function* initializeMonacoSaga(action: ActionType<typeof editor.onMount>) {

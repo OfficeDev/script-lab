@@ -44,7 +44,11 @@ export const getSolutionWithHiddenFiles = (
 
 export const getAll = (state: IState): ISolution[] =>
   getObjectValues(state.solutions.metadata)
-    .filter(solution => solution.host === state.host || solution.host === 'ALL')
+    .filter(
+      solution =>
+        solution.host === state.host ||
+        solution.host === 'ALL' /* for null solution or settings solution, etc. */,
+    )
     .filter(({ id }) => id !== SETTINGS_SOLUTION_ID)
     .map(solution => ({
       ...solution,

@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Route } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 
 import IDE from '../IDE';
@@ -24,16 +24,18 @@ export interface IProps extends IPropsFromRedux {}
 
 const App = ({ theme }: IProps) => (
   <ThemeProvider theme={theme}>
-    <>
-      <Route exact path={PATHS.BACKSTAGE} component={Backstage} />
-      <Route
-        exact
-        path={'/(custom-functions|custom-functions-dashboard)/'}
-        component={CustomFunctionsDashboard}
-      />
-      <IDE />
-    </>
+    <Switch>
+      <Route exact path={'/custom-functions/'} component={CustomFunctionsDashboard} />
+      <Route component={BackstageAndIDE} />
+    </Switch>
   </ThemeProvider>
+);
+
+const BackstageAndIDE = () => (
+  <>
+    <Route exact path={PATHS.BACKSTAGE} component={Backstage} />
+    <IDE />
+  </>
 );
 
 export default connect(mapStateToProps)(App);

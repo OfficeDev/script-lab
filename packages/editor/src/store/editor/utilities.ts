@@ -185,3 +185,13 @@ export function parseTripleSlashRefs(url: string, content: string) {
 
   return additionalUrls;
 }
+
+export function removeLoadingIndicator() {
+  const loadingIndicator = document.getElementById('loading');
+  if (loadingIndicator) {
+    const { parentNode } = loadingIndicator;
+    if (parentNode) {
+      parentNode.removeChild(loadingIndicator);
+    }
+  }
+}
