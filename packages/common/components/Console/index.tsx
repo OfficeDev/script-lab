@@ -12,6 +12,7 @@ import {
   LogsArea,
   LogsList,
   Log,
+  LogText,
 } from './styles';
 
 export enum ConsoleLogSeverities {
@@ -72,7 +73,7 @@ class Console extends React.Component<IPrivateProps, IState> {
     const { theme, logs, clearLogs, style } = this.props;
 
     return (
-      <Wrapper style={{ ...style }}>
+      <Wrapper style={{ backgroundColor: theme.neutralLighter, ...style }}>
         <FilterWrapper>
           <ClearButton onClick={clearLogs}>
             <Icon
@@ -143,7 +144,7 @@ class Console extends React.Component<IPrivateProps, IState> {
                         }}
                       />
                     )}
-                    {log.message}
+                    <LogText>{log.message}</LogText>
                   </Log>
                 );
               })}

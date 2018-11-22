@@ -38,7 +38,6 @@
         localStorage.setItem('playground_dummy_key', 'null');
 
         var solution = localStorage.getItem('activeSolution');
-        console.log('posting message');
         window.parent.postMessage(solution, event.origin);
 
         // if (event.message == 'GET_ACTIVE_SOLUTION') {

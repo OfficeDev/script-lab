@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const Wrapper = styled.div`
   flex: 3;
   /* height: 100%; */
-  /* position: relative; */
+  position: relative;
   display: flex;
   flex-direction: column;
   /* padding: 0rem 1.8rem; */
@@ -41,13 +41,13 @@ export const FilterWrapper = styled.div`
   align-items: center;
   padding: 0.8rem;
   height: 4.8rem;
-  background: ${props => props.theme.neutralLighter};
+  background: ${props => props.theme.neutralLight};
   box-sizing: border-box;
 `;
 
 export const CheckboxWrapper = styled.div`
   height: 3.8rem;
-  background: ${props => props.theme.neutralLighter};
+  background: ${props => props.theme.neutralLight};
   box-sizing: border-box;
   padding: 0.9rem;
 `;
@@ -65,12 +65,18 @@ export const Log = styled.li`
   display: flex;
   align-items: center;
   width: 100%;
-  min-height: 4.2rem;
-  padding: 1.3rem;
+  min-height: 3.2rem;
+  padding: 0.9rem;
+  padding-left: 1.6rem;
+  font-family: monospace;
   box-sizing: border-box;
-  word-wrap: break-word;
   border-top: 0.5px solid ${props => props.theme.neutralLight};
   border-bottom: 0.5px solid ${props => props.theme.neutralLight};
+`;
+
+export const LogText = styled.div`
+  word-wrap: break-word;
+  width: 100%;
 `;
 
 export const ClearButton = styled.button`

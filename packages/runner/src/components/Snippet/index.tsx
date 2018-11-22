@@ -139,11 +139,7 @@ class Snippet extends React.Component<IProps> {
       return;
     }
 
-    console.log('setting up iframe');
-
     const iframe = this.node.contentWindow;
-
-    console.log(iframe);
 
     // console logs
     iframe.console = window.console;
