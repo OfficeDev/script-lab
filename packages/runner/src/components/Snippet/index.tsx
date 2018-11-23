@@ -3,9 +3,12 @@ import React from 'react';
 import ts from 'typescript';
 
 import IFrame from './IFrame';
+import Only from 'common/lib/components/Only';
 
 import template from './template';
 import { officeNamespacesForIframe } from '../../constants';
+import { LoadingIndicatorWrapper } from './styles';
+import { Spinner, SpinnerSize } from 'office-ui-fabric-react/lib/Spinner';
 
 function processLibraries(libraries: string, isInsideOffice: boolean) {
   const linkReferences: string[] = [];
@@ -64,7 +67,7 @@ function processLibraries(libraries: string, isInsideOffice: boolean) {
 }
 
 interface IProps {
-  solution: ISolution;
+  solution?: ISolution;
 }
 
 interface IState {
@@ -88,8 +91,10 @@ class Snippet extends React.Component<IProps, IState> {
 
   componentDidUpdate(prevProps: IProps) {
     if (
-      this.props.solution.id !== prevProps.solution.id ||
-      this.props.solution.dateLastModified !== prevProps.solution.dateLastModified
+      this.props.solution &&
+      ((this.props.solution && !prevProps.solution) ||
+        this.props.solution.id !== prevProps.solution!.id ||
+        this.props.solution.dateLastModified !== prevProps.solution!.dateLastModified)
     ) {
       this.setState({
         content: this.getContent(this.props),
@@ -103,7 +108,11 @@ class Snippet extends React.Component<IProps, IState> {
 
   componentWillUnmount() {}
 
-  getContent = ({ solution }: IProps) => {
+  getContent = ({ solution }: IProps): string => {
+    if (!solution) {
+      return '';
+    }
+
     // gathering content out of solution
     const html = solution.files.find(file => file.name === 'index.html')!.content;
     const inlineStyles = solution.files.find(file => file.name === 'index.css')!.content;
@@ -135,12 +144,23 @@ class Snippet extends React.Component<IProps, IState> {
 
   render() {
     return (
-      <IFrame
-        content={this.state.content}
-        lastRendered={this.state.lastRendered}
-        onRenderComplete={this.completeLoad}
-        namespacesToTransferFromWindow={officeNamespacesForIframe}
-      />
+      <>
+        <Only when={this.state.isLoading}>
+          <LoadingIndicatorWrapper>
+            <Spinner size={SpinnerSize.large} label="Loading..." />
+          </LoadingIndicatorWrapper>
+        </Only>
+        {this.props.solution && (
+          <div style={{ display: this.state.isLoading ? 'none' : 'block' }}>
+            <IFrame
+              content={this.state.content}
+              lastRendered={this.state.lastRendered}
+              onRenderComplete={this.completeLoad}
+              namespacesToTransferFromWindow={officeNamespacesForIframe}
+            />
+          </div>
+        )}
+      </>
     );
   }
 }

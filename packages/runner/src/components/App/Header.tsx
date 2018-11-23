@@ -6,7 +6,7 @@ export interface IProps {
   solutionName?: string;
 
   goBack?: () => void;
-  refresh?: () => void;
+  refresh: () => void;
   hardRefresh: () => void;
 }
 

@@ -75,7 +75,12 @@ class IFrame extends React.Component<IProps> {
       <iframe
         id="user-snippet"
         ref={node => (this.node = node)}
-        style={{ width: '100%', height: '100%', margin: 0, border: 0 }}
+        style={{
+          width: '100%',
+          height: '100%',
+          margin: 0,
+          border: 0,
+        }}
       />
     );
   }

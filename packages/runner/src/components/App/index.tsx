@@ -134,7 +134,7 @@ export class App extends React.Component<{}, IState> {
             }
           >
             <RefreshBar isVisible={false} />
-            {this.state.solution && <Snippet solution={this.state.solution!} />}
+            <Snippet solution={this.state.solution || undefined} />
           </HeaderFooterLayout>
           <Only when={this.state.isConsoleOpen}>
             <Console
