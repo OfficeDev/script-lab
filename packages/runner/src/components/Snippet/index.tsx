@@ -1,14 +1,15 @@
 import React from 'react';
 
-import ts from 'typescript';
-
 import IFrame from './IFrame';
 import Only from 'common/lib/components/Only';
 
-import template from './template';
+import runTemplate from './templates/run';
+import errorTemplate from './templates/error';
+
 import { officeNamespacesForIframe } from '../../constants';
 import { LoadingIndicatorWrapper } from './styles';
 import { Spinner, SpinnerSize } from 'office-ui-fabric-react/lib/Spinner';
+import { compileTypeScript, SyntaxError } from './utilities';
 
 function processLibraries(libraries: string, isInsideOffice: boolean) {
   const linkReferences: string[] = [];
@@ -66,7 +67,7 @@ function processLibraries(libraries: string, isInsideOffice: boolean) {
   }
 }
 
-interface IProps {
+export interface IProps {
   solution?: ISolution;
 }
 
@@ -112,34 +113,34 @@ class Snippet extends React.Component<IProps, IState> {
     if (!solution) {
       return '';
     }
+    try {
+      // gathering content out of solution
+      const html = solution.files.find(file => file.name === 'index.html')!.content;
+      const inlineStyles = solution.files.find(file => file.name === 'index.css')!
+        .content;
+      const inlineScript = compileTypeScript(
+        solution.files.find(file => file.name === 'index.ts')!.content,
+      );
+      const libraries = solution.files.find(file => file.name === 'libraries.txt')!
+        .content;
+      const { linkReferences, scriptReferences, officeJS } = processLibraries(
+        libraries,
+        false,
+      );
 
-    // gathering content out of solution
-    const html = solution.files.find(file => file.name === 'index.html')!.content;
-    const inlineStyles = solution.files.find(file => file.name === 'index.css')!.content;
-    const inlineScript = ts.transpileModule(
-      solution.files.find(file => file.name === 'index.ts')!.content,
-      {
-        reportDiagnostics: true,
-        compilerOptions: {
-          target: ts.ScriptTarget.ES5,
-          allowJs: true,
-          lib: ['dom', 'es2015'],
-        },
-      },
-    ).outputText;
-    const libraries = solution.files.find(file => file.name === 'libraries.txt')!.content;
-    const { linkReferences, scriptReferences, officeJS } = processLibraries(
-      libraries,
-      false,
-    );
-
-    return template({
-      linkReferences,
-      scriptReferences,
-      inlineScript,
-      inlineStyles,
-      html,
-    });
+      return runTemplate({
+        linkReferences,
+        scriptReferences,
+        inlineScript,
+        inlineStyles,
+        html,
+      });
+    } catch (error) {
+      return errorTemplate({
+        title: error instanceof SyntaxError ? 'Syntax Error' : 'Unknown Error',
+        details: error.message,
+      });
+    }
   };
 
   render() {
@@ -151,7 +152,9 @@ class Snippet extends React.Component<IProps, IState> {
           </LoadingIndicatorWrapper>
         </Only>
         {this.props.solution && (
-          <div style={{ display: this.state.isLoading ? 'none' : 'block' }}>
+          <div
+            style={{ display: this.state.isLoading ? 'none' : 'block', height: '100%' }}
+          >
             <IFrame
               content={this.state.content}
               lastRendered={this.state.lastRendered}

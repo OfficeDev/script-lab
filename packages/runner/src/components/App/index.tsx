@@ -91,7 +91,6 @@ export class App extends React.Component<{}, IState> {
   onReceiveNewActiveSolution = (solution: ISolution) => this.setState({ solution });
 
   render() {
-    // console.info(this.state);
     return (
       <Theme host={this.state.solution ? this.state.solution.host : Utilities.host}>
         <AppWrapper>
@@ -100,7 +99,7 @@ export class App extends React.Component<{}, IState> {
             header={
               <Header
                 solutionName={this.state.solution ? this.state.solution.name : undefined}
-                goBack={() => {}}
+                // goBack={() => {}}
                 refresh={() => window.location.reload()}
                 hardRefresh={() => window.location.reload()}
               />
@@ -140,7 +139,7 @@ export class App extends React.Component<{}, IState> {
             <Console
               style={{ flex: '3', minHeight: '25rem' }}
               logs={this.state.logs}
-              clearLogs={() => {}}
+              clearLogs={this.clearLogs}
             />
           </Only>
         </AppWrapper>
