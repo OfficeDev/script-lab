@@ -2,6 +2,7 @@ import React from 'react';
 // import inlineScript from './templates/inlineScript';
 // import 'handlebars/lib/handlebars.runtime';
 // import './templates/compiled/newsnippet.handlebars';
+import ts from 'typescript';
 import template from './template';
 import { officeNamespacesForIframe } from '../../constants';
 
@@ -110,7 +111,17 @@ class Snippet extends React.Component<IProps> {
       const html = solution.files.find(file => file.name === 'index.html')!.content;
       const inlineStyles = solution.files.find(file => file.name === 'index.css')!
         .content;
-      const inlineScript = solution.files.find(file => file.name === 'index.ts')!.content;
+      const inlineScript = ts.transpileModule(
+        solution.files.find(file => file.name === 'index.ts')!.content,
+        {
+          reportDiagnostics: true,
+          compilerOptions: {
+            target: ts.ScriptTarget.ES5,
+            allowJs: true,
+            lib: ['dom', 'es2015'],
+          },
+        },
+      ).outputText;
       const libraries = solution.files.find(file => file.name === 'libraries.txt')!
         .content;
       const { linkReferences, scriptReferences, officeJS } = processLibraries(
@@ -144,9 +155,15 @@ class Snippet extends React.Component<IProps> {
     // console logs
     iframe.console = window.console;
     iframe.onerror = (...args) => console.error(args);
-
+    // console.log({
+    //   iframe,
+    //   window,
+    //   windowLocation: window.location,
+    //   parent: window.parent,
+    //   parentLocation: window.parent.location,
+    // });
     officeNamespacesForIframe.forEach(
-      namespace => (iframe[namespace] = window.parent[namespace]),
+      namespace => (iframe[namespace] = window[namespace]),
     );
   };
 

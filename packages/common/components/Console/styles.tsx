@@ -76,6 +76,7 @@ export const Log = styled.li`
 
 export const LogText = styled.div`
   word-wrap: break-word;
+  font-size: 1.2rem;
   width: 100%;
 `;
 

@@ -6,32 +6,41 @@ import { DEFAULT_HOST } from '../../constants';
 
 interface IProps {
   host: string;
-  children: (theme: ITheme) => any;
+  children: any;
 }
 interface IState {
   theme: ITheme;
 }
 
+export const ThemeContext = React.createContext(getTheme(DEFAULT_HOST));
+
 class Theme extends Component<IProps, IState> {
-  state;
   constructor(props) {
     super(props);
     initializeIcons();
-    setupFabricTheme(DEFAULT_HOST);
-    this.state = { theme: getTheme(DEFAULT_HOST) };
+    setupFabricTheme(props.host || DEFAULT_HOST);
+    this.state = { theme: getTheme(props.host || DEFAULT_HOST) };
   }
 
   componentDidUpdate(prevProps: IProps) {
+    console.log({ prevProps, props: this.props });
+
     if (this.props.host !== prevProps.host) {
+      console.log('if w as true');
       setupFabricTheme(this.props.host);
-      this.setState({ theme: getTheme(this.props.host) });
+      const theme = getTheme(this.props.host);
+      console.log({ theme });
+      this.setState({ theme });
     }
   }
 
   render() {
+    console.log({ theme: this.state.theme, host: this.props.host });
     return (
       <ThemeProvider theme={this.state.theme}>
-        {this.props.children(this.state.theme)}
+        <ThemeContext.Provider value={this.state.theme}>
+          {this.props.children}
+        </ThemeContext.Provider>
       </ThemeProvider>
     );
   }
