@@ -16,7 +16,7 @@ import SolutionSettings from './SolutionSettings';
 import { getRunButton, IProps as IRunButtonProps } from './Buttons/Run';
 
 import { ITheme as IFabricTheme } from 'office-ui-fabric-react/lib/Styling';
-import { NULL_SOLUTION_ID, PATHS, IS_TASK_PANE_WIDTH } from '../../../constants';
+import { NULL_SOLUTION_ID, PATHS, IS_TASK_PANE_WIDE } from '../../../constants';
 import { getPlatform, PlatformType } from '../../../environment';
 
 import { connect } from 'react-redux';
@@ -309,7 +309,7 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
       .filter(({ hidden }) => !hidden)
       .map(option => {
         const { hidden, ...rest } = option;
-        return { ...rest, iconOnly: screenWidth < IS_TASK_PANE_WIDTH };
+        return { ...rest, iconOnly: screenWidth < IS_TASK_PANE_WIDE };
       });
 
     const name = {
@@ -322,7 +322,7 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
       iconOnly: false,
     };
 
-    if (screenWidth < IS_TASK_PANE_WIDTH) {
+    if (screenWidth < IS_TASK_PANE_WIDE) {
       name.style.paddingRight = '0';
       name.iconProps = { iconName: 'OfficeAddinsLogo' };
       name.iconOnly = true;

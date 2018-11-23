@@ -1,4 +1,8 @@
+/* spellchecker: disable */
 import uuidv4 from 'uuid';
+const createGUID = uuidv4;
+/* spellchecker: enable */
+
 import { LIBRARIES_FILE_NAME, SCRIPT_FILE_NAME } from '../constants';
 import { getBoilerplateFiles } from '../newSolutionData';
 
@@ -41,7 +45,7 @@ export function convertExtensionToLanguage(file): string {
 }
 
 const createFile = (name, { content, language }): IFile => ({
-  id: uuidv4(),
+  id: createGUID(),
   name,
   content,
   language,
@@ -66,7 +70,7 @@ export const convertSnippetToSolution = (snippet: ISnippet): ISolution => {
   ) as IFile[];
 
   const solution = {
-    id: uuidv4(),
+    id: createGUID(),
     name,
     host,
     description,

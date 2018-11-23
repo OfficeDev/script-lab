@@ -7,16 +7,20 @@
   "typescript.tsdk": "node_modules\\typescript\\lib",
   "cSpell.words": [
     "Addin",
+    "Addins",
+    "Customizer",
     "DOCTYPE",
     "Nico",
     "Stringifiable",
     "Unmount",
     "Zlatkovsky",
+    "adhoc",
     "azurewebsites",
     "backend",
     "bornholm",
     "customfunction",
     "dropdown",
+    "flexbox",
     "guid",
     "iframe's",
     "injectable",
@@ -26,9 +30,12 @@
     "minified",
     "officejs",
     "onenote",
+    "overscroll",
     "parameterized",
     "polyfills",
     "powepoint",
+    "precompile",
+    "precompiled",
     "prereq",
     "proxying",
     "repo",
@@ -43,5 +50,11 @@
     "unpkg",
     "untrusted",
     "uppercased"
-  ]
+  ],
+  "cSpell.ignorePaths": [
+    "**/node_modules", // the same for this one
+    "**/node_modules/**", // the same for this one
+    "package.json"
+  ],
+  "cSpell.flagWords": ["hte"]
 }
