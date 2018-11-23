@@ -1,7 +1,6 @@
 type ConsoleLogTypes = 'log' | 'info' | 'warn' | 'error';
 
 interface ILogData {
-  source: string;
-  message: any;
+  message: string;
   severity: ConsoleLogTypes;
 }

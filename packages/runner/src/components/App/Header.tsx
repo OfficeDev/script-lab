@@ -7,27 +7,48 @@ export interface IProps {
 
   goBack?: () => void;
   refresh?: () => void;
+  hardRefresh: () => void;
 }
 
-const Header = ({ solutionName, goBack, refresh }: IProps) => {
+const Header = ({ solutionName, goBack, refresh, hardRefresh }: IProps) => {
   const items = [
     {
       hidden: !goBack,
-      item: { key: 'go-back', iconProps: { iconName: 'Back' }, onClick: goBack },
+      key: 'go-back',
+      iconProps: { iconName: 'Back' },
+      onClick: goBack,
     },
     {
-      item: {
-        key: 'title',
-        iconProps: solutionName ? { iconName: 'Refresh' } : {},
-        text: solutionName || 'No Snippet Selected',
-        onClick: refresh,
+      key: 'title',
+      text: solutionName || 'No Snippet Selected',
+      onClick: refresh,
+    },
+  ];
+
+  const farItems = [
+    {
+      key: 'overflow',
+      iconProps: { iconName: 'Refresh' },
+      subMenuProps: {
+        items: [
+          {
+            key: 'refresh-snippet',
+            iconProps: { iconName: 'Refresh' },
+            text: 'Refresh',
+            onClick: refresh,
+          },
+          {
+            key: 'hard-refresh',
+            iconProps: { iconName: 'Refresh' },
+            text: 'Hard Refresh',
+            onClick: hardRefresh,
+          },
+        ],
       },
     },
-  ]
-    .filter(({ hidden }) => !hidden)
-    .map(({ item }) => item);
+  ];
 
-  return <CommonHeader items={items} />;
+  return <CommonHeader items={items} farItems={farItems} />;
 };
 
 export default Header;

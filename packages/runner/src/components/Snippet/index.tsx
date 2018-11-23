@@ -3,6 +3,9 @@ import React from 'react';
 // import 'handlebars/lib/handlebars.runtime';
 // import './templates/compiled/newsnippet.handlebars';
 import ts from 'typescript';
+
+import IFrame from './IFrame';
+
 import template from './template';
 import { officeNamespacesForIframe } from '../../constants';
 
@@ -66,120 +69,88 @@ interface IProps {
   solution: ISolution;
 }
 
-class Snippet extends React.Component<IProps> {
-  node; // ref to iframe node
-  // tslint:disable-next-line:variable-name
-  _isMounted: boolean;
+interface IState {
+  isLoading: boolean;
+  content: string;
+  lastRendered: number;
+}
 
+class Snippet extends React.Component<IProps, IState> {
   constructor(props) {
     super(props);
-    this._isMounted = false;
+
+    this.state = {
+      content: this.getContent(this.props),
+      lastRendered: Date.now(),
+      isLoading: true,
+    };
   }
 
-  componentDidMount() {
-    this._isMounted = true;
+  componentDidMount() {}
 
-    const doc = this.getContentDoc();
-    if (doc && doc.readyState === 'complete') {
-      this.forceUpdate();
-    } else {
-      this.node.addEventListener('load', this.handleLoad);
-    }
-  }
-
-  shouldComponentUpdate(nextProps: IProps, nextState) {
-    return (
-      nextProps.solution.id !== this.props.solution.id ||
-      nextProps.solution.dateLastModified !== this.props.solution.dateLastModified
-    );
-  }
-
-  componentWillUnmount() {
-    this._isMounted = false;
-
-    this.node.removeEventListener('load', this.handleLoad);
-  }
-
-  getContentDoc = () => this.node.contentDocument;
-
-  renderContents = () => {
-    if (this._isMounted) {
-      this.setupIframe();
-      const { solution } = this.props;
-
-      // gathering content out of solution
-      const html = solution.files.find(file => file.name === 'index.html')!.content;
-      const inlineStyles = solution.files.find(file => file.name === 'index.css')!
-        .content;
-      const inlineScript = ts.transpileModule(
-        solution.files.find(file => file.name === 'index.ts')!.content,
-        {
-          reportDiagnostics: true,
-          compilerOptions: {
-            target: ts.ScriptTarget.ES5,
-            allowJs: true,
-            lib: ['dom', 'es2015'],
-          },
-        },
-      ).outputText;
-      const libraries = solution.files.find(file => file.name === 'libraries.txt')!
-        .content;
-      const { linkReferences, scriptReferences, officeJS } = processLibraries(
-        libraries,
-        false,
-      );
-
-      const content = template({
-        linkReferences,
-        scriptReferences,
-        inlineScript,
-        inlineStyles,
-        html,
+  componentDidUpdate(prevProps: IProps) {
+    if (
+      this.props.solution.id !== prevProps.solution.id ||
+      this.props.solution.dateLastModified !== prevProps.solution.dateLastModified
+    ) {
+      this.setState({
+        content: this.getContent(this.props),
+        lastRendered: Date.now(),
+        isLoading: true,
       });
-
-      // console.log({ resultFromHandlebars });
-      const doc = this.getContentDoc();
-      doc.open('text/html', 'replace');
-      doc.write(content);
-      doc.close();
     }
-  };
+  }
 
-  setupIframe = () => {
-    if (!this._isMounted) {
-      return;
-    }
+  completeLoad = () => this.setState({ isLoading: false });
 
-    const iframe = this.node.contentWindow;
+  // shouldComponentUpdate(nextProps: IProps, nextState: IState) {
+  //   // console.log('componentShouldupdate');
+  //   return (
+  //     nextProps.solution.id !== this.props.solution.id ||
+  //     nextProps.solution.dateLastModified !== this.props.solution.dateLastModified ||
+  //     nextState.lastRendered !== this.state.lastRendered
+  //   );
+  // }
 
-    // console logs
-    iframe.console = window.console;
-    iframe.onerror = (...args) => console.error(args);
-    // console.log({
-    //   iframe,
-    //   window,
-    //   windowLocation: window.location,
-    //   parent: window.parent,
-    //   parentLocation: window.parent.location,
-    // });
-    officeNamespacesForIframe.forEach(
-      namespace => (iframe[namespace] = window[namespace]),
+  componentWillUnmount() {}
+
+  getContent = ({ solution }: IProps) => {
+    // gathering content out of solution
+    const html = solution.files.find(file => file.name === 'index.html')!.content;
+    const inlineStyles = solution.files.find(file => file.name === 'index.css')!.content;
+    const inlineScript = ts.transpileModule(
+      solution.files.find(file => file.name === 'index.ts')!.content,
+      {
+        reportDiagnostics: true,
+        compilerOptions: {
+          target: ts.ScriptTarget.ES5,
+          allowJs: true,
+          lib: ['dom', 'es2015'],
+        },
+      },
+    ).outputText;
+    const libraries = solution.files.find(file => file.name === 'libraries.txt')!.content;
+    const { linkReferences, scriptReferences, officeJS } = processLibraries(
+      libraries,
+      false,
     );
-  };
 
-  handleLoad = () => {
-    if (this._isMounted) {
-      this.forceUpdate();
-    }
+    return template({
+      linkReferences,
+      scriptReferences,
+      inlineScript,
+      inlineStyles,
+      html,
+    });
   };
 
   render() {
-    this.renderContents();
     return (
-      <iframe
-        id="user-snippet"
-        ref={node => (this.node = node)}
-        style={{ width: '100%', height: '100%', margin: 0, border: 0 }}
+      <IFrame
+        content={this.state.content}
+        lastRendered={this.state.lastRendered}
+        onRenderComplete={this.completeLoad}
+        namespacesToTransferFromWindow={officeNamespacesForIframe}
       />
     );
   }

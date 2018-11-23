@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 
 export const Layout = styled.div`
-  height: 100vh;
-  min-height: 100vh;
+  height: 100%;
+  min-height: 20rem;
   display: flex;
   flex-direction: column;
   z-index: 1000;

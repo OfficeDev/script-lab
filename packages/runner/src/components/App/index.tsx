@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Utilities } from '@microsoft/office-js-helpers';
 
-import Theme, { ThemeContext } from 'common/lib/components/Theme';
+import Theme from 'common/lib/components/Theme';
 import Console, { ConsoleLogSeverities } from 'common/lib/components/Console';
 import HeaderFooterLayout from 'common/lib/components/HeaderFooterLayout';
 import Heartbeat from '../Heartbeat';
@@ -12,6 +12,13 @@ import Only from 'common/lib/components/Only';
 import MessageBar from '../MessageBar';
 
 import Snippet from '../Snippet';
+
+const AppWrapper = styled.div`
+  height: 100vh;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+`;
 
 const RefreshBar = props => (
   <MessageBar
@@ -53,18 +60,22 @@ export class App extends React.Component<{}, IState> {
       const oldMethod = window.console[method];
       window.console[method] = (...args) => {
         oldMethod(...args);
-        // oldMethod(...args);
-        // console.log(args);
-        if (typeof args[0] === 'string') {
+        try {
+          const message =
+            typeof args[0] !== 'string' ? JSON.stringify(args[0], null, 2) : args[0];
+
           setTimeout(
             () =>
               this.addLog({
                 severity: method as ConsoleLogTypes,
-                message: args[0],
-                source: 'idk',
+                message,
               }),
             0,
           );
+        } catch (error) {
+          // this is a quickfix to prevent
+          // Uncaught TypeError: Converting circular structure to JSON
+          // from being thown
         }
       };
     });
@@ -82,14 +93,16 @@ export class App extends React.Component<{}, IState> {
   render() {
     // console.info(this.state);
     return (
-      <>
-        <Theme host={this.state.solution ? this.state.solution.host : Utilities.host}>
+      <Theme host={this.state.solution ? this.state.solution.host : Utilities.host}>
+        <AppWrapper>
           <HeaderFooterLayout
+            wrapperStyle={{ flex: '7' }}
             header={
               <Header
                 solutionName={this.state.solution ? this.state.solution.name : undefined}
                 goBack={() => {}}
                 refresh={() => window.location.reload()}
+                hardRefresh={() => window.location.reload()}
               />
             }
             footer={
@@ -115,35 +128,18 @@ export class App extends React.Component<{}, IState> {
             }
           >
             <RefreshBar isVisible={false} />
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                flex: '1',
-                height: '100%',
-              }}
-            >
-              {this.state.solution && (
-                <div style={{ flex: '7', minHeight: '7rem' }}>
-                  <Snippet solution={this.state.solution!} />
-                </div>
-              )}
-
-              <Only when={this.state.isConsoleOpen}>
-                <ThemeContext.Consumer>
-                  {theme => <div style={{ height: '2px', background: theme.primary }} />}
-                </ThemeContext.Consumer>
-                <Console
-                  style={{ flex: '3', minHeight: '25rem' }}
-                  logs={this.state.logs}
-                  clearLogs={() => {}}
-                />
-              </Only>
-            </div>
+            {this.state.solution && <Snippet solution={this.state.solution!} />}
           </HeaderFooterLayout>
-        </Theme>
+          <Only when={this.state.isConsoleOpen}>
+            <Console
+              style={{ flex: '3', minHeight: '2rem' }}
+              logs={this.state.logs}
+              clearLogs={() => {}}
+            />
+          </Only>
+        </AppWrapper>
         <Heartbeat onReceiveNewActiveSolution={this.onReceiveNewActiveSolution} />
-      </>
+      </Theme>
     );
   }
 }

@@ -23,19 +23,14 @@ class Theme extends Component<IProps, IState> {
   }
 
   componentDidUpdate(prevProps: IProps) {
-    console.log({ prevProps, props: this.props });
-
     if (this.props.host !== prevProps.host) {
-      console.log('if w as true');
       setupFabricTheme(this.props.host);
       const theme = getTheme(this.props.host);
-      console.log({ theme });
       this.setState({ theme });
     }
   }
 
   render() {
-    console.log({ theme: this.state.theme, host: this.props.host });
     return (
       <ThemeProvider theme={this.state.theme}>
         <ThemeContext.Provider value={this.state.theme}>

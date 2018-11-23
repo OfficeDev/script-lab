@@ -144,7 +144,7 @@ class Console extends React.Component<IPrivateProps, IState> {
                         }}
                       />
                     )}
-                    <LogText>{log.message}</LogText>
+                    <LogText>{log.message.replace('\n', '<br>')}</LogText>
                   </Log>
                 );
               })}

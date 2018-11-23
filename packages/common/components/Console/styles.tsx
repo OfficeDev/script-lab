@@ -74,7 +74,7 @@ export const Log = styled.li`
   border-bottom: 0.5px solid ${props => props.theme.neutralLight};
 `;
 
-export const LogText = styled.div`
+export const LogText = styled.pre`
   word-wrap: break-word;
   font-size: 1.2rem;
   width: 100%;
