@@ -90,6 +90,14 @@ export class App extends React.Component<{}, IState> {
 
   onReceiveNewActiveSolution = (solution: ISolution) => this.setState({ solution });
 
+  softRefresh = () => {
+    if (this.state.solution) {
+      this.setState({
+        solution: { ...this.state.solution, dateLastModified: Date.now() },
+      });
+    }
+  };
+
   render() {
     return (
       <Theme host={this.state.solution ? this.state.solution.host : Utilities.host}>
@@ -100,8 +108,8 @@ export class App extends React.Component<{}, IState> {
               <Header
                 solutionName={this.state.solution ? this.state.solution.name : undefined}
                 // goBack={() => {}}
-                refresh={() => window.location.reload()}
-                hardRefresh={() => window.location.reload()}
+                refresh={this.softRefresh}
+                hardRefresh={window.location.reload}
               />
             }
             footer={
