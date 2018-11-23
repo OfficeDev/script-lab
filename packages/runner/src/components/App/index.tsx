@@ -113,14 +113,20 @@ export class App extends React.Component<{}, IState> {
                     hidden: this.state.isConsoleOpen || this.state.solution === null,
                     key: 'open-console',
                     text: 'Open Console',
-                    iconProps: { iconName: 'CaretSolidUp' },
+                    iconProps: {
+                      iconName: 'CaretSolidUp',
+                      styles: { root: { fontSize: '1.2rem' } },
+                    },
                     onClick: this.openConsole,
                   },
                   {
                     hidden: !this.state.isConsoleOpen || this.state.solution === null,
                     key: 'close-console',
                     text: 'Close Console',
-                    iconProps: { iconName: 'CaretSolidDown' },
+                    iconProps: {
+                      iconName: 'CaretSolidDown',
+                      styles: { root: { fontSize: '1.2rem' } },
+                    },
                     onClick: this.closeConsole,
                   },
                 ]}
