@@ -32,7 +32,7 @@ const additionalFilesToCopy = [
 
 const oldFilesToRemove = ['./public/vs', './public/external/vs'];
 
-/////////////////////////////////////////
+////////////////////////////////////////
 
 import fs from 'fs-extra';
 

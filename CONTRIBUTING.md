@@ -66,3 +66,7 @@ This is a particularly critical step for loading the Add-in inside of Office on 
 # Manual-testing scenarios
 
 Please see "[TESTING.md](TESTING.md)".
+
+# Misc.
+
+- Running Script Lab offline (no CDN access to Office.js): modify the Office.js CDN URL in `packages\editor\src\constants.ts` to point to the local copy. But be sure to undo this before committing!

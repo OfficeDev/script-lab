@@ -8,15 +8,6 @@
     />
     <meta name="theme-color" content="#FFFFFF" />
 
-    <script src="%PUBLIC_URL%/external/monaco-editor-0-14-3/vs/loader.js"></script>
-
-    <!--
-      For offline office-js debugging, uncomment the local office-js below (while commenting
-      out the CDN one). Don't forget to reverse this before committing!
-    -->
-    <!-- <script src="%PUBLIC_URL%/external/office-js/office.js"></script> -->
-    <script src="https://appsforoffice.microsoft.com/lib/1/hosted/Office.debug.js"></script>
-
     <script>
       // For now, set Office.initialize to an empty function, to work around an issue with onReady
       // (As of Nov 1st 2018, onReady works, but requires Office.initialize to still be set).
@@ -36,6 +27,10 @@
       href="%PUBLIC_URL%/precompiled/style-f6728d9319d797f4cf13dc3772ab5f3f.css"
     />
     <!-- End precompile placeholder: style.css -->
+
+    <!-- Begin precompile placeholder: office-js-loader.js -->
+    <script src="%PUBLIC_URL%/precompiled/office-js-loader-158455b5b8c41fcadaeb5be736067b36"></script>
+    <!-- End precompile placeholder: office-js-loader.js -->
 
     <title>Script Lab React</title>
   </head>
