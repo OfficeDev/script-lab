@@ -56,7 +56,6 @@ class IFrame extends React.Component<IProps> {
       const doc = this.getContentDoc();
       doc.open('text/html', 'replace');
       doc.write(this.props.content);
-      console.log(this.props.content);
       doc.close();
 
       this.props.onRenderComplete();

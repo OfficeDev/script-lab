@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import moment from 'moment';
 import { Utilities } from '@microsoft/office-js-helpers';
 
 import Theme from 'common/lib/components/Theme';
@@ -12,6 +13,8 @@ import Only from 'common/lib/components/Only';
 import MessageBar from '../MessageBar';
 
 import Snippet from '../Snippet';
+
+const LAST_UPDATED_POLL_INTERVAL = 1000;
 
 const AppWrapper = styled.div`
   height: 100vh;
@@ -30,15 +33,26 @@ const RefreshBar = props => (
 
 interface IState {
   solution: ISolution | null;
+  lastRendered: number | null;
+  lastUpdatedText: string;
   logs: ILogData[];
   isConsoleOpen: boolean;
 }
 
 export class App extends React.Component<{}, IState> {
+  lastUpdatedTextPoll;
+
   constructor(props) {
     super(props);
 
-    this.state = { solution: null, logs: [], isConsoleOpen: false };
+    this.state = {
+      solution: null,
+      logs: [],
+      isConsoleOpen: false,
+      lastRendered: null,
+      lastUpdatedText: '',
+    };
+
     Office.onReady(async () => {
       const loadingIndicator = document.getElementById('loading');
       if (loadingIndicator) {
@@ -49,11 +63,31 @@ export class App extends React.Component<{}, IState> {
       }
       this.forceUpdate(); // TODO: is needed?
     });
+
+    moment.relativeTimeThreshold('s', 40);
+    // Note, per documentation, "ss" must be set after "s"
+    moment.relativeTimeThreshold('ss', 1);
+    moment.relativeTimeThreshold('m', 40);
+    moment.relativeTimeThreshold('h', 20);
+    moment.relativeTimeThreshold('d', 25);
+    moment.relativeTimeThreshold('M', 10);
   }
 
   componentDidMount() {
+    this.lastUpdatedTextPoll = setInterval(
+      this.setLastUpdatedText,
+      LAST_UPDATED_POLL_INTERVAL,
+    );
     this.portConsole();
   }
+
+  setLastUpdatedText = () =>
+    this.setState({
+      lastUpdatedText:
+        this.state.lastRendered !== null
+          ? `Last updated ${moment(new Date(this.state.lastRendered)).fromNow()}`
+          : '',
+    });
 
   portConsole = () => {
     ['info', 'warn', 'error', 'log'].forEach(method => {
@@ -98,6 +132,9 @@ export class App extends React.Component<{}, IState> {
     }
   };
 
+  setLastRendered = (lastRendered: number) =>
+    this.setState({ lastRendered }, this.setLastUpdatedText);
+
   render() {
     return (
       <Theme host={this.state.solution ? this.state.solution.host : Utilities.host}>
@@ -114,7 +151,13 @@ export class App extends React.Component<{}, IState> {
             }
             footer={
               <Footer
-                items={[]}
+                items={[
+                  {
+                    hidden: this.state.lastRendered === null,
+                    key: 'last-updated',
+                    text: this.state.lastUpdatedText,
+                  },
+                ]}
                 farItems={[
                   {
                     hidden: this.state.isConsoleOpen || this.state.solution === null,
@@ -141,7 +184,10 @@ export class App extends React.Component<{}, IState> {
             }
           >
             <RefreshBar isVisible={false} />
-            <Snippet solution={this.state.solution || undefined} />
+            <Snippet
+              solution={this.state.solution || undefined}
+              onRender={this.setLastRendered}
+            />
           </HeaderFooterLayout>
           <Only when={this.state.isConsoleOpen}>
             <Console

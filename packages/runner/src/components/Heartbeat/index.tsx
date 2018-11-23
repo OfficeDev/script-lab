@@ -10,7 +10,7 @@ export interface IProps {
 }
 
 interface IState {
-  activeSolutionId: string | undefined;
+  activeSolution?: ISolution;
 }
 
 class Heartbeat extends Component<IProps, IState> {
@@ -53,8 +53,8 @@ class Heartbeat extends Component<IProps, IState> {
 
     try {
       const solutionOrNull: ISolution | null = JSON.parse(data);
-      if (solutionOrNull && this.state.activeSolutionId !== solutionOrNull.id) {
-        this.setState({ activeSolutionId: solutionOrNull.id });
+      if (solutionOrNull) {
+        this.setState({ activeSolution: solutionOrNull });
         this.props.onReceiveNewActiveSolution(solutionOrNull);
       }
     } catch (err) {

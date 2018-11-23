@@ -69,6 +69,7 @@ function processLibraries(libraries: string, isInsideOffice: boolean) {
 
 export interface IProps {
   solution?: ISolution;
+  onRender?: (timestamp: number) => void;
 }
 
 interface IState {
@@ -81,11 +82,15 @@ class Snippet extends React.Component<IProps, IState> {
   constructor(props) {
     super(props);
 
+    const lastRendered = Date.now();
     this.state = {
       content: this.getContent(this.props),
-      lastRendered: Date.now(),
+      lastRendered,
       isLoading: true,
     };
+    if (this.props.onRender) {
+      this.props.onRender(lastRendered);
+    }
   }
 
   componentDidMount() {}
@@ -97,11 +102,15 @@ class Snippet extends React.Component<IProps, IState> {
         this.props.solution.id !== prevProps.solution!.id ||
         this.props.solution.dateLastModified !== prevProps.solution!.dateLastModified)
     ) {
+      const lastRendered = Date.now();
       this.setState({
         content: this.getContent(this.props),
-        lastRendered: Date.now(),
+        lastRendered,
         isLoading: true,
       });
+      if (this.props.onRender) {
+        this.props.onRender(lastRendered);
+      }
     }
   }
 
