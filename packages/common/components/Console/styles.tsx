@@ -2,14 +2,9 @@ import styled from 'styled-components';
 
 export const Wrapper = styled.div`
   flex: 3;
-  /* height: 100%; */
   position: relative;
   display: flex;
   flex-direction: column;
-  /* padding: 0rem 1.8rem; */
-
-  /* border-top: 0.5px solid ${props => props.theme.neutralLight}; */
-  /* border-bottom: 0.5px solid ${props => props.theme.neutralLight}; */
 `;
 
 export const NoLogsPlaceholderContainer = styled.div`
