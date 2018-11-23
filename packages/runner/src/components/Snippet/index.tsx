@@ -1,7 +1,5 @@
 import React from 'react';
-// import inlineScript from './templates/inlineScript';
-// import 'handlebars/lib/handlebars.runtime';
-// import './templates/compiled/newsnippet.handlebars';
+
 import ts from 'typescript';
 
 import IFrame from './IFrame';
@@ -102,15 +100,6 @@ class Snippet extends React.Component<IProps, IState> {
   }
 
   completeLoad = () => this.setState({ isLoading: false });
-
-  // shouldComponentUpdate(nextProps: IProps, nextState: IState) {
-  //   // console.log('componentShouldupdate');
-  //   return (
-  //     nextProps.solution.id !== this.props.solution.id ||
-  //     nextProps.solution.dateLastModified !== this.props.solution.dateLastModified ||
-  //     nextState.lastRendered !== this.state.lastRendered
-  //   );
-  // }
 
   componentWillUnmount() {}
 

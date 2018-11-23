@@ -138,7 +138,7 @@ export class App extends React.Component<{}, IState> {
           </HeaderFooterLayout>
           <Only when={this.state.isConsoleOpen}>
             <Console
-              style={{ flex: '3', minHeight: '2rem' }}
+              style={{ flex: '3', minHeight: '20rem' }}
               logs={this.state.logs}
               clearLogs={() => {}}
             />
