@@ -71,7 +71,7 @@ for (const key in expectedPackages) {
   foldersToCopy.push({
     from: `../../node_modules/${packageToCheck.name}/${packageToCheck.pathToCopyFrom}`,
     to: `./public/external/${packageToCheck.copyAsName}-${getVersionNumberHyphenated(
-      expectedPackages.monaco.version,
+      packageToCheck.version,
     )}${packageToCheck.pathToCopyTo ? '/' + packageToCheck.pathToCopyTo : ''}`,
   });
 }

@@ -12,6 +12,8 @@ import { initializeIcons } from 'office-ui-fabric-react/lib/Icons';
 import './index.css';
 import Root from './components/Root';
 import { invokeGlobalErrorHandler } from './utils';
+import { resolve } from 'path';
+import { WINDOW_SCRIPT_LAB_IS_READY_KEY } from './constants';
 
 document.addEventListener(
   'keydown',
@@ -32,8 +34,11 @@ document.addEventListener(
 //   to still use try/catch-es or .catch-es where possible.
 window.onerror = error => invokeGlobalErrorHandler(error);
 
-Office.onReady(() => {
+(async () => {
   try {
+    await waitForAllDynamicScriptsToBeLoaded();
+    await Office.onReady();
+
     if (Authenticator.isAuthDialog()) {
       return;
     }
@@ -54,4 +59,19 @@ Office.onReady(() => {
   } catch (e) {
     invokeGlobalErrorHandler(e);
   }
-});
+})();
+
+function waitForAllDynamicScriptsToBeLoaded(): Promise<void> {
+  if ((window as any)[WINDOW_SCRIPT_LAB_IS_READY_KEY]) {
+    return Promise.resolve();
+  }
+
+  return new Promise(resolve => {
+    const interval = setInterval(() => {
+      if ((window as any)[WINDOW_SCRIPT_LAB_IS_READY_KEY]) {
+        clearInterval(interval);
+        resolve();
+      }
+    }, 50);
+  });
+}

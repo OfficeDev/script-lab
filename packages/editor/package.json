@@ -34,7 +34,7 @@
   "scripts": {
     "analyze": "source-map-explorer build/static/js/main.*",
     "postinstall": "ts-node --project ../../scripts/tsconfig.json scripts/postinstall.ts && yarn precompile",
-    "precompile": "ts-node --project ../../scripts/tsconfig.json scripts/precompile.ts && prettier --write public/*.html",
+    "precompile": "ts-node --project ../../scripts/tsconfig.json scripts/precompile.ts",
     "start": "set HTTPS=true&&react-scripts start",
     "lint": "tslint \"src/**/*.ts?(x)\"",
     "build": "node scripts/build.js",
@@ -60,7 +60,7 @@
     "@types/js-yaml": "^3.11.2",
     "@types/lodash": "^4.14.118",
     "@types/node": "^10.0.9",
-    "@types/office-js": "^0.0.87",
+    "@types/office-js": "^0.0.135",
     "@types/prettier": "^1.13.2",
     "@types/react": "^16.3.14",
     "@types/react-dom": "^16.0.5",

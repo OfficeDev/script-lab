@@ -11,8 +11,8 @@ const FILES_SPEC: Array<{
     processor: readAsIsProcessor,
   },
   {
-    name: 'office-js-loader.js',
-    relativeFilePath: 'office-js-loader',
+    name: 'scripts-loader.js',
+    relativeFilePath: 'scripts-loader',
     injectInto: ['index.html'],
     processor: webpackProcessor,
   },
@@ -97,6 +97,12 @@ for (const filename in fileLines) {
   const fullPath = path.join(PUBLIC_DIR, filename);
   console.log(`    - ${fullPath}`);
   fs.writeFileSync(fullPath, fileLines[filename].join('\n'));
+  childProcess.execSync(
+    `${path.normalize('../../node_modules/.bin/prettier --write')} ${fullPath}`,
+    {
+      stdio: [0, 1, 2],
+    },
+  );
 
   if (unfulfilledPlaceholders[filename].length > 0) {
     throw new Error(
