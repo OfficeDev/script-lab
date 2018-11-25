@@ -21,8 +21,25 @@ Note: the installation of Node JS and Yarn add paths to your operating system's 
 
 From the root of the repo:
 
-1. `yarn install`
+1. `yarn install` (or just `yarn`)
 2. `yarn start`
+
+Your default browser will launch almost immediately. However, note that **it will take some 30-60 seconds before the website is actually up and running.**
+
+Also note that you'll see a few warnings in the node console. You can safely ignore them.
+
+```
+Compiled with warnings.
+
+.../script-lab-react/node_modules/prettier/standalone.js
+Critical dependency: the request of a dependency is an expression
+
+.../script-lab-react/node_modules/typescript/lib/typescript.js
+Critical dependency: the request of a dependency is an expression
+
+.../script-lab-react/node_modules/source-map-support/source-map-support.js
+Module not found: Can't resolve 'module' in '...\script-lab-react\node_modules\source-map-support'
+```
 
 ## Trust the certificates
 
