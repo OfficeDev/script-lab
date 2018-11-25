@@ -1,12 +1,13 @@
 import styled from 'styled-components';
 
-export const CenteredContent = styled.div`
+export const WelcomePage = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   height: 100vh;
   width: 100vw;
+  padding: 20px;
+  overflow: auto;
 `;
 
 export const WelcomeTitle = styled.h1.attrs({ className: 'ms-font-su' })`
@@ -22,7 +23,7 @@ export const WelcomeSubTitle = styled.h3.attrs({ className: 'ms-font-s-plus' })`
   text-align: center;
 `;
 
-export const Seperator = styled.hr`
+export const Separator = styled.hr`
   width: 14.1rem;
   margin-top: 2.4rem;
   margin-bottom: 3.2rem;

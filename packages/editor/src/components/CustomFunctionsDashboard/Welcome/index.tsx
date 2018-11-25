@@ -1,10 +1,10 @@
 import React from 'react';
 import { DefaultButton } from 'office-ui-fabric-react/lib/Button';
 import {
-  CenteredContent,
+  WelcomePage,
   WelcomeTitle,
   WelcomeSubTitle,
-  Seperator,
+  Separator,
   Instructions,
   InstructionsDescription,
   List,
@@ -12,19 +12,17 @@ import {
   CodeBlock,
 } from './styles';
 
-interface IProps {
-  isRefreshEnabled: boolean;
-}
+interface IProps {}
 
 const refresh = () => window.location.reload();
 
-export const Welcome = ({ isRefreshEnabled }: IProps) => (
-  <CenteredContent>
+export const Welcome = () => (
+  <WelcomePage>
     <WelcomeTitle>Welcome</WelcomeTitle>
     <WelcomeSubTitle>
       Discover what custom functions can do for you today!
     </WelcomeSubTitle>
-    <Seperator />
+    <Separator />
     <Instructions>
       <InstructionsDescription>
         Get started with your first custom function.
@@ -46,7 +44,6 @@ export const Welcome = ({ isRefreshEnabled }: IProps) => (
       </List>
       <DefaultButton
         primary
-        disabled={!isRefreshEnabled}
         onClick={refresh}
         text="Refresh"
         style={{
@@ -55,7 +52,7 @@ export const Welcome = ({ isRefreshEnabled }: IProps) => (
         }}
       />
     </Instructions>
-  </CenteredContent>
+  </WelcomePage>
 );
 
 export default Welcome;

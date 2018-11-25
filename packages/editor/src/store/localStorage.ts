@@ -107,21 +107,15 @@ export const saveState = (state: IState) => {
       localStorage.setItem('activeSolution', 'null');
     }
 
-    // FIXME Zlatkovsky
-    // const cfPostData = getCFPostData(state);
+    // FIXME Zlatkovsky signal on CF update
     // localStorage.setItem(
-    //   localStorageKeys.customFunctionsRunPostData,
-    //   JSON.stringify(cfPostData),
+    //   localStorageKeys.customFunctionsLastUpdatedCodeTimestamp,
+    //   selectors.customFunctions.getLastModifiedDate(state).toString(),
     // );
-
-    localStorage.setItem(
-      localStorageKeys.customFunctionsLastUpdatedCodeTimestamp,
-      selectors.customFunctions.getLastModifiedDate(state).toString(),
-    );
 
     lastSavedState = state;
   } catch (err) {
-    // TODO
+    // FIXME Nico this should bubble up in the notifications to the user
     console.error(err);
   }
 };

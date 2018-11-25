@@ -95,7 +95,7 @@ export class CustomFunctionsDashboard extends React.Component<IProps, IState> {
           />
         );
       } else {
-        return <Welcome isRefreshEnabled={this.getShouldPromptRefresh()} />;
+        return <Welcome />;
       }
     } else {
       return <ComingSoon />;

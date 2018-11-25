@@ -1,6 +1,11 @@
 import { pause } from '../utils';
 import { getCurrentEnv } from '../environment';
 
+// For ease of debugging, establish a session-storage key that will allow
+// the dashboard to be displayed in a regular browser.
+const SESSION_STORAGE_KEY__BYPASS_CUSTOM_FUNCTIONS_ENGINE_STATUS_CHECK =
+  'BYPASS_CUSTOM_FUNCTIONS_ENGINE_STATUS_CHECK';
+
 const isCustomFunctionRegex = /@customfunction/i;
 export function isCustomFunctionScript(content: string) {
   return isCustomFunctionRegex.test(content);
@@ -56,6 +61,19 @@ export async function registerMetadata(
 export async function getCustomFunctionEngineStatus(): Promise<
   ICustomFunctionEngineStatus
 > {
+  // For ease of debugging, allow a manual way to let the dashboard display
+  // in a standalone browser.
+  if (
+    window.sessionStorage.getItem(
+      SESSION_STORAGE_KEY__BYPASS_CUSTOM_FUNCTIONS_ENGINE_STATUS_CHECK,
+    )
+  ) {
+    return {
+      enabled: true,
+      nativeRuntime: false,
+    };
+  }
+
   if (!Office || !Office.context || !Office.context.requirements) {
     throw new Error('This page is expected to only run inside of Excel');
   }
