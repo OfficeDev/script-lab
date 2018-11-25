@@ -6,7 +6,7 @@ import { Utilities } from '@microsoft/office-js-helpers';
 import Theme from 'common/lib/components/Theme';
 import Console, { ConsoleLogSeverities } from 'common/lib/components/Console';
 import HeaderFooterLayout from 'common/lib/components/HeaderFooterLayout';
-import Heartbeat from '../Heartbeat';
+import Heartbeat from './Heartbeat';
 import Header from './Header';
 import Footer from 'common/lib/components/Footer';
 import Only from 'common/lib/components/Only';
@@ -144,7 +144,6 @@ export class App extends React.Component<{}, IState> {
             header={
               <Header
                 solutionName={this.state.solution ? this.state.solution.name : undefined}
-                // goBack={() => {}}
                 refresh={this.softRefresh}
                 hardRefresh={window.location.reload}
               />
@@ -170,7 +169,7 @@ export class App extends React.Component<{}, IState> {
                     onClick: this.openConsole,
                   },
                   {
-                    hidden: !this.state.isConsoleOpen || this.state.solution === null,
+                    hidden: !this.state.isConsoleOpen,
                     key: 'close-console',
                     text: 'Close Console',
                     iconProps: {
