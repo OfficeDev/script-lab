@@ -49,6 +49,7 @@ export const CheckboxWrapper = styled.div`
 
 export const LogsArea = styled.div`
   height: 100%;
+  max-height: inherit;
   overflow-x: hidden;
   overflow-y: auto;
   flex: 1;
