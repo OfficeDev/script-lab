@@ -19,4 +19,11 @@ module.exports = {
   globals: {
     'ts-jest': { tsConfig: 'tsconfig.test.json' },
   },
+
+  moduleDirectories: [
+    'node_modules',
+    // add the directory with the test-utils.js file, for example:
+    'src/utils', // a utility folder
+    __dirname, // the root directory
+  ],
 };
