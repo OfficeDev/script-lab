@@ -111,6 +111,7 @@ export class App extends React.Component<{}, IState> {
       this.setState({
         solution: { ...this.state.solution, dateLastModified: Date.now() },
       });
+      console.info(`Your snippet '${this.state.solution.name}' has been reloaded.`);
     }
   };
 
@@ -138,6 +139,7 @@ export class App extends React.Component<{}, IState> {
                 closeConsole={this.closeConsole}
                 isSolutionLoaded={this.state.solution !== null}
                 lastRendered={this.state.lastRendered}
+                refresh={this.softRefresh}
               />
             }
           >

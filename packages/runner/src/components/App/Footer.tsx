@@ -44,6 +44,12 @@ class Footer extends React.Component<IProps, IState> {
     );
   }
 
+  componentDidUpdate(prevProps: IProps) {
+    if (this.props.lastRendered !== prevProps.lastRendered) {
+      this.setLastUpdatedText();
+    }
+  }
+
   componentWillUnmount() {
     clearInterval(this.lastUpdatedTextPoll);
   }
