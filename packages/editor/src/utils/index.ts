@@ -1,7 +1,4 @@
-/* spellchecker: disable */
-import uuidv4 from 'uuid';
-const createGUID = uuidv4;
-/* spellchecker: enable */
+import createGUID from 'uuid';
 
 import { LIBRARIES_FILE_NAME, SCRIPT_FILE_NAME } from '../constants';
 import { getBoilerplateFiles } from '../newSolutionData';
