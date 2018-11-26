@@ -6,8 +6,6 @@ import { Checkbox } from 'office-ui-fabric-react/lib/Checkbox';
 import { List, ScrollToMode, IListProps } from 'office-ui-fabric-react/lib/List';
 import { FocusZone } from 'office-ui-fabric-react/lib/FocusZone';
 
-const VIRTUALIZATION_THRESHOLD = 100;
-
 import {
   Wrapper,
   CheckboxWrapper,
@@ -55,11 +53,11 @@ class Console extends React.Component<IPrivateProps, IState> {
   }
 
   componentDidMount() {
-    // this.scrollToBottom();
+    this.scrollToBottom();
   }
 
   componentDidUpdate() {
-    // this.scrollToBottom();
+    this.scrollToBottom();
   }
 
   setShouldScrollToBottom = (ev: React.FormEvent<HTMLElement>, checked: boolean) =>
@@ -71,9 +69,9 @@ class Console extends React.Component<IPrivateProps, IState> {
     });
 
   scrollToBottom() {
-    // if (this.state.shouldScrollToBottom && this.refs.lastLog) {
-    //   (this.refs.lastLog as any).scrollIntoView();
-    // }
+    if (this.state.shouldScrollToBottom && this.list) {
+      this.list.scrollToIndex(this.props.logs.length);
+    }
   }
 
   render() {
@@ -167,60 +165,10 @@ class Console extends React.Component<IPrivateProps, IState> {
                 onRenderCell={
                   this.onRenderCell // getPageHeight={this._getPageHeight}
                 }
-                onShouldVirtualize={(props: IListProps) =>
-                  !!(props.items && props.items.length > VIRTUALIZATION_THRESHOLD)
-                }
               />
             </div>
-
-            {/* <LogsList>
-            {logs
-              .filter(log => log.message.toLowerCase().includes(this.state.filterQuery))
-              .map((log, i) => {
-                const { backgroundColor, color, icon } = {
-                  [ConsoleLogSeverities.Log]: {
-                    backgroundColor: theme.white,
-                    color: theme.black,
-                    icon: null,
-                  },
-                  [ConsoleLogSeverities.Info]: {
-                    backgroundColor: '#cce6ff',
-                    color: theme.black,
-                    icon: { name: 'Info', color: '#002db3' },
-                  },
-                  [ConsoleLogSeverities.Warn]: {
-                    backgroundColor: '#fff4ce',
-                    color: theme.black,
-                    icon: { name: 'Warning', color: 'gold' },
-                  },
-                  [ConsoleLogSeverities.Error]: {
-                    backgroundColor: '#fde7e9',
-                    color: theme.black,
-                    icon: { name: 'Error', color: 'red' },
-                  },
-                }[log.severity];
-                return (
-                  <Log key={`${log.severity}-${i}`} style={{ backgroundColor, color }}>
-                    {icon && (
-                      <Icon
-                        className="ms-font-m"
-                        iconName={icon.name}
-                        style={{
-                          fontSize: '1.6rem',
-                          color: icon.color,
-                          marginRight: '0.5rem',
-                        }}
-                      />
-                    )}
-                    <LogText>{log.message.replace('\n', '<br>')}</LogText>
-                  </Log>
-                );
-              })}
-          </LogsList>
-          <div ref="lastLog" /> */}
           </LogsArea>
         </HeaderFooterLayout>
-        `
       </Wrapper>
     );
   }
