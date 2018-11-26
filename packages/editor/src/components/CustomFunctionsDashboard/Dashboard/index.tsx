@@ -109,7 +109,7 @@ class DashboardWithoutTheme extends React.Component<IProps, IState> {
             onSelect={this.setSelectedKey}
           />
         </Header>
-        <Only when={shouldPromptRefresh}>
+        <Only when={shouldPromptRefresh && false /*FIXME zlatkovsky disable for now*/}>
           <MessageBar
             messageBarType={MessageBarType.info}
             isMultiline={false}

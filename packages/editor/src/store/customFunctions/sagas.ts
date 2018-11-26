@@ -75,7 +75,10 @@ function* fetchHeartbeatSaga() {
 }
 
 function* openDashboardSaga() {
-  yield put(push(PATHS.CUSTOM_FUNCTIONS));
+  // Need to do a full-page navigation rather than a route navigation,
+  // because Custom Functions need to load a different copy of the Office.js
+  // script reference, and hence need a brand new page.
+  window.location.href = '/custom-functions.html';
 }
 
 function* checkIfIsCustomFunctionSaga(
