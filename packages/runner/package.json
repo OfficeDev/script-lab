@@ -15,7 +15,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "export CI=false&&react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "lint": "tslint \"src/**/*.ts?(x)\""
   },
