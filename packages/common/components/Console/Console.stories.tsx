@@ -743,8 +743,16 @@ class ConsoleWrapper extends React.Component<{ interval: number }> {
 }
 
 storiesOf('Console', module)
-  .add('basic', () => <Console {...props} />)
-  .add('with a LOT of logs', () => <Console {...props} logs={lotsOfLogs} />)
+  .add('basic', () => (
+    <SimpleWrapper>
+      <Console {...props} />
+    </SimpleWrapper>
+  ))
+  .add('with a LOT of logs', () => (
+    <SimpleWrapper>
+      <Console {...props} logs={lotsOfLogs} />
+    </SimpleWrapper>
+  ))
   .add('with logs being added', () => (
     <SimpleWrapper>
       <ConsoleWrapper interval={number('interval for adding logs', 1000)} />

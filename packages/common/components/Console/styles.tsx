@@ -58,12 +58,13 @@ export const LogsArea = styled.div`
 export const LogsList = styled.ul``;
 
 export const Log = styled.li`
+  position: relative;
   display: flex;
   align-items: center;
   width: 100%;
   min-height: 3.2rem;
   padding: 0.9rem;
-  padding-left: 1.6rem;
+  padding-left: 1rem;
   font-family: monospace;
   box-sizing: border-box;
   border-top: 0.5px solid ${props => props.theme.neutralLight};
@@ -73,6 +74,9 @@ export const Log = styled.li`
 export const LogText = styled.pre`
   word-wrap: break-word;
   font-size: 1.2rem;
+  position: absolute;
+  left: 3.4rem;
+  /* margin-left: 2rem; */
   width: 100%;
 `;
 
