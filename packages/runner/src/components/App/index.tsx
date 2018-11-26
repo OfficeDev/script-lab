@@ -46,7 +46,7 @@ export class App extends React.Component<{}, IState> {
       lastRendered: null,
     };
 
-    Office.onReady(async () => {
+    Office.onReady(() => {
       const loadingIndicator = document.getElementById('loading');
       if (loadingIndicator) {
         const { parentNode } = loadingIndicator;
@@ -54,18 +54,18 @@ export class App extends React.Component<{}, IState> {
           parentNode.removeChild(loadingIndicator);
         }
       }
-      this.forceUpdate(); // TODO: is needed?
+      this.forceUpdate();
     });
   }
 
   componentDidMount() {
-    this.portConsole();
+    this.monkeypatchConsole();
   }
 
-  portConsole = () => {
+  monkeypatchConsole = () => {
     ['info', 'warn', 'error', 'log'].forEach(method => {
       const oldMethod = window.console[method];
-      window.console[method] = (...args) => {
+      window.console[method] = (...args: any[]) => {
         oldMethod(...args);
         try {
           const message =
@@ -83,6 +83,15 @@ export class App extends React.Component<{}, IState> {
           // this is a quickfix to prevent
           // Uncaught TypeError: Converting circular structure to JSON
           // from being thown
+          setTimeout(
+            () =>
+              this.addLog({
+                severity: ConsoleLogSeverities.Error,
+                message: '[Could not display log entry]',
+              }),
+            0,
+          );
+          // FIXME Zlatkovsky to use stringifyplusplus
         }
       };
     });
@@ -105,6 +114,8 @@ export class App extends React.Component<{}, IState> {
     }
   };
 
+  reloadPage = () => window.location.reload();
+
   setLastRendered = (lastRendered: number) => this.setState({ lastRendered });
 
   render() {
@@ -117,7 +128,7 @@ export class App extends React.Component<{}, IState> {
               <Header
                 solutionName={this.state.solution ? this.state.solution.name : undefined}
                 refresh={this.softRefresh}
-                hardRefresh={window.location.reload}
+                hardRefresh={this.reloadPage}
               />
             }
             footer={

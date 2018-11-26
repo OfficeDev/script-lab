@@ -1,10 +1,10 @@
 import './polyfills';
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import React from 'react';
+import ReactDOM from 'react-dom';
 import { Authenticator } from '@microsoft/office-js-helpers';
 import configureStore from './store/configureStore';
 import { setupFabricTheme } from './theme';
-import registerServiceWorker, { unregister } from './registerServiceWorker';
+import { unregister } from './registerServiceWorker';
 import { misc } from './store/actions';
 import selectors from './store/selectors';
 import { initializeIcons } from 'office-ui-fabric-react/lib/Icons';
@@ -42,12 +42,7 @@ Office.onReady(async () => {
     return;
   }
   initializeIcons();
-  const initialState = {
-    ...loadStateFromLocalStorage(),
-    ...loadStateFromSessionStorage(),
-  };
 
-  console.log(JSON.stringify(initialState, null, 4));
   const { store, history } = configureStore({
     history: createHashHistory(),
     initialState: {
@@ -74,5 +69,5 @@ Office.onReady(async () => {
     document.getElementById('root') as HTMLElement,
   );
 
-  unregister(); // did this help?
+  unregister(); // need more testing to determine if this can be removed. seems to help with the caching of the html file issues
 });

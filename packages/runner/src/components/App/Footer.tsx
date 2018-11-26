@@ -66,7 +66,7 @@ class Footer extends React.Component<IProps, IState> {
         ]}
         farItems={[
           {
-            hidden: this.props.isConsoleOpen || this.props.isSolutionLoaded,
+            hidden: this.props.isConsoleOpen || !this.props.isSolutionLoaded,
             key: 'open-console',
             text: 'Open Console',
             iconProps: {

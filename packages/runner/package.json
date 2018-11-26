@@ -10,7 +10,6 @@
     "office-ui-fabric-react": "^6.69.0",
     "react": "^16.5.0",
     "react-dom": "^16.5.0",
-    "react-inspector": "^2.3.0",
     "styled-components": "^3.4.6",
     "typescript": "^3.1.6"
   },

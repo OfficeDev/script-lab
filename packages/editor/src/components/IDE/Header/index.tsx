@@ -135,7 +135,7 @@ const mapDispatchToProps = (dispatch, ownProps: IProps): IActionsFromRedux => ({
     ),
 
   navigateToCustomFunctions: () => dispatch(actions.customFunctions.openDashboard()),
-  navigateToRun: () => (window.location.href = 'https://localhost:3200/'),
+  navigateToRun: () => (window.location.href = 'https://localhost:3200/'), // TODO: NICO: FIXME: DONT CHECK IN!!!
   showTrustError: () =>
     dispatch(
       actions.messageBar.show({

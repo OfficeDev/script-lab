@@ -43,7 +43,7 @@ function* onEditorOpenSaga() {
 }
 
 export function* onEditorOpenFileSaga(action: ActionType<typeof editor.openFile>) {
-  const currentOpenSolution = yield select(selectors.editor.getActiveSolution);
+  const currentOpenSolution: ISolution = yield select(selectors.editor.getActiveSolution);
   const currentOpenFile = yield select(selectors.editor.getActiveFile);
 
   // tslint:disable-next-line:prefer-const
@@ -54,18 +54,6 @@ export function* onEditorOpenFileSaga(action: ActionType<typeof editor.openFile>
     } else {
       solutionId = currentOpenSolution.id;
     }
-  }
-
-  if (!solutionId) {
-    throw new Error(
-      `Not sure why this is needed but it makes
-       typescript feel safer about solutionId below
-       not being undefined... but this should never
-       get hit because it should actually throw above.
-       And even that one shouldn't get hit because it
-       indicates that the action was used improperly`,
-    );
-    return;
   }
 
   yield put(editor.setActive({ solutionId, fileId }));
