@@ -17,7 +17,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "lint": "tslint \"src/**/*.ts?(x)\""
   },
   "devDependencies": {
     "@types/fs-extra": "^5.0.4",
