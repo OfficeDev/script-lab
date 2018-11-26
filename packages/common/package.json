@@ -13,11 +13,12 @@
     "styled-components": "^4.1.1"
   },
   "scripts": {
-    "postinstall": "yarn build",
-    "build": "tsc",
+    "postinstall": "yarn build:package",
+    "build:package": "tsc",
     "start": "tsc --watch",
     "storybook": "start-storybook -p 6006",
-    "build:storybook": "build-storybook -c .storybook -o build-storybook",
+    "build": "build-storybook -c .storybook -o build-storybook",
+    "lint": "tslint \"src/**/*.ts?(x)\"",
     "test": "jest --env=jsdom"
   },
   "devDependencies": {
@@ -48,6 +49,9 @@
     "enzyme-adapter-react-16": "^1.7.0",
     "jest": "^23.6.0",
     "ts-jest": "^23.10.4",
+    "tslint": "^5.11.0",
+    "tslint-config-prettier": "^1.16.0",
+    "tslint-react": "^3.6.0",
     "typescript": "^3.0.3"
   },
   "browserslist": [
