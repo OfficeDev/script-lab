@@ -157,7 +157,10 @@ export class App extends React.Component<{}, IState> {
             />
           </Only>
         </AppWrapper>
-        <Heartbeat onReceiveNewActiveSolution={this.onReceiveNewActiveSolution} />
+        <Heartbeat
+          host={Utilities.host}
+          onReceiveNewActiveSolution={this.onReceiveNewActiveSolution}
+        />
       </Theme>
     );
   }
