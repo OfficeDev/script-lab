@@ -13,7 +13,7 @@
     "styled-components": "^4.1.1"
   },
   "scripts": {
-    "prepare": "yarn build",
+    "postinstall": "yarn build",
     "build": "tsc",
     "start": "tsc --watch",
     "storybook": "start-storybook -p 6006",
