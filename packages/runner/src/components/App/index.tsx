@@ -11,7 +11,7 @@ import Footer from './Footer';
 import Only from 'common/lib/components/Only';
 import MessageBar from '../MessageBar';
 
-import Snippet from '../Snippet';
+import SnippetContainer from '../SnippetContainer';
 
 const AppWrapper = styled.div`
   height: 100vh;
@@ -142,7 +142,7 @@ export class App extends React.Component<{}, IState> {
             }
           >
             <RefreshBar isVisible={false} />
-            <Snippet
+            <SnippetContainer
               solution={this.state.solution || undefined}
               onRender={this.setLastRendered}
             />
