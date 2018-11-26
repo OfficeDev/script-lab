@@ -45,17 +45,40 @@ function* onEditorOpenSaga() {
 export function* onEditorOpenFileSaga(action: ActionType<typeof editor.openFile>) {
   const currentOpenSolution = yield select(selectors.editor.getActiveSolution);
   const currentOpenFile = yield select(selectors.editor.getActiveFile);
-  yield put(editor.setActive(action.payload));
+
+  // tslint:disable-next-line:prefer-const
+  let { solutionId, fileId } = action.payload;
+  if (!solutionId) {
+    if (!currentOpenSolution.files.find(file => file.id === fileId)) {
+      throw new Error(`The file id ${fileId} does not exist in current open solution.`);
+    } else {
+      solutionId = currentOpenSolution.id;
+    }
+  }
+
+  if (!solutionId) {
+    throw new Error(
+      `Not sure why this is needed but it makes
+       typescript feel safer about solutionId below
+       not being undefined... but this should never
+       get hit because it should actually throw above.
+       And even that one shouldn't get hit because it
+       indicates that the action was used improperly`,
+    );
+    return;
+  }
+
+  yield put(editor.setActive({ solutionId, fileId }));
   yield call(onEditorOpenSaga);
 
-  const solutionToOpen = yield select(selectors.solutions.get, action.payload.solutionId);
-  const fileToOpen = yield select(selectors.solutions.getFile, action.payload.fileId);
+  const solutionToOpen = yield select(selectors.solutions.get, solutionId);
+  const fileToOpen = yield select(selectors.solutions.getFile, fileId);
 
-  if (currentOpenSolution.id !== action.payload.solutionId) {
+  if (currentOpenSolution.id !== solutionId) {
     yield put(editor.newSolutionOpened(solutionToOpen));
   }
 
-  if (currentOpenFile.id !== action.payload.fileId) {
+  if (currentOpenFile.id !== fileId) {
     yield put(editor.newFileOpened(solutionToOpen, fileToOpen));
   }
 }

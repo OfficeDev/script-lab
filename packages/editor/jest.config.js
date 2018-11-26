@@ -3,6 +3,7 @@ module.exports = {
   testEnvironment: 'node',
   moduleNameMapper: {
     'office-ui-fabric-react/lib/': 'office-ui-fabric-react/lib-commonjs/',
+    '\\.(css)$': '<rootDir>/__mocks__/styleMock.js',
   },
   transform: {
     '\\.(jsx?|tsx?)$': 'ts-jest',

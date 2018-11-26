@@ -3,7 +3,7 @@ import { createAction, createAsyncAction } from 'typesafe-actions';
 export const open = createAction('EDITOR_OPEN');
 
 export const openFile = createAction('EDITOR_OPEN_FILE', resolve => {
-  return (props: { solutionId: string; fileId: string }) => resolve(props);
+  return (props: { solutionId?: string; fileId: string }) => resolve(props);
 });
 
 export const setActive = createAction('EDITOR_SET_ACTIVE', resolve => {

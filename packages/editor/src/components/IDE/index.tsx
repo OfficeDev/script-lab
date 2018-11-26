@@ -1,31 +1,19 @@
 import React, { Component } from 'react';
 
 import Header from './Header';
-import PivotBar from '../PivotBar';
 import MessageBar from './MessageBar';
+import FileSwitcherPivot from './FileSwitcherPivot';
 import Dialog from './Dialog';
 import Editor from './Editor';
 import Footer from './Footer';
 
 import { Layout, ContentWrapper } from './styles';
-import {
-  NULL_SOLUTION,
-  NULL_FILE,
-  LIBRARIES_FILE_NAME,
-  SCRIPT_FILE_NAME,
-} from '../../constants';
+import { NULL_SOLUTION, NULL_FILE } from '../../constants';
 
 import { connect } from 'react-redux';
 import { IState as IReduxState } from '../../store/reducer';
 import selectors from '../../store/selectors';
 import { editor as editorActions } from '../../store/actions';
-
-const FILE_NAME_MAP = {
-  [SCRIPT_FILE_NAME]: 'Script',
-  'index.html': 'HTML',
-  'index.css': 'CSS',
-  [LIBRARIES_FILE_NAME]: 'Libraries',
-};
 
 interface IPropsFromRedux {
   isVisible: boolean;
@@ -72,14 +60,7 @@ class IDE extends Component<IIDE> {
         }
       >
         <Header solution={activeSolution} file={activeFile} />
-        <PivotBar
-          items={activeSolution.files.map(file => ({
-            key: file.id,
-            text: FILE_NAME_MAP[file.name] || file.name,
-          }))}
-          selectedKey={activeFile.id}
-          onSelect={this.changeActiveFile}
-        />
+        <FileSwitcherPivot />
         <MessageBar />
         <Dialog />
         <ContentWrapper>
