@@ -521,7 +521,7 @@
         <bt:String id="PG.ApiDocsCommand.TipTitle" DefaultValue="API Reference Documentation"></bt:String>
         <bt:String id="PG.AskCommand.Label" DefaultValue="Ask the Community"></bt:String>
         <bt:String id="PG.AskCommand.TipTitle" DefaultValue="Get API help from the community"></bt:String>
-        <bt:String id="PG.CFNamespace" DefaultValue="SCRIPTLABDEV" />
+        <bt:String id="PG.CFNamespace" DefaultValue="SCRIPTLAB" />
       </bt:ShortStrings>
       <bt:LongStrings>
         <bt:String id="PG.CodeSupertip.Desc" DefaultValue="Opens the Script Lab code editor"></bt:String>

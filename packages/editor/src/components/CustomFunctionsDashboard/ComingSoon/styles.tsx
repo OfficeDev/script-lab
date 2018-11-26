@@ -9,7 +9,7 @@ export const CenteredContent = styled.div`
   width: 100vw;
 `;
 
-export const Logo = styled.img.attrs({ src: '../../../assets/icon-large.svg' })`
+export const Logo = styled.img.attrs({ src: './assets/images/icon-large.svg' })`
   height: 12rem;
   width: 12rem;
 `;
