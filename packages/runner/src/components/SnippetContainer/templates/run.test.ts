@@ -1,9 +1,9 @@
-import template, { IProps } from './template';
+import run, { IProps } from './run';
 
 describe('template', () => {
   it('should render proper runner html', () => {
     expect(
-      template({
+      run({
         linkReferences: ['url1', 'url2', 'url3'],
         scriptReferences: ['url4', 'url5', 'url6'],
         inlineScript: 'example inline script',
