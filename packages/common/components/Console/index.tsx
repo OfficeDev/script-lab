@@ -17,7 +17,6 @@ import {
   LogText,
 } from './styles';
 import HeaderFooterLayout from '../HeaderFooterLayout';
-import { autobind } from '@uifabric/utilities';
 
 export enum ConsoleLogSeverities {
   Info = 'info',
@@ -191,11 +190,6 @@ class Console extends React.Component<IPrivateProps, IState> {
             style={{
               fontSize: '1.2rem',
               color: icon.color,
-              // position: 'absolute',
-              // top: '50%',
-              // bottom: '0',
-              // left: '50%',
-              // margin: 'auto',
               lineHeight: '1.2rem',
             }}
           />
