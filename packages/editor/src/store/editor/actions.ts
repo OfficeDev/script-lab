@@ -14,8 +14,6 @@ export const onMount = createAction('EDITOR_ON_MOUNT', resolve => {
   return (editor: monaco.editor.IStandaloneCodeEditor) => resolve(editor);
 });
 
-export const onLoadComplete = createAction('EDITOR_ON_LOAD_COMPLETE');
-
 export const applyMonacoOptions = createAction('EDITOR_APPLY_MONACO_OPTIONS');
 
 export const setIntellisenseFiles = createAsyncAction(
