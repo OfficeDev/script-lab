@@ -13,9 +13,9 @@ import LoadingIndicator from 'common/lib/components/LoadingIndicator';
 import { connect } from 'react-redux';
 import selectors from '../../store/selectors';
 
-import { getIsCustomFunctionsSupportedOnHost } from '../../store/customFunctions/utilities';
 import { localStorageKeys } from '../../constants';
 import { misc } from '../../store/actions';
+import { getCustomFunctionEngineStatus } from '../../store/customFunctions/utilities';
 
 interface IPropsFromRedux {
   hasCustomFunctionsInSolutions: boolean;
@@ -37,22 +37,24 @@ const mapStateToProps = (state): IPropsFromRedux => ({
 interface IProps extends IPropsFromRedux, IActionsFromRedux {}
 
 interface IState {
-  isCFSupportedOnHost: boolean | undefined;
+  engineStatus: ICustomFunctionEngineStatus | null;
   customFunctionsLastModified: number;
 }
 
 export class CustomFunctionsDashboard extends React.Component<IProps, IState> {
   localStorageCheckInterval;
-  state = { isCFSupportedOnHost: true, customFunctionsLastModified: 0 };
+  state: IState = { engineStatus: null, customFunctionsLastModified: 0 };
 
   constructor(props) {
     super(props);
 
-    // FIXME Nico commented-out code
-    // getIsCustomFunctionsSupportedOnHost().then((isCFSupportedOnHost: boolean) => {
-    //   this.props.hideLoadingSplashScreen();
-    //   this.setState({ isCFSupportedOnHost });
-    // });
+    getCustomFunctionEngineStatus().then(status => {
+      if (status) {
+        this.setState({ engineStatus: status });
+
+        this.props.hideLoadingSplashScreen();
+      }
+    });
   }
 
   componentDidMount() {
@@ -78,16 +80,11 @@ export class CustomFunctionsDashboard extends React.Component<IProps, IState> {
     });
 
   render() {
-    const { isCFSupportedOnHost } = this.state;
     const { hasCustomFunctionsInSolutions } = this.props;
 
-    if (isCFSupportedOnHost === undefined) {
-      return (
-        <div style={{ width: '100vw', height: '100vh' }}>
-          <LoadingIndicator ballSize={32} numBalls={5} ballColor="#d83b01" delay={0.05} />
-        </div>
-      );
-    } else if (isCFSupportedOnHost) {
+    if (!this.state.engineStatus) {
+      return <></>;
+    } else if (this.state.engineStatus!.enabled) {
       if (hasCustomFunctionsInSolutions) {
         return (
           <Dashboard
