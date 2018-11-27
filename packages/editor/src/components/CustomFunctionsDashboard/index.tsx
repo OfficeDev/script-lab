@@ -35,14 +35,14 @@ interface IState {
 
 export class CustomFunctionsDashboard extends React.Component<IProps, IState> {
   localStorageCheckInterval;
-  state = { isCFSupportedOnHost: undefined, customFunctionsLastModified: 0 };
+  state = { isCFSupportedOnHost: true, customFunctionsLastModified: 0 };
 
   constructor(props) {
     super(props);
 
-    getIsCustomFunctionsSupportedOnHost().then((isCFSupportedOnHost: boolean) => {
-      this.setState({ isCFSupportedOnHost });
-    });
+    // getIsCustomFunctionsSupportedOnHost().then((isCFSupportedOnHost: boolean) => {
+    //   this.setState({ isCFSupportedOnHost });
+    // });
   }
 
   componentDidMount() {
