@@ -47,30 +47,36 @@ export function* fetchAllGistMetadataSaga() {
   });
 
   if (response) {
-    const gistsMetadata = response.map(gist => {
-      const { files, id, description } = gist;
-      const file = files[Object.keys(files)[0]];
+    const gistsMetadata = response
+      .filter(
+        ({ files }) =>
+          files.length === 1 &&
+          /^(.*)\.yaml$/.test(files[Object.keys(files)[0]].filename),
+      )
+      .map(gist => {
+        const { files, id, description } = gist;
+        const file = files[Object.keys(files)[0]];
 
-      const result = /^(.*)\.(EXCEL|WORD|POWERPOINT|ACCESS|PROJECT|OUTLOOK|ONENOTE|WEB)\.yaml$/.exec(
-        file.filename,
-      );
+        const result = /^(.*)\.(EXCEL|WORD|POWERPOINT|ACCESS|PROJECT|OUTLOOK|ONENOTE|WEB)\.yaml$/.exec(
+          file.filename,
+        );
 
-      const { title, host } =
-        result !== null
-          ? { title: result[1], host: result[2] }
-          : { title: file.filename.replace('.yaml', ''), host: currentHost };
+        const { title, host } =
+          result !== null
+            ? { title: result[1], host: result[2] }
+            : { title: file.filename.replace('.yaml', ''), host: currentHost };
 
-      const url = file.raw_url;
+        const url = file.raw_url;
 
-      return {
-        url,
-        host,
-        id,
-        description,
-        title,
-        isPublic: gist.public,
-      };
-    });
+        return {
+          url,
+          host,
+          id,
+          description,
+          title,
+          isPublic: gist.public,
+        };
+      });
 
     yield put(gists.fetchMetadata.success(gistsMetadata));
   } else {
