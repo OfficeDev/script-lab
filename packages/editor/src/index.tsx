@@ -1,4 +1,4 @@
-import './polyfills';
+import 'common/lib/polyfills';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Authenticator } from '@microsoft/office-js-helpers';

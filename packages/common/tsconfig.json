@@ -13,7 +13,7 @@
     "strictFunctionTypes": false,
     "strictPropertyInitialization": false
   },
-  "include": ["./components/**/*", "./interfaces/**/*"],
+  "include": ["./components/**/*", "./interfaces/**/*", "./polyfills.ts"],
   "exclude": [
     "node_modules",
     "**/node_modules/**/*",
