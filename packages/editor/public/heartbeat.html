@@ -34,6 +34,7 @@
     <noscript> You need to enable JavaScript to run this app. </noscript>
     <script>
       window.onmessage = function(event) {
+        // FIXME: Zlatkovsky
         // In order to fix the IE cross-tab issue (#147)
         localStorage.setItem('playground_dummy_key', 'null');
         if (event.data.indexOf('GET_ACTIVE_SOLUTION') >= 0) {
