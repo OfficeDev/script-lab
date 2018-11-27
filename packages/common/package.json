@@ -17,7 +17,7 @@
     "build:package": "tsc",
     "start": "tsc --watch",
     "storybook": "start-storybook -p 6006",
-    "build": "build-storybook -c .storybook -o build-storybook",
+    "build": "build-storybook -c .storybook -o build",
     "lint": "tslint \"src/**/*.ts?(x)\"",
     "test": "jest --env=jsdom"
   },

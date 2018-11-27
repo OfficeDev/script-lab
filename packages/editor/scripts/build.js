@@ -13,7 +13,6 @@ var commands = [
   // something about them using source-map-support is messing things up
   // By setting this env var, the warning will not make travis fail and stop deployment
   'yarn react-scripts:build',
-  'yarn build:storybook',
 ].join(' && ');
 
 shell.exec(commands);

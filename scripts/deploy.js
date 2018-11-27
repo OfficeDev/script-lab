@@ -36,16 +36,19 @@ if (deploymentSlot !== undefined) {
     shell.exit(1);
   }
 
-  // Not all packages have a storybook, therefore only
-  // deploy storybook when one exists
-  if (shell.test('-d', `${PACKAGE_LOCATION}/build-storybook`)) {
-    shell.echo('starting deployment of storybook');
-    deploy(
-      `${PACKAGE_LOCATION}/build-storybook`,
-      `${SITE_NAME}-storybook`,
-      `${SITE_NAME}-storybook${deploymentSlot}`,
-    );
-  }
+  // removing this for now, might bring back at a later date when we have
+  // and official subscription
+
+  // // Not all packages have a storybook, therefore only
+  // // deploy storybook when one exists
+  // if (shell.test('-d', `${PACKAGE_LOCATION}/build-storybook`)) {
+  //   shell.echo('starting deployment of storybook');
+  //   deploy(
+  //     `${PACKAGE_LOCATION}/build-storybook`,
+  //     `${SITE_NAME}-storybook`,
+  //     `${SITE_NAME}-storybook${deploymentSlot}`,
+  //   );
+  // }
 }
 
 function deploy(path, site, siteWithStaging) {
