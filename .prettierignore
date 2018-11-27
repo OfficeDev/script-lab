@@ -1,6 +1,7 @@
 monaco.d.ts
 packages/**/build/*
 packages/**/public/external/*
+packages/**/public/precompiled/*
 packages/**/public/assets/*
 
 package.json
