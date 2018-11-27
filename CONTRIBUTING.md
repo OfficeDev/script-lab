@@ -41,9 +41,27 @@ Critical dependency: the request of a dependency is an expression
 Module not found: Can't resolve 'module' in '...\script-lab-react\node_modules\source-map-support'
 ```
 
+When running locally, the Runner console might also show the following errors:
+
+```
+.../script-lab-react/node_modules/typescript/lib/typescript.js
+Critical dependency: the request of a dependency is an expression
+
+.../script-lab-react/node_modules/source-map-support/source-map-support.js
+Module not found: Can't resolve 'module' in 'C:\Users\mizlatko\Documents\Repos\script-lab-react\node_modules\source-map-support'
+
+Warning: Cannot update during an existing state transition (such as within `render`). Render methods should be a pure function of props and state.
+```
+
+You can safely ignore these -- those won't show up to users on the production site.
+
 ## Trust the certificates
 
-Trust the certificates for each of <https://localhost:3000> (editor), <https://localhost:3200> (runner), and <https://localhost:5000> (server). For purposes of running add-ins on a PC, do this within Internet Explorer. See the gif below for a step-by-step animation:
+You will need to trust the certificates for each of <https://localhost:3000> (editor), <https://localhost:3200> (runner), and <https://localhost:5000> (server).
+
+For testing in the web browser (whether standalone or in Office Online) in Chrome, you can bypass the "unsecure localhost" by enabling this setting:  <chrome://flags/#allow-insecure-localhost>
+
+For testing on a PC version of Office, you will need to trust the certificates from within Internet Explorer. See the gif below for a step-by-step animation:
 
 ![](.github/images/trust-ssl-internet-explorer.gif).
 
