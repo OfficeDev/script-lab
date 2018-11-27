@@ -1,6 +1,6 @@
 import flatten from 'lodash/flatten';
 import semver from 'semver';
-import { pause } from '../utils';
+import { pause } from '../../utils';
 
 const isCustomFunctionRegex = /@customfunction/i;
 export function isCustomFunctionScript(content: string) {

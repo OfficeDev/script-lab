@@ -6,11 +6,8 @@ import { customFunctions, solutions } from '../actions';
 import selectors from '../selectors';
 
 import { convertSolutionToSnippet } from '../../utils';
-import {
-  getCustomFunctionEngineStatus,
-  isCustomFunctionScript,
-} from '../../utils/customFunctions';
-import { registerMetadata } from '../../utils/customFunctions';
+import { getCustomFunctionEngineStatus, isCustomFunctionScript } from './utilities';
+import { registerMetadata } from './utilities';
 
 import { RUNNER_URL, PATHS } from '../../constants';
 import {

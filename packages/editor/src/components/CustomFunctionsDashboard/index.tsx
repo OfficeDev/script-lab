@@ -13,7 +13,7 @@ import LoadingIndicator from 'common/lib/components/LoadingIndicator';
 import { connect } from 'react-redux';
 import selectors from '../../store/selectors';
 
-import { getIsCustomFunctionsSupportedOnHost } from '../../utils/customFunctions';
+import { getIsCustomFunctionsSupportedOnHost } from '../../store/customFunctions/utilities';
 import { localStorageKeys } from '../../constants';
 
 interface IPropsFromRedux {
