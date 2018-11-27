@@ -55,6 +55,9 @@ const defaultHeaderProps = {
       isPrimary: boolean;
     }>,
   ) => {},
+
+  navigateToRun: () => {},
+  showTrustError: () => {},
 };
 
 storiesOf('IDE|Header', module)

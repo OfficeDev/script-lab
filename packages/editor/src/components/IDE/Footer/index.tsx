@@ -18,6 +18,8 @@ import { connect } from 'react-redux';
 
 import { actions, selectors } from '../../../store';
 
+import CommonFooter from 'common/lib/components/Footer';
+
 const languageMap = {
   typescript: 'TypeScript',
   javascript: 'JavaScript',
@@ -181,24 +183,7 @@ const FooterWithoutTheme = ({
     .filter(({ hidden }) => !hidden)
     .map(item => ({ ...item, style: { fontSize: '1.2rem' } }));
 
-  return (
-    <Customizer settings={{ theme: commandBarFabricTheme }}>
-      <Wrapper>
-        <CommandBar
-          items={items}
-          farItems={farItems}
-          styles={{
-            root: {
-              paddingLeft: 0,
-              paddingRight: 0,
-              height: '2rem',
-            },
-          }}
-          ariaLabel={'Use left and right arrow keys to navigate between commands'}
-        />
-      </Wrapper>
-    </Customizer>
-  );
+  return <CommonFooter items={items} farItems={farItems} />;
 };
 
 export const Footer = withTheme(FooterWithoutTheme);

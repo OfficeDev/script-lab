@@ -43,19 +43,30 @@ function* onEditorOpenSaga() {
 }
 
 export function* onEditorOpenFileSaga(action: ActionType<typeof editor.openFile>) {
-  const currentOpenSolution = yield select(selectors.editor.getActiveSolution);
+  const currentOpenSolution: ISolution = yield select(selectors.editor.getActiveSolution);
   const currentOpenFile = yield select(selectors.editor.getActiveFile);
-  yield put(editor.setActive(action.payload));
+
+  // tslint:disable-next-line:prefer-const
+  let { solutionId, fileId } = action.payload;
+  if (!solutionId) {
+    if (!currentOpenSolution.files.find(file => file.id === fileId)) {
+      throw new Error(`The file id ${fileId} does not exist in current open solution.`);
+    } else {
+      solutionId = currentOpenSolution.id;
+    }
+  }
+
+  yield put(editor.setActive({ solutionId, fileId }));
   yield call(onEditorOpenSaga);
 
-  const solutionToOpen = yield select(selectors.solutions.get, action.payload.solutionId);
-  const fileToOpen = yield select(selectors.solutions.getFile, action.payload.fileId);
+  const solutionToOpen = yield select(selectors.solutions.get, solutionId);
+  const fileToOpen = yield select(selectors.solutions.getFile, fileId);
 
-  if (currentOpenSolution.id !== action.payload.solutionId) {
+  if (currentOpenSolution.id !== solutionId) {
     yield put(editor.newSolutionOpened(solutionToOpen));
   }
 
-  if (currentOpenFile.id !== action.payload.fileId) {
+  if (currentOpenFile.id !== fileId) {
     yield put(editor.newFileOpened(solutionToOpen, fileToOpen));
   }
 }
@@ -179,7 +190,7 @@ function* makeAddIntellisenseRequestSaga() {
         .filter(x => x !== null),
     );
 
-    const urlContentPairing = zip(urlsToFetch, urlContents);
+    const urlContentPairing = zip(urlsToFetch, urlContents) as string[][];
 
     urlsToFetch = flatten(
       urlContentPairing.map(([url, content]) => parseTripleSlashRefs(url, content)),
@@ -241,45 +252,17 @@ function* applyFormattingSaga() {
 }
 
 function* navigateToRunSaga() {
-  const activeSolution: ISolution = yield select(selectors.editor.getActiveSolution);
-  const snippet = convertSolutionToSnippet(activeSolution);
+  // TODO: Zlatkovsky clean up
+  const runnerUrl = {
+    'http://localhost:3000': 'http://localhost:3200',
+    'https://localhost:3000': 'https://localhost:3200',
+    'https://script-lab-react-alpha.azurewebsites.net':
+      'https://script-lab-react-runner-alpha.azurewebsites.net',
+    'https://script-lab-react-beta.azurewebsites.net':
+      'https://script-lab-react-runner-beta.azurewebsites.net',
+    'https://script-lab.azureedge.net':
+      'https://script-lab-react-runner.azurewebsites.net',
+  }[window.location.origin];
 
-  const state = {
-    snippet: snippet,
-    displayLanguage: 'en-us',
-    isInsideOfficeApp: (yield call(Office.onReady)).host,
-    returnUrl: window.location.href,
-    refreshUrl: window.location.origin + '/run.html',
-    hideSyncWithEditorButton: true,
-  };
-
-  const data = JSON.stringify(state);
-  const params = {
-    data: data,
-    isTrustedSnippet: true,
-  };
-
-  const useAlphaRunner =
-    /^http(s?):\/\/script-lab-react-alpha\./.test(window.location.href) ||
-    /^http(s?):\/\/localhost/.test(window.location.href);
-  const path =
-    'https://bornholm-runner-' +
-    (useAlphaRunner ? 'edge' : 'insiders') +
-    '.azurewebsites.net/compile/page';
-  const form = document.createElement('form');
-  form.setAttribute('method', 'post');
-  form.setAttribute('action', path);
-
-  for (const key in params) {
-    if (params.hasOwnProperty(key)) {
-      const hiddenField = document.createElement('input');
-      hiddenField.setAttribute('type', 'hidden');
-      hiddenField.setAttribute('name', key);
-      hiddenField.setAttribute('value', params[key]);
-      form.appendChild(hiddenField);
-    }
-  }
-
-  document.body.appendChild(form);
-  form.submit();
+  window.location.href = runnerUrl;
 }

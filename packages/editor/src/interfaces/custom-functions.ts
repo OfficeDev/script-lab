@@ -25,7 +25,7 @@ interface ICFVisualFunctionMetadata /* doesn't extend ICFSchemaFunctionMetadata 
   // Sub-namespaced full name, not capitalized (e.g., "BlankSnippet1.add42") */
   nonCapitalizedFullName: string;
 
-  status?: CustomFunctionsRegistrationStatus;
+  status: CustomFunctionsRegistrationStatus;
   paramString?: string;
   error?: string | boolean;
 

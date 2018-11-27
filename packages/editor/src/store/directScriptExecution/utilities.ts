@@ -109,7 +109,6 @@ async function compileTypeScript(content: string) {
 
     return result.outputText.replace(
       'Object.defineProperty(exports, "__esModule", { value: true });',
-
       '',
     );
   });

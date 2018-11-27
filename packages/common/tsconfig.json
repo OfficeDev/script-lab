@@ -1,0 +1,29 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "typeRoots": ["./interfaces", "node_modules/@types", "../../node_modules/@types"],
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "strict": false,
+    "outDir": "lib",
+    "declaration": true,
+    "allowJs": false,
+    "jsx": "react",
+    "alwaysStrict": false,
+    "strictFunctionTypes": false,
+    "strictPropertyInitialization": false
+  },
+  "include": ["./components/**/*", "./interfaces/**/*"],
+  "exclude": [
+    "node_modules",
+    "**/node_modules/**/*",
+    "build",
+    "scripts",
+    "acceptance-tests",
+    "webpack",
+    "jest",
+    "src/setupTests.ts",
+    "public",
+    "**/*.stories.tsx"
+  ]
+}
