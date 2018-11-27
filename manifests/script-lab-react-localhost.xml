@@ -29,16 +29,23 @@
     <AppDomain>https://bornholm-runner-staging.azurewebsites.net</AppDomain>
     <AppDomain>https://bornholm.azurewebsites.net</AppDomain>
     <AppDomain>https://bornholm-runner.azurewebsites.net</AppDomain>
+    <AppDomain>https://script-lab-react.azurewebsites.net</AppDomain>
+    <AppDomain>https://script-lab-react-runner.azurewebsites.net</AppDomain>
+    <AppDomain>https://script-lab-react-server.azurewebsites.net</AppDomain>
     <AppDomain>https://script-lab-react-alpha.azurewebsites.net</AppDomain>
-    <AppDomain>https://script-lab-react-beta.azurewebsites.net</AppDomain>
+    <AppDomain>https://script-lab-react-runner-alpha.azurewebsites.net</AppDomain>
     <AppDomain>https://script-lab-react-server-alpha.azurewebsites.net</AppDomain>
+    <AppDomain>https://script-lab-react-beta.azurewebsites.net</AppDomain>
+    <AppDomain>https://script-lab-react-runner-beta.azurewebsites.net</AppDomain>
     <AppDomain>https://script-lab-react-server-beta.azurewebsites.net</AppDomain>
+    <AppDomain>https://script-lab-react-staging.azurewebsites.net</AppDomain>
+    <AppDomain>https://script-lab-react-runner-staging.azurewebsites.net</AppDomain>
+    <AppDomain>https://script-lab-react-server-staging.azurewebsites.net</AppDomain>
   </AppDomains>
   <Hosts>
     <Host Name="Workbook" />
     <Host Name="Document" />
     <Host Name="Presentation"/>
-    <Host Name="Project"/>
   </Hosts>
   <DefaultSettings>
     <SourceLocation DefaultValue="https://localhost:3000" />
