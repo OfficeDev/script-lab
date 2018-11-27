@@ -191,7 +191,7 @@ class Console extends React.Component<IPrivateProps, IState> {
         ) : (
           <div style={{ width: '1.2rem', height: '1.2rem' }} />
         )}
-        <LogText>{message.replace('\n', '<br>')}</LogText>
+        <LogText>{message}</LogText>
       </Log>
     );
   };

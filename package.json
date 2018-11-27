@@ -9,7 +9,7 @@
     "postinstall": "yarn workspace common postinstall && yarn workspace editor postinstall",
     "build": "cd packages/editor && yarn build && cd ../server && yarn build",
     "prettier": "prettier --list-different \"./**/*.@(ts|tsx|js|jsx|html)\"",
-    "prettier-write": "prettier --write \"./**/*.@(ts|tsx|js|jsx|html)\"",
+    "prettier:write": "prettier --write \"./**/*.@(ts|tsx|js|jsx|html)\"",
     "deploy": "node scripts/deploy.js",
     "common": "yarn workspace common start",
     "editor": "yarn workspace editor start",
