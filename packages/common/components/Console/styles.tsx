@@ -72,11 +72,10 @@ export const Log = styled.li`
 `;
 
 export const LogText = styled.pre`
+  white-space: pre-wrap;
   word-wrap: break-word;
   font-size: 1.2rem;
-  position: absolute;
-  left: 3.4rem;
-  /* margin-left: 2rem; */
+  margin-left: 1rem;
   width: 100%;
 `;
 

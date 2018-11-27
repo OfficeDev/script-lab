@@ -13,6 +13,8 @@ export interface IProps {
   isSolutionLoaded: boolean;
 
   lastRendered: number | null;
+
+  refresh: () => void;
 }
 
 interface IState {
@@ -42,6 +44,12 @@ class Footer extends React.Component<IProps, IState> {
     );
   }
 
+  componentDidUpdate(prevProps: IProps) {
+    if (this.props.lastRendered !== prevProps.lastRendered) {
+      this.setLastUpdatedText();
+    }
+  }
+
   componentWillUnmount() {
     clearInterval(this.lastUpdatedTextPoll);
   }
@@ -62,6 +70,7 @@ class Footer extends React.Component<IProps, IState> {
             hidden: this.state.lastUpdatedText === '',
             key: 'last-updated',
             text: this.state.lastUpdatedText,
+            onClick: this.props.refresh,
           },
         ]}
         farItems={[

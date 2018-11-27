@@ -73,6 +73,7 @@ export interface IProps {
 }
 
 interface IState {
+  isIFrameMounted: boolean;
   isLoading: boolean;
   content: string;
   lastRendered: number;
@@ -86,7 +87,8 @@ class Snippet extends React.Component<IProps, IState> {
     this.state = {
       content: this.getContent(this.props),
       lastRendered,
-      isLoading: true,
+      isLoading: false,
+      isIFrameMounted: false,
     };
     if (this.props.onRender) {
       this.props.onRender(lastRendered);
@@ -100,14 +102,17 @@ class Snippet extends React.Component<IProps, IState> {
       this.props.solution &&
       ((this.props.solution && !prevProps.solution) ||
         this.props.solution.id !== prevProps.solution!.id ||
-        this.props.solution.dateLastModified !== prevProps.solution!.dateLastModified)
+        this.props.solution.dateLastModified > prevProps.solution!.dateLastModified)
     ) {
       const lastRendered = Date.now();
-      this.setState({
-        content: this.getContent(this.props),
-        lastRendered,
-        isLoading: true,
-      });
+      this.setState({ isIFrameMounted: false, isLoading: true }, () =>
+        this.setState({
+          content: this.getContent(this.props),
+          lastRendered,
+          isLoading: true,
+          isIFrameMounted: true,
+        }),
+      );
       if (this.props.onRender) {
         this.props.onRender(lastRendered);
       }
@@ -160,16 +165,19 @@ class Snippet extends React.Component<IProps, IState> {
             <Spinner size={SpinnerSize.large} label="Loading..." />
           </LoadingIndicatorWrapper>
         </Only>
+
         {this.props.solution && (
           <div
             style={{ display: this.state.isLoading ? 'none' : 'block', height: '100%' }}
           >
-            <IFrame
-              content={this.state.content}
-              lastRendered={this.state.lastRendered}
-              onRenderComplete={this.completeLoad}
-              namespacesToTransferFromWindow={officeNamespacesForIframe}
-            />
+            {this.state.isIFrameMounted && (
+              <IFrame
+                content={this.state.content}
+                lastRendered={this.state.lastRendered}
+                namespacesToTransferFromWindow={officeNamespacesForIframe}
+                onRenderComplete={this.completeLoad}
+              />
+            )}
           </div>
         )}
       </>

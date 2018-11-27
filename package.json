@@ -6,7 +6,7 @@
     "packages/*"
   ],
   "scripts": {
-    "postinstall": "yarn workspace editor postinstall",
+    "postinstall": "yarn workspace common postinstall && yarn workspace editor postinstall",
     "build": "cd packages/editor && yarn build && cd ../server && yarn build",
     "prettier": "prettier --list-different \"./**/*.@(ts|tsx|js|jsx|html)\"",
     "prettier-write": "prettier --write \"./**/*.@(ts|tsx|js|jsx|html)\"",

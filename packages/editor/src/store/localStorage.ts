@@ -87,23 +87,19 @@ export const saveState = (state: IState) => {
   // save settings
   writeIfChanged(selectors.settings.getUser, 'userSettings', state, lastSavedState);
 
+  const host = selectors.host.get(state);
   const activeSolution = selectors.editor.getActiveSolution(state, {
     withHiddenFiles: true,
   });
   if (isRealSolution(activeSolution) && isStandaloneRunnable(activeSolution)) {
-    // for new runner
     writeIfChanged(
       state => selectors.editor.getActiveSolution(state, { withHiddenFiles: true }),
-      'activeSolution',
+      (solution: ISolution) => `activeSolution_${solution.host}`,
       state,
       lastSavedState,
     );
-    // for old runner
-    const activeSnippet = convertSolutionToSnippet(activeSolution);
-    localStorage.setItem('activeSnippet', JSON.stringify(activeSnippet));
   } else {
-    localStorage.setItem('activeSnippet', 'null');
-    localStorage.setItem('activeSolution', 'null');
+    localStorage.setItem(`activeSolution_${host}`, 'null');
   }
 
   const cfPostData = getCFPostData(state);

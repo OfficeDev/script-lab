@@ -3,7 +3,7 @@ import React from 'react';
 interface IProps {
   content: string;
   lastRendered: number;
-  onRenderComplete: () => void;
+  onRenderComplete?: () => void;
   namespacesToTransferFromWindow: string[];
 }
 
@@ -54,11 +54,14 @@ class IFrame extends React.Component<IProps> {
 
       // writing content to iframe
       const doc = this.getContentDoc();
+      doc.location.reload();
       doc.open('text/html', 'replace');
       doc.write(this.props.content);
       doc.close();
 
-      this.props.onRenderComplete();
+      if (this.props.onRenderComplete) {
+        this.props.onRenderComplete();
+      }
     }
   };
 

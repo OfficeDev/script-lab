@@ -34,15 +34,9 @@ const Header = ({ solutionName, goBack, refresh, hardRefresh }: IProps) => {
   const farItems = [
     {
       key: 'overflow',
-      iconProps: { iconName: 'Refresh' },
+      iconProps: { iconName: 'More' },
       subMenuProps: {
         items: [
-          {
-            key: 'refresh-snippet',
-            iconProps: { iconName: 'Refresh' },
-            text: 'Refresh',
-            onClick: refresh,
-          },
           {
             key: 'hard-refresh',
             iconProps: { iconName: 'Refresh' },

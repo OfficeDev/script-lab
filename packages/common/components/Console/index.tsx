@@ -120,11 +120,6 @@ class Console extends React.Component<IPrivateProps, IState> {
               <ClearButton onClick={clearLogs}>
                 <Icon
                   style={{
-                    position: 'absolute',
-                    top: '0px',
-                    bottom: '0px',
-                    left: '0px',
-                    right: '0px',
                     width: '2rem',
                     height: '2rem',
                     lineHeight: '2rem',
@@ -183,7 +178,7 @@ class Console extends React.Component<IPrivateProps, IState> {
   ): JSX.Element => {
     return (
       <Log key={key} style={{ backgroundColor, color }}>
-        {icon && (
+        {icon ? (
           <Icon
             className="ms-font-m"
             iconName={icon.name}
@@ -193,6 +188,8 @@ class Console extends React.Component<IPrivateProps, IState> {
               lineHeight: '1.2rem',
             }}
           />
+        ) : (
+          <div style={{ width: '1.2rem', height: '1.2rem' }} />
         )}
         <LogText>{message.replace('\n', '<br>')}</LogText>
       </Log>

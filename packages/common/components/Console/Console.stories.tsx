@@ -703,7 +703,7 @@ const props: IProps = {
 };
 
 const SimpleWrapper = ({ children }) => (
-  <div style={{ display: 'flex', height: '100vh' }}>{children}</div>
+  <div style={{ display: 'flex', height: '100vh', width: '100vw' }}>{children}</div>
 );
 
 class ConsoleWrapper extends React.Component<{ interval: number }> {

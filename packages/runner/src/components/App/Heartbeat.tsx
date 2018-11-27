@@ -6,6 +6,7 @@ const HEARTBEAT_HTML_URL = `${URL}/heartbeat.html`;
 const GET_ACTIVE_SOLUTION_REQUEST_MESSAGE = 'GET_ACTIVE_SOLUTION';
 
 export interface IProps {
+  host: string;
   onReceiveNewActiveSolution: (solution: ISolution) => void;
 }
 
@@ -40,8 +41,8 @@ class Heartbeat extends Component<IProps, IState> {
   private requestActiveSolution = () => {
     if (this.node.current) {
       this.node.current.contentWindow!.postMessage(
-        GET_ACTIVE_SOLUTION_REQUEST_MESSAGE,
-        URL /* '*' */,
+        `${GET_ACTIVE_SOLUTION_REQUEST_MESSAGE}/${this.props.host}`,
+        URL,
       );
     }
   };
