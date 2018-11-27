@@ -157,9 +157,7 @@ class Console extends React.Component<IPrivateProps, IState> {
               <List
                 ref={this.resolveList}
                 items={items}
-                onRenderCell={
-                  this.onRenderCell // getPageHeight={this._getPageHeight}
-                }
+                onRenderCell={this.onRenderCell}
               />
             </div>
           </LogsArea>

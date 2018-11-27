@@ -1,4 +1,3 @@
-// load the default config generator.
 const path = require('path');
 
 module.exports = (baseConfig, env, config) => {
