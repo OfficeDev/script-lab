@@ -8,7 +8,6 @@ branches:
     - master
     - beta
     - production
-    - runner
 
 cache: yarn
 
@@ -27,21 +26,23 @@ matrix:
         - PACKAGE_NAME=common
         - SITE_NAME=script-lab-react-storybook
 
-    # - name: 'Editor Pipeline'
-    #   env:
-    #     - PACKAGE_LOCATION=packages/editor
-    #     - PACKAGE_NAME=editor
-    #     - SITE_NAME=script-lab-react
-    # - name: 'Runner Pipeline'
-    #   env:
-    #     - PACKAGE_LOCATION=packages/runner
-    #     - PACKAGE_NAME=runner
-    #     - SITE_NAME=script-lab-react-runner
-    # - name: 'Server Pipeline'
-    #   env:
-    #     - PACKAGE_LOCATION=packages/server
-    #     - PACKAGE_NAME=server
-    #     - SITE_NAME=script-lab-react-server
+    - name: 'Editor Pipeline'
+      env:
+        - PACKAGE_LOCATION=packages/editor
+        - PACKAGE_NAME=editor
+        - SITE_NAME=script-lab-react
+
+    - name: 'Runner Pipeline'
+      env:
+        - PACKAGE_LOCATION=packages/runner
+        - PACKAGE_NAME=runner
+        - SITE_NAME=script-lab-react-runner
+
+    - name: 'Server Pipeline'
+      env:
+        - PACKAGE_LOCATION=packages/server
+        - PACKAGE_NAME=server
+        - SITE_NAME=script-lab-react-server
 
 script:
   - cd $PACKAGE_LOCATION
