@@ -80,7 +80,7 @@ export const convertSnippetToSolution = (snippet: ISnippet): ISolution => {
 };
 
 export const convertSolutionToSnippet = (solution: ISolution): ISnippet => {
-  const { id, name, description, host, files } = solution;
+  const { name, description, host, files } = solution;
 
   const snippetFiles = Object.entries({
     script: file => file.name === SCRIPT_FILE_NAME,
@@ -103,7 +103,6 @@ export const convertSolutionToSnippet = (solution: ISolution): ISnippet => {
     }, {});
 
   return {
-    id,
     name,
     description,
     host,
