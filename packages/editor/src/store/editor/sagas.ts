@@ -247,45 +247,17 @@ function* applyFormattingSaga() {
 }
 
 function* navigateToRunSaga() {
-  const activeSolution: ISolution = yield select(selectors.editor.getActiveSolution);
-  const snippet = convertSolutionToSnippet(activeSolution);
+  // TODO: Zlatkovsky clean up
+  const runnerUrl = {
+    'http://localhost:3000': 'http://localhost:3200',
+    'https://localhost:3000': 'https://localhost:3200',
+    'https://script-lab-react-alpha.azurewebsites.net':
+      'https://script-lab-react-runner-alpha.azurewebsites.net',
+    'https://script-lab-react-beta.azurewebsites.net':
+      'https://script-lab-react-runner-beta.azurewebsites.net',
+    'https://script-lab.azureedge.net':
+      'https://script-lab-react-runner.azurewebsites.net',
+  }[window.location.origin];
 
-  const state = {
-    snippet: snippet,
-    displayLanguage: 'en-us',
-    isInsideOfficeApp: (yield call(Office.onReady)).host,
-    returnUrl: window.location.href,
-    refreshUrl: window.location.origin + '/run.html',
-    hideSyncWithEditorButton: true,
-  };
-
-  const data = JSON.stringify(state);
-  const params = {
-    data: data,
-    isTrustedSnippet: true,
-  };
-
-  const useAlphaRunner =
-    /^http(s?):\/\/script-lab-react-alpha\./.test(window.location.href) ||
-    /^http(s?):\/\/localhost/.test(window.location.href);
-  const path =
-    'https://bornholm-runner-' +
-    (useAlphaRunner ? 'edge' : 'insiders') +
-    '.azurewebsites.net/compile/page';
-  const form = document.createElement('form');
-  form.setAttribute('method', 'post');
-  form.setAttribute('action', path);
-
-  for (const key in params) {
-    if (params.hasOwnProperty(key)) {
-      const hiddenField = document.createElement('input');
-      hiddenField.setAttribute('type', 'hidden');
-      hiddenField.setAttribute('name', key);
-      hiddenField.setAttribute('value', params[key]);
-      form.appendChild(hiddenField);
-    }
-  }
-
-  document.body.appendChild(form);
-  form.submit();
+  window.location.href = runnerUrl;
 }

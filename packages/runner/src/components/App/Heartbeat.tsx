@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
+import { editorUrls, getCurrentEnv } from '../../constants';
 
 const LOCAL_STORAGE_POLLING_INTERVAL = 1000; // ms
-const URL = 'https://localhost:3000'; // TODO: NICO UNDO THIS
+const URL = editorUrls[getCurrentEnv()];
 const HEARTBEAT_HTML_URL = `${URL}/heartbeat.html`;
 const GET_ACTIVE_SOLUTION_REQUEST_MESSAGE = 'GET_ACTIVE_SOLUTION';
 

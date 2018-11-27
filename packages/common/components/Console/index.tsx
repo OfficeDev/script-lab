@@ -157,9 +157,7 @@ class Console extends React.Component<IPrivateProps, IState> {
               <List
                 ref={this.resolveList}
                 items={items}
-                onRenderCell={
-                  this.onRenderCell // getPageHeight={this._getPageHeight}
-                }
+                onRenderCell={this.onRenderCell}
               />
             </div>
           </LogsArea>
@@ -191,7 +189,7 @@ class Console extends React.Component<IPrivateProps, IState> {
         ) : (
           <div style={{ width: '1.2rem', height: '1.2rem' }} />
         )}
-        <LogText>{message.replace('\n', '<br>')}</LogText>
+        <LogText>{message}</LogText>
       </Log>
     );
   };
