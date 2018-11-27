@@ -65,6 +65,8 @@ export function* fetchAllGistMetadataSaga() {
           result !== null
             ? { title: result[1], host: result[2] }
             : { title: file.filename.replace('.yaml', ''), host: currentHost };
+        // in the else case of the condition above, it is a legacy Script Lab gist that wasn't saved with a host,
+        // so it is assuming it is for the current host so that it will be visible
 
         const url = file.raw_url;
 
