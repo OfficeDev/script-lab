@@ -135,7 +135,7 @@ const mapDispatchToProps = (dispatch, ownProps: IProps): IActionsFromRedux => ({
     ),
 
   navigateToCustomFunctions: () => dispatch(actions.customFunctions.openDashboard()),
-  navigateToRun: () => dispatch(actions.editor.navigateToRun()), // TODO: NICO: FIXME: DONT CHECK IN!!!
+  navigateToRun: () => dispatch(actions.editor.navigateToRun()),
   showTrustError: () =>
     dispatch(
       actions.messageBar.show({
