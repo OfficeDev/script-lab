@@ -63,62 +63,57 @@ export const loadState = (): Partial<IState> => {
 };
 
 export const saveState = (state: IState) => {
-  try {
-    // save solution
+  // save solution
+  writeIfChanged(
+    state => selectors.editor.getActiveSolution(state, { withHiddenFiles: true }),
+    (solution: ISolution) => solution.id,
+    state,
+    lastSavedState,
+    SOLUTION_ROOT,
+  );
+
+  // save github
+  writeIfChanged(
+    (state: IState): IStoredGitHubState => ({
+      profilePicUrl: selectors.github.getProfilePicUrl(state),
+      username: selectors.github.getUsername(state),
+      token: selectors.github.getToken(state),
+    }),
+    GITHUB_KEY,
+    state,
+    lastSavedState,
+  );
+
+  // save settings
+  writeIfChanged(selectors.settings.getUser, 'userSettings', state, lastSavedState);
+
+  const host = selectors.host.get(state);
+  const activeSolution = selectors.editor.getActiveSolution(state, {
+    withHiddenFiles: true,
+  });
+  if (isRealSolution(activeSolution) && isStandaloneRunnable(activeSolution)) {
     writeIfChanged(
       state => selectors.editor.getActiveSolution(state, { withHiddenFiles: true }),
-      (solution: ISolution) => solution.id,
-      state,
-      lastSavedState,
-      SOLUTION_ROOT,
-    );
-
-    // save github
-    writeIfChanged(
-      (state: IState): IStoredGitHubState => ({
-        profilePicUrl: selectors.github.getProfilePicUrl(state),
-        username: selectors.github.getUsername(state),
-        token: selectors.github.getToken(state),
-      }),
-      GITHUB_KEY,
+      (solution: ISolution) => `activeSolution_${solution.host}`,
       state,
       lastSavedState,
     );
-
-    // save settings
-    writeIfChanged(selectors.settings.getUser, 'userSettings', state, lastSavedState);
-
-    const host = selectors.host.get(state);
-    const activeSolution = selectors.editor.getActiveSolution(state, {
-      withHiddenFiles: true,
-    });
-    if (isRealSolution(activeSolution) && isStandaloneRunnable(activeSolution)) {
-      writeIfChanged(
-        state => selectors.editor.getActiveSolution(state, { withHiddenFiles: true }),
-        (solution: ISolution) => `activeSolution_${solution.host}`,
-        state,
-        lastSavedState,
-      );
-    } else {
-      localStorage.setItem(`activeSolution_${host}`, 'null');
-    }
-
-    const cfPostData = getCFPostData(state);
-    localStorage.setItem(
-      localStorageKeys.customFunctionsRunPostData,
-      JSON.stringify(cfPostData),
-    );
-
-    localStorage.setItem(
-      localStorageKeys.customFunctionsLastUpdatedCodeTimestamp,
-      selectors.customFunctions.getLastModifiedDate(state).toString(),
-    );
-
-    lastSavedState = state;
-  } catch (err) {
-    // TODO
-    console.error(err);
+  } else {
+    localStorage.setItem(`activeSolution_${host}`, 'null');
   }
+
+  const cfPostData = getCFPostData(state);
+  localStorage.setItem(
+    localStorageKeys.customFunctionsRunPostData,
+    JSON.stringify(cfPostData),
+  );
+
+  localStorage.setItem(
+    localStorageKeys.customFunctionsLastUpdatedCodeTimestamp,
+    selectors.customFunctions.getLastModifiedDate(state).toString(),
+  );
+
+  lastSavedState = state;
 };
 
 // solutions
