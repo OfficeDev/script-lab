@@ -13,8 +13,6 @@ import { supportsHistory } from 'history/es/DOMUtils';
 import createMemoryHistory from 'history/createMemoryHistory';
 import createHashHistory from 'history/createHashHistory';
 
-import { IRootAction } from './actions';
-
 const addLoggingToDispatch = store => {
   const rawDispatch = store.dispatch;
   if (!console.group) {
