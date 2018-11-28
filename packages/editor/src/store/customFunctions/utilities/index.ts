@@ -3,7 +3,6 @@ import semver from 'semver';
 
 import compileScript from 'common/lib/utilities/compile.script';
 import { stripSpaces } from 'common/lib/utilities/string';
-
 import { pause } from '../../../utils';
 import { parseMetadata } from './metadata.parser';
 import { consoleMonkeypatch } from './console.monkeypatch';
