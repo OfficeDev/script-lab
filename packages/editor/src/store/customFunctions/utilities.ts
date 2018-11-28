@@ -1,7 +1,9 @@
 import flatten from 'lodash/flatten';
 import semver from 'semver';
+
 import { pause } from '../../utils';
 import { parseMetadata } from './metadata.parser';
+import { getCurrentEnv } from '../../environment';
 
 const isCustomFunctionRegex = /@customfunction/i;
 export function isCustomFunctionScript(content: string) {
@@ -188,7 +190,7 @@ export async function getCustomFunctionEngineStatus(): Promise<
 }
 
 export function getScriptLabTopLevelNamespace() {
-  return 'ScriptLab' + (true ? 'Dev' : ''); // TODO: (nicobell)
+  return 'ScriptLab' + (getCurrentEnv() === 'local' ? 'Dev' : '');
 }
 
 export async function getIsCustomFunctionsSupportedOnHost(): Promise<boolean> {
@@ -220,7 +222,7 @@ export async function getIsCustomFunctionsSupportedOnHost(): Promise<boolean> {
 
     while (true) {
       try {
-        // Addtitionally, we need some flights
+        // Additionally, we need some flights
         const allFlightsOn = await Excel.run(async context => {
           const features = [
             'Microsoft.Office.Excel.AddinDefinedFunctionEnabled',

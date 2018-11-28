@@ -23,6 +23,7 @@
     "test": "jest --env=jsdom"
   },
   "devDependencies": {
+    "@babel/core": "^7.1.6",
     "@storybook/addon-a11y": "^4.0.6",
     "@storybook/addon-actions": "^4.0.6",
     "@storybook/addon-knobs": "^4.0.6",

@@ -15,18 +15,26 @@ import selectors from '../../store/selectors';
 
 import { getIsCustomFunctionsSupportedOnHost } from '../../store/customFunctions/utilities';
 import { localStorageKeys } from '../../constants';
+import { misc } from '../../store/actions';
 
 interface IPropsFromRedux {
   hasCustomFunctionsInSolutions: boolean;
   runnerLastUpdated: number;
 }
 
+interface IActionsFromRedux {
+  hideLoadingSplashScreen: () => void;
+}
+const mapDispatchToProps = (dispatch): IActionsFromRedux => ({
+  hideLoadingSplashScreen: () => dispatch(misc.hideLoadingSplashScreen()),
+});
+
 const mapStateToProps = (state): IPropsFromRedux => ({
   hasCustomFunctionsInSolutions: selectors.customFunctions.getSolutions(state).length > 0,
   runnerLastUpdated: state.customFunctions.runner.lastUpdated,
 });
 
-interface IProps extends IPropsFromRedux {}
+interface IProps extends IPropsFromRedux, IActionsFromRedux {}
 
 interface IState {
   isCFSupportedOnHost: boolean | undefined;
@@ -40,9 +48,10 @@ export class CustomFunctionsDashboard extends React.Component<IProps, IState> {
   constructor(props) {
     super(props);
 
-    // getIsCustomFunctionsSupportedOnHost().then((isCFSupportedOnHost: boolean) => {
-    //   this.setState({ isCFSupportedOnHost });
-    // });
+    getIsCustomFunctionsSupportedOnHost().then((isCFSupportedOnHost: boolean) => {
+      this.props.hideLoadingSplashScreen();
+      this.setState({ isCFSupportedOnHost });
+    });
   }
 
   componentDidMount() {
@@ -94,4 +103,7 @@ export class CustomFunctionsDashboard extends React.Component<IProps, IState> {
   }
 }
 
-export default connect(mapStateToProps)(CustomFunctionsDashboard);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(CustomFunctionsDashboard);
