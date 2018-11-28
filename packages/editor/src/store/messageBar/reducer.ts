@@ -110,7 +110,7 @@ const messageBarReducer = (
         link: null,
       };
 
-    case getType(customFunctions.fetchMetadata.failure):
+    case getType(customFunctions.registerMetadata.failure):
       return {
         isVisible: true,
         style: MessageBarType.error,

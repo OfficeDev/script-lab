@@ -8,42 +8,42 @@ import Console from './Console';
 import ComingSoon from './ComingSoon';
 import Welcome from './Welcome';
 
-import LoadingIndicator from 'common/lib/components/LoadingIndicator';
-
 import { connect } from 'react-redux';
 import selectors from '../../store/selectors';
 
-import { localStorageKeys } from '../../constants';
 import { misc } from '../../store/actions';
 import { getCustomFunctionEngineStatus } from '../../store/customFunctions/utilities';
 
 interface IPropsFromRedux {
   hasCustomFunctionsInSolutions: boolean;
   runnerLastUpdated: number;
+  customFunctionSolutionLastModified: number;
 }
-
-interface IActionsFromRedux {
-  hideLoadingSplashScreen: () => void;
-}
-const mapDispatchToProps = (dispatch): IActionsFromRedux => ({
-  hideLoadingSplashScreen: () => dispatch(misc.hideLoadingSplashScreen()),
-});
 
 const mapStateToProps = (state): IPropsFromRedux => ({
   hasCustomFunctionsInSolutions: selectors.customFunctions.getSolutions(state).length > 0,
   runnerLastUpdated: state.customFunctions.runner.lastUpdated,
+  customFunctionSolutionLastModified: selectors.customFunctions.getLastModifiedDate(
+    state,
+  ),
+});
+
+interface IActionsFromRedux {
+  hideLoadingSplashScreen: () => void;
+}
+
+const mapDispatchToProps = (dispatch): IActionsFromRedux => ({
+  hideLoadingSplashScreen: () => dispatch(misc.hideLoadingSplashScreen()),
 });
 
 interface IProps extends IPropsFromRedux, IActionsFromRedux {}
 
 interface IState {
   engineStatus: ICustomFunctionEngineStatus | null;
-  customFunctionsLastModified: number;
 }
 
 export class CustomFunctionsDashboard extends React.Component<IProps, IState> {
-  localStorageCheckInterval;
-  state: IState = { engineStatus: null, customFunctionsLastModified: 0 };
+  state: IState = { engineStatus: null };
 
   constructor(props) {
     super(props);
@@ -51,33 +51,13 @@ export class CustomFunctionsDashboard extends React.Component<IProps, IState> {
     getCustomFunctionEngineStatus().then(status => {
       if (status) {
         this.setState({ engineStatus: status });
-
         this.props.hideLoadingSplashScreen();
       }
     });
   }
 
-  componentDidMount() {
-    this.localStorageCheckInterval = setInterval(
-      this.getCustomFunctionsLastModified,
-      1000,
-    );
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.localStorageCheckInterval);
-  }
-
   getShouldPromptRefresh = () =>
-    this.state.customFunctionsLastModified > this.props.runnerLastUpdated;
-
-  getCustomFunctionsLastModified = () =>
-    this.setState({
-      customFunctionsLastModified:
-        Number(
-          localStorage.getItem(localStorageKeys.customFunctionsLastUpdatedCodeTimestamp),
-        ) || 0,
-    });
+    this.props.customFunctionSolutionLastModified > this.props.runnerLastUpdated;
 
   render() {
     const { hasCustomFunctionsInSolutions } = this.props;
