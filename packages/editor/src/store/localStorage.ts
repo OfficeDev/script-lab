@@ -277,7 +277,7 @@ const getCFPostData = (state: IState): IRunnerCustomFunctionsPostData => {
 
     return {
       name,
-      id,
+      id: solution.id,
       libraries: libraries || '',
       script: script ? script : { content: '', language: 'typescript' },
       metadata: undefined,

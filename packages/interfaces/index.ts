@@ -1,6 +1,6 @@
 // script-lab
 interface ISnippet {
-  id: string;
+  id?: string;
   gist?: string;
   gistOwnerId?: string;
   name: string;
