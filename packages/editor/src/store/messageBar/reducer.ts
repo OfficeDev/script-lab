@@ -1,9 +1,11 @@
 import {
+  customFunctions,
   gists,
   messageBar,
   editor,
   solutions,
   settings,
+  ICustomFunctionsAction,
   IGistsAction,
   IMessageBarAction,
   ISolutionsAction,
@@ -54,7 +56,8 @@ const messageBarReducer = (
     | IMessageBarAction
     | ISolutionsAction
     | ISettingsAction
-    | IEditorAction,
+    | IEditorAction
+    | ICustomFunctionsAction,
 ): IState => {
   switch (action.type) {
     case getType(gists.create.success):
@@ -104,6 +107,16 @@ const messageBarReducer = (
         isVisible: true,
         style: MessageBarType.error,
         text: `${action.payload}`,
+        link: null,
+      };
+
+    case getType(customFunctions.fetchMetadata.failure):
+      return {
+        isVisible: true,
+        style: MessageBarType.error,
+        text: `Error: Failed to parse custom function metadata because '${
+          action.payload.message
+        }'.`,
         link: null,
       };
 
