@@ -97,7 +97,7 @@ function* fetchHeartbeatSaga() {
 }
 
 function* openDashboardSaga() {
-  yield put(push(PATHS.CUSTOM_FUNCTIONS));
+  window.location.href = './custom-functions.html';
 }
 
 function* checkIfIsCustomFunctionSaga(
