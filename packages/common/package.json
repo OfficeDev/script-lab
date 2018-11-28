@@ -11,7 +11,7 @@
     "react": "^16.5.0",
     "react-dom": "^16.5.0",
     "styled-components": "^4.1.1",
-    "typescript": "^3.1.6"
+    "typescript": "3.0.1"
   },
   "scripts": {
     "postinstall": "yarn build:package",
@@ -54,7 +54,7 @@
     "tslint": "^5.11.0",
     "tslint-config-prettier": "^1.16.0",
     "tslint-react": "^3.6.0",
-    "typescript": "^3.0.3"
+    "typescript": "3.0.3"
   },
   "browserslist": [
     ">0.2%",

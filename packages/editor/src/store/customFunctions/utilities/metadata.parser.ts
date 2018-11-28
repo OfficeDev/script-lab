@@ -38,9 +38,9 @@ function traverseAST(
   namespace: string,
   sourceFile: ts.SourceFile,
 ): ICFVisualFunctionMetadata[] {
-  const metadata: ICFVisualFunctionMetadata[] = [];
+  const metadata: Array<Partial<ICFVisualFunctionMetadata>> = [];
   visitNode(sourceFile);
-  return metadata;
+  return metadata as ICFVisualFunctionMetadata[];
 
   function visitNode(node: ts.Node) {
     switch (node.kind) {
@@ -99,7 +99,7 @@ function traverseAST(
 
             const funcName = func.name!.text;
             const metadataItem: Partial<ICFVisualFunctionMetadata> = {
-              funcName: funcName,
+              funcName: funcName || '',
               nonCapitalizedFullName: `${namespace}.${funcName}`,
               description,
               parameters,

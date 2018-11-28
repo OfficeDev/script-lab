@@ -3,7 +3,7 @@
   "compilerOptions": {
     "module": "esnext",
     "typeRoots": [
-      "../common/interfaces",
+      "../common/src/interfaces",
       "./src/interfaces",
       "node_modules/@types",
       "../../node_modules/@types"
@@ -19,7 +19,10 @@
     "strictFunctionTypes": false,
     "strictPropertyInitialization": false
   },
-  "include": ["../interfaces/*", "./src/**/*"],
+  "include": [
+    "./src/**/*",
+    "../common/src/interfaces"
+  ],
   "exclude": [
     "node_modules",
     "build",

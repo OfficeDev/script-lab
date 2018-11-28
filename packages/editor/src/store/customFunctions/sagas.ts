@@ -7,7 +7,11 @@ import { customFunctions, solutions } from '../actions';
 import selectors from '../selectors';
 
 import { convertSolutionToSnippet } from '../../utils';
-import { getCustomFunctionEngineStatus, isCustomFunctionScript } from './utilities';
+import {
+  getCustomFunctionEngineStatus,
+  isCustomFunctionScript,
+  getCustomFunctionsInfoForRegistration,
+} from './utilities';
 import { registerMetadata } from './utilities';
 
 import { RUNNER_URL, PATHS } from '../../constants';
@@ -44,15 +48,14 @@ export function* fetchCustomFunctionsMetadataSaga() {
 
   const snippets = solutions.map(solution => convertSolutionToSnippet(solution));
 
-  const { response, error } = yield call(request, {
-    method: 'POST',
-    url: `${RUNNER_URL}/custom-functions/parse-metadata`,
-    jsonPayload: JSON.stringify({ data: JSON.stringify({ snippets }) }),
-  });
-
-  if (response) {
-    yield put(customFunctions.fetchMetadata.success(response));
-  } else {
+  try {
+    const cfInfo: { visual: ICFVisualMetadata; code: string } = yield call(
+      getCustomFunctionsInfoForRegistration,
+      snippets,
+    );
+    yield put(customFunctions.fetchMetadata.success(cfInfo));
+  } catch (error) {
+    console.error(`Failed to get custom function metadata: ${error}.`);
     yield put(customFunctions.fetchMetadata.failure(error));
   }
 }

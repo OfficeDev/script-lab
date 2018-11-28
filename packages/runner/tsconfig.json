@@ -2,8 +2,7 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "typeRoots": [
-      "../common/interfaces",
-      "./src/interfaces",
+      "../common/src/interfaces",
       "node_modules/@types",
       "../../node_modules/@types"
     ],
@@ -17,11 +16,7 @@
     "jsx": "preserve",
     "module": "esnext"
   },
-  "include": [
-    "../interfaces/*",
-    "./src/**/*",
-    "../common/interfaces"
-  ],
+  "include": ["./src/**/*", "../common/src/interfaces"],
   "exclude": [
     "node_modules",
     "build",

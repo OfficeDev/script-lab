@@ -2,7 +2,7 @@ import ts from 'typescript';
 
 export class SyntaxError extends Error {}
 
-export function compileScript(content: string) {
+export default function compileScript(content: string) {
   const result = ts.transpileModule(content, {
     reportDiagnostics: true,
     compilerOptions: {
