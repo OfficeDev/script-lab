@@ -30,7 +30,7 @@
     "semver": "^5.5.1",
     "styled-components": "^4.1.1",
     "typesafe-actions": "^2.0.4",
-    "typescript": "3.0.1",
+    "typescript": "^3.1.6",
     "uuid": "^3.2.1"
   },
   "scripts": {
@@ -69,6 +69,7 @@
     "@types/uuid": "^3.4.4",
     "@uifabric/jest-serializer-merge-styles": "^6.0.5",
     "awesome-typescript-loader": "^5.2.1",
+    "babel-loader": "^8.0.4",
     "enzyme": "^3.4.1",
     "enzyme-adapter-react-16": "^1.2.0",
     "enzyme-to-json": "^3.3.4",
@@ -85,8 +86,7 @@
     "ts-node": "^7.0.1",
     "tslint": "^5.11.0",
     "tslint-config-prettier": "^1.16.0",
-    "tslint-react": "^3.6.0",
-    "typescript": "3.0.1"
+    "tslint-react": "^3.6.0"
   },
   "browserslist": [
     ">0.2%",

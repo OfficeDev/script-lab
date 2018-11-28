@@ -866,7 +866,6 @@
 "@microsoft/office-js@1.1.11-adhoc.20":
   version "1.1.11-adhoc.20"
   resolved "https://registry.yarnpkg.com/@microsoft/office-js/-/office-js-1.1.11-adhoc.20.tgz#d53b57720ce7f7aa8a5c155b275855852e85211f"
-  integrity sha512-E2Jq0nQDPwhuh7T8oZiog+COJnMhrSJQwWOIa060TwJxAtBYLQSHsRYM697cMQ8eskCxOQ1JYJQ3qTrhCPiA1A==
 
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
@@ -1267,7 +1266,6 @@
 "@types/md5@^2.1.33":
   version "2.1.33"
   resolved "https://registry.yarnpkg.com/@types/md5/-/md5-2.1.33.tgz#8c8dba30df4ad0e92296424f08c4898dd808e8df"
-  integrity sha512-8+X960EtKLoSblhauxLKy3zzotagjoj3Jt1Tx9oaxUdZEPIBl+mkrUz6PNKpzJgkrKSN9YgkWTA29c0KnLshmA==
   dependencies:
     "@types/node" "*"
 
@@ -1290,7 +1288,6 @@
 "@types/office-js@^0.0.135":
   version "0.0.135"
   resolved "https://registry.yarnpkg.com/@types/office-js/-/office-js-0.0.135.tgz#70372e05fa86607f13946195ee25bc30289dad02"
-  integrity sha512-Og8W2rLjNJlMoyN+huWzTHJlvPKTDmRdNsW8awMLHnLzVSG6nPrp65clfIOyyhImdGMSgidI8kY1rlcIn5rxpQ==
 
 "@types/prettier@^1.13.2":
   version "1.13.2"
@@ -1378,7 +1375,6 @@
 "@types/uuid@^3.4.4":
   version "3.4.4"
   resolved "https://registry.yarnpkg.com/@types/uuid/-/uuid-3.4.4.tgz#7af69360fa65ef0decb41fd150bf4ca5c0cefdf5"
-  integrity sha512-tPIgT0GUmdJQNSHxp0X2jnpQfBSTfGxUMc/2CXBU2mnyTFVYVa2ojpoQ74w0U2yn2vw3jnC640+77lkFFpdVDw==
   dependencies:
     "@types/node" "*"
 
@@ -2168,7 +2164,7 @@ babel-jest@23.6.0, babel-jest@^23.6.0:
     babel-plugin-istanbul "^4.1.6"
     babel-preset-jest "^23.2.0"
 
-babel-loader@8.0.4:
+babel-loader@8.0.4, babel-loader@^8.0.4:
   version "8.0.4"
   resolved "https://registry.yarnpkg.com/babel-loader/-/babel-loader-8.0.4.tgz#7bbf20cbe4560629e2e41534147692d3fecbdce6"
   dependencies:
@@ -2901,7 +2897,6 @@ chardet@^0.7.0:
 charenc@~0.0.1:
   version "0.0.2"
   resolved "https://registry.yarnpkg.com/charenc/-/charenc-0.0.2.tgz#c0a1d2f3a7092e03774bfa83f14c0fc5790a8667"
-  integrity sha1-wKHS86cJLgN3S/qD8UwPxXkKhmc=
 
 check-types@^7.3.0:
   version "7.4.0"
@@ -3366,7 +3361,6 @@ cross-spawn@^5.0.1:
 crypt@~0.0.1:
   version "0.0.2"
   resolved "https://registry.yarnpkg.com/crypt/-/crypt-0.0.2.tgz#88d7ff7ec0dfb86f713dc87bbb42d044d3e6c41b"
-  integrity sha1-iNf/fsDfuG9xPch7u0LQRNPmxBs=
 
 crypto-browserify@^3.11.0:
   version "3.12.0"
@@ -6855,7 +6849,6 @@ md5.js@^1.3.4:
 md5@^2.2.1:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/md5/-/md5-2.2.1.tgz#53ab38d5fe3c8891ba465329ea23fac0540126f9"
-  integrity sha1-U6s41f48iJG6RlMp6iP6wFQBJvk=
   dependencies:
     charenc "~0.0.1"
     crypt "~0.0.1"
@@ -10493,13 +10486,13 @@ typesafe-actions@^2.0.4:
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/typesafe-actions/-/typesafe-actions-2.0.4.tgz#31c8f8df3566d549eb52edb64a75997e970c17d0"
 
-typescript@2.9.2:
+typescript@^2.9.2:
   version "2.9.2"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.9.2.tgz#1cbf61d05d6b96269244eb6a3bce4bd914e0f00c"
 
-typescript@3.0.1:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.0.1.tgz#43738f29585d3a87575520a4b93ab6026ef11fdb"
+typescript@^3.0.3, typescript@^3.1.6:
+  version "3.1.6"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.1.6.tgz#b6543a83cfc8c2befb3f4c8fba6896f5b0c9be68"
 
 ua-parser-js@^0.7.18:
   version "0.7.19"
