@@ -34,8 +34,7 @@ const oldFilesToRemove = ['./public/vs', './public/external/vs'];
 
 ////////////////////////////////////////
 
-// tslint:disable-next-line:no-var-requires
-const fs = require('fs-extra');
+import fs from 'fs-extra';
 
 oldFilesToRemove.forEach(filename => {
   console.log(`Removing "${filename}`);
