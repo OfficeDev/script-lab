@@ -43,7 +43,7 @@ if (deploymentSlot !== undefined) {
       });
     }
 
-    const deploymentLogFilename = new Date().toISOString().replace(/\:/, '_') + '.txt';
+    const deploymentLogFilename = new Date().toISOString().replace(/\:/g, '_') + '.txt';
     shell.echo('Deploying the following files from the build directory:');
     shell.echo(allOtherFiles.join('\n'));
 
