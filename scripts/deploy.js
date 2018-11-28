@@ -1,3 +1,5 @@
+// cSpell:ignore pushd, popd
+
 var shell = require('shelljs');
 const fs = require('fs-extra');
 
@@ -22,7 +24,7 @@ if (deploymentSlot !== undefined) {
   if (shell.test('-d', `${PACKAGE_LOCATION}/build`)) {
     shell.echo('starting deployment');
 
-    var possibleFilesToDelete = [`${PACKAGE_LOCATION}/build/external/.gitignore`];
+    var possibleFilesToDelete = [`${PACKAGE_LOCATION}/build/.gitignore`];
     possibleFilesToDelete.forEach(fullPath => {
       shell.echo(`removing unnecessary "${fullPath}"`);
       if (fs.existsSync(fullPath)) {

@@ -1,3 +1,0 @@
-# Ignore the folders that gets copied by the postinstall script, as outlined below:
-/monaco-editor-*
-/office-js-*
