@@ -4,10 +4,11 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Editor precompile script",
+      "name": "Precompile script",
       "runtimeArgs": ["-r", "ts-node/register"],
       "args": ["scripts/precompile.ts"],
-      "cwd": "${workspaceFolder}/packages/editor"
+      "cwd": "${workspaceRoot}",
+      "env": { "TS_NODE_PROJECT": "scripts/tsconfig.json" }
     },
     {
       "name": "Editor",
