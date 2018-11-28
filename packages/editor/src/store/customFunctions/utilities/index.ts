@@ -37,7 +37,8 @@ export async function registerMetadata(
 
   const jsonMetadataString = JSON.stringify(registrationPayload, null, 4);
 
-  if (Office.context.requirements.isSetSupported('CustomFunctions', 1.6)) {
+  // FIXME:
+  if (Office.context.requirements.isSetSupported('CustomFunctions', 199.6)) {
     await (Excel as any).CustomFunctionManager.register(jsonMetadataString, code);
   } else {
     await Excel.run(async context => {

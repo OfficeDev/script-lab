@@ -13,7 +13,7 @@ import { supportsHistory } from 'history/es/DOMUtils';
 import createMemoryHistory from 'history/createMemoryHistory';
 import createHashHistory from 'history/createHashHistory';
 
-import actions from './actions';
+import { IRootAction } from './actions';
 
 const addLoggingToDispatch = store => {
   const rawDispatch = store.dispatch;
@@ -45,7 +45,7 @@ const configureStore = ({
   // const history = supportsHistory() ? createBrowserHistory() : createHashHistory()
   const sagaMiddleware = createSagaMiddleware();
 
-  const store = createStore<IState>(
+  const store = createStore(
     connectRouter(history)(rootReducer),
     initialState as any,
     composeWithDevTools(applyMiddleware(sagaMiddleware, routerMiddleware(history))),

@@ -123,7 +123,7 @@ console.log(`=== Done running precompile script ===`);
 
 // Helpers
 function readAsIsProcessor(fullPath: string): string {
-  return fs.readFileSync(fullPath).toString();
+  return fs.readFileSync(fullPath, 'utf8').toString();
 }
 
 function webpackProcessor(folderPath: string): string {
@@ -136,7 +136,9 @@ function webpackProcessor(folderPath: string): string {
       stdio: [0, 1, 2],
     },
   );
-  return fs.readFileSync(path.join(folderPath, 'dist/webpack/bundle.js')).toString();
+  return fs
+    .readFileSync(path.join(folderPath, 'dist/webpack/bundle.js'), 'utf8')
+    .toString();
 }
 
 function substituteIntoIndexFileLines(

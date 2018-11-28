@@ -19,10 +19,7 @@
     "strictFunctionTypes": false,
     "strictPropertyInitialization": false
   },
-  "include": [
-    "./src/**/*",
-    "../common/src/interfaces"
-  ],
+  "include": ["./src/**/*", "../common/src/interfaces/*"],
   "exclude": [
     "node_modules",
     "build",
