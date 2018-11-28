@@ -19,7 +19,7 @@ const PRECOMPILE_SPEC: {
 
 const BEGIN_PLACEHOLDER_REGEX = /^.*(<!-- Begin precompile placeholder: .* -->).*$/;
 
-const WEBPACK_MODE = 'development'; // FIXME Zlatkovsky vs "production"
+const WEBPACK_MODE = process.env.TRAVIS ? 'production' : 'development';
 
 ////////////////////////////////////////
 
