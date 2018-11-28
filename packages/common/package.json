@@ -22,6 +22,7 @@
     "test": "jest --env=jsdom"
   },
   "devDependencies": {
+    "@babel/core": "^7.1.6",
     "@storybook/addon-a11y": "^4.0.6",
     "@storybook/addon-actions": "^4.0.6",
     "@storybook/addon-knobs": "^4.0.6",
@@ -47,6 +48,7 @@
     "@types/storybook__react": "^4.0.0",
     "@types/styled-components": "^4.1.0",
     "core-js": "^2.5.7",
+    "babel-loader": "^8.0.4",
     "enzyme": "^3.7.0",
     "enzyme-adapter-react-16": "^1.7.0",
     "jest": "^23.6.0",

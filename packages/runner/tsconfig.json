@@ -14,9 +14,14 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "module": "esnext"
   },
-  "include": ["../interfaces/*", "./src/**/*", "../common/interfaces"],
+  "include": [
+    "../interfaces/*",
+    "./src/**/*",
+    "../common/interfaces"
+  ],
   "exclude": [
     "node_modules",
     "build",

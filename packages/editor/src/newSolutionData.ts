@@ -1,4 +1,4 @@
-import uuidv4 from 'uuid';
+import createGUID from 'uuid';
 import { LIBRARIES_FILE_NAME, SCRIPT_FILE_NAME } from './constants';
 
 export const getBoilerplateFiles = (timestamp: number): IFile[] =>
@@ -54,7 +54,7 @@ jquery@3.1.1
     },
   ].map(file => ({
     ...file,
-    id: uuidv4(),
+    id: createGUID(),
     dateCreated: timestamp,
     dateLastModified: timestamp,
   }));
@@ -64,7 +64,7 @@ export const getBoilerplateSolution = (
   files: IFile[],
   timestamp: number,
 ): ISolution => ({
-  id: uuidv4(),
+  id: createGUID(),
   name: `Blank Snippet`,
   host,
   dateCreated: timestamp,
