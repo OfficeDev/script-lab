@@ -1,5 +1,6 @@
 import { put, takeEvery, call, select } from 'redux-saga/effects';
 import { getType, ActionType } from 'typesafe-actions';
+import flatten from 'lodash/flatten';
 
 import { request } from '../../services/general';
 import { customFunctions, solutions } from '../actions';
@@ -60,14 +61,21 @@ function* registerCustomFunctionsMetadataSaga(
   action: ActionType<typeof customFunctions.registerMetadata.request>,
 ) {
   const { visual, code } = action.payload;
+  const allFunctions: ICFVisualFunctionMetadata[] = flatten(
+    visual.snippets.map(snippet => snippet.functions),
+  );
+
   try {
-    yield call(registerMetadata, visual, code);
+    yield call(registerMetadata, allFunctions, code);
     yield put(customFunctions.registerMetadata.success());
 
     const engineStatus = yield call(getCustomFunctionEngineStatus);
     yield put(updateEngineStatus(engineStatus));
+
     yield put(customFunctions.updateRunner({ isAlive: true, lastUpdated: Date.now() }));
   } catch (error) {
+    console.error(error);
+    // FIXME Nico TODO make sure this bubbles up, right now it doesn't!
     yield put(customFunctions.registerMetadata.failure(error));
   }
 }
