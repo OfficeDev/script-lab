@@ -43,6 +43,7 @@ interface IPropsFromRedux {
   isLoggingInOrOut: boolean;
   commandBarFabricTheme: IFabricTheme;
   screenWidth: number;
+  shouldShowPopOutButton: boolean;
 }
 
 const mapStateToProps = (state): IPropsFromRedux => ({
@@ -58,6 +59,7 @@ const mapStateToProps = (state): IPropsFromRedux => ({
   profilePicUrl: selectors.github.getProfilePicUrl(state),
   commandBarFabricTheme: getCommandBarFabricTheme(selectors.host.get(state)),
   screenWidth: selectors.screen.getWidth(state),
+  shouldShowPopOutButton: selectors.host.getIsInAddin(state),
 });
 
 interface IActionsFromRedux {
@@ -251,6 +253,7 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
       updateGist,
       createPublicGist,
       createSecretGist,
+      shouldShowPopOutButton,
     } = this.props;
     const solutionName = solution ? solution.name : 'Solution Name';
 
@@ -404,6 +407,15 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
       onClick: isLoggingInOrOut ? () => {} : login,
     };
 
+    const popOutButton = {
+      key: 'pop-out',
+      iconOnly: true,
+      iconProps: { iconName: 'OpenInNewWindow' },
+      onClick: () => Office.context.ui.displayDialogAsync(window.location.href),
+    };
+
+    const farItems = shouldShowPopOutButton ? [profilePic, popOutButton] : [profilePic];
+
     return (
       <>
         <Customizer settings={{ theme: commandBarFabricTheme }}>
@@ -420,7 +432,7 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
                   }[getPlatform()],
                 },
               }}
-              farItems={[profilePic]}
+              farItems={farItems}
               ariaLabel={'Use left and right arrow keys to navigate between commands'}
             />
           </HeaderWrapper>

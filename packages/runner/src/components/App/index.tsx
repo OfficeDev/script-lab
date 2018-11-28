@@ -12,6 +12,7 @@ import Only from 'common/lib/components/Only';
 import MessageBar from '../MessageBar';
 
 import SnippetContainer from '../SnippetContainer';
+import { editorUrl } from '../../constants';
 
 const AppWrapper = styled.div`
   height: 100vh;
@@ -117,6 +118,8 @@ export class App extends React.Component<{}, IState> {
 
   reloadPage = () => window.location.reload();
 
+  openCode = () => Office.context.ui.displayDialogAsync(editorUrl);
+
   setLastRendered = (lastRendered: number) => this.setState({ lastRendered });
 
   render() {
@@ -130,6 +133,7 @@ export class App extends React.Component<{}, IState> {
                 solutionName={this.state.solution ? this.state.solution.name : undefined}
                 refresh={this.softRefresh}
                 hardRefresh={this.reloadPage}
+                openCode={this.openCode}
               />
             }
             footer={

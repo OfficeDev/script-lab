@@ -63,6 +63,7 @@ describe('Header should render properly in basic case', () => {
     profilePicUrl: null,
     screenWidth: 700,
     commandBarFabricTheme: getCommandBarFabricTheme(host) as IFabricTheme,
+    shouldShowPopOutButton: true,
     ...actionProps,
   };
 
@@ -71,9 +72,12 @@ describe('Header should render properly in basic case', () => {
     .find('CommandBarBase')
     .props();
 
-  it('should render the profile pic item', () => {
-    expect(commandBarProps.farItems!.length).toEqual(1);
-    expect(commandBarProps.farItems![0].key).toEqual('account');
+  it('should render the proper far items in the header', () => {
+    expect(commandBarProps.farItems!.length).toEqual(2);
+    expect(commandBarProps.farItems!.map(({ key }) => key)).toEqual([
+      'account',
+      'pop-out',
+    ]);
   });
 
   it('should render the proper items in the header', () => {
@@ -100,6 +104,39 @@ describe('Header should render properly in basic case', () => {
   });
 });
 
+describe("Header shouldn't show pop-out button if already popped out", () => {
+  const normalExample = getBoilerplate(host);
+
+  const solution = normalExample;
+  const headerProps = {
+    solution,
+    file: solution.files.find(file => file.name === SCRIPT_FILE_NAME)!,
+    isLoggedIn: true,
+    isLoggingInOrOut: false,
+    isRunnableOnThisHost: true,
+    isSettingsView: false,
+    isCustomFunctionsView: false,
+    isNullSolution: false,
+    isDirectScriptExecutionSolution: false,
+    runnableFunctions: [],
+    profilePicUrl: null,
+    screenWidth: 800,
+    commandBarFabricTheme: getCommandBarFabricTheme(host) as IFabricTheme,
+    shouldShowPopOutButton: false,
+    ...actionProps,
+  };
+
+  const header = mount(<Header {...headerProps} />);
+  const commandBarProps: Partial<ICommandBarProps> = header
+    .find('CommandBarBase')
+    .props();
+
+  it('should render the proper far items in the header', () => {
+    expect(commandBarProps.farItems!.length).toEqual(1);
+    expect(commandBarProps.farItems!.map(({ key }) => key)).toEqual(['account']);
+  });
+});
+
 describe("Header shouldn't show run button if isn't runnable", () => {
   const normalExample = getBoilerplate(host);
 
@@ -118,6 +155,7 @@ describe("Header shouldn't show run button if isn't runnable", () => {
     profilePicUrl: null,
     screenWidth: 800,
     commandBarFabricTheme: getCommandBarFabricTheme(host) as IFabricTheme,
+    shouldShowPopOutButton: true,
     ...actionProps,
   };
 

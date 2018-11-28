@@ -18,6 +18,8 @@ export const editorUrls = {
   production: 'https://script-lab.azureedge.net',
 };
 
+export const editorUrl = editorUrls[getCurrentEnv()];
+
 export function getCurrentEnv(): 'local' | 'alpha' | 'beta' | 'prod' {
   return {
     'http://localhost:3200': 'local',
