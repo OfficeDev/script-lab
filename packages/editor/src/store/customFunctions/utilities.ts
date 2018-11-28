@@ -9,21 +9,17 @@ export function isCustomFunctionScript(content: string) {
 }
 
 export async function registerMetadata(
-  visual: ICFVisualMetadata,
+  functions: ICFVisualFunctionMetadata[],
   code: string,
 ): Promise<void> {
-  if (typeof Excel === 'undefined') {
-    throw new Error('Excel is not present.');
-  }
-
-  const functions = flatten(visual.snippets.map(snippet => snippet.functions));
-
   const registrationPayload: ICustomFunctionsRegistrationApiMetadata = {
     functions: functions
       .filter(func => func.status === 'good')
       .map(func => {
+        const uppercasedFullName = func.nonCapitalizedFullName.toUpperCase();
         const schemaFunc: ICFSchemaFunctionMetadata = {
-          name: func.nonCapitalizedFullName.toUpperCase(),
+          id: uppercasedFullName,
+          name: uppercasedFullName,
           description: func.description,
           options: func.options,
           result: func.result,
@@ -33,21 +29,27 @@ export async function registerMetadata(
       }),
   };
 
-  if (Office.context.requirements.isSetSupported('CustomFunctions', 1.3)) {
-    await Excel.run(async context => {
-      (Excel as any).CustomFunctionManager.newObject(context).register(
-        JSON.stringify(registrationPayload, null, 4),
-        code,
-      );
-      await context.sync();
-    });
+  const jsonMetadataString = JSON.stringify(registrationPayload, null, 4);
+
+  if (Office.context.requirements.isSetSupported('CustomFunctions', 1.6)) {
+    await (Excel as any).CustomFunctionManager.register(jsonMetadataString, code);
   } else {
-    // Older style registration
     await Excel.run(async context => {
-      (context.workbook as any).registerCustomFunctions(
-        getScriptLabTopLevelNamespace().toUpperCase(),
-        JSON.stringify(registrationPayload),
-      );
+      if (Office.context.platform === Office.PlatformType.OfficeOnline) {
+        const namespace = getScriptLabTopLevelNamespace().toUpperCase();
+        (context.workbook as any).registerCustomFunctions(
+          namespace,
+          jsonMetadataString,
+          '' /*addinId*/,
+          'en-us',
+          namespace,
+        );
+      } else {
+        (Excel as any).CustomFunctionManager.newObject(context).register(
+          jsonMetadataString,
+          code,
+        );
+      }
       await context.sync();
     });
   }
