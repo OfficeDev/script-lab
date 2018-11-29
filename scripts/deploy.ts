@@ -34,23 +34,15 @@ if (deploymentSlot !== undefined) {
     );
 
     if (gitIgnoreFiles.length > 0) {
-      shell.echo(
-        'Removing unnecessary gitIgnore files that ended up in the build directory',
+      throw new Error(
+        [
+          'Unexpectedly found 1 or more .gitignore files. This should not happen: ',
+          ...gitIgnoreFiles.map(filepath => ' - ' + filepath),
+        ].join('\n'),
       );
-      gitIgnoreFiles.forEach(filepath => {
-        fs.removeSync(filepath);
-        shell.echo(' - ' + filepath);
-      });
     }
 
-    const deploymentLogFilename = new Date().toISOString().replace(/\:/, '_') + '.txt';
-    shell.echo('Deploying the following files from the build directory:');
-    shell.echo(allOtherFiles.join('\n'));
-
-    fs.writeFileSync(
-      path.join(BUILD_DIRECTORY, 'DeploymentLog', deploymentLogFilename),
-      allOtherFiles.join('\n'),
-    );
+    writeDeploymentLog(BUILD_DIRECTORY, allOtherFiles);
 
     deploy(`${PACKAGE_LOCATION}/build`, SITE_NAME, `${SITE_NAME}${deploymentSlot}`);
   } else {
@@ -104,4 +96,19 @@ function listAllFilesRecursive(initialDir: string): string[] {
         : [...files, fullPath];
     }, []);
   }
+}
+
+function writeDeploymentLog(buildDirectory: string, files: string[]) {
+  const deploymentLogFilename = new Date().toISOString().replace(/\:/g, '_') + '.txt';
+  shell.echo('Deploying the following files from the build directory:');
+  shell.echo(files.join('\n'));
+
+  if (!fs.existsSync(path.join(buildDirectory, 'DeploymentLog'))) {
+    fs.mkdirSync(path.join(buildDirectory, 'DeploymentLog'));
+  }
+
+  fs.writeFileSync(
+    path.join(buildDirectory, 'DeploymentLog', deploymentLogFilename),
+    files.join('\n'),
+  );
 }
