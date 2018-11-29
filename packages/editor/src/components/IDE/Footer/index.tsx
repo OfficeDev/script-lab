@@ -1,7 +1,9 @@
 import React from 'react';
 import { withTheme } from 'styled-components';
 
-import { getCurrentEnv, allowedEnvs } from '../../../environment';
+import { ITheme as IFabricTheme } from 'office-ui-fabric-react/lib/Styling';
+import { getCurrentEnv, allowedEnvironments } from '../../../environment';
+
 import { PATHS } from '../../../constants';
 
 import { HostType } from '@microsoft/office-js-helpers';
@@ -111,7 +113,7 @@ const FooterWithoutTheme = ({
       key: 'environment-switcher',
       text: getCurrentEnv(),
       subMenuProps: {
-        items: allowedEnvs.map(env => ({
+        items: allowedEnvironments.map(env => ({
           key: env,
           text: env.charAt(0).toUpperCase() + env.slice(1),
           onClick: () => switchEnvironment(env),

@@ -2,11 +2,16 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
+    <title>Script Lab</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
     <meta name="theme-color" content="#000000" />
+    <link rel="shortcut icon" type="image/x-icon" href="/assets/images/favicon.ico" />
 
     <script src="https://appsforoffice.microsoft.com/lib/1/hosted/Office.js"></script>
     <script>
@@ -21,134 +26,21 @@
       href="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-core/9.6.0/css/fabric.min.css"
     />
 
-    <!--
-      Note: these styles must be run through autoprefixer manually, anytime you make a change
-    -->
-    <style>
-      *,
-      *::before,
-      *::after {
-        padding: 0;
-        margin: 0;
-        -webkit-box-sizing: inherit;
-        box-sizing: inherit;
-      }
-
-      html {
-        font-size: 62.5%;
-      }
-
-      body {
-        font-family: sans-serif;
-        -webkit-box-sizing: border-box;
-        box-sizing: border-box;
-        overscroll-behavior-y: none;
-        background-color: white;
-        overflow: hidden;
-      }
-
-      #loading {
-        position: absolute;
-        color: #333333;
-        height: 100%;
-        width: 100%;
-        display: -webkit-box;
-        display: -ms-flexbox;
-        display: flex;
-        -webkit-box-orient: vertical;
-        -webkit-box-direction: normal;
-        -ms-flex-direction: column;
-        flex-direction: column;
-        -webkit-box-align: center;
-        -ms-flex-align: center;
-        align-items: center;
-        -webkit-box-pack: center;
-        -ms-flex-pack: center;
-        justify-content: center;
-      }
-
-      .loading-indicator {
-        margin: 20px auto 0;
-        -webkit-box-sizing: border-box;
-        box-sizing: border-box;
-        width: 140px;
-        text-align: center;
-      }
-
-      .loading-indicator > div {
-        width: 18px;
-        height: 18px;
-        background-color: #d83b01;
-        margin: 3px;
-        -webkit-box-sizing: border-box;
-        box-sizing: border-box;
-
-        border-radius: 100%;
-        display: inline-block;
-        -webkit-animation: loading-animation 1.4s infinite ease-in-out both;
-        animation: loading-animation 1.4s infinite ease-in-out both;
-      }
-
-      .loading-indicator .ball1 {
-        -webkit-animation-delay: -0.8s;
-        animation-delay: -0.8s;
-      }
-
-      .loading-indicator .ball2 {
-        -webkit-animation-delay: -0.64s;
-        animation-delay: -0.64s;
-      }
-
-      .loading-indicator .ball3 {
-        -webkit-animation-delay: -0.48s;
-        animation-delay: -0.48s;
-      }
-
-      .loading-indicator .ball4 {
-        -webkit-animation-delay: -0.32s;
-        animation-delay: -0.32s;
-      }
-
-      .loading-indicator .ball5 {
-        -webkit-animation-delay: -0.16s;
-        animation-delay: -0.16s;
-      }
-
-      @-webkit-keyframes loading-animation {
-        0%,
-        80%,
-        100% {
-          -webkit-transform: scale(0);
-        }
-
-        40% {
-          -webkit-transform: scale(1);
-        }
-      }
-
-      @keyframes loading-animation {
-        0%,
-        80%,
-        100% {
-          -webkit-transform: scale(0);
-          transform: scale(0);
-        }
-
-        40% {
-          -webkit-transform: scale(1);
-          transform: scale(1);
-        }
-      }
-    </style>
-
-    <title>Script Lab React</title>
+    <!-- Begin precompile placeholder: style.css -->
+    <link
+      rel="stylesheet"
+      href="/precompiled/style-5fcf4f93466e1759e687514e7f818114.css"
+    />
+    <!-- End precompile placeholder: style.css -->
   </head>
 
   <body class="ms-Fabric">
     <noscript> You need to enable JavaScript to run this app. </noscript>
+
     <div id="loading">
-      <img src="assets/images/icon-large.svg" style="height: 200px; width: 200px" />
-      <h1 class="ms-font-su" style="margin-top: 2rem;">Script Lab</h1>
+      <img src="/assets/images/icon-large.svg" alt="Script Lab logo" />
+      <h1 class="ms-font-xxl">Script Lab</h1>
+      <h2 class="ms-font-m">Code ● Run ● Share</h2>
       <div class="loading-indicator">
         <div class="ball1"></div>
         <div class="ball2"></div>
@@ -157,16 +49,7 @@
         <div class="ball5"></div>
       </div>
     </div>
+
     <div id="root"></div>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
-
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
-
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
   </body>
 </html>

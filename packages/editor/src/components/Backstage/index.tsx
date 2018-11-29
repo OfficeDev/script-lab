@@ -85,19 +85,20 @@ interface IState {
 }
 
 export class Backstage extends Component<IProps, IState> {
-  state = {
-    isLoading: false,
-    selectedKey: 'my-solutions',
-    conflictingGist: null,
-    existingSolutionsConflicting: null,
-    width: 0,
-  };
   containerDomNode;
   resizeListener;
 
   constructor(props) {
     super(props);
     this.containerDomNode = React.createRef();
+
+    this.state = {
+      isLoading: false,
+      selectedKey: this.props.solutions.length > 0 ? 'my-solutions' : 'samples',
+      conflictingGist: null,
+      existingSolutionsConflicting: null,
+      width: 0,
+    };
   }
 
   componentDidMount() {

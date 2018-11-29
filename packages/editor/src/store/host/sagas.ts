@@ -3,7 +3,7 @@ import { getType } from 'typesafe-actions';
 
 import { host, gists, samples, editor } from '../actions';
 import selectors from '../selectors';
-import { openLastModifiedOrDefaultSolutionSaga } from '../solutions/sagas';
+import { openLastModifiedOrBackstageSaga } from '../solutions/sagas';
 import { setupFabricTheme } from '../../theme';
 import { PATHS } from '../../constants';
 
@@ -20,7 +20,7 @@ export function* hostChangedSaga() {
     return;
   }
 
-  yield call(openLastModifiedOrDefaultSolutionSaga);
+  yield call(openLastModifiedOrBackstageSaga);
 
   yield put(samples.fetchMetadata.request());
   yield put(gists.fetchMetadata.request());

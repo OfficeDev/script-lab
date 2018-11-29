@@ -1,7 +1,7 @@
 import { takeEvery, put, call, select } from 'redux-saga/effects';
 import { getType, ActionType } from 'typesafe-actions';
 import { actions, selectors } from '../';
-import { getCurrentEnv, editorUrls } from '../../environment';
+import { getCurrentEnv, allEditorUrls } from '../../environment';
 
 export default function* miscWatcher() {
   yield takeEvery(getType(actions.misc.initialize), onInitializeSaga);
@@ -21,7 +21,7 @@ function* onSwitchEnvironmentSaga(
 
   if (newEnvironment !== currentEnvironment) {
     window.location.href = `${
-      editorUrls.production
-    }?targetEnvironment=${encodeURIComponent(editorUrls[newEnvironment])}`;
+      allEditorUrls.production
+    }?targetEnvironment=${encodeURIComponent(allEditorUrls[newEnvironment])}`;
   }
 }

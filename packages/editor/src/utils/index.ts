@@ -1,6 +1,7 @@
 import createGUID from 'uuid';
 import { LIBRARIES_FILE_NAME, SCRIPT_FILE_NAME } from '../constants';
 import { getBoilerplateFiles } from '../newSolutionData';
+import { stringifyPlusPlus } from 'common/lib/utilities/string';
 
 export const getObjectValues = (dict: object): any[] =>
   Object.keys(dict).map(key => dict[key]);
@@ -110,76 +111,6 @@ export const convertSolutionToSnippet = (solution: ISolution): ISnippet => {
     ...snippetFiles,
   };
 };
-
-export function stringifyPlusPlus(object: any): string {
-  if (object === null) {
-    return 'null';
-  }
-
-  if (typeof object === 'undefined') {
-    return 'undefined';
-  }
-
-  // Don't JSON.stringify strings, because we don't want quotes in the output
-  if (typeof object === 'string') {
-    return object;
-  }
-
-  if (object instanceof Error) {
-    try {
-      return 'Error: ' + '\n' + jsonStringify(object);
-    } catch (e) {
-      return stringifyPlusPlus(object.toString());
-    }
-  }
-  if (object.toString() !== '[object Object]') {
-    return object.toString();
-  }
-
-  // Otherwise, stringify the object
-  return jsonStringify(object);
-}
-
-function jsonStringify(object: any): string {
-  return JSON.stringify(
-    object,
-    (key, value) => {
-      if (value && typeof value === 'object' && !Array.isArray(value)) {
-        return getStringifiableSnapshot(value);
-      }
-      return value;
-    },
-    4,
-  );
-
-  function getStringifiableSnapshot(object: any) {
-    const snapshot: any = {};
-
-    try {
-      let current = object;
-
-      do {
-        Object.getOwnPropertyNames(current).forEach(tryAddName);
-        current = Object.getPrototypeOf(current);
-      } while (current);
-
-      return snapshot;
-    } catch (e) {
-      return object;
-    }
-
-    function tryAddName(name: string) {
-      const hasOwnProperty = Object.prototype.hasOwnProperty;
-      if (name.indexOf(' ') < 0 && !hasOwnProperty.call(snapshot, name)) {
-        Object.defineProperty(snapshot, name, {
-          configurable: true,
-          enumerable: true,
-          get: () => object[name],
-        });
-      }
-    }
-  }
-}
 
 export function invokeGlobalErrorHandler(error: any) {
   console.error('Global error handler:');
