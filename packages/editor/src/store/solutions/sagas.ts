@@ -1,12 +1,13 @@
 import { put, takeEvery, call, select } from 'redux-saga/effects';
 import { getType, ActionType } from 'typesafe-actions';
+import { push } from 'connected-react-router';
 
 import { messageBar, solutions, editor } from '../actions';
 import { fetchYaml } from '../../services/general';
 import selectors from '../selectors';
 import { convertSnippetToSolution } from '../../utils';
 import { getBoilerplate } from '../../newSolutionData';
-import { SCRIPT_FILE_NAME } from '../../constants';
+import { SCRIPT_FILE_NAME, PATHS, NULL_SOLUTION_ID, NULL_FILE_ID } from '../../constants';
 import { deleteSolutionFromStorage } from '../localStorage';
 import { formatTypeScriptFile } from '../editor/utilities';
 import { getCurrentEnv } from '../../environment';
@@ -138,7 +139,7 @@ export function* createSolutionSaga(solution: ISolution) {
 
 function* removeSolutionSaga(action: ActionType<typeof solutions.remove>) {
   yield call(deleteSolutionFromStorage, action.payload.id);
-  yield call(openLastModifiedOrDefaultSolutionSaga);
+  yield call(openLastModifiedOrBackstageSaga);
 }
 
 function* updateOptionsSaga(action: ActionType<typeof solutions.updateOptions>) {
@@ -156,11 +157,12 @@ function* updateOptionsSaga(action: ActionType<typeof solutions.updateOptions>) 
   );
 }
 
-export function* openLastModifiedOrDefaultSolutionSaga() {
+export function* openLastModifiedOrBackstageSaga() {
   const solutions = yield select(selectors.solutions.getInLastModifiedOrder);
 
   if (solutions.length === 0) {
-    yield call(getDefaultSaga);
+    yield put(editor.openFile({ solutionId: NULL_SOLUTION_ID, fileId: NULL_FILE_ID }));
+    yield put(push(PATHS.BACKSTAGE));
   } else {
     yield put(
       editor.openFile({ solutionId: solutions[0].id, fileId: solutions[0].files[0].id }),
