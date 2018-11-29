@@ -17,6 +17,7 @@ export default ({ title, details }: IProps) => `<!DOCTYPE html>
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
     <meta name="theme-color" content="#000000" />
+    <link rel="shortcut icon" type="image/x-icon" href="/assets/images/favicon.ico" />
 
     <link
       rel="stylesheet"

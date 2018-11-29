@@ -26,6 +26,7 @@ export default ({
     name="viewport"
     content="width=device-width, initial-scale=1, shrink-to-fit=no"
   />
+  <link rel="shortcut icon" type="image/x-icon" href="/assets/images/favicon.ico" />
 
   ${linkReferences.map(href => `<link rel="stylesheet" href="${href}" />`).join('\n  ')}
 
