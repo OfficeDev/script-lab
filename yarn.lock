@@ -863,9 +863,10 @@
     lodash "4.17.4"
     rxjs "5.2.0"
 
-"@microsoft/office-js@1.1.10":
-  version "1.1.10"
-  resolved "https://registry.yarnpkg.com/@microsoft/office-js/-/office-js-1.1.10.tgz#9125966bbd587c91e59fb400b4d202ce0ebe9711"
+"@microsoft/office-js@1.1.11-adhoc.20":
+  version "1.1.11-adhoc.20"
+  resolved "https://registry.yarnpkg.com/@microsoft/office-js/-/office-js-1.1.11-adhoc.20.tgz#d53b57720ce7f7aa8a5c155b275855852e85211f"
+  integrity sha512-E2Jq0nQDPwhuh7T8oZiog+COJnMhrSJQwWOIa060TwJxAtBYLQSHsRYM697cMQ8eskCxOQ1JYJQ3qTrhCPiA1A==
 
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
@@ -1204,6 +1205,10 @@
   dependencies:
     "@types/node" "*"
 
+"@types/core-js@^2.5.0":
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/@types/core-js/-/core-js-2.5.0.tgz#35cc282488de6f10af1d92902899a3b8ca3fbc47"
+
 "@types/enzyme-adapter-react-16@^1.0.3":
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/@types/enzyme-adapter-react-16/-/enzyme-adapter-react-16-1.0.3.tgz#0cf7025b036694ca8d596fe38f24162e7117acf1"
@@ -1263,6 +1268,13 @@
   version "4.14.118"
   resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.118.tgz#247bab39bfcc6d910d4927c6e06cbc70ec376f27"
 
+"@types/md5@^2.1.33":
+  version "2.1.33"
+  resolved "https://registry.yarnpkg.com/@types/md5/-/md5-2.1.33.tgz#8c8dba30df4ad0e92296424f08c4898dd808e8df"
+  integrity sha512-8+X960EtKLoSblhauxLKy3zzotagjoj3Jt1Tx9oaxUdZEPIBl+mkrUz6PNKpzJgkrKSN9YgkWTA29c0KnLshmA==
+  dependencies:
+    "@types/node" "*"
+
 "@types/mime@*":
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@types/mime/-/mime-2.0.0.tgz#5a7306e367c539b9f6543499de8dd519fac37a8b"
@@ -1279,9 +1291,10 @@
   version "0.0.111"
   resolved "https://registry.yarnpkg.com/@types/office-js/-/office-js-0.0.111.tgz#ced69601ce5dc5c475e239c4395d3a7d216dd93d"
 
-"@types/office-js@^0.0.87":
-  version "0.0.87"
-  resolved "https://registry.yarnpkg.com/@types/office-js/-/office-js-0.0.87.tgz#bca1132268e6fc8139268712a66445b1511c9e0c"
+"@types/office-js@^0.0.135":
+  version "0.0.135"
+  resolved "https://registry.yarnpkg.com/@types/office-js/-/office-js-0.0.135.tgz#70372e05fa86607f13946195ee25bc30289dad02"
+  integrity sha512-Og8W2rLjNJlMoyN+huWzTHJlvPKTDmRdNsW8awMLHnLzVSG6nPrp65clfIOyyhImdGMSgidI8kY1rlcIn5rxpQ==
 
 "@types/prettier@^1.13.2":
   version "1.13.2"
@@ -1365,6 +1378,13 @@
 "@types/tapable@1.0.2":
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/@types/tapable/-/tapable-1.0.2.tgz#e13182e1b69871a422d7863e11a4a6f5b814a4bd"
+
+"@types/uuid@^3.4.4":
+  version "3.4.4"
+  resolved "https://registry.yarnpkg.com/@types/uuid/-/uuid-3.4.4.tgz#7af69360fa65ef0decb41fd150bf4ca5c0cefdf5"
+  integrity sha512-tPIgT0GUmdJQNSHxp0X2jnpQfBSTfGxUMc/2CXBU2mnyTFVYVa2ojpoQ74w0U2yn2vw3jnC640+77lkFFpdVDw==
+  dependencies:
+    "@types/node" "*"
 
 "@types/webpack-env@*":
   version "1.13.6"
@@ -2882,6 +2902,11 @@ chardet@^0.7.0:
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/chardet/-/chardet-0.7.0.tgz#90094849f0937f2eedc2425d0d28a9e5f0cbad9e"
 
+charenc@~0.0.1:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/charenc/-/charenc-0.0.2.tgz#c0a1d2f3a7092e03774bfa83f14c0fc5790a8667"
+  integrity sha1-wKHS86cJLgN3S/qD8UwPxXkKhmc=
+
 check-types@^7.3.0:
   version "7.4.0"
   resolved "https://registry.yarnpkg.com/check-types/-/check-types-7.4.0.tgz#0378ec1b9616ec71f774931a3c6516fad8c152f4"
@@ -3341,6 +3366,11 @@ cross-spawn@^5.0.1:
     lru-cache "^4.0.1"
     shebang-command "^1.2.0"
     which "^1.2.9"
+
+crypt@~0.0.1:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/crypt/-/crypt-0.0.2.tgz#88d7ff7ec0dfb86f713dc87bbb42d044d3e6c41b"
+  integrity sha1-iNf/fsDfuG9xPch7u0LQRNPmxBs=
 
 crypto-browserify@^3.11.0:
   version "3.12.0"
@@ -4849,14 +4879,6 @@ fs-extra@^4.0.2:
     jsonfile "^4.0.0"
     universalify "^0.1.0"
 
-fs-extra@^6.0.1:
-  version "6.0.1"
-  resolved "https://registry.yarnpkg.com/fs-extra/-/fs-extra-6.0.1.tgz#8abc128f7946e310135ddc93b98bddb410e7a34b"
-  dependencies:
-    graceful-fs "^4.1.2"
-    jsonfile "^4.0.0"
-    universalify "^0.1.0"
-
 fs-extra@^7.0.0, fs-extra@^7.0.1:
   version "7.0.1"
   resolved "https://registry.yarnpkg.com/fs-extra/-/fs-extra-7.0.1.tgz#4f189c44aa123b895f722804f55ea23eadc348e9"
@@ -5664,7 +5686,7 @@ is-boolean-object@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/is-boolean-object/-/is-boolean-object-1.0.0.tgz#98f8b28030684219a95f375cfbd88ce3405dff93"
 
-is-buffer@^1.0.2, is-buffer@^1.1.5:
+is-buffer@^1.0.2, is-buffer@^1.1.5, is-buffer@~1.1.1:
   version "1.1.6"
   resolved "https://registry.yarnpkg.com/is-buffer/-/is-buffer-1.1.6.tgz#efaa2ea9daa0d7ab2ea13a97b2b8ad51fefbe8be"
 
@@ -6833,6 +6855,15 @@ md5.js@^1.3.4:
     hash-base "^3.0.0"
     inherits "^2.0.1"
     safe-buffer "^5.1.2"
+
+md5@^2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/md5/-/md5-2.2.1.tgz#53ab38d5fe3c8891ba465329ea23fac0540126f9"
+  integrity sha1-U6s41f48iJG6RlMp6iP6wFQBJvk=
+  dependencies:
+    charenc "~0.0.1"
+    crypt "~0.0.1"
+    is-buffer "~1.1.1"
 
 mdn-data@~1.1.0:
   version "1.1.4"

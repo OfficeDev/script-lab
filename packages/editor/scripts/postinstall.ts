@@ -16,7 +16,7 @@ const expectedPackages: {
   },
   officeJs: {
     name: '@microsoft/office-js',
-    version: '1.1.10',
+    version: '1.1.11-adhoc.20',
     copyAsName: 'office-js',
     pathToCopyFrom: 'dist',
     pathToCopyTo: '',
@@ -32,10 +32,9 @@ const additionalFilesToCopy = [
 
 const oldFilesToRemove = ['./public/vs', './public/external/vs'];
 
-/////////////////////////////////////////
+////////////////////////////////////////
 
-// tslint:disable-next-line:no-var-requires
-const fs = require('fs-extra');
+import fs from 'fs-extra';
 
 oldFilesToRemove.forEach(filename => {
   console.log(`Removing "${filename}`);
@@ -72,7 +71,7 @@ for (const key in expectedPackages) {
   foldersToCopy.push({
     from: `../../node_modules/${packageToCheck.name}/${packageToCheck.pathToCopyFrom}`,
     to: `./public/external/${packageToCheck.copyAsName}-${getVersionNumberHyphenated(
-      expectedPackages.monaco.version,
+      packageToCheck.version,
     )}${packageToCheck.pathToCopyTo ? '/' + packageToCheck.pathToCopyTo : ''}`,
   });
 }

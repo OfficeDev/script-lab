@@ -6,7 +6,6 @@
     "@microsoft/office-js-helpers": "0.7.4",
     "color": "^3.0.0",
     "common": "0.0.1",
-    "core-js": "^2.5.7",
     "office-ui-fabric-react": "^6.69.0",
     "react": "^16.5.0",
     "react-dom": "^16.5.0",
@@ -20,7 +19,6 @@
     "lint": "tslint \"src/**/*.ts?(x)\""
   },
   "devDependencies": {
-    "@types/fs-extra": "^5.0.4",
     "@types/jest": "^23.3.2",
     "@types/lodash": "^4.14.118",
     "@types/node": "^10.9.4",
@@ -28,7 +26,6 @@
     "@types/react": "^16.4.14",
     "@types/react-dom": "^16.0.7",
     "@types/shelljs": "^0.8.0",
-    "fs-extra": "^7.0.1",
     "react-scripts": "^2.1.0",
     "react-testing-library": "^5.3.0",
     "shelljs": "^0.8.3",
