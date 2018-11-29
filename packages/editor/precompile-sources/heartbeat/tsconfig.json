@@ -6,5 +6,5 @@
     "outDir": "./dist/tsc/",
     "skipLibCheck": true
   },
-  "include": ["./index.ts", "../../../interfaces/*"]
+  "include": ["./index.ts"]
 }
