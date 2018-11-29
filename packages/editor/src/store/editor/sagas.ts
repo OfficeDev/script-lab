@@ -259,5 +259,5 @@ function* navigateToRunSaga() {
       'https://script-lab-react-runner.azurewebsites.net',
   }[window.location.origin];
 
-  window.location.href = runnerUrl;
+  window.location.href = `${runnerUrl}?backButton=true`;
 }

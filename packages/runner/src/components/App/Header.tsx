@@ -26,7 +26,7 @@ const Header = ({ solution, goBack, refresh, hardRefresh }: IProps) => {
           <Spinner size={SpinnerSize.small} style={{ padding: '.1rem' }} />
         ) : null;
       },
-      style: { padding: '0 2rem' },
+      style: { padding: '0 1rem' },
       onClick: refresh,
     },
   ];

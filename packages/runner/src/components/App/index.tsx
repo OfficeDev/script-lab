@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Utilities } from '@microsoft/office-js-helpers';
+import queryString from 'query-string';
 
 import Theme from 'common/lib/components/Theme';
 import Console, { ConsoleLogSeverities } from 'common/lib/components/Console';
@@ -12,6 +13,7 @@ import Only from 'common/lib/components/Only';
 import MessageBar from '../MessageBar';
 
 import SnippetContainer from '../SnippetContainer';
+import { currentEditorUrl } from '../../constants';
 
 const AppWrapper = styled.div`
   height: 100vh;
@@ -128,6 +130,11 @@ export class App extends React.Component<{}, IState> {
                 solution={this.state.solution}
                 refresh={this.softRefresh}
                 hardRefresh={this.reloadPage}
+                goBack={
+                  !!queryString.parse(location.search).backButton
+                    ? () => (location.href = currentEditorUrl)
+                    : undefined
+                }
               />
             }
             footer={
