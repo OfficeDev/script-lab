@@ -1205,6 +1205,10 @@
   dependencies:
     "@types/node" "*"
 
+"@types/core-js@^2.5.0":
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/@types/core-js/-/core-js-2.5.0.tgz#35cc282488de6f10af1d92902899a3b8ca3fbc47"
+
 "@types/enzyme-adapter-react-16@^1.0.3":
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/@types/enzyme-adapter-react-16/-/enzyme-adapter-react-16-1.0.3.tgz#0cf7025b036694ca8d596fe38f24162e7117acf1"
