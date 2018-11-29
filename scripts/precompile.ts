@@ -1,11 +1,12 @@
 const PRECOMPILE_SPEC: {
   editor: ISpecArray;
+  runner: ISpecArray;
 } = {
   editor: [
     {
       name: 'style.css',
       relativeFilePath: 'style.css',
-      injectInto: ['index.html'],
+      injectInto: ['index.html', 'run.html'],
       processor: readAsIsProcessor,
     },
     {
@@ -14,12 +15,34 @@ const PRECOMPILE_SPEC: {
       injectInto: ['index.html'],
       processor: webpackProcessor,
     },
+    {
+      name: 'run-page-redirect.js',
+      relativeFilePath: 'run-page-redirect',
+      injectInto: ['run.html'],
+      processor: webpackProcessor,
+    },
+    {
+      name: 'heartbeat.js',
+      relativeFilePath: 'heartbeat',
+      injectInto: ['heartbeat.html'],
+      processor: webpackProcessor,
+    },
+  ],
+  runner: [
+    {
+      name: 'style.css',
+      relativeFilePath: '../../editor/precompile-sources/style.css',
+      injectInto: ['index.html'],
+      processor: readAsIsProcessor,
+    },
   ],
 };
 
 const BEGIN_PLACEHOLDER_REGEX = /^.*(<!-- Begin precompile placeholder: .* -->).*$/;
 
-const WEBPACK_MODE = process.env.TRAVIS ? 'production' : 'development';
+// Setting to production mode both makes the file smaller, and avoids merge conflicts
+// by removing comments (comments that otherwise have source maps that include the absolutely file path to the repo)
+const WEBPACK_MODE = 'production';
 
 ////////////////////////////////////////
 
@@ -83,7 +106,7 @@ for (const packageName in PRECOMPILE_SPEC) {
     fs.writeFileSync(pathToWriteTo, afterProcessing);
 
     if (spec.injectInto.length > 0) {
-      const resultingUrl = `%PUBLIC_URL%/precompiled/${filenameWithHash}`;
+      const resultingUrl = `/precompiled/${filenameWithHash}`;
       const toInject = spec.name
         .trim()
         .toLowerCase()

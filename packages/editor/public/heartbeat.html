@@ -2,47 +2,28 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
+    <title>Script Lab</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
     <meta name="theme-color" content="#000000" />
-    <!--
-      manifest.json provides metadata used when your web app is added to the
-      homescreen on Android. See https://developers.google.com/web/fundamentals/engage-and-retain/web-app-manifest/
-    -->
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
-    <!--
-      Notice the use of %PUBLIC_URL% in the tags above.
-      It will be replaced with the URL of the `public` folder during the build.
-      Only files inside the `public` folder can be referenced from the HTML.
+    <link rel="shortcut icon" type="image/x-icon" href="/assets/images/favicon.ico" />
 
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running `npm run build`.
-    -->
     <link
       rel="stylesheet"
       href="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-core/9.6.0/css/fabric.min.css"
     />
-
-    <title>Script Lab React</title>
   </head>
 
   <body class="ms-Fabric">
     <noscript> You need to enable JavaScript to run this app. </noscript>
-    <script>
-      window.onmessage = function(event) {
-        // FIXME: Zlatkovsky
-        // In order to fix the IE cross-tab issue (#147)
-        localStorage.setItem('playground_dummy_key', 'null');
-        if (event.data.indexOf('GET_ACTIVE_SOLUTION') >= 0) {
-          const host = event.data.split('/')[1];
-          var solution = localStorage.getItem('activeSolution_' + host);
-          window.parent.postMessage(solution, event.origin);
-        }
-      };
-    </script>
+
+    <!-- Begin precompile placeholder: heartbeat.js -->
+    <script src="/precompiled/heartbeat-99f80878e2905f3bfcbfdfd8f8ec8a04.js"></script>
+    <!-- End precompile placeholder: heartbeat.js -->
   </body>
 </html>

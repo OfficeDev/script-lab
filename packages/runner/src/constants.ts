@@ -20,7 +20,6 @@ export const editorUrls = {
 
 export function getCurrentEnv(): 'local' | 'alpha' | 'beta' | 'prod' {
   return {
-    'http://localhost:3200': 'local',
     'https://localhost:3200': 'local',
     'https://script-lab-react-runner-alpha.azurewebsites.net': 'alpha',
     'https://script-lab-react-runner-beta.azurewebsites.net': 'beta',

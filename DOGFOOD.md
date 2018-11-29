@@ -1,7 +1,7 @@
 # Dogfooding Instructions
 
 To switch to Script Lab React, you first need to be in the
-**Beta** version of today's Script Lab. The extra layer of redirection is to ensure that people don't accidently end up in the new experience until it's ready.
+**Beta** version of today's Script Lab. The extra layer of redirection is to ensure that people don't accidentally end up in the new experience until it's ready.
 
 ## Step 1 - Open Script Lab's About Page
 
@@ -26,7 +26,7 @@ After opening the page, select the `Script Lab React - Beta` option.
 For the basic scenarios, things should "just work". Moreover:
 
 - Keyboard accessibility is now enabled.
-- Font size, theme, and autoformatting can be configured in settings.
+- Font size, theme, and auto-formatting can be configured in settings.
 - You can now search through your snippets.
 
 ### Known Issues

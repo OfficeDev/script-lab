@@ -17,6 +17,7 @@ import {
 import { convertSolutionToSnippet } from '../../utils';
 import { actions } from '..';
 import { MessageBarType } from 'office-ui-fabric-react/lib/MessageBar';
+import { getCurrentEnv, reactRunnerUrls } from '../../environment';
 
 let monacoEditor;
 
@@ -247,17 +248,5 @@ function* applyFormattingSaga() {
 }
 
 function* navigateToRunSaga() {
-  // TODO: Zlatkovsky clean up
-  const runnerUrl = {
-    'http://localhost:3000': 'http://localhost:3200',
-    'https://localhost:3000': 'https://localhost:3200',
-    'https://script-lab-react-alpha.azurewebsites.net':
-      'https://script-lab-react-runner-alpha.azurewebsites.net',
-    'https://script-lab-react-beta.azurewebsites.net':
-      'https://script-lab-react-runner-beta.azurewebsites.net',
-    'https://script-lab.azureedge.net':
-      'https://script-lab-react-runner.azurewebsites.net',
-  }[window.location.origin];
-
-  window.location.href = runnerUrl;
+  window.location.href = reactRunnerUrls[getCurrentEnv()];
 }
