@@ -1,5 +1,6 @@
 const PRECOMPILE_SPEC: {
   editor: ISpecArray;
+  runner: ISpecArray;
 } = {
   editor: [
     {
@@ -25,6 +26,14 @@ const PRECOMPILE_SPEC: {
       relativeFilePath: 'heartbeat',
       injectInto: ['heartbeat.html'],
       processor: webpackProcessor,
+    },
+  ],
+  runner: [
+    {
+      name: 'style.css',
+      relativeFilePath: '../../editor/precompile-sources/style.css',
+      injectInto: ['index.html'],
+      processor: readAsIsProcessor,
     },
   ],
 };

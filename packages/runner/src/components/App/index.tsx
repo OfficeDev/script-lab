@@ -48,13 +48,8 @@ export class App extends React.Component<{}, IState> {
     };
 
     Office.onReady(() => {
-      const loadingIndicator = document.getElementById('loading');
-      if (loadingIndicator) {
-        const { parentNode } = loadingIndicator;
-        if (parentNode) {
-          parentNode.removeChild(loadingIndicator);
-        }
-      }
+      const loadingIndicator = document.getElementById('loading')!;
+      loadingIndicator.style.visibility = 'hidden';
       this.forceUpdate();
     });
   }
