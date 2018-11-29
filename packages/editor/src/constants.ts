@@ -26,7 +26,7 @@ export const NULL_SOLUTION_ID = 'null-solution';
 export const NULL_SOLUTION: ISolution = {
   id: NULL_SOLUTION_ID,
   name: '',
-  host: 'NULL',
+  host: 'ALL',
   dateCreated: 0,
   dateLastModified: 0,
   options: {},
