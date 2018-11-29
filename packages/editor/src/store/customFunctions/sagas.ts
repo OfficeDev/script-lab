@@ -78,7 +78,6 @@ function* registerCustomFunctionsMetadataSaga(
     yield put(customFunctions.updateRunner({ isAlive: true, lastUpdated: Date.now() }));
   } catch (error) {
     console.error(error);
-    // FIXME Nico TODO make sure this bubbles up, right now it doesn't!
     yield put(customFunctions.registerMetadata.failure(error));
   }
 }
