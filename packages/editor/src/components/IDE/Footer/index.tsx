@@ -1,18 +1,12 @@
 import React from 'react';
 import { withTheme } from 'styled-components';
 
-import { Customizer } from 'office-ui-fabric-react/lib/Utilities';
-import { CommandBar, ICommandBarItemProps } from 'office-ui-fabric-react/lib/CommandBar';
 import { ITheme as IFabricTheme } from 'office-ui-fabric-react/lib/Styling';
-
 import { getCurrentEnv, allowedEnvironments } from '../../../environment';
+
 import { PATHS } from '../../../constants';
 
-import { getCommandBarFabricTheme } from '../../../theme';
-
 import { HostType } from '@microsoft/office-js-helpers';
-
-import { Wrapper } from './styles';
 
 import { connect } from 'react-redux';
 
@@ -32,8 +26,6 @@ interface IPropsFromRedux {
   language: string;
   currentHost: string;
   isWeb: boolean;
-  hasCustomFunctions: boolean;
-  commandBarFabricTheme: IFabricTheme;
   currentEditorTheme: string;
   isSettingsView: boolean;
 }
@@ -42,8 +34,6 @@ const mapStateToProps = (state, ownProps: IProps): IPropsFromRedux => ({
   language: selectors.editor.getActiveFile(state).language,
   currentHost: selectors.host.get(state),
   isWeb: selectors.host.getIsWeb(state),
-  hasCustomFunctions: selectors.customFunctions.getHasCustomFunctions(state),
-  commandBarFabricTheme: getCommandBarFabricTheme(selectors.host.get(state)),
   currentEditorTheme: selectors.settings.getPrettyEditorTheme(state),
   isSettingsView: selectors.settings.getIsOpen(state),
 });
@@ -51,7 +41,6 @@ const mapStateToProps = (state, ownProps: IProps): IPropsFromRedux => ({
 interface IActionsFromRedux {
   onSettingsIconClick: () => void;
   changeHost: (host: string) => void;
-  navigateToCustomFunctionsDashboard: () => void;
   cycleEditorTheme: () => void;
   switchEnvironment: (env: string) => void;
 }
@@ -59,8 +48,6 @@ interface IActionsFromRedux {
 const mapDispatchToProps = (dispatch): IActionsFromRedux => ({
   onSettingsIconClick: () => dispatch(actions.settings.open()),
   changeHost: (host: string) => dispatch(actions.host.change(host)),
-  navigateToCustomFunctionsDashboard: () =>
-    dispatch(actions.customFunctions.openDashboard()),
   cycleEditorTheme: () => dispatch(actions.settings.cycleEditorTheme()),
   switchEnvironment: (env: string) => dispatch(actions.misc.switchEnvironment(env)),
 });
@@ -74,11 +61,8 @@ const FooterWithoutTheme = ({
   theme,
   currentHost,
   isWeb,
-  hasCustomFunctions,
   onSettingsIconClick,
-  navigateToCustomFunctionsDashboard,
   changeHost,
-  commandBarFabricTheme,
   currentEditorTheme,
   cycleEditorTheme,
   switchEnvironment,
@@ -123,12 +107,6 @@ const FooterWithoutTheme = ({
           root: { backgroundColor: theme.primary, color: theme.white },
         }),
       },
-    },
-    {
-      hidden: !hasCustomFunctions,
-      key: 'custom-functions-dashboard',
-      text: 'Custom Functions Dashboard',
-      onClick: navigateToCustomFunctionsDashboard,
     },
     {
       hidden: !isSettingsView,

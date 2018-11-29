@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 
 import Header from './Header';
-import MessageBar from './MessageBar';
 import FileSwitcherPivot from './FileSwitcherPivot';
-import Dialog from './Dialog';
 import Editor from './Editor';
 import Footer from './Footer';
+
+import Notifications from '../Notifications';
 
 import { Layout, ContentWrapper } from './styles';
 import { NULL_SOLUTION, NULL_FILE } from '../../constants';
@@ -61,8 +61,7 @@ class IDE extends Component<IIDE> {
       >
         <Header solution={activeSolution} file={activeFile} />
         <FileSwitcherPivot />
-        <MessageBar />
-        <Dialog />
+        <Notifications />
         <ContentWrapper>
           <Editor
             activeSolution={activeSolution}

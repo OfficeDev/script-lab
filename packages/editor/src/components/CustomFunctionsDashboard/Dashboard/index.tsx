@@ -16,6 +16,7 @@ import selectors from '../../../store/selectors';
 import { customFunctions as customFunctionsActions } from '../../../store/actions';
 import { goBack } from 'connected-react-router';
 import Only from '../../Only';
+import Notifications from '../../Notifications';
 
 interface IPropsFromRedux {
   commandBarFabricTheme: IFabricTheme;
@@ -109,6 +110,7 @@ class DashboardWithoutTheme extends React.Component<IProps, IState> {
             onSelect={this.setSelectedKey}
           />
         </Header>
+        <Notifications />
         <Only when={shouldPromptRefresh}>
           <MessageBar
             messageBarType={MessageBarType.info}

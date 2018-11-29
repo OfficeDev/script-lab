@@ -25,6 +25,7 @@ import Root from './components/Root';
 import App from './components/App';
 import { WINDOW_SCRIPT_LAB_IS_READY_KEY } from './constants';
 import { invokeGlobalErrorHandler } from './utils';
+import { IState } from './store/reducer';
 
 document.addEventListener(
   'keydown',
@@ -60,7 +61,7 @@ window.onerror = error => invokeGlobalErrorHandler(error);
 
     store.subscribe(
       throttle(() => {
-        const state = store.getState();
+        const state: IState = store.getState();
         saveStateToLocalStorage(state);
         saveStateToSessionStorage(state);
       }, 1000),

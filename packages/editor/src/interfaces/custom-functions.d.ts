@@ -36,6 +36,7 @@ interface ICFVisualFunctionMetadata /* doesn't extend ICFSchemaFunctionMetadata 
 }
 
 interface ICFSchemaFunctionMetadata {
+  id: string;
   name: string;
   description?: string;
   parameters: ICFSchemaParameterMetadata[];
@@ -56,7 +57,6 @@ interface ICFSchemaFunctionResultMetadata {
 }
 
 interface ICFSchemaFunctionOptions {
-  sync: boolean;
   stream: boolean;
   cancelable: boolean;
 }
