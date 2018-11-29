@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Utilities } from '@microsoft/office-js-helpers';
+import { stringifyPlusPlus } from 'common/lib/utilities/string';
 
 import Theme from 'common/lib/components/Theme';
 import Console, { ConsoleLogSeverities } from 'common/lib/components/Console';
@@ -68,8 +69,7 @@ export class App extends React.Component<{}, IState> {
       window.console[method] = (...args: any[]) => {
         oldMethod(...args);
         try {
-          const message =
-            typeof args[0] !== 'string' ? JSON.stringify(args[0], null, 2) : args[0];
+          const message = stringifyPlusPlus(args);
 
           setTimeout(
             () =>
@@ -80,9 +80,8 @@ export class App extends React.Component<{}, IState> {
             0,
           );
         } catch (error) {
-          // this is a quickfix to prevent
-          // Uncaught TypeError: Converting circular structure to JSON
-          // from being thown
+          // This shouldn't happen (stringifyPlusPlus should ensure there are no circular structures)
+          // But just in case...
           setTimeout(
             () =>
               this.addLog({
@@ -91,7 +90,6 @@ export class App extends React.Component<{}, IState> {
               }),
             0,
           );
-          // FIXME Zlatkovsky to use stringifyplusplus
         }
       };
     });
