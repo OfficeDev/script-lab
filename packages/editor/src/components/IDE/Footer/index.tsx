@@ -5,7 +5,7 @@ import { Customizer } from 'office-ui-fabric-react/lib/Utilities';
 import { CommandBar, ICommandBarItemProps } from 'office-ui-fabric-react/lib/CommandBar';
 import { ITheme as IFabricTheme } from 'office-ui-fabric-react/lib/Styling';
 
-import { getCurrentEnv, allowedEnvs } from '../../../environment';
+import { getCurrentEnv, allowedEnvironments } from '../../../environment';
 import { PATHS } from '../../../constants';
 
 import { getCommandBarFabricTheme } from '../../../theme';
@@ -135,7 +135,7 @@ const FooterWithoutTheme = ({
       key: 'environment-switcher',
       text: getCurrentEnv(),
       subMenuProps: {
-        items: allowedEnvs.map(env => ({
+        items: allowedEnvironments.map(env => ({
           key: env,
           text: env.charAt(0).toUpperCase() + env.slice(1),
           onClick: () => switchEnvironment(env),

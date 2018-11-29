@@ -1,4 +1,7 @@
+// cspell:ignore devtool, nosources
+
 const path = require('path');
+
 module.exports = {
   entry: './index.ts',
   devtool: 'nosources-source-map',

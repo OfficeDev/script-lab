@@ -1,3 +1,5 @@
+// cspell:ignore crossorigin
+
 export interface IProps {
   linkReferences: string[];
   scriptReferences: string[];

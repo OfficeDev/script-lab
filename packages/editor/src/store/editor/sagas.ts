@@ -17,7 +17,7 @@ import {
 import { convertSolutionToSnippet } from '../../utils';
 import { actions } from '..';
 import { MessageBarType } from 'office-ui-fabric-react/lib/MessageBar';
-import { getCurrentEnv, runnerUrls } from '../../environment';
+import { getCurrentEnv, reactRunnerUrls } from '../../environment';
 
 let monacoEditor;
 
@@ -248,5 +248,5 @@ function* applyFormattingSaga() {
 }
 
 function* navigateToRunSaga() {
-  window.location.href = runnerUrls[getCurrentEnv()];
+  window.location.href = reactRunnerUrls[getCurrentEnv()];
 }

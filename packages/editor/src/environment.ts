@@ -20,7 +20,7 @@ export const environmentName = {
 }[getCurrentEnv()];
 
 // FIXME Zlatkovsky/Nico:  what are those used for?  They should probably match up with getCurrentEnv's enumerations!
-export const editorUrls = {
+export const allEditorUrls = {
   local: 'https://localhost:3000',
   'react-alpha': 'https://script-lab-react-alpha.azurewebsites.net',
   'react-beta': 'https://script-lab-react-beta.azurewebsites.net',
@@ -28,6 +28,16 @@ export const editorUrls = {
   beta: 'https://bornholm-insiders.azurewebsites.net',
   production: 'https://script-lab.azureedge.net',
 };
+
+export const allowedEnvironments = [
+  'local',
+  'react-alpha',
+  'react-beta',
+  'react',
+  'alpha',
+  'beta',
+  'production',
+];
 
 // FIXME Zlatkovsky/Nico: introduce 'prod-direct' and 'staging' environments as well
 export function getCurrentEnv(): 'local' | 'alpha' | 'beta' | 'prod' {
@@ -39,7 +49,19 @@ export function getCurrentEnv(): 'local' | 'alpha' | 'beta' | 'prod' {
   } as any)[window.location.origin];
 }
 
-export const runnerUrls: { local: string; alpha: string; beta: string; prod: string } = {
+export const reactEditorUrls = {
+  local: 'https://localhost:3000',
+  alpha: 'https://script-lab-react-alpha.azurewebsites.net',
+  beta: 'https://script-lab-react-beta.azurewebsites.net',
+  prod: 'https://script-lab.azureedge.net',
+};
+
+export const reactRunnerUrls: {
+  local: string;
+  alpha: string;
+  beta: string;
+  prod: string;
+} = {
   local: 'https://localhost:3200',
   alpha: 'https://script-lab-react-runner-alpha.azurewebsites.net',
   beta: 'https://script-lab-react-runner-beta.azurewebsites.net',
@@ -61,13 +83,3 @@ export function getPlatform(): PlatformType {
     (window as any).Office.context.platform) ||
     PlatformType.OfficeOnline) as PlatformType;
 }
-
-export const allowedEnvs = [
-  'local',
-  'react-alpha',
-  'react-beta',
-  'react',
-  'alpha',
-  'beta',
-  'production',
-];

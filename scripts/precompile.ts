@@ -20,6 +20,12 @@ const PRECOMPILE_SPEC: {
       injectInto: ['run.html'],
       processor: webpackProcessor,
     },
+    {
+      name: 'heartbeat.js',
+      relativeFilePath: 'heartbeat',
+      injectInto: ['heartbeat.html'],
+      processor: webpackProcessor,
+    },
   ],
 };
 
