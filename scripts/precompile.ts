@@ -19,7 +19,9 @@ const PRECOMPILE_SPEC: {
 
 const BEGIN_PLACEHOLDER_REGEX = /^.*(<!-- Begin precompile placeholder: .* -->).*$/;
 
-const WEBPACK_MODE = process.env.TRAVIS ? 'production' : 'development';
+// Setting to production mode both makes the file smaller, and avoids merge conflicts
+// by removing comments (comments that otherwise have source maps that include the absolutely file path to the repo)
+const WEBPACK_MODE = 'production';
 
 ////////////////////////////////////////
 
