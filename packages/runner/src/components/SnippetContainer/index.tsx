@@ -5,6 +5,7 @@ import Only from 'common/lib/components/Only';
 
 import runTemplate from './templates/run';
 import errorTemplate from './templates/error';
+import noSnippet from './templates/noSnippet';
 
 import { officeNamespacesForIframe } from '../../constants';
 import { LoadingIndicatorWrapper } from './styles';
@@ -68,7 +69,7 @@ function processLibraries(libraries: string, isInsideOffice: boolean) {
 }
 
 export interface IProps {
-  solution?: ISolution;
+  solution?: ISolution | null;
   onRender?: (timestamp: number) => void;
 }
 
@@ -87,7 +88,7 @@ class Snippet extends React.Component<IProps, IState> {
     this.state = {
       content: this.getContent(this.props),
       lastRendered,
-      isLoading: false,
+      isLoading: true,
       isIFrameMounted: false,
     };
     if (this.props.onRender) {
@@ -99,10 +100,11 @@ class Snippet extends React.Component<IProps, IState> {
 
   componentDidUpdate(prevProps: IProps) {
     if (
-      this.props.solution &&
-      ((this.props.solution && !prevProps.solution) ||
-        this.props.solution.id !== prevProps.solution!.id ||
-        this.props.solution.dateLastModified > prevProps.solution!.dateLastModified)
+      (this.props.solution === null && prevProps.solution !== null) ||
+      (this.props.solution &&
+        ((this.props.solution && !prevProps.solution) ||
+          this.props.solution.id !== prevProps.solution!.id ||
+          this.props.solution.dateLastModified > prevProps.solution!.dateLastModified))
     ) {
       const lastRendered = Date.now();
       this.setState({ isIFrameMounted: false, isLoading: true }, () =>
@@ -124,9 +126,14 @@ class Snippet extends React.Component<IProps, IState> {
   componentWillUnmount() {}
 
   getContent = ({ solution }: IProps): string => {
-    if (!solution) {
+    if (solution === undefined) {
       return '';
     }
+
+    if (solution === null) {
+      return noSnippet();
+    }
+
     try {
       // gathering content out of solution
       const html = solution.files.find(file => file.name === 'index.html')!.content;
@@ -166,20 +173,16 @@ class Snippet extends React.Component<IProps, IState> {
           </LoadingIndicatorWrapper>
         </Only>
 
-        {this.props.solution && (
-          <div
-            style={{ display: this.state.isLoading ? 'none' : 'block', height: '100%' }}
-          >
-            {this.state.isIFrameMounted && (
-              <IFrame
-                content={this.state.content}
-                lastRendered={this.state.lastRendered}
-                namespacesToTransferFromWindow={officeNamespacesForIframe}
-                onRenderComplete={this.completeLoad}
-              />
-            )}
-          </div>
-        )}
+        <div style={{ display: this.state.isLoading ? 'none' : 'block', height: '100%' }}>
+          {this.state.isIFrameMounted && (
+            <IFrame
+              content={this.state.content}
+              lastRendered={this.state.lastRendered}
+              namespacesToTransferFromWindow={officeNamespacesForIframe}
+              onRenderComplete={this.completeLoad}
+            />
+          )}
+        </div>
       </>
     );
   }

@@ -8,11 +8,11 @@ const GET_ACTIVE_SOLUTION_REQUEST_MESSAGE = 'GET_ACTIVE_SOLUTION';
 
 export interface IProps {
   host: string;
-  onReceiveNewActiveSolution: (solution: ISolution) => void;
+  onReceiveNewActiveSolution: (solution: ISolution | null) => void;
 }
 
 interface IState {
-  activeSolution?: ISolution;
+  activeSolution?: ISolution | null;
 }
 
 class Heartbeat extends Component<IProps, IState> {
@@ -54,10 +54,16 @@ class Heartbeat extends Component<IProps, IState> {
     }
 
     try {
-      const solutionOrNull: ISolution | null = JSON.parse(data);
-      if (solutionOrNull) {
-        this.setState({ activeSolution: solutionOrNull });
-        this.props.onReceiveNewActiveSolution(solutionOrNull);
+      const solution: ISolution | null = JSON.parse(data);
+      if (
+        (!this.state.activeSolution && solution) ||
+        (this.state.activeSolution === undefined && solution === null) ||
+        (solution &&
+          (solution.id !== this.state.activeSolution.id ||
+            solution.dateLastModified > this.state.activeSolution.dateLastModified))
+      ) {
+        this.setState({ activeSolution: solution });
+        this.props.onReceiveNewActiveSolution(solution);
       }
     } catch (err) {
       console.error(err);

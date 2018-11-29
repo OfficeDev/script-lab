@@ -29,7 +29,7 @@ const RefreshBar = props => (
 );
 
 interface IState {
-  solution: ISolution | null;
+  solution?: ISolution | null;
   lastRendered: number | null;
   logs: ILogData[];
   isConsoleOpen: boolean;
@@ -40,22 +40,19 @@ export class App extends React.Component<{}, IState> {
     super(props);
 
     this.state = {
-      solution: null,
+      solution: undefined,
       logs: [],
       isConsoleOpen: false,
       lastRendered: null,
     };
 
-    Office.onReady(() => {
-      const loadingIndicator = document.getElementById('loading');
-      if (loadingIndicator) {
-        const { parentNode } = loadingIndicator;
-        if (parentNode) {
-          parentNode.removeChild(loadingIndicator);
-        }
+    const loadingIndicator = document.getElementById('loading');
+    if (loadingIndicator) {
+      const { parentNode } = loadingIndicator;
+      if (parentNode) {
+        parentNode.removeChild(loadingIndicator);
       }
-      this.forceUpdate();
-    });
+    }
   }
 
   componentDidMount() {
@@ -104,7 +101,8 @@ export class App extends React.Component<{}, IState> {
   openConsole = () => this.setState({ isConsoleOpen: true });
   closeConsole = () => this.setState({ isConsoleOpen: false });
 
-  onReceiveNewActiveSolution = (solution: ISolution) => this.setState({ solution });
+  onReceiveNewActiveSolution = (solution: ISolution | null) =>
+    this.setState({ solution });
 
   softRefresh = () => {
     if (this.state.solution) {
@@ -127,7 +125,7 @@ export class App extends React.Component<{}, IState> {
             wrapperStyle={{ flex: '7' }}
             header={
               <Header
-                solutionName={this.state.solution ? this.state.solution.name : undefined}
+                solution={this.state.solution}
                 refresh={this.softRefresh}
                 hardRefresh={this.reloadPage}
               />
@@ -137,7 +135,7 @@ export class App extends React.Component<{}, IState> {
                 isConsoleOpen={this.state.isConsoleOpen}
                 openConsole={this.openConsole}
                 closeConsole={this.closeConsole}
-                isSolutionLoaded={this.state.solution !== null}
+                isSolutionLoaded={!!this.state.solution}
                 lastRendered={this.state.lastRendered}
                 refresh={this.softRefresh}
               />
@@ -145,7 +143,7 @@ export class App extends React.Component<{}, IState> {
           >
             <RefreshBar isVisible={false} />
             <SnippetContainer
-              solution={this.state.solution || undefined}
+              solution={this.state.solution}
               onRender={this.setLastRendered}
             />
           </HeaderFooterLayout>

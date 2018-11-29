@@ -7,7 +7,11 @@ interface IProps {
   namespacesToTransferFromWindow: string[];
 }
 
-class IFrame extends React.Component<IProps> {
+interface IState {
+  previousRender: number;
+}
+
+class IFrame extends React.Component<IProps, IState> {
   node; // ref to iframe node
   // tslint:disable-next-line:variable-name
   _isMounted: boolean;
@@ -15,6 +19,8 @@ class IFrame extends React.Component<IProps> {
   constructor(props) {
     super(props);
     this._isMounted = false;
+
+    this.state = { previousRender: 0 };
   }
 
   componentDidMount() {
@@ -29,8 +35,10 @@ class IFrame extends React.Component<IProps> {
   }
 
   shouldComponentUpdate(nextProps: IProps) {
-    return nextProps.lastRendered !== this.props.lastRendered;
+    return this.shouldRender();
   }
+
+  shouldRender = () => this.props.lastRendered !== this.state.previousRender;
 
   componentWillUnmount() {
     this._isMounted = false;
@@ -41,7 +49,7 @@ class IFrame extends React.Component<IProps> {
   getContentDoc = () => this.node.contentDocument;
 
   renderContents = () => {
-    if (this._isMounted) {
+    if (this._isMounted && this.shouldRender()) {
       // setting up iframe
       const iframe = this.node.contentWindow;
 
@@ -59,6 +67,7 @@ class IFrame extends React.Component<IProps> {
       doc.write(this.props.content);
       doc.close();
 
+      this.setState({ previousRender: this.props.lastRendered });
       if (this.props.onRenderComplete) {
         this.props.onRenderComplete();
       }
