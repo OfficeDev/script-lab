@@ -34,13 +34,12 @@ if (deploymentSlot !== undefined) {
     );
 
     if (gitIgnoreFiles.length > 0) {
-      shell.echo(
-        'Removing unnecessary gitIgnore files that ended up in the build directory',
+      throw new Error(
+        [
+          'Unexpectedly found 1 or more .gitignore files. This should not happen: ',
+          ...gitIgnoreFiles.map(filepath => ' - ' + filepath),
+        ].join('\n'),
       );
-      gitIgnoreFiles.forEach(filepath => {
-        fs.removeSync(filepath);
-        shell.echo(' - ' + filepath);
-      });
     }
 
     writeDeploymentLog(BUILD_DIRECTORY, allOtherFiles);
