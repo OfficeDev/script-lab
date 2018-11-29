@@ -1,7 +1,7 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "typeRoots": ["./interfaces", "node_modules/@types", "../../node_modules/@types"],
+    "typeRoots": ["./src/interfaces", "node_modules/@types", "../../node_modules/@types"],
     "skipLibCheck": true,
     "esModuleInterop": true,
     "strict": false,
@@ -13,7 +13,7 @@
     "strictFunctionTypes": false,
     "strictPropertyInitialization": false
   },
-  "include": ["./components/**/*", "./interfaces/**/*", "./polyfills.ts"],
+  "include": ["./src/**/*"],
   "exclude": [
     "node_modules",
     "**/node_modules/**/*",
@@ -24,6 +24,7 @@
     "jest",
     "src/setupTests.ts",
     "public",
-    "**/*.stories.tsx"
+    "**/*.stories.tsx",
+    "**/.storybook/**"
   ]
 }

@@ -3,7 +3,7 @@
   "compilerOptions": {
     "module": "esnext",
     "typeRoots": [
-      "../common/interfaces",
+      "../common/src/interfaces",
       "./src/interfaces",
       "node_modules/@types",
       "../../node_modules/@types"
@@ -11,15 +11,18 @@
     "skipLibCheck": true,
     "esModuleInterop": true,
     "strict": false,
-    "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "preserve",
     "alwaysStrict": false,
     "strictFunctionTypes": false,
-    "strictPropertyInitialization": false
+    "strictPropertyInitialization": false,
+    "resolveJsonModule": true
   },
-  "include": ["../interfaces/*", "./src/**/*"],
+  "include": [
+    "./src/**/*",
+    "../common/src/interfaces/*"
+  ],
   "exclude": [
     "node_modules",
     "build",

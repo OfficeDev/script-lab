@@ -1,5 +1,6 @@
 import { put, takeEvery, call, select } from 'redux-saga/effects';
 import { getType, ActionType } from 'typesafe-actions';
+import flatten from 'lodash/flatten';
 
 import { request } from '../../services/general';
 import { customFunctions, solutions } from '../actions';
@@ -9,8 +10,9 @@ import { convertSolutionToSnippet } from '../../utils';
 import {
   getCustomFunctionEngineStatus,
   isCustomFunctionScript,
-} from '../../utils/customFunctions';
-import { registerMetadata } from '../../utils/customFunctions';
+  getCustomFunctionsInfoForRegistration,
+} from './utilities';
+import { registerMetadata } from './utilities';
 
 import { RUNNER_URL, PATHS } from '../../constants';
 import {
@@ -46,15 +48,14 @@ export function* fetchCustomFunctionsMetadataSaga() {
 
   const snippets = solutions.map(solution => convertSolutionToSnippet(solution));
 
-  const { response, error } = yield call(request, {
-    method: 'POST',
-    url: `${RUNNER_URL}/custom-functions/parse-metadata`,
-    jsonPayload: JSON.stringify({ data: JSON.stringify({ snippets }) }),
-  });
-
-  if (response) {
-    yield put(customFunctions.fetchMetadata.success(response));
-  } else {
+  try {
+    const cfInfo: { visual: ICFVisualMetadata; code: string } = yield call(
+      getCustomFunctionsInfoForRegistration,
+      snippets,
+    );
+    yield put(customFunctions.fetchMetadata.success(cfInfo));
+  } catch (error) {
+    console.error(`Failed to get custom function metadata: ${error}.`);
     yield put(customFunctions.fetchMetadata.failure(error));
   }
 }
@@ -63,14 +64,20 @@ function* registerCustomFunctionsMetadataSaga(
   action: ActionType<typeof customFunctions.registerMetadata.request>,
 ) {
   const { visual, code } = action.payload;
+  const allFunctions: ICFVisualFunctionMetadata[] = flatten(
+    visual.snippets.map(snippet => snippet.functions),
+  );
+
   try {
-    yield call(registerMetadata, visual, code);
+    yield call(registerMetadata, allFunctions, code);
     yield put(customFunctions.registerMetadata.success());
 
     const engineStatus = yield call(getCustomFunctionEngineStatus);
     yield put(updateEngineStatus(engineStatus));
+
     yield put(customFunctions.updateRunner({ isAlive: true, lastUpdated: Date.now() }));
   } catch (error) {
+    console.error(error);
     yield put(customFunctions.registerMetadata.failure(error));
   }
 }
@@ -89,7 +96,7 @@ function* fetchHeartbeatSaga() {
 }
 
 function* openDashboardSaga() {
-  yield put(push(PATHS.CUSTOM_FUNCTIONS));
+  window.location.href = './custom-functions.html';
 }
 
 function* checkIfIsCustomFunctionSaga(

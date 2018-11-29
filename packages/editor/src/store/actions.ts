@@ -28,7 +28,7 @@ export { screen };
 export { settings };
 export { solutions };
 
-export default {
+const all = {
   customFunctions,
   dialog,
   directScriptExecution,
@@ -44,6 +44,8 @@ export default {
   solutions,
 };
 
+export default all;
+
 export type ICustomFunctionsAction = ActionType<typeof customFunctions>;
 export type IDialogAction = ActionType<typeof dialog>;
 export type IDirectScriptExecutionAction = ActionType<typeof directScriptExecution>;
@@ -57,3 +59,5 @@ export type ISamplesAction = ActionType<typeof samples>;
 export type IScreenAction = ActionType<typeof screen>;
 export type ISettingsAction = ActionType<typeof settings>;
 export type ISolutionsAction = ActionType<typeof solutions>;
+
+export type IRootAction = ActionType<typeof all>;

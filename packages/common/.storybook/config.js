@@ -6,8 +6,8 @@ import { withKnobs } from '@storybook/addon-knobs';
 import { ThemeProvider } from 'styled-components';
 import React from 'react';
 
-import '../index.css';
-import { getTheme, setupFabricTheme } from '../theme';
+import '../src/index.css';
+import { getTheme, setupFabricTheme } from '../src/theme';
 import { initializeIcons } from 'office-ui-fabric-react/lib-commonjs/Icons';
 import { setOptions } from '@storybook/addon-options';
 
@@ -32,7 +32,7 @@ addDecorator(withKnobs);
 addDecorator(checkA11y);
 
 // automatically import all files ending in *.stories.js
-const req = require.context('../components', true, /.stories.tsx$/);
+const req = require.context('../src/components', true, /.stories.tsx$/);
 function loadStories() {
   req.keys().forEach(filename => req(filename));
 }
