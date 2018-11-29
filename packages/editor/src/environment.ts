@@ -19,6 +19,7 @@ export const environmentName = {
   prod: 'react',
 }[getCurrentEnv()];
 
+// FIXME Zlatkovsky/Nico:  what are those used for?  They should probably match up with getCurrentEnv's enumerations!
 export const editorUrls = {
   local: 'https://localhost:3000',
   'react-alpha': 'https://script-lab-react-alpha.azurewebsites.net',
@@ -28,15 +29,22 @@ export const editorUrls = {
   production: 'https://script-lab.azureedge.net',
 };
 
+// FIXME Zlatkovsky/Nico: introduce 'prod-direct' and 'staging' environments as well
 export function getCurrentEnv(): 'local' | 'alpha' | 'beta' | 'prod' {
-  return {
-    'http://localhost:3000': 'local',
+  return ({
     'https://localhost:3000': 'local',
     'https://script-lab-react-alpha.azurewebsites.net': 'alpha',
     'https://script-lab-react-beta.azurewebsites.net': 'beta',
     'https://script-lab-react.azurewebsites.net': 'prod',
-  }[window.location.origin];
+  } as any)[window.location.origin];
 }
+
+export const runnerUrls: { local: string; alpha: string; beta: string; prod: string } = {
+  local: 'https://localhost:3200',
+  alpha: 'https://script-lab-react-runner-alpha.azurewebsites.net',
+  beta: 'https://script-lab-react-runner-beta.azurewebsites.net',
+  prod: 'https://script-lab-runner.azureedge.net',
+};
 
 export enum PlatformType {
   PC = 'PC',

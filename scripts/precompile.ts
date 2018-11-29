@@ -5,13 +5,19 @@ const PRECOMPILE_SPEC: {
     {
       name: 'style.css',
       relativeFilePath: 'style.css',
-      injectInto: ['index.html'],
+      injectInto: ['index.html', 'run.html'],
       processor: readAsIsProcessor,
     },
     {
       name: 'scripts-loader.js',
       relativeFilePath: 'scripts-loader',
       injectInto: ['index.html'],
+      processor: webpackProcessor,
+    },
+    {
+      name: 'run-page-redirect.js',
+      relativeFilePath: 'run-page-redirect',
+      injectInto: ['run.html'],
       processor: webpackProcessor,
     },
   ],
@@ -85,7 +91,7 @@ for (const packageName in PRECOMPILE_SPEC) {
     fs.writeFileSync(pathToWriteTo, afterProcessing);
 
     if (spec.injectInto.length > 0) {
-      const resultingUrl = `%PUBLIC_URL%/precompiled/${filenameWithHash}`;
+      const resultingUrl = `/precompiled/${filenameWithHash}`;
       const toInject = spec.name
         .trim()
         .toLowerCase()

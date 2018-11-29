@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "strict": true,
+    "outDir": "./dist/tsc/",
+    "skipLibCheck": true
+  },
+  "include": ["./index.ts", "../../../interfaces/*"]
+}
