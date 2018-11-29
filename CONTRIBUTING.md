@@ -21,10 +21,12 @@ Note: the installation of Node JS and Yarn add paths to your operating system's 
 
 From the root of the repo:
 
-1. `yarn install` (or just `yarn`)
+1. `yarn install` (or just `yarn`). **Be sure to run this after every pull/merge!**
 2. `yarn start`
 
 Your default browser will launch almost immediately. However, note that **it will take some 30-60 seconds before the website is actually up and running.**
+
+Also, on first launch, the browsers will be stuck on the "Loading" page -- you will need to press ctrl+R to reload and show the actual editor/runner.
 
 Also note that you'll see a few warnings in the node console. You can safely ignore them.
 
@@ -59,7 +61,7 @@ You can safely ignore these -- those won't show up to users on the production si
 
 You will need to trust the certificates for each of <https://localhost:3000> (editor), <https://localhost:3200> (runner), and <https://localhost:5000> (server).
 
-For testing in the web browser (whether standalone or in Office Online) in Chrome, you can bypass the "unsecure localhost" by enabling this setting:  <chrome://flags/#allow-insecure-localhost>
+For testing in the web browser (whether standalone or in Office Online) in Chrome, you can bypass the "unsecure localhost" by enabling this setting: <chrome://flags/#allow-insecure-localhost>
 
 For testing on a PC version of Office, you will need to trust the certificates from within Internet Explorer. See the gif below for a step-by-step animation:
 
