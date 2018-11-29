@@ -3,6 +3,7 @@ import { getCurrentEnv, reactRunnerUrls } from '../../src/environment';
 window.onmessage = event => {
   if (event.origin !== reactRunnerUrls[getCurrentEnv()]) {
     console.error(`Could not read snippet data: invalid origin "${event.origin}"`);
+    return;
   }
 
   // In order to fix the IE cross-tab issue (#147)
