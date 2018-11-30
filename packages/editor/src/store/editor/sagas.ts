@@ -63,11 +63,11 @@ export function* onEditorOpenFileSaga(action: ActionType<typeof editor.openFile>
   const solutionToOpen = yield select(selectors.solutions.get, solutionId);
   const fileToOpen = yield select(selectors.solutions.getFile, fileId);
 
-  if (currentOpenSolution.id !== solutionId) {
+  if (solutionToOpen && currentOpenSolution.id !== solutionId) {
     yield put(editor.newSolutionOpened(solutionToOpen));
   }
 
-  if (currentOpenFile.id !== fileId) {
+  if (fileToOpen && currentOpenFile.id !== fileId) {
     yield put(editor.newFileOpened(solutionToOpen, fileToOpen));
   }
 }
