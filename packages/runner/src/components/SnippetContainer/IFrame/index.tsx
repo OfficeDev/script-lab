@@ -49,15 +49,9 @@ class IFrame extends React.Component<IProps, IState> {
 
   renderContents = () => {
     if (this.isIframeMounted && this.shouldRender()) {
-      // setting up iframe
-      const iframe = this.node.contentWindow;
-
-      iframe.console = window.console;
-      iframe.onerror = (...args) => console.error(args);
-
-      this.props.namespacesToTransferFromWindow.forEach(
-        namespace => (iframe[namespace] = window[namespace]),
-      );
+      // Before writing to the frame, monkeypatch it (to make sure that if errors are throw,
+      // that they are shown/logged, to give it access to Office variables, etc.)
+      this.monkeypatchIframe();
 
       // writing content to iframe
       const doc = this.getContentDoc();
@@ -66,11 +60,27 @@ class IFrame extends React.Component<IProps, IState> {
       doc.write(this.props.content);
       doc.close();
 
+      // After write to the document, some of the overwrites (at least, the onerror)
+      // seem to get reset.  So, just for safety, monkeypatch it again
+      this.monkeypatchIframe();
+
       this.setState({ previousRenderTimestamp: this.props.lastRendered });
       if (this.props.onRenderComplete) {
         this.props.onRenderComplete();
       }
     }
+  };
+
+  private monkeypatchIframe = () => {
+    const iframe = (this.node as HTMLIFrameElement).contentWindow!;
+
+    // cast to "as any" so that can overwrite the console field, which TS thinks is read-only
+    (iframe as any).console = window.console;
+    iframe.onerror = (...args) => console.error(args);
+
+    this.props.namespacesToTransferFromWindow.forEach(
+      namespace => (iframe[namespace] = window[namespace]),
+    );
   };
 
   handleLoad = () => {
