@@ -42,9 +42,7 @@ describe('template', () => {
   <div>hello world</div>
 
   <script type=\"text/javascript\">
-    Office.onReady(function () {
-      example inline script
-    });
+    example inline script
   </script>
 </body>
 

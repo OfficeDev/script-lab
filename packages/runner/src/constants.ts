@@ -26,3 +26,5 @@ export function getCurrentEnv(): 'local' | 'alpha' | 'beta' | 'prod' {
     'https://script-lab-react-runner.azurewebsites.net': 'prod',
   }[window.location.origin];
 }
+
+export const currentEditorUrl = editorUrls[getCurrentEnv()];

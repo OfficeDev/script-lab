@@ -248,5 +248,5 @@ function* applyFormattingSaga() {
 }
 
 function* navigateToRunSaga() {
-  window.location.href = reactRunnerUrls[getCurrentEnv()];
+  window.location.href = `${reactRunnerUrls[getCurrentEnv()]}?backButton=true`;
 }
