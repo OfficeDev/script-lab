@@ -13,6 +13,7 @@ import { connect } from 'react-redux';
 import { actions, selectors } from '../../../store';
 
 import CommonFooter from 'common/lib/components/Footer';
+import { capitalizeWord } from 'common/lib/utilities/string';
 
 const languageMap = {
   typescript: 'TypeScript',
@@ -111,14 +112,11 @@ const FooterWithoutTheme = ({
     {
       hidden: !isSettingsView,
       key: 'environment-switcher',
-      text:
-        getCurrentEnv()
-          .charAt(0)
-          .toUpperCase() + getCurrentEnv().slice(1),
+      text: capitalizeWord(getCurrentEnv()),
       subMenuProps: {
         items: getVisibleEnvironmentsToSwitchTo().map(env => ({
           key: env,
-          text: env.charAt(0).toUpperCase() + env.slice(1),
+          text: capitalizeWord(env),
           onClick: () => switchEnvironment(env),
         })),
       },

@@ -2,6 +2,7 @@ import { takeEvery, put, call, select } from 'redux-saga/effects';
 import { getType, ActionType } from 'typesafe-actions';
 import { actions, selectors } from '../';
 import { getCurrentEnv, allEditorUrls } from '../../environment';
+import { capitalizeWord } from 'common/lib/utilities/string';
 
 export default function* miscWatcher() {
   yield takeEvery(getType(actions.misc.initialize), onInitializeSaga);
@@ -24,7 +25,9 @@ function* onSwitchEnvironmentSaga(
   const currentEnvironment = getCurrentEnv();
 
   if (newEnvironment !== currentEnvironment) {
-    const title = `Switch from ${currentEnvironment} to ${newEnvironment}:`;
+    const currentEnvPretty = capitalizeWord(currentEnvironment);
+    const newEnvPretty = capitalizeWord(newEnvironment);
+    const title = `Switch from ${currentEnvPretty} to ${newEnvPretty}:`;
     const subText =
       'You are about to change your Script Lab environment and will not have access to your saved local snippets until you return to this environment. Are you sure you want to proceed?';
 
