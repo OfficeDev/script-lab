@@ -2,7 +2,7 @@ import React from 'react';
 import { withTheme } from 'styled-components';
 
 import { ITheme as IFabricTheme } from 'office-ui-fabric-react/lib/Styling';
-import { getCurrentEnv, allowedEnvironments } from '../../../environment';
+import { getCurrentEnv, getVisibleEnvironmentsToSwitchTo } from '../../../environment';
 
 import { PATHS } from '../../../constants';
 
@@ -111,9 +111,12 @@ const FooterWithoutTheme = ({
     {
       hidden: !isSettingsView,
       key: 'environment-switcher',
-      text: getCurrentEnv(),
+      text:
+        getCurrentEnv()
+          .charAt(0)
+          .toUpperCase() + getCurrentEnv().slice(1),
       subMenuProps: {
-        items: allowedEnvironments.map(env => ({
+        items: getVisibleEnvironmentsToSwitchTo().map(env => ({
           key: env,
           text: env.charAt(0).toUpperCase() + env.slice(1),
           onClick: () => switchEnvironment(env),
