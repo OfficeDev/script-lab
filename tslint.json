@@ -13,6 +13,11 @@
     "no-empty": false,
     "no-empty-interface": false,
     "no-misused-new": false,
-    "forin": false
+    "forin": false,
+
+    // Rationale: when reading objects such as received JSON,
+    // it feels cleaner and more explicit to do
+    // `data["someField"]` rather than `data.someField`
+    "no-string-literal": false
   }
 }

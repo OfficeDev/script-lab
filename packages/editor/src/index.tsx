@@ -23,8 +23,8 @@ import throttle from 'lodash/throttle';
 import './index.css';
 import Root from './components/Root';
 import App from './components/App';
-import { WINDOW_SCRIPT_LAB_IS_READY_KEY } from './constants';
-import { invokeGlobalErrorHandler } from './utils';
+import { waitForAllDynamicScriptsToBeLoaded } from 'common/lib/utilities/script.loader';
+import invokeGlobalErrorHandler from 'common/lib/utilities/global.error.handler';
 import { IState } from './store/reducer';
 
 document.addEventListener(
@@ -82,17 +82,3 @@ window.onerror = error => invokeGlobalErrorHandler(error);
     invokeGlobalErrorHandler(e);
   }
 })();
-
-function waitForAllDynamicScriptsToBeLoaded(): Promise<void> {
-  if ((window as any)[WINDOW_SCRIPT_LAB_IS_READY_KEY]) {
-    return Promise.resolve();
-  }
-  return new Promise(resolve => {
-    const interval = setInterval(() => {
-      if ((window as any)[WINDOW_SCRIPT_LAB_IS_READY_KEY]) {
-        clearInterval(interval);
-        resolve();
-      }
-    }, 50);
-  });
-}

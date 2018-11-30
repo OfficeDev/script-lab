@@ -11,6 +11,7 @@
     "Customizer",
     "DOCTYPE",
     "Env's",
+    "IntelliSense",
     "Nico",
     "Stringifiable",
     "Unmount",
@@ -35,6 +36,7 @@
     "keyframes",
     "localstorage",
     "minified",
+    "monkeypatch",
     "officejs",
     "onenote",
     "overscroll",
@@ -54,6 +56,7 @@
     "subfolders",
     "typesafe",
     "uncomment",
+    "unminified",
     "unpkg",
     "untrusted",
     "uppercased"

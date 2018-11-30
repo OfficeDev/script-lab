@@ -35,13 +35,21 @@ const PRECOMPILE_SPEC: {
       injectInto: ['index.html'],
       processor: readAsIsProcessor,
     },
+    {
+      name: 'scripts-loader.js',
+      relativeFilePath: 'scripts-loader',
+      injectInto: ['index.html'],
+      processor: webpackProcessor,
+    },
   ],
 };
 
 const BEGIN_PLACEHOLDER_REGEX = /^.*(<!-- Begin precompile placeholder: .* -->).*$/;
 
 // Setting to production mode both makes the file smaller, and avoids merge conflicts
-// by removing comments (comments that otherwise have source maps that include the absolutely file path to the repo)
+// by removing comments (comments that otherwise have source maps that include
+// the absolutely file path to the repo).
+// To temporarily see unminified files, switch to "development" (but do NOT check in like this!)
 const WEBPACK_MODE = 'production';
 
 ////////////////////////////////////////
