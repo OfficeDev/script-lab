@@ -6,6 +6,10 @@ import { getCurrentEnv, allEditorUrls } from '../../environment';
 export default function* miscWatcher() {
   yield takeEvery(getType(actions.misc.initialize), onInitializeSaga);
   yield takeEvery(getType(actions.misc.switchEnvironment), onSwitchEnvironmentSaga);
+  yield takeEvery(
+    getType(actions.misc.confirmSwitchEnvironment),
+    onConfirmSwitchEnvironmentSaga,
+  );
 }
 
 function* onInitializeSaga() {
@@ -20,8 +24,31 @@ function* onSwitchEnvironmentSaga(
   const currentEnvironment = getCurrentEnv();
 
   if (newEnvironment !== currentEnvironment) {
-    window.location.href = `${
-      allEditorUrls.production
-    }?targetEnvironment=${encodeURIComponent(allEditorUrls[newEnvironment])}`;
+    const title = `Switch from ${currentEnvironment} to ${newEnvironment}:`;
+    const subText =
+      'You are about to change your Script Lab environment and will not have access to your saved local snippets until you return to this environment. Are you sure you want to proceed?';
+
+    const buttons = [
+      {
+        text: 'OK',
+        isPrimary: true,
+        action: actions.misc.confirmSwitchEnvironment(newEnvironment),
+      },
+      {
+        text: 'Cancel',
+        isPrimary: false,
+        action: actions.dialog.hide(),
+      },
+    ];
+
+    yield put(actions.dialog.show({ title, subText, buttons, isBlocking: true }));
   }
+}
+
+function* onConfirmSwitchEnvironmentSaga(
+  action: ActionType<typeof actions.misc.confirmSwitchEnvironment>,
+) {
+  window.location.href = `${
+    allEditorUrls.production
+  }?targetEnvironment=${encodeURIComponent(allEditorUrls[action.payload])}`;
 }
