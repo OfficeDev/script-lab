@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Utilities } from '@microsoft/office-js-helpers';
+import queryString from 'query-string';
 import { stringifyPlusPlus } from 'common/lib/utilities/string';
 
 import Theme from 'common/lib/components/Theme';
@@ -13,6 +14,7 @@ import Only from 'common/lib/components/Only';
 import MessageBar from '../MessageBar';
 
 import SnippetContainer from '../SnippetContainer';
+import { currentEditorUrl } from '../../constants';
 
 const AppWrapper = styled.div`
   height: 100vh;
@@ -30,7 +32,7 @@ const RefreshBar = props => (
 );
 
 interface IState {
-  solution: ISolution | null;
+  solution?: ISolution | null;
   lastRendered: number | null;
   logs: ILogData[];
   isConsoleOpen: boolean;
@@ -41,17 +43,14 @@ export class App extends React.Component<{}, IState> {
     super(props);
 
     this.state = {
-      solution: null,
+      solution: undefined,
       logs: [],
       isConsoleOpen: false,
       lastRendered: null,
     };
 
-    Office.onReady(() => {
-      const loadingIndicator = document.getElementById('loading')!;
-      loadingIndicator.style.visibility = 'hidden';
-      this.forceUpdate();
-    });
+    const loadingIndicator = document.getElementById('loading')!;
+    loadingIndicator.style.visibility = 'hidden';
   }
 
   componentDidMount() {
@@ -97,14 +96,18 @@ export class App extends React.Component<{}, IState> {
   openConsole = () => this.setState({ isConsoleOpen: true });
   closeConsole = () => this.setState({ isConsoleOpen: false });
 
-  onReceiveNewActiveSolution = (solution: ISolution) => this.setState({ solution });
+  onReceiveNewActiveSolution = (solution: ISolution | null) => {
+    if (solution !== null && this.state.solution) {
+      console.info(`Your snippet '${solution.name}' has been loaded.`);
+    }
+    this.setState({ solution });
+  };
 
   softRefresh = () => {
     if (this.state.solution) {
       this.setState({
         solution: { ...this.state.solution, dateLastModified: Date.now() },
       });
-      console.info(`Your snippet '${this.state.solution.name}' has been reloaded.`);
     }
   };
 
@@ -120,9 +123,14 @@ export class App extends React.Component<{}, IState> {
             wrapperStyle={{ flex: '7' }}
             header={
               <Header
-                solutionName={this.state.solution ? this.state.solution.name : undefined}
+                solution={this.state.solution}
                 refresh={this.softRefresh}
                 hardRefresh={this.reloadPage}
+                goBack={
+                  !!queryString.parse(location.search).backButton
+                    ? () => (location.href = currentEditorUrl)
+                    : undefined
+                }
               />
             }
             footer={
@@ -130,7 +138,7 @@ export class App extends React.Component<{}, IState> {
                 isConsoleOpen={this.state.isConsoleOpen}
                 openConsole={this.openConsole}
                 closeConsole={this.closeConsole}
-                isSolutionLoaded={this.state.solution !== null}
+                isSolutionLoaded={!!this.state.solution}
                 lastRendered={this.state.lastRendered}
                 refresh={this.softRefresh}
               />
@@ -138,7 +146,7 @@ export class App extends React.Component<{}, IState> {
           >
             <RefreshBar isVisible={false} />
             <SnippetContainer
-              solution={this.state.solution || undefined}
+              solution={this.state.solution}
               onRender={this.setLastRendered}
             />
           </HeaderFooterLayout>

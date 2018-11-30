@@ -43,9 +43,7 @@ export default ({
   ${html}
 
   <script type="text/javascript">
-    Office.onReady(function () {
-      ${inlineScript}
-    });
+    ${inlineScript}
   </script>
 </body>
 

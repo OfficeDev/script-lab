@@ -17,7 +17,12 @@
     "editor": "yarn workspace editor start",
     "runner": "yarn workspace runner start",
     "server": "yarn workspace server start",
-    "start": "npm-run-all --parallel common editor runner server"
+    "start": "npm-run-all --parallel common editor runner server",
+    "common:test": "yarn workspace common test",
+    "editor:test": "yarn workspace editor test",
+    "runner:test": "yarn workspace runner test",
+    "server:test": "yarn workspace server test",
+    "test": "npm-run-all --parallel common:test editor:test runner:test server:test"
   },
   "devDependencies": {
     "@types/fs-extra": "^5.0.4",

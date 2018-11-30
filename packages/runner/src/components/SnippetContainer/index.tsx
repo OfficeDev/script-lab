@@ -5,11 +5,13 @@ import Only from 'common/lib/components/Only';
 
 import runTemplate from './templates/run';
 import errorTemplate from './templates/error';
+import noSnippet from './templates/noSnippet';
 
 import { officeNamespacesForIframe } from '../../constants';
 import { LoadingIndicatorWrapper } from './styles';
 import { Spinner, SpinnerSize } from 'office-ui-fabric-react/lib/Spinner';
 import { compileTypeScript, SyntaxError } from './utilities';
+import untrusted from './templates/untrusted';
 
 function processLibraries(libraries: string, isInsideOffice: boolean) {
   const linkReferences: string[] = [];
@@ -68,7 +70,7 @@ function processLibraries(libraries: string, isInsideOffice: boolean) {
 }
 
 export interface IProps {
-  solution?: ISolution;
+  solution?: ISolution | null;
   onRender?: (timestamp: number) => void;
 }
 
@@ -87,7 +89,7 @@ class Snippet extends React.Component<IProps, IState> {
     this.state = {
       content: this.getContent(this.props),
       lastRendered,
-      isLoading: false,
+      isLoading: true,
       isIFrameMounted: false,
     };
     if (this.props.onRender) {
@@ -98,12 +100,7 @@ class Snippet extends React.Component<IProps, IState> {
   componentDidMount() {}
 
   componentDidUpdate(prevProps: IProps) {
-    if (
-      this.props.solution &&
-      ((this.props.solution && !prevProps.solution) ||
-        this.props.solution.id !== prevProps.solution!.id ||
-        this.props.solution.dateLastModified > prevProps.solution!.dateLastModified)
-    ) {
+    if (this.shouldUpdate(prevProps.solution, this.props.solution)) {
       const lastRendered = Date.now();
       this.setState({ isIFrameMounted: false, isLoading: true }, () =>
         this.setState({
@@ -124,9 +121,18 @@ class Snippet extends React.Component<IProps, IState> {
   componentWillUnmount() {}
 
   getContent = ({ solution }: IProps): string => {
-    if (!solution) {
+    if (solution === undefined) {
       return '';
     }
+
+    if (solution === null) {
+      return noSnippet();
+    }
+
+    if (solution.options.isUntrusted) {
+      return untrusted({ snippetName: solution.name });
+    }
+
     try {
       // gathering content out of solution
       const html = solution.files.find(file => file.name === 'index.html')!.content;
@@ -166,22 +172,50 @@ class Snippet extends React.Component<IProps, IState> {
           </LoadingIndicatorWrapper>
         </Only>
 
-        {this.props.solution && (
-          <div
-            style={{ display: this.state.isLoading ? 'none' : 'block', height: '100%' }}
-          >
-            {this.state.isIFrameMounted && (
-              <IFrame
-                content={this.state.content}
-                lastRendered={this.state.lastRendered}
-                namespacesToTransferFromWindow={officeNamespacesForIframe}
-                onRenderComplete={this.completeLoad}
-              />
-            )}
-          </div>
-        )}
+        <div style={{ display: this.state.isLoading ? 'none' : 'block', height: '100%' }}>
+          {this.state.isIFrameMounted && (
+            <IFrame
+              content={this.state.content}
+              lastRendered={this.state.lastRendered}
+              namespacesToTransferFromWindow={officeNamespacesForIframe}
+              onRenderComplete={this.completeLoad}
+            />
+          )}
+        </div>
       </>
     );
+  }
+
+  // helpers
+
+  private shouldUpdate(
+    oldSolution: ISolution | null | undefined,
+    newSolution: ISolution | null | undefined,
+  ): boolean {
+    // if the newSolution is null, but the old solution wasn't, update
+    if (newSolution === null && oldSolution !== null) {
+      return true;
+    }
+
+    if (newSolution) {
+      // if there's a new solution
+      // but no old solution, update
+      if (!oldSolution) {
+        return true;
+      }
+
+      // or if it is a different solution
+      if (newSolution.id !== oldSolution.id) {
+        return true;
+      }
+
+      // or if the solution has been updated
+      if (newSolution.dateLastModified > oldSolution.dateLastModified) {
+        return true;
+      }
+    }
+    // otherwise
+    return false;
   }
 }
 
