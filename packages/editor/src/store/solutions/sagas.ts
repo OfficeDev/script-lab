@@ -35,24 +35,7 @@ function* onSolutionOpenOrFileEditSaga(
       break;
 
     case getType(solutions.edit):
-      if (action.payload.solution && action.payload.solution.options) {
-        const solution: ISolution = yield select(
-          selectors.solutions.get,
-          action.payload.id,
-        );
-        const prevDirectScriptExecution = !!solution.options.isDirectScriptExecution;
-        const newDirectScriptExecution = !!action.payload.solution.options
-          .isDirectScriptExecution;
-
-        if (!prevDirectScriptExecution && newDirectScriptExecution) {
-          // in this case the solution was just switched from not being
-          // a direct script execution to being a direct script execution
-          solutionId = action.payload.id;
-          break;
-        } else {
-          return;
-        }
-      } else if (action.payload.fileId) {
+      if (action.payload.fileId) {
         const file: IFile = yield select(
           selectors.solutions.getFile,
           action.payload.fileId,
