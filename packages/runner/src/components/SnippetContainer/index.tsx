@@ -11,6 +11,7 @@ import { officeNamespacesForIframe } from '../../constants';
 import { LoadingIndicatorWrapper } from './styles';
 import { Spinner, SpinnerSize } from 'office-ui-fabric-react/lib/Spinner';
 import { compileTypeScript, SyntaxError } from './utilities';
+import untrusted from './templates/untrusted';
 
 function processLibraries(libraries: string, isInsideOffice: boolean) {
   const linkReferences: string[] = [];
@@ -126,6 +127,10 @@ class Snippet extends React.Component<IProps, IState> {
 
     if (solution === null) {
       return noSnippet();
+    }
+
+    if (solution.options.isUntrusted) {
+      return untrusted({ snippetName: solution.name });
     }
 
     try {
