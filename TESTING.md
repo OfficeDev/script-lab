@@ -31,6 +31,7 @@ By the end of Nov 2018, should also be able to test the following (can skip for 
   - Snippet renders correctly
   - "Run" from editor or run gallery, in-place refresh, and full refresh all work correctly (render the snippet, don't double-refresh, etc.). The run (either type) doesn't show a "snippet needs reloading" message if the snippet is already fresh.
   - Console log renders correctly (and scrolls correctly, if many lines)
+  - Thrown errors from user code are reflected in the console.
   - Erroneous code (e.g, syntax error) shows error correctly.
   - Running deleted snippet has reasonable behavior.
   - [Side-by-side runner]:
