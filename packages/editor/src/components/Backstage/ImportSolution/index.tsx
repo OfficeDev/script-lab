@@ -56,7 +56,10 @@ class ImportSolution extends Component<IProps, IState> {
       } else {
         gist = input;
         const content = YAML.safeLoad(input);
-        const solutionTest = convertSnippetToSolution(content);
+        const { name, host } = convertSnippetToSolution(content);
+        if (!name && !host) {
+          throw new Error();
+        }
       }
 
       this.props.importGist(gistId, gist);
