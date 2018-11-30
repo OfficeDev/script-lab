@@ -96,15 +96,18 @@ export class App extends React.Component<{}, IState> {
   openConsole = () => this.setState({ isConsoleOpen: true });
   closeConsole = () => this.setState({ isConsoleOpen: false });
 
-  onReceiveNewActiveSolution = (solution: ISolution | null) =>
+  onReceiveNewActiveSolution = (solution: ISolution | null) => {
+    if (solution !== null && this.state.solution) {
+      console.info(`Your snippet '${solution.name}' has been loaded.`);
+    }
     this.setState({ solution });
+  };
 
   softRefresh = () => {
     if (this.state.solution) {
       this.setState({
         solution: { ...this.state.solution, dateLastModified: Date.now() },
       });
-      console.info(`Your snippet '${this.state.solution.name}' has been reloaded.`);
     }
   };
 

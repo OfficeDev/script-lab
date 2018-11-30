@@ -8,23 +8,22 @@ interface IProps {
 }
 
 interface IState {
-  previousRender: number;
+  previousRenderTimestamp: number;
 }
 
 class IFrame extends React.Component<IProps, IState> {
   node; // ref to iframe node
-  // tslint:disable-next-line:variable-name
-  _isMounted: boolean;
+  private isIframeMounted: boolean;
 
   constructor(props) {
     super(props);
-    this._isMounted = false;
+    this.isIframeMounted = false;
 
-    this.state = { previousRender: 0 };
+    this.state = { previousRenderTimestamp: 0 };
   }
 
   componentDidMount() {
-    this._isMounted = true;
+    this.isIframeMounted = true;
 
     const doc = this.getContentDoc();
     if (doc && doc.readyState === 'complete') {
@@ -38,10 +37,10 @@ class IFrame extends React.Component<IProps, IState> {
     return this.shouldRender();
   }
 
-  shouldRender = () => this.props.lastRendered !== this.state.previousRender;
+  shouldRender = () => this.props.lastRendered !== this.state.previousRenderTimestamp;
 
   componentWillUnmount() {
-    this._isMounted = false;
+    this.isIframeMounted = false;
 
     this.node.removeEventListener('load', this.handleLoad);
   }
@@ -49,7 +48,7 @@ class IFrame extends React.Component<IProps, IState> {
   getContentDoc = () => this.node.contentDocument;
 
   renderContents = () => {
-    if (this._isMounted && this.shouldRender()) {
+    if (this.isIframeMounted && this.shouldRender()) {
       // setting up iframe
       const iframe = this.node.contentWindow;
 
@@ -67,7 +66,7 @@ class IFrame extends React.Component<IProps, IState> {
       doc.write(this.props.content);
       doc.close();
 
-      this.setState({ previousRender: this.props.lastRendered });
+      this.setState({ previousRenderTimestamp: this.props.lastRendered });
       if (this.props.onRenderComplete) {
         this.props.onRenderComplete();
       }
@@ -75,7 +74,7 @@ class IFrame extends React.Component<IProps, IState> {
   };
 
   handleLoad = () => {
-    if (this._isMounted) {
+    if (this.isIframeMounted) {
       this.forceUpdate();
     }
   };

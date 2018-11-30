@@ -99,13 +99,7 @@ class Snippet extends React.Component<IProps, IState> {
   componentDidMount() {}
 
   componentDidUpdate(prevProps: IProps) {
-    if (
-      (this.props.solution === null && prevProps.solution !== null) ||
-      (this.props.solution &&
-        ((this.props.solution && !prevProps.solution) ||
-          this.props.solution.id !== prevProps.solution!.id ||
-          this.props.solution.dateLastModified > prevProps.solution!.dateLastModified))
-    ) {
+    if (this.shouldUpdate(prevProps.solution, this.props.solution)) {
       const lastRendered = Date.now();
       this.setState({ isIFrameMounted: false, isLoading: true }, () =>
         this.setState({
@@ -185,6 +179,38 @@ class Snippet extends React.Component<IProps, IState> {
         </div>
       </>
     );
+  }
+
+  // helpers
+
+  private shouldUpdate(
+    oldSolution: ISolution | null | undefined,
+    newSolution: ISolution | null | undefined,
+  ): boolean {
+    // if the newSolution is null, but the old solution wasn't, update
+    if (newSolution === null && oldSolution !== null) {
+      return true;
+    }
+
+    if (newSolution) {
+      // if there's a new solution
+      // but no old solution, update
+      if (!oldSolution) {
+        return true;
+      }
+
+      // or if it is a different solution
+      if (newSolution.id !== oldSolution.id) {
+        return true;
+      }
+
+      // or if the solution has been updated
+      if (newSolution.dateLastModified > oldSolution.dateLastModified) {
+        return true;
+      }
+    }
+    // otherwise
+    return false;
   }
 }
 

@@ -49,8 +49,8 @@ export default () => `<!DOCTYPE html>
 
 <body class="ms-Fabric">
   <div class="container">
-    <h1 id="title" class="ms-font-xxl">No Open Snippet</h1>
-    <h3 id="details" class="ms-font-l">Please open the editor to open a snippet.</h3>
+    <h1 id="title" class="ms-font-xxl">No snippet to run</h1>
+    <h3 id="details" class="ms-font-l">Please open the editor to select a snippet.</h3>
   </div>
 </body>
 
