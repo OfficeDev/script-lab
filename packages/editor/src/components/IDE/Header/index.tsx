@@ -37,8 +37,6 @@ interface IPropsFromRedux {
   isRunnableOnThisHost: boolean;
   isSettingsView: boolean;
   isCustomFunctionsView: boolean;
-  isDirectScriptExecutionSolution: boolean;
-  runnableFunctions: IDirectScriptExecutionFunctionMetadata[];
   isLoggedIn: boolean;
   isLoggingInOrOut: boolean;
   commandBarFabricTheme: IFabricTheme;
@@ -49,9 +47,6 @@ const mapStateToProps = (state): IPropsFromRedux => ({
   isNullSolution: selectors.editor.getActiveSolution(state).id === NULL_SOLUTION_ID,
   isSettingsView: selectors.settings.getIsOpen(state),
   isCustomFunctionsView: selectors.customFunctions.getIsCurrentSolutionCF(state),
-  isDirectScriptExecutionSolution: !!selectors.editor.getActiveSolution(state).options
-    .isDirectScriptExecution,
-  runnableFunctions: selectors.directScriptExecution.getMetadataForActiveSolution(state),
   isLoggedIn: !!selectors.github.getToken(state),
   isLoggingInOrOut: selectors.github.getIsLoggingInOrOut(state),
   isRunnableOnThisHost: selectors.host.getIsRunnableOnThisHost(state),
@@ -83,13 +78,6 @@ interface IActionsFromRedux {
   navigateToCustomFunctions: () => void;
   navigateToRun: () => void;
   showTrustError: () => void;
-
-  directScriptExecutionFunction: (
-    solutionId: string,
-    fileId: string,
-    funcName: string,
-  ) => void;
-  terminateAllDirectScriptExecutionFunctions: () => void;
 
   showDialog: (
     title: string,
@@ -151,21 +139,6 @@ const mapDispatchToProps = (dispatch, ownProps: IProps): IActionsFromRedux => ({
       }),
     ),
 
-  directScriptExecutionFunction: (
-    solutionId: string,
-    fileId: string,
-    functionName: string,
-  ) =>
-    dispatch(
-      actions.directScriptExecution.runFunction.request({
-        solutionId,
-        fileId,
-        functionName,
-      }),
-    ),
-  terminateAllDirectScriptExecutionFunctions: () =>
-    dispatch(actions.directScriptExecution.terminateAll.request()),
-
   showDialog: (
     title: string,
     subText: string,
@@ -174,7 +147,7 @@ const mapDispatchToProps = (dispatch, ownProps: IProps): IActionsFromRedux => ({
       action: { type: string; payload?: any };
       isPrimary: boolean;
     }>,
-  ) => dispatch(dialog.show(title, subText, buttons)),
+  ) => dispatch(dialog.show({ title, subText, buttons })),
 });
 
 export interface IProps extends IPropsFromRedux, IActionsFromRedux {

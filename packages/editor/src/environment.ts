@@ -29,15 +29,25 @@ export const allEditorUrls = {
   production: 'https://script-lab.azureedge.net',
 };
 
-export const allowedEnvironments = [
-  'local',
-  'react-alpha',
-  'react-beta',
-  'react',
-  'alpha',
-  'beta',
-  'production',
-];
+export function getVisibleEnvironmentsToSwitchTo() {
+  switch (getCurrentEnv()) {
+    case 'local':
+    case 'alpha':
+      return [
+        'production',
+        'react',
+        'beta',
+        'react-beta',
+        'alpha',
+        'react-alpha',
+        'local',
+      ];
+    case 'beta':
+      return ['production', 'react', 'beta', 'react-beta', 'alpha', 'react-alpha'];
+    case 'prod':
+      return ['production', 'react', 'beta', 'react-beta'];
+  }
+}
 
 // FIXME Zlatkovsky/Nico: introduce 'prod-direct' and 'staging' environments as well
 export function getCurrentEnv(): 'local' | 'alpha' | 'beta' | 'prod' {
