@@ -7,6 +7,9 @@ import { stringifyPlusPlus } from 'common/lib/utilities/string';
 import Theme from 'common/lib/components/Theme';
 import Console, { ConsoleLogSeverities } from 'common/lib/components/Console';
 import HeaderFooterLayout from 'common/lib/components/HeaderFooterLayout';
+import { SCRIPT_URLS } from 'common/lib/constants';
+import { extractParams } from 'common/lib/utilities/script.loader';
+
 import Heartbeat from './Heartbeat';
 import Header from './Header';
 import Footer from './Footer';
@@ -36,21 +39,26 @@ interface IState {
   lastRendered: number | null;
   logs: ILogData[];
   isConsoleOpen: boolean;
+  officeJsUrl: string;
 }
 
 export class App extends React.Component<{}, IState> {
   constructor(props) {
     super(props);
 
+    const params = extractParams(window.location.href.split('?')[1]) || {};
+    const officeJsUrl =
+      ((params['officejs'] as string) || '').trim().length > 0
+        ? params['officejs'] || ''
+        : SCRIPT_URLS.OFFICE_JS_FOR_EDITOR;
+
     this.state = {
       solution: undefined,
       logs: [],
       isConsoleOpen: false,
       lastRendered: null,
+      officeJsUrl,
     };
-
-    const loadingIndicator = document.getElementById('loading')!;
-    loadingIndicator.style.visibility = 'hidden';
   }
 
   componentDidMount() {
@@ -111,9 +119,15 @@ export class App extends React.Component<{}, IState> {
     }
   };
 
+  // FIXME Zlatkovsky
   reloadPage = () => window.location.reload();
 
-  setLastRendered = (lastRendered: number) => this.setState({ lastRendered });
+  onSnippetRender = (lastRendered: number) => {
+    this.setState({ lastRendered });
+
+    const loadingIndicator = document.getElementById('loading')!;
+    loadingIndicator.style.visibility = 'hidden';
+  };
 
   render() {
     return (
@@ -146,8 +160,9 @@ export class App extends React.Component<{}, IState> {
           >
             <RefreshBar isVisible={false} />
             <SnippetContainer
+              officeJsUrl={this.state.officeJsUrl}
               solution={this.state.solution}
-              onRender={this.setLastRendered}
+              onRender={this.onSnippetRender}
             />
           </HeaderFooterLayout>
           <Only when={this.state.isConsoleOpen}>

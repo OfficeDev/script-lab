@@ -72,6 +72,7 @@ function processLibraries(libraries: string, isInsideOffice: boolean) {
 export interface IProps {
   solution?: ISolution | null;
   onRender?: (timestamp: number) => void;
+  officeJsUrl: string;
 }
 
 interface IState {
@@ -102,6 +103,7 @@ class Snippet extends React.Component<IProps, IState> {
   componentDidUpdate(prevProps: IProps) {
     if (this.shouldUpdate(prevProps.solution, this.props.solution)) {
       const lastRendered = Date.now();
+
       this.setState({ isIFrameMounted: false, isLoading: true }, () =>
         this.setState({
           content: this.getContent(this.props),
@@ -148,6 +150,10 @@ class Snippet extends React.Component<IProps, IState> {
         false,
       );
 
+      if (this.props.officeJsUrl.toLowerCase() !== (officeJS || '').toLowerCase()) {
+        throw new NeedToReloadOfficeError(officeJS!);
+      }
+
       return runTemplate({
         linkReferences,
         scriptReferences,
@@ -156,6 +162,11 @@ class Snippet extends React.Component<IProps, IState> {
         html,
       });
     } catch (error) {
+      if (error instanceof NeedToReloadOfficeError) {
+        // re-bubble it up:
+        throw error;
+      }
+
       return errorTemplate({
         title: error instanceof SyntaxError ? 'Syntax Error' : 'Unknown Error',
         details: error.message,
@@ -216,6 +227,13 @@ class Snippet extends React.Component<IProps, IState> {
     }
     // otherwise
     return false;
+  }
+}
+
+// tslint:disable-next-line:max-classes-per-file
+class NeedToReloadOfficeError extends Error {
+  constructor(public officeJsUrl: string) {
+    super(`Need to reload Office.js to ${officeJsUrl}`);
   }
 }
 
