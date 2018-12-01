@@ -33,26 +33,3 @@ export function waitForAllDynamicScriptsToBeLoaded(): Promise<void> {
     }, 50);
   });
 }
-
-// Taken from office-js-helpers Authenticator class:
-// https://github.com/OfficeDev/office-js-helpers/blob/master/src/authentication/authenticator.ts
-export function extractParams(segment: string): any {
-  if (segment == null || segment.trim() === '') {
-    return null;
-  }
-
-  const params: any = {};
-  const regex = /([^&=]+)=([^&]*)/g;
-  let matchParts;
-
-  // tslint:disable-next-line:no-conditional-assignment
-  while ((matchParts = regex.exec(segment)) !== null) {
-    // Fixes bugs when the state parameters contains a / before them
-    if (matchParts[1] === '/state') {
-      matchParts[1] = matchParts[1].replace('/', '');
-    }
-    params[decodeURIComponent(matchParts[1])] = decodeURIComponent(matchParts[2]);
-  }
-
-  return params;
-}

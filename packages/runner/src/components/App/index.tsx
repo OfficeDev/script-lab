@@ -8,7 +8,6 @@ import Theme from 'common/lib/components/Theme';
 import Console, { ConsoleLogSeverities } from 'common/lib/components/Console';
 import HeaderFooterLayout from 'common/lib/components/HeaderFooterLayout';
 import { SCRIPT_URLS, OFFICE_JS_URL_QUERY_PARAMETER_KEY } from 'common/lib/constants';
-import { extractParams } from 'common/lib/utilities/script.loader';
 
 import Heartbeat from './Heartbeat';
 import Header from './Header';
@@ -46,13 +45,14 @@ export class App extends React.Component<{}, IState> {
   constructor(props) {
     super(props);
 
-    const params = extractParams(window.location.href.split('?')[1]) || {};
+    const params = queryString.parse(window.location.search) as {
+      [OFFICE_JS_URL_QUERY_PARAMETER_KEY]: string;
+    };
     const officeJsPageUrlLowerCased =
       Utilities.host === HostType.WEB
         ? null
         : (
-            (params[OFFICE_JS_URL_QUERY_PARAMETER_KEY] as string) ||
-            SCRIPT_URLS.OFFICE_JS_FOR_EDITOR
+            params[OFFICE_JS_URL_QUERY_PARAMETER_KEY] || SCRIPT_URLS.OFFICE_JS_FOR_EDITOR
           ).toLowerCase();
 
     this.state = {
