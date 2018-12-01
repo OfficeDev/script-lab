@@ -106,11 +106,11 @@ export class App extends React.Component<{}, IState> {
   onReceiveNewActiveSolution = (solution: ISolution | null) => {
     if (solution !== null) {
       if (!this.state.solution) {
-        console.info(`Your snippet '${solution.name}' has been loaded.`);
+        console.info(`Your snippet "${solution.name}" has been loaded.`);
       } else if (this.state.solution.id === solution.id) {
-        console.info(`You have updated snippet '${solution.name}'. Reloading...`);
+        console.info(`Updating your snippet "${solution.name}".`);
       } else {
-        console.info(`Switching to snippet '${solution.name}'.`);
+        console.info(`Switching to snippet "${solution.name}".`);
       }
     }
     this.setState({ solution });
