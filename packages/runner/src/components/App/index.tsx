@@ -1,13 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Utilities } from '@microsoft/office-js-helpers';
+import { Utilities, HostType } from '@microsoft/office-js-helpers';
 import queryString from 'query-string';
 import { stringifyPlusPlus } from 'common/lib/utilities/string';
 
 import Theme from 'common/lib/components/Theme';
 import Console, { ConsoleLogSeverities } from 'common/lib/components/Console';
 import HeaderFooterLayout from 'common/lib/components/HeaderFooterLayout';
-import { SCRIPT_URLS } from 'common/lib/constants';
+import { SCRIPT_URLS, OFFICE_JS_URL_QUERY_PARAMETER_KEY } from 'common/lib/constants';
 import { extractParams } from 'common/lib/utilities/script.loader';
 
 import Heartbeat from './Heartbeat';
@@ -39,7 +39,7 @@ interface IState {
   lastRendered: number | null;
   logs: ILogData[];
   isConsoleOpen: boolean;
-  officeJsUrl: string;
+  officeJsPageUrlLowerCased: string | null;
 }
 
 export class App extends React.Component<{}, IState> {
@@ -47,17 +47,20 @@ export class App extends React.Component<{}, IState> {
     super(props);
 
     const params = extractParams(window.location.href.split('?')[1]) || {};
-    const officeJsUrl =
-      ((params['officejs'] as string) || '').trim().length > 0
-        ? params['officejs'] || ''
-        : SCRIPT_URLS.OFFICE_JS_FOR_EDITOR;
+    const officeJsPageUrlLowerCased =
+      Utilities.host === HostType.WEB
+        ? null
+        : (
+            (params[OFFICE_JS_URL_QUERY_PARAMETER_KEY] as string) ||
+            SCRIPT_URLS.OFFICE_JS_FOR_EDITOR
+          ).toLowerCase();
 
     this.state = {
       solution: undefined,
       logs: [],
       isConsoleOpen: false,
       lastRendered: null,
-      officeJsUrl,
+      officeJsPageUrlLowerCased,
     };
   }
 
@@ -119,10 +122,32 @@ export class App extends React.Component<{}, IState> {
     }
   };
 
-  // FIXME Zlatkovsky
-  reloadPage = () => window.location.reload();
+  reloadPage = (newOfficeJsUrl?: string) => {
+    const newQueryParams: { [key: string]: any } = queryString.parse(
+      window.location.search,
+    );
 
-  onSnippetRender = (lastRendered: number) => {
+    if (newOfficeJsUrl) {
+      newQueryParams[OFFICE_JS_URL_QUERY_PARAMETER_KEY] = newOfficeJsUrl;
+    }
+
+    window.location.search = queryString.stringify(newQueryParams);
+  };
+
+  onSnippetRender = ({
+    lastRendered,
+    officeJs,
+  }: {
+    lastRendered: number;
+    officeJs?: string | null;
+  }) => {
+    if (this.isOfficeJsMismatch(officeJs)) {
+      this.onOfficeJsMismatch(officeJs!);
+      return;
+    }
+
+    // Otherwise set the state, remove the loading screen (if any), and proceed normally
+
     this.setState({ lastRendered });
 
     const loadingIndicator = document.getElementById('loading')!;
@@ -141,8 +166,8 @@ export class App extends React.Component<{}, IState> {
                 refresh={this.softRefresh}
                 hardRefresh={this.reloadPage}
                 goBack={
-                  !!queryString.parse(location.search).backButton
-                    ? () => (location.href = currentEditorUrl)
+                  !!queryString.parse(window.location.search).backButton
+                    ? () => (window.location.href = currentEditorUrl)
                     : undefined
                 }
               />
@@ -160,7 +185,6 @@ export class App extends React.Component<{}, IState> {
           >
             <RefreshBar isVisible={false} />
             <SnippetContainer
-              officeJsUrl={this.state.officeJsUrl}
               solution={this.state.solution}
               onRender={this.onSnippetRender}
             />
@@ -180,6 +204,30 @@ export class App extends React.Component<{}, IState> {
       </Theme>
     );
   }
+
+  /////////////////////////
+
+  private onOfficeJsMismatch = (newOfficeJsUrl: string) => {
+    // On reloading Office.js, show a visual indication to indicate it
+    if (this.state.lastRendered) {
+      const loadingIndicator = document.getElementById('loading')!;
+      loadingIndicator.style.visibility = 'initial';
+      const subtitleElement = document.querySelectorAll('#loading h2')[0] as HTMLElement;
+      subtitleElement.textContent = 'Re-loading office.js, please wait...';
+
+      (document.getElementById('root') as HTMLElement).style.display = 'none';
+    }
+
+    this.reloadPage(newOfficeJsUrl);
+  };
+
+  private isOfficeJsMismatch = (newOfficeJs: string | null | undefined) => {
+    if (this.state.officeJsPageUrlLowerCased && newOfficeJs) {
+      return this.state.officeJsPageUrlLowerCased !== newOfficeJs.toLowerCase();
+    }
+
+    return false;
+  };
 }
 
 export default App;

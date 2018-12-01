@@ -1,3 +1,5 @@
+import processLibraries from 'common/lib/utilities/process.libraries';
+
 export async function checkForUnsupportedAPIsIfRelevant(snippet: ISnippet) {
   const { host } = await Office.onReady();
   const isInsideOfficeApp = !!host;
@@ -7,7 +9,7 @@ export async function checkForUnsupportedAPIsIfRelevant(snippet: ISnippet) {
   }
 
   const desiredOfficeJS =
-    processLibraries(snippet.libraries || '', isInsideOfficeApp).officeJS || '';
+    processLibraries(snippet.libraries || '', isInsideOfficeApp).officeJs || '';
   const isProductionOfficeJs = desiredOfficeJS
     .toLowerCase()
     .includes('https://appsforoffice.microsoft.com/lib/1/hosted/');
@@ -26,60 +28,4 @@ export async function checkForUnsupportedAPIsIfRelevant(snippet: ISnippet) {
       );
     }
   });
-}
-
-function processLibraries(libraries: string, isInsideOffice: boolean) {
-  const linkReferences: string[] = [];
-  const scriptReferences: string[] = [];
-  let officeJS: string | null = null;
-
-  libraries.split('\n').forEach(processLibrary);
-
-  if (!isInsideOffice) {
-    officeJS = '<none>';
-  }
-
-  return { linkReferences, scriptReferences, officeJS };
-
-  function processLibrary(text: string) {
-    if (text == null || text.trim() === '') {
-      return null;
-    }
-
-    text = text.trim();
-
-    const isNotScriptOrStyle =
-      /^#.*|^\/\/.*|^\/\*.*|.*\*\/$.*/im.test(text) ||
-      /^@types/.test(text) ||
-      /^dt~/.test(text) ||
-      /\.d\.ts$/i.test(text);
-
-    if (isNotScriptOrStyle) {
-      return null;
-    }
-
-    const resolvedUrlPath = /^https?:\/\/|^ftp? :\/\//i.test(text)
-      ? text
-      : `https://unpkg.com/${text}`;
-
-    if (/\.css$/i.test(resolvedUrlPath)) {
-      return linkReferences.push(resolvedUrlPath);
-    }
-
-    if (/\.ts$|\.js$/i.test(resolvedUrlPath)) {
-      /*
-       * Don't add Office.js to the rest of the script references --
-       * it is special because of how it needs to be *outside* of the iframe,
-       * whereas the rest of the script references need to be inside the iframe.
-       */
-      if (/(?:office|office.debug).js$/.test(resolvedUrlPath.toLowerCase())) {
-        officeJS = resolvedUrlPath;
-        return null;
-      }
-
-      return scriptReferences.push(resolvedUrlPath);
-    }
-
-    return scriptReferences.push(resolvedUrlPath);
-  }
 }

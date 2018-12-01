@@ -12,67 +12,12 @@ import { LoadingIndicatorWrapper } from './styles';
 import { Spinner, SpinnerSize } from 'office-ui-fabric-react/lib/Spinner';
 import { compileTypeScript, SyntaxError } from './utilities';
 import untrusted from './templates/untrusted';
-
-function processLibraries(libraries: string, isInsideOffice: boolean) {
-  const linkReferences: string[] = [];
-  const scriptReferences: string[] = [];
-  let officeJS: string | null = null;
-
-  libraries.split('\n').forEach(processLibrary);
-
-  if (!isInsideOffice) {
-    officeJS = '<none>';
-  }
-
-  return { linkReferences, scriptReferences, officeJS };
-
-  function processLibrary(text: string) {
-    if (text == null || text.trim() === '') {
-      return null;
-    }
-
-    text = text.trim();
-
-    const isNotScriptOrStyle =
-      /^#.*|^\/\/.*|^\/\*.*|.*\*\/$.*/im.test(text) ||
-      /^@types/.test(text) ||
-      /^dt~/.test(text) ||
-      /\.d\.ts$/i.test(text);
-
-    if (isNotScriptOrStyle) {
-      return null;
-    }
-
-    const resolvedUrlPath = /^https?:\/\/|^ftp? :\/\//i.test(text)
-      ? text
-      : `https://unpkg.com/${text}`;
-
-    if (/\.css$/i.test(resolvedUrlPath)) {
-      return linkReferences.push(resolvedUrlPath);
-    }
-
-    if (/\.ts$|\.js$/i.test(resolvedUrlPath)) {
-      /*
-       * Don't add Office.js to the rest of the script references --
-       * it is special because of how it needs to be *outside* of the iframe,
-       * whereas the rest of the script references need to be inside the iframe.
-       */
-      if (/(?:office|office.debug).js$/.test(resolvedUrlPath.toLowerCase())) {
-        officeJS = resolvedUrlPath;
-        return null;
-      }
-
-      return scriptReferences.push(resolvedUrlPath);
-    }
-
-    return scriptReferences.push(resolvedUrlPath);
-  }
-}
+import { Utilities, HostType } from '@microsoft/office-js-helpers';
+import processLibraries from 'common/lib/utilities/process.libraries';
 
 export interface IProps {
   solution?: ISolution | null;
-  onRender?: (timestamp: number) => void;
-  officeJsUrl: string;
+  onRender?: (data: { officeJs?: string | null; lastRendered: number }) => void;
 }
 
 interface IState {
@@ -80,6 +25,7 @@ interface IState {
   isLoading: boolean;
   content: string;
   lastRendered: number;
+  officeJsSnippetUrl?: string | null;
 }
 
 class Snippet extends React.Component<IProps, IState> {
@@ -87,14 +33,17 @@ class Snippet extends React.Component<IProps, IState> {
     super(props);
 
     const lastRendered = Date.now();
+    const { content, officeJs } = this.getSnippetContentAndOfficeJs(this.props);
     this.state = {
-      content: this.getContent(this.props),
+      content: content,
+      officeJsSnippetUrl: officeJs,
       lastRendered,
       isLoading: true,
       isIFrameMounted: false,
     };
+
     if (this.props.onRender) {
-      this.props.onRender(lastRendered);
+      this.props.onRender({ officeJs, lastRendered });
     }
   }
 
@@ -104,17 +53,21 @@ class Snippet extends React.Component<IProps, IState> {
     if (this.shouldUpdate(prevProps.solution, this.props.solution)) {
       const lastRendered = Date.now();
 
-      this.setState({ isIFrameMounted: false, isLoading: true }, () =>
-        this.setState({
-          content: this.getContent(this.props),
+      this.setState({ isIFrameMounted: false, isLoading: true }, () => {
+        const { content, officeJs } = this.getSnippetContentAndOfficeJs(this.props);
+
+        if (this.props.onRender) {
+          this.props.onRender!({ officeJs, lastRendered });
+        }
+
+        return this.setState({
+          content,
+          officeJsSnippetUrl: officeJs,
           lastRendered,
           isLoading: true,
           isIFrameMounted: true,
-        }),
-      );
-      if (this.props.onRender) {
-        this.props.onRender(lastRendered);
-      }
+        });
+      });
     }
   }
 
@@ -122,17 +75,19 @@ class Snippet extends React.Component<IProps, IState> {
 
   componentWillUnmount() {}
 
-  getContent = ({ solution }: IProps): string => {
+  getSnippetContentAndOfficeJs = ({
+    solution,
+  }: IProps): { content: string; officeJs?: string | null } => {
     if (solution === undefined) {
-      return '';
+      return { content: '' };
     }
 
     if (solution === null) {
-      return noSnippet();
+      return { content: noSnippet() };
     }
 
     if (solution.options.isUntrusted) {
-      return untrusted({ snippetName: solution.name });
+      return { content: untrusted({ snippetName: solution.name }) };
     }
 
     try {
@@ -145,32 +100,28 @@ class Snippet extends React.Component<IProps, IState> {
       );
       const libraries = solution.files.find(file => file.name === 'libraries.txt')!
         .content;
-      const { linkReferences, scriptReferences, officeJS } = processLibraries(
+      const { linkReferences, scriptReferences, officeJs } = processLibraries(
         libraries,
-        false,
+        Utilities.host !== HostType.WEB /*isInsideOffice*/,
       );
 
-      if (this.props.officeJsUrl.toLowerCase() !== (officeJS || '').toLowerCase()) {
-        throw new NeedToReloadOfficeError(officeJS!);
-      }
-
-      return runTemplate({
-        linkReferences,
-        scriptReferences,
-        inlineScript,
-        inlineStyles,
-        html,
-      });
+      return {
+        content: runTemplate({
+          linkReferences,
+          scriptReferences,
+          inlineScript,
+          inlineStyles,
+          html,
+        }),
+        officeJs,
+      };
     } catch (error) {
-      if (error instanceof NeedToReloadOfficeError) {
-        // re-bubble it up:
-        throw error;
-      }
-
-      return errorTemplate({
-        title: error instanceof SyntaxError ? 'Syntax Error' : 'Unknown Error',
-        details: error.message,
-      });
+      return {
+        content: errorTemplate({
+          title: error instanceof SyntaxError ? 'Syntax Error' : 'Unknown Error',
+          details: error.message,
+        }),
+      };
     }
   };
 
@@ -227,13 +178,6 @@ class Snippet extends React.Component<IProps, IState> {
     }
     // otherwise
     return false;
-  }
-}
-
-// tslint:disable-next-line:max-classes-per-file
-class NeedToReloadOfficeError extends Error {
-  constructor(public officeJsUrl: string) {
-    super(`Need to reload Office.js to ${officeJsUrl}`);
   }
 }
 
