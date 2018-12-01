@@ -18,6 +18,7 @@ import MessageBar from '../MessageBar';
 
 import SnippetContainer from '../SnippetContainer';
 import { currentEditorUrl } from '../../constants';
+import processLibraries from 'common/lib/utilities/process.libraries';
 
 const AppWrapper = styled.div`
   height: 100vh;
@@ -41,30 +42,32 @@ interface IState {
   lastRendered: number | null;
   logs: ILogData[];
   isConsoleOpen: boolean;
-  officeJsPageUrlLowerCased: string | null;
 }
 
 export class App extends React.Component<{}, IState> {
+  private officeJsPageUrlLowerCased: string | null;
+  private hasRenderedFirstRealSnippet = false;
+  private isTransitioningAwayFromPage = false;
+
   constructor(props) {
     super(props);
-
-    const params = queryString.parse(window.location.search) as {
-      [OFFICE_JS_URL_QUERY_PARAMETER_KEY]: string;
-    };
-    const officeJsPageUrlLowerCased =
-      Utilities.host === HostType.WEB
-        ? null
-        : (
-            params[OFFICE_JS_URL_QUERY_PARAMETER_KEY] || SCRIPT_URLS.OFFICE_JS_FOR_EDITOR
-          ).toLowerCase();
 
     this.state = {
       solution: undefined,
       logs: [],
       isConsoleOpen: false,
       lastRendered: null,
-      officeJsPageUrlLowerCased,
     };
+
+    const params = queryString.parse(window.location.search) as {
+      [OFFICE_JS_URL_QUERY_PARAMETER_KEY]: string;
+    };
+    this.officeJsPageUrlLowerCased =
+      Utilities.host === HostType.WEB
+        ? null
+        : (
+            params[OFFICE_JS_URL_QUERY_PARAMETER_KEY] || SCRIPT_URLS.OFFICE_JS_FOR_EDITOR
+          ).toLowerCase();
   }
 
   componentDidMount() {
@@ -117,6 +120,8 @@ export class App extends React.Component<{}, IState> {
 
   onReceiveNewActiveSolution = (solution: ISolution | null) => {
     if (solution !== null) {
+      this.respondToOfficeJsMismatchIfAny(solution);
+
       if (!this.state.solution) {
         console.info(`Your snippet "${solution.name}" has been loaded.`);
       } else if (this.state.solution.id === solution.id) {
@@ -149,24 +154,19 @@ export class App extends React.Component<{}, IState> {
     window.location.search = queryString.stringify(newQueryParams);
   };
 
-  onSnippetRender = ({
-    lastRendered,
-    officeJs,
-  }: {
-    lastRendered: number;
-    officeJs?: string | null;
-  }) => {
-    if (this.isOfficeJsMismatch(officeJs)) {
-      this.onOfficeJsMismatch(officeJs!);
-      return;
+  onSnippetRender = ({ lastRendered }: { lastRendered: number }) => {
+    // If staying on this page (rather than being in the process of reloading)
+    if (!this.isTransitioningAwayFromPage) {
+      this.setState({ lastRendered });
+
+      if (this.state.solution) {
+        this.hasRenderedFirstRealSnippet = true;
+
+        // Also, hide the loading indicators, if they were still up
+        const loadingIndicator = document.getElementById('loading')!;
+        loadingIndicator.style.visibility = 'hidden';
+      }
     }
-
-    // Otherwise set the state, remove the loading screen (if any), and proceed normally
-
-    this.setState({ lastRendered });
-
-    const loadingIndicator = document.getElementById('loading')!;
-    loadingIndicator.style.visibility = 'hidden';
   };
 
   render() {
@@ -222,27 +222,46 @@ export class App extends React.Component<{}, IState> {
 
   /////////////////////////
 
-  private onOfficeJsMismatch = (newOfficeJsUrl: string) => {
-    // On reloading Office.js, show a visual indication to indicate it
-    if (this.state.lastRendered) {
-      const loadingIndicator = document.getElementById('loading')!;
-      loadingIndicator.style.visibility = 'initial';
-      const subtitleElement = document.querySelectorAll('#loading h2')[0] as HTMLElement;
-      subtitleElement.textContent = 'Re-loading office.js, please wait...';
-
-      (document.getElementById('root') as HTMLElement).style.display = 'none';
+  private respondToOfficeJsMismatchIfAny(solution: ISolution) {
+    const librariesFile = solution.files.find(file => file.name === 'libraries.txt');
+    if (!librariesFile) {
+      return;
     }
 
-    this.reloadPage(newOfficeJsUrl);
-  };
+    const newOfficeJsUrl = processLibraries(
+      librariesFile.content,
+      Utilities.host !== HostType.WEB /*isInsideOffice*/,
+    ).officeJs;
 
-  private isOfficeJsMismatch = (newOfficeJs: string | null | undefined) => {
-    if (this.state.officeJsPageUrlLowerCased && newOfficeJs) {
-      return this.state.officeJsPageUrlLowerCased !== newOfficeJs.toLowerCase();
+    const isMismatched = (() => {
+      if (this.officeJsPageUrlLowerCased && newOfficeJsUrl) {
+        return this.officeJsPageUrlLowerCased !== newOfficeJsUrl.toLowerCase();
+      }
+
+      return false;
+    })();
+
+    if (isMismatched) {
+      // On reloading Office.js (and if had already shown a snippet before),
+      // show a visual indication to explain the reload.
+      // Otherwise, if hasn't rendered any snippet before (i.e., it's a first navigation,
+      // straight to an office.js beta snippet, don't change out the title, keep as is
+      // so that the load appears continuous).
+      if (this.hasRenderedFirstRealSnippet) {
+        const loadingIndicator = document.getElementById('loading')!;
+        loadingIndicator.style.visibility = 'initial';
+        const subtitleElement = document.querySelectorAll(
+          '#loading h2',
+        )[0] as HTMLElement;
+        subtitleElement.textContent = 'Re-loading office.js, please wait...';
+
+        (document.getElementById('root') as HTMLElement).style.display = 'none';
+      }
+
+      this.isTransitioningAwayFromPage = true;
+      this.reloadPage(newOfficeJsUrl!);
     }
-
-    return false;
-  };
+  }
 }
 
 export default App;

@@ -75,7 +75,9 @@ This is a particularly critical step for loading the Add-in inside of Office on 
 
 1. Locate the add-in manifest (which you'll find in the `manifests` folder in the root of the repo). For purposes of running against localhost, use `localhost.xml`.
 
-2. Sideload the manifest into your office host application. See <https://aka.ms/sideload-addins>, which includes instructions and a step-by-step video for sideloading on the desktop, as well as links for the other platforms.
+2. Sideload the manifest into your office host application. Use **either** option:
+   - Sideload the localhost manifest located in 'manifests/script-lab-react-localhost.xml', using the instructions on <https://aka.ms/sideload-addins>.
+   - Alternatively, install the **Store** version of the add-in, then switch environments (via dropdown on bottom left when in Settings mode) to alpha -- and **from alpha, to localhost**. Note that the localhost option will only show up if you're in alpha (or already on localhost). Also note that you need to be careful, it will stay stuck on _localhost_ until you undo it -- so if your local server isn't running, Script Lab might appear to be broken for you!
 
 ## [Optional] Testing GitHub auth locally (on localhost)
 

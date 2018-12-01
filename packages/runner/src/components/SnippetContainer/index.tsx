@@ -17,7 +17,7 @@ import processLibraries from 'common/lib/utilities/process.libraries';
 
 export interface IProps {
   solution?: ISolution | null;
-  onRender?: (data: { officeJs?: string | null; lastRendered: number }) => void;
+  onRender?: (data: { lastRendered: number }) => void;
 }
 
 interface IState {
@@ -25,7 +25,6 @@ interface IState {
   isLoading: boolean;
   content: string;
   lastRendered: number;
-  officeJsSnippetUrl?: string | null;
 }
 
 class Snippet extends React.Component<IProps, IState> {
@@ -33,17 +32,15 @@ class Snippet extends React.Component<IProps, IState> {
     super(props);
 
     const lastRendered = Date.now();
-    const { content, officeJs } = this.getSnippetContentAndOfficeJs(this.props);
     this.state = {
-      content: content,
-      officeJsSnippetUrl: officeJs,
+      content: this.getContent(this.props),
       lastRendered,
       isLoading: true,
       isIFrameMounted: false,
     };
 
     if (this.props.onRender) {
-      this.props.onRender({ officeJs, lastRendered });
+      this.props.onRender({ lastRendered });
     }
   }
 
@@ -54,20 +51,17 @@ class Snippet extends React.Component<IProps, IState> {
       const lastRendered = Date.now();
 
       this.setState({ isIFrameMounted: false, isLoading: true }, () => {
-        const { content, officeJs } = this.getSnippetContentAndOfficeJs(this.props);
-
-        if (this.props.onRender) {
-          this.props.onRender!({ officeJs, lastRendered });
-        }
-
         return this.setState({
-          content,
-          officeJsSnippetUrl: officeJs,
+          content: this.getContent(this.props),
           lastRendered,
           isLoading: true,
           isIFrameMounted: true,
         });
       });
+
+      if (this.props.onRender) {
+        this.props.onRender!({ lastRendered });
+      }
     }
   }
 
@@ -75,19 +69,17 @@ class Snippet extends React.Component<IProps, IState> {
 
   componentWillUnmount() {}
 
-  getSnippetContentAndOfficeJs = ({
-    solution,
-  }: IProps): { content: string; officeJs?: string | null } => {
+  getContent = ({ solution }: IProps): string => {
     if (solution === undefined) {
-      return { content: '' };
+      return '';
     }
 
     if (solution === null) {
-      return { content: noSnippet() };
+      return noSnippet();
     }
 
     if (solution.options.isUntrusted) {
-      return { content: untrusted({ snippetName: solution.name }) };
+      return untrusted({ snippetName: solution.name });
     }
 
     try {
@@ -105,23 +97,18 @@ class Snippet extends React.Component<IProps, IState> {
         Utilities.host !== HostType.WEB /*isInsideOffice*/,
       );
 
-      return {
-        content: runTemplate({
-          linkReferences,
-          scriptReferences,
-          inlineScript,
-          inlineStyles,
-          html,
-        }),
-        officeJs,
-      };
+      return runTemplate({
+        linkReferences,
+        scriptReferences,
+        inlineScript,
+        inlineStyles,
+        html,
+      });
     } catch (error) {
-      return {
-        content: errorTemplate({
-          title: error instanceof SyntaxError ? 'Syntax Error' : 'Unknown Error',
-          details: error.message,
-        }),
-      };
+      return errorTemplate({
+        title: error instanceof SyntaxError ? 'Syntax Error' : 'Unknown Error',
+        details: error.message,
+      });
     }
   };
 
