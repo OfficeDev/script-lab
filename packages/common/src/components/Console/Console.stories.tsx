@@ -26,7 +26,7 @@ const logs = [
       "This is a test of an ERROR message. Also, this error message happens to be very very long. Super long. It's only purpose is to be super long. So long that we can test that the log container properly resizes itself and shows all of this super important, meaningful text that will help us understand if this log will be readable by the user.",
     severity: ConsoleLogSeverities.Error,
   },
-].map((log, i) => ({ ...log, id: i }));
+].map((log, i) => ({ ...log, id: i.toString() }));
 
 const lotsOfLogs = [
   {
@@ -695,7 +695,7 @@ const lotsOfLogs = [
     message: 'This is a test of an ERROR message.',
     severity: ConsoleLogSeverities.Error,
   },
-].map((log, i) => ({ ...log, id: i }));
+].map((log, i) => ({ ...log, id: i.toString() }));
 
 const props: IProps = {
   logs,
