@@ -31,6 +31,8 @@ const RefreshBar = props => (
   />
 );
 
+let logCount = 0;
+
 interface IState {
   solution?: ISolution | null;
   lastRendered: number | null;
@@ -89,16 +91,27 @@ export class App extends React.Component<{}, IState> {
     });
   };
 
-  addLog = (log: ILogData) =>
-    this.setState({ logs: [...this.state.logs, log], isConsoleOpen: true });
+  addLog = (log: { severity: ConsoleLogTypes; message: string }) => {
+    this.setState({
+      logs: [...this.state.logs, { id: logCount.toString(), ...log }],
+      isConsoleOpen: true,
+    });
+    logCount++;
+  };
   clearLogs = () => this.setState({ logs: [] });
 
   openConsole = () => this.setState({ isConsoleOpen: true });
   closeConsole = () => this.setState({ isConsoleOpen: false });
 
   onReceiveNewActiveSolution = (solution: ISolution | null) => {
-    if (solution !== null && this.state.solution) {
-      console.info(`Your snippet '${solution.name}' has been loaded.`);
+    if (solution !== null) {
+      if (!this.state.solution) {
+        console.info(`Your snippet "${solution.name}" has been loaded.`);
+      } else if (this.state.solution.id === solution.id) {
+        console.info(`Updating your snippet "${solution.name}".`);
+      } else {
+        console.info(`Switching to snippet "${solution.name}".`);
+      }
     }
     this.setState({ solution });
   };
@@ -108,6 +121,7 @@ export class App extends React.Component<{}, IState> {
       this.setState({
         solution: { ...this.state.solution, dateLastModified: Date.now() },
       });
+      console.info(`Your snippet '${this.state.solution.name}' has been reloaded.`);
     }
   };
 

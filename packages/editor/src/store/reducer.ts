@@ -4,9 +4,6 @@ import { RouterState } from 'connected-react-router';
 // reducers
 import customFunctions, { IState as ICFState } from './customFunctions/reducer';
 import dialog, { IState as IDialogState } from './dialog/reducer';
-import directScriptExecution, {
-  IState as IDirectScriptExecutionState,
-} from './directScriptExecution/reducer';
 import editor, { IState as IEditorState } from './editor/reducer';
 import github, { IState as IGithubState } from './github/reducer';
 import messageBar, { IState as IMessageBarState } from './messageBar/reducer';
@@ -22,7 +19,6 @@ import { IRootAction } from './actions';
 export interface IState {
   customFunctions: ICFState;
   dialog: IDialogState;
-  directScriptExecution: IDirectScriptExecutionState;
   editor: IEditorState;
   github: IGithubState;
   messageBar: IMessageBarState;
@@ -38,7 +34,6 @@ export interface IState {
 const root = combineReducers<IState, IRootAction>({
   customFunctions,
   dialog,
-  directScriptExecution,
   editor,
   github,
   messageBar,

@@ -1,18 +1,25 @@
 import { createAction } from 'typesafe-actions';
 import { DialogType } from 'office-ui-fabric-react/lib/Dialog';
 
+interface IShowDialogProps {
+  title: string;
+  subText: string;
+  buttons: Array<{
+    text: string;
+    action: { type: string; payload?: any };
+    isPrimary: boolean;
+  }>;
+  style?: DialogType;
+  isBlocking?: boolean;
+}
 export const show = createAction('DIALOG_SHOW', resolve => {
-  return (
-    title: string,
-    subText: string,
-    buttons: Array<{
-      text: string;
-      action: { type: string; payload?: any };
-      isPrimary: boolean;
-    }>,
-    style: DialogType = DialogType.largeHeader,
-    isBlocking: boolean = false,
-  ) => resolve({ title, subText, buttons, style, isBlocking });
+  return ({
+    title,
+    subText,
+    buttons,
+    style = DialogType.largeHeader,
+    isBlocking = false,
+  }: IShowDialogProps) => resolve({ title, subText, buttons, style, isBlocking });
 });
 
 export const dismiss = createAction('DIALOG_DISMISS');

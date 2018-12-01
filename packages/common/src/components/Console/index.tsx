@@ -3,8 +3,6 @@ import { withTheme } from 'styled-components';
 
 import { Icon } from 'office-ui-fabric-react/lib/Icon';
 import { Checkbox } from 'office-ui-fabric-react/lib/Checkbox';
-import { List, ScrollToMode, IListProps } from 'office-ui-fabric-react/lib/List';
-import { FocusZone } from 'office-ui-fabric-react/lib/FocusZone';
 
 import {
   Wrapper,
@@ -17,6 +15,8 @@ import {
   LogText,
 } from './styles';
 import HeaderFooterLayout from '../HeaderFooterLayout';
+
+const MAX_LOGS_SHOWN = 100;
 
 export enum ConsoleLogSeverities {
   Info = 'info',
@@ -41,16 +41,12 @@ interface IState {
 }
 
 class Console extends React.Component<IPrivateProps, IState> {
-  private list: List;
+  private lastLog = React.createRef<HTMLDivElement>();
+  state: IState = { shouldScrollToBottom: true, filterQuery: '' };
 
   static defaultProps = {
     style: {},
   };
-
-  constructor(props: IPrivateProps) {
-    super(props);
-    this.state = { shouldScrollToBottom: true, filterQuery: '' };
-  }
 
   componentDidMount() {
     this.scrollToBottom();
@@ -69,8 +65,8 @@ class Console extends React.Component<IPrivateProps, IState> {
     });
 
   scrollToBottom() {
-    if (this.state.shouldScrollToBottom && this.list) {
-      this.list.scrollToIndex(this.props.logs.length);
+    if (this.state.shouldScrollToBottom && this.lastLog.current) {
+      this.lastLog.current.scrollIntoView();
     }
   }
 
@@ -78,8 +74,9 @@ class Console extends React.Component<IPrivateProps, IState> {
     const { theme, logs, clearLogs, style } = this.props;
 
     const items = logs
+      .slice(-1 * MAX_LOGS_SHOWN) // get the last X logs
       .filter(log => log.message.toLowerCase().includes(this.state.filterQuery))
-      .map(({ severity, message }, i) => {
+      .map(({ id, severity, message }) => {
         const { backgroundColor, color, icon } = {
           [ConsoleLogSeverities.Log]: {
             backgroundColor: theme.white,
@@ -104,7 +101,7 @@ class Console extends React.Component<IPrivateProps, IState> {
         }[severity];
 
         return {
-          key: `${severity}-${i}`,
+          key: `${severity}-${id}}`,
           backgroundColor,
           color,
           icon,
@@ -153,46 +150,30 @@ class Console extends React.Component<IPrivateProps, IState> {
           }
         >
           <LogsArea>
-            <div>
-              <List
-                ref={this.resolveList}
-                items={items}
-                onRenderCell={this.onRenderCell}
-              />
-            </div>
+            {items.map(({ backgroundColor, color, key, icon, message }) => (
+              <Log key={key} style={{ backgroundColor, color }}>
+                {icon ? (
+                  <Icon
+                    className="ms-font-m"
+                    iconName={icon.name}
+                    style={{
+                      fontSize: '1.2rem',
+                      color: icon.color,
+                      lineHeight: '1.2rem',
+                    }}
+                  />
+                ) : (
+                  <div style={{ width: '1.2rem', height: '1.2rem' }} />
+                )}
+                <LogText>{message}</LogText>
+              </Log>
+            ))}
+            <div ref={this.lastLog} />
           </LogsArea>
         </HeaderFooterLayout>
       </Wrapper>
     );
   }
-
-  private resolveList = (list: List): void => {
-    this.list = list;
-  };
-
-  private onRenderCell = (
-    { key, backgroundColor, color, icon, message }: any,
-    index: number,
-  ): JSX.Element => {
-    return (
-      <Log key={key} style={{ backgroundColor, color }}>
-        {icon ? (
-          <Icon
-            className="ms-font-m"
-            iconName={icon.name}
-            style={{
-              fontSize: '1.2rem',
-              color: icon.color,
-              lineHeight: '1.2rem',
-            }}
-          />
-        ) : (
-          <div style={{ width: '1.2rem', height: '1.2rem' }} />
-        )}
-        <LogText>{message}</LogText>
-      </Log>
-    );
-  };
 }
 
 export default withTheme(Console);
