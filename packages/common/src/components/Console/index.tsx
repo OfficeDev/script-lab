@@ -76,7 +76,7 @@ class Console extends React.Component<IPrivateProps, IState> {
     const items = logs
       .slice(-1 * MAX_LOGS_SHOWN) // get the last X logs
       .filter(log => log.message.toLowerCase().includes(this.state.filterQuery))
-      .map(({ severity, message }) => {
+      .map(({ id, severity, message }) => {
         const { backgroundColor, color, icon } = {
           [ConsoleLogSeverities.Log]: {
             backgroundColor: theme.white,
@@ -101,7 +101,7 @@ class Console extends React.Component<IPrivateProps, IState> {
         }[severity];
 
         return {
-          key: `${severity}-${message.slice(Math.min(5, message.length))}`,
+          key: `${severity}-${id}}`,
           backgroundColor,
           color,
           icon,
