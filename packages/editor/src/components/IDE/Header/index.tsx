@@ -147,7 +147,7 @@ const mapDispatchToProps = (dispatch, ownProps: IProps): IActionsFromRedux => ({
       action: { type: string; payload?: any };
       isPrimary: boolean;
     }>,
-  ) => dispatch(dialog.show(title, subText, buttons)),
+  ) => dispatch(dialog.show({ title, subText, buttons })),
 });
 
 export interface IProps extends IPropsFromRedux, IActionsFromRedux {
