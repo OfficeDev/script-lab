@@ -140,12 +140,7 @@ for (const packageName in PRECOMPILE_SPEC) {
     const fullPath = path.join(publicFolderFullDir, filename);
     console.log(`    - ${fullPath}`);
     fs.writeFileSync(fullPath, fileLines[filename].join('\n'));
-    childProcess.execSync(
-      `${path.normalize('node_modules/.bin/prettier --write')} ${fullPath}`,
-      {
-        stdio: [0, 1, 2],
-      },
-    );
+    execShellCommand('node_modules/.bin/prettier', ['--write', fullPath]);
 
     if (unfulfilledPlaceholders[filename].length > 0) {
       throw new Error(
@@ -163,19 +158,33 @@ console.log(`=== Done running precompile script ===`);
 ////////////////////////////////////////
 
 // Helpers
+
+function execShellCommand(
+  commandPath: string,
+  args: string[],
+  otherOptions: { cwd?: string } = {},
+): void {
+  const fullCommand = [path.normalize(commandPath), ...args].join(' ');
+  console.info(
+    `Executing shell command: "${fullCommand}"` +
+      (otherOptions.cwd ? ` in folder "${otherOptions.cwd}"` : ''),
+  );
+
+  childProcess.execSync(fullCommand, {
+    stdio: [0, 1, 2],
+    ...otherOptions,
+  });
+}
+
 function readAsIsProcessor(fullPath: string): string {
   return fs.readFileSync(fullPath, 'utf8').toString();
 }
 
 function webpackProcessor(folderPath: string): string {
-  childProcess.execSync(
-    `${path.normalize(
-      '../../../../node_modules/.bin/webpack-cli',
-    )} --mode ${WEBPACK_MODE}`,
-    {
-      cwd: folderPath,
-      stdio: [0, 1, 2],
-    },
+  execShellCommand(
+    '../../../../node_modules/.bin/webpack-cli',
+    ['--mode', WEBPACK_MODE],
+    { cwd: folderPath },
   );
   return fs
     .readFileSync(path.join(folderPath, 'dist/webpack/bundle.js'), 'utf8')

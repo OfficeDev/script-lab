@@ -1,12 +1,15 @@
+import { parse } from 'query-string';
 import {
   SCRIPT_URLS,
   OFFICE_JS_URL_QUERY_PARAMETER_KEY,
 } from '../../../common/src/constants';
-import { addScriptTag, extractParams } from '../../../common/src/utilities/script.loader';
+import { addScriptTag } from '../../../common/src/utilities/script.loader';
 
-const params = extractParams(window.location.href.split('?')[1]) || {};
+const params = parse(window.location.search) as {
+  [OFFICE_JS_URL_QUERY_PARAMETER_KEY]: string;
+};
 const officeJsUrlToLoad =
-  ((params[OFFICE_JS_URL_QUERY_PARAMETER_KEY] as string) || '').trim().length > 0
+  (params[OFFICE_JS_URL_QUERY_PARAMETER_KEY] || '').trim().length > 0
     ? params[OFFICE_JS_URL_QUERY_PARAMETER_KEY]
     : SCRIPT_URLS.OFFICE_JS_FOR_EDITOR;
 addScriptTag(officeJsUrlToLoad, () => true /*isDoneCheck*/);
