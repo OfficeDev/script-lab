@@ -7,7 +7,8 @@ import { stringifyPlusPlus } from 'common/lib/utilities/string';
 import Theme from 'common/lib/components/Theme';
 import Console, { ConsoleLogSeverities } from 'common/lib/components/Console';
 import HeaderFooterLayout from 'common/lib/components/HeaderFooterLayout';
-import { SCRIPT_URLS, OFFICE_JS_URL_QUERY_PARAMETER_KEY } from 'common/lib/constants';
+import { SCRIPT_URLS } from 'common/lib/constants';
+import { OFFICE_JS_URL_QUERY_PARAMETER_KEY } from 'common/lib/utilities/script-loader/constants';
 
 import Heartbeat from './Heartbeat';
 import Header from './Header';

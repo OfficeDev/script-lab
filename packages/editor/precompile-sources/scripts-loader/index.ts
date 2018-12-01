@@ -1,15 +1,10 @@
 import { PATHS } from '../../src/constants';
 import { SCRIPT_URLS } from '../../../common/src/constants';
-import { addScriptTag } from '../../../common/src/utilities/script.loader';
+import { addScriptTags } from '../../../common/src/utilities/script-loader/precompile';
 
-let currentFinishedScriptCounter = 0;
-const listOfScriptsToLoad = determineScriptsToDynamicallyLoad();
-listOfScriptsToLoad.forEach(url =>
-  addScriptTag(url, () => {
-    currentFinishedScriptCounter++;
-    return currentFinishedScriptCounter === listOfScriptsToLoad.length;
-  }),
-);
+addScriptTags(determineScriptsToDynamicallyLoad());
+
+/////////////////////////////////////////////
 
 // Helpers
 

@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "lib": ["dom", "es2015"],
+    "lib": ["dom", "es5"],
     "module": "commonjs",
     "strict": true,
     "outDir": "./dist/tsc/",

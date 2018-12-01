@@ -23,7 +23,7 @@ import throttle from 'lodash/throttle';
 import './index.css';
 import Root from './components/Root';
 import App from './components/App';
-import { waitForAllDynamicScriptsToBeLoaded } from 'common/lib/utilities/script.loader';
+import { waitForAllDynamicScriptsToBeLoaded } from 'common/lib/utilities/script-loader/consumer';
 import invokeGlobalErrorHandler from 'common/lib/utilities/global.error.handler';
 import { IState } from './store/reducer';
 
