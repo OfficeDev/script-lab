@@ -27,6 +27,7 @@
     "src/setupTests.ts",
     "public",
     "**/*.stories.tsx",
-    "**/.storybook/**"
+    "**/.storybook/**",
+    "lib"
   ]
 }

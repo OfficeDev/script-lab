@@ -9,14 +9,13 @@
     ],
     "outDir": "build/dist",
     "skipLibCheck": true,
-    // "strict": true,
+    "strict": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "preserve",
-    "alwaysStrict": false,
-    "strictFunctionTypes": false,
-    "strictPropertyInitialization": false
+    "alwaysStrict": true,
+    "strictFunctionTypes": true
   },
   "include": ["./src/**/*", "../common/src/interfaces"],
   "exclude": [

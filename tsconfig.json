@@ -10,10 +10,10 @@
     "jsx": "react",
     "moduleResolution": "node",
     "forceConsistentCasingInFileNames": true,
-    "noImplicitReturns": false, // until all the errors are fixerd
+    "noImplicitReturns": false, // until all the errors are fixed
     "noImplicitThis": true,
     "noImplicitAny": false, // until all the errors are fixed
-    "strict": false, // until all the errorrs are fixed
+    "strict": true,
     "pretty": true,
     "removeComments": true,
     "strictNullChecks": false, // until all the errors are fixed

@@ -88,21 +88,16 @@ interface IState {
 }
 
 export class Backstage extends Component<IProps, IState> {
-  containerDomNode: any;
+  containerDomNode = React.createRef<HTMLDivElement>();
   resizeListener: any;
 
-  constructor(props: IProps) {
-    super(props);
-    this.containerDomNode = React.createRef();
-
-    this.state = {
-      isLoading: false,
-      selectedKey: this.props.solutions.length > 0 ? 'my-solutions' : 'samples',
-      conflictingGist: null,
-      existingSolutionsConflicting: null,
-      width: 0,
-    };
-  }
+  state = {
+    isLoading: false,
+    selectedKey: this.props.solutions.length > 0 ? 'my-solutions' : 'samples',
+    conflictingGist: null,
+    existingSolutionsConflicting: null,
+    width: 0,
+  };
 
   componentDidMount() {
     this.resizeListener = window.addEventListener('resize', debounce(this.setWidth, 100));
