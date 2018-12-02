@@ -145,16 +145,8 @@ export class App extends React.Component<{}, IState> {
     }
   };
 
-  reloadPage = (newOfficeJsUrl?: string) => {
-    const newQueryParams: { [key: string]: any } = queryString.parse(
-      window.location.search,
-    );
-
-    if (newOfficeJsUrl) {
-      newQueryParams[OFFICE_JS_URL_QUERY_PARAMETER_KEY] = newOfficeJsUrl;
-    }
-
-    window.location.search = queryString.stringify(newQueryParams);
+  reloadPage = () => {
+    this.reloadPageWithDifferentOfficeJsUrl(null);
   };
 
   onSnippetRender = ({ lastRendered }: { lastRendered: number }) => {
@@ -225,6 +217,23 @@ export class App extends React.Component<{}, IState> {
 
   /////////////////////////
 
+  // Note: need a separate helper function rather than re-using
+  // the "reloadPage", because that one is used by a click handler --
+  // and thus will get invoked with an object-based click-event parameter
+  // rather than a string, messing up the reload.
+  private reloadPageWithDifferentOfficeJsUrl(newOfficeJsUrl: string | null) {
+    const newQueryParams: { [key: string]: any } = queryString.parse(
+      window.location.search,
+    );
+
+    if (newOfficeJsUrl) {
+      newQueryParams[OFFICE_JS_URL_QUERY_PARAMETER_KEY] = newOfficeJsUrl;
+    }
+
+    const newParams = queryString.stringify(newQueryParams);
+    window.location.search = newParams;
+  }
+
   private respondToOfficeJsMismatchIfAny(solution: ISolution) {
     const librariesFile = solution.files.find(file => file.name === 'libraries.txt');
     if (!librariesFile) {
@@ -262,7 +271,7 @@ export class App extends React.Component<{}, IState> {
       }
 
       this.isTransitioningAwayFromPage = true;
-      this.reloadPage(newOfficeJsUrl!);
+      this.reloadPageWithDifferentOfficeJsUrl(newOfficeJsUrl!);
     }
   }
 }
