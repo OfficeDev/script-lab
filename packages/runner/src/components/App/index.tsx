@@ -78,8 +78,11 @@ export class App extends React.Component<{}, IState> {
     ['info', 'warn', 'error', 'log'].forEach(method => {
       const oldMethod = window.console[method];
       window.console[method] = (...args: any[]) => {
-        oldMethod(...args);
         try {
+          // For some reason, in IE, calling the old method occasionally resulted in an error:
+          // "JavaScript runtime error: Invalid calling object".  Hence putting it into the try/catch as well.
+          oldMethod(...args);
+
           const message = stringifyPlusPlus(args);
 
           setTimeout(

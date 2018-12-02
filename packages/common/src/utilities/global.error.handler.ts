@@ -12,7 +12,12 @@ export default function invokeGlobalErrorHandler(error: any) {
   const subtitleElement = document.querySelectorAll('#loading h2')[0] as HTMLElement;
 
   const fromOldErrorIfAny = document.querySelectorAll('#loading .error');
-  fromOldErrorIfAny.forEach(item => item.parentNode!.removeChild(item));
+  // Don't use "forEach", it doesn't work in IE!  Instead, just iterate over the elements:
+  // tslint:disable-next-line:prefer-for-of
+  for (let i = 0; i < fromOldErrorIfAny.length; i++) {
+    const item = fromOldErrorIfAny[i];
+    item.parentNode!.removeChild(item);
+  }
 
   subtitleElement.innerHTML = 'An unexpected error has occurred.';
 

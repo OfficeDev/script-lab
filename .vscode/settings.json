@@ -65,7 +65,8 @@
   "cSpell.ignorePaths": [
     "**/node_modules", // the same for this one
     "**/node_modules/**", // the same for this one
-    "package.json"
+    "package.json",
+    "yarn.lock"
   ],
   "cSpell.flagWords": ["hte"]
 }

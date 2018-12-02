@@ -1301,10 +1301,10 @@
   version "15.5.6"
   resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.5.6.tgz#9c03d3fed70a8d517c191b7734da2879b50ca26c"
 
-"@types/query-string@^6.1.1":
-  version "6.1.1"
-  resolved "https://registry.yarnpkg.com/@types/query-string/-/query-string-6.1.1.tgz#1cfd9209c8dbd91b940192c8a2b7005d2a743e6f"
-  integrity sha512-wRUeF7KN2yxCMw4VoXzPh3GWStbGaiyVjyX22fG7mpSzt6etLvsA2S0g0IuGeXGwVNIlztzVmGP6AxZMmYTQhw==
+"@types/query-string@^5.1.0":
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/@types/query-string/-/query-string-5.1.0.tgz#7f40cdea49ddafa0ea4f3db35fb6c24d3bfd4dcc"
+  integrity sha512-9/sJK+T04pNq7uwReR0CLxqXj1dhxiTapZ1tIxA0trEsT6FRS0bz09YMcMb7tsVBTm4RJ0NEBYGsAjoEmqoFXg==
 
 "@types/range-parser@*":
   version "1.2.2"
@@ -8640,12 +8640,14 @@ qs@6.5.2, qs@^6.5.2, qs@~6.5.2:
   version "6.5.2"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.5.2.tgz#cb3ae806e8740444584ef154ce8ee98d403f3e36"
 
-query-string@^6.2.0:
-  version "6.2.0"
-  resolved "https://registry.yarnpkg.com/query-string/-/query-string-6.2.0.tgz#468edeb542b7e0538f9f9b1aeb26f034f19c86e1"
+query-string@5:
+  version "5.1.1"
+  resolved "https://registry.yarnpkg.com/query-string/-/query-string-5.1.1.tgz#a78c012b71c17e05f2e3fa2319dd330682efb3cb"
+  integrity sha512-gjWOsm2SoGlgLEdAGt7a6slVOk9mGiXmPFMqrEhLQ68rhQuBnpfs3+EmlvqKyxnCo9/PPlF+9MtY02S1aFg+Jw==
   dependencies:
     decode-uri-component "^0.2.0"
-    strict-uri-encode "^2.0.0"
+    object-assign "^4.1.0"
+    strict-uri-encode "^1.0.0"
 
 querystring-es3@^0.2.0:
   version "0.2.1"
@@ -9971,9 +9973,10 @@ stream-shift@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/stream-shift/-/stream-shift-1.0.0.tgz#d5c752825e5367e786f78e18e445ea223a155952"
 
-strict-uri-encode@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/strict-uri-encode/-/strict-uri-encode-2.0.0.tgz#b9c7330c7042862f6b142dc274bbcc5866ce3546"
+strict-uri-encode@^1.0.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/strict-uri-encode/-/strict-uri-encode-1.1.0.tgz#279b225df1d582b1f54e65addd4352e18faa0713"
+  integrity sha1-J5siXfHVgrH1TmWt3UNS4Y+qBxM=
 
 string-length@^2.0.0:
   version "2.0.0"
