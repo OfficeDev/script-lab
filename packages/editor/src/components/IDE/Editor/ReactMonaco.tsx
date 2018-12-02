@@ -16,13 +16,8 @@ interface IState {
 }
 
 export class ReactMonaco extends Component<IProps, IState> {
-  editor;
-  container;
-
-  constructor(props) {
-    super(props);
-    this.container = React.createRef();
-  }
+  private editor: monaco.editor.IStandaloneCodeEditor;
+  private container = React.createRef<HTMLDivElement>();
 
   componentDidMount() {
     if ((window as any).monaco !== undefined) {
@@ -61,13 +56,20 @@ export class ReactMonaco extends Component<IProps, IState> {
   }
 
   initializeMonaco = () => {
+    if (!this.container.current) {
+      // Adding throw here mostly for the type-safety of using current below
+      throw new Error(
+        "Trying to initialize but ref isn't even valid. This should not be reachable.",
+      );
+    }
+
     this.editor = monaco.editor.create(this.container.current, {});
 
     const model = this.getModel();
     model.updateOptions({ tabSize: this.props.tabSize });
     this.editor.setModel(model);
 
-    this.editor.onDidChangeModelContent(event => {
+    this.editor.onDidChangeModelContent(() => {
       this.onValueChange();
     });
 

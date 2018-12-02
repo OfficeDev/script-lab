@@ -14,6 +14,9 @@ import { actions, selectors } from '../../../store';
 
 import CommonFooter from 'common/lib/components/Footer';
 import { capitalizeWord } from 'common/lib/utilities/string';
+import { Dispatch } from 'redux';
+import { IRootAction } from '../../../store/actions';
+import { IState as IReduxState } from '../../../store/reducer';
 
 const languageMap = {
   typescript: 'TypeScript',
@@ -31,7 +34,7 @@ interface IPropsFromRedux {
   isSettingsView: boolean;
 }
 
-const mapStateToProps = (state, ownProps: IProps): IPropsFromRedux => ({
+const mapStateToProps = (state: IReduxState): IPropsFromRedux => ({
   language: selectors.editor.getActiveFile(state).language,
   currentHost: selectors.host.get(state),
   isWeb: selectors.host.getIsWeb(state),
@@ -46,7 +49,7 @@ interface IActionsFromRedux {
   switchEnvironment: (env: string) => void;
 }
 
-const mapDispatchToProps = (dispatch): IActionsFromRedux => ({
+const mapDispatchToProps = (dispatch: Dispatch<IRootAction>): IActionsFromRedux => ({
   onSettingsIconClick: () => dispatch(actions.settings.open()),
   changeHost: (host: string) => dispatch(actions.host.change(host)),
   cycleEditorTheme: () => dispatch(actions.settings.cycleEditorTheme()),
@@ -104,7 +107,7 @@ const FooterWithoutTheme = ({
               },
             },
           })),
-        styles: props => ({
+        styles: () => ({
           root: { backgroundColor: theme.primary, color: theme.white },
         }),
       },

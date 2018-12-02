@@ -14,8 +14,11 @@ import ConflictResolutionDialog from './ConflictResolutionDialog/ConflictResolut
 import { ConflictResolutionOptions } from '../../interfaces/enums';
 
 import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { IRootAction } from '../../store/actions';
 import selectors from '../../store/selectors';
 import { editor, solutions, samples, gists, github } from '../../store/actions';
+import { IState as IReduxState } from '../../store/reducer';
 import { push } from 'connected-react-router';
 import { PATHS } from '../../constants';
 import Only from '../Only';
@@ -37,7 +40,7 @@ interface IPropsFromRedux {
   samplesByGroup: { [group: string]: ISampleMetadata[] };
 }
 
-const mapStateToProps = (state): IPropsFromRedux => ({
+const mapStateToProps = (state: IReduxState): IPropsFromRedux => ({
   solutions: selectors.solutions.getInLastModifiedOrder(state),
   activeSolution: selectors.editor.getActiveSolution(state),
   sharedGistMetadata: selectors.gists.getGistMetadata(state),
@@ -58,7 +61,7 @@ interface IActionsFromRedux {
   signIn: () => void;
 }
 
-const mapDispatchToProps = (dispatch): IActionsFromRedux => ({
+const mapDispatchToProps = (dispatch: Dispatch<IRootAction>): IActionsFromRedux => ({
   createNewSolution: () => dispatch(solutions.create()),
   openSolution: (solutionId: string, fileId: string) =>
     dispatch(editor.openFile({ solutionId, fileId })),
@@ -70,7 +73,7 @@ const mapDispatchToProps = (dispatch): IActionsFromRedux => ({
   ) => dispatch(gists.get.request({ rawUrl, gistId, conflictResolution })),
   importGist: (gistId?: string, gist?: string) =>
     dispatch(gists.importSnippet.request({ gistId, gist })),
-  goBack: () => dispatch(push(PATHS.EDITOR)),
+  goBack: () => dispatch(editor.open()),
   signIn: () => dispatch(github.login.request()),
 });
 
@@ -85,10 +88,10 @@ interface IState {
 }
 
 export class Backstage extends Component<IProps, IState> {
-  containerDomNode;
-  resizeListener;
+  containerDomNode: any;
+  resizeListener: any;
 
-  constructor(props) {
+  constructor(props: IProps) {
     super(props);
     this.containerDomNode = React.createRef();
 

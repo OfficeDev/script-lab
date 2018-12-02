@@ -1,13 +1,14 @@
 import React from 'react';
 
 import { connect } from 'react-redux';
-import actions from '../../store/actions';
+import actions, { IRootAction } from '../../store/actions';
+import { Dispatch } from 'redux';
 
 interface IActionsFromRedux {
   updateSize: (width: number, height: number) => void;
 }
 
-const mapDispatchToProps = (dispatch): IActionsFromRedux => ({
+const mapDispatchToProps = (dispatch: Dispatch<IRootAction>): IActionsFromRedux => ({
   updateSize: (width: number, height: number) =>
     dispatch(actions.screen.updateSize({ width, height })),
 });
