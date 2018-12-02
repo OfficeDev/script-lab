@@ -32,8 +32,6 @@ export default ({
 
   ${linkReferences.map(href => `<link rel="stylesheet" href="${href}" />`).join('\n  ')}
 
-  ${scriptReferences.map(src => `<script crossorigin="anonymous" src="${src}"></script>`).join('\n  ')}
-
   <style type="text/css">
     ${inlineStyles}
   </style>
@@ -41,6 +39,12 @@ export default ({
 
 <body>
   ${html}
+
+  <script type="text/javascript">
+    window.parent.scriptRunnerOnLoad(window);
+  </script>
+
+  ${scriptReferences.map(src => `<script crossorigin="anonymous" src="${src}"></script>`).join('\n  ')}
 
   <script type="text/javascript">
     ${inlineScript}

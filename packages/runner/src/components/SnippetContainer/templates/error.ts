@@ -72,6 +72,10 @@ export default ({ title, details }: IProps) => `<!DOCTYPE html>
     <h1 id="title" class="ms-font-xxl">${title}</h1>
     <pre id="details">${details}</pre>
   </div>
+
+  <script type="text/javascript">
+    window.parent.scriptRunnerOnLoad(window);
+  </script>
 </body>
 
 </html>`;
