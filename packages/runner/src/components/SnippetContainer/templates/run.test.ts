@@ -29,10 +29,6 @@ describe('template', () => {
   <link rel=\"stylesheet\" href=\"url2\" />
   <link rel=\"stylesheet\" href=\"url3\" />
 
-  <script crossorigin=\"anonymous\" src=\"url4\"></script>
-  <script crossorigin=\"anonymous\" src=\"url5\"></script>
-  <script crossorigin=\"anonymous\" src=\"url6\"></script>
-
   <style type=\"text/css\">
     body { color: blue }
   </style>
@@ -41,7 +37,15 @@ describe('template', () => {
 <body>
   <div>hello world</div>
 
-  <script type=\"text/javascript\">
+  <script>
+    window.parent.scriptRunnerOnLoad(window);
+  </script>
+
+  <script crossorigin=\"anonymous\" src=\"url4\"></script>
+  <script crossorigin=\"anonymous\" src=\"url5\"></script>
+  <script crossorigin=\"anonymous\" src=\"url6\"></script>
+
+  <script>
     example inline script
   </script>
 </body>

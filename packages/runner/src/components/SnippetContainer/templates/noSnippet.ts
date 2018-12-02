@@ -53,7 +53,7 @@ export default () => `<!DOCTYPE html>
     <h3 id="details" class="ms-font-l">Please open the editor to select a snippet.</h3>
   </div>
 
-  <script type="text/javascript">
+  <script>
     window.parent.scriptRunnerOnLoad(window);
   </script>
 </body>

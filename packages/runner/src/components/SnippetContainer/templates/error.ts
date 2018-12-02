@@ -73,7 +73,7 @@ export default ({ title, details }: IProps) => `<!DOCTYPE html>
     <pre id="details">${details}</pre>
   </div>
 
-  <script type="text/javascript">
+  <script>
     window.parent.scriptRunnerOnLoad(window);
   </script>
 </body>

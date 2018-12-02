@@ -40,13 +40,13 @@ export default ({
 <body>
   ${html}
 
-  <script type="text/javascript">
+  <script>
     window.parent.scriptRunnerOnLoad(window);
   </script>
 
   ${scriptReferences.map(src => `<script crossorigin="anonymous" src="${src}"></script>`).join('\n  ')}
 
-  <script type="text/javascript">
+  <script>
     ${inlineScript}
   </script>
 </body>
