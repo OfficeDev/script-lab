@@ -14,7 +14,7 @@ cache: yarn
 install:
   - yarn install --frozen-lockfile
   - yarn postinstall
-  - git diff-index HEAD --name-status || travis_terminate 1 # This makes sure that someone ran "yarn install" after merging their PR, and that the postinstall doesn't produce any diffs, which are annoying/confusing
+  - git --no-pager diff HEAD --exit-code || travis_terminate 1 # This makes sure that someone ran "yarn install" after merging their PR, and that the postinstall doesn't produce any diffs, which are annoying/confusing
 
 before_script:
   - yarn prettier
