@@ -5,21 +5,28 @@
     "lib": ["es6", "dom", "es2017"],
     "sourceMap": true,
     "allowJs": true,
+    "checkJs": true,
+    "importHelpers": true, // importing helper functions from tslib
+    "noEmitHelpers": true, // disable emitting inline helper functions
+
     "jsx": "react",
     "moduleResolution": "node",
     "forceConsistentCasingInFileNames": true,
-    "noImplicitReturns": false,
+    "noImplicitReturns": true,
     "noImplicitThis": true,
-    "noImplicitAny": false,
+    "noImplicitAny": true,
+    "strict": true,
+    "pretty": true,
+    "removeComments": true,
     "strictNullChecks": true,
     "suppressImplicitAnyIndexErrors": true,
     "noUnusedLocals": false,
     "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
     "downlevelIteration": true,
     "skipLibCheck": true
   },
-
-  "include": ["packages/interfaces/*"],
+  "include": ["packages/common/src/interfaces/*"],
   "exclude": [
     "node_modules",
     "build",
