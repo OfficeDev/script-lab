@@ -75,7 +75,7 @@ if (!Array.prototype.find) {
 }
 
 // https://tc39.github.io/ecma262/#sec-array.prototype.includes
-if (!Array.prototype.includes) {
+if (!(Array as any).prototype.includes) {
   Object.defineProperty(Array.prototype, 'includes', {
     value(searchElement, fromIndex) {
       if (this == null) {

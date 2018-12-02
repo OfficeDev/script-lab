@@ -49,10 +49,6 @@ class IFrame extends React.Component<IProps, IState> {
 
   renderContents = () => {
     if (this.isIframeMounted && this.shouldRender()) {
-      // Before writing to the frame, monkeypatch it (to make sure that if errors are throw,
-      // that they are shown/logged, to give it access to Office variables, etc.)
-      this.monkeypatchIframe();
-
       // writing content to iframe
       const doc = this.getContentDoc();
       doc.location.reload();
@@ -61,19 +57,21 @@ class IFrame extends React.Component<IProps, IState> {
       doc.close();
 
       // After write to the document, some of the overwrites (at least, the onerror)
-      // seem to get reset.  So, just for safety, monkeypatch it again
-      this.monkeypatchIframe();
+      // seem to get reset.  And in IE, the previously-transferred variables don't show.
+      // So, the only reliable way seems to be to monkeypatch the frame
+      // *once the script thinks it's ready*
+      (window as any).scriptRunnerOnLoad = (iframeWindow: Window) => {
+        this.monkeypatchIframe(iframeWindow);
 
-      this.setState({ previousRenderTimestamp: this.props.lastRendered });
-      if (this.props.onRenderComplete) {
-        this.props.onRenderComplete();
-      }
+        this.setState({ previousRenderTimestamp: this.props.lastRendered });
+        if (this.props.onRenderComplete) {
+          this.props.onRenderComplete();
+        }
+      };
     }
   };
 
-  private monkeypatchIframe = () => {
-    const iframe = (this.node as HTMLIFrameElement).contentWindow!;
-
+  private monkeypatchIframe = (iframe: Window) => {
     // cast to "as any" so that can overwrite the console field, which TS thinks is read-only
     (iframe as any).console = window.console;
     iframe.onerror = (...args) => console.error(args);

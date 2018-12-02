@@ -50,7 +50,7 @@ When running locally, the Runner console might also show the following errors:
 Critical dependency: the request of a dependency is an expression
 
 .../script-lab-react/node_modules/source-map-support/source-map-support.js
-Module not found: Can't resolve 'module' in 'C:\Users\mizlatko\Documents\Repos\script-lab-react\node_modules\source-map-support'
+Module not found: Can't resolve 'module' in ...\script-lab-react\script-lab-react\node_modules\source-map-support'
 
 Warning: Cannot update during an existing state transition (such as within `render`). Render methods should be a pure function of props and state.
 ```
@@ -61,7 +61,7 @@ You can safely ignore these -- those won't show up to users on the production si
 
 You will need to trust the certificates for each of <https://localhost:3000> (editor), <https://localhost:3200> (runner), and <https://localhost:5000> (server).
 
-For testing in the web browser (whether standalone or in Office Online) in Chrome, you can bypass the "unsecure localhost" by enabling this setting: <chrome://flags/#allow-insecure-localhost>
+For testing in the web browser (whether standalone or in Office Online) in Chrome, you can bypass the "insecure localhost" by enabling this setting: <chrome://flags/#allow-insecure-localhost>
 
 For testing on a PC version of Office, you will need to trust the certificates from within Internet Explorer. See the gif below for a step-by-step animation:
 
@@ -75,7 +75,9 @@ This is a particularly critical step for loading the Add-in inside of Office on 
 
 1. Locate the add-in manifest (which you'll find in the `manifests` folder in the root of the repo). For purposes of running against localhost, use `localhost.xml`.
 
-2. Sideload the manifest into your office host application. See <https://aka.ms/sideload-addins>, which includes instructions and a step-by-step video for sideloading on the desktop, as well as links for the other platforms.
+2. Sideload the manifest into your office host application. Use **either** option:
+   - Sideload the localhost manifest located in 'manifests/script-lab-react-localhost.xml', using the instructions on <https://aka.ms/sideload-addins>.
+   - Alternatively, install the **Store** version of the add-in, then switch environments (via dropdown on bottom left when in Settings mode) to alpha -- and **from alpha, to localhost**. Note that the localhost option will only show up if you're in alpha (or already on localhost). Also note that you need to be careful, it will stay stuck on _localhost_ until you undo it -- so if your local server isn't running, Script Lab might appear to be broken for you!
 
 ## [Optional] Testing GitHub auth locally (on localhost)
 
@@ -86,3 +88,11 @@ This is a particularly critical step for loading the Add-in inside of Office on 
 # Manual-testing scenarios
 
 Please see "[TESTING.md](TESTING.md)".
+
+# Dev tips & tricks:
+
+- `packages/common`:
+  - When adding code to the `packages/common`, run `yarn workspace common build:package` in order to get Intellisense and the compiler to pick it up. In VS Code, you may need to `F12` into the file references before Intellisense is able to see the updated contents.
+- Precompile scripts
+  - For precompile scripts, it's easiest to reference the `packages/common` files directly via ".." syntax, rather than trying to import from "common/lib/...". And also not to use any external libraries. Otherwise we'll need to figure out how to pipe the module information in (today, get an error like: `Module not found: Error: Can't resolve 'query-string' in '...\packages\runner\precompile-sources\scripts-loader'`)
+  - To avoid different md5 hashes when building on different machines, the precompile script (`/scripts/precompile.ts`) uses `const WEBPACK_MODE = 'production'`. You can temporarily switch it to 'development' to see the result of the precompile scripts.

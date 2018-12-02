@@ -52,6 +52,10 @@ export default () => `<!DOCTYPE html>
     <h1 id="title" class="ms-font-xxl">No snippet to run</h1>
     <h3 id="details" class="ms-font-l">Please open the editor to select a snippet.</h3>
   </div>
+
+  <script>
+    window.parent.scriptRunnerOnLoad(window);
+  </script>
 </body>
 
 </html>`;

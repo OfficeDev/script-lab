@@ -18,7 +18,6 @@
     "downlevelIteration": true,
     "skipLibCheck": true
   },
-
   "include": ["packages/interfaces/*"],
   "exclude": [
     "node_modules",

@@ -9,7 +9,7 @@
   - Should see your snippets in snippets list
     - Note: This is currently broken on IE (WAC), and somewhat broken on EDGE (WAC). An error appears saying "The security settings in your browser prevent us from creating a dialog box..."
     - Note: Separately, there's an issue with IE on both WAC and Win32 that does not allow for consenting to GitHub OAuth apps via IE. The current workaround is to load [this](https://script-lab-react-beta.azurewebsites.net/) url in Chrome and sign-in and consent in that window. After consenting in Chrome, you should be able to use the GitHub functionality in Win32.
-- Import someone else's snippet
+- Import someone elses' snippet
   - From YAML
   - From Gist
   - Both regular and custom functions
@@ -24,6 +24,8 @@
   - Update option should not appear in share menu after importing a gist that you do not own
   - Update option appears in share menu after initial publish of a new gist or a gist that you did not previously own
   - Deleting a gist (on the github website) and then trying to update it from Script Lab should have a reasonable behavior (some sort of error message?)
+- Misc:
+  - On both editor and runner, should be able to trigger a runtime error via the browser (e.g., type the following into the console: `setTimeout(function() { throw new Error("Test") } , 500)`), and it should trigger an error experience.
 
 By the end of Nov 2018, should also be able to test the following (can skip for now, since we're currently re-using the Script Lab 2017 runner experience):
 
