@@ -5,6 +5,7 @@ import 'core-js/fn/array/from';
 import 'core-js/fn/array/sort';
 import 'core-js/fn/array/find';
 import 'core-js/fn/array/includes';
+import 'core-js/fn/string/trim-left';
 import 'core-js/fn/string/trim-right';
 import 'core-js/fn/string/code-point-at';
 import 'core-js/fn/string/includes';
