@@ -2,6 +2,7 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "typeRoots": ["./src/interfaces", "node_modules/@types", "../../node_modules/@types"],
+    "lib": ["dom", "es2015"],
     "skipLibCheck": true,
     "esModuleInterop": true,
     "strict": false,

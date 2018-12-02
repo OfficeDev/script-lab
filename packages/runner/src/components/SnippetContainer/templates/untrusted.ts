@@ -56,6 +56,10 @@ export default ({snippetName}: IProps) => `<!DOCTYPE html>
     <h1 id="title" class="ms-font-xxl">Untrusted Snippet</h1>
     <h3 id="details" class="ms-font-l">In order to run "${snippetName}", you must first trust it in the editor.</h3>
   </div>
+
+  <script>
+    window.parent.scriptRunnerOnLoad(window);
+  </script>
 </body>
 
 </html>`;

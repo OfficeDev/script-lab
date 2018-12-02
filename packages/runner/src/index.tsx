@@ -5,6 +5,17 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './components/App';
 
-Office.onReady().then(() => {
-  ReactDOM.render(<App />, document.getElementById('root') as HTMLElement);
-});
+import { waitForAllDynamicScriptsToBeLoaded } from 'common/lib/utilities/script-loader/consumer';
+import invokeGlobalErrorHandler from 'common/lib/utilities/global.error.handler';
+
+window.onerror = error => invokeGlobalErrorHandler(error);
+
+(async () => {
+  try {
+    await waitForAllDynamicScriptsToBeLoaded();
+    await Office.onReady();
+    ReactDOM.render(<App />, document.getElementById('root') as HTMLElement);
+  } catch (e) {
+    invokeGlobalErrorHandler(e);
+  }
+})();

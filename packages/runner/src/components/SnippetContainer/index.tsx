@@ -12,66 +12,12 @@ import { LoadingIndicatorWrapper } from './styles';
 import { Spinner, SpinnerSize } from 'office-ui-fabric-react/lib/Spinner';
 import { compileTypeScript, SyntaxError } from './utilities';
 import untrusted from './templates/untrusted';
-
-function processLibraries(libraries: string, isInsideOffice: boolean) {
-  const linkReferences: string[] = [];
-  const scriptReferences: string[] = [];
-  let officeJS: string | null = null;
-
-  libraries.split('\n').forEach(processLibrary);
-
-  if (!isInsideOffice) {
-    officeJS = '<none>';
-  }
-
-  return { linkReferences, scriptReferences, officeJS };
-
-  function processLibrary(text: string) {
-    if (text == null || text.trim() === '') {
-      return null;
-    }
-
-    text = text.trim();
-
-    const isNotScriptOrStyle =
-      /^#.*|^\/\/.*|^\/\*.*|.*\*\/$.*/im.test(text) ||
-      /^@types/.test(text) ||
-      /^dt~/.test(text) ||
-      /\.d\.ts$/i.test(text);
-
-    if (isNotScriptOrStyle) {
-      return null;
-    }
-
-    const resolvedUrlPath = /^https?:\/\/|^ftp? :\/\//i.test(text)
-      ? text
-      : `https://unpkg.com/${text}`;
-
-    if (/\.css$/i.test(resolvedUrlPath)) {
-      return linkReferences.push(resolvedUrlPath);
-    }
-
-    if (/\.ts$|\.js$/i.test(resolvedUrlPath)) {
-      /*
-       * Don't add Office.js to the rest of the script references --
-       * it is special because of how it needs to be *outside* of the iframe,
-       * whereas the rest of the script references need to be inside the iframe.
-       */
-      if (/(?:office|office.debug).js$/.test(resolvedUrlPath.toLowerCase())) {
-        officeJS = resolvedUrlPath;
-        return null;
-      }
-
-      return scriptReferences.push(resolvedUrlPath);
-    }
-
-    return scriptReferences.push(resolvedUrlPath);
-  }
-}
+import { Utilities, HostType } from '@microsoft/office-js-helpers';
+import processLibraries from 'common/lib/utilities/process.libraries';
 
 export interface IProps {
   solution?: ISolution | null;
-  onRender?: (timestamp: number) => void;
+  onRender?: (data: { lastRendered: number }) => void;
 }
 
 interface IState {
@@ -92,8 +38,9 @@ class Snippet extends React.Component<IProps, IState> {
       isLoading: true,
       isIFrameMounted: false,
     };
+
     if (this.props.onRender) {
-      this.props.onRender(lastRendered);
+      this.props.onRender({ lastRendered });
     }
   }
 
@@ -102,16 +49,18 @@ class Snippet extends React.Component<IProps, IState> {
   componentDidUpdate(prevProps: IProps) {
     if (this.shouldUpdate(prevProps.solution, this.props.solution)) {
       const lastRendered = Date.now();
-      this.setState({ isIFrameMounted: false, isLoading: true }, () =>
-        this.setState({
+
+      this.setState({ isIFrameMounted: false, isLoading: true }, () => {
+        return this.setState({
           content: this.getContent(this.props),
           lastRendered,
           isLoading: true,
           isIFrameMounted: true,
-        }),
-      );
+        });
+      });
+
       if (this.props.onRender) {
-        this.props.onRender(lastRendered);
+        this.props.onRender!({ lastRendered });
       }
     }
   }
@@ -143,9 +92,9 @@ class Snippet extends React.Component<IProps, IState> {
       );
       const libraries = solution.files.find(file => file.name === 'libraries.txt')!
         .content;
-      const { linkReferences, scriptReferences, officeJS } = processLibraries(
+      const { linkReferences, scriptReferences, officeJs } = processLibraries(
         libraries,
-        false,
+        Utilities.host !== HostType.WEB /*isInsideOffice*/,
       );
 
       return runTemplate({

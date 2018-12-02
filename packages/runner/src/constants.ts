@@ -11,11 +11,12 @@ export const officeNamespacesForIframe = [
   'ExcelOp',
 ];
 
+// FIXME Zlatkovsky/Nico: merge these with the rest of environment.ts!
 export const editorUrls = {
   local: 'https://localhost:3000',
   alpha: 'https://script-lab-react-alpha.azurewebsites.net',
   beta: 'https://script-lab-react-beta.azurewebsites.net',
-  production: 'https://script-lab.azureedge.net',
+  prod: 'https://script-lab.azureedge.net',
 };
 
 export function getCurrentEnv(): 'local' | 'alpha' | 'beta' | 'prod' {
