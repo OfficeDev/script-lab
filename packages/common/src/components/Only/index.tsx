@@ -4,4 +4,5 @@ export interface IProps {
   children: React.ReactNode;
 }
 
-export default ({ when, children }: IProps) => (when ? children : null);
+export default ({ when, children }: IProps): JSX.Element =>
+  (when ? children : null) as JSX.Element;

@@ -23,7 +23,7 @@
     "runner:test": "yarn workspace runner test",
     "server:test": "yarn workspace server test",
     "test": "npm-run-all --parallel common:test editor:test runner:test server:test",
-    "checkForErrors": "ts-node scripts/compile.all.ts"
+    "tscAll": "ts-node scripts/compile.all.ts"
   },
   "devDependencies": {
     "@types/fs-extra": "^5.0.4",

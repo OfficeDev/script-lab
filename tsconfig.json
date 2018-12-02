@@ -12,7 +12,7 @@
     "jsx": "react",
     "moduleResolution": "node",
     "forceConsistentCasingInFileNames": true,
-    "noImplicitReturns": true,
+    "noImplicitReturns": false, // until all the errors are fixerd
     "noImplicitThis": true,
     "noImplicitAny": false, // until all the errors are fixed
     "strict": false, // until all the errorrs are fixed

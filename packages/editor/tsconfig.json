@@ -9,7 +9,6 @@
       "../../node_modules/@types"
     ],
     "skipLibCheck": true,
-    "esModuleInterop": true,
     "strict": false,
     "isolatedModules": true,
     "noEmit": true,
@@ -19,10 +18,7 @@
     "strictPropertyInitialization": false,
     "resolveJsonModule": true
   },
-  "include": [
-    "./src/**/*",
-    "../common/src/interfaces/*"
-  ],
+  "include": ["./src/**/*", "../common/src/interfaces/*"],
   "exclude": [
     "node_modules",
     "build",
