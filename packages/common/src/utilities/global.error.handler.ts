@@ -7,8 +7,6 @@ export default function invokeGlobalErrorHandler(error: any) {
   const loadingElement = document.getElementById('loading')!;
   const rootElement = document.getElementById('root');
 
-  loadingElement.style.visibility = 'initial';
-
   const subtitleElement = document.querySelectorAll('#loading h2')[0] as HTMLElement;
 
   const fromOldErrorIfAny = document.querySelectorAll('#loading .error');
@@ -60,6 +58,7 @@ export default function invokeGlobalErrorHandler(error: any) {
   }
 
   rootElement!.style.display = 'none';
+  loadingElement.style.visibility = 'initial';
 
   return true;
 }

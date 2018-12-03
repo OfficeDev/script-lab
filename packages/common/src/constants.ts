@@ -1,4 +1,4 @@
-const OFFICE_JS_LOCAL_PACKAGE_URL = '/external/office-js-1-1-11-adhoc-20/office.js';
+const OFFICE_JS_LOCAL_PACKAGE_URL = '/external/office-js-1-1-11-adhoc-28/office.js';
 
 export const SCRIPT_URLS = {
   OFFICE_JS_FOR_EDITOR: 'https://appsforoffice.microsoft.com/lib/1/hosted/office.js',

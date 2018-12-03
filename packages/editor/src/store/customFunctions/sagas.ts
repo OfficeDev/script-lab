@@ -14,7 +14,6 @@ import {
 } from './utilities';
 import { registerMetadata } from './utilities';
 
-import { RUNNER_URL, PATHS } from '../../constants';
 import {
   getCustomFunctionLogs,
   getCustomFunctionRunnerLastUpdated,

@@ -30,8 +30,6 @@ export const SCRIPT_FILE_NAME = 'index.ts';
 
 export const READ_ONLY_FILE_IDS = [NULL_FILE_ID, ABOUT_FILE_ID, DEFAULT_SETTINGS_FILE_ID];
 
-export const RUNNER_URL = 'https://bornholm-runner-insiders.azurewebsites.net';
-
 export const localStorageKeys = {
   customFunctionsLastHeartbeatTimestamp:
     'playground_custom_functions_last_heartbeat_timestamp',
