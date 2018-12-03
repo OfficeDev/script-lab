@@ -54,6 +54,7 @@ export default ({ title, details }: IProps) => `<!DOCTYPE html>
         margin-bottom: 20px;
       }
       #details {
+        max-width: 95%;
         background: #eee;
         border-radius: 5px;
         margin: 10px;
