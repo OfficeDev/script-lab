@@ -208,9 +208,8 @@ export class Backstage extends Component<IProps, IState> {
         icon: 'Download',
         content: <ImportSolution importGist={this.props.importGist} />,
       },
-    ].filter(x => x);
-    console.log(this.props.solutions.length === 0);
-    console.log(originalItems);
+    ];
+
     const items = originalItems.map((item: IBackstageItem) => ({
       onClick: () => this.setState({ selectedKey: item.key }),
       ...item,
