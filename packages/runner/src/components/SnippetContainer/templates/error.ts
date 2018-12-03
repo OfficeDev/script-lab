@@ -63,6 +63,9 @@ export default ({ title, details }: IProps) => `<!DOCTYPE html>
                 box-sizing: border-box;
         white-space: pre-wrap;
         word-wrap: break-word;
+        word-break: break-all;
+        white-space: pre-wrap;
+        overflow-y: auto;
       }
     </style>
 </head>
