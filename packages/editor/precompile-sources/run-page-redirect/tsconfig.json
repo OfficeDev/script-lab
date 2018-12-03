@@ -4,7 +4,8 @@
     "module": "commonjs",
     "strict": true,
     "outDir": "./dist/tsc/",
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "esModuleInterop": true
   },
   "include": ["./index.ts"]
 }

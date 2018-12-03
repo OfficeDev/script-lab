@@ -4,15 +4,21 @@ const PRECOMPILE_SPEC: {
 } = {
   editor: [
     {
-      name: 'style.css',
-      relativeFilePath: 'style.css',
-      injectInto: ['index.html', 'run.html'],
-      processor: readAsIsProcessor,
+      name: 'addin-commands.js',
+      relativeFilePath: 'addin-commands',
+      injectInto: ['functions.html'],
+      processor: webpackProcessor,
     },
     {
-      name: 'scripts-loader.js',
-      relativeFilePath: 'scripts-loader',
-      injectInto: ['index.html'],
+      name: 'external-page.js',
+      relativeFilePath: 'external-page',
+      injectInto: ['external-page.html'],
+      processor: webpackProcessor,
+    },
+    {
+      name: 'heartbeat.js',
+      relativeFilePath: 'heartbeat',
+      injectInto: ['heartbeat.html'],
       processor: webpackProcessor,
     },
     {
@@ -22,10 +28,16 @@ const PRECOMPILE_SPEC: {
       processor: webpackProcessor,
     },
     {
-      name: 'heartbeat.js',
-      relativeFilePath: 'heartbeat',
-      injectInto: ['heartbeat.html'],
+      name: 'scripts-loader.js',
+      relativeFilePath: 'scripts-loader',
+      injectInto: ['index.html'],
       processor: webpackProcessor,
+    },
+    {
+      name: 'style.css',
+      relativeFilePath: 'style.css',
+      injectInto: ['index.html', 'run.html'],
+      processor: readAsIsProcessor,
     },
   ],
   runner: [
@@ -106,7 +118,7 @@ for (const packageName in PRECOMPILE_SPEC) {
     const afterProcessing = spec.processor(
       path.resolve(packageFullDir, 'precompile-sources', spec.relativeFilePath),
     );
-    const hash = md5(afterProcessing);
+    const hash = getPlatformAgnosticHash(afterProcessing);
     const dotExtension = path.extname(spec.name);
     const baseName = path.basename(spec.name, dotExtension);
     const filenameWithHash = `${baseName}-${hash}${dotExtension}`;
@@ -254,6 +266,15 @@ function indexOfOneAndOnly(lines: string[], fullTextToFind: string): number {
 
 function getPlaceholderTextToFind(prefix: 'Begin' | 'End', filename: string): string {
   return `<!-- ${prefix} precompile placeholder: ${filename} -->`;
+}
+
+function getPlatformAgnosticHash(text: string) {
+  return md5(
+    text
+      .split('\n')
+      .map(line => line.trim())
+      .join('\n'),
+  );
 }
 
 type ISpecArray = Array<{
