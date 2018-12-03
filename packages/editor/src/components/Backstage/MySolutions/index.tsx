@@ -20,13 +20,13 @@ interface IState {
 }
 
 class MySolutions extends React.Component<IProps> {
-  state = { filterQuery: '' };
+  state: IState = { filterQuery: '' };
 
   componentWillMount() {
     this.setFilterQuery('');
   }
 
-  setFilterQuery = filterQuery => this.setState({ filterQuery });
+  setFilterQuery = (filterQuery: string) => this.setState({ filterQuery });
 
   render() {
     const {

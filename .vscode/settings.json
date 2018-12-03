@@ -10,9 +10,13 @@
     "Addins",
     "Customizer",
     "DOCTYPE",
+    "Env's",
+    "IntelliSense",
     "Nico",
+    "PowerPoint",
     "Stringifiable",
     "Unmount",
+    "Visio",
     "Zlatkovsky",
     "adhoc",
     "autoprefixer",
@@ -20,6 +24,8 @@
     "backend",
     "bornholm",
     "customfunction",
+    "dogfood",
+    "dogfooding",
     "dropdown",
     "filepath",
     "flexbox",
@@ -32,6 +38,7 @@
     "keyframes",
     "localstorage",
     "minified",
+    "monkeypatch",
     "officejs",
     "onenote",
     "overscroll",
@@ -51,6 +58,7 @@
     "subfolders",
     "typesafe",
     "uncomment",
+    "unminified",
     "unpkg",
     "untrusted",
     "uppercased"
@@ -58,7 +66,8 @@
   "cSpell.ignorePaths": [
     "**/node_modules", // the same for this one
     "**/node_modules/**", // the same for this one
-    "package.json"
+    "package.json",
+    "yarn.lock"
   ],
   "cSpell.flagWords": ["hte"]
 }

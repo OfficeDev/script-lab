@@ -3,7 +3,7 @@ import { Spinner, SpinnerSize } from 'office-ui-fabric-react/lib/Spinner';
 import CommonHeader from 'common/lib/components/Header';
 
 export interface IProps {
-  solutionName?: string;
+  solution?: ISolution | null;
 
   goBack?: () => void;
   refresh: () => void;
@@ -11,7 +11,7 @@ export interface IProps {
   openCode: () => void;
 }
 
-const Header = ({ solutionName, goBack, refresh, hardRefresh, openCode }: IProps) => {
+const Header = ({ solution, goBack, refresh, hardRefresh, openCode }: IProps) => {
   const items = [
     {
       hidden: !goBack,
@@ -21,13 +21,13 @@ const Header = ({ solutionName, goBack, refresh, hardRefresh, openCode }: IProps
     },
     {
       key: 'title',
-      text: solutionName || '',
+      text: solution ? solution.name : '',
       onRenderIcon: (props, defaultRender) => {
-        return solutionName ? null : (
+        return solution === undefined ? (
           <Spinner size={SpinnerSize.small} style={{ padding: '.1rem' }} />
-        );
+        ) : null;
       },
-      style: { padding: '0 2rem' },
+      style: { padding: '0 1rem' },
       onClick: refresh,
     },
   ];

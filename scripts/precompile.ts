@@ -1,10 +1,49 @@
 const PRECOMPILE_SPEC: {
   editor: ISpecArray;
+  runner: ISpecArray;
 } = {
   editor: [
     {
+      name: 'addin-commands.js',
+      relativeFilePath: 'addin-commands',
+      injectInto: ['functions.html'],
+      processor: webpackProcessor,
+    },
+    {
+      name: 'external-page.js',
+      relativeFilePath: 'external-page',
+      injectInto: ['external-page.html'],
+      processor: webpackProcessor,
+    },
+    {
+      name: 'heartbeat.js',
+      relativeFilePath: 'heartbeat',
+      injectInto: ['heartbeat.html'],
+      processor: webpackProcessor,
+    },
+    {
+      name: 'run-page-redirect.js',
+      relativeFilePath: 'run-page-redirect',
+      injectInto: ['run.html'],
+      processor: webpackProcessor,
+    },
+    {
+      name: 'scripts-loader.js',
+      relativeFilePath: 'scripts-loader',
+      injectInto: ['index.html'],
+      processor: webpackProcessor,
+    },
+    {
       name: 'style.css',
       relativeFilePath: 'style.css',
+      injectInto: ['index.html', 'run.html'],
+      processor: readAsIsProcessor,
+    },
+  ],
+  runner: [
+    {
+      name: 'style.css',
+      relativeFilePath: '../../editor/precompile-sources/style.css',
       injectInto: ['index.html'],
       processor: readAsIsProcessor,
     },
@@ -19,7 +58,11 @@ const PRECOMPILE_SPEC: {
 
 const BEGIN_PLACEHOLDER_REGEX = /^.*(<!-- Begin precompile placeholder: .* -->).*$/;
 
-const WEBPACK_MODE = process.env.TRAVIS ? 'production' : 'development';
+// Setting to production mode both makes the file smaller, and avoids merge conflicts
+// by removing comments (comments that otherwise have source maps that include
+// the absolutely file path to the repo).
+// To temporarily see unminified files, switch to "development" (but do NOT check in like this!)
+const WEBPACK_MODE = 'production';
 
 ////////////////////////////////////////
 
@@ -75,7 +118,7 @@ for (const packageName in PRECOMPILE_SPEC) {
     const afterProcessing = spec.processor(
       path.resolve(packageFullDir, 'precompile-sources', spec.relativeFilePath),
     );
-    const hash = md5(afterProcessing);
+    const hash = getPlatformAgnosticHash(afterProcessing);
     const dotExtension = path.extname(spec.name);
     const baseName = path.basename(spec.name, dotExtension);
     const filenameWithHash = `${baseName}-${hash}${dotExtension}`;
@@ -83,7 +126,7 @@ for (const packageName in PRECOMPILE_SPEC) {
     fs.writeFileSync(pathToWriteTo, afterProcessing);
 
     if (spec.injectInto.length > 0) {
-      const resultingUrl = `%PUBLIC_URL%/precompiled/${filenameWithHash}`;
+      const resultingUrl = `/precompiled/${filenameWithHash}`;
       const toInject = spec.name
         .trim()
         .toLowerCase()
@@ -109,12 +152,7 @@ for (const packageName in PRECOMPILE_SPEC) {
     const fullPath = path.join(publicFolderFullDir, filename);
     console.log(`    - ${fullPath}`);
     fs.writeFileSync(fullPath, fileLines[filename].join('\n'));
-    childProcess.execSync(
-      `${path.normalize('node_modules/.bin/prettier --write')} ${fullPath}`,
-      {
-        stdio: [0, 1, 2],
-      },
-    );
+    execShellCommand('node_modules/.bin/prettier', ['--write', fullPath]);
 
     if (unfulfilledPlaceholders[filename].length > 0) {
       throw new Error(
@@ -132,19 +170,33 @@ console.log(`=== Done running precompile script ===`);
 ////////////////////////////////////////
 
 // Helpers
+
+function execShellCommand(
+  commandPath: string,
+  args: string[],
+  otherOptions: { cwd?: string } = {},
+): void {
+  const fullCommand = [path.normalize(commandPath), ...args].join(' ');
+  console.info(
+    `Executing shell command: "${fullCommand}"` +
+      (otherOptions.cwd ? ` in folder "${otherOptions.cwd}"` : ''),
+  );
+
+  childProcess.execSync(fullCommand, {
+    stdio: [0, 1, 2],
+    ...otherOptions,
+  });
+}
+
 function readAsIsProcessor(fullPath: string): string {
   return fs.readFileSync(fullPath, 'utf8').toString();
 }
 
 function webpackProcessor(folderPath: string): string {
-  childProcess.execSync(
-    `${path.normalize(
-      '../../../../node_modules/.bin/webpack-cli',
-    )} --mode ${WEBPACK_MODE}`,
-    {
-      cwd: folderPath,
-      stdio: [0, 1, 2],
-    },
+  execShellCommand(
+    '../../../../node_modules/.bin/webpack-cli',
+    ['--mode', WEBPACK_MODE],
+    { cwd: folderPath },
   );
   return fs
     .readFileSync(path.join(folderPath, 'dist/webpack/bundle.js'), 'utf8')
@@ -214,6 +266,15 @@ function indexOfOneAndOnly(lines: string[], fullTextToFind: string): number {
 
 function getPlaceholderTextToFind(prefix: 'Begin' | 'End', filename: string): string {
   return `<!-- ${prefix} precompile placeholder: ${filename} -->`;
+}
+
+function getPlatformAgnosticHash(text: string) {
+  return md5(
+    text
+      .split('\n')
+      .map(line => line.trim())
+      .join('\n'),
+  );
 }
 
 type ISpecArray = Array<{

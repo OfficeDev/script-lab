@@ -1,11 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Utilities } from '@microsoft/office-js-helpers';
-import { connect } from 'react-redux';
+import { Utilities, HostType } from '@microsoft/office-js-helpers';
+import queryString from 'query-string';
+import { stringifyPlusPlus } from 'common/lib/utilities/string';
 
 import Theme from 'common/lib/components/Theme';
 import Console, { ConsoleLogSeverities } from 'common/lib/components/Console';
 import HeaderFooterLayout from 'common/lib/components/HeaderFooterLayout';
+import { SCRIPT_URLS } from 'common/lib/constants';
+import { OFFICE_JS_URL_QUERY_PARAMETER_KEY } from 'common/lib/utilities/script-loader/constants';
+
 import Heartbeat from './Heartbeat';
 import Header from './Header';
 import Footer from './Footer';
@@ -14,6 +18,7 @@ import MessageBar from '../MessageBar';
 
 import SnippetContainer from '../SnippetContainer';
 import { editorUrl } from '../../constants';
+import processLibraries from 'common/lib/utilities/process.libraries';
 
 const AppWrapper = styled.div`
   height: 100vh;
@@ -30,42 +35,39 @@ const RefreshBar = props => (
   />
 );
 
-interface IActionsFromRedux {
-  openCode: () => void;
-}
-
-const mapDispatchToProps = (_): IActionsFromRedux => ({
-  openCode: () => Office.context.ui.displayDialogAsync(editorUrl),
-});
+let logCount = 0;
 
 interface IState {
-  solution: ISolution | null;
+  solution?: ISolution | null;
   lastRendered: number | null;
   logs: ILogData[];
   isConsoleOpen: boolean;
 }
 
 export class App extends React.Component<{}, IState> {
+  private officeJsPageUrlLowerCased: string | null;
+  private hasRenderedFirstRealSnippet = false;
+  private isTransitioningAwayFromPage = false;
+
   constructor(props) {
     super(props);
 
     this.state = {
-      solution: null,
+      solution: undefined,
       logs: [],
       isConsoleOpen: false,
       lastRendered: null,
     };
 
-    Office.onReady(() => {
-      const loadingIndicator = document.getElementById('loading');
-      if (loadingIndicator) {
-        const { parentNode } = loadingIndicator;
-        if (parentNode) {
-          parentNode.removeChild(loadingIndicator);
-        }
-      }
-      this.forceUpdate();
-    });
+    const params = queryString.parse(window.location.search) as {
+      [OFFICE_JS_URL_QUERY_PARAMETER_KEY]: string;
+    };
+    this.officeJsPageUrlLowerCased =
+      Utilities.host === HostType.WEB
+        ? null
+        : (
+            params[OFFICE_JS_URL_QUERY_PARAMETER_KEY] || SCRIPT_URLS.OFFICE_JS_FOR_EDITOR
+          ).toLowerCase();
   }
 
   componentDidMount() {
@@ -76,10 +78,16 @@ export class App extends React.Component<{}, IState> {
     ['info', 'warn', 'error', 'log'].forEach(method => {
       const oldMethod = window.console[method];
       window.console[method] = (...args: any[]) => {
-        oldMethod(...args);
         try {
-          const message =
-            typeof args[0] !== 'string' ? JSON.stringify(args[0], null, 2) : args[0];
+          // For some reason, in IE, calling the old method results in an error:
+          // "JavaScript runtime error: Invalid calling object".  Hence putting it into the try/catch as well.
+          oldMethod(...args);
+        } catch (e) {
+          // Silently ignore.  We'll still get notified via the UI anyway!
+        }
+
+        try {
+          const message = stringifyPlusPlus(args);
 
           setTimeout(
             () =>
@@ -90,9 +98,8 @@ export class App extends React.Component<{}, IState> {
             0,
           );
         } catch (error) {
-          // this is a quickfix to prevent
-          // Uncaught TypeError: Converting circular structure to JSON
-          // from being thown
+          // This shouldn't happen (stringifyPlusPlus should ensure there are no circular structures)
+          // But just in case...
           setTimeout(
             () =>
               this.addLog({
@@ -101,20 +108,39 @@ export class App extends React.Component<{}, IState> {
               }),
             0,
           );
-          // FIXME Zlatkovsky to use stringifyplusplus
         }
       };
     });
   };
 
-  addLog = (log: ILogData) =>
-    this.setState({ logs: [...this.state.logs, log], isConsoleOpen: true });
+  addLog = (log: { severity: ConsoleLogTypes; message: string }) => {
+    this.setState({
+      logs: [...this.state.logs, { id: logCount.toString(), ...log }],
+      isConsoleOpen: true,
+    });
+    logCount++;
+  };
   clearLogs = () => this.setState({ logs: [] });
 
   openConsole = () => this.setState({ isConsoleOpen: true });
   closeConsole = () => this.setState({ isConsoleOpen: false });
 
-  onReceiveNewActiveSolution = (solution: ISolution) => this.setState({ solution });
+  openCode = () => Office.context.ui.displayDialogAsync(editorUrl);
+
+  onReceiveNewActiveSolution = (solution: ISolution | null) => {
+    if (solution !== null) {
+      this.respondToOfficeJsMismatchIfAny(solution);
+
+      if (!this.state.solution) {
+        console.info(`Your snippet "${solution.name}" has been loaded.`);
+      } else if (this.state.solution.id === solution.id) {
+        console.info(`Updating your snippet "${solution.name}".`);
+      } else {
+        console.info(`Switching to snippet "${solution.name}".`);
+      }
+    }
+    this.setState({ solution });
+  };
 
   softRefresh = () => {
     if (this.state.solution) {
@@ -125,9 +151,24 @@ export class App extends React.Component<{}, IState> {
     }
   };
 
-  reloadPage = () => window.location.reload();
+  reloadPage = () => {
+    this.reloadPageWithDifferentOfficeJsUrl(null);
+  };
 
-  setLastRendered = (lastRendered: number) => this.setState({ lastRendered });
+  onSnippetRender = ({ lastRendered }: { lastRendered: number }) => {
+    // If staying on this page (rather than being in the process of reloading)
+    if (!this.isTransitioningAwayFromPage) {
+      this.setState({ lastRendered });
+
+      if (this.state.solution) {
+        this.hasRenderedFirstRealSnippet = true;
+
+        // Also, hide the loading indicators, if they were still up
+        const loadingIndicator = document.getElementById('loading')!;
+        loadingIndicator.style.visibility = 'hidden';
+      }
+    }
+  };
 
   render() {
     return (
@@ -137,9 +178,14 @@ export class App extends React.Component<{}, IState> {
             wrapperStyle={{ flex: '7' }}
             header={
               <Header
-                solutionName={this.state.solution ? this.state.solution.name : undefined}
+                solution={this.state.solution}
                 refresh={this.softRefresh}
                 hardRefresh={this.reloadPage}
+                goBack={
+                  !!queryString.parse(window.location.search).backButton
+                    ? () => (window.location.href = editorUrl)
+                    : undefined
+                }
                 openCode={this.openCode}
               />
             }
@@ -148,7 +194,7 @@ export class App extends React.Component<{}, IState> {
                 isConsoleOpen={this.state.isConsoleOpen}
                 openConsole={this.openConsole}
                 closeConsole={this.closeConsole}
-                isSolutionLoaded={this.state.solution !== null}
+                isSolutionLoaded={!!this.state.solution}
                 lastRendered={this.state.lastRendered}
                 refresh={this.softRefresh}
               />
@@ -156,8 +202,8 @@ export class App extends React.Component<{}, IState> {
           >
             <RefreshBar isVisible={false} />
             <SnippetContainer
-              solution={this.state.solution || undefined}
-              onRender={this.setLastRendered}
+              solution={this.state.solution}
+              onRender={this.onSnippetRender}
             />
           </HeaderFooterLayout>
           <Only when={this.state.isConsoleOpen}>
@@ -175,9 +221,66 @@ export class App extends React.Component<{}, IState> {
       </Theme>
     );
   }
+
+  /////////////////////////
+
+  // Note: need a separate helper function rather than re-using
+  // the "reloadPage", because that one is used by a click handler --
+  // and thus will get invoked with an object-based click-event parameter
+  // rather than a string, messing up the reload.
+  private reloadPageWithDifferentOfficeJsUrl(newOfficeJsUrl: string | null) {
+    const newQueryParams: { [key: string]: any } = queryString.parse(
+      window.location.search,
+    );
+
+    if (newOfficeJsUrl) {
+      newQueryParams[OFFICE_JS_URL_QUERY_PARAMETER_KEY] = newOfficeJsUrl;
+    }
+
+    const newParams = queryString.stringify(newQueryParams);
+    window.location.search = newParams;
+  }
+
+  private respondToOfficeJsMismatchIfAny(solution: ISolution) {
+    const librariesFile = solution.files.find(file => file.name === 'libraries.txt');
+    if (!librariesFile) {
+      return;
+    }
+
+    const newOfficeJsUrl = processLibraries(
+      librariesFile.content,
+      Utilities.host !== HostType.WEB /*isInsideOffice*/,
+    ).officeJs;
+
+    const isMismatched = (() => {
+      if (this.officeJsPageUrlLowerCased && newOfficeJsUrl) {
+        return this.officeJsPageUrlLowerCased !== newOfficeJsUrl.toLowerCase();
+      }
+
+      return false;
+    })();
+
+    if (isMismatched) {
+      // On reloading Office.js (and if had already shown a snippet before),
+      // show a visual indication to explain the reload.
+      // Otherwise, if hasn't rendered any snippet before (i.e., it's a first navigation,
+      // straight to an office.js beta snippet, don't change out the title, keep as is
+      // so that the load appears continuous).
+      if (this.hasRenderedFirstRealSnippet) {
+        const loadingIndicator = document.getElementById('loading')!;
+        loadingIndicator.style.visibility = 'initial';
+        const subtitleElement = document.querySelectorAll(
+          '#loading h2',
+        )[0] as HTMLElement;
+        subtitleElement.textContent = 'Re-loading office.js, please wait...';
+
+        (document.getElementById('root') as HTMLElement).style.display = 'none';
+      }
+
+      this.isTransitioningAwayFromPage = true;
+      this.reloadPageWithDifferentOfficeJsUrl(newOfficeJsUrl!);
+    }
+  }
 }
 
-export default connect(
-  undefined,
-  mapDispatchToProps,
-)(App);
+export default App;

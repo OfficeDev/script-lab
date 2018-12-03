@@ -7,8 +7,8 @@ module.exports = {
   transform: {
     '\\.(jsx?|tsx?)$': 'ts-jest',
   },
-  testMatch: ['<rootDir>/components/**/?(*.)+(spec|test).ts?(x)'],
-  setupTestFrameworkScriptFile: '<rootDir>/setupTests.ts',
+  testMatch: ['<rootDir>/src/components/**/?(*.)+(spec|test).ts?(x)'],
+  setupTestFrameworkScriptFile: '<rootDir>/src/setupTests.ts',
   collectCoverageFrom: [
     '<rootDir>/src/**/*.ts',
     '!<rootDir>/src/**/*.d.ts',

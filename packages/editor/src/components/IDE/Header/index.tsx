@@ -17,14 +17,15 @@ import { getRunButton, IProps as IRunButtonProps } from './Buttons/Run';
 
 import { ITheme as IFabricTheme } from 'office-ui-fabric-react/lib/Styling';
 import { NULL_SOLUTION_ID, PATHS, IS_TASK_PANE_WIDTH } from '../../../constants';
-import { getPlatform, PlatformType } from '../../../environment';
+import { getPlatform, PlatformType, reactRunnerUrl } from '../../../environment';
 
 import { connect } from 'react-redux';
-import actions, { dialog } from '../../../store/actions';
+import actions, { dialog, IRootAction } from '../../../store/actions';
 import selectors from '../../../store/selectors';
-
+import { IState as IReduxState } from '../../../store/reducer';
 import { getCommandBarFabricTheme } from '../../../theme';
 import { push } from 'connected-react-router';
+import { Dispatch } from 'redux';
 
 const HeaderWrapper = styled.header`
   background-color: ${props => props.theme.primary};
@@ -37,8 +38,6 @@ interface IPropsFromRedux {
   isRunnableOnThisHost: boolean;
   isSettingsView: boolean;
   isCustomFunctionsView: boolean;
-  isDirectScriptExecutionSolution: boolean;
-  runnableFunctions: IDirectScriptExecutionFunctionMetadata[];
   isLoggedIn: boolean;
   isLoggingInOrOut: boolean;
   commandBarFabricTheme: IFabricTheme;
@@ -46,13 +45,10 @@ interface IPropsFromRedux {
   shouldShowPopOutButton: boolean;
 }
 
-const mapStateToProps = (state): IPropsFromRedux => ({
+const mapStateToProps = (state: IReduxState): IPropsFromRedux => ({
   isNullSolution: selectors.editor.getActiveSolution(state).id === NULL_SOLUTION_ID,
   isSettingsView: selectors.settings.getIsOpen(state),
   isCustomFunctionsView: selectors.customFunctions.getIsCurrentSolutionCF(state),
-  isDirectScriptExecutionSolution: !!selectors.editor.getActiveSolution(state).options
-    .isDirectScriptExecution,
-  runnableFunctions: selectors.directScriptExecution.getMetadataForActiveSolution(state),
   isLoggedIn: !!selectors.github.getToken(state),
   isLoggingInOrOut: selectors.github.getIsLoggingInOrOut(state),
   isRunnableOnThisHost: selectors.host.getIsRunnableOnThisHost(state),
@@ -86,13 +82,6 @@ interface IActionsFromRedux {
   navigateToRun: () => void;
   showTrustError: () => void;
 
-  directScriptExecutionFunction: (
-    solutionId: string,
-    fileId: string,
-    funcName: string,
-  ) => void;
-  terminateAllDirectScriptExecutionFunctions: () => void;
-
   showDialog: (
     title: string,
     subText: string,
@@ -106,7 +95,7 @@ interface IActionsFromRedux {
   openEditor: () => void;
 }
 
-const mapDispatchToProps = (dispatch, ownProps: IProps): IActionsFromRedux => ({
+const mapDispatchToProps = (dispatch: Dispatch, ownProps: IProps): IActionsFromRedux => ({
   login: () => dispatch(actions.github.login.request()),
   logout: () => dispatch(actions.github.logout.request()),
 
@@ -155,21 +144,6 @@ const mapDispatchToProps = (dispatch, ownProps: IProps): IActionsFromRedux => ({
       }),
     ),
 
-  directScriptExecutionFunction: (
-    solutionId: string,
-    fileId: string,
-    functionName: string,
-  ) =>
-    dispatch(
-      actions.directScriptExecution.runFunction.request({
-        solutionId,
-        fileId,
-        functionName,
-      }),
-    ),
-  terminateAllDirectScriptExecutionFunctions: () =>
-    dispatch(actions.directScriptExecution.terminateAll.request()),
-
   showDialog: (
     title: string,
     subText: string,
@@ -178,17 +152,17 @@ const mapDispatchToProps = (dispatch, ownProps: IProps): IActionsFromRedux => ({
       action: { type: string; payload?: any };
       isPrimary: boolean;
     }>,
-  ) => dispatch(dialog.show(title, subText, buttons)),
-  openEditor: () =>
-    Office.context.ui.displayDialogAsync(window.location.href, {
-      promptBeforeOpen: false,
-    } as Office.DialogOptions),
+  ) => dispatch(dialog.show({ title, subText, buttons })),
+  openEditor: () => {
+    Office.context.ui.displayDialogAsync(window.location.href);
+    window.location.href = reactRunnerUrl;
+  },
 });
 
 export interface IProps extends IPropsFromRedux, IActionsFromRedux {
   solution: ISolution;
   file: IFile;
-  theme: ITheme; // from withTheme
+  theme?: ITheme; // from withTheme
 }
 
 interface IState {
@@ -203,7 +177,7 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
     isDeleteConfirmationDialogVisible: false,
     isNavigatingAwayToRun: false,
   };
-  clipboard;
+  clipboard: Clipboard;
 
   constructor(props: IProps) {
     super(props);

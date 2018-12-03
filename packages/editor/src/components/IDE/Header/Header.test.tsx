@@ -28,12 +28,6 @@ const actionProps = {
   navigateToCustomFunctions: () => {},
   navigateToRun: () => {},
   showTrustError: () => {},
-  directScriptExecutionFunction: (
-    solutionId: string,
-    fileId: string,
-    functionName: string,
-  ) => {},
-  terminateAllDirectScriptExecutionFunctions: () => {},
   showDialog: (
     title: string,
     subText: string,
@@ -58,8 +52,6 @@ describe('Header should render properly in basic case', () => {
     isSettingsView: false,
     isCustomFunctionsView: false,
     isNullSolution: false,
-    isDirectScriptExecutionSolution: false,
-    runnableFunctions: [],
     profilePicUrl: null,
     screenWidth: 700,
     commandBarFabricTheme: getCommandBarFabricTheme(host) as IFabricTheme,

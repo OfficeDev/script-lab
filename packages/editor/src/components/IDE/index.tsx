@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 
 import Header from './Header';
-import MessageBar from './MessageBar';
 import FileSwitcherPivot from './FileSwitcherPivot';
-import Dialog from './Dialog';
 import Editor from './Editor';
 import Footer from './Footer';
+
+import Notifications from '../Notifications';
 
 import { Layout, ContentWrapper } from './styles';
 import { NULL_SOLUTION, NULL_FILE } from '../../constants';
@@ -13,7 +13,8 @@ import { NULL_SOLUTION, NULL_FILE } from '../../constants';
 import { connect } from 'react-redux';
 import { IState as IReduxState } from '../../store/reducer';
 import selectors from '../../store/selectors';
-import { editor as editorActions } from '../../store/actions';
+import { editor as editorActions, IRootAction } from '../../store/actions';
+import { Dispatch } from 'redux';
 
 interface IPropsFromRedux {
   isVisible: boolean;
@@ -22,7 +23,7 @@ interface IPropsFromRedux {
   activeFile: IFile;
 }
 
-const mapStateToProps = (state: IReduxState): Partial<IPropsFromRedux> => ({
+const mapStateToProps = (state: IReduxState): IPropsFromRedux => ({
   isVisible: state.editor.isVisible,
   hasLoaded: state.editor.hasLoaded,
   activeSolution: selectors.editor.getActiveSolution(state),
@@ -33,7 +34,7 @@ interface IActionsFromRedux {
   openFile: (solutionId: string, fileId: string) => void;
 }
 
-const mapDispatchToProps = (dispatch): IActionsFromRedux => ({
+const mapDispatchToProps = (dispatch: Dispatch<IRootAction>): IActionsFromRedux => ({
   openFile: (solutionId: string, fileId: string) =>
     dispatch(editorActions.openFile({ solutionId, fileId })),
 });
@@ -61,8 +62,7 @@ class IDE extends Component<IIDE> {
       >
         <Header solution={activeSolution} file={activeFile} />
         <FileSwitcherPivot />
-        <MessageBar />
-        <Dialog />
+        <Notifications />
         <ContentWrapper>
           <Editor
             activeSolution={activeSolution}

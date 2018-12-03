@@ -8,7 +8,7 @@ import {
   getInLastModifiedOrder as getSolutionsInLastModifiedOrder,
 } from '../solutions/selectors';
 
-import { isCustomFunctionScript } from '../../utils/customFunctions';
+import { isCustomFunctionScript } from './utilities';
 import { PATHS, SCRIPT_FILE_NAME } from '../../constants';
 
 export const getMetadata = (state: IState) => state.customFunctions.metadata;
@@ -87,4 +87,4 @@ export const getHasCustomFunctions = createSelector(
 );
 
 export const getIsStandalone = (state: IState): boolean =>
-  state.router.location.pathname === PATHS.CUSTOM_FUNCTIONS_DASHBOARD;
+  state.router!.location.pathname === PATHS.CUSTOM_FUNCTIONS_DASHBOARD;
