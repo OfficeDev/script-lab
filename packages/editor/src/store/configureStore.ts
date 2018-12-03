@@ -44,7 +44,7 @@ const configureStore = ({
   const sagaMiddleware = createSagaMiddleware();
 
   const store = createStore(
-    connectRouter(history)(rootReducer),
+    connectRouter(history)<IState>(rootReducer),
     initialState as any,
     composeWithDevTools(applyMiddleware(sagaMiddleware, routerMiddleware(history))),
   );

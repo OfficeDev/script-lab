@@ -40,7 +40,7 @@ const initialState = {
 };
 
 class ConflictResolutionDialog extends Component<IGistConflictDialog, IState> {
-  dropdownRef;
+  dropdownRef: any;
   state = initialState;
 
   closeDialog = () => {

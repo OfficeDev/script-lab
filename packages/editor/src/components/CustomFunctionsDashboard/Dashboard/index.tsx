@@ -1,5 +1,4 @@
 import React from 'react';
-import { withTheme } from 'styled-components';
 import PivotBar from '../../PivotBar';
 import { Layout, Header, Content } from './styles';
 
@@ -11,6 +10,7 @@ import { ITheme as IFabricTheme } from 'office-ui-fabric-react/lib/Styling';
 import { getCommandBarFabricTheme } from '../../../theme';
 
 import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
 import { IState as IReduxState } from '../../../store/reducer';
 import selectors from '../../../store/selectors';
 import { customFunctions as customFunctionsActions } from '../../../store/actions';
@@ -33,7 +33,7 @@ interface IActionsFromRedux {
   goBack?: () => void;
 }
 
-const mapDispatchToProps = (dispatch, ownProps): IActionsFromRedux => ({
+const mapDispatchToProps = (dispatch: Dispatch, ownProps: IProps): IActionsFromRedux => ({
   onMount: () => dispatch(customFunctionsActions.fetchMetadata.request()),
   goBack: !ownProps.isStandalone ? () => dispatch(goBack()) : undefined,
 });
@@ -41,15 +41,14 @@ const mapDispatchToProps = (dispatch, ownProps): IActionsFromRedux => ({
 interface IProps extends IPropsFromRedux, IActionsFromRedux {
   shouldPromptRefresh: boolean;
   items: { [itemName: string]: any /* react component */ };
-  theme: ITheme; // from withTheme
 }
 
 interface IState {
   selectedKey: string;
 }
 
-class DashboardWithoutTheme extends React.Component<IProps, IState> {
-  constructor(props) {
+class Dashboard extends React.Component<IProps, IState> {
+  constructor(props: IProps) {
     super(props);
     const selectedKey =
       Object.keys(props.items).length > 0 ? Object.keys(props.items)[0] : '';
@@ -70,7 +69,6 @@ class DashboardWithoutTheme extends React.Component<IProps, IState> {
     const { selectedKey } = this.state;
     const {
       items,
-      theme,
       isStandalone,
       commandBarFabricTheme,
       goBack,
@@ -131,8 +129,6 @@ class DashboardWithoutTheme extends React.Component<IProps, IState> {
     );
   }
 }
-
-export const Dashboard = withTheme(DashboardWithoutTheme);
 
 export default connect(
   mapStateToProps,

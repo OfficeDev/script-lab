@@ -9,6 +9,7 @@
     "outDir": "lib",
     "declaration": true,
     "allowJs": false,
+    "checkJs": false,
     "jsx": "react",
     "alwaysStrict": false,
     "strictFunctionTypes": false,
@@ -26,6 +27,7 @@
     "src/setupTests.ts",
     "public",
     "**/*.stories.tsx",
-    "**/.storybook/**"
+    "**/.storybook/**",
+    "lib"
   ]
 }
