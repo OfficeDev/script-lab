@@ -14,6 +14,7 @@ export const get = (state: IState, id: string): ISolution | null => {
     return null;
   }
 
+  // TODO: REMOVE THIS LOGIC FROM HERE AS IT ISN'T THE RIGHT PLACE TO DO IT
   const { isCustomFunctionsSolution, isDirectScriptExecution } = solutionMetadata.options;
   const files = solutionMetadata.files
     .map(fileId => getFile(state, fileId))
@@ -30,6 +31,7 @@ export const get = (state: IState, id: string): ISolution | null => {
   return { ...solutionMetadata, files };
 };
 
+// TODO: REMOVE THIS LOGIC FROM HERE AS IT ISN'T THE RIGHT PLACE TO DO IT
 export const getSolutionWithHiddenFiles = (
   state: IState,
   id: string,
