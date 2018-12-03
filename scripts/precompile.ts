@@ -4,15 +4,21 @@ const PRECOMPILE_SPEC: {
 } = {
   editor: [
     {
-      name: 'style.css',
-      relativeFilePath: 'style.css',
-      injectInto: ['index.html', 'run.html'],
-      processor: readAsIsProcessor,
+      name: 'addin-commands.js',
+      relativeFilePath: 'addin-commands',
+      injectInto: ['functions.html'],
+      processor: webpackProcessor,
     },
     {
-      name: 'scripts-loader.js',
-      relativeFilePath: 'scripts-loader',
-      injectInto: ['index.html'],
+      name: 'external-page.js',
+      relativeFilePath: 'external-page',
+      injectInto: ['external-page.html'],
+      processor: webpackProcessor,
+    },
+    {
+      name: 'heartbeat.js',
+      relativeFilePath: 'heartbeat',
+      injectInto: ['heartbeat.html'],
       processor: webpackProcessor,
     },
     {
@@ -22,10 +28,16 @@ const PRECOMPILE_SPEC: {
       processor: webpackProcessor,
     },
     {
-      name: 'heartbeat.js',
-      relativeFilePath: 'heartbeat',
-      injectInto: ['heartbeat.html'],
+      name: 'scripts-loader.js',
+      relativeFilePath: 'scripts-loader',
+      injectInto: ['index.html'],
       processor: webpackProcessor,
+    },
+    {
+      name: 'style.css',
+      relativeFilePath: 'style.css',
+      injectInto: ['index.html', 'run.html'],
+      processor: readAsIsProcessor,
     },
   ],
   runner: [
