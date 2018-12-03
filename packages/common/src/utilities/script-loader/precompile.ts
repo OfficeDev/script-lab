@@ -4,9 +4,20 @@
 // still be meaningless.  As such, they communicate via setting a flag
 // on the window object, to signify that Script Lab has loaded.
 
-import { WINDOW_SCRIPT_LAB_IS_READY_KEY } from './constants';
+import {
+  WINDOW_SCRIPT_LAB_IS_READY_KEY,
+  WINDOW_SCRIPT_LAB_NAVIGATING_AWAY_TO_DIFFERENT_ENVIRONMENT_KEY,
+} from './constants';
 
 export function addScriptTags(urls: string[]) {
+  // If will be navigating away in a moment, don't bother.
+  // This will also ensure that WINDOW_SCRIPT_LAB_IS_READY_KEY never gets set,
+  // and so any consumer listening to that (via waitForAllDynamicScriptsToBeLoaded)
+  // will just keep the loading UI as is.
+  if ((window as any)[WINDOW_SCRIPT_LAB_NAVIGATING_AWAY_TO_DIFFERENT_ENVIRONMENT_KEY]) {
+    return;
+  }
+
   let currentFinishedScriptCounter = 0;
   urls.forEach(url =>
     addScriptTag(url, () => {

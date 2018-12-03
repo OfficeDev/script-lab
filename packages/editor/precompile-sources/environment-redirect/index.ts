@@ -2,6 +2,7 @@ import { parse } from 'query-string';
 import { localStorageKeys } from '../../src/constants';
 import { allEditorUrls } from '../../src/environment';
 import ensureFreshLocalStorage from '../../../common/lib/utilities/ensure.fresh.local.storage';
+import { WINDOW_SCRIPT_LAB_NAVIGATING_AWAY_TO_DIFFERENT_ENVIRONMENT_KEY } from '../../../common/src/utilities/script-loader/constants';
 
 (() => {
   try {
@@ -53,6 +54,10 @@ import ensureFreshLocalStorage from '../../../common/lib/utilities/ensure.fresh.
         encodeURIComponent(window.location.origin),
       ].join('');
 
+      (window as any)[
+        WINDOW_SCRIPT_LAB_NAVIGATING_AWAY_TO_DIFFERENT_ENVIRONMENT_KEY
+      ] = true;
+
       window.location.replace(
         [
           redirectUrl,
@@ -62,6 +67,7 @@ import ensureFreshLocalStorage from '../../../common/lib/utilities/ensure.fresh.
           window.location.hash,
         ].join(''),
       );
+
       return;
     }
 
