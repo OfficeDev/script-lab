@@ -5,7 +5,7 @@ import { editor, settings, screen, misc } from '../actions';
 import zip from 'lodash/zip';
 import flatten from 'lodash/flatten';
 import { push, RouterState } from 'connected-react-router';
-import { PATHS, LIBRARIES_FILE_NAME } from '../../constants';
+import { PATHS, LIBRARIES_FILE_NAME, NULL_SOLUTION_ID } from '../../constants';
 
 import {
   registerLibrariesMonacoLanguage,
@@ -58,7 +58,9 @@ export function* onEditorOpenFileSaga(action: ActionType<typeof editor.openFile>
   }
 
   yield put(editor.setActive({ solutionId, fileId }));
-  yield call(onEditorOpenSaga);
+  if (solutionId !== NULL_SOLUTION_ID) {
+    yield call(onEditorOpenSaga);
+  }
 
   const solutionToOpen = yield select(selectors.solutions.get, solutionId);
   const fileToOpen = yield select(selectors.solutions.getFile, fileId);
