@@ -104,11 +104,12 @@ function* checkIfIsCustomFunctionSaga(
   const { solution, file } = action.payload;
 
   const isCustomFunctionsSolution = isCustomFunctionScript(file.content);
-  if (
-    /* solutions.options.isCustomFunctionsSolution XOR isCustomFunctionsSolution */
+
+  // Compare what is currently in the solution with what we want to update it to (via XOR)
+  const optionsChanged = 
     (!solution.options.isCustomFunctionsSolution && isCustomFunctionsSolution) ||
-    (solution.options.isCustomFunctionsSolution && !isCustomFunctionsSolution)
-  ) {
+    (solution.options.isCustomFunctionsSolution && !isCustomFunctionsSolution);
+  if (optionsChanged) {
     yield put(
       solutions.updateOptions({ solution, options: { isCustomFunctionsSolution } }),
     );
