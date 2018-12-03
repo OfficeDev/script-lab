@@ -104,7 +104,11 @@ function* checkIfIsCustomFunctionSaga(
   const { solution, file } = action.payload;
 
   const isCustomFunctionsSolution = isCustomFunctionScript(file.content);
-  if (!solution.options.isCustomFunctionsSolution && isCustomFunctionsSolution) {
+  if (
+    /* solutions.options.isCustomFunctionsSolution XOR isCustomFunctionsSolution */
+    (!solution.options.isCustomFunctionsSolution && isCustomFunctionsSolution) ||
+    (solution.options.isCustomFunctionsSolution && !isCustomFunctionsSolution)
+  ) {
     yield put(
       solutions.updateOptions({ solution, options: { isCustomFunctionsSolution } }),
     );
