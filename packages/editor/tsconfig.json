@@ -9,7 +9,6 @@
       "../../node_modules/@types"
     ],
     "skipLibCheck": true,
-    "esModuleInterop": true,
     "strict": false,
     "isolatedModules": true,
     "noEmit": true,
@@ -17,7 +16,8 @@
     "alwaysStrict": false,
     "strictFunctionTypes": false,
     "strictPropertyInitialization": false,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "allowJs": true
   },
   "include": [
     "./src/**/*",

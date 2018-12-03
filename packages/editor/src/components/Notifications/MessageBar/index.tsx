@@ -6,17 +6,19 @@ import { IState as IMessageBarState } from '../../../store/messageBar/reducer';
 import { connect } from 'react-redux';
 import { messageBar } from '../../../store/actions';
 import { getMessageBarStyle } from './helpers';
+import { IState as IReduxState } from '../../../store/reducer';
 
 import './animations.css';
 import { DefaultButton } from 'office-ui-fabric-react/lib/Button';
 import selectors from '../../../store/selectors';
+import { Dispatch } from 'redux';
 
 interface IPropsFromRedux {
   messageBarProps: IMessageBarState;
   screenWidth: number;
 }
 
-const mapStateToProps = (state): IPropsFromRedux => ({
+const mapStateToProps = (state: IReduxState): IPropsFromRedux => ({
   messageBarProps: state.messageBar,
   screenWidth: selectors.screen.getWidth(state),
 });
@@ -26,9 +28,9 @@ interface IActionsFromRedux {
   dismiss: () => void;
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
+const mapDispatchToProps = (dispatch: Dispatch, ownProps: IProps) => ({
   buttonOnClick: ownProps.messageBarProps.button
-    ? () => dispatch(ownProps.messageBarProps.button.action)
+    ? () => dispatch(ownProps.messageBarProps.button!.action)
     : () => {},
   dismiss: () => dispatch(messageBar.dismiss()),
 });

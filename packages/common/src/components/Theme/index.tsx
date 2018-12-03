@@ -15,7 +15,7 @@ interface IState {
 export const ThemeContext = React.createContext(getTheme(DEFAULT_HOST));
 
 class Theme extends Component<IProps, IState> {
-  constructor(props) {
+  constructor(props: IProps) {
     super(props);
     initializeIcons();
     setupFabricTheme(props.host || DEFAULT_HOST);

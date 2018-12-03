@@ -23,7 +23,8 @@ import { setUpMomentJsDurationDefaults } from '../../../utils';
 import Only from '../../Only';
 import { connect } from 'react-redux';
 import { IState as IReduxState } from '../../../store/reducer';
-import actions from '../../../store/actions';
+import actions, { IRootAction } from '../../../store/actions';
+import { Dispatch } from 'redux';
 
 export enum ConsoleLogTypes {
   Info = 'info',
@@ -51,7 +52,7 @@ interface IActionsFromRedux {
   clearLogs: () => void;
 }
 
-const mapDispatchToProps = (dispatch): IActionsFromRedux => ({
+const mapDispatchToProps = (dispatch: Dispatch<IRootAction>): IActionsFromRedux => ({
   fetchLogs: () => dispatch(actions.customFunctions.fetchLogsAndHeartbeat()),
   clearLogs: () => dispatch(actions.customFunctions.clearLogs()),
 });
@@ -66,7 +67,7 @@ interface IState {
 }
 
 class ConsoleWithoutTheme extends React.Component<IConsole, IState> {
-  private logFetchInterval;
+  private logFetchInterval: any;
   state = { shouldScrollToBottom: true, filterQuery: '' };
 
   constructor(props: IConsole) {

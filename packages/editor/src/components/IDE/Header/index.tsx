@@ -20,11 +20,12 @@ import { NULL_SOLUTION_ID, PATHS, IS_TASK_PANE_WIDTH } from '../../../constants'
 import { getPlatform, PlatformType } from '../../../environment';
 
 import { connect } from 'react-redux';
-import actions, { dialog } from '../../../store/actions';
+import actions, { dialog, IRootAction } from '../../../store/actions';
 import selectors from '../../../store/selectors';
-
+import { IState as IReduxState } from '../../../store/reducer';
 import { getCommandBarFabricTheme } from '../../../theme';
 import { push } from 'connected-react-router';
+import { Dispatch } from 'redux';
 
 const HeaderWrapper = styled.header`
   background-color: ${props => props.theme.primary};
@@ -43,7 +44,7 @@ interface IPropsFromRedux {
   screenWidth: number;
 }
 
-const mapStateToProps = (state): IPropsFromRedux => ({
+const mapStateToProps = (state: IReduxState): IPropsFromRedux => ({
   isNullSolution: selectors.editor.getActiveSolution(state).id === NULL_SOLUTION_ID,
   isSettingsView: selectors.settings.getIsOpen(state),
   isCustomFunctionsView: selectors.customFunctions.getIsCurrentSolutionCF(state),
@@ -90,7 +91,7 @@ interface IActionsFromRedux {
   ) => void;
 }
 
-const mapDispatchToProps = (dispatch, ownProps: IProps): IActionsFromRedux => ({
+const mapDispatchToProps = (dispatch: Dispatch, ownProps: IProps): IActionsFromRedux => ({
   login: () => dispatch(actions.github.login.request()),
   logout: () => dispatch(actions.github.logout.request()),
 
@@ -153,7 +154,7 @@ const mapDispatchToProps = (dispatch, ownProps: IProps): IActionsFromRedux => ({
 export interface IProps extends IPropsFromRedux, IActionsFromRedux {
   solution: ISolution;
   file: IFile;
-  theme: ITheme; // from withTheme
+  theme?: ITheme; // from withTheme
 }
 
 interface IState {
@@ -168,7 +169,7 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
     isDeleteConfirmationDialogVisible: false,
     isNavigatingAwayToRun: false,
   };
-  clipboard;
+  clipboard: Clipboard;
 
   constructor(props: IProps) {
     super(props);
