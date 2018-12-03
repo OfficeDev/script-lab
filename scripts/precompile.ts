@@ -106,7 +106,7 @@ for (const packageName in PRECOMPILE_SPEC) {
     const afterProcessing = spec.processor(
       path.resolve(packageFullDir, 'precompile-sources', spec.relativeFilePath),
     );
-    const hash = md5(afterProcessing);
+    const hash = getPlatformAgnosticHash(afterProcessing);
     const dotExtension = path.extname(spec.name);
     const baseName = path.basename(spec.name, dotExtension);
     const filenameWithHash = `${baseName}-${hash}${dotExtension}`;
@@ -254,6 +254,15 @@ function indexOfOneAndOnly(lines: string[], fullTextToFind: string): number {
 
 function getPlaceholderTextToFind(prefix: 'Begin' | 'End', filename: string): string {
   return `<!-- ${prefix} precompile placeholder: ${filename} -->`;
+}
+
+function getPlatformAgnosticHash(text: string) {
+  return md5(
+    text
+      .split('\n')
+      .map(line => line.trim())
+      .join('\n'),
+  );
 }
 
 type ISpecArray = Array<{
