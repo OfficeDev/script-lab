@@ -17,7 +17,7 @@ import processLibraries from 'common/lib/utilities/process.libraries';
 
 export interface IProps {
   solution?: ISolution | null;
-  onRender?: (data: { lastRendered: number }) => void;
+  onRender?: (data: { lastRendered: number; hasContent: boolean }) => void;
 }
 
 interface IState {
@@ -32,15 +32,16 @@ class Snippet extends React.Component<IProps, IState> {
     super(props);
 
     const lastRendered = Date.now();
+    const content = this.getContent(this.props);
     this.state = {
-      content: this.getContent(this.props),
+      content,
       lastRendered,
       isLoading: true,
       isIFrameMounted: false,
     };
 
     if (this.props.onRender) {
-      this.props.onRender({ lastRendered });
+      this.props.onRender({ lastRendered, hasContent: content.length > 0 });
     }
   }
 
@@ -51,17 +52,19 @@ class Snippet extends React.Component<IProps, IState> {
       const lastRendered = Date.now();
 
       this.setState({ isIFrameMounted: false, isLoading: true }, () => {
+        const content = this.getContent(this.props);
+
+        if (this.props.onRender) {
+          this.props.onRender!({ lastRendered, hasContent: content.length > 0 });
+        }
+
         return this.setState({
-          content: this.getContent(this.props),
+          content,
           lastRendered,
           isLoading: true,
           isIFrameMounted: true,
         });
       });
-
-      if (this.props.onRender) {
-        this.props.onRender!({ lastRendered });
-      }
     }
   }
 
