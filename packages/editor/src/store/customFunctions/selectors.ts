@@ -87,4 +87,4 @@ export const getHasCustomFunctions = createSelector(
 );
 
 export const getIsStandalone = (state: IState): boolean =>
-  state.router.location.pathname === PATHS.CUSTOM_FUNCTIONS_DASHBOARD;
+  state.router!.location.pathname === PATHS.CUSTOM_FUNCTIONS_DASHBOARD;

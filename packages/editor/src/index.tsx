@@ -61,7 +61,7 @@ window.onerror = error => invokeGlobalErrorHandler(error);
 
     store.subscribe(
       throttle(() => {
-        const state: IState = store.getState();
+        const state = store.getState();
         saveStateToLocalStorage(state);
         saveStateToSessionStorage(state);
       }, 1000),
