@@ -11,7 +11,7 @@ export const officeNamespacesForIframe = [
   'ExcelOp',
 ];
 
-// FIXME Zlatkovsky/Nico: merge these with the rest of environment.ts!
+// FIXME: Zlatkovsky/Nico: merge these with the rest of environment.ts!
 export const editorUrls = {
   local: 'https://localhost:3000',
   alpha: 'https://script-lab-react-alpha.azurewebsites.net',

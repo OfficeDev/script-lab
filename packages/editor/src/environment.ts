@@ -19,7 +19,7 @@ export const environmentName = {
   prod: 'react',
 }[getCurrentEnv()];
 
-// FIXME Zlatkovsky/Nico:  what are those used for?  They should probably match up with getCurrentEnv's enumerations!
+// FIXME: Zlatkovsky/Nico:  what are those used for?  They should probably match up with getCurrentEnv's enumerations!
 export const allEditorUrls = {
   local: 'https://localhost:3000',
   'react-alpha': 'https://script-lab-react-alpha.azurewebsites.net',
@@ -49,7 +49,7 @@ export function getVisibleEnvironmentsToSwitchTo() {
   }
 }
 
-// FIXME Zlatkovsky/Nico: introduce 'prod-direct' and 'staging' environments as well
+// FIXME: Zlatkovsky/Nico: introduce 'prod-direct' and 'staging' environments as well
 export function getCurrentEnv(): 'local' | 'alpha' | 'beta' | 'prod' {
   return ({
     'https://localhost:3000': 'local',

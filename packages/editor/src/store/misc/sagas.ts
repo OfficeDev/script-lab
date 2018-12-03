@@ -51,6 +51,7 @@ function* onSwitchEnvironmentSaga(
 function* onConfirmSwitchEnvironmentSaga(
   action: ActionType<typeof actions.misc.confirmSwitchEnvironment>,
 ) {
+  // FIXME: Zlatkovsky, need to use key from localstorage!
   window.location.href = `${
     allEditorUrls.production
   }?targetEnvironment=${encodeURIComponent(allEditorUrls[action.payload])}`;

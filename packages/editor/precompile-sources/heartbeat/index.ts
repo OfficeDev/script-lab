@@ -1,4 +1,5 @@
 import { getCurrentEnv, reactRunnerUrls } from '../../src/environment';
+import ensureFreshLocalStorage from '../../../common/lib/utilities/ensure.fresh.local.storage';
 
 window.onmessage = event => {
   if (event.origin !== reactRunnerUrls[getCurrentEnv()]) {
@@ -6,8 +7,7 @@ window.onmessage = event => {
     return;
   }
 
-  // In order to fix the IE cross-tab issue (#147)
-  localStorage.setItem('playground_dummy_key', 'null');
+  ensureFreshLocalStorage();
 
   if (event.data.indexOf('GET_ACTIVE_SOLUTION') >= 0) {
     const host = event.data.split('/')[1];
