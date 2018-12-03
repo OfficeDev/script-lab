@@ -2,8 +2,11 @@
   "name": "editor",
   "version": "0.1.0",
   "private": true,
+  "dependencies_comments": {
+    "query-string": "Restricing query-string to version 5.1.1 because later versions (6+) started targeting ES6 rather than ES5, making it not work for the precompile scripts. See more at https://stackoverflow.com/a/49985749/678505",
+    "@microsoft/office-js": "For the custom functions dashboard, need a custom build of office-js that hasn't made it to prod yet (as of mid-Nov 2018)"
+  },
   "dependencies": {
-    "//": "For the custom functions dashboard, need a custom build of office-js that hasn't made it to prod yet (as of mid-Nov 2018)",
     "@microsoft/office-js": "1.1.11-adhoc.20",
     "@microsoft/office-js-helpers": "0.7.4",
     "clipboard": "^2.0.1",
@@ -16,6 +19,7 @@
     "monaco-editor": "^0.14.3",
     "normalizr": "^3.2.4",
     "office-ui-fabric-react": "6.79.0",
+    "query-string": "5.1.1",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
     "react-redux": "^5.0.7",
