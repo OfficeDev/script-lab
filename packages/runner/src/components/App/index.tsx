@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Utilities } from '@microsoft/office-js-helpers';
+import { connect } from 'react-redux';
 
 import Theme from 'common/lib/components/Theme';
 import Console, { ConsoleLogSeverities } from 'common/lib/components/Console';
@@ -28,6 +29,14 @@ const RefreshBar = props => (
     {...props}
   />
 );
+
+interface IActionsFromRedux {
+  openCode: () => void;
+}
+
+const mapDispatchToProps = (_): IActionsFromRedux => ({
+  openCode: () => Office.context.ui.displayDialogAsync(editorUrl),
+});
 
 interface IState {
   solution: ISolution | null;
@@ -118,8 +127,6 @@ export class App extends React.Component<{}, IState> {
 
   reloadPage = () => window.location.reload();
 
-  openCode = () => Office.context.ui.displayDialogAsync(editorUrl);
-
   setLastRendered = (lastRendered: number) => this.setState({ lastRendered });
 
   render() {
@@ -170,4 +177,7 @@ export class App extends React.Component<{}, IState> {
   }
 }
 
-export default App;
+export default connect(
+  undefined,
+  mapDispatchToProps,
+)(App);

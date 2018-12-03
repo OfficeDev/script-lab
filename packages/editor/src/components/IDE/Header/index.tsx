@@ -102,6 +102,8 @@ interface IActionsFromRedux {
       isPrimary: boolean;
     }>,
   ) => void;
+
+  openEditor: () => void;
 }
 
 const mapDispatchToProps = (dispatch, ownProps: IProps): IActionsFromRedux => ({
@@ -177,6 +179,10 @@ const mapDispatchToProps = (dispatch, ownProps: IProps): IActionsFromRedux => ({
       isPrimary: boolean;
     }>,
   ) => dispatch(dialog.show(title, subText, buttons)),
+  openEditor: () =>
+    Office.context.ui.displayDialogAsync(window.location.href, {
+      promptBeforeOpen: false,
+    } as Office.DialogOptions),
 });
 
 export interface IProps extends IPropsFromRedux, IActionsFromRedux {
@@ -254,6 +260,7 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
       createPublicGist,
       createSecretGist,
       shouldShowPopOutButton,
+      openEditor,
     } = this.props;
     const solutionName = solution ? solution.name : 'Solution Name';
 
@@ -411,7 +418,7 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
       key: 'pop-out',
       iconOnly: true,
       iconProps: { iconName: 'OpenInNewWindow' },
-      onClick: () => Office.context.ui.displayDialogAsync(window.location.href),
+      onClick: openEditor,
     };
 
     const farItems = shouldShowPopOutButton ? [profilePic, popOutButton] : [profilePic];
