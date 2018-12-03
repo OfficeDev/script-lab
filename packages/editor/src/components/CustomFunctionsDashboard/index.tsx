@@ -10,9 +10,11 @@ import Welcome from './Welcome';
 
 import { connect } from 'react-redux';
 import selectors from '../../store/selectors';
+import { IState as IReduxState } from '../../store/reducer';
 
-import { misc } from '../../store/actions';
+import { misc, IRootAction } from '../../store/actions';
 import { getCustomFunctionEngineStatus } from '../../store/customFunctions/utilities';
+import { Dispatch } from 'redux';
 
 interface IPropsFromRedux {
   hasCustomFunctionsInSolutions: boolean;
@@ -20,7 +22,7 @@ interface IPropsFromRedux {
   customFunctionSolutionLastModified: number;
 }
 
-const mapStateToProps = (state): IPropsFromRedux => ({
+const mapStateToProps = (state: IReduxState): IPropsFromRedux => ({
   hasCustomFunctionsInSolutions: selectors.customFunctions.getSolutions(state).length > 0,
   runnerLastUpdated: state.customFunctions.runner.lastUpdated,
   customFunctionSolutionLastModified: selectors.customFunctions.getLastModifiedDate(
@@ -32,7 +34,7 @@ interface IActionsFromRedux {
   hideLoadingSplashScreen: () => void;
 }
 
-const mapDispatchToProps = (dispatch): IActionsFromRedux => ({
+const mapDispatchToProps = (dispatch: Dispatch<IRootAction>): IActionsFromRedux => ({
   hideLoadingSplashScreen: () => dispatch(misc.hideLoadingSplashScreen()),
 });
 
@@ -45,7 +47,7 @@ interface IState {
 export class CustomFunctionsDashboard extends React.Component<IProps, IState> {
   state: IState = { engineStatus: null };
 
-  constructor(props) {
+  constructor(props: IProps) {
     super(props);
 
     getCustomFunctionEngineStatus().then(status => {

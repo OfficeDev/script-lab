@@ -16,7 +16,7 @@ enum Status {
 
 const stories = storiesOf('Custom Functions|Summary', module);
 
-const containerWrapper = storyFn => (
+const containerWrapper = (storyFn: () => React.ReactNode) => (
   <Layout>
     <Content>{storyFn()}</Content>
   </Layout>

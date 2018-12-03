@@ -16,7 +16,7 @@ const expectedPackages: {
   },
   officeJs: {
     name: '@microsoft/office-js',
-    version: '1.1.11-adhoc.20',
+    version: '1.1.11-adhoc.28',
     copyAsName: 'office-js',
     pathToCopyFrom: 'dist',
     pathToCopyTo: '',

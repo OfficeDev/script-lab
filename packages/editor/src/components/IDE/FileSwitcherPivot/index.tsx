@@ -5,6 +5,9 @@ import PivotBar from '../../PivotBar';
 
 import { LIBRARIES_FILE_NAME, SCRIPT_FILE_NAME } from '../../../constants';
 import { actions, selectors } from '../../../store';
+import { IState as IReduxState } from '../../../store/reducer';
+import { IRootAction } from '../../../store/actions';
+import { Dispatch } from 'redux';
 
 const FILE_NAME_MAP = {
   [SCRIPT_FILE_NAME]: 'Script',
@@ -18,7 +21,7 @@ interface IPropsFromRedux {
   activeFile: IFile;
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: IReduxState): IPropsFromRedux => ({
   files: selectors.editor.getActiveSolution(state).files,
   activeFile: selectors.editor.getActiveFile(state),
 });
@@ -27,7 +30,7 @@ interface IActionsFromRedux {
   openFile: (fileId: string) => void;
 }
 
-const mapDipatchToProps = dispatch => ({
+const mapDipatchToProps = (dispatch: Dispatch<IRootAction>): IActionsFromRedux => ({
   openFile: (fileId: string) => dispatch(actions.editor.openFile({ fileId })),
 });
 

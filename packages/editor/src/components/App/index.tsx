@@ -9,6 +9,7 @@ import Backstage from '../Backstage';
 import CustomFunctionsDashboard from '../CustomFunctionsDashboard';
 
 import selectors from '../../store/selectors';
+import { IState } from '../../store/reducer';
 import { getTheme } from '../../theme';
 import { PATHS } from '../../constants';
 
@@ -16,7 +17,7 @@ interface IPropsFromRedux {
   theme: ITheme;
 }
 
-const mapStateToProps = (state): IPropsFromRedux => ({
+const mapStateToProps = (state: IState): IPropsFromRedux => ({
   theme: getTheme(selectors.host.get(state)),
 });
 

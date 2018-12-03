@@ -17,11 +17,7 @@ interface IState {
 }
 
 class GalleryList extends Component<IProps, IState> {
-  state = { isExpanded: true };
-
-  constructor(props) {
-    super(props);
-  }
+  state: IState = { isExpanded: true };
 
   toggleExpansion = () => this.setState({ isExpanded: !this.state.isExpanded });
 

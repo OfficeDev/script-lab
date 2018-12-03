@@ -14,6 +14,8 @@ import host, { IState as IHostState } from './host/reducer';
 import samples, { IState as ISamplesState } from './samples/reducer';
 import screen, { IState as IScreenState } from './screen/reducer';
 
+import { IRootAction } from './actions';
+
 export interface IState {
   customFunctions: ICFState;
   dialog: IDialogState;
@@ -26,10 +28,10 @@ export interface IState {
   host: IHostState;
   samples: ISamplesState;
   screen: IScreenState;
-  router: RouterState; // from connected-react-router
+  router?: RouterState; // from connected-react-router
 }
 
-const root = combineReducers({
+const root = combineReducers<IState, IRootAction>({
   customFunctions,
   dialog,
   editor,
