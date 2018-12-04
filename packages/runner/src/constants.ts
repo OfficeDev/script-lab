@@ -10,3 +10,5 @@ export const officeNamespacesForIframe = [
   'Visio',
   'ExcelOp',
 ];
+
+export const SILENT_SNIPPET_SWITCHING = true;

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Spinner, SpinnerSize } from 'office-ui-fabric-react/lib/Spinner';
+import { Icon } from 'office-ui-fabric-react/lib/Icon';
 import CommonHeader from 'common/lib/components/Header';
 
 export interface IProps {
@@ -24,7 +25,9 @@ const Header = ({ solution, goBack, refresh, hardRefresh }: IProps) => {
       onRenderIcon: (props, defaultRender) => {
         return solution === undefined ? (
           <Spinner size={SpinnerSize.small} style={{ padding: '.1rem' }} />
-        ) : null;
+        ) : (
+          <Icon iconName="Refresh" style={{ padding: '.4rem' }} />
+        );
       },
       style: { padding: '0 1rem' },
       onClick: refresh,
