@@ -220,6 +220,15 @@ function loadAllSolutionsAndFiles(): {
   localStorage.removeItem('solutions');
   localStorage.removeItem('files');
 
+  // SL2017
+  Object.keys(HostType)
+    .map(key => HostType[key])
+    .forEach(host => localStorage.removeItem(`playground_${host}_snippets`));
+
+  ['playground_log', 'playground_settings', 'playground_trusted_snippets'].forEach(key =>
+    localStorage.removeItem(key),
+  );
+
   return { solutions, files };
 }
 
