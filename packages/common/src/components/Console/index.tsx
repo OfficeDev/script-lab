@@ -116,12 +116,8 @@ class Console extends React.Component<IPrivateProps, IState> {
             <FilterWrapper>
               <ClearButton onClick={clearLogs}>
                 <Icon
-                  style={{
-                    width: '2rem',
-                    height: '2rem',
-                    lineHeight: '2rem',
-                  }}
-                  iconName="Clear"
+                  style={{ width: '2rem', height: '2rem', lineHeight: '2rem' }}
+                  iconName="EraseTool"
                 />
               </ClearButton>
               <input

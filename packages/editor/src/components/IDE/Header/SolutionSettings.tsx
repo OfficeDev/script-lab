@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import Only from '../../Only';
 
 import { Dialog, DialogType, DialogFooter } from 'office-ui-fabric-react/lib/Dialog';
-import { Checkbox } from 'office-ui-fabric-react/lib/Checkbox';
 import { TextField } from 'office-ui-fabric-react/lib/TextField';
 import { PrimaryButton, DefaultButton } from 'office-ui-fabric-react/lib/Button';
 import { Label } from 'office-ui-fabric-react/lib/Label';
@@ -29,18 +28,16 @@ interface ISolutionSettings {
 interface IState {
   name: string;
   description: string;
-  isDirectScriptExecutionSolution?: boolean;
 }
 
 class SolutionSettings extends React.Component<ISolutionSettings, IState> {
-  state = { name: '', description: '', isDirectScriptExecutionSolution: undefined };
+  state = { name: '', description: '' };
 
   setupForm = () => {
     const { solution } = this.props;
     const { name } = solution;
     const description = solution.description || '';
-    const isDirectScriptExecutionSolution = solution.options.isDirectScriptExecution;
-    this.setState({ name, description, isDirectScriptExecutionSolution });
+    this.setState({ name, description });
   };
 
   componentWillMount() {
@@ -53,7 +50,7 @@ class SolutionSettings extends React.Component<ISolutionSettings, IState> {
 
   render() {
     const { solution, isOpen, closeSolutionSettings } = this.props;
-    const { name, description, isDirectScriptExecutionSolution } = this.state;
+    const { name, description } = this.state;
     return (
       <Dialog
         hidden={!isOpen}
@@ -69,11 +66,6 @@ class SolutionSettings extends React.Component<ISolutionSettings, IState> {
             rows={4}
             onChange={this.updateSolutionDescription}
             value={description}
-          />
-          <Checkbox
-            label="No Custom UI"
-            checked={isDirectScriptExecutionSolution || false}
-            onChange={this.updateSolutionNoCustomUI}
           />
           <Only when={solution.source && solution.source.origin === 'gist'}>
             <div>
@@ -112,26 +104,11 @@ class SolutionSettings extends React.Component<ISolutionSettings, IState> {
     newValue?: string | undefined,
   ) => this.setState({ description: newValue! });
 
-  private updateSolutionNoCustomUI = (
-    event: React.FormEvent<HTMLElement>,
-    isChecked: boolean,
-  ) => {
-    if (isChecked) {
-      this.setState({ isDirectScriptExecutionSolution: true });
-    } else {
-      this.setState({ isDirectScriptExecutionSolution: undefined });
-    }
-  };
-
   private updateSolutionMetadata = () => {
-    const { name, description, isDirectScriptExecutionSolution } = this.state;
+    const { name, description } = this.state;
     this.props.editSolutionMetadata(this.props.solution.id, {
       name,
       description,
-      options: {
-        ...this.props.solution.options,
-        isDirectScriptExecution: isDirectScriptExecutionSolution,
-      },
     });
     this.props.closeSolutionSettings();
   };
