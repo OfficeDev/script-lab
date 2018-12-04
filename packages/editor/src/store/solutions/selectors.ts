@@ -14,6 +14,8 @@ export const get = (state: IState, id: string): ISolution | null => {
     return null;
   }
 
+  // TODO: Nico: REMOVE THIS LOGIC FROM HERE AS IT ISN'T THE RIGHT PLACE TO DO IT
+  // https://github.com/OfficeDev/script-lab-react/issues/430
   const { isCustomFunctionsSolution, isDirectScriptExecution } = solutionMetadata.options;
   const files = solutionMetadata.files
     .map(fileId => getFile(state, fileId))
@@ -30,6 +32,8 @@ export const get = (state: IState, id: string): ISolution | null => {
   return { ...solutionMetadata, files };
 };
 
+// TODO: Nico: REMOVE THIS LOGIC FROM HERE AS IT ISN'T THE RIGHT PLACE TO DO IT
+// https://github.com/OfficeDev/script-lab-react/issues/430
 export const getSolutionWithHiddenFiles = (
   state: IState,
   id: string,
