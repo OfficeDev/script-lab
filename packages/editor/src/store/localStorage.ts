@@ -242,7 +242,7 @@ export const getIsCustomFunctionRunnerAlive = (): boolean => {
   return lastHeartbeat ? +lastHeartbeat > 3000 : false;
 };
 
-export const getCustomFunctionRunnerLastUpdated = (): number => {
+export const getCustomFunctionCodeLastUpdated = (): number => {
   // In order to fix the IE cross-tab issue (#147)
   localStorage.setItem('playground_dummy_key', 'null');
 
