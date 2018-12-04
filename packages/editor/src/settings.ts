@@ -6,7 +6,7 @@ import {
   ABOUT_FILE_ID,
 } from './constants';
 
-import { environmentDisplayName } from './environment';
+import { environmentDisplayName } from 'common/lib/environment';
 
 export const defaultSettings: ISettings = {
   'editor.theme': 'dark',

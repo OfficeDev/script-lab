@@ -14,10 +14,8 @@ import {
   parseTripleSlashRefs,
   doesMonacoExist,
 } from './utilities';
-import { convertSolutionToSnippet } from '../../utils';
-import { actions } from '..';
-import { MessageBarType } from 'office-ui-fabric-react/lib/MessageBar';
-import { getCurrentEnv, reactRunnerUrls } from '../../environment';
+
+import { currentRunnerUrl } from 'common/lib/environment';
 
 let monacoEditor;
 
@@ -248,5 +246,5 @@ function* applyFormattingSaga() {
 }
 
 function* navigateToRunSaga() {
-  window.location.href = `${reactRunnerUrls[getCurrentEnv()]}?backButton=true`;
+  window.location.href = `${currentRunnerUrl}?backButton=true`;
 }

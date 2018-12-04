@@ -6,7 +6,7 @@ import {
   getVisibleEnvironmentKeysToSwitchTo,
   environmentDisplayNames,
   environmentDisplayName,
-} from '../../../environment';
+} from 'common/lib/environment';
 
 import { PATHS } from '../../../constants';
 

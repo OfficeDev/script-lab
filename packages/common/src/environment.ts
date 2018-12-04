@@ -43,7 +43,7 @@ export const environmentDisplayNames: IAllSwitchableEnvironments = {
   beta2017: 'Script Lab 2017 - Beta',
 };
 
-export const allEditorUrls: IAllSwitchableEnvironments = {
+export const editorUrls: IAllSwitchableEnvironments = {
   local: 'https://localhost:3000',
   alpha: 'https://script-lab-react-alpha.azurewebsites.net',
   beta: 'https://script-lab-react-beta.azurewebsites.net',
@@ -54,7 +54,7 @@ export const allEditorUrls: IAllSwitchableEnvironments = {
   beta2017: 'https://bornholm-insiders.azurewebsites.net',
 };
 
-export const reactRunnerUrls: IReactEnvironments = {
+export const runnerUrls: IReactEnvironments = {
   local: 'https://localhost:3200',
   alpha: 'https://script-lab-react-runner-alpha.azurewebsites.net',
   beta: 'https://script-lab-react-runner-beta.azurewebsites.net',
@@ -65,9 +65,14 @@ export const reactRunnerUrls: IReactEnvironments = {
 
 //////////////////////////
 
-export const serverUrl = serverUrls[getCurrentEnv()];
+export const currentServerUrl = serverUrls[getCurrentEnv()];
+export const currentRunnerUrl = runnerUrls[getCurrentEnv()];
+export const currentEditorUrl = editorUrls[getCurrentEnv()];
 export const githubAppClientId = githubAppClientIds[getCurrentEnv()];
 export const environmentDisplayName = environmentDisplayNames[getCurrentEnv()];
+export const currentOfficeJsRawSnippetsBaseRepoUrl = `https://raw.githubusercontent.com/OfficeDev/office-js-snippets/${
+  getCurrentEnv() === 'cdn' ? 'deploy-prod' : 'deploy-beta'
+}`;
 
 export function getVisibleEnvironmentKeysToSwitchTo(): Array<
   keyof IAllSwitchableEnvironments
@@ -91,10 +96,14 @@ export function getVisibleEnvironmentKeysToSwitchTo(): Array<
 }
 
 export function getCurrentEnv(): keyof IReactEnvironments {
-  for (const key in allEditorUrls) {
-    const value = (allEditorUrls as any)[key];
-    if (window.location.origin.indexOf(value) === 0) {
-      return key as keyof IReactEnvironments;
+  const environmentTypesToSearch = [editorUrls, runnerUrls];
+
+  for (const environmentToSearch of environmentTypesToSearch) {
+    for (const key in environmentToSearch) {
+      const value = (environmentToSearch as any)[key];
+      if (window.location.origin.indexOf(value) === 0) {
+        return key as keyof IReactEnvironments;
+      }
     }
   }
 
