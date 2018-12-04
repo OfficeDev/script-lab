@@ -10,7 +10,7 @@ import { getBoilerplate } from '../../newSolutionData';
 import { SCRIPT_FILE_NAME, PATHS, NULL_SOLUTION_ID, NULL_FILE_ID } from '../../constants';
 import { deleteSolutionFromStorage } from '../localStorage';
 import { formatTypeScriptFile } from '../editor/utilities';
-import { getCurrentEnv } from '../../environment';
+import { currentOfficeJsRawSnippetsBaseRepoUrl } from 'common/lib/environment';
 
 export default function* solutionsWatcher() {
   yield takeEvery(getType(solutions.edit), onSolutionOpenOrFileEditSaga);
@@ -69,10 +69,9 @@ function* onSolutionOpenOrFileEditSaga(
 
 export function* getDefaultSaga() {
   const host: string = yield select(selectors.host.get);
-  const deploymentSlot = getCurrentEnv() === 'prod' ? 'deploy-prod' : 'deploy-beta';
   const response = yield call(
     fetchYaml,
-    `https://raw.githubusercontent.com/OfficeDev/office-js-snippets/${deploymentSlot}/samples/${host.toLowerCase()}/default.yaml`,
+    `${currentOfficeJsRawSnippetsBaseRepoUrl}/samples/${host.toLowerCase()}/default.yaml`,
   );
 
   const { content, error } = response;

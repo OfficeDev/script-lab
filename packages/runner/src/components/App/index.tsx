@@ -17,7 +17,7 @@ import Only from 'common/lib/components/Only';
 import MessageBar from '../MessageBar';
 
 import SnippetContainer from '../SnippetContainer';
-import { currentEditorUrl } from '../../constants';
+import { currentEditorUrl } from 'common/lib/environment';
 import processLibraries from 'common/lib/utilities/process.libraries';
 
 const AppWrapper = styled.div`

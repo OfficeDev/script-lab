@@ -15,8 +15,5 @@ module.exports = {
   module: {
     rules: [{ test: /\.ts$/, loader: 'ts-loader' }],
   },
-  plugins: [
-    new CopyWebpackPlugin(['web.config']),
-    new CopyWebpackPlugin([{ from: 'public', to: 'public/' }]),
-  ],
+  plugins: [new CopyWebpackPlugin(['web.config'])],
 };

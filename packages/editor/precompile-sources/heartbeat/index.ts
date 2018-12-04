@@ -1,7 +1,7 @@
-import { getCurrentEnv, reactRunnerUrls } from '../../src/environment';
+import { currentRunnerUrl } from 'common/lib/environment';
 
 window.onmessage = event => {
-  if (event.origin !== reactRunnerUrls[getCurrentEnv()]) {
+  if (event.origin !== currentRunnerUrl) {
     console.error(`Could not read snippet data: invalid origin "${event.origin}"`);
     return;
   }
