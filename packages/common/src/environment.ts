@@ -15,7 +15,7 @@ interface I2017Environments {
 interface IAllSwitchableEnvironments extends IReactEnvironments, I2017Environments {}
 
 const serverUrls: IReactEnvironments = {
-  local: 'https://localhost:5000',
+  local: 'http://localhost:5000',
   alpha: 'https://script-lab-react-server-alpha.azurewebsites.net',
   beta: 'https://script-lab-react-server-beta.azurewebsites.net',
   staging: 'https://script-lab-react-server-staging.azurewebsites.net',
@@ -89,7 +89,7 @@ export function getVisibleEnvironmentKeysToSwitchTo(): Array<
     case 'alpha':
       return [...basicEnvironments, 'alpha2017', 'production', 'staging', 'local'];
     default:
-      return [...basicEnvironments];
+      return basicEnvironments;
   }
 }
 
