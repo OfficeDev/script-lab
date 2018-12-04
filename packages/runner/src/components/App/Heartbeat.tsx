@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { currentEditorUrl } from 'common/lib/environment';
 
-const LOCAL_STORAGE_POLLING_INTERVAL = 1000; // ms
+const LOCAL_STORAGE_POLLING_INTERVAL = 300; // ms
 const heartbeatEditorUrl = `${currentEditorUrl}/heartbeat.html`;
 const GET_ACTIVE_SOLUTION_REQUEST_MESSAGE = 'GET_ACTIVE_SOLUTION';
 

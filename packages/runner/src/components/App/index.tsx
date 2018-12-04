@@ -19,6 +19,7 @@ import MessageBar from '../MessageBar';
 import SnippetContainer from '../SnippetContainer';
 import { currentEditorUrl } from 'common/lib/environment';
 import processLibraries from 'common/lib/utilities/process.libraries';
+import { SILENT_SNIPPET_SWITCHING } from '../../constants';
 
 const AppWrapper = styled.div`
   height: 100vh;
@@ -130,9 +131,9 @@ export class App extends React.Component<{}, IState> {
       this.respondToOfficeJsMismatchIfAny(solution);
 
       if (!this.state.solution) {
-        console.info(`Your snippet "${solution.name}" has been loaded.`);
+        informSnippetSwitch(`Your snippet "${solution.name}" has been loaded.`);
       } else {
-        console.info(`Switching to snippet "${solution.name}".`);
+        informSnippetSwitch(`Switching to snippet "${solution.name}".`);
       }
     }
     this.setState({ solution });
@@ -143,7 +144,9 @@ export class App extends React.Component<{}, IState> {
       this.setState({
         solution: { ...this.state.solution, dateLastModified: Date.now() },
       });
-      console.info(`Your snippet '${this.state.solution.name}' has been reloaded.`);
+      informSnippetSwitch(
+        `Your snippet '${this.state.solution.name}' has been reloaded.`,
+      );
     }
   };
 
@@ -281,6 +284,12 @@ export class App extends React.Component<{}, IState> {
       this.isTransitioningAwayFromPage = true;
       this.reloadPageWithDifferentOfficeJsUrl(newOfficeJsUrl!);
     }
+  }
+}
+
+function informSnippetSwitch(message: string) {
+  if (!SILENT_SNIPPET_SWITCHING) {
+    console.log(message);
   }
 }
 

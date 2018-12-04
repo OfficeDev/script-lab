@@ -8,15 +8,13 @@ import errorTemplate from './templates/error';
 import noSnippet from './templates/noSnippet';
 
 import { officeNamespacesForIframe } from '../../constants';
-import { LoadingIndicatorWrapper } from './styles';
-import { Spinner, SpinnerSize } from 'office-ui-fabric-react/lib/Spinner';
 import { ProgressIndicator } from 'office-ui-fabric-react/lib/ProgressIndicator';
 import { compileTypeScript, SyntaxError } from './utilities';
 import untrusted from './templates/untrusted';
 import { Utilities, HostType } from '@microsoft/office-js-helpers';
 import processLibraries from 'common/lib/utilities/process.libraries';
 
-const SHOW_PROGRESS_BAR_DURATION = 100000; // ms // FIXME: change this to an acceptable number, high for testing
+const SHOW_PROGRESS_BAR_DURATION = 750 /* ms */;
 
 export interface IProps {
   solution?: ISolution | null;
@@ -133,12 +131,25 @@ class Snippet extends React.Component<IProps, IState> {
     return (
       <>
         <Only when={this.state.isShowingProgressBar}>
-          <ProgressIndicator styles={{ itemProgress: { padding: '1px' } }} />
+          <ProgressIndicator
+            styles={{
+              itemProgress: { padding: '1px', height: '5px' },
+              root: {
+                height: '10px',
+                width: '100%',
+                position: 'absolute',
+              },
+              progressTrack: {
+                height: '5px',
+              },
+              progressBar: {
+                height: '5px',
+              },
+            }}
+          />
         </Only>
         <Only when={this.state.isLoading}>
-          <LoadingIndicatorWrapper>
-            <Spinner size={SpinnerSize.large} label="Loading..." />
-          </LoadingIndicatorWrapper>
+          <></>
         </Only>
 
         <div style={{ display: this.state.isLoading ? 'none' : 'block', height: '100%' }}>
