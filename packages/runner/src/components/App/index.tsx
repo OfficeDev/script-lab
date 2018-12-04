@@ -19,6 +19,7 @@ import MessageBar from '../MessageBar';
 import SnippetContainer from '../SnippetContainer';
 import { currentEditorUrl } from 'common/lib/environment';
 import processLibraries from 'common/lib/utilities/process.libraries';
+import { showSplashScreen } from 'common/lib/utilities/splash.screen';
 
 const AppWrapper = styled.div`
   height: 100vh;
@@ -270,14 +271,7 @@ export class App extends React.Component<{}, IState> {
       // straight to an office.js beta snippet, don't change out the title, keep as is
       // so that the load appears continuous).
       if (this.hasRenderedContent) {
-        const loadingIndicator = document.getElementById('loading')!;
-        loadingIndicator.style.visibility = 'initial';
-        const subtitleElement = document.querySelectorAll(
-          '#loading h2',
-        )[0] as HTMLElement;
-        subtitleElement.textContent = 'Re-loading office.js, please wait...';
-
-        (document.getElementById('root') as HTMLElement).style.display = 'none';
+        showSplashScreen('Re-loading office.js, please wait...');
       }
 
       this.isTransitioningAwayFromPage = true;

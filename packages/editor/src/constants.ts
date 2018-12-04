@@ -39,6 +39,8 @@ export const localStorageKeys = {
     'playground_custom_functions_currently_running_timestamp',
   log: 'playground_log',
   customFunctionsRunPostData: 'custom_functions_run_post_data',
+  originEnvironmentUrl: 'playground_origin_environment_url',
+  redirectEnvironmentUrl: 'playground_redirect_environment_url',
 };
 
 export const CUSTOM_FUNCTIONS_INFO_URL = 'https://aka.ms/customfunctions';
