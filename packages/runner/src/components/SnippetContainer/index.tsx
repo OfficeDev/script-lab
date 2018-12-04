@@ -133,7 +133,7 @@ class Snippet extends React.Component<IProps, IState> {
     return (
       <>
         <Only when={this.state.isShowingProgressBar}>
-          <ProgressIndicator />
+          <ProgressIndicator styles={{ itemProgress: { padding: '1px' } }} />
         </Only>
         <Only when={this.state.isLoading}>
           <LoadingIndicatorWrapper>

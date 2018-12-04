@@ -65,14 +65,16 @@ class Footer extends React.Component<IProps, IState> {
   render() {
     return (
       <CommonFooter
-        items={[
-          {
-            hidden: this.state.lastUpdatedText === '',
-            key: 'last-updated',
-            text: this.state.lastUpdatedText,
-            onClick: this.props.refresh,
-          },
-        ]}
+        items={
+          [
+            // {
+            //   hidden: this.state.lastUpdatedText === '',
+            //   key: 'last-updated',
+            //   text: this.state.lastUpdatedText,
+            //   onClick: this.props.refresh,
+            // },
+          ]
+        }
         farItems={[
           {
             hidden: this.props.isConsoleOpen || !this.props.isSolutionLoaded,
