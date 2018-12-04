@@ -53,3 +53,5 @@ describe('template', () => {
 </html>`);
   });
 });
+
+// cspell:ignore crossorigin

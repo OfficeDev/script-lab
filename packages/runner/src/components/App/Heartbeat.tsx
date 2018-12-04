@@ -15,15 +15,9 @@ interface IState {
 }
 
 class Heartbeat extends Component<IProps, IState> {
-  node: { current: HTMLIFrameElement };
+  node = React.createRef<HTMLIFrameElement>();
+  state: IState = { activeSolution: undefined };
   pollingInterval: any;
-  state: IState;
-
-  constructor(props) {
-    super(props);
-    this.node = React.createRef();
-    this.state = { activeSolution: undefined };
-  }
 
   componentDidMount() {
     this.pollingInterval = setInterval(() => {
