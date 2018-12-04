@@ -35,30 +35,38 @@ export const login = async (): Promise<{
   profilePicUrl?: string;
   username?: string;
 }> => {
-  let token: IToken;
+  let itoken: IToken;
   try {
-    token = await auth.authenticate('GitHub');
+    itoken = await auth.authenticate('GitHub');
   } catch (err) {
     console.error(err);
     throw err;
   }
-
-  const { response, error } = await request({
-    method: 'GET',
-    path: 'user',
-    token: token.access_token,
-  });
-
-  if (error) {
-    console.error(error);
-    throw error;
-  }
+  const token = itoken.access_token;
 
   return {
-    token: token.access_token,
-    profilePicUrl: response!.avatar_url,
-    username: response!.login,
+    token,
+    ...(await getProfilePicUrlAndUsername(token)),
   };
 };
+
+export const getProfilePicUrlAndUsername = (
+  token: string,
+): Promise<{ profilePicUrl?: string; username?: string }> =>
+  request({
+    method: 'GET',
+    path: 'user',
+    token,
+  }).then(({ response, error }) => {
+    if (error) {
+      console.error(error);
+      return {};
+    } else {
+      return {
+        profilePicUrl: response!.avatar_url,
+        username: response!.login,
+      };
+    }
+  });
 
 export const logout = (token: string) => auth.tokens.clear();

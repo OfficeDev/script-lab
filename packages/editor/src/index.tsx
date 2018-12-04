@@ -54,7 +54,7 @@ window.onerror = error => invokeGlobalErrorHandler(error);
     const { store, history } = configureStore({
       history: createHashHistory(),
       initialState: {
-        ...loadStateFromLocalStorage(),
+        ...(await loadStateFromLocalStorage()),
         ...loadStateFromSessionStorage(),
       },
     });
