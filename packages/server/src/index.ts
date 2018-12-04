@@ -55,15 +55,4 @@ app.post('/auth', (req, res) => {
   );
 });
 
-if (process.env.NODE_ENV !== 'production') {
-  const https = require('https');
-  const httpsOptions = {
-    key: fs.readFileSync('./key.pem'),
-    cert: fs.readFileSync('./cert.pem'),
-  };
-  https
-    .createServer(httpsOptions, app)
-    .listen(port, () => console.log(`Listening on port ${port}`));
-} else {
-  app.listen(port, () => console.log(`Listening on port ${port}`));
-}
+app.listen(port, () => console.log(`Listening on port ${port}`));
