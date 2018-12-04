@@ -64,13 +64,15 @@ export const loadState = (): Partial<IState> => {
 
 export const saveState = (state: IState) => {
   // save solution
-  writeIfChanged(
-    state => selectors.editor.getActiveSolution(state, { withHiddenFiles: true }),
-    (solution: ISolution) => solution.id,
-    state,
-    lastSavedState,
-    SOLUTION_ROOT,
-  );
+  if (selectors.editor.getActiveSolution(state).id !== NULL_SOLUTION_ID) {
+    writeIfChanged(
+      state => selectors.editor.getActiveSolution(state, { withHiddenFiles: true }),
+      (solution: ISolution) => solution.id,
+      state,
+      lastSavedState,
+      SOLUTION_ROOT,
+    );
+  }
 
   // save github
   writeIfChanged(
@@ -196,6 +198,7 @@ function normalizeSolutions(solutions: {
 }): { [id: string]: ISolutionWithFileIds } {
   const defaults = getBoilerplate('');
   return Object.keys(solutions)
+    .filter(id => id !== NULL_SOLUTION_ID)
     .map(key => solutions[key])
     .reduce(
       (newSolutions, solution) => ({
@@ -239,7 +242,7 @@ export const getIsCustomFunctionRunnerAlive = (): boolean => {
   return lastHeartbeat ? +lastHeartbeat > 3000 : false;
 };
 
-export const getCustomFunctionRunnerLastUpdated = (): number => {
+export const getCustomFunctionCodeLastUpdated = (): number => {
   // In order to fix the IE cross-tab issue (#147)
   localStorage.setItem('playground_dummy_key', 'null');
 

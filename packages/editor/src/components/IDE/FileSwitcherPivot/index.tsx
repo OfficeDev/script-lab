@@ -19,11 +19,13 @@ const FILE_NAME_MAP = {
 interface IPropsFromRedux {
   files: IFile[];
   activeFile: IFile;
+  isCustomFunctionSolution: boolean;
 }
 
 const mapStateToProps = (state: IReduxState): IPropsFromRedux => ({
   files: selectors.editor.getActiveSolution(state).files,
   activeFile: selectors.editor.getActiveFile(state),
+  isCustomFunctionSolution: selectors.customFunctions.getIsCurrentSolutionCF(state),
 });
 
 interface IActionsFromRedux {
@@ -36,12 +38,25 @@ const mapDipatchToProps = (dispatch: Dispatch<IRootAction>): IActionsFromRedux =
 
 interface IProps extends IPropsFromRedux, IActionsFromRedux {}
 
-const FileSwitcherPivot = ({ files, activeFile, openFile }: IProps) => (
+const FileSwitcherPivot = ({
+  files,
+  activeFile,
+  isCustomFunctionSolution,
+  openFile,
+}: IProps) => (
   <PivotBar
-    items={files.map(file => ({
-      key: file.id,
-      text: FILE_NAME_MAP[file.name] || file.name,
-    }))}
+    items={files
+      .filter(file => {
+        if (isCustomFunctionSolution) {
+          return [SCRIPT_FILE_NAME, LIBRARIES_FILE_NAME].includes(file.name);
+        } else {
+          return true;
+        }
+      })
+      .map(file => ({
+        key: file.id,
+        text: FILE_NAME_MAP[file.name] || file.name,
+      }))}
     selectedKey={activeFile.id}
     onSelect={openFile}
     data-test-id="file-switcher-pivot"

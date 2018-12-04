@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { withTheme } from 'styled-components';
 import { BackstageWrapper, ContentContainer, LoadingContainer } from './styles';
 import debounce from 'lodash/debounce';
 
@@ -19,8 +18,6 @@ import { IRootAction } from '../../store/actions';
 import selectors from '../../store/selectors';
 import { editor, solutions, samples, gists, github } from '../../store/actions';
 import { IState as IReduxState } from '../../store/reducer';
-import { push } from 'connected-react-router';
-import { PATHS } from '../../constants';
 import Only from '../Only';
 
 interface IBackstageItem {
@@ -163,12 +160,13 @@ export class Backstage extends Component<IProps, IState> {
   };
 
   render() {
+    const showBack = this.props.solutions.length !== 0;
     const originalItems: IBackstageItem[] = [
       {
         key: 'back',
         ariaLabel: 'Back',
-        icon: 'GlobalNavButton',
-        onClick: this.props.goBack,
+        icon: showBack ? 'GlobalNavButton' : '',
+        onClick: showBack ? this.props.goBack : () => {},
       },
       {
         key: 'new',
@@ -211,6 +209,7 @@ export class Backstage extends Component<IProps, IState> {
         content: <ImportSolution importGist={this.props.importGist} />,
       },
     ];
+
     const items = originalItems.map((item: IBackstageItem) => ({
       onClick: () => this.setState({ selectedKey: item.key }),
       ...item,
