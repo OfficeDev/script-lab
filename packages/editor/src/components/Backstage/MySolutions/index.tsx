@@ -68,6 +68,12 @@ class MySolutions extends React.Component<IProps> {
               isActive: activeSolution && activeSolution.id === sol.id,
             }))}
         />
+        {/*
+        We want to show the "My shared gists" either when:
+        1) You're not signed in, so that we can tell you that you should. And so that you still see this UI
+        2) You have 1 or more gists.
+        For signed in case but with empty gists, omit this section.
+        */}
         {(!isSignedIn || gistMetadata.length > 0) && (
           <GalleryList
             title="My shared gists on GitHub"
