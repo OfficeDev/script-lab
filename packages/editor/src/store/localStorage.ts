@@ -1,6 +1,7 @@
 import isEqual from 'lodash/isEqual';
 import flatten from 'lodash/flatten';
 
+import { IState as IGitHubState } from './github/reducer';
 import { IState } from './reducer';
 import selectors from './selectors';
 import { convertSolutionToSnippet, convertSnippetToSolution } from '../utils';
@@ -9,6 +10,7 @@ import { getSettingsSolutionAndFiles } from '../settings';
 import { verifySettings } from './settings/sagas';
 import { getBoilerplate } from '../newSolutionData';
 import { HostType } from '@microsoft/office-js-helpers';
+import { getProfilePicUrlAndUsername } from '../services/github';
 
 interface IStoredGitHubState {
   token: string | null;
@@ -20,7 +22,7 @@ const GITHUB_KEY = 'github';
 const SOLUTION_ROOT = 'solution#';
 let lastSavedState: IState;
 
-export const loadState = (): Partial<IState> => {
+export async function loadState(): Promise<Partial<IState>> {
   try {
     // In order to fix the IE cross-tab issue (#147)
     localStorage.setItem('playground_dummy_key', 'null');
@@ -44,10 +46,7 @@ export const loadState = (): Partial<IState> => {
       lastActive: { solutionId: null, fileId: null },
     };
 
-    const github = {
-      ...JSON.parse(localStorage.getItem(GITHUB_KEY) || '{}'),
-      isLoggingInOrOut: false,
-    };
+    const github = await loadGitHubInfo();
 
     return { solutions: { metadata: solutions, files }, settings: settingsState, github };
   } catch (err) {
@@ -60,7 +59,7 @@ export const loadState = (): Partial<IState> => {
       },
     };
   }
-};
+}
 
 export const saveState = (state: IState) => {
   // save solution
@@ -117,6 +116,37 @@ export const saveState = (state: IState) => {
 
   lastSavedState = state;
 };
+
+// github
+async function loadGitHubInfo(): Promise<IGitHubState> {
+  const githubInfo: string = localStorage.getItem(GITHUB_KEY);
+  if (githubInfo) {
+    return { ...JSON.parse(githubInfo), isLoggingInOrOut: false };
+  }
+
+  const tokenStorage = localStorage.getItem('OAuth2Tokens');
+  if (tokenStorage) {
+    const parsedTokenStorage = JSON.parse(tokenStorage);
+    if ('GitHub' in parsedTokenStorage) {
+      const token = parsedTokenStorage.GitHub.access_token;
+      if (token) {
+        return {
+          profilePicUrl: null,
+          username: null,
+          ...(await getProfilePicUrlAndUsername(token)),
+          token,
+          isLoggingInOrOut: false,
+        };
+      }
+    }
+  }
+  return {
+    profilePicUrl: null,
+    username: null,
+    token: null,
+    isLoggingInOrOut: false,
+  };
+}
 
 // solutions
 export function deleteSolutionFromStorage(id: string) {
