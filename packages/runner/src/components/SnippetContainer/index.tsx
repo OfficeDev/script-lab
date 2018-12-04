@@ -133,7 +133,7 @@ class Snippet extends React.Component<IProps, IState> {
         <Only when={this.state.isShowingProgressBar}>
           <ProgressIndicator
             styles={{
-              itemProgress: { padding: '1px', height: '5px' },
+              itemProgress: { padding: '1px', height: '5px', zIndex: 1000 },
               root: {
                 height: '10px',
                 width: '100%',
@@ -147,9 +147,6 @@ class Snippet extends React.Component<IProps, IState> {
               },
             }}
           />
-        </Only>
-        <Only when={this.state.isLoading}>
-          <></>
         </Only>
 
         <div style={{ display: this.state.isLoading ? 'none' : 'block', height: '100%' }}>
