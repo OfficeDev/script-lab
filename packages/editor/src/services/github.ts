@@ -39,7 +39,6 @@ export const login = async (): Promise<{
   try {
     token = await auth.authenticate('GitHub');
   } catch (err) {
-    console.error('iam1');
     console.error(err);
     throw err;
   }
@@ -52,7 +51,7 @@ export const login = async (): Promise<{
 
   if (error) {
     console.error(error);
-    throw new Error(error.toString());
+    throw error;
   }
 
   return {
