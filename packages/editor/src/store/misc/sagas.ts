@@ -34,10 +34,10 @@ function* onSwitchEnvironmentSaga(
   if (newEnvironment !== currentEnvironment) {
     const currentEnvPretty = environmentDisplayNames[currentEnvironment];
     const newEnvPretty = environmentDisplayNames[newEnvironment];
-    const title = `Switch from ${currentEnvPretty} to ${newEnvPretty}:`;
+    const title = `Switch from ${currentEnvPretty} to ${newEnvPretty}?`;
     const subText =
-      'You are about to change your Script Lab environment and will not have access' +
-      ' to your saved local snippets until you return to this environment. ' +
+      'You are about to change your Script Lab environment and will not have access ' +
+      'to your saved local snippets until you return to this environment. ' +
       'Are you sure you want to proceed?';
 
     const buttons = [
