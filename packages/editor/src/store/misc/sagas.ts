@@ -1,8 +1,11 @@
 import { takeEvery, put, call, select } from 'redux-saga/effects';
 import { getType, ActionType } from 'typesafe-actions';
 import { actions, selectors } from '../';
-import { getCurrentEnv, allEditorUrls } from '../../environment';
-import { capitalizeWord } from 'common/lib/utilities/string';
+import {
+  getCurrentEnv,
+  editorUrls,
+  environmentDisplayNames,
+} from 'common/lib/environment';
 
 export default function* miscWatcher() {
   yield takeEvery(getType(actions.misc.initialize), onInitializeSaga);
@@ -25,11 +28,13 @@ function* onSwitchEnvironmentSaga(
   const currentEnvironment = getCurrentEnv();
 
   if (newEnvironment !== currentEnvironment) {
-    const currentEnvPretty = capitalizeWord(currentEnvironment);
-    const newEnvPretty = capitalizeWord(newEnvironment);
+    const currentEnvPretty = environmentDisplayNames[currentEnvironment];
+    const newEnvPretty = environmentDisplayNames[newEnvironment];
     const title = `Switch from ${currentEnvPretty} to ${newEnvPretty}:`;
     const subText =
-      'You are about to change your Script Lab environment and will not have access to your saved local snippets until you return to this environment. Are you sure you want to proceed?';
+      'You are about to change your Script Lab environment and will not have access' +
+      ' to your saved local snippets until you return to this environment. ' +
+      'Are you sure you want to proceed?';
 
     const buttons = [
       {
@@ -52,7 +57,7 @@ function* onConfirmSwitchEnvironmentSaga(
   action: ActionType<typeof actions.misc.confirmSwitchEnvironment>,
 ) {
   // FIXME: Zlatkovsky, need to use key from localstorage!
-  window.location.href = `${
-    allEditorUrls.production
-  }?targetEnvironment=${encodeURIComponent(allEditorUrls[action.payload])}`;
+  window.location.href = `${editorUrls.production}?targetEnvironment=${encodeURIComponent(
+    editorUrls[action.payload],
+  )}`;
 }

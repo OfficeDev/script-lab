@@ -1,11 +1,11 @@
 import { put, takeEvery, select, call, all } from 'redux-saga/effects';
 import { getType, ActionType } from 'typesafe-actions';
 import selectors from '../selectors';
-import { editor, settings, screen, misc } from '../actions';
+import { editor, settings, screen, misc, solutions } from '../actions';
 import zip from 'lodash/zip';
 import flatten from 'lodash/flatten';
 import { push, RouterState } from 'connected-react-router';
-import { PATHS, LIBRARIES_FILE_NAME } from '../../constants';
+import { PATHS, LIBRARIES_FILE_NAME, NULL_SOLUTION_ID } from '../../constants';
 
 import {
   registerLibrariesMonacoLanguage,
@@ -14,22 +14,25 @@ import {
   parseTripleSlashRefs,
   doesMonacoExist,
 } from './utilities';
-import { convertSolutionToSnippet } from '../../utils';
-import { actions } from '..';
-import { MessageBarType } from 'office-ui-fabric-react/lib/MessageBar';
-import { getCurrentEnv, reactRunnerUrls } from '../../environment';
+
+import { currentRunnerUrl } from 'common/lib/environment';
 
 let monacoEditor;
 
 export default function* editorWatcher() {
   yield takeEvery(getType(editor.open), onEditorOpenSaga);
   yield takeEvery(getType(editor.openFile), onEditorOpenFileSaga);
+  yield takeEvery(getType(solutions.edit), onSolutionEditSaga);
   yield takeEvery(getType(editor.newSolutionOpened), onSolutionOpenSaga);
   yield takeEvery(getType(editor.newFileOpened), onFileOpenSaga);
   yield takeEvery(getType(editor.onMount), initializeMonacoSaga);
   yield takeEvery(getType(misc.hideLoadingSplashScreen), hideLoadingSplashScreen);
   yield takeEvery(getType(editor.applyMonacoOptions), applyMonacoOptionsSaga);
   yield takeEvery(getType(settings.edit.success), applyMonacoOptionsSaga);
+  yield takeEvery(
+    getType(editor.shouldUpdateIntellisense),
+    makeAddIntellisenseRequestSaga,
+  );
   yield takeEvery(getType(editor.setIntellisenseFiles.request), setIntellisenseFilesSaga);
   yield takeEvery(getType(screen.updateSize), resizeEditorSaga);
   yield takeEvery(getType(editor.applyFormatting), applyFormattingSaga);
@@ -58,7 +61,9 @@ export function* onEditorOpenFileSaga(action: ActionType<typeof editor.openFile>
   }
 
   yield put(editor.setActive({ solutionId, fileId }));
-  yield call(onEditorOpenSaga);
+  if (solutionId !== NULL_SOLUTION_ID) {
+    yield call(onEditorOpenSaga);
+  }
 
   const solutionToOpen = yield select(selectors.solutions.get, solutionId);
   const fileToOpen = yield select(selectors.solutions.getFile, fileId);
@@ -72,10 +77,18 @@ export function* onEditorOpenFileSaga(action: ActionType<typeof editor.openFile>
   }
 }
 
-function* onSolutionOpenSaga() {
-  if (doesMonacoExist()) {
-    yield call(makeAddIntellisenseRequestSaga);
+function* onSolutionEditSaga(action: ActionType<typeof solutions.edit>) {
+  if (!action.payload.fileId) {
+    return;
   }
+  const file = yield select(selectors.solutions.getFile, action.payload.fileId);
+  if (file.language === 'libraries') {
+    yield put(editor.shouldUpdateIntellisense());
+  }
+}
+
+function* onSolutionOpenSaga() {
+  yield put(editor.shouldUpdateIntellisense());
 }
 
 function* onFileOpenSaga(action: ActionType<typeof editor.newFileOpened>) {
@@ -143,6 +156,10 @@ function* applyMonacoOptionsSaga() {
 }
 
 function* makeAddIntellisenseRequestSaga() {
+  if (!doesMonacoExist()) {
+    return;
+  }
+
   const solution = yield select(selectors.editor.getActiveSolution);
   const libraries = solution.files.find(file => file.name === LIBRARIES_FILE_NAME);
   let urls: string[] = [];
@@ -203,8 +220,11 @@ function* setIntellisenseFilesSaga(
   const existingIntellisenseFiles = yield select(selectors.editor.getIntellisenseFiles);
   const existingUrls = Object.keys(existingIntellisenseFiles);
   const currentUrls = action.payload.urls;
+
   const urlsToDispose = existingUrls.filter(url => !currentUrls.includes(url));
   urlsToDispose.forEach(url => existingIntellisenseFiles[url].dispose());
+  yield put(editor.removeIntellisenseFiles(urlsToDispose));
+
   const urlsToFetch = currentUrls.filter(url => !existingUrls.includes(url));
   const newIntellisenseFiles = yield call(() =>
     Promise.all(
@@ -248,5 +268,5 @@ function* applyFormattingSaga() {
 }
 
 function* navigateToRunSaga() {
-  window.location.href = `${reactRunnerUrls[getCurrentEnv()]}?backButton=true`;
+  window.location.href = `${currentRunnerUrl}?backButton=true`;
 }

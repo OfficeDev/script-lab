@@ -1,8 +1,8 @@
-import { getCurrentEnv, reactRunnerUrls } from '../../src/environment';
-import ensureFreshLocalStorage from '../../../common/lib/utilities/ensure.fresh.local.storage';
+import { currentRunnerUrl } from 'common/lib/environment';
+import ensureFreshLocalStorage from 'common/lib/utilities/ensure.fresh.local.storage';
 
 window.onmessage = event => {
-  if (event.origin !== reactRunnerUrls[getCurrentEnv()]) {
+  if (event.origin !== currentRunnerUrl) {
     console.error(`Could not read snippet data: invalid origin "${event.origin}"`);
     return;
   }

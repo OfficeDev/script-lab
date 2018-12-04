@@ -1,3 +1,3 @@
-import { reactRunnerUrls, getCurrentEnv } from '../../src/environment';
+import { currentRunnerUrl } from 'common/lib/environment';
 
-window.location.href = reactRunnerUrls[getCurrentEnv()];
+window.location.href = currentRunnerUrl;

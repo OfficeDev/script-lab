@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { editorUrls, getCurrentEnv } from '../../constants';
+import { currentEditorUrl } from 'common/lib/environment';
 
 const LOCAL_STORAGE_POLLING_INTERVAL = 1000; // ms
-const URL = editorUrls[getCurrentEnv()];
-const HEARTBEAT_HTML_URL = `${URL}/heartbeat.html`;
+const heartbeatEditorUrl = `${currentEditorUrl}/heartbeat.html`;
 const GET_ACTIVE_SOLUTION_REQUEST_MESSAGE = 'GET_ACTIVE_SOLUTION';
 
 export interface IProps {
@@ -16,14 +15,14 @@ interface IState {
 }
 
 class Heartbeat extends Component<IProps, IState> {
-  node;
-  pollingInterval;
-  state;
+  node: { current: HTMLIFrameElement };
+  pollingInterval: any;
+  state: IState;
 
   constructor(props) {
     super(props);
     this.node = React.createRef();
-    this.state = { activeSolutionId: undefined };
+    this.state = { activeSolution: undefined };
   }
 
   componentDidMount() {
@@ -43,13 +42,13 @@ class Heartbeat extends Component<IProps, IState> {
     if (this.node.current) {
       this.node.current.contentWindow!.postMessage(
         `${GET_ACTIVE_SOLUTION_REQUEST_MESSAGE}/${this.props.host}`,
-        URL,
+        currentEditorUrl,
       );
     }
   };
 
   private onWindowMessage = ({ origin, data }) => {
-    if (origin !== URL) {
+    if (origin !== currentEditorUrl) {
       return;
     }
 
@@ -66,7 +65,7 @@ class Heartbeat extends Component<IProps, IState> {
 
   render() {
     return (
-      <iframe style={{ display: 'none' }} src={HEARTBEAT_HTML_URL} ref={this.node} />
+      <iframe style={{ display: 'none' }} src={heartbeatEditorUrl} ref={this.node} />
     );
   }
 

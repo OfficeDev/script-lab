@@ -14,20 +14,17 @@ import { IState as IReduxState } from '../../store/reducer';
 
 import { misc, IRootAction } from '../../store/actions';
 import { getCustomFunctionEngineStatus } from '../../store/customFunctions/utilities';
+import { getCustomFunctionCodeLastUpdated } from '../../store/localStorage';
 import { Dispatch } from 'redux';
 
 interface IPropsFromRedux {
   hasCustomFunctionsInSolutions: boolean;
   runnerLastUpdated: number;
-  customFunctionSolutionLastModified: number;
 }
 
 const mapStateToProps = (state: IReduxState): IPropsFromRedux => ({
   hasCustomFunctionsInSolutions: selectors.customFunctions.getSolutions(state).length > 0,
   runnerLastUpdated: state.customFunctions.runner.lastUpdated,
-  customFunctionSolutionLastModified: selectors.customFunctions.getLastModifiedDate(
-    state,
-  ),
 });
 
 interface IActionsFromRedux {
@@ -41,11 +38,13 @@ const mapDispatchToProps = (dispatch: Dispatch<IRootAction>): IActionsFromRedux 
 interface IProps extends IPropsFromRedux, IActionsFromRedux {}
 
 interface IState {
+  customFunctionsSolutionLastModified: number;
   engineStatus: ICustomFunctionEngineStatus | null;
 }
 
 export class CustomFunctionsDashboard extends React.Component<IProps, IState> {
-  state: IState = { engineStatus: null };
+  localStoragePollingInterval: any;
+  state: IState = { engineStatus: null, customFunctionsSolutionLastModified: 0 };
 
   constructor(props: IProps) {
     super(props);
@@ -58,8 +57,23 @@ export class CustomFunctionsDashboard extends React.Component<IProps, IState> {
     });
   }
 
-  getShouldPromptRefresh = () =>
-    this.props.customFunctionSolutionLastModified > this.props.runnerLastUpdated;
+  componentDidMount() {
+    this.localStoragePollingInterval = setInterval(
+      () =>
+        this.setState({
+          customFunctionsSolutionLastModified: getCustomFunctionCodeLastUpdated(),
+        }),
+      500,
+    );
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.localStoragePollingInterval);
+  }
+
+  getShouldPromptRefresh = () => {
+    return this.state.customFunctionsSolutionLastModified > this.props.runnerLastUpdated;
+  };
 
   render() {
     const { hasCustomFunctionsInSolutions } = this.props;

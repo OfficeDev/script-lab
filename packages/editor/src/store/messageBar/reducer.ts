@@ -64,9 +64,7 @@ const messageBarReducer = (
       return {
         isVisible: true,
         style: MessageBarType.success,
-        text: `Your gist has been published at https://gist.github.com/${
-          action.payload.gist.id
-        }.`,
+        text: 'Your gist has been published.',
         link: {
           text: 'View on GitHub',
           url: `https://gist.github.com/${action.payload.gist.id}`,
@@ -85,9 +83,7 @@ const messageBarReducer = (
       return {
         isVisible: true,
         style: MessageBarType.success,
-        text: `Your gist has been updated at https://gist.github.com/${
-          action.payload.gist.id
-        }.`,
+        text: 'Your gist has been updated.',
         link: {
           text: 'View on GitHub',
           url: `https://gist.github.com/${action.payload.gist.id}`,

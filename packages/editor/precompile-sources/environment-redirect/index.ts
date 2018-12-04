@@ -1,8 +1,8 @@
 import { parse } from 'query-string';
 import { localStorageKeys } from '../../src/constants';
-import { allEditorUrls } from '../../src/environment';
-import ensureFreshLocalStorage from '../../../common/lib/utilities/ensure.fresh.local.storage';
-import { WINDOW_SCRIPT_LAB_NAVIGATING_AWAY_TO_DIFFERENT_ENVIRONMENT_KEY } from '../../../common/src/utilities/script-loader/constants';
+import { editorUrls } from 'common/lib/environment';
+import ensureFreshLocalStorage from 'common/lib/utilities/ensure.fresh.local.storage';
+import { WINDOW_SCRIPT_LAB_NAVIGATING_AWAY_TO_DIFFERENT_ENVIRONMENT_KEY } from 'common/lib/utilities/script-loader/constants';
 
 (() => {
   try {
@@ -86,8 +86,8 @@ function isAllowedUrl(url: string) {
     return true;
   }
 
-  for (const key in allEditorUrls) {
-    const value = (allEditorUrls as { [key: string]: string })[key];
+  for (const key in editorUrls) {
+    const value = (editorUrls as any)[key];
     if (value.indexOf(url) === 0) {
       return true;
     }

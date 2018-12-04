@@ -54,6 +54,7 @@ export default ({ title, details }: IProps) => `<!DOCTYPE html>
         margin-bottom: 20px;
       }
       #details {
+        max-width: 95%;
         background: #eee;
         border-radius: 5px;
         margin: 10px;
@@ -63,6 +64,9 @@ export default ({ title, details }: IProps) => `<!DOCTYPE html>
                 box-sizing: border-box;
         white-space: pre-wrap;
         word-wrap: break-word;
+        word-break: break-all;
+        white-space: pre-wrap;
+        overflow-y: auto;
       }
     </style>
 </head>

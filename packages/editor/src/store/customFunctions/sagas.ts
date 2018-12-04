@@ -16,7 +16,6 @@ import { registerMetadata } from './utilities';
 
 import {
   getCustomFunctionLogs,
-  getCustomFunctionRunnerLastUpdated,
   getIsCustomFunctionRunnerAlive,
 } from '../../store/localStorage';
 import { fetchLogsAndHeartbeat, updateEngineStatus, openDashboard } from './actions';
@@ -87,12 +86,12 @@ function* fetchLogsAndHeartbeatSaga() {
     yield put(customFunctions.pushLogs(logs));
   }
 }
-
-function* fetchHeartbeatSaga() {
-  const lastUpdated = yield call(getCustomFunctionRunnerLastUpdated);
-  const isAlive = yield call(getIsCustomFunctionRunnerAlive);
-  yield put(customFunctions.updateRunner({ isAlive, lastUpdated }));
-}
+// TODO: Zlatkovsky when heartbeat for cf is in place
+// function* fetchHeartbeatSaga() {
+//   const lastUpdated = yield call(getCustomFunctionRunnerLastUpdated);
+//   const isAlive = yield call(getIsCustomFunctionRunnerAlive);
+//   yield put(customFunctions.updateRunner({ isAlive, lastUpdated }));
+// }
 
 function* openDashboardSaga() {
   window.location.href = './custom-functions.html';
@@ -104,7 +103,12 @@ function* checkIfIsCustomFunctionSaga(
   const { solution, file } = action.payload;
 
   const isCustomFunctionsSolution = isCustomFunctionScript(file.content);
-  if (!solution.options.isCustomFunctionsSolution && isCustomFunctionsSolution) {
+
+  // Compare what is currently in the solution with what we want to update it to (via XOR)
+  const optionsChanged =
+    (!solution.options.isCustomFunctionsSolution && isCustomFunctionsSolution) ||
+    (solution.options.isCustomFunctionsSolution && !isCustomFunctionsSolution);
+  if (optionsChanged) {
     yield put(
       solutions.updateOptions({ solution, options: { isCustomFunctionsSolution } }),
     );
