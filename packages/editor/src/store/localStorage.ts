@@ -93,7 +93,7 @@ export const saveState = (state: IState) => {
   const activeSolution = selectors.editor.getActiveSolution(state, {
     withHiddenFiles: true,
   });
-  if (isRealSolution(activeSolution) && isStandaloneRunnable(activeSolution)) {
+  if (isRealSolution(activeSolution)) {
     writeIfChanged(
       state => selectors.editor.getActiveSolution(state, { withHiddenFiles: true }),
       (solution: ISolution) => `activeSolution_${solution.host}`,
@@ -315,12 +315,6 @@ function getAllLocalStorageKeys(): string[] {
 
 function isRealSolution(solution: ISolution) {
   return solution.id !== NULL_SOLUTION_ID && solution.id !== SETTINGS_SOLUTION_ID;
-}
-
-function isStandaloneRunnable(solution: ISolution) {
-  return !(
-    solution.options.isDirectScriptExecution || solution.options.isCustomFunctionsSolution
-  );
 }
 
 function writeIfChanged(
