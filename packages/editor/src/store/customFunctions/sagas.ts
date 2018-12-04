@@ -94,7 +94,7 @@ function* fetchLogsAndHeartbeatSaga() {
 // }
 
 function* openDashboardSaga() {
-  window.location.href = './custom-functions.html';
+  window.location.href = './custom-functions.html?backButton=true';
 }
 
 function* checkIfIsCustomFunctionSaga(
