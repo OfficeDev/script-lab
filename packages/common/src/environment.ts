@@ -107,6 +107,13 @@ export function getCurrentEnv(): keyof IReactEnvironments {
     }
   }
 
+  // For jest tests, it looks like the window.location.origin is set to
+  // "http://localhost" (as http rather than https, and without a port number).
+  // Allow that through to avoid throwing an exception and failing the tests.
+  if (window.location.origin === 'http://localhost') {
+    return 'local';
+  }
+
   throw new Error(
     `Invalid environment. URL "${
       window.location.origin
