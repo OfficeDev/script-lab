@@ -35,6 +35,7 @@ interface IPropsFromRedux {
   activeSolution?: ISolution;
   sharedGistMetadata: ISharedGistMetadata[];
   samplesByGroup: { [group: string]: ISampleMetadata[] };
+  isSignedIn: boolean;
 }
 
 const mapStateToProps = (state: IReduxState): IPropsFromRedux => ({
@@ -42,6 +43,7 @@ const mapStateToProps = (state: IReduxState): IPropsFromRedux => ({
   activeSolution: selectors.editor.getActiveSolution(state),
   sharedGistMetadata: selectors.gists.getGistMetadata(state),
   samplesByGroup: selectors.samples.getMetadataByGroup(state),
+  isSignedIn: !!selectors.github.getToken(state),
 });
 
 interface IActionsFromRedux {
@@ -187,6 +189,7 @@ export class Backstage extends Component<IProps, IState> {
             activeSolution={this.props.activeSolution}
             gistMetadata={this.props.sharedGistMetadata}
             openGist={this.openSharedGist}
+            isSignedIn={this.props.isSignedIn}
             signIn={this.props.signIn}
           />
         ),
