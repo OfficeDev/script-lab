@@ -13,6 +13,7 @@ import { compileTypeScript, SyntaxError } from './utilities';
 import untrusted from './templates/untrusted';
 import { Utilities, HostType } from '@microsoft/office-js-helpers';
 import processLibraries from 'common/lib/utilities/process.libraries';
+import { sanitizeObject } from './templates/sanitizer';
 
 const SHOW_PROGRESS_BAR_DURATION = 750 /* ms */;
 
@@ -120,10 +121,12 @@ class Snippet extends React.Component<IProps, IState> {
         html,
       });
     } catch (error) {
-      return errorTemplate({
-        title: error instanceof SyntaxError ? 'Syntax Error' : 'Unknown Error',
-        details: error.message,
-      });
+      return errorTemplate(
+        sanitizeObject({
+          title: error instanceof SyntaxError ? 'Syntax Error' : 'Unknown Error',
+          details: error.message,
+        }),
+      );
     }
   };
 
