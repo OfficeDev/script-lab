@@ -20,6 +20,22 @@ class IFrame extends React.Component<IProps, IState> {
     this.isIframeMounted = false;
 
     this.state = { previousRenderTimestamp: 0 };
+
+    // Set up a callback so that after writing the snippet to the iframe, the parent is notified.
+    // This allows us to redirect onerror and console (which would otherwise get overwritten when
+    // writing to the iframe document, if we did it ahead of time).
+    // This is also where we put the "Office", "Excel", and etc namespaces onto the iframe
+    // (which get lost in IE if we do it preemptively.)
+    // Essentially, the only reliable way seems to be to monkeypatch the frame
+    // *once the script thinks it's ready, via it calling back into us*.
+    (window as any).scriptRunnerOnLoad = (iframeWindow: Window) => {
+      this.monkeypatchIframe(iframeWindow);
+
+      this.setState({ previousRenderTimestamp: this.props.lastRendered });
+      if (this.props.onRenderComplete) {
+        this.props.onRenderComplete();
+      }
+    };
   }
 
   componentDidMount() {
@@ -51,34 +67,10 @@ class IFrame extends React.Component<IProps, IState> {
     if (this.isIframeMounted && this.shouldRender()) {
       // writing content to iframe
       const doc = this.getContentDoc();
-      doc.location.reload();
       doc.open('text/html', 'replace');
       doc.write(this.props.content);
       doc.close();
-
-      // After write to the document, some of the overwrites (at least, the onerror)
-      // seem to get reset.  And in IE, the previously-transferred variables don't show.
-      // So, the only reliable way seems to be to monkeypatch the frame
-      // *once the script thinks it's ready*
-      (window as any).scriptRunnerOnLoad = (iframeWindow: Window) => {
-        this.monkeypatchIframe(iframeWindow);
-
-        this.setState({ previousRenderTimestamp: this.props.lastRendered });
-        if (this.props.onRenderComplete) {
-          this.props.onRenderComplete();
-        }
-      };
     }
-  };
-
-  private monkeypatchIframe = (iframe: Window) => {
-    // cast to "as any" so that can overwrite the console field, which TS thinks is read-only
-    (iframe as any).console = window.console;
-    iframe.onerror = (...args) => console.error(args);
-
-    this.props.namespacesToTransferFromWindow.forEach(
-      namespace => (iframe[namespace] = window[namespace]),
-    );
   };
 
   handleLoad = () => {
@@ -102,6 +94,16 @@ class IFrame extends React.Component<IProps, IState> {
       />
     );
   }
+
+  private monkeypatchIframe = (iframe: Window) => {
+    // cast to "as any" so that can overwrite the console field, which TS thinks is read-only
+    (iframe as any).console = window.console;
+    iframe.onerror = (...args) => console.error(args);
+
+    this.props.namespacesToTransferFromWindow.forEach(
+      namespace => (iframe[namespace] = window[namespace]),
+    );
+  };
 }
 
 export default IFrame;

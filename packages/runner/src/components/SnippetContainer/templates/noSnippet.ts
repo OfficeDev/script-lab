@@ -36,6 +36,7 @@ export default () => `<!DOCTYPE html>
         margin-bottom: 0px;
       }
       #details {
+        max-width: 95%;
         margin: 10px;
         padding: 10px;
         overflow-wrap: normal;
@@ -43,6 +44,9 @@ export default () => `<!DOCTYPE html>
                 box-sizing: border-box;
         white-space: pre-wrap;
         word-wrap: break-word;
+        word-break: break-all;
+        white-space: pre-wrap;
+        overflow-y: auto;
       }
     </style>
 </head>

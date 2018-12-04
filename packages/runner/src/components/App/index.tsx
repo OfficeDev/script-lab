@@ -46,7 +46,7 @@ interface IState {
 
 export class App extends React.Component<{}, IState> {
   private officeJsPageUrlLowerCased: string | null;
-  private hasRenderedFirstRealSnippet = false;
+  private hasRenderedContent = false;
   private isTransitioningAwayFromPage = false;
 
   constructor(props) {
@@ -153,13 +153,19 @@ export class App extends React.Component<{}, IState> {
     this.reloadPageWithDifferentOfficeJsUrl(null);
   };
 
-  onSnippetRender = ({ lastRendered }: { lastRendered: number }) => {
+  onSnippetRender = ({
+    lastRendered,
+    hasContent,
+  }: {
+    lastRendered: number;
+    hasContent: boolean;
+  }) => {
     // If staying on this page (rather than being in the process of reloading)
     if (!this.isTransitioningAwayFromPage) {
       this.setState({ lastRendered });
 
-      if (this.state.solution) {
-        this.hasRenderedFirstRealSnippet = true;
+      if (hasContent) {
+        this.hasRenderedContent = true;
 
         // Also, hide the loading indicators, if they were still up
         const loadingIndicator = document.getElementById('loading')!;
@@ -263,7 +269,7 @@ export class App extends React.Component<{}, IState> {
       // Otherwise, if hasn't rendered any snippet before (i.e., it's a first navigation,
       // straight to an office.js beta snippet, don't change out the title, keep as is
       // so that the load appears continuous).
-      if (this.hasRenderedFirstRealSnippet) {
+      if (this.hasRenderedContent) {
         const loadingIndicator = document.getElementById('loading')!;
         loadingIndicator.style.visibility = 'initial';
         const subtitleElement = document.querySelectorAll(
