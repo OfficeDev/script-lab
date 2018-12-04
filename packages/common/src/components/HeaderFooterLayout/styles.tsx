@@ -3,7 +3,6 @@ import styled from 'styled-components';
 export const Layout = styled.div`
   height: 100%;
   max-height: inherit;
-  min-height: 20rem;
   display: flex;
   flex-direction: column;
   z-index: 1000;

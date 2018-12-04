@@ -179,7 +179,7 @@ export class App extends React.Component<{}, IState> {
       <Theme host={this.state.solution ? this.state.solution.host : Utilities.host}>
         <AppWrapper>
           <HeaderFooterLayout
-            wrapperStyle={{ flex: '7' }}
+            wrapperStyle={{ flex: '6', minHeight: '30rem' }}
             header={
               <Header
                 solution={this.state.solution}
@@ -211,7 +211,7 @@ export class App extends React.Component<{}, IState> {
           </HeaderFooterLayout>
           <Only when={this.state.isConsoleOpen}>
             <Console
-              style={{ flex: '3', minHeight: '25rem' }}
+              style={{ flex: '4', minHeight: '5rem' }}
               logs={this.state.logs}
               clearLogs={this.clearLogs}
             />
