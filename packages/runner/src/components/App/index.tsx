@@ -131,8 +131,6 @@ export class App extends React.Component<{}, IState> {
 
       if (!this.state.solution) {
         console.info(`Your snippet "${solution.name}" has been loaded.`);
-      } else if (this.state.solution.id === solution.id) {
-        console.info(`Updating your snippet "${solution.name}".`);
       } else {
         console.info(`Switching to snippet "${solution.name}".`);
       }
