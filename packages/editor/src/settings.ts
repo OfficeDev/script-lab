@@ -6,7 +6,7 @@ import {
   ABOUT_FILE_ID,
 } from './constants';
 
-import { environmentName } from './environment';
+import { environmentDisplayName } from './environment';
 
 export const defaultSettings: ISettings = {
   'editor.theme': 'dark',
@@ -41,7 +41,7 @@ const getAboutContent = (): string => {
   return [
     `Last Updated: ${lastUpdated}`,
     `Commit: https://github.com/OfficeDev/script-lab-react/commits/${commit}`,
-    `Environment: ${environmentName}`,
+    `Environment: ${environmentDisplayName}`,
   ].join('\n');
 };
 

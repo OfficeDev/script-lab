@@ -18,3 +18,5 @@ PACKAGES_TO_COMPILE.forEach(pkg => {
   shell.exec(`tsc -p tsconfig.json ${stringArgs}`);
   shell.popd();
 });
+
+// cspell:ignore pushd, popd

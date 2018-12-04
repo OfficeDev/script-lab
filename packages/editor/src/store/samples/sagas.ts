@@ -10,7 +10,7 @@ import { getCurrentEnv } from '../../environment';
 
 function* fetchAllSamplesMetadetaSaga() {
   const host: string = yield select(selectors.host.get);
-  const deploymentSlot = getCurrentEnv() === 'prod' ? 'deploy-prod' : 'deploy-beta';
+  const deploymentSlot = getCurrentEnv() === 'cdn' ? 'deploy-prod' : 'deploy-beta';
   const { content, error } = yield call(
     fetchYaml,
     `https://raw.githubusercontent.com/OfficeDev/office-js-snippets/${deploymentSlot}/playlists/${host.toLowerCase()}.yaml`,
