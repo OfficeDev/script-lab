@@ -39,6 +39,7 @@ app.post('/auth', (req, res) => {
       },
     },
     (error, httpResponse, body) => {
+      // TODO: pretty sure a 404 went into the else of this if
       if (error) {
         console.error('github login failed');
         res

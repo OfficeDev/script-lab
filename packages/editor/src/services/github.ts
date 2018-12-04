@@ -35,12 +35,25 @@ export const login = async (): Promise<{
   profilePicUrl?: string;
   username?: string;
 }> => {
-  const token: IToken = await auth.authenticate('GitHub');
+  let token: IToken;
+  try {
+    token = await auth.authenticate('GitHub');
+  } catch (err) {
+    console.error('iam1');
+    console.error(err);
+    throw err;
+  }
+
   const { response, error } = await request({
     method: 'GET',
     path: 'user',
     token: token.access_token,
   });
+
+  if (error) {
+    console.error(error);
+    throw new Error(error.toString());
+  }
 
   return {
     token: token.access_token,

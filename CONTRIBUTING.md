@@ -59,7 +59,7 @@ You can safely ignore these -- those won't show up to users on the production si
 
 ## Trust the certificates
 
-You will need to trust the certificates for each of <https://localhost:3000> (editor), <https://localhost:3200> (runner), and <https://localhost:5000> (server).
+You will need to trust the certificates for each of <https://localhost:3000> (editor), <https://localhost:3200> (runner), and <http://localhost:5000> (server).
 
 For testing in the web browser (whether standalone or in Office Online) in Chrome, you can bypass the "insecure localhost" by enabling this setting: <chrome://flags/#allow-insecure-localhost>
 
