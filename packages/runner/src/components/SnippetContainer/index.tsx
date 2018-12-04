@@ -10,10 +10,13 @@ import noSnippet from './templates/noSnippet';
 import { officeNamespacesForIframe } from '../../constants';
 import { LoadingIndicatorWrapper } from './styles';
 import { Spinner, SpinnerSize } from 'office-ui-fabric-react/lib/Spinner';
+import { ProgressIndicator } from 'office-ui-fabric-react/lib/ProgressIndicator';
 import { compileTypeScript, SyntaxError } from './utilities';
 import untrusted from './templates/untrusted';
 import { Utilities, HostType } from '@microsoft/office-js-helpers';
 import processLibraries from 'common/lib/utilities/process.libraries';
+
+const SHOW_PROGRESS_BAR_DURATION = 100000; // ms // FIXME: change this to an acceptable number, high for testing
 
 export interface IProps {
   solution?: ISolution | null;
@@ -23,6 +26,7 @@ export interface IProps {
 interface IState {
   isIFrameMounted: boolean;
   isLoading: boolean;
+  isShowingProgressBar: boolean;
   content: string;
   lastRendered: number;
 }
@@ -37,6 +41,7 @@ class Snippet extends React.Component<IProps, IState> {
       content,
       lastRendered,
       isLoading: true,
+      isShowingProgressBar: true,
       isIFrameMounted: false,
     };
 
@@ -51,24 +56,33 @@ class Snippet extends React.Component<IProps, IState> {
     if (this.shouldUpdate(prevProps.solution, this.props.solution)) {
       const lastRendered = Date.now();
 
-      this.setState({ isIFrameMounted: false, isLoading: true }, () => {
-        const content = this.getContent(this.props);
+      this.setState(
+        { isIFrameMounted: false, isLoading: true, isShowingProgressBar: true },
+        () => {
+          const content = this.getContent(this.props);
 
-        if (this.props.onRender) {
-          this.props.onRender!({ lastRendered, hasContent: content.length > 0 });
-        }
+          if (this.props.onRender) {
+            this.props.onRender!({ lastRendered, hasContent: content.length > 0 });
+          }
 
-        return this.setState({
-          content,
-          lastRendered,
-          isLoading: true,
-          isIFrameMounted: true,
-        });
-      });
+          return this.setState({
+            content,
+            lastRendered,
+            isLoading: true,
+            isIFrameMounted: true,
+          });
+        },
+      );
     }
   }
 
-  completeLoad = () => this.setState({ isLoading: false });
+  completeLoad = () => {
+    this.setState({ isLoading: false });
+    setTimeout(
+      () => this.setState({ isShowingProgressBar: false }),
+      SHOW_PROGRESS_BAR_DURATION,
+    );
+  };
 
   componentWillUnmount() {}
 
@@ -118,6 +132,9 @@ class Snippet extends React.Component<IProps, IState> {
   render() {
     return (
       <>
+        <Only when={this.state.isShowingProgressBar}>
+          <ProgressIndicator />
+        </Only>
         <Only when={this.state.isLoading}>
           <LoadingIndicatorWrapper>
             <Spinner size={SpinnerSize.large} label="Loading..." />
