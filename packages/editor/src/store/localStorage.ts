@@ -190,6 +190,10 @@ function loadAllSolutionsAndFiles(): {
   localStorage.removeItem('solutions');
   localStorage.removeItem('files');
 
+  Object.keys(HostType)
+    .map(key => HostType[key])
+    .forEach(host => localStorage.removeItem(`playground_${host}_snippets`));
+
   return { solutions, files };
 }
 
