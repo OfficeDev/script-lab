@@ -48,6 +48,11 @@ class Heartbeat extends Component<IProps, IState> {
 
     try {
       const solution: ISolution | null = JSON.parse(data);
+
+      if (solution && solution.options.isCustomFunctionsSolution) {
+        window.location.href = `${currentEditorUrl}/custom-functions.html`;
+      }
+
       if (this.checkIfSolutionChanged(solution)) {
         this.setState({ activeSolution: solution });
         this.props.onReceiveNewActiveSolution(solution);
