@@ -1,6 +1,7 @@
 import isEqual from 'lodash/isEqual';
 import flatten from 'lodash/flatten';
 
+import { IState as IGitHubState } from './github/reducer';
 import { IState } from './reducer';
 import selectors from './selectors';
 import { convertSolutionToSnippet, convertSnippetToSolution } from '../utils';
@@ -9,6 +10,8 @@ import { getSettingsSolutionAndFiles } from '../settings';
 import { verifySettings } from './settings/sagas';
 import { getBoilerplate } from '../newSolutionData';
 import { HostType } from '@microsoft/office-js-helpers';
+import ensureFreshLocalStorage from 'common/lib/utilities/ensure.fresh.local.storage';
+import { getProfilePicUrlAndUsername } from '../services/github';
 
 interface IStoredGitHubState {
   token: string | null;
@@ -20,10 +23,9 @@ const GITHUB_KEY = 'github';
 const SOLUTION_ROOT = 'solution#';
 let lastSavedState: IState;
 
-export const loadState = (): Partial<IState> => {
+export async function loadState(): Promise<Partial<IState>> {
   try {
-    // In order to fix the IE cross-tab issue (#147)
-    localStorage.setItem('playground_dummy_key', 'null');
+    ensureFreshLocalStorage();
 
     let { solutions, files } = loadAllSolutionsAndFiles();
 
@@ -44,10 +46,7 @@ export const loadState = (): Partial<IState> => {
       lastActive: { solutionId: null, fileId: null },
     };
 
-    const github = {
-      ...JSON.parse(localStorage.getItem(GITHUB_KEY) || '{}'),
-      isLoggingInOrOut: false,
-    };
+    const github = await loadGitHubInfo();
 
     return { solutions: { metadata: solutions, files }, settings: settingsState, github };
   } catch (err) {
@@ -60,7 +59,7 @@ export const loadState = (): Partial<IState> => {
       },
     };
   }
-};
+}
 
 export const saveState = (state: IState) => {
   // save solution
@@ -93,7 +92,7 @@ export const saveState = (state: IState) => {
   const activeSolution = selectors.editor.getActiveSolution(state, {
     withHiddenFiles: true,
   });
-  if (isRealSolution(activeSolution) && isStandaloneRunnable(activeSolution)) {
+  if (isRealSolution(activeSolution)) {
     writeIfChanged(
       state => selectors.editor.getActiveSolution(state, { withHiddenFiles: true }),
       (solution: ISolution) => `activeSolution_${solution.host}`,
@@ -117,6 +116,37 @@ export const saveState = (state: IState) => {
 
   lastSavedState = state;
 };
+
+// github
+async function loadGitHubInfo(): Promise<IGitHubState> {
+  const githubInfo: string = localStorage.getItem(GITHUB_KEY);
+  if (githubInfo) {
+    return { ...JSON.parse(githubInfo), isLoggingInOrOut: false };
+  }
+
+  const tokenStorage = localStorage.getItem('OAuth2Tokens');
+  if (tokenStorage) {
+    const parsedTokenStorage = JSON.parse(tokenStorage);
+    if ('GitHub' in parsedTokenStorage) {
+      const token = parsedTokenStorage.GitHub.access_token;
+      if (token) {
+        return {
+          profilePicUrl: null,
+          username: null,
+          ...(await getProfilePicUrlAndUsername(token)),
+          token,
+          isLoggingInOrOut: false,
+        };
+      }
+    }
+  }
+  return {
+    profilePicUrl: null,
+    username: null,
+    token: null,
+    isLoggingInOrOut: false,
+  };
+}
 
 // solutions
 export function deleteSolutionFromStorage(id: string) {
@@ -190,6 +220,15 @@ function loadAllSolutionsAndFiles(): {
   localStorage.removeItem('solutions');
   localStorage.removeItem('files');
 
+  // SL2017
+  Object.keys(HostType)
+    .map(key => HostType[key])
+    .forEach(host => localStorage.removeItem(`playground_${host}_snippets`));
+
+  ['playground_log', 'playground_settings', 'playground_trusted_snippets'].forEach(key =>
+    localStorage.removeItem(key),
+  );
+
   return { solutions, files };
 }
 
@@ -233,8 +272,7 @@ function loadLegacyScriptLabSnippets(): ISolution[] {
 
 // custom functions
 export const getIsCustomFunctionRunnerAlive = (): boolean => {
-  // In order to fix the IE cross-tab issue (#147)
-  localStorage.setItem('playground_dummy_key', 'null');
+  ensureFreshLocalStorage();
 
   const lastHeartbeat = localStorage.getItem(
     localStorageKeys.customFunctionsLastHeartbeatTimestamp,
@@ -243,8 +281,7 @@ export const getIsCustomFunctionRunnerAlive = (): boolean => {
 };
 
 export const getCustomFunctionCodeLastUpdated = (): number => {
-  // In order to fix the IE cross-tab issue (#147)
-  localStorage.setItem('playground_dummy_key', 'null');
+  ensureFreshLocalStorage();
 
   const lastUpdated = localStorage.getItem(
     localStorageKeys.customFunctionsLastUpdatedCodeTimestamp,
@@ -253,8 +290,7 @@ export const getCustomFunctionCodeLastUpdated = (): number => {
 };
 
 export const getCustomFunctionLogs = (): ILogData[] | null => {
-  // In order to fix the IE cross-tab issue (#147)
-  localStorage.setItem('playground_dummy_key', 'null');
+  ensureFreshLocalStorage();
 
   const logsString = localStorage.getItem(localStorageKeys.log);
 
@@ -315,12 +351,6 @@ function getAllLocalStorageKeys(): string[] {
 
 function isRealSolution(solution: ISolution) {
   return solution.id !== NULL_SOLUTION_ID && solution.id !== SETTINGS_SOLUTION_ID;
-}
-
-function isStandaloneRunnable(solution: ISolution) {
-  return !(
-    solution.options.isDirectScriptExecution || solution.options.isCustomFunctionsSolution
-  );
 }
 
 function writeIfChanged(

@@ -21,9 +21,15 @@
 
   <body class="ms-Fabric">
     <noscript> You need to enable JavaScript to run this app. </noscript>
+
+    <!-- Begin precompile placeholder: environment-redirect.js -->
+    <script src="/precompiled/environment-redirect-eca112b0911c84050c6e3386c11d7f7a.js"></script>
+    <!-- End precompile placeholder: environment-redirect.js -->
+
     <script>
       // In order to fix the IE cross-tab issue (#147)
       localStorage.setItem('playground_dummy_key', 'null');
+      // TODO: Zlatkovsky:  use the "ensureFreshLocalStorage" helper, instead
 
       var data = localStorage.getItem('custom_functions_run_post_data');
 

@@ -7,9 +7,13 @@ import { fetchAllGistMetadataSaga } from '../gists/sagas';
 import selectors from '../selectors';
 
 function* gitHubLoginSaga(action: ActionType<typeof github.login.request>) {
-  const profile = yield call(login);
+  try {
+    const profile = yield call(login);
 
-  yield put(github.login.success(profile));
+    yield put(github.login.success(profile));
+  } catch (error) {
+    yield put(github.login.failure(error));
+  }
 }
 
 function* gitHubLogoutSaga(action: ActionType<typeof github.logout.request>) {

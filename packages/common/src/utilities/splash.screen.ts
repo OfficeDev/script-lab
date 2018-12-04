@@ -1,6 +1,6 @@
 import { stringifyPlusPlus } from './string';
 
-export default function invokeGlobalErrorHandler(error: any) {
+export function invokeGlobalErrorHandler(error: any) {
   console.error('Global error handler:');
   console.error(error);
 
@@ -61,4 +61,13 @@ export default function invokeGlobalErrorHandler(error: any) {
   loadingElement.style.visibility = 'initial';
 
   return true;
+}
+
+export function showSplashScreen(subtitle: string) {
+  const loadingIndicator = document.getElementById('loading')!;
+  loadingIndicator.style.visibility = 'initial';
+  const subtitleElement = document.querySelectorAll('#loading h2')[0] as HTMLElement;
+  subtitleElement.textContent = subtitle;
+
+  (document.getElementById('root') as HTMLElement).style.display = 'none';
 }

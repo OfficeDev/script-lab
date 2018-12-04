@@ -10,6 +10,28 @@ const PRECOMPILE_SPEC: {
       processor: webpackProcessor,
     },
     {
+      name: 'custom-functions-dashboard-redirect.js',
+      relativeFilePath: 'custom-functions-dashboard-redirect',
+      injectInto: ['custom-functions.html'],
+      processor: webpackProcessor,
+    },
+    {
+      name: 'environment-redirect.js',
+      relativeFilePath: 'environment-redirect',
+      injectInto: [
+        'custom-functions-run.html',
+        'custom-functions.html',
+        'dogfood.html',
+        'external-page.html',
+        'functions.html',
+        'heartbeat.html',
+        'index.html',
+        'run.html',
+        'tutorial.html',
+      ],
+      processor: webpackProcessor,
+    },
+    {
       name: 'external-page.js',
       relativeFilePath: 'external-page',
       injectInto: ['external-page.html'],
@@ -157,8 +179,10 @@ for (const packageName in PRECOMPILE_SPEC) {
     if (unfulfilledPlaceholders[filename].length > 0) {
       throw new Error(
         [
-          `Unfulfilled placeholders remain in file "${filename}: "`,
+          `Unfulfilled precompile placeholders remain in file "${filename}":`,
           unfulfilledPlaceholders[filename].map(item => ` - ${item}`),
+          `Please open "scripts/precompile.ts" and check the configuration at the top of the file, `,
+          `to ensure that your expected placeholder is being compiled and injected into the right files.`,
         ].join('\n'),
       );
     }

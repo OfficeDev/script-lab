@@ -19,6 +19,7 @@ import MessageBar from '../MessageBar';
 import SnippetContainer from '../SnippetContainer';
 import { currentEditorUrl } from 'common/lib/environment';
 import processLibraries from 'common/lib/utilities/process.libraries';
+import { showSplashScreen } from 'common/lib/utilities/splash.screen';
 import { SILENT_SNIPPET_SWITCHING } from '../../constants';
 
 const AppWrapper = styled.div`
@@ -180,7 +181,7 @@ export class App extends React.Component<{}, IState> {
       <Theme host={this.state.solution ? this.state.solution.host : Utilities.host}>
         <AppWrapper>
           <HeaderFooterLayout
-            wrapperStyle={{ flex: '7' }}
+            wrapperStyle={{ flex: '6', minHeight: '30rem' }}
             header={
               <Header
                 solution={this.state.solution}
@@ -212,7 +213,7 @@ export class App extends React.Component<{}, IState> {
           </HeaderFooterLayout>
           <Only when={this.state.isConsoleOpen}>
             <Console
-              style={{ flex: '3', minHeight: '25rem' }}
+              style={{ flex: '4', minHeight: '5rem' }}
               logs={this.state.logs}
               clearLogs={this.clearLogs}
             />
@@ -271,14 +272,7 @@ export class App extends React.Component<{}, IState> {
       // straight to an office.js beta snippet, don't change out the title, keep as is
       // so that the load appears continuous).
       if (this.hasRenderedContent) {
-        const loadingIndicator = document.getElementById('loading')!;
-        loadingIndicator.style.visibility = 'initial';
-        const subtitleElement = document.querySelectorAll(
-          '#loading h2',
-        )[0] as HTMLElement;
-        subtitleElement.textContent = 'Re-loading office.js, please wait...';
-
-        (document.getElementById('root') as HTMLElement).style.display = 'none';
+        showSplashScreen('Re-loading office.js, please wait...');
       }
 
       this.isTransitioningAwayFromPage = true;
