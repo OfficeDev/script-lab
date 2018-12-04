@@ -39,6 +39,7 @@ app.post('/auth', (req, res) => {
       },
     },
     (error, httpResponse, body) => {
+      // TODO: pretty sure a 404 went into the else of this if
       if (error) {
         console.error('github login failed');
         res
@@ -55,15 +56,4 @@ app.post('/auth', (req, res) => {
   );
 });
 
-if (process.env.NODE_ENV !== 'production') {
-  const https = require('https');
-  const httpsOptions = {
-    key: fs.readFileSync('./key.pem'),
-    cert: fs.readFileSync('./cert.pem'),
-  };
-  https
-    .createServer(httpsOptions, app)
-    .listen(port, () => console.log(`Listening on port ${port}`));
-} else {
-  app.listen(port, () => console.log(`Listening on port ${port}`));
-}
+app.listen(port, () => console.log(`Listening on port ${port}`));

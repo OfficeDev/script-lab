@@ -35,7 +35,13 @@ export const login = async (): Promise<{
   profilePicUrl?: string;
   username?: string;
 }> => {
-  const itoken: IToken = await auth.authenticate('GitHub');
+  let itoken: IToken;
+  try {
+    itoken = await auth.authenticate('GitHub');
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
   const token = itoken.access_token;
 
   return {
@@ -53,6 +59,7 @@ export const getProfilePicUrlAndUsername = (
     token,
   }).then(({ response, error }) => {
     if (error) {
+      console.error(error);
       return {};
     } else {
       return {
