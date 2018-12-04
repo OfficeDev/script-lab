@@ -8,7 +8,7 @@ import { convertSnippetToSolution } from '../../utils';
 import { createSolutionSaga } from '../solutions/sagas';
 import { getCurrentEnv } from '../../environment';
 
-function* fetchAllSamplesMetadetaSaga() {
+function* fetchAllSamplesMetadataSaga() {
   const host: string = yield select(selectors.host.get);
   const deploymentSlot = getCurrentEnv() === 'cdn' ? 'deploy-prod' : 'deploy-beta';
   const { content, error } = yield call(
@@ -41,7 +41,7 @@ function* handleOpenSampleSuccessSaga(action: ActionType<typeof samples.get.succ
 }
 
 export default function* samplesWatcher() {
-  yield takeEvery(getType(samples.fetchMetadata.request), fetchAllSamplesMetadetaSaga);
+  yield takeEvery(getType(samples.fetchMetadata.request), fetchAllSamplesMetadataSaga);
 
   yield takeEvery(getType(samples.get.request), openSampleSaga);
   yield takeEvery(getType(samples.get.success), handleOpenSampleSuccessSaga);
