@@ -24,22 +24,13 @@ export const getCustomFunctionCodeLastUpdated = (): number => {
   return lastUpdated ? +lastUpdated : 0;
 };
 
-export const getCustomFunctionLogs = (): ILogData[] | null => {
+export const getCustomFunctionLogsFromLocalStorage = (): string | null => {
   ensureFreshLocalStorage();
 
-  const logsString = localStorage.getItem(localStorageKeys.editor.log);
+  const logString = localStorage.getItem(localStorageKeys.editor.log);
+  localStorage.removeItem(localStorageKeys.editor.log);
 
-  if (logsString !== null) {
-    localStorage.removeItem(localStorageKeys.editor.log);
-
-    return logsString
-      .split('\n')
-      .filter(line => line !== '')
-      .filter(line => !line.includes('Agave.HostCall'))
-      .map(entry => JSON.parse(entry) as ILogData);
-  } else {
-    return null;
-  }
+  return logString;
 };
 
 // helpers

@@ -15,11 +15,12 @@ import {
 import { registerMetadata } from './utilities';
 
 import {
-  getCustomFunctionLogs,
+  getCustomFunctionLogsFromLocalStorage,
   getIsCustomFunctionRunnerAlive,
 } from 'common/lib/utilities/localStorage';
 import { fetchLogsAndHeartbeat, updateEngineStatus, openDashboard } from './actions';
 import { push } from 'connected-react-router';
+import { getLogsFromAsyncStorage } from './utilities/logs';
 
 export default function* customFunctionsWatcher() {
   yield takeEvery(
@@ -31,10 +32,7 @@ export default function* customFunctionsWatcher() {
     registerCustomFunctionsMetadataSaga,
   );
 
-  yield takeEvery(
-    getType(customFunctions.fetchLogsAndHeartbeat),
-    fetchLogsAndHeartbeatSaga,
-  );
+  yield takeEvery(getType(customFunctions.fetchLogsAndHeartbeat), fetchLogsSaga);
 
   yield takeEvery(getType(customFunctions.openDashboard), openDashboardSaga);
 
@@ -80,12 +78,21 @@ function* registerCustomFunctionsMetadataSaga(
   }
 }
 
-function* fetchLogsAndHeartbeatSaga() {
-  const logs = yield call(getCustomFunctionLogs);
-  if (logs) {
+function* fetchLogsSaga() {
+  const isUsingAsyncStorage: boolean = yield select(
+    selectors.customFunctions.getIsUsingAsyncStorage,
+  );
+
+  const logsString: string | null = isUsingAsyncStorage
+    ? yield call(getLogsFromAsyncStorage)
+    : yield call(getCustomFunctionLogsFromLocalStorage);
+
+  if (logsString) {
+    const logs: ILogData[] = JSON.parse(logsString);
     yield put(customFunctions.pushLogs(logs));
   }
 }
+
 // TODO: Zlatkovsky when heartbeat for cf is in place
 // function* fetchHeartbeatSaga() {
 //   const lastUpdated = yield call(getCustomFunctionRunnerLastUpdated);
