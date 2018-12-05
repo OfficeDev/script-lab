@@ -14,7 +14,7 @@ import { IState as IReduxState } from '../../store/reducer';
 
 import { misc, IRootAction } from '../../store/actions';
 import { getCustomFunctionEngineStatus } from '../../store/customFunctions/utilities';
-import { getCustomFunctionCodeLastUpdated } from '../../store/localStorage';
+import { getCustomFunctionCodeLastUpdated } from 'common/lib/utilities/localStorage';
 import { Dispatch } from 'redux';
 
 interface IPropsFromRedux {

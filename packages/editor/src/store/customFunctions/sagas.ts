@@ -17,7 +17,7 @@ import { registerMetadata } from './utilities';
 import {
   getCustomFunctionLogs,
   getIsCustomFunctionRunnerAlive,
-} from '../../store/localStorage';
+} from 'common/lib/utilities/localStorage';
 import { fetchLogsAndHeartbeat, updateEngineStatus, openDashboard } from './actions';
 import { push } from 'connected-react-router';
 
