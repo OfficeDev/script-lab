@@ -50,9 +50,11 @@ function getMetadata(): ICFMetadata[] {
     .map((solution: ISolution) => {
       try {
         const namespace = transformSolutionName(solution.name);
-        const script = solution.files.find(file => file.name === 'index.ts')!.content;
-        const libraries = solution.files.find(file => file.name === 'libraries.txt')!
+        const script = solution.files.find((file: IFile) => file.name === 'index.ts')!
           .content;
+        const libraries = solution.files.find(
+          (file: IFile) => file.name === 'libraries.txt',
+        )!.content;
 
         const metadata: ICFVisualFunctionMetadata[] = parseMetadata(
           namespace,
