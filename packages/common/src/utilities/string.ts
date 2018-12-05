@@ -137,3 +137,29 @@ export function stringifyPlusPlus(object: any): string {
     }
   }
 }
+
+export function generateLogString(
+  args: any[],
+  severityType: ConsoleLogTypes,
+): { severity: ConsoleLogTypes; message: string } {
+  let message: string = '';
+  let isSuccessfulMsg: boolean = true;
+  args.forEach(element => {
+    try {
+      message += stringifyPlusPlus(element);
+    } catch (e) {
+      isSuccessfulMsg = false;
+      message += '<Unable to log>';
+    }
+    message += '\n';
+  });
+
+  if (message.length > 0) {
+    message = message.trim();
+  }
+
+  return {
+    message,
+    severity: isSuccessfulMsg ? severityType : 'error',
+  };
+}

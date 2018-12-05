@@ -5,7 +5,8 @@ const PRECOMPILE_SPEC: {
   runner: ISpecArray;
 } = {
   editor: [
-    /* FIXME: STOPSTOP
+    // FIXME: STOPSTOP
+    /*
     {
       name: 'addin-commands.js',
       relativeFilePath: 'addin-commands',
@@ -79,7 +80,8 @@ const PRECOMPILE_SPEC: {
       injectInto: ['custom-functions.html'],
       processor: webpackProcessor,
     },
-    /* FIXME: STOPSTOP
+    // FIXME: STOPSTOP
+    /*
     {
       name: 'scripts-loader.js',
       relativeFilePath: 'scripts-loader',
@@ -102,7 +104,7 @@ const BEGIN_PLACEHOLDER_REGEX = /^.*(<!-- Begin precompile placeholder: .* -->).
 // by removing comments (comments that otherwise have source maps that include
 // the absolutely file path to the repo).
 // To temporarily see unminified files, switch to "development" (but do NOT check in like this!)
-const WEBPACK_MODE = 'production';
+const WEBPACK_MODE = IS_INNER_DEV_LOOP ? 'development' : 'production';
 
 ////////////////////////////////////////
 
@@ -119,10 +121,12 @@ for (const packageName in PRECOMPILE_SPEC) {
   const fileLines: { [key: string]: string[] } = {};
   const unfulfilledPlaceholders: { [key: string]: string[] } = {};
 
-  console.log(
-    `=== [${packageName}]: Emptying the target dir "${targetFolderFullDir}" ===`,
-  );
-  fs.emptyDirSync(targetFolderFullDir);
+  if (!IS_INNER_DEV_LOOP) {
+    console.log(
+      `=== [${packageName}]: Emptying the target dir "${targetFolderFullDir}" ===`,
+    );
+    fs.emptyDirSync(targetFolderFullDir);
+  }
 
   console.log(`=== [${packageName}]: Analyzing files ===`);
   fs.readdirSync(publicFolderFullDir).forEach(filename => {
