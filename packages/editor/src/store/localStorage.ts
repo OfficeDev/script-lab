@@ -50,6 +50,7 @@ export async function loadState(): Promise<Partial<IState>> {
 
     return { solutions: { metadata: solutions, files }, settings: settingsState, github };
   } catch (err) {
+    console.error(err);
     const settings = getSettingsSolutionAndFiles();
 
     return {
@@ -127,7 +128,7 @@ async function loadGitHubInfo(): Promise<IGitHubState> {
   const tokenStorage = localStorage.getItem('OAuth2Tokens');
   if (tokenStorage) {
     const parsedTokenStorage = JSON.parse(tokenStorage);
-    if ('GitHub' in parsedTokenStorage) {
+    if (parsedTokenStorage && 'GitHub' in parsedTokenStorage) {
       const token = parsedTokenStorage.GitHub.access_token;
       if (token) {
         return {
