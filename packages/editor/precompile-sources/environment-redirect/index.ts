@@ -1,5 +1,5 @@
 import { parse } from 'query-string';
-import { localStorageKeys } from '../../src/constants';
+import { localStorageKeys } from 'common/lib/constants';
 import { editorUrls } from 'common/lib/environment';
 import ensureFreshLocalStorage from 'common/lib/utilities/ensure.fresh.local.storage';
 import { WINDOW_SCRIPT_LAB_NAVIGATING_AWAY_TO_DIFFERENT_ENVIRONMENT_KEY } from 'common/lib/utilities/script-loader/constants';
@@ -26,25 +26,28 @@ import { WINDOW_SCRIPT_LAB_NAVIGATING_AWAY_TO_DIFFERENT_ENVIRONMENT_KEY } from '
       // The exception: clear the redirect key if already on the target (i.e.,
       // the user has returned back to the root site)
       if (window.location.href.toLowerCase().indexOf(targetUrl) === 0) {
-        window.localStorage.removeItem(localStorageKeys.redirectEnvironmentUrl);
+        window.localStorage.removeItem(localStorageKeys.editor.redirectEnvironmentUrl);
         return;
       }
 
       // If hasn't quit above, then set the redirect URL into storage
-      window.localStorage.setItem(localStorageKeys.redirectEnvironmentUrl, targetUrl);
+      window.localStorage.setItem(
+        localStorageKeys.editor.redirectEnvironmentUrl,
+        targetUrl,
+      );
     }
 
     // Store the root site origin, if provided
     if (originUrl.length > 0) {
       window.localStorage.setItem(
-        localStorageKeys.originEnvironmentUrl,
+        localStorageKeys.editor.originEnvironmentUrl,
         decodeURIComponent(originUrl).toLowerCase(),
       );
     }
 
     ensureFreshLocalStorage();
     const redirectUrl = window.localStorage.getItem(
-      localStorageKeys.redirectEnvironmentUrl,
+      localStorageKeys.editor.redirectEnvironmentUrl,
     );
 
     if (redirectUrl) {
