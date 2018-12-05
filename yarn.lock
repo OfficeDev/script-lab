@@ -1382,6 +1382,11 @@
   resolved "https://registry.yarnpkg.com/@types/core-js/-/core-js-2.5.0.tgz#35cc282488de6f10af1d92902899a3b8ca3fbc47"
   integrity sha512-qjkHL3wF0JMHMqgm/kmL8Pf8rIiqvueEiZ0g6NVTcBX1WN46GWDr+V5z+gsHUeL0n8TfAmXnYmF7ajsxmBp4PQ==
 
+"@types/custom-functions-runtime@^1.4.7":
+  version "1.4.7"
+  resolved "https://registry.yarnpkg.com/@types/custom-functions-runtime/-/custom-functions-runtime-1.4.7.tgz#774c77c084797715220023232c8d4700f8d93cda"
+  integrity sha512-+FxqXd/Any7uXIg05qm/4LyFTBhDdLTlm0klu/AsYiShLKvIr2YcHfEUAvyaNoUlHZ1kmIU3fEaIomIZuKpWtg==
+
 "@types/enzyme-adapter-react-16@^1.0.3":
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/@types/enzyme-adapter-react-16/-/enzyme-adapter-react-16-1.0.3.tgz#0cf7025b036694ca8d596fe38f24162e7117acf1"

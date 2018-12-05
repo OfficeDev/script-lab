@@ -1,8 +1,11 @@
+const IS_INNER_DEV_LOOP = true; // FIXME: STOPSTOP
+
 const PRECOMPILE_SPEC: {
   editor: ISpecArray;
   runner: ISpecArray;
 } = {
   editor: [
+    /* FIXME: STOPSTOP
     {
       name: 'addin-commands.js',
       relativeFilePath: 'addin-commands',
@@ -13,6 +16,12 @@ const PRECOMPILE_SPEC: {
       name: 'custom-functions-dashboard-redirect.js',
       relativeFilePath: 'custom-functions-dashboard-redirect',
       injectInto: ['custom-functions.html'],
+      processor: webpackProcessor,
+    },
+    {
+      name: 'custom-functions-run-redirect.js',
+      relativeFilePath: 'custom-functions-run-redirect',
+      injectInto: ['custom-functions-run.html'],
       processor: webpackProcessor,
     },
     {
@@ -61,20 +70,29 @@ const PRECOMPILE_SPEC: {
       injectInto: ['index.html', 'run.html'],
       processor: readAsIsProcessor,
     },
+    */
   ],
   runner: [
     {
-      name: 'style.css',
-      relativeFilePath: '../../editor/precompile-sources/style.css',
-      injectInto: ['index.html'],
-      processor: readAsIsProcessor,
+      name: 'custom-functions.js',
+      relativeFilePath: 'custom-functions',
+      injectInto: ['custom-functions.html'],
+      processor: webpackProcessor,
     },
+    /* FIXME: STOPSTOP
     {
       name: 'scripts-loader.js',
       relativeFilePath: 'scripts-loader',
       injectInto: ['index.html'],
       processor: webpackProcessor,
     },
+    {
+      name: 'style.css',
+      relativeFilePath: '../../editor/precompile-sources/style.css',
+      injectInto: ['index.html'],
+      processor: readAsIsProcessor,
+    },
+    */
   ],
 };
 
@@ -174,9 +192,17 @@ for (const packageName in PRECOMPILE_SPEC) {
     const fullPath = path.join(publicFolderFullDir, filename);
     console.log(`    - ${fullPath}`);
     fs.writeFileSync(fullPath, fileLines[filename].join('\n'));
-    execShellCommand('node_modules/.bin/prettier', ['--write', fullPath]);
 
-    if (unfulfilledPlaceholders[filename].length > 0) {
+    if (!IS_INNER_DEV_LOOP) {
+      execShellCommand('node_modules/.bin/prettier', ['--write', fullPath]);
+    }
+
+    let throwErrorDueToUnfulfilled = unfulfilledPlaceholders[filename].length > 0;
+    if (IS_INNER_DEV_LOOP) {
+      throwErrorDueToUnfulfilled = false;
+    }
+
+    if (throwErrorDueToUnfulfilled) {
       throw new Error(
         [
           `Unfulfilled precompile placeholders remain in file "${filename}":`,
