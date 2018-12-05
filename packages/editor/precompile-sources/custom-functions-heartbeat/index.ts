@@ -1,3 +1,4 @@
+import 'core-js/fn/array/find';
 import { currentRunnerUrl } from 'common/lib/environment';
 import ensureFreshLocalStorage from 'common/lib/utilities/ensure.fresh.local.storage';
 import { CF_HEARTBEAT_POLLING_INTERVAL, localStorageKeys } from 'common/lib/constants';
@@ -36,14 +37,6 @@ window.onmessage = event => {
     default:
       throw new Error(`Unknown message type: "${message.type}`);
   }
-
-  ensureFreshLocalStorage();
-
-  if (event.data.indexOf('GET_ACTIVE_SOLUTION') === 0) {
-    const host = event.data.split('/')[1];
-    const solution = localStorage.getItem('activeSolution_' + host);
-    window.parent.postMessage(solution, event.origin);
-  }
 };
 
 // helpers
@@ -55,30 +48,35 @@ function getMetadata(): ICFMetadata[] {
   return loadAllCFSolutions()
     .filter((solution: ISolution) => !solution.options.isUntrusted)
     .map((solution: ISolution) => {
-      const namespace = transformSolutionName(solution.name);
-      const script = solution.files.find(file => file.name === 'index.ts')!.content;
-      const libraries = solution.files.find(file => file.name === 'libraries.txt')!
-        .content;
+      try {
+        const namespace = transformSolutionName(solution.name);
+        const script = solution.files.find(file => file.name === 'index.ts')!.content;
+        const libraries = solution.files.find(file => file.name === 'libraries.txt')!
+          .content;
 
-      const metadata: ICFVisualFunctionMetadata[] = parseMetadata(
-        namespace,
-        script,
-      ) as ICFVisualFunctionMetadata[];
+        const metadata: ICFVisualFunctionMetadata[] = parseMetadata(
+          namespace,
+          script,
+        ) as ICFVisualFunctionMetadata[];
 
-      if (metadata.filter(({ error }) => !!error).length > 0) {
+        if (metadata.filter(({ error }) => !!error).length > 0) {
+          return null;
+        }
+
+        return {
+          solutionId: solution.id,
+          namespace,
+          functionNames: metadata.map(({ funcName }) => funcName),
+          code: compileScript(script),
+          jsLibs: processLibraries(
+            libraries,
+            false /* hardcoding because ignoring officeJS result */,
+          ).scriptReferences,
+        };
+      } catch (error) {
+        console.error(error);
         return null;
       }
-
-      return {
-        solutionId: solution.id,
-        namespace,
-        functionNames: metadata.map(({ funcName }) => funcName),
-        code: compileScript(script),
-        jsLibs: processLibraries(
-          libraries,
-          false /* hardcoding because ignoring officeJS result */,
-        ).scriptReferences,
-      };
     })
     .filter(x => x !== null) as ICFMetadata[];
 }
