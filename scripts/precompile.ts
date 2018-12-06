@@ -1,9 +1,4 @@
-const packagesRequested = process.argv.slice(2 /* actual args start on the 3rd one */);
-const IS_INCREMENTAL_BUILD = packagesRequested.length > 0;
-
-// FIXME: Zlatkovsky use packagesRequested filter.
-
-const PRECOMPILE_SPEC: {
+const PRECOMPILE_SPEC_LIST: {
   editor: ISpecArray;
   runner: ISpecArray;
 } = {
@@ -101,7 +96,7 @@ const BEGIN_PLACEHOLDER_REGEX = /^.*(<!-- Begin precompile placeholder: .* -->).
 // by removing comments (comments that otherwise have source maps that include
 // the absolutely file path to the repo).
 // To temporarily see unminified files, switch to "development" (but do NOT check in like this!)
-const WEBPACK_MODE = 'production'; // FIXME: STOPSTOP
+const WEBPACK_MODE = 'production';
 
 ////////////////////////////////////////
 
@@ -110,7 +105,34 @@ import path from 'path';
 import md5 from 'md5';
 import childProcess from 'child_process';
 
-for (const packageName in PRECOMPILE_SPEC) {
+const packagesRequested = process.argv.slice(2 /* actual args start on the 3rd one */);
+const IS_INCREMENTAL_BUILD = packagesRequested.length > 0;
+
+let specsToCompile: { [key: string]: ISpecArray };
+if (IS_INCREMENTAL_BUILD) {
+  console.warn('Only recompile requested packages: ' + JSON.stringify(packagesRequested));
+  specsToCompile = {};
+  packagesRequested.forEach(item => {
+    let [packageName, fileName] = item.split('/');
+    if (PRECOMPILE_SPEC_LIST[packageName]) {
+      let theExactSpec = (PRECOMPILE_SPEC_LIST[packageName] as ISpecArray).find(
+        spec => spec.name === fileName,
+      );
+      if (theExactSpec) {
+        specsToCompile[packageName] = specsToCompile[packageName] || [];
+        specsToCompile[packageName].push(theExactSpec);
+      } else {
+        throw new Error(`The requested package/file combo, "${item}", was not found.`);
+      }
+    } else {
+      throw new Error(`The requested package/file combo, "${item}", was not found.`);
+    }
+  });
+} else {
+  specsToCompile = PRECOMPILE_SPEC_LIST;
+}
+
+for (const packageName in specsToCompile) {
   const packageFullDir = path.join('packages', packageName);
   const publicFolderFullDir = path.join(packageFullDir, 'public');
   const targetFolderFullDir = path.join(publicFolderFullDir, 'precompiled');
@@ -154,7 +176,7 @@ for (const packageName in PRECOMPILE_SPEC) {
   });
 
   console.log(`=== [${packageName}]: Processing files ===`);
-  const perPackageSpec = PRECOMPILE_SPEC[packageName] as ISpecArray;
+  const perPackageSpec = specsToCompile[packageName] as ISpecArray;
   perPackageSpec.forEach(spec => {
     console.log(`Processing precompile source "${spec.name}"`);
     const afterProcessing = spec.processor(
