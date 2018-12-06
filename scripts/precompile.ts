@@ -1,12 +1,13 @@
-const IS_INNER_DEV_LOOP = true; // FIXME: STOPSTOP
+const packagesRequested = process.argv.slice(2 /* actual args start on the 3rd one */);
+const IS_INCREMENTAL_BUILD = packagesRequested.length > 0;
+
+// FIXME: Zlatkovsky use packagesRequested filter.
 
 const PRECOMPILE_SPEC: {
   editor: ISpecArray;
   runner: ISpecArray;
 } = {
   editor: [
-    // FIXME: STOPSTOP
-    /*
     {
       name: 'addin-commands.js',
       relativeFilePath: 'addin-commands',
@@ -71,7 +72,6 @@ const PRECOMPILE_SPEC: {
       injectInto: ['index.html', 'run.html'],
       processor: readAsIsProcessor,
     },
-    */
   ],
   runner: [
     {
@@ -80,8 +80,6 @@ const PRECOMPILE_SPEC: {
       injectInto: ['custom-functions.html'],
       processor: webpackProcessor,
     },
-    // FIXME: STOPSTOP
-    /*
     {
       name: 'scripts-loader.js',
       relativeFilePath: 'scripts-loader',
@@ -94,7 +92,6 @@ const PRECOMPILE_SPEC: {
       injectInto: ['index.html'],
       processor: readAsIsProcessor,
     },
-    */
   ],
 };
 
@@ -104,7 +101,7 @@ const BEGIN_PLACEHOLDER_REGEX = /^.*(<!-- Begin precompile placeholder: .* -->).
 // by removing comments (comments that otherwise have source maps that include
 // the absolutely file path to the repo).
 // To temporarily see unminified files, switch to "development" (but do NOT check in like this!)
-const WEBPACK_MODE = IS_INNER_DEV_LOOP ? 'development' : 'production';
+const WEBPACK_MODE = 'production'; // FIXME: STOPSTOP
 
 ////////////////////////////////////////
 
@@ -119,9 +116,10 @@ for (const packageName in PRECOMPILE_SPEC) {
   const targetFolderFullDir = path.join(publicFolderFullDir, 'precompiled');
 
   const fileLines: { [key: string]: string[] } = {};
+  const touchedFiles: { [key: string]: boolean } = {};
   const unfulfilledPlaceholders: { [key: string]: string[] } = {};
 
-  if (!IS_INNER_DEV_LOOP) {
+  if (!IS_INCREMENTAL_BUILD) {
     console.log(
       `=== [${packageName}]: Emptying the target dir "${targetFolderFullDir}" ===`,
     );
@@ -187,6 +185,7 @@ for (const packageName in PRECOMPILE_SPEC) {
           injectableName: spec.name,
           textToSubstitute: toInject,
         });
+        touchedFiles[fileToInjectInto] = true;
       });
     }
   });
@@ -197,12 +196,12 @@ for (const packageName in PRECOMPILE_SPEC) {
     console.log(`    - ${fullPath}`);
     fs.writeFileSync(fullPath, fileLines[filename].join('\n'));
 
-    if (!IS_INNER_DEV_LOOP) {
+    if (touchedFiles[filename]) {
       execShellCommand('node_modules/.bin/prettier', ['--write', fullPath]);
     }
 
     let throwErrorDueToUnfulfilled = unfulfilledPlaceholders[filename].length > 0;
-    if (IS_INNER_DEV_LOOP) {
+    if (IS_INCREMENTAL_BUILD) {
       throwErrorDueToUnfulfilled = false;
     }
 
