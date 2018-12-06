@@ -26,15 +26,6 @@ export const NoLogsPlaceholder = styled.div`
   max-width: 90%;
 `;
 
-export const RunnerLastUpdatedWrapper = styled.div.attrs({ className: 'ms-font-m' })`
-  padding: 0rem 1.6rem;
-  height: 2.8rem;
-  line-height: 2.8rem;
-  background: ${props => props.theme.neutralLighter};
-  overflow: hidden;
-  overflow-wrap: normal;
-`;
-
 export const FilterWrapper = styled.div`
   display: flex;
   align-items: center;

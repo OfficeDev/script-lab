@@ -2,12 +2,10 @@ import React from 'react';
 import { withTheme } from 'styled-components';
 import moment from 'moment';
 
-import { MessageBar, MessageBarType } from 'office-ui-fabric-react/lib/MessageBar';
 import { Icon } from 'office-ui-fabric-react/lib/Icon';
 import { Checkbox } from 'office-ui-fabric-react/lib/Checkbox';
 
 import {
-  RunnerLastUpdatedWrapper,
   Wrapper,
   NoLogsPlaceholderContainer,
   NoLogsPlaceholder,
@@ -20,7 +18,6 @@ import {
 } from './styles';
 
 import { setUpMomentJsDurationDefaults } from '../../../utils';
-import Only from '../../Only';
 import { connect } from 'react-redux';
 import { IState as IReduxState } from '../../../store/reducer';
 import actions, { IRootAction } from '../../../store/actions';
@@ -35,16 +32,10 @@ export enum ConsoleLogTypes {
 
 interface IPropsFromRedux {
   logs: ILogData[];
-  runnerLastUpdated: number;
-  runnerIsAlive: boolean;
-  engineStatus: ICustomFunctionEngineStatus;
 }
 
 const mapStateToProps = (state: IReduxState): IPropsFromRedux => ({
   logs: state.customFunctions.logs,
-  runnerLastUpdated: state.customFunctions.runner.lastUpdated,
-  runnerIsAlive: state.customFunctions.runner.isAlive,
-  engineStatus: state.customFunctions.engineStatus,
 });
 
 interface IActionsFromRedux {
@@ -104,31 +95,10 @@ class ConsoleWithoutTheme extends React.Component<IConsole, IState> {
   }
 
   render() {
-    const {
-      theme,
-      logs,
-      runnerIsAlive,
-      runnerLastUpdated,
-      engineStatus,
-      clearLogs,
-    } = this.props;
-
-    const runnerLastUpdatedText = runnerIsAlive
-      ? moment(new Date(runnerLastUpdated)).fromNow()
-      : '';
+    const { theme, logs, clearLogs } = this.props;
 
     return (
       <Wrapper>
-        <MessageBar messageBarType={MessageBarType.info}>
-          {engineStatus.nativeRuntime
-            ? 'Using the native javascript execution engine'
-            : 'Using the web execution engine'}
-        </MessageBar>
-        <Only when={runnerIsAlive}>
-          <RunnerLastUpdatedWrapper>
-            Runner last updated {runnerLastUpdatedText}
-          </RunnerLastUpdatedWrapper>
-        </Only>
         {logs.length > 0 ? (
           <>
             <FilterWrapper>
@@ -223,26 +193,19 @@ class ConsoleWithoutTheme extends React.Component<IConsole, IState> {
           </>
         ) : (
           <NoLogsPlaceholderContainer>
-            {engineStatus.nativeRuntime ? (
-              <NoLogsPlaceholder>
-                Currently, the native javascript execution engine does not support console
-                logging from within Script Lab. Sorry about that!
-              </NoLogsPlaceholder>
-            ) : (
-              <NoLogsPlaceholder>
-                There are no logs to display. Use{' '}
-                <pre
-                  style={{
-                    fontFamily: 'Consolas, monaco, monospace',
-                    fontWeight: 'bold',
-                    display: 'inline',
-                  }}
-                >
-                  console.log()
-                </pre>{' '}
-                inside your functions to display logs here.
-              </NoLogsPlaceholder>
-            )}
+            <NoLogsPlaceholder>
+              There are no logs to display. Use{' '}
+              <pre
+                style={{
+                  fontFamily: 'Consolas, monaco, monospace',
+                  fontWeight: 'bold',
+                  display: 'inline',
+                }}
+              >
+                console.log()
+              </pre>{' '}
+              inside your functions to display logs here.
+            </NoLogsPlaceholder>
           </NoLogsPlaceholderContainer>
         )}
       </Wrapper>

@@ -90,13 +90,6 @@ function* fetchLogsSaga() {
   yield put(customFunctions.pushLogs(logs));
 }
 
-// TODO: Zlatkovsky when heartbeat for cf is in place
-// function* fetchHeartbeatSaga() {
-//   const lastUpdated = yield call(getCustomFunctionRunnerLastUpdated);
-//   const isAlive = yield call(getIsCustomFunctionRunnerAlive);
-//   yield put(customFunctions.updateRunner({ isAlive, lastUpdated }));
-// }
-
 function* openDashboardSaga() {
   window.location.href = './custom-functions.html?backButton=true';
 }
