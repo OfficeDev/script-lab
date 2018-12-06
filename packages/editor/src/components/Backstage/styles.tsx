@@ -38,6 +38,7 @@ export const ContentDescription = styled.h2.attrs({ className: 'ms-font-l' })`
 export const ContentContainer = styled.div`
   flex: 1;
   position: relative;
+  overflow-y: auto;
 `;
 
 export const LoadingContainer = styled.div`

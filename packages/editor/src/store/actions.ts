@@ -2,7 +2,6 @@ import { ActionType } from 'typesafe-actions';
 
 import * as customFunctions from './customFunctions/actions';
 import * as dialog from './dialog/actions';
-import * as directScriptExecution from './directScriptExecution/actions';
 import * as editor from './editor/actions';
 import * as gists from './gists/actions';
 import * as github from './github/actions';
@@ -16,7 +15,6 @@ import * as solutions from './solutions/actions';
 
 export { customFunctions };
 export { dialog };
-export { directScriptExecution };
 export { editor };
 export { gists };
 export { github };
@@ -28,10 +26,9 @@ export { screen };
 export { settings };
 export { solutions };
 
-export default {
+const all = {
   customFunctions,
   dialog,
-  directScriptExecution,
   editor,
   gists,
   github,
@@ -44,9 +41,10 @@ export default {
   solutions,
 };
 
+export default all;
+
 export type ICustomFunctionsAction = ActionType<typeof customFunctions>;
 export type IDialogAction = ActionType<typeof dialog>;
-export type IDirectScriptExecutionAction = ActionType<typeof directScriptExecution>;
 export type IEditorAction = ActionType<typeof editor>;
 export type IGistsAction = ActionType<typeof gists>;
 export type IGithubAction = ActionType<typeof github>;
@@ -57,3 +55,5 @@ export type ISamplesAction = ActionType<typeof samples>;
 export type IScreenAction = ActionType<typeof screen>;
 export type ISettingsAction = ActionType<typeof settings>;
 export type ISolutionsAction = ActionType<typeof solutions>;
+
+export type IRootAction = ActionType<typeof all>;

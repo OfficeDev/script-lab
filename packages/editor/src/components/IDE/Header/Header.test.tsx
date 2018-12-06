@@ -28,12 +28,6 @@ const actionProps = {
   navigateToCustomFunctions: () => {},
   navigateToRun: () => {},
   showTrustError: () => {},
-  directScriptExecutionFunction: (
-    solutionId: string,
-    fileId: string,
-    functionName: string,
-  ) => {},
-  terminateAllDirectScriptExecutionFunctions: () => {},
   showDialog: (
     title: string,
     subText: string,
@@ -58,8 +52,6 @@ describe('Header should render properly in basic case', () => {
     isSettingsView: false,
     isCustomFunctionsView: false,
     isNullSolution: false,
-    isDirectScriptExecutionSolution: false,
-    runnableFunctions: [],
     profilePicUrl: null,
     screenWidth: 700,
     commandBarFabricTheme: getCommandBarFabricTheme(host) as IFabricTheme,
@@ -67,7 +59,9 @@ describe('Header should render properly in basic case', () => {
   };
 
   const header = mount(<Header {...headerProps} />);
-  const commandBarProps: ICommandBarProps = header.find('CommandBarBase').props();
+  const commandBarProps: Partial<ICommandBarProps> = header
+    .find('CommandBarBase')
+    .props();
 
   it('should render the profile pic item', () => {
     expect(commandBarProps.farItems!.length).toEqual(1);
@@ -75,8 +69,8 @@ describe('Header should render properly in basic case', () => {
   });
 
   it('should render the proper items in the header', () => {
-    expect(commandBarProps.items.length).toEqual(5);
-    expect(commandBarProps.items.map(({ key }) => key)).toEqual([
+    expect(commandBarProps.items!.length).toEqual(5);
+    expect(commandBarProps.items!.map(({ key }) => key)).toEqual([
       'nav',
       'solution-name',
       'run',
@@ -86,7 +80,7 @@ describe('Header should render properly in basic case', () => {
   });
 
   it('should show the proper share buttons', () => {
-    const shareSubMenuItems = commandBarProps.items.filter(
+    const shareSubMenuItems = commandBarProps.items!.filter(
       item => item.key === 'share',
     )[0].subMenuProps!.items;
     expect(shareSubMenuItems.length).toEqual(3);
@@ -120,11 +114,13 @@ describe("Header shouldn't show run button if isn't runnable", () => {
   };
 
   const header = mount(<Header {...headerProps} />);
-  const commandBarProps: ICommandBarProps = header.find('CommandBarBase').props();
+  const commandBarProps: Partial<ICommandBarProps> = header
+    .find('CommandBarBase')
+    .props();
 
   it('should render the proper items in the header', () => {
-    expect(commandBarProps.items.length).toEqual(4);
-    expect(commandBarProps.items.map(({ key }) => key)).toEqual([
+    expect(commandBarProps.items!.length).toEqual(4);
+    expect(commandBarProps.items!.map(({ key }) => key)).toEqual([
       'nav',
       'solution-name',
       'delete',

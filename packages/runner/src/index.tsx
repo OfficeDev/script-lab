@@ -1,19 +1,21 @@
-import './polyfills';
+import 'common/lib/polyfills';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { setupFabricTheme } from './theme';
-import registerServiceWorker from './registerServiceWorker';
-import { initializeIcons } from 'office-ui-fabric-react/lib/Icons';
 
 import './index.css';
 import App from './components/App';
 
-Office.onReady(async () => {
-  initializeIcons();
+import { waitForAllDynamicScriptsToBeLoaded } from 'common/lib/utilities/script-loader/consumer';
+import { invokeGlobalErrorHandler } from 'common/lib/utilities/splash.screen';
 
-  setupFabricTheme('EXCEL');
+window.onerror = error => invokeGlobalErrorHandler(error);
 
-  ReactDOM.render(<App />, document.getElementById('root') as HTMLElement);
-
-  registerServiceWorker();
-});
+(async () => {
+  try {
+    await waitForAllDynamicScriptsToBeLoaded();
+    await Office.onReady();
+    ReactDOM.render(<App />, document.getElementById('root') as HTMLElement);
+  } catch (e) {
+    invokeGlobalErrorHandler(e);
+  }
+})();

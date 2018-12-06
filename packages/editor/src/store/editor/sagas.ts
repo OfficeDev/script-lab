@@ -1,11 +1,11 @@
 import { put, takeEvery, select, call, all } from 'redux-saga/effects';
 import { getType, ActionType } from 'typesafe-actions';
 import selectors from '../selectors';
-import { editor, settings, screen } from '../actions';
+import { editor, settings, screen, misc, solutions } from '../actions';
 import zip from 'lodash/zip';
 import flatten from 'lodash/flatten';
 import { push, RouterState } from 'connected-react-router';
-import { PATHS, LIBRARIES_FILE_NAME } from '../../constants';
+import { PATHS, LIBRARIES_FILE_NAME, NULL_SOLUTION_ID } from '../../constants';
 
 import {
   registerLibrariesMonacoLanguage,
@@ -14,21 +14,25 @@ import {
   parseTripleSlashRefs,
   doesMonacoExist,
 } from './utilities';
-import { convertSolutionToSnippet } from '../../utils';
-import { actions } from '..';
-import { MessageBarType } from 'office-ui-fabric-react/lib/MessageBar';
+
+import { currentRunnerUrl } from 'common/lib/environment';
 
 let monacoEditor;
 
 export default function* editorWatcher() {
   yield takeEvery(getType(editor.open), onEditorOpenSaga);
   yield takeEvery(getType(editor.openFile), onEditorOpenFileSaga);
+  yield takeEvery(getType(solutions.edit), onSolutionEditSaga);
   yield takeEvery(getType(editor.newSolutionOpened), onSolutionOpenSaga);
   yield takeEvery(getType(editor.newFileOpened), onFileOpenSaga);
   yield takeEvery(getType(editor.onMount), initializeMonacoSaga);
-  yield takeEvery(getType(editor.onLoadComplete), hasLoadedSaga);
+  yield takeEvery(getType(misc.hideLoadingSplashScreen), hideLoadingSplashScreen);
   yield takeEvery(getType(editor.applyMonacoOptions), applyMonacoOptionsSaga);
   yield takeEvery(getType(settings.edit.success), applyMonacoOptionsSaga);
+  yield takeEvery(
+    getType(editor.shouldUpdateIntellisense),
+    makeAddIntellisenseRequestSaga,
+  );
   yield takeEvery(getType(editor.setIntellisenseFiles.request), setIntellisenseFilesSaga);
   yield takeEvery(getType(screen.updateSize), resizeEditorSaga);
   yield takeEvery(getType(editor.applyFormatting), applyFormattingSaga);
@@ -43,27 +47,48 @@ function* onEditorOpenSaga() {
 }
 
 export function* onEditorOpenFileSaga(action: ActionType<typeof editor.openFile>) {
-  const currentOpenSolution = yield select(selectors.editor.getActiveSolution);
+  const currentOpenSolution: ISolution = yield select(selectors.editor.getActiveSolution);
   const currentOpenFile = yield select(selectors.editor.getActiveFile);
-  yield put(editor.setActive(action.payload));
-  yield call(onEditorOpenSaga);
 
-  const solutionToOpen = yield select(selectors.solutions.get, action.payload.solutionId);
-  const fileToOpen = yield select(selectors.solutions.getFile, action.payload.fileId);
+  // tslint:disable-next-line:prefer-const
+  let { solutionId, fileId } = action.payload;
+  if (!solutionId) {
+    if (!currentOpenSolution.files.find(file => file.id === fileId)) {
+      throw new Error(`The file id ${fileId} does not exist in current open solution.`);
+    } else {
+      solutionId = currentOpenSolution.id;
+    }
+  }
 
-  if (currentOpenSolution.id !== action.payload.solutionId) {
+  yield put(editor.setActive({ solutionId, fileId }));
+  if (solutionId !== NULL_SOLUTION_ID) {
+    yield call(onEditorOpenSaga);
+  }
+
+  const solutionToOpen = yield select(selectors.solutions.get, solutionId);
+  const fileToOpen = yield select(selectors.solutions.getFile, fileId);
+
+  if (solutionToOpen && currentOpenSolution.id !== solutionId) {
     yield put(editor.newSolutionOpened(solutionToOpen));
   }
 
-  if (currentOpenFile.id !== action.payload.fileId) {
+  if (fileToOpen && currentOpenFile.id !== fileId) {
     yield put(editor.newFileOpened(solutionToOpen, fileToOpen));
   }
 }
 
-function* onSolutionOpenSaga() {
-  if (doesMonacoExist()) {
-    yield call(makeAddIntellisenseRequestSaga);
+function* onSolutionEditSaga(action: ActionType<typeof solutions.edit>) {
+  if (!action.payload.fileId) {
+    return;
   }
+  const file = yield select(selectors.solutions.getFile, action.payload.fileId);
+  if (file.language === 'libraries') {
+    yield put(editor.shouldUpdateIntellisense());
+  }
+}
+
+function* onSolutionOpenSaga() {
+  yield put(editor.shouldUpdateIntellisense());
 }
 
 function* onFileOpenSaga(action: ActionType<typeof editor.newFileOpened>) {
@@ -81,14 +106,9 @@ function* onFileOpenSaga(action: ActionType<typeof editor.newFileOpened>) {
   }
 }
 
-export function* hasLoadedSaga(action: ActionType<typeof editor.onLoadComplete>) {
-  const loadingIndicator = document.getElementById('loading');
-  if (loadingIndicator) {
-    const { parentNode } = loadingIndicator;
-    if (parentNode) {
-      parentNode.removeChild(loadingIndicator);
-    }
-  }
+export function* hideLoadingSplashScreen() {
+  const loadingIndicator = document.getElementById('loading')!;
+  loadingIndicator.style.visibility = 'hidden';
 }
 
 function* initializeMonacoSaga(action: ActionType<typeof editor.onMount>) {
@@ -116,7 +136,7 @@ function* initializeMonacoSaga(action: ActionType<typeof editor.onMount>) {
   });
 
   yield put(editor.applyMonacoOptions());
-  yield put(editor.onLoadComplete());
+  yield put(misc.hideLoadingSplashScreen());
   yield call(makeAddIntellisenseRequestSaga);
 }
 
@@ -136,6 +156,10 @@ function* applyMonacoOptionsSaga() {
 }
 
 function* makeAddIntellisenseRequestSaga() {
+  if (!doesMonacoExist()) {
+    return;
+  }
+
   const solution = yield select(selectors.editor.getActiveSolution);
   const libraries = solution.files.find(file => file.name === LIBRARIES_FILE_NAME);
   let urls: string[] = [];
@@ -179,7 +203,7 @@ function* makeAddIntellisenseRequestSaga() {
         .filter(x => x !== null),
     );
 
-    const urlContentPairing = zip(urlsToFetch, urlContents);
+    const urlContentPairing = zip(urlsToFetch, urlContents) as string[][];
 
     urlsToFetch = flatten(
       urlContentPairing.map(([url, content]) => parseTripleSlashRefs(url, content)),
@@ -196,8 +220,11 @@ function* setIntellisenseFilesSaga(
   const existingIntellisenseFiles = yield select(selectors.editor.getIntellisenseFiles);
   const existingUrls = Object.keys(existingIntellisenseFiles);
   const currentUrls = action.payload.urls;
+
   const urlsToDispose = existingUrls.filter(url => !currentUrls.includes(url));
   urlsToDispose.forEach(url => existingIntellisenseFiles[url].dispose());
+  yield put(editor.removeIntellisenseFiles(urlsToDispose));
+
   const urlsToFetch = currentUrls.filter(url => !existingUrls.includes(url));
   const newIntellisenseFiles = yield call(() =>
     Promise.all(
@@ -241,45 +268,5 @@ function* applyFormattingSaga() {
 }
 
 function* navigateToRunSaga() {
-  const activeSolution: ISolution = yield select(selectors.editor.getActiveSolution);
-  const snippet = convertSolutionToSnippet(activeSolution);
-
-  const state = {
-    snippet: snippet,
-    displayLanguage: 'en-us',
-    isInsideOfficeApp: (yield call(Office.onReady)).host,
-    returnUrl: window.location.href,
-    refreshUrl: window.location.origin + '/run.html',
-    hideSyncWithEditorButton: true,
-  };
-
-  const data = JSON.stringify(state);
-  const params = {
-    data: data,
-    isTrustedSnippet: true,
-  };
-
-  const useAlphaRunner =
-    /^http(s?):\/\/script-lab-react-alpha\./.test(window.location.href) ||
-    /^http(s?):\/\/localhost/.test(window.location.href);
-  const path =
-    'https://bornholm-runner-' +
-    (useAlphaRunner ? 'edge' : 'insiders') +
-    '.azurewebsites.net/compile/page';
-  const form = document.createElement('form');
-  form.setAttribute('method', 'post');
-  form.setAttribute('action', path);
-
-  for (const key in params) {
-    if (params.hasOwnProperty(key)) {
-      const hiddenField = document.createElement('input');
-      hiddenField.setAttribute('type', 'hidden');
-      hiddenField.setAttribute('name', key);
-      hiddenField.setAttribute('value', params[key]);
-      form.appendChild(hiddenField);
-    }
-  }
-
-  document.body.appendChild(form);
-  form.submit();
+  window.location.href = `${currentRunnerUrl}?backButton=true`;
 }

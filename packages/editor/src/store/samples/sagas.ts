@@ -6,14 +6,13 @@ import { samples } from '../actions';
 import { fetchYaml } from '../../services/general';
 import { convertSnippetToSolution } from '../../utils';
 import { createSolutionSaga } from '../solutions/sagas';
-import { getCurrentEnv } from '../../environment';
+import { currentOfficeJsRawSnippetsBaseRepoUrl } from 'common/lib/environment';
 
-function* fetchAllSamplesMetadetaSaga() {
+function* fetchAllSamplesMetadataSaga() {
   const host: string = yield select(selectors.host.get);
-  const deploymentSlot = getCurrentEnv() === 'prod' ? 'deploy-prod' : 'deploy-beta';
   const { content, error } = yield call(
     fetchYaml,
-    `https://raw.githubusercontent.com/OfficeDev/office-js-snippets/${deploymentSlot}/playlists/${host.toLowerCase()}.yaml`,
+    `${currentOfficeJsRawSnippetsBaseRepoUrl}/playlists/${host.toLowerCase()}.yaml`,
   );
   if (content) {
     yield put(
@@ -41,7 +40,7 @@ function* handleOpenSampleSuccessSaga(action: ActionType<typeof samples.get.succ
 }
 
 export default function* samplesWatcher() {
-  yield takeEvery(getType(samples.fetchMetadata.request), fetchAllSamplesMetadetaSaga);
+  yield takeEvery(getType(samples.fetchMetadata.request), fetchAllSamplesMetadataSaga);
 
   yield takeEvery(getType(samples.get.request), openSampleSaga);
   yield takeEvery(getType(samples.get.success), handleOpenSampleSuccessSaga);

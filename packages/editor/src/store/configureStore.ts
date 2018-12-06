@@ -1,15 +1,7 @@
 // redux
 import { createStore, applyMiddleware } from 'redux';
-import rootReducer from './reducer';
+import rootReducer, { IState } from './reducer';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import {
-  loadState as loadStateFromLocalStorage,
-  saveState as saveStateToLocalStorage,
-} from './localStorage';
-import {
-  loadState as loadStateFromSessionStorage,
-  saveState as saveStateToSessionStorage,
-} from './sessionStorage';
 
 // saga
 import createSagaMiddleware from 'redux-saga';
@@ -18,11 +10,8 @@ import rootSaga from './sagas';
 // router
 import { connectRouter, routerMiddleware } from 'connected-react-router';
 import { supportsHistory } from 'history/es/DOMUtils';
-import createBrowserHistory from 'history/createBrowserHistory';
+import createMemoryHistory from 'history/createMemoryHistory';
 import createHashHistory from 'history/createHashHistory';
-
-// utilities
-import throttle from 'lodash/throttle';
 
 const addLoggingToDispatch = store => {
   const rawDispatch = store.dispatch;
@@ -40,20 +29,23 @@ const addLoggingToDispatch = store => {
   };
 };
 
-const configureStore = () => {
+export interface IConfigureStoreProps {
+  history?: any;
+  initialState: Partial<IState>;
+}
+
+const configureStore = ({
+  history = createMemoryHistory(),
+  initialState = {},
+}: IConfigureStoreProps) => {
   // TODO: (nicobell) find out why supportsHistory() says true for the agave window or use another condition
   // NOTE: editor/reducer will need to be updated as it currently is hardcoded to depend on window.location.hash
   // const history = supportsHistory() ? createBrowserHistory() : createHashHistory()
-  const history = createHashHistory();
   const sagaMiddleware = createSagaMiddleware();
 
-  const persistedState = {
-    ...loadStateFromLocalStorage(),
-    ...loadStateFromSessionStorage(),
-  };
   const store = createStore(
-    connectRouter(history)(rootReducer),
-    persistedState as any,
+    connectRouter(history)<IState>(rootReducer),
+    initialState as any,
     composeWithDevTools(applyMiddleware(sagaMiddleware, routerMiddleware(history))),
   );
   sagaMiddleware.run(rootSaga);
@@ -61,14 +53,6 @@ const configureStore = () => {
   if (process.env.NODE_ENV !== 'production') {
     store.dispatch = addLoggingToDispatch(store);
   }
-
-  store.subscribe(
-    throttle(() => {
-      const state = store.getState();
-      saveStateToLocalStorage(state);
-      saveStateToSessionStorage(state);
-    }, 1000),
-  );
 
   return { store, history };
 };

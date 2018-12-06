@@ -6,11 +6,15 @@ import debounce from 'lodash/debounce';
 
 import { connect } from 'react-redux';
 import { actions, selectors } from '../../../store';
+import { IState as IReduxState } from '../../../store/reducer';
+import { IRootAction } from '../../../store/actions';
+
 import {
   SETTINGS_SOLUTION_ID,
   EDIT_FILE_DEBOUNCE_MS,
   EDIT_SETTINGS_DEBOUNCE_MS,
 } from '../../../constants';
+import { Dispatch } from 'redux';
 
 interface IPropsFromRedux {
   backgroundColor: string;
@@ -20,7 +24,7 @@ interface IPropsFromRedux {
   activeFile: IFile;
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: IReduxState): IPropsFromRedux => ({
   backgroundColor: selectors.settings.getBackgroundColor(state),
   activeSolution: selectors.editor.getActiveSolution(state),
   activeFile: selectors.editor.getActiveFile(state),
@@ -38,7 +42,7 @@ interface IActionsFromRedux {
   signalEditorLoaded: (editor: monaco.editor.IStandaloneCodeEditor) => void;
 }
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch: Dispatch<IRootAction>): IActionsFromRedux => ({
   editFile: (
     solutionId: string,
     fileId: string,

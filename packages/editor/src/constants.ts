@@ -18,7 +18,7 @@ export const NULL_SOLUTION_ID = 'null-solution';
 export const NULL_SOLUTION: ISolution = {
   id: NULL_SOLUTION_ID,
   name: '',
-  host: 'NULL',
+  host: 'ALL',
   dateCreated: 0,
   dateLastModified: 0,
   options: {},
@@ -30,8 +30,6 @@ export const SCRIPT_FILE_NAME = 'index.ts';
 
 export const READ_ONLY_FILE_IDS = [NULL_FILE_ID, ABOUT_FILE_ID, DEFAULT_SETTINGS_FILE_ID];
 
-export const RUNNER_URL = 'https://bornholm-runner-insiders.azurewebsites.net';
-
 export const localStorageKeys = {
   customFunctionsLastHeartbeatTimestamp:
     'playground_custom_functions_last_heartbeat_timestamp',
@@ -41,6 +39,8 @@ export const localStorageKeys = {
     'playground_custom_functions_currently_running_timestamp',
   log: 'playground_log',
   customFunctionsRunPostData: 'custom_functions_run_post_data',
+  originEnvironmentUrl: 'playground_origin_environment_url',
+  redirectEnvironmentUrl: 'playground_redirect_environment_url',
 };
 
 export const CUSTOM_FUNCTIONS_INFO_URL = 'https://aka.ms/customfunctions';

@@ -1,6 +1,7 @@
-import uuidv4 from 'uuid';
+import createGUID from 'uuid';
 import { LIBRARIES_FILE_NAME, SCRIPT_FILE_NAME } from '../constants';
 import { getBoilerplateFiles } from '../newSolutionData';
+import { stringifyPlusPlus } from 'common/lib/utilities/string';
 
 export const getObjectValues = (dict: object): any[] =>
   Object.keys(dict).map(key => dict[key]);
@@ -41,7 +42,7 @@ export function convertExtensionToLanguage(file): string {
 }
 
 const createFile = (name, { content, language }): IFile => ({
-  id: uuidv4(),
+  id: createGUID(),
   name,
   content,
   language,
@@ -66,7 +67,7 @@ export const convertSnippetToSolution = (snippet: ISnippet): ISolution => {
   ) as IFile[];
 
   const solution = {
-    id: uuidv4(),
+    id: createGUID(),
     name,
     host,
     description,
@@ -80,7 +81,7 @@ export const convertSnippetToSolution = (snippet: ISnippet): ISolution => {
 };
 
 export const convertSolutionToSnippet = (solution: ISolution): ISnippet => {
-  const { id, name, description, host, files } = solution;
+  const { name, description, host, files } = solution;
 
   const snippetFiles = Object.entries({
     script: file => file.name === SCRIPT_FILE_NAME,
@@ -103,7 +104,6 @@ export const convertSolutionToSnippet = (solution: ISolution): ISnippet => {
     }, {});
 
   return {
-    id,
     name,
     description,
     host,

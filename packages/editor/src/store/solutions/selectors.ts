@@ -1,6 +1,7 @@
 import { IState } from '../reducer';
 import { getObjectValues } from '../../utils';
 import {
+  NULL_SOLUTION_ID,
   SETTINGS_SOLUTION_ID,
   SCRIPT_FILE_NAME,
   LIBRARIES_FILE_NAME,
@@ -13,6 +14,8 @@ export const get = (state: IState, id: string): ISolution | null => {
     return null;
   }
 
+  // TODO: Nico: REMOVE THIS LOGIC FROM HERE AS IT ISN'T THE RIGHT PLACE TO DO IT
+  // https://github.com/OfficeDev/script-lab-react/issues/430
   const { isCustomFunctionsSolution, isDirectScriptExecution } = solutionMetadata.options;
   const files = solutionMetadata.files
     .map(fileId => getFile(state, fileId))
@@ -29,6 +32,8 @@ export const get = (state: IState, id: string): ISolution | null => {
   return { ...solutionMetadata, files };
 };
 
+// TODO: Nico: REMOVE THIS LOGIC FROM HERE AS IT ISN'T THE RIGHT PLACE TO DO IT
+// https://github.com/OfficeDev/script-lab-react/issues/430
 export const getSolutionWithHiddenFiles = (
   state: IState,
   id: string,
@@ -45,7 +50,7 @@ export const getSolutionWithHiddenFiles = (
 export const getAll = (state: IState): ISolution[] =>
   getObjectValues(state.solutions.metadata)
     .filter(solution => solution.host === state.host || solution.host === 'ALL')
-    .filter(({ id }) => id !== SETTINGS_SOLUTION_ID)
+    .filter(({ id }) => ![NULL_SOLUTION_ID, SETTINGS_SOLUTION_ID].includes(id))
     .map(solution => ({
       ...solution,
       files: solution.files.map(id => getFile(state, id)),

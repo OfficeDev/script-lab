@@ -6,7 +6,7 @@ import {
   ABOUT_FILE_ID,
 } from './constants';
 
-import { environmentName } from './environment';
+import { environmentDisplayName } from 'common/lib/environment';
 
 export const defaultSettings: ISettings = {
   'editor.theme': 'dark',
@@ -38,7 +38,11 @@ const getUserSettingsContent = (userSettings: Partial<ISettings>): string => {
 const getAboutContent = (): string => {
   const commit = process.env.REACT_APP_COMMIT;
   const lastUpdated = process.env.REACT_APP_LAST_UPDATED;
-  return `Last Updated: ${lastUpdated}\nCommit: ${commit}\nEnvironment: ${environmentName}`;
+  return [
+    `Last Updated: ${lastUpdated}`,
+    `Commit: https://github.com/OfficeDev/script-lab-react/commits/${commit}`,
+    `Environment: ${environmentDisplayName}`,
+  ].join('\n');
 };
 
 const getSettingsFiles = (

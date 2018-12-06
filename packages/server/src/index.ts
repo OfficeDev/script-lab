@@ -22,18 +22,6 @@ app.get('/hello', (req, res) => {
   res.send({ express: 'Hello From Express' });
 });
 
-app.get('/iframe.html', function(req, res) {
-  res.sendFile(path.join(__dirname, '../public', 'iframe.html'));
-});
-
-app.get('/worker.js', function(req, res) {
-  res.sendFile(path.join(__dirname, '../public', 'worker.js'));
-});
-
-app.get('/iframe.js', function(req, res) {
-  res.sendFile(path.join(__dirname, '../public', 'iframe.js'));
-});
-
 app.post('/auth', (req, res) => {
   const { code, state } = req.body;
   request.post(
@@ -51,6 +39,7 @@ app.post('/auth', (req, res) => {
       },
     },
     (error, httpResponse, body) => {
+      // TODO: pretty sure a 404 went into the else of this if
       if (error) {
         console.error('github login failed');
         res
@@ -67,15 +56,4 @@ app.post('/auth', (req, res) => {
   );
 });
 
-if (process.env.NODE_ENV !== 'production') {
-  const https = require('https');
-  const httpsOptions = {
-    key: fs.readFileSync('./key.pem'),
-    cert: fs.readFileSync('./cert.pem'),
-  };
-  https
-    .createServer(httpsOptions, app)
-    .listen(port, () => console.log(`Listening on port ${port}`));
-} else {
-  app.listen(port, () => console.log(`Listening on port ${port}`));
-}
+app.listen(port, () => console.log(`Listening on port ${port}`));

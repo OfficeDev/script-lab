@@ -1,9 +1,11 @@
 import {
+  customFunctions,
   gists,
   messageBar,
   editor,
   solutions,
   settings,
+  ICustomFunctionsAction,
   IGistsAction,
   IMessageBarAction,
   ISolutionsAction,
@@ -54,16 +56,15 @@ const messageBarReducer = (
     | IMessageBarAction
     | ISolutionsAction
     | ISettingsAction
-    | IEditorAction,
+    | IEditorAction
+    | ICustomFunctionsAction,
 ): IState => {
   switch (action.type) {
     case getType(gists.create.success):
       return {
         isVisible: true,
         style: MessageBarType.success,
-        text: `Your gist has been published at https://gist.github.com/${
-          action.payload.gist.id
-        }.`,
+        text: 'Your gist has been published.',
         link: {
           text: 'View on GitHub',
           url: `https://gist.github.com/${action.payload.gist.id}`,
@@ -82,9 +83,7 @@ const messageBarReducer = (
       return {
         isVisible: true,
         style: MessageBarType.success,
-        text: `Your gist has been updated at https://gist.github.com/${
-          action.payload.gist.id
-        }.`,
+        text: 'Your gist has been updated.',
         link: {
           text: 'View on GitHub',
           url: `https://gist.github.com/${action.payload.gist.id}`,
@@ -104,6 +103,16 @@ const messageBarReducer = (
         isVisible: true,
         style: MessageBarType.error,
         text: `${action.payload}`,
+        link: null,
+      };
+
+    case getType(customFunctions.registerMetadata.failure):
+      return {
+        isVisible: true,
+        style: MessageBarType.error,
+        text: `Error: Failed to parse custom function metadata because '${
+          action.payload.message
+        }'.`,
         link: null,
       };
 

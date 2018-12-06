@@ -1,10 +1,27 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "baseUrl": ".",
-    "outDir": "build/dist"
+    "module": "esnext",
+    "typeRoots": [
+      "../common/src/interfaces",
+      "node_modules/@types",
+      "../../node_modules/@types"
+    ],
+    "outDir": "build/dist",
+    "skipLibCheck": true,
+    "strict": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "preserve",
+    "alwaysStrict": true,
+    "strictFunctionTypes": true,
+    "allowJs": true
   },
-  "include": ["../interfaces/*", "./src/**/*"],
+  "include": [
+    "./src/**/*",
+    "../common/src/interfaces"
+  ],
   "exclude": [
     "node_modules",
     "build",

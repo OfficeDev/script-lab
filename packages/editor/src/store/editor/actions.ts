@@ -3,7 +3,7 @@ import { createAction, createAsyncAction } from 'typesafe-actions';
 export const open = createAction('EDITOR_OPEN');
 
 export const openFile = createAction('EDITOR_OPEN_FILE', resolve => {
-  return (props: { solutionId: string; fileId: string }) => resolve(props);
+  return (props: { solutionId?: string; fileId: string }) => resolve(props);
 });
 
 export const setActive = createAction('EDITOR_SET_ACTIVE', resolve => {
@@ -13,8 +13,6 @@ export const setActive = createAction('EDITOR_SET_ACTIVE', resolve => {
 export const onMount = createAction('EDITOR_ON_MOUNT', resolve => {
   return (editor: monaco.editor.IStandaloneCodeEditor) => resolve(editor);
 });
-
-export const onLoadComplete = createAction('EDITOR_ON_LOAD_COMPLETE');
 
 export const applyMonacoOptions = createAction('EDITOR_APPLY_MONACO_OPTIONS');
 
@@ -41,3 +39,5 @@ export const newFileOpened = createAction('NEW_FILE_OPENED', resolve => {
 });
 
 export const navigateToRun = createAction('NAVIGATE_TO_RUN');
+
+export const shouldUpdateIntellisense = createAction('EDITOR_SHOULD_UPDATE_INTELLISENSE');

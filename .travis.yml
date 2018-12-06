@@ -14,17 +14,30 @@ cache: yarn
 install:
   - yarn install --frozen-lockfile
   - yarn postinstall
+  - git --no-pager diff HEAD --exit-code || travis_terminate 1 # This makes sure that someone ran "yarn install" after merging their PR, and that the postinstall doesn't produce any diffs, which are annoying/confusing
 
 before_script:
   - yarn prettier
 
 matrix:
   include:
+    - name: 'Common Pipeline'
+      env:
+        - PACKAGE_LOCATION=packages/common
+        - PACKAGE_NAME=common
+        - SITE_NAME=script-lab-react-storybook
+
     - name: 'Editor Pipeline'
       env:
         - PACKAGE_LOCATION=packages/editor
         - PACKAGE_NAME=editor
         - SITE_NAME=script-lab-react
+
+    - name: 'Runner Pipeline'
+      env:
+        - PACKAGE_LOCATION=packages/runner
+        - PACKAGE_NAME=runner
+        - SITE_NAME=script-lab-react-runner
 
     - name: 'Server Pipeline'
       env:
