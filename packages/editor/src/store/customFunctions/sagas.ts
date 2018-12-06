@@ -83,14 +83,11 @@ function* fetchLogsSaga() {
     selectors.customFunctions.getIsUsingAsyncStorage,
   );
 
-  const logsString: string | null = isUsingAsyncStorage
+  const logs: ILogData[] = isUsingAsyncStorage
     ? yield call(getLogsFromAsyncStorage)
     : yield call(getCustomFunctionLogsFromLocalStorage);
 
-  if (logsString) {
-    const logs: ILogData[] = JSON.parse(logsString);
-    yield put(customFunctions.pushLogs(logs));
-  }
+  yield put(customFunctions.pushLogs(logs));
 }
 
 // TODO: Zlatkovsky when heartbeat for cf is in place

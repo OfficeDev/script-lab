@@ -3,10 +3,13 @@ import 'core-js/fn/array/find';
 import { currentRunnerUrl } from 'common/lib/environment';
 import ensureFreshLocalStorage from 'common/lib/utilities/ensure.fresh.local.storage';
 import { CF_HEARTBEAT_POLLING_INTERVAL, localStorageKeys } from 'common/lib/constants';
+
 import {
   getAllLocalStorageKeys,
   SOLUTION_ROOT,
   readItem,
+  writeItem,
+  CF_LOGS_ROOT,
 } from 'common/lib/utilities/localStorage';
 import { parseMetadata } from 'common/lib/utilities/custom.functions.metadata.parser';
 import compileScript from 'common/lib/utilities/compile.script';
@@ -99,13 +102,8 @@ function loadAllCFSolutions() {
     .filter((solution: ISolution) => solution.options.isCustomFunctionsSolution);
 }
 
-function addLog(log: ICFLogMessage) {
-  ensureFreshLocalStorage();
-  const existingLogs = JSON.parse(
-    localStorage.getItem(localStorageKeys.editor.log) || '[]',
-  );
-  const newLogs = [...existingLogs, log.payload];
-  localStorage.setItem(localStorageKeys.editor.log, JSON.stringify(newLogs));
+function addLog({ payload }: ICFLogMessage) {
+  writeItem(CF_LOGS_ROOT, payload.id, payload);
 }
 
 function getCustomFunctionsLastUpdated(): number {
