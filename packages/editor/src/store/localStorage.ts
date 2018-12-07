@@ -111,10 +111,17 @@ export const saveState = (state: IState) => {
     localStorage.setItem(`activeSolution_${host}`, 'null');
   }
 
-  localStorage.setItem(
-    localStorageKeys.editor.customFunctionsLastUpdatedCodeTimestamp,
-    selectors.customFunctions.getLastModifiedDate(state).toString(),
+  const currentTimestamp = Number(
+    localStorage.getItem(localStorageKeys.editor.customFunctionsLastUpdatedCodeTimestamp),
   );
+
+  // this is to fix a bug that prevents the CF dashboard from overwriting the timestamp with it's cached timestamp from boot
+  if (selectors.customFunctions.getLastModifiedDate(state) >= currentTimestamp) {
+    localStorage.setItem(
+      localStorageKeys.editor.customFunctionsLastUpdatedCodeTimestamp,
+      selectors.customFunctions.getLastModifiedDate(state).toString(),
+    );
+  }
 
   lastSavedState = state;
 };
