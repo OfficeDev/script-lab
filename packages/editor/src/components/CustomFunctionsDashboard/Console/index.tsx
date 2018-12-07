@@ -41,13 +41,12 @@ interface IConsole extends IPropsFromRedux, IActionsFromRedux {
 }
 
 interface IState {
-  shouldScrollToBottom: boolean;
   filterQuery: string;
 }
 
 class ConsoleWithoutTheme extends React.Component<IConsole, IState> {
   private logFetchInterval: any;
-  state = { shouldScrollToBottom: true, filterQuery: '' };
+  state = { filterQuery: '' };
 
   constructor(props: IConsole) {
     super(props);
@@ -56,31 +55,17 @@ class ConsoleWithoutTheme extends React.Component<IConsole, IState> {
   }
 
   componentDidMount() {
-    this.scrollToBottom();
-    this.logFetchInterval = setInterval(this.props.fetchLogs, 300);
+    this.logFetchInterval = setInterval(this.props.fetchLogs, 500);
   }
 
   componentWillUnmount() {
     clearInterval(this.logFetchInterval);
   }
 
-  componentDidUpdate() {
-    this.scrollToBottom();
-  }
-
-  setShouldScrollToBottom = (ev: React.FormEvent<HTMLElement>, checked: boolean) =>
-    this.setState({ shouldScrollToBottom: checked });
-
   updateFilterQuery = () =>
     this.setState({
       filterQuery: (this.refs.filterTextInput as any).value.toLowerCase(),
     });
-
-  scrollToBottom() {
-    if (this.state.shouldScrollToBottom && this.refs.lastLog) {
-      (this.refs.lastLog as any).scrollIntoView();
-    }
-  }
 
   render() {
     const { theme, logs, clearLogs } = this.props;
