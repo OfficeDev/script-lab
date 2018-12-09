@@ -1,4 +1,4 @@
-const PRECOMPILE_SPEC: {
+const PRECOMPILE_SPEC_LIST: {
   editor: ISpecArray;
   runner: ISpecArray;
 } = {
@@ -13,6 +13,12 @@ const PRECOMPILE_SPEC: {
       name: 'custom-functions-dashboard-redirect.js',
       relativeFilePath: 'custom-functions-dashboard-redirect',
       injectInto: ['custom-functions.html'],
+      processor: webpackProcessor,
+    },
+    {
+      name: 'custom-functions-run-redirect.js',
+      relativeFilePath: 'custom-functions-run-redirect',
+      injectInto: ['custom-functions-run.html'],
       processor: webpackProcessor,
     },
     {
@@ -69,16 +75,22 @@ const PRECOMPILE_SPEC: {
   ],
   runner: [
     {
-      name: 'style.css',
-      relativeFilePath: '../../editor/precompile-sources/style.css',
-      injectInto: ['index.html'],
-      processor: readAsIsProcessor,
+      name: 'custom-functions.js',
+      relativeFilePath: 'custom-functions',
+      injectInto: ['custom-functions.html'],
+      processor: webpackProcessor,
     },
     {
       name: 'scripts-loader.js',
       relativeFilePath: 'scripts-loader',
       injectInto: ['index.html'],
       processor: webpackProcessor,
+    },
+    {
+      name: 'style.css',
+      relativeFilePath: '../../editor/precompile-sources/style.css',
+      injectInto: ['index.html'],
+      processor: readAsIsProcessor,
     },
   ],
 };
@@ -89,7 +101,7 @@ const BEGIN_PLACEHOLDER_REGEX = /^.*(<!-- Begin precompile placeholder: .* -->).
 // by removing comments (comments that otherwise have source maps that include
 // the absolutely file path to the repo).
 // To temporarily see unminified files, switch to "development" (but do NOT check in like this!)
-const WEBPACK_MODE = 'production';
+const WEBPACK_MODE = 'development'; // FIXME: STOPSTOP
 
 ////////////////////////////////////////
 
@@ -98,18 +110,48 @@ import path from 'path';
 import md5 from 'md5';
 import childProcess from 'child_process';
 
-for (const packageName in PRECOMPILE_SPEC) {
+const packagesRequested = process.argv.slice(2 /* actual args start on the 3rd one */);
+const IS_INCREMENTAL_BUILD = packagesRequested.length > 0;
+
+let specsToCompile: { [key: string]: ISpecArray };
+if (IS_INCREMENTAL_BUILD) {
+  console.warn('Only recompile requested packages: ' + JSON.stringify(packagesRequested));
+  specsToCompile = {};
+  packagesRequested.forEach(item => {
+    let [packageName, fileName] = item.split('/');
+    if (PRECOMPILE_SPEC_LIST[packageName]) {
+      let theExactSpec = (PRECOMPILE_SPEC_LIST[packageName] as ISpecArray).find(
+        spec => spec.name === fileName,
+      );
+      if (theExactSpec) {
+        specsToCompile[packageName] = specsToCompile[packageName] || [];
+        specsToCompile[packageName].push(theExactSpec);
+      } else {
+        throw new Error(`The requested package/file combo, "${item}", was not found.`);
+      }
+    } else {
+      throw new Error(`The requested package/file combo, "${item}", was not found.`);
+    }
+  });
+} else {
+  specsToCompile = PRECOMPILE_SPEC_LIST;
+}
+
+for (const packageName in specsToCompile) {
   const packageFullDir = path.join('packages', packageName);
   const publicFolderFullDir = path.join(packageFullDir, 'public');
   const targetFolderFullDir = path.join(publicFolderFullDir, 'precompiled');
 
   const fileLines: { [key: string]: string[] } = {};
+  const touchedFiles: { [key: string]: boolean } = {};
   const unfulfilledPlaceholders: { [key: string]: string[] } = {};
 
-  console.log(
-    `=== [${packageName}]: Emptying the target dir "${targetFolderFullDir}" ===`,
-  );
-  fs.emptyDirSync(targetFolderFullDir);
+  if (!IS_INCREMENTAL_BUILD) {
+    console.log(
+      `=== [${packageName}]: Emptying the target dir "${targetFolderFullDir}" ===`,
+    );
+    fs.emptyDirSync(targetFolderFullDir);
+  }
 
   console.log(`=== [${packageName}]: Analyzing files ===`);
   fs.readdirSync(publicFolderFullDir).forEach(filename => {
@@ -139,7 +181,7 @@ for (const packageName in PRECOMPILE_SPEC) {
   });
 
   console.log(`=== [${packageName}]: Processing files ===`);
-  const perPackageSpec = PRECOMPILE_SPEC[packageName] as ISpecArray;
+  const perPackageSpec = specsToCompile[packageName] as ISpecArray;
   perPackageSpec.forEach(spec => {
     console.log(`Processing precompile source "${spec.name}"`);
     const afterProcessing = spec.processor(
@@ -170,6 +212,7 @@ for (const packageName in PRECOMPILE_SPEC) {
           injectableName: spec.name,
           textToSubstitute: toInject,
         });
+        touchedFiles[fileToInjectInto] = true;
       });
     }
   });
@@ -179,9 +222,17 @@ for (const packageName in PRECOMPILE_SPEC) {
     const fullPath = path.join(publicFolderFullDir, filename);
     console.log(`    - ${fullPath}`);
     fs.writeFileSync(fullPath, fileLines[filename].join('\n'));
-    execShellCommand('node_modules/.bin/prettier', ['--write', fullPath]);
 
-    if (unfulfilledPlaceholders[filename].length > 0) {
+    if (touchedFiles[filename]) {
+      execShellCommand('node_modules/.bin/prettier', ['--write', fullPath]);
+    }
+
+    let throwErrorDueToUnfulfilled = unfulfilledPlaceholders[filename].length > 0;
+    if (IS_INCREMENTAL_BUILD) {
+      throwErrorDueToUnfulfilled = false;
+    }
+
+    if (throwErrorDueToUnfulfilled) {
       throw new Error(
         [
           `Unfulfilled precompile placeholders remain in file "${filename}":`,

@@ -25,6 +25,7 @@
     "lint": "tslint \"src/**/*.ts?(x)\""
   },
   "devDependencies": {
+    "@types/custom-functions-runtime": "^1.4.7",
     "@types/jest": "^23.3.2",
     "@types/lodash": "^4.14.118",
     "@types/node": "^10.9.4",
