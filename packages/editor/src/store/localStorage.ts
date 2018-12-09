@@ -1,17 +1,27 @@
-import isEqual from 'lodash/isEqual';
 import flatten from 'lodash/flatten';
 
 import { IState as IGitHubState } from './github/reducer';
 import { IState } from './reducer';
 import selectors from './selectors';
 import { convertSolutionToSnippet, convertSnippetToSolution } from '../utils';
-import { SETTINGS_SOLUTION_ID, NULL_SOLUTION_ID, localStorageKeys } from '../constants';
+import { localStorageKeys } from 'common/lib/constants';
+import { SETTINGS_SOLUTION_ID, NULL_SOLUTION_ID } from '../constants';
 import { getSettingsSolutionAndFiles } from '../settings';
 import { verifySettings } from './settings/sagas';
 import { getBoilerplate } from '../newSolutionData';
-import { HostType } from '@microsoft/office-js-helpers';
 import ensureFreshLocalStorage from 'common/lib/utilities/ensure.fresh.local.storage';
 import { getProfilePicUrlAndUsername } from '../services/github';
+import { HostType } from '@microsoft/office-js-helpers';
+
+import {
+  SOLUTION_ROOT,
+  GITHUB_KEY,
+  writeIfChanged,
+  writeItem,
+  readItem,
+  deleteItem,
+  getAllLocalStorageKeys,
+} from 'common/lib/utilities/localStorage';
 
 interface IStoredGitHubState {
   token: string | null;
@@ -19,8 +29,6 @@ interface IStoredGitHubState {
   username: string | null;
 }
 
-const GITHUB_KEY = 'github';
-const SOLUTION_ROOT = 'solution#';
 let lastSavedState: IState;
 
 export async function loadState(): Promise<Partial<IState>> {
@@ -103,16 +111,17 @@ export const saveState = (state: IState) => {
     localStorage.setItem(`activeSolution_${host}`, 'null');
   }
 
-  const cfPostData = getCFPostData(state);
-  localStorage.setItem(
-    localStorageKeys.customFunctionsRunPostData,
-    JSON.stringify(cfPostData),
+  const currentTimestamp = Number(
+    localStorage.getItem(localStorageKeys.editor.customFunctionsLastUpdatedCodeTimestamp),
   );
 
-  localStorage.setItem(
-    localStorageKeys.customFunctionsLastUpdatedCodeTimestamp,
-    selectors.customFunctions.getLastModifiedDate(state).toString(),
-  );
+  // this is to fix a bug that prevents the CF dashboard from overwriting the timestamp with it's cached timestamp from boot
+  if (selectors.customFunctions.getLastModifiedDate(state) >= currentTimestamp) {
+    localStorage.setItem(
+      localStorageKeys.editor.customFunctionsLastUpdatedCodeTimestamp,
+      selectors.customFunctions.getLastModifiedDate(state).toString(),
+    );
+  }
 
   lastSavedState = state;
 };
@@ -147,7 +156,6 @@ async function loadGitHubInfo(): Promise<IGitHubState> {
     isLoggingInOrOut: false,
   };
 }
-
 // solutions
 export function deleteSolutionFromStorage(id: string) {
   deleteItem(SOLUTION_ROOT, id);
@@ -270,112 +278,8 @@ function loadLegacyScriptLabSnippets(): ISolution[] {
   );
 }
 
-// custom functions
-export const getIsCustomFunctionRunnerAlive = (): boolean => {
-  ensureFreshLocalStorage();
-
-  const lastHeartbeat = localStorage.getItem(
-    localStorageKeys.customFunctionsLastHeartbeatTimestamp,
-  );
-  return lastHeartbeat ? +lastHeartbeat > 3000 : false;
-};
-
-export const getCustomFunctionCodeLastUpdated = (): number => {
-  ensureFreshLocalStorage();
-
-  const lastUpdated = localStorage.getItem(
-    localStorageKeys.customFunctionsLastUpdatedCodeTimestamp,
-  );
-  return lastUpdated ? +lastUpdated : 0;
-};
-
-export const getCustomFunctionLogs = (): ILogData[] | null => {
-  ensureFreshLocalStorage();
-
-  const logsString = localStorage.getItem(localStorageKeys.log);
-
-  if (logsString !== null) {
-    localStorage.removeItem(localStorageKeys.log);
-
-    return logsString
-      .split('\n')
-      .filter(line => line !== '')
-      .filter(line => !line.includes('Agave.HostCall'))
-      .map(entry => JSON.parse(entry) as ILogData);
-  } else {
-    return null;
-  }
-};
-
-const getCFPostData = (state: IState): IRunnerCustomFunctionsPostData => {
-  const cfSolutions = selectors.customFunctions.getSolutions(state);
-
-  const snippets = cfSolutions.map(solution => {
-    const snippet = convertSolutionToSnippet(solution);
-    const { name, id, libraries, script } = snippet;
-
-    return {
-      name,
-      id: solution.id,
-      libraries: libraries || '',
-      script: script ? script : { content: '', language: 'typescript' },
-      metadata: undefined,
-    };
-  });
-
-  const result = {
-    snippets,
-    loadFromOfficeJsPreviewCachedCopy: false,
-    displayLanguage: 'en-us',
-    heartbeatParams: {
-      clientTimestamp: Date.now(),
-      loadFromOfficeJsPreviewCachedCopy: false,
-    },
-    experimentationFlags: {},
-  };
-
-  return result;
-};
-
 // Helpers
-function getAllLocalStorageKeys(): string[] {
-  const keys: string[] = [];
-  for (let i = 0; i < localStorage.length; i++) {
-    const key = localStorage.key(i);
-    if (key) {
-      keys.push(key);
-    }
-  }
-  return keys;
-}
 
 function isRealSolution(solution: ISolution) {
   return solution.id !== NULL_SOLUTION_ID && solution.id !== SETTINGS_SOLUTION_ID;
-}
-
-function writeIfChanged(
-  selector: (state: IState) => any,
-  getKey: ((selectionResult: any) => string) | string,
-  currentState: IState,
-  lastState: IState | undefined,
-  root: string = '',
-) {
-  const current = selector(currentState);
-  const last = lastState ? selector(lastState) : null;
-  const key = typeof getKey === 'string' ? getKey : getKey(current);
-  if (current && (!last || !isEqual(current, last))) {
-    writeItem(root, key, current);
-  }
-}
-
-function writeItem(root: string, id: string, object: any) {
-  localStorage.setItem(`${root}${id}`, JSON.stringify(object));
-}
-
-function readItem(root: string, id: string) {
-  return JSON.parse(localStorage.getItem(`${root}${id}`) || 'null');
-}
-
-function deleteItem(root: string, id: string) {
-  localStorage.removeItem(`${root}${id}`);
 }

@@ -1500,6 +1500,11 @@
   resolved "https://registry.yarnpkg.com/@types/office-js/-/office-js-0.0.135.tgz#70372e05fa86607f13946195ee25bc30289dad02"
   integrity sha512-Og8W2rLjNJlMoyN+huWzTHJlvPKTDmRdNsW8awMLHnLzVSG6nPrp65clfIOyyhImdGMSgidI8kY1rlcIn5rxpQ==
 
+"@types/office-runtime@^1.0.6":
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/@types/office-runtime/-/office-runtime-1.0.6.tgz#1821b2d0ab81c99b6a797b1424e68682e047f40a"
+  integrity sha512-nC4utvinRC+9IDttH4DuW7zAGJbq+3ybcK/HUfUqRPOelKrMoS6+r6YFDJ5oXO/9MC4yNKL9g9Nm+YmcNBkI2w==
+
 "@types/prettier@^1.13.2":
   version "1.15.2"
   resolved "https://registry.yarnpkg.com/@types/prettier/-/prettier-1.15.2.tgz#91594ea7cb6f3b1f7ea69f32621246654c7cc231"

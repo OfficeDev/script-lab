@@ -30,19 +30,6 @@ export const SCRIPT_FILE_NAME = 'index.ts';
 
 export const READ_ONLY_FILE_IDS = [NULL_FILE_ID, ABOUT_FILE_ID, DEFAULT_SETTINGS_FILE_ID];
 
-export const localStorageKeys = {
-  customFunctionsLastHeartbeatTimestamp:
-    'playground_custom_functions_last_heartbeat_timestamp',
-  customFunctionsLastUpdatedCodeTimestamp:
-    'playground_custom_functions_last_updated_code_timestamp',
-  customFunctionsCurrentlyRunningTimestamp:
-    'playground_custom_functions_currently_running_timestamp',
-  log: 'playground_log',
-  customFunctionsRunPostData: 'custom_functions_run_post_data',
-  originEnvironmentUrl: 'playground_origin_environment_url',
-  redirectEnvironmentUrl: 'playground_redirect_environment_url',
-};
-
 export const CUSTOM_FUNCTIONS_INFO_URL = 'https://aka.ms/customfunctions';
 
 export const EDITOR_PATH = '/';

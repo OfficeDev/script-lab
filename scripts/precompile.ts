@@ -22,6 +22,12 @@ const PRECOMPILE_SPEC_LIST: {
       processor: webpackProcessor,
     },
     {
+      name: 'custom-functions-heartbeat.js',
+      relativeFilePath: 'custom-functions-heartbeat',
+      injectInto: ['custom-functions-heartbeat.html'],
+      processor: webpackProcessor,
+    },
+    {
       name: 'environment-redirect.js',
       relativeFilePath: 'environment-redirect',
       injectInto: [
@@ -30,7 +36,6 @@ const PRECOMPILE_SPEC_LIST: {
         'dogfood.html',
         'external-page.html',
         'functions.html',
-        'heartbeat.html',
         'index.html',
         'run.html',
         'tutorial.html',

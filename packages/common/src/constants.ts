@@ -7,3 +7,20 @@ export const SCRIPT_URLS = {
 };
 
 export const DEFAULT_HOST = 'WEB';
+
+export const CF_HEARTBEAT_POLLING_INTERVAL = 500;
+
+export const localStorageKeys = {
+  editor: {
+    customFunctionsLastHeartbeatTimestamp:
+      'playground_custom_functions_last_heartbeat_timestamp',
+    customFunctionsLastUpdatedCodeTimestamp:
+      'playground_custom_functions_last_updated_code_timestamp',
+    customFunctionsCurrentlyRunningTimestamp:
+      'playground_custom_functions_currently_running_timestamp',
+    log: 'playground_log',
+    customFunctionsRunPostData: 'custom_functions_run_post_data',
+    originEnvironmentUrl: 'playground_origin_environment_url',
+    redirectEnvironmentUrl: 'playground_redirect_environment_url',
+  },
+};
