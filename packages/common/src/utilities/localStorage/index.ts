@@ -4,6 +4,7 @@ import ensureFreshLocalStorage from '../ensure.fresh.local.storage';
 
 export const GITHUB_KEY = 'github';
 export const SOLUTION_ROOT = 'solution#';
+export const CF_LOGS_ROOT = 'cf_logs#';
 
 // custom functions
 export const getIsCustomFunctionRunnerAlive = (): boolean => {
@@ -24,22 +25,12 @@ export const getCustomFunctionCodeLastUpdated = (): number => {
   return lastUpdated ? +lastUpdated : 0;
 };
 
-export const getCustomFunctionLogs = (): ILogData[] | null => {
+export const getCustomFunctionLogsFromLocalStorage = (): ILogData[] => {
   ensureFreshLocalStorage();
 
-  const logsString = localStorage.getItem(localStorageKeys.editor.log);
-
-  if (logsString !== null) {
-    localStorage.removeItem(localStorageKeys.editor.log);
-
-    return logsString
-      .split('\n')
-      .filter(line => line !== '')
-      .filter(line => !line.includes('Agave.HostCall'))
-      .map(entry => JSON.parse(entry) as ILogData);
-  } else {
-    return null;
-  }
+  const logs = getAllItemsWithRoot<ILogData>(CF_LOGS_ROOT);
+  removeAllItemsWithRoot(CF_LOGS_ROOT);
+  return logs;
 };
 
 // helpers
@@ -79,4 +70,19 @@ export function getAllLocalStorageKeys(): string[] {
     }
   }
   return keys;
+}
+
+export function getAllLocalStorageKeysWithRoot(root: string): string[] {
+  return getAllLocalStorageKeys().filter(key => key.startsWith(root));
+}
+
+export function getAllItemsWithRoot<T>(root: string): T[] {
+  ensureFreshLocalStorage();
+  return getAllLocalStorageKeysWithRoot(root)
+    .map(key => localStorage.getItem(key))
+    .map(item => JSON.parse(item));
+}
+
+export function removeAllItemsWithRoot(root: string) {
+  getAllLocalStorageKeysWithRoot(root).forEach(key => localStorage.removeItem(key));
 }

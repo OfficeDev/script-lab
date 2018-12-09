@@ -1,27 +1,35 @@
 import 'core-js/fn/array/find';
+
 import { currentRunnerUrl } from 'common/lib/environment';
 import ensureFreshLocalStorage from 'common/lib/utilities/ensure.fresh.local.storage';
 import { CF_HEARTBEAT_POLLING_INTERVAL, localStorageKeys } from 'common/lib/constants';
+
 import {
   getAllLocalStorageKeys,
   SOLUTION_ROOT,
   readItem,
+  writeItem,
+  CF_LOGS_ROOT,
 } from 'common/lib/utilities/localStorage';
 import { parseMetadata } from 'common/lib/utilities/custom.functions.metadata.parser';
 import compileScript from 'common/lib/utilities/compile.script';
 import processLibraries from 'common/lib/utilities/process.libraries';
 
-// if changes in the custom functions solutions are detected,
-// send the runner a {type: 'refresh'}
+// ========================= REFRESH =================================//
 setInterval(() => {
   if (checkShouldUpdate()) {
+    // if changes in the custom functions solutions are detected,
+    // send the runner a {type: 'refresh'}
     sendMessageToRunner({ type: 'refresh' });
   }
 }, CF_HEARTBEAT_POLLING_INTERVAL);
 
-// send the runner metadata
-sendMessageToRunner({ type: 'metadata', payload: getMetadata() });
+const initialMetadataTimestamp = getCustomFunctionsLastUpdated();
+function checkShouldUpdate(): boolean {
+  return getCustomFunctionsLastUpdated() > initialMetadataTimestamp;
+}
 
+// ========================= LOGS =================================//
 window.onmessage = event => {
   if (event.origin !== currentRunnerUrl) {
     console.error(`Ignoring message from an invalid origin "${event.origin}"`);
@@ -39,7 +47,10 @@ window.onmessage = event => {
   }
 };
 
-// helpers
+// ========================= METADATA  =================================//
+sendMessageToRunner({ type: 'metadata', payload: getMetadata() });
+
+// ========================= HELPERS  ==================================//
 function sendMessageToRunner(message: ICFHeartbeatMessage) {
   window.parent.postMessage(JSON.stringify(message), currentRunnerUrl);
 }
@@ -91,18 +102,8 @@ function loadAllCFSolutions() {
     .filter((solution: ISolution) => solution.options.isCustomFunctionsSolution);
 }
 
-const initialMetadataTimestamp = getCustomFunctionsLastUpdated();
-function checkShouldUpdate(): boolean {
-  return getCustomFunctionsLastUpdated() > initialMetadataTimestamp;
-}
-
-function addLog(log: ICFLogMessage) {
-  ensureFreshLocalStorage();
-  const existingLogs = JSON.parse(
-    localStorage.getItem(localStorageKeys.editor.log) || '[]',
-  );
-  const newLogs = [...existingLogs, log.payload];
-  localStorage.setItem(localStorageKeys.editor.log, JSON.stringify(newLogs));
+function addLog({ payload }: ICFLogMessage) {
+  writeItem(CF_LOGS_ROOT, payload.id, payload);
 }
 
 function getCustomFunctionsLastUpdated(): number {

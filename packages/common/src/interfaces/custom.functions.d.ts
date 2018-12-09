@@ -141,8 +141,5 @@ interface ICFGetMetadataMessage extends ICFHeartbeatMessage {
 
 interface ICFLogMessage extends ICFHeartbeatMessage {
   type: 'log';
-  payload: {
-    type: ConsoleLogTypes;
-    content: string;
-  };
+  payload: ILogData;
 }
