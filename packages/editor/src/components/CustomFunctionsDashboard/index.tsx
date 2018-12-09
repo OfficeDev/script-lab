@@ -86,16 +86,10 @@ export class CustomFunctionsDashboard extends React.Component<IProps, IState> {
     } else if (this.state.engineStatus!.enabled) {
       if (hasCustomFunctionsInSolutions) {
         return (
-          <>
-            <div>
-              {this.state.customFunctionsSolutionLastModified},{' '}
-              {this.props.runnerLastUpdated}
-            </div>
-            <Dashboard
-              items={{ Summary: <Summary />, Console: <Console /> }}
-              shouldPromptRefresh={this.getShouldPromptRefresh()}
-            />
-          </>
+          <Dashboard
+            items={{ Summary: <Summary />, Console: <Console /> }}
+            shouldPromptRefresh={this.getShouldPromptRefresh()}
+          />
         );
       } else {
         return <Welcome isRefreshEnabled={this.getShouldPromptRefresh()} />;

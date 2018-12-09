@@ -1,4 +1,5 @@
 import { officeNamespacesForCustomFunctionsIframe } from '../../src/constants';
+import { currentEditorUrl } from 'common/lib/environment';
 import { generateLogString, stringifyPlusPlus } from 'common/lib/utilities/string';
 import 'core-js/fn/array/find';
 
@@ -6,6 +7,7 @@ import generateCustomFunctionIframe, {
   ICustomFunctionPayload,
 } from './run.customFunctions';
 
+const HEARTBEAT_URL = `${currentEditorUrl}/custom-functions-heartbeat.html`;
 const VERBOSE_MODE = true; // FIXME: Nico: you'll probably want to turn this off before going to production
 
 (async () => {
@@ -13,8 +15,32 @@ const VERBOSE_MODE = true; // FIXME: Nico: you'll probably want to turn this off
 
   overwriteConsole('[SYSTEM]', window);
 
-  const payload = getFakePayload();
-  await initializeRunnableSnippets(payload);
+  // set up heartbeat listener
+  window.onmessage = async ({ origin, data }) => {
+    if (origin !== currentEditorUrl) {
+      // console.error(`Unexpected message from ${origin}: ${data}`);
+      return;
+    }
+
+    const { type, payload }: ICFHeartbeatMessage = JSON.parse(data);
+    console.log(payload);
+    switch (type) {
+      case 'metadata':
+        console.log(' got metadata');
+        await initializeRunnableSnippets(payload);
+        break;
+      case 'refresh':
+        console.log('REFRESHINGNGNGGN');
+        window.location.reload();
+        break;
+      default:
+        throw new Error(`Unexpected event type: ${type}`);
+    }
+  };
+
+  addHeartbeat();
+
+  // const payload = getFakePayload();
   logIfExtraLoggingEnabled('Done preparing snippets');
 
   // tslint:disable-next-line:no-string-literal
@@ -25,6 +51,14 @@ const VERBOSE_MODE = true; // FIXME: Nico: you'll probably want to turn this off
   );
 })();
 ///////////////////////////////////////
+
+let heartbeat: HTMLIFrameElement;
+function addHeartbeat() {
+  heartbeat = document.createElement('iframe');
+  heartbeat.style.display = 'none';
+  heartbeat.src = HEARTBEAT_URL;
+  document.body.appendChild(heartbeat);
+}
 
 async function initializeRunnableSnippets(payload: ICustomFunctionPayload[]) {
   return new Promise(resolve =>
@@ -107,10 +141,23 @@ function overwriteConsole(source: '[SYSTEM]' | string, windowObject: Window) {
   }
 }
 
+let logCounter = 0;
 function tryToSendLog(data: { source: string; severity: string; message: string }) {
   try {
+    if (heartbeat && heartbeat.contentWindow) {
+      heartbeat.contentWindow.postMessage(
+        JSON.stringify({
+          type: 'log',
+          payload: {
+            id: logCounter++,
+            message: data.message,
+            severity: data.severity,
+          },
+        }),
+        HEARTBEAT_URL,
+      );
+    }
     // FIXME: Nico: pass this to the heartbeat and also add a counter for the ID
-    debugger;
   } catch (e) {
     // If couldn't log, not much you can do about it.
   }
@@ -130,34 +177,4 @@ function handleError(error: Error | any) {
     severity: 'error',
     source: '[SYSTEM]',
   });
-}
-
-// FIXME: Nico: replace with actual data that comes from heartbeat
-function getFakePayload() {
-  return [
-    {
-      solutionId: 'FooBar',
-      namespace: 'FooBar',
-      functionNames: ['foo', 'bar'],
-      code:
-        '/** @customFunction */\r\nfunction foo() {\r\n    return 42;\r\n}\r\n/** @customFunction */\r\nfunction bar() {\r\n    return 43;\r\n}\r\n',
-      jsLibs: [
-        'https://unpkg.com/core-js@2.4.1/client/core.min.js',
-        'https://unpkg.com/@microsoft/office-js-helpers@0.7.4/dist/office.helpers.min.js',
-        'https://unpkg.com/jquery@3.1.1',
-      ],
-    },
-    {
-      solutionId: '2323423432',
-      namespace: 'BlankSnippet',
-      functionNames: ['add10', 'add5ish'],
-      code:
-        '/** @CustomFunction */\r\nfunction add10(x) {\r\n    return x + 10;\r\n}\r\n/** @CustomFunction */\r\nfunction add5ish(x) {\r\n    var num = Math.random();\r\n    console.log(num);\r\n    return x + num + 5;\r\n}\r\n',
-      jsLibs: [
-        'https://unpkg.com/core-js@2.4.1/client/core.min.js',
-        'https://unpkg.com/@microsoft/office-js-helpers@0.7.4/dist/office.helpers.min.js',
-        'https://unpkg.com/jquery@3.1.1',
-      ],
-    },
-  ];
 }
