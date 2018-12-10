@@ -26,7 +26,6 @@ const PRECOMPILE_SPEC: {
         'functions.html',
         'heartbeat.html',
         'index.html',
-        'run.html',
         'tutorial.html',
       ],
       processor: webpackProcessor,
@@ -41,12 +40,6 @@ const PRECOMPILE_SPEC: {
       name: 'heartbeat.js',
       relativeFilePath: 'heartbeat',
       injectInto: ['heartbeat.html'],
-      processor: webpackProcessor,
-    },
-    {
-      name: 'run-page-redirect.js',
-      relativeFilePath: 'run-page-redirect',
-      injectInto: ['run.html'],
       processor: webpackProcessor,
     },
     {

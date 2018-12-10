@@ -48,6 +48,7 @@ export const CUSTOM_FUNCTIONS_INFO_URL = 'https://aka.ms/customfunctions';
 export const EDITOR_PATH = '/';
 export const PATHS = {
   EDITOR: '/',
+  RUNNER_REDIRECT: '/run',
   CUSTOM_FUNCTIONS: '/custom-functions',
   CUSTOM_FUNCTIONS_DASHBOARD: '/custom-functions-dashboard',
   BACKSTAGE: '/backstage',

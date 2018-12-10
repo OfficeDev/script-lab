@@ -5,6 +5,7 @@ import { ThemeProvider } from 'styled-components';
 
 import IDE from '../IDE';
 import CustomFunctionsDashboard from '../CustomFunctionsDashboard';
+import Pages from './pages';
 
 import selectors from '../../store/selectors';
 import { IState } from '../../store/reducer';
@@ -25,6 +26,7 @@ const App = ({ theme }: IProps) => (
   <ThemeProvider theme={theme}>
     <Switch>
       <Route exact path={PATHS.CUSTOM_FUNCTIONS} component={CustomFunctionsDashboard} />
+      <Route exact path={PATHS.RUNNER_REDIRECT} component={Pages.Run} />
       <Route component={IDE} />
     </Switch>
   </ThemeProvider>
