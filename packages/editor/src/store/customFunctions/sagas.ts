@@ -20,7 +20,7 @@ import {
   setCustomFunctionsLastRegisteredTimestamp,
 } from 'common/lib/utilities/localStorage';
 
-import {, updateEngineStatus, } from './actions';
+import { updateEngineStatus } from './actions';
 import { push } from 'connected-react-router';
 import { getLogsFromAsyncStorage } from './utilities/logs';
 
