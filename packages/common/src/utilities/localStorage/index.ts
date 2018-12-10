@@ -33,6 +33,23 @@ export const getCustomFunctionLogsFromLocalStorage = (): ILogData[] => {
   return logs;
 };
 
+export function setCustomFunctionsLastRegisteredTimestamp(timestamp: number) {
+  localStorage.setItem(
+    localStorageKeys.editor.customFunctionsLastRegisteredTimestamp,
+    timestamp.toString(),
+  );
+}
+
+export function getCustomFunctionsLastRegisteredTimestamp() {
+  ensureFreshLocalStorage();
+
+  return JSON.parse(
+    localStorage.getItem(
+      localStorageKeys.editor.customFunctionsLastRegisteredTimestamp,
+    ) || '0',
+  );
+}
+
 // helpers
 export function writeIfChanged<T>(
   selector: (state: T) => any,

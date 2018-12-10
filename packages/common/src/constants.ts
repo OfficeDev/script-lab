@@ -16,6 +16,7 @@ export const localStorageKeys = {
       'playground_custom_functions_last_heartbeat_timestamp',
     customFunctionsLastUpdatedCodeTimestamp:
       'playground_custom_functions_last_updated_code_timestamp',
+    customFunctionsLastRegisteredTimestamp: 'playground_custom_functions_last_registered',
     customFunctionsCurrentlyRunningTimestamp:
       'playground_custom_functions_currently_running_timestamp',
     log: 'playground_log',

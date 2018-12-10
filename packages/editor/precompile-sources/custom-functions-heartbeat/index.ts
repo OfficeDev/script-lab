@@ -5,6 +5,7 @@ import ensureFreshLocalStorage from 'common/lib/utilities/ensure.fresh.local.sto
 import { CF_HEARTBEAT_POLLING_INTERVAL, localStorageKeys } from 'common/lib/constants';
 
 import {
+  getCustomFunctionsLastRegisteredTimestamp,
   getAllLocalStorageKeys,
   SOLUTION_ROOT,
   readItem,
@@ -24,9 +25,9 @@ setInterval(() => {
   }
 }, CF_HEARTBEAT_POLLING_INTERVAL);
 
-const initialMetadataTimestamp = getCustomFunctionsLastUpdated();
+const initialMetadataTimestamp = getCustomFunctionsLastRegisteredTimestamp();
 function checkShouldUpdate(): boolean {
-  return getCustomFunctionsLastUpdated() > initialMetadataTimestamp;
+  return getCustomFunctionsLastRegisteredTimestamp() > initialMetadataTimestamp;
 }
 
 // ========================= LOGS =================================//

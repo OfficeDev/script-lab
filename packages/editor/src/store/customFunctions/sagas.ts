@@ -17,7 +17,9 @@ import { registerMetadata } from './utilities';
 import {
   getCustomFunctionLogsFromLocalStorage,
   getIsCustomFunctionRunnerAlive,
+  setCustomFunctionsLastRegisteredTimestamp,
 } from 'common/lib/utilities/localStorage';
+
 import { fetchLogsAndHeartbeat, updateEngineStatus, openDashboard } from './actions';
 import { push } from 'connected-react-router';
 import { getLogsFromAsyncStorage } from './utilities/logs';
@@ -71,7 +73,9 @@ function* registerCustomFunctionsMetadataSaga(
     const engineStatus = yield call(getCustomFunctionEngineStatus);
     yield put(updateEngineStatus(engineStatus));
 
-    yield put(customFunctions.updateRunner({ isAlive: true, lastUpdated: Date.now() }));
+    const timestamp = Date.now();
+    yield put(customFunctions.updateRunner({ isAlive: true, lastUpdated: timestamp }));
+    setCustomFunctionsLastRegisteredTimestamp(timestamp);
   } catch (error) {
     console.error(error);
     yield put(customFunctions.registerMetadata.failure(error));

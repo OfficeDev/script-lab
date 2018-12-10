@@ -10,10 +10,8 @@ import generateCustomFunctionIframe, {
 const HEARTBEAT_URL = `${currentEditorUrl}/custom-functions-heartbeat.html`;
 const VERBOSE_MODE = true; // FIXME: Nico: you'll probably want to turn this off before going to production
 
-(async () => {
+(() => {
   // FIXME: Start heartbeat and hook up refresh event.  Note, might not need refresh if reloading the taskpane (which calls "CustomFunctionsManager.register" destroys the old iframe)
-
-  overwriteConsole('[SYSTEM]', window);
 
   // set up heartbeat listener
   window.onmessage = async ({ origin, data }) => {
@@ -23,14 +21,13 @@ const VERBOSE_MODE = true; // FIXME: Nico: you'll probably want to turn this off
     }
 
     const { type, payload }: ICFHeartbeatMessage = JSON.parse(data);
-    console.log(payload);
     switch (type) {
       case 'metadata':
-        console.log(' got metadata');
         await initializeRunnableSnippets(payload);
+        // tslint:disable-next-line:no-string-literal
+        delete CustomFunctionMappings['__delay__'];
         break;
       case 'refresh':
-        console.log('REFRESHINGNGNGGN');
         window.location.reload();
         break;
       default:
@@ -39,12 +36,9 @@ const VERBOSE_MODE = true; // FIXME: Nico: you'll probably want to turn this off
   };
 
   addHeartbeat();
+  overwriteConsole('[SYSTEM]', window);
 
-  // const payload = getFakePayload();
   logIfExtraLoggingEnabled('Done preparing snippets');
-
-  // tslint:disable-next-line:no-string-literal
-  delete CustomFunctionMappings['__delay__'];
 
   logIfExtraLoggingEnabled(
     'Custom functions runner is ready to evaluate your functions!',
