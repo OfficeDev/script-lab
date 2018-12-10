@@ -4,7 +4,7 @@ import {
   fireEvent,
   cleanup,
   renderWithReduxAndRouter,
-} from '../../../utils/test-utils';
+} from '../../../../utils/test-utils';
 
 import FileSwitcherPivot from './';
 

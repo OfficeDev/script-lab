@@ -8,7 +8,7 @@ import { MessageBarType } from 'office-ui-fabric-react/lib/MessageBar';
 import { Spinner, SpinnerSize } from 'office-ui-fabric-react/lib/Spinner';
 
 import Clipboard from 'clipboard';
-import { convertSolutionToSnippet } from '../../../utils';
+import { convertSolutionToSnippet } from '../../../../utils';
 import YAML from 'js-yaml';
 
 import DeleteConfirmationDialog from './DeleteConfirmationDialog';
@@ -16,14 +16,14 @@ import SolutionSettings from './SolutionSettings';
 import { getRunButton, IProps as IRunButtonProps } from './Buttons/Run';
 
 import { ITheme as IFabricTheme } from 'office-ui-fabric-react/lib/Styling';
-import { NULL_SOLUTION_ID, PATHS, IS_TASK_PANE_WIDTH } from '../../../constants';
+import { NULL_SOLUTION_ID, PATHS, IS_TASK_PANE_WIDTH } from '../../../../constants';
 import { getPlatform, PlatformType } from 'common/lib/environment';
 
 import { connect } from 'react-redux';
-import actions, { dialog, IRootAction } from '../../../store/actions';
-import selectors from '../../../store/selectors';
-import { IState as IReduxState } from '../../../store/reducer';
-import { getCommandBarFabricTheme } from '../../../theme';
+import actions, { dialog, IRootAction } from '../../../../store/actions';
+import selectors from '../../../../store/selectors';
+import { IState as IReduxState } from '../../../../store/reducer';
+import { getCommandBarFabricTheme } from '../../../../theme';
 import { push } from 'connected-react-router';
 import { Dispatch } from 'redux';
 

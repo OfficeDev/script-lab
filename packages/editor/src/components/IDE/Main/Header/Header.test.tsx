@@ -2,11 +2,11 @@ import React from 'react';
 import { mount } from 'enzyme';
 
 import { Header, IProps } from '.';
-import { getBoilerplate } from '../../../newSolutionData';
+import { getBoilerplate } from '../../../../newSolutionData';
 import { ITheme as IFabricTheme } from 'office-ui-fabric-react/lib/Styling';
-import { getCommandBarFabricTheme } from '../../../theme';
+import { getCommandBarFabricTheme } from '../../../../theme';
 import { ICommandBarProps } from 'office-ui-fabric-react/lib/CommandBar';
-import { SCRIPT_FILE_NAME } from '../../../constants';
+import { SCRIPT_FILE_NAME } from '../../../../constants';
 
 const host = 'EXCEL';
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 
 import { Footer } from './';
-import { getCommandBarFabricTheme } from '../../../theme';
+import { getCommandBarFabricTheme } from '../../../../theme';
 
 const voidFunc = () => {};
 
