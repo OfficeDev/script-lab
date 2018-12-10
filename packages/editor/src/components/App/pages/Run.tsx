@@ -3,7 +3,6 @@ import { currentRunnerUrl } from 'common/lib/environment';
 
 const Run = () => {
   useEffect(() => {
-    console.log('using effect!!!!');
     window.location.href = currentRunnerUrl;
   });
 
