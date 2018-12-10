@@ -38,6 +38,8 @@ const configureStore = ({
   history = createMemoryHistory(),
   initialState = {},
 }: IConfigureStoreProps) => {
+  // UPDATE: https://github.com/ReactTraining/history/issues/509
+  // it is office.js
   // TODO: (nicobell) find out why supportsHistory() says true for the agave window or use another condition
   // NOTE: editor/reducer will need to be updated as it currently is hardcoded to depend on window.location.hash
   // const history = supportsHistory() ? createBrowserHistory() : createHashHistory()
