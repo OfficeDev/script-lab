@@ -32,7 +32,7 @@ interface IActionsFromRedux {
 }
 
 const mapDispatchToProps = (dispatch: Dispatch<IRootAction>): IActionsFromRedux => ({
-  fetchLogs: () => dispatch(actions.customFunctions.fetchLogsAndHeartbeat()),
+  fetchLogs: () => dispatch(actions.customFunctions.fetchLogs()),
   clearLogs: () => dispatch(actions.customFunctions.clearLogs()),
 });
 

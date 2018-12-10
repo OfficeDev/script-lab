@@ -20,7 +20,7 @@ import {
   setCustomFunctionsLastRegisteredTimestamp,
 } from 'common/lib/utilities/localStorage';
 
-import { fetchLogsAndHeartbeat, updateEngineStatus, openDashboard } from './actions';
+import {, updateEngineStatus, } from './actions';
 import { push } from 'connected-react-router';
 import { getLogsFromAsyncStorage } from './utilities/logs';
 
@@ -34,7 +34,7 @@ export default function* customFunctionsWatcher() {
     registerCustomFunctionsMetadataSaga,
   );
 
-  yield takeEvery(getType(customFunctions.fetchLogsAndHeartbeat), fetchLogsSaga);
+  yield takeEvery(getType(customFunctions.fetchLogs), fetchLogsSaga);
 
   yield takeEvery(getType(customFunctions.openDashboard), openDashboardSaga);
 
