@@ -17,7 +17,7 @@ import { getRunButton, IProps as IRunButtonProps } from './Buttons/Run';
 
 import { ITheme as IFabricTheme } from 'office-ui-fabric-react/lib/Styling';
 import { NULL_SOLUTION_ID, PATHS, IS_TASK_PANE_WIDTH } from '../../../constants';
-import { getPlatform, PlatformType, reactRunnerUrl } from 'common/lib/environment';
+import { getPlatform, PlatformType, currentRunnerUrl } from 'common/lib/environment';
 
 import { connect } from 'react-redux';
 import actions, { dialog, IRootAction } from '../../../store/actions';
@@ -155,7 +155,7 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps: IProps): IActionsFromR
   ) => dispatch(dialog.show({ title, subText, buttons })),
   openEditor: () => {
     Office.context.ui.displayDialogAsync(window.location.href);
-    window.location.href = reactRunnerUrl;
+    window.location.href = currentRunnerUrl;
   },
 });
 

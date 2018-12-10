@@ -127,7 +127,7 @@ export class App extends React.Component<{}, IState> {
   openConsole = () => this.setState({ isConsoleOpen: true });
   closeConsole = () => this.setState({ isConsoleOpen: false });
 
-  openCode = () => Office.context.ui.displayDialogAsync(editorUrl);
+  openCode = () => Office.context.ui.displayDialogAsync(currentEditorUrl);
 
   onReceiveNewActiveSolution = (solution: ISolution | null) => {
     if (solution !== null) {
@@ -191,7 +191,7 @@ export class App extends React.Component<{}, IState> {
                 hardRefresh={this.reloadPage}
                 goBack={
                   !!queryString.parse(window.location.search).backButton
-                    ? () => (window.location.href = editorUrl)
+                    ? () => (window.location.href = currentEditorUrl)
                     : undefined
                 }
                 openCode={this.openCode}
