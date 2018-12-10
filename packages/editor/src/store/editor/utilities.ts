@@ -150,13 +150,20 @@ function runTypeScriptPrettier(
   content: string,
   prettierSettings: IPrettierSettings,
 ) {
-  return prettier.format(content, {
-    parser: 'typescript',
-    plugins: [prettierTS],
-    tabWidth: prettierSettings.tabWidth,
-    arrowParens: 'always',
-    printWidth: 120,
-  });
+  try {
+    return prettier.format(content, {
+      parser: 'typescript',
+      plugins: [prettierTS],
+      tabWidth: prettierSettings.tabWidth,
+      arrowParens: 'always',
+      printWidth: 120,
+    });
+  } catch (e) {
+    /** On failure, just return the content as it was, without formatting.
+     * (Otherwise, was bubbling up the error, as in issue https://github.com/OfficeDev/script-lab-react/issues/418)
+     */
+    return content;
+  }
 }
 
 export function parseTripleSlashRefs(url: string, content: string) {

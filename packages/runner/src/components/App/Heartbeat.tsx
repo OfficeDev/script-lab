@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { editorUrls, getCurrentEnv } from '../../constants';
+import { currentEditorUrl } from 'common/lib/environment';
 
-const LOCAL_STORAGE_POLLING_INTERVAL = 1000; // ms
-const URL = editorUrls[getCurrentEnv()];
-const HEARTBEAT_HTML_URL = `${URL}/heartbeat.html`;
+const LOCAL_STORAGE_POLLING_INTERVAL = 300; // ms
+const heartbeatEditorUrl = `${currentEditorUrl}/heartbeat.html`;
 const GET_ACTIVE_SOLUTION_REQUEST_MESSAGE = 'GET_ACTIVE_SOLUTION';
 
 export interface IProps {
@@ -16,15 +15,9 @@ interface IState {
 }
 
 class Heartbeat extends Component<IProps, IState> {
-  node;
-  pollingInterval;
-  state;
-
-  constructor(props) {
-    super(props);
-    this.node = React.createRef();
-    this.state = { activeSolutionId: undefined };
-  }
+  node = React.createRef<HTMLIFrameElement>();
+  state: IState = { activeSolution: undefined };
+  pollingInterval: any;
 
   componentDidMount() {
     this.pollingInterval = setInterval(() => {
@@ -43,18 +36,23 @@ class Heartbeat extends Component<IProps, IState> {
     if (this.node.current) {
       this.node.current.contentWindow!.postMessage(
         `${GET_ACTIVE_SOLUTION_REQUEST_MESSAGE}/${this.props.host}`,
-        URL,
+        currentEditorUrl,
       );
     }
   };
 
   private onWindowMessage = ({ origin, data }) => {
-    if (origin !== URL) {
+    if (origin !== currentEditorUrl) {
       return;
     }
 
     try {
       const solution: ISolution | null = JSON.parse(data);
+
+      if (solution && solution.options.isCustomFunctionsSolution) {
+        window.location.href = `${currentEditorUrl}/custom-functions.html`;
+      }
+
       if (this.checkIfSolutionChanged(solution)) {
         this.setState({ activeSolution: solution });
         this.props.onReceiveNewActiveSolution(solution);
@@ -66,7 +64,7 @@ class Heartbeat extends Component<IProps, IState> {
 
   render() {
     return (
-      <iframe style={{ display: 'none' }} src={HEARTBEAT_HTML_URL} ref={this.node} />
+      <iframe style={{ display: 'none' }} src={heartbeatEditorUrl} ref={this.node} />
     );
   }
 

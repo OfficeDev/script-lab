@@ -50,7 +50,7 @@ export function* fetchAllGistMetadataSaga() {
     const gistsMetadata = response
       .filter(
         ({ files }) =>
-          files.length === 1 &&
+          Object.keys(files).length === 1 &&
           /^(.*)\.yaml$/.test(files[Object.keys(files)[0]].filename),
       )
       .map(gist => {

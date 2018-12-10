@@ -1,8 +1,15 @@
 import { takeEvery, put, call, select } from 'redux-saga/effects';
 import { getType, ActionType } from 'typesafe-actions';
 import { actions, selectors } from '../';
-import { getCurrentEnv, allEditorUrls } from '../../environment';
-import { capitalizeWord } from 'common/lib/utilities/string';
+import {
+  getCurrentEnv,
+  editorUrls,
+  environmentDisplayNames,
+  currentEditorUrl,
+} from 'common/lib/environment';
+import ensureFreshLocalStorage from 'common/lib/utilities/ensure.fresh.local.storage';
+import { localStorageKeys } from '../../constants';
+import { showSplashScreen } from 'common/lib/utilities/splash.screen';
 
 export default function* miscWatcher() {
   yield takeEvery(getType(actions.misc.initialize), onInitializeSaga);
@@ -25,11 +32,13 @@ function* onSwitchEnvironmentSaga(
   const currentEnvironment = getCurrentEnv();
 
   if (newEnvironment !== currentEnvironment) {
-    const currentEnvPretty = capitalizeWord(currentEnvironment);
-    const newEnvPretty = capitalizeWord(newEnvironment);
-    const title = `Switch from ${currentEnvPretty} to ${newEnvPretty}:`;
+    const currentEnvPretty = environmentDisplayNames[currentEnvironment];
+    const newEnvPretty = environmentDisplayNames[newEnvironment];
+    const title = `Switch from ${currentEnvPretty} to ${newEnvPretty}?`;
     const subText =
-      'You are about to change your Script Lab environment and will not have access to your saved local snippets until you return to this environment. Are you sure you want to proceed?';
+      'You are about to change your Script Lab environment and will not have access ' +
+      'to your saved local snippets until you return to this environment. ' +
+      'Are you sure you want to proceed?';
 
     const buttons = [
       {
@@ -51,7 +60,27 @@ function* onSwitchEnvironmentSaga(
 function* onConfirmSwitchEnvironmentSaga(
   action: ActionType<typeof actions.misc.confirmSwitchEnvironment>,
 ) {
-  window.location.href = `${
-    allEditorUrls.production
-  }?targetEnvironment=${encodeURIComponent(allEditorUrls[action.payload])}`;
+  ensureFreshLocalStorage();
+  const originEnvironment = window.localStorage.getItem(
+    localStorageKeys.originEnvironmentUrl,
+  );
+
+  const targetEnvironment = editorUrls[action.payload];
+
+  showSplashScreen('Re-loading Script Lab...');
+
+  // Add query string parameters to default editor URL
+  if (originEnvironment) {
+    window.location.href = `${originEnvironment}?targetEnvironment=${encodeURIComponent(
+      targetEnvironment,
+    )}`;
+  } else {
+    window.localStorage.setItem(
+      localStorageKeys.redirectEnvironmentUrl,
+      targetEnvironment,
+    );
+    window.location.href = `${targetEnvironment}?originEnvironment=${encodeURIComponent(
+      currentEditorUrl,
+    )}`;
+  }
 }

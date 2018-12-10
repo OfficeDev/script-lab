@@ -1,5 +1,5 @@
 import { parse } from 'query-string';
-import safeExternalUrls from '../../../common/src/safe.external.urls';
+import safeExternalUrls from 'common/lib/safe.external.urls';
 
 (() => {
   const { destination } = parse(window.location.search) as {

@@ -1,5 +1,5 @@
 import { Utilities, HostType } from '@microsoft/office-js-helpers';
-import safeExternalUrls from '../../../common/src/safe.external.urls';
+import safeExternalUrls from 'common/lib/safe.external.urls';
 
 registerCommand('launchCode', event =>
   launchInDialog(codeUrl, event, { width: 75, height: 75, displayInIframe: false }),

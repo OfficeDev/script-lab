@@ -17,8 +17,10 @@ import Only from 'common/lib/components/Only';
 import MessageBar from '../MessageBar';
 
 import SnippetContainer from '../SnippetContainer';
-import { editorUrl } from '../../constants';
+import { currentEditorUrl } from 'common/lib/environment';
 import processLibraries from 'common/lib/utilities/process.libraries';
+import { showSplashScreen } from 'common/lib/utilities/splash.screen';
+import { SILENT_SNIPPET_SWITCHING } from '../../constants';
 
 const AppWrapper = styled.div`
   height: 100vh;
@@ -46,7 +48,7 @@ interface IState {
 
 export class App extends React.Component<{}, IState> {
   private officeJsPageUrlLowerCased: string | null;
-  private hasRenderedFirstRealSnippet = false;
+  private hasRenderedContent = false;
   private isTransitioningAwayFromPage = false;
 
   constructor(props) {
@@ -132,11 +134,9 @@ export class App extends React.Component<{}, IState> {
       this.respondToOfficeJsMismatchIfAny(solution);
 
       if (!this.state.solution) {
-        console.info(`Your snippet "${solution.name}" has been loaded.`);
-      } else if (this.state.solution.id === solution.id) {
-        console.info(`Updating your snippet "${solution.name}".`);
+        informSnippetSwitch(`Your snippet "${solution.name}" has been loaded.`);
       } else {
-        console.info(`Switching to snippet "${solution.name}".`);
+        informSnippetSwitch(`Switching to snippet "${solution.name}".`);
       }
     }
     this.setState({ solution });
@@ -147,7 +147,9 @@ export class App extends React.Component<{}, IState> {
       this.setState({
         solution: { ...this.state.solution, dateLastModified: Date.now() },
       });
-      console.info(`Your snippet '${this.state.solution.name}' has been reloaded.`);
+      informSnippetSwitch(
+        `Your snippet '${this.state.solution.name}' has been reloaded.`,
+      );
     }
   };
 
@@ -155,13 +157,19 @@ export class App extends React.Component<{}, IState> {
     this.reloadPageWithDifferentOfficeJsUrl(null);
   };
 
-  onSnippetRender = ({ lastRendered }: { lastRendered: number }) => {
+  onSnippetRender = ({
+    lastRendered,
+    hasContent,
+  }: {
+    lastRendered: number;
+    hasContent: boolean;
+  }) => {
     // If staying on this page (rather than being in the process of reloading)
     if (!this.isTransitioningAwayFromPage) {
       this.setState({ lastRendered });
 
-      if (this.state.solution) {
-        this.hasRenderedFirstRealSnippet = true;
+      if (hasContent) {
+        this.hasRenderedContent = true;
 
         // Also, hide the loading indicators, if they were still up
         const loadingIndicator = document.getElementById('loading')!;
@@ -175,7 +183,7 @@ export class App extends React.Component<{}, IState> {
       <Theme host={this.state.solution ? this.state.solution.host : Utilities.host}>
         <AppWrapper>
           <HeaderFooterLayout
-            wrapperStyle={{ flex: '7' }}
+            wrapperStyle={{ flex: '6', minHeight: '30rem' }}
             header={
               <Header
                 solution={this.state.solution}
@@ -208,7 +216,7 @@ export class App extends React.Component<{}, IState> {
           </HeaderFooterLayout>
           <Only when={this.state.isConsoleOpen}>
             <Console
-              style={{ flex: '3', minHeight: '25rem' }}
+              style={{ flex: '4', minHeight: '5rem' }}
               logs={this.state.logs}
               clearLogs={this.clearLogs}
             />
@@ -266,20 +274,19 @@ export class App extends React.Component<{}, IState> {
       // Otherwise, if hasn't rendered any snippet before (i.e., it's a first navigation,
       // straight to an office.js beta snippet, don't change out the title, keep as is
       // so that the load appears continuous).
-      if (this.hasRenderedFirstRealSnippet) {
-        const loadingIndicator = document.getElementById('loading')!;
-        loadingIndicator.style.visibility = 'initial';
-        const subtitleElement = document.querySelectorAll(
-          '#loading h2',
-        )[0] as HTMLElement;
-        subtitleElement.textContent = 'Re-loading office.js, please wait...';
-
-        (document.getElementById('root') as HTMLElement).style.display = 'none';
+      if (this.hasRenderedContent) {
+        showSplashScreen('Re-loading office.js, please wait...');
       }
 
       this.isTransitioningAwayFromPage = true;
       this.reloadPageWithDifferentOfficeJsUrl(newOfficeJsUrl!);
     }
+  }
+}
+
+function informSnippetSwitch(message: string) {
+  if (!SILENT_SNIPPET_SWITCHING) {
+    console.log(message);
   }
 }
 

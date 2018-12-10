@@ -24,7 +24,7 @@ import './index.css';
 import Root from './components/Root';
 import App from './components/App';
 import { waitForAllDynamicScriptsToBeLoaded } from 'common/lib/utilities/script-loader/consumer';
-import invokeGlobalErrorHandler from 'common/lib/utilities/global.error.handler';
+import { invokeGlobalErrorHandler } from 'common/lib/utilities/splash.screen';
 import { IState } from './store/reducer';
 
 document.addEventListener(
@@ -54,7 +54,7 @@ window.onerror = error => invokeGlobalErrorHandler(error);
     const { store, history } = configureStore({
       history: createHashHistory(),
       initialState: {
-        ...loadStateFromLocalStorage(),
+        ...(await loadStateFromLocalStorage()),
         ...loadStateFromSessionStorage(),
       },
     });

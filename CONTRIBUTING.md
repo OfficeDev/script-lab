@@ -59,7 +59,7 @@ You can safely ignore these -- those won't show up to users on the production si
 
 ## Trust the certificates
 
-You will need to trust the certificates for each of <https://localhost:3000> (editor), <https://localhost:3200> (runner), and <https://localhost:5000> (server).
+You will need to trust the certificates for each of <https://localhost:3000> (editor), <https://localhost:3200> (runner), and <http://localhost:5000> (server).
 
 For testing in the web browser (whether standalone or in Office Online) in Chrome, you can bypass the "insecure localhost" by enabling this setting: <chrome://flags/#allow-insecure-localhost>
 
@@ -94,5 +94,4 @@ Please see "[TESTING.md](TESTING.md)".
 - `packages/common`:
   - When adding code to the `packages/common`, run `yarn workspace common build:package` in order to get Intellisense and the compiler to pick it up. In VS Code, you may need to `F12` into the file references before Intellisense is able to see the updated contents.
 - Precompile scripts
-  - For precompile scripts, it's easiest to reference the `packages/common` files directly via ".." syntax, rather than trying to import from "common/lib/...". And also not to use any external libraries. Otherwise we'll need to figure out how to pipe the module information in (today, get an error like: `Module not found: Error: Can't resolve 'query-string' in '...\packages\runner\precompile-sources\scripts-loader'`)
   - To avoid different md5 hashes when building on different machines, the precompile script (`/scripts/precompile.ts`) uses `const WEBPACK_MODE = 'production'`. You can temporarily switch it to 'development' to see the result of the precompile scripts.

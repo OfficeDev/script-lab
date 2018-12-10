@@ -17,7 +17,7 @@ import { getRunButton, IProps as IRunButtonProps } from './Buttons/Run';
 
 import { ITheme as IFabricTheme } from 'office-ui-fabric-react/lib/Styling';
 import { NULL_SOLUTION_ID, PATHS, IS_TASK_PANE_WIDTH } from '../../../constants';
-import { getPlatform, PlatformType, reactRunnerUrl } from '../../../environment';
+import { getPlatform, PlatformType, reactRunnerUrl } from 'common/lib/environment';
 
 import { connect } from 'react-redux';
 import actions, { dialog, IRootAction } from '../../../store/actions';

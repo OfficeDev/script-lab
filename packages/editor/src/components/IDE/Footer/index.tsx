@@ -1,8 +1,12 @@
 import React from 'react';
 import { withTheme } from 'styled-components';
 
-import { ITheme as IFabricTheme } from 'office-ui-fabric-react/lib/Styling';
-import { getCurrentEnv, getVisibleEnvironmentsToSwitchTo } from '../../../environment';
+import {
+  getCurrentEnv,
+  getVisibleEnvironmentKeysToSwitchTo,
+  environmentDisplayNames,
+  environmentDisplayName,
+} from 'common/lib/environment';
 
 import { PATHS } from '../../../constants';
 
@@ -13,7 +17,6 @@ import { connect } from 'react-redux';
 import { actions, selectors } from '../../../store';
 
 import CommonFooter from 'common/lib/components/Footer';
-import { capitalizeWord } from 'common/lib/utilities/string';
 import { Dispatch } from 'redux';
 import { IRootAction } from '../../../store/actions';
 import { IState as IReduxState } from '../../../store/reducer';
@@ -115,11 +118,11 @@ const FooterWithoutTheme = ({
     {
       hidden: !isSettingsView,
       key: 'environment-switcher',
-      text: capitalizeWord(getCurrentEnv()),
+      text: environmentDisplayName,
       subMenuProps: {
-        items: getVisibleEnvironmentsToSwitchTo().map(env => ({
+        items: getVisibleEnvironmentKeysToSwitchTo().map(env => ({
           key: env,
-          text: capitalizeWord(env),
+          text: environmentDisplayNames[env],
           onClick: () => switchEnvironment(env),
         })),
       },
@@ -143,7 +146,7 @@ const FooterWithoutTheme = ({
       onClick: cycleEditorTheme,
     },
     {
-      hidden: getCurrentEnv() === 'prod',
+      hidden: getCurrentEnv() === 'cdn',
       key: 'report-an-issue',
       iconOnly: true,
       iconProps: { iconName: 'Emoji2', styles: iconStyles },
@@ -152,7 +155,6 @@ const FooterWithoutTheme = ({
       text: 'Report an Issue',
       ariaLabel: 'Report an issue',
     },
-
     {
       key: 'settings',
       iconOnly: true,

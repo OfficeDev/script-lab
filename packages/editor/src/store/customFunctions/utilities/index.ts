@@ -6,7 +6,7 @@ import { stripSpaces } from 'common/lib/utilities/string';
 import { pause } from '../../../utils';
 import { parseMetadata } from './metadata.parser';
 import { consoleMonkeypatch } from './console.monkeypatch';
-import { getCurrentEnv } from '../../../environment';
+import { getCurrentEnv } from 'common/lib/environment';
 
 const isCustomFunctionRegex = /@customfunction/i;
 export function isCustomFunctionScript(content: string) {
