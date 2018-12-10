@@ -11,6 +11,7 @@ import { SCRIPT_FILE_NAME } from '../../../constants';
 const host = 'EXCEL';
 
 const actionProps = {
+  openCode: () => {},
   showBackstage: () => {},
   editSolution: (
     solutionId: string,

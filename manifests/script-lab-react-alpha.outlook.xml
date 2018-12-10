@@ -164,12 +164,12 @@
         </Hosts>
         <Resources>
             <bt:Images>
-                <bt:Image id="PG.Icon.Run.16" DefaultValue="https://localhost:3000/assets/images/run-16.png" />
-                <bt:Image id="PG.Icon.Run.32" DefaultValue="https://localhost:3000/assets/images/run-32.png" />
-                <bt:Image id="PG.Icon.Run.80" DefaultValue="https://localhost:3000/assets/images/run-80.png" />
+                <bt:Image id="PG.Icon.Run.16" DefaultValue="https://script-lab-react-alpha.azurewebsites.net/assets/images/run-16.png" />
+                <bt:Image id="PG.Icon.Run.32" DefaultValue="https://script-lab-react-alpha.azurewebsites.net/assets/images/run-32.png" />
+                <bt:Image id="PG.Icon.Run.80" DefaultValue="https://script-lab-react-alpha.azurewebsites.net/assets/images/run-80.png" />
             </bt:Images>
             <bt:Urls>
-                <bt:Url id="PG.Run.Url" DefaultValue="https://localhost:3000/run.html" />
+                <bt:Url id="PG.Run.Url" DefaultValue="https://script-lab-react-alpha.azurewebsites.net/run.html" />
             </bt:Urls>
             <bt:ShortStrings>
                 <bt:String id="PG.GroupLabel" DefaultValue="Script" />
@@ -288,12 +288,12 @@
             </Hosts>
             <Resources>
                 <bt:Images>
-                    <bt:Image id="PG.Icon.Run.16" DefaultValue="https://localhost:3000/assets/images/run-16.png" />
-                    <bt:Image id="PG.Icon.Run.32" DefaultValue="https://localhost:3000/assets/images/run-32.png" />
-                    <bt:Image id="PG.Icon.Run.80" DefaultValue="https://localhost:3000/assets/images/run-80.png" />
+                    <bt:Image id="PG.Icon.Run.16" DefaultValue="https://script-lab-react-alpha.azurewebsites.net/assets/images/run-16.png" />
+                    <bt:Image id="PG.Icon.Run.32" DefaultValue="https://script-lab-react-alpha.azurewebsites.net/assets/images/run-32.png" />
+                    <bt:Image id="PG.Icon.Run.80" DefaultValue="https://script-lab-react-alpha.azurewebsites.net/assets/images/run-80.png" />
                 </bt:Images>
                 <bt:Urls>
-                    <bt:Url id="PG.Run.Url" DefaultValue="https://localhost:3000/run.html" />
+                    <bt:Url id="PG.Run.Url" DefaultValue="https://script-lab-react-alpha.azurewebsites.net/run.html" />
                 </bt:Urls>
                 <bt:ShortStrings>
                     <bt:String id="PG.GroupLabel" DefaultValue="Script" />
