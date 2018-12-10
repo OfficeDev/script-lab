@@ -1,3 +1,4 @@
+import React from 'react';
 import { PATHS } from '../../constants';
 import { Route, Switch } from 'react-router-dom';
 
