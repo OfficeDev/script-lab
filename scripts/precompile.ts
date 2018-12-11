@@ -101,7 +101,7 @@ const BEGIN_PLACEHOLDER_REGEX = /^.*(<!-- Begin precompile placeholder: .* -->).
 // by removing comments (comments that otherwise have source maps that include
 // the absolutely file path to the repo).
 // To temporarily see unminified files, switch to "development" (but do NOT check in like this!)
-const WEBPACK_MODE = 'development'; // FIXME: STOPSTOP
+const WEBPACK_MODE = 'production';
 
 ////////////////////////////////////////
 
