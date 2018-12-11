@@ -34,12 +34,10 @@ const AdditionalInfoContainer = styled.div`
   }
 `;
 
-const SnippetName = styled.div.attrs({ className: 'ms-font-xs' })`
+const SnippetName = styled.div.attrs({ className: 'ms-font-s' })`
   position: absolute;
   bottom: 0.2rem;
   right: 0.5rem;
-
-  font-size: 1rem;
 
   color: ${props => props.theme.neutralSecondaryLight};
 

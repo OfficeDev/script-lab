@@ -8,7 +8,7 @@ import {
   currentEditorUrl,
 } from 'common/lib/environment';
 import ensureFreshLocalStorage from 'common/lib/utilities/ensure.fresh.local.storage';
-import { localStorageKeys } from '../../constants';
+import { localStorageKeys } from 'common/lib/constants';
 import { showSplashScreen } from 'common/lib/utilities/splash.screen';
 
 export default function* miscWatcher() {
@@ -62,7 +62,7 @@ function* onConfirmSwitchEnvironmentSaga(
 ) {
   ensureFreshLocalStorage();
   const originEnvironment = window.localStorage.getItem(
-    localStorageKeys.originEnvironmentUrl,
+    localStorageKeys.editor.originEnvironmentUrl,
   );
 
   const targetEnvironment = editorUrls[action.payload];
@@ -76,7 +76,7 @@ function* onConfirmSwitchEnvironmentSaga(
     )}`;
   } else {
     window.localStorage.setItem(
-      localStorageKeys.redirectEnvironmentUrl,
+      localStorageKeys.editor.redirectEnvironmentUrl,
       targetEnvironment,
     );
     window.location.href = `${targetEnvironment}?originEnvironment=${encodeURIComponent(

@@ -109,13 +109,6 @@ interface ICustomFunctionEngineStatus {
 
 type ConsoleLogTypes = 'log' | 'info' | 'warn' | 'error';
 
-interface ILogData {
-  source: string;
-  message: any;
-  severity: ConsoleLogTypes;
-  indent?: number;
-}
-
 interface ICustomFunctionSummaryItem {
   status: CustomFunctionsRegistrationStatus;
   snippetName: string;
@@ -126,4 +119,27 @@ interface ICustomFunctionSummaryItem {
 interface IRunnerState {
   isAlive: boolean;
   lastUpdated: number;
+}
+
+interface ICFHeartbeatMessage {
+  type: 'metadata' | 'refresh' | 'log';
+  payload?: any;
+}
+
+interface ICFMetadata {
+  solutionId: string;
+  namespace: string;
+  functionNames: string[];
+  code: string; // compiled js
+  jsLibs: string[];
+}
+
+interface ICFGetMetadataMessage extends ICFHeartbeatMessage {
+  type: 'metadata';
+  payload: ICFMetadata[];
+}
+
+interface ICFLogMessage extends ICFHeartbeatMessage {
+  type: 'log';
+  payload: ILogData;
 }
