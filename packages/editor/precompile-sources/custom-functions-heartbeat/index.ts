@@ -33,7 +33,7 @@ function checkShouldUpdate(): boolean {
 // ========================= LOGS =================================//
 window.onmessage = event => {
   if (event.origin !== currentRunnerUrl) {
-    console.error(`Ignoring message from an invalid origin "${event.origin}"`);
+    // console.error(`Ignoring message from an invalid origin "${event.origin}"`);
     return;
   }
 
