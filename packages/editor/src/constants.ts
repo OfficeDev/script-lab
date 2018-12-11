@@ -1,3 +1,4 @@
+import { PAGE_PATHS } from './components/App/index';
 export const SETTINGS_SOLUTION_ID = 'user-settings';
 export const USER_SETTINGS_FILE_ID = 'user-settings-file';
 export const DEFAULT_SETTINGS_FILE_ID = 'default-settings-file';

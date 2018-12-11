@@ -10,7 +10,11 @@ import Pages from './pages';
 import selectors from '../../store/selectors';
 import { IState } from '../../store/reducer';
 import { getTheme } from '../../theme';
-import { PATHS } from '../../constants';
+
+export const PAGE_PATHS = {
+  CustomFunctions: '/custom-functions',
+  Run: '/run',
+};
 
 interface IPropsFromRedux {
   theme: ITheme;
@@ -25,8 +29,16 @@ export interface IProps extends IPropsFromRedux {}
 const App = ({ theme }: IProps) => (
   <ThemeProvider theme={theme}>
     <Switch>
-      <Route exact path={PATHS.CUSTOM_FUNCTIONS} component={CustomFunctionsDashboard} />
-      <Route exact path={PATHS.RUNNER_REDIRECT} component={Pages.Run} />
+      {/* Render a route for each page */}
+      {Object.keys(Pages).map(page => (
+        <Route exact path={PAGE_PATHS[page]} component={Pages[page]} key={page} />
+      ))}
+      <Route
+        exact
+        path={PAGE_PATHS.CustomFunctions}
+        component={CustomFunctionsDashboard}
+      />
+      {/* Falling back on the IDE for an unknown route */}
       <Route component={IDE} />
     </Switch>
   </ThemeProvider>
