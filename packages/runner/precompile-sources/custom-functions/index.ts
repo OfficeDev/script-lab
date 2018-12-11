@@ -8,7 +8,7 @@ import generateCustomFunctionIframe, {
 } from './run.customFunctions';
 
 const HEARTBEAT_URL = `${currentEditorUrl}/custom-functions-heartbeat.html`;
-const VERBOSE_MODE = true; // FIXME: Nico: you'll probably want to turn this off before going to production
+const VERBOSE_MODE = false; // FIXME: Nico: you'll probably want to turn this off before going to production
 
 (() => {
   // FIXME: Start heartbeat and hook up refresh event.  Note, might not need refresh if reloading the taskpane (which calls "CustomFunctionsManager.register" destroys the old iframe)
