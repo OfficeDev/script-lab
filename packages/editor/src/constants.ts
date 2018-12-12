@@ -1,4 +1,3 @@
-import { PAGE_PATHS } from './components/App/index';
 export const SETTINGS_SOLUTION_ID = 'user-settings';
 export const USER_SETTINGS_FILE_ID = 'user-settings-file';
 export const DEFAULT_SETTINGS_FILE_ID = 'default-settings-file';
@@ -41,6 +40,8 @@ export const PATHS = {
   CUSTOM_FUNCTIONS_DASHBOARD: '/custom-functions-dashboard',
   BACKSTAGE: '/backstage',
   GITHUB_ISSUE: 'https://github.com/OfficeDev/script-lab-react/issues/new/choose',
+  CustomFunctions: '/custom-functions',
+  Run: '/run',
 }; // stand alone page with no back button
 
 export const IS_TASK_PANE_WIDTH = 475;

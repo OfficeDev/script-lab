@@ -48,7 +48,7 @@ const PRECOMPILE_SPEC_LIST: {
     {
       name: 'style.css',
       relativeFilePath: 'style.css',
-      injectInto: ['index.html', 'run.html'],
+      injectInto: ['index.html'],
       processor: readAsIsProcessor,
     },
   ],
