@@ -5,7 +5,7 @@ import { ThemeProvider } from 'styled-components';
 
 import IDE from '../IDE';
 import CustomFunctionsDashboard from '../CustomFunctionsDashboard';
-import Pages from './pages';
+import Pages from '../../pages';
 
 import selectors from '../../store/selectors';
 import { IState } from '../../store/reducer';
