@@ -112,7 +112,7 @@ class Dashboard extends React.Component<IProps, IState> {
         <Only when={shouldPromptRefresh}>
           <MessageBar
             messageBarType={MessageBarType.info}
-            isMultiline={false}
+            isMultiline={true}
             actions={
               <div>
                 <DefaultButton primary={true} onClick={this.reload}>
