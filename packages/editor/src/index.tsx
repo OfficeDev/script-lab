@@ -1,4 +1,8 @@
 import 'common/lib/polyfills';
+
+import redirectToProperEnvIfNeeded from './utils/stagingEnvironmentRedirector';
+redirectToProperEnvIfNeeded();
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Authenticator } from '@microsoft/office-js-helpers';

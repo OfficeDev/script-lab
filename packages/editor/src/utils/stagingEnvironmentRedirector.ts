@@ -4,7 +4,7 @@ import { editorUrls } from 'common/lib/environment';
 import ensureFreshLocalStorage from 'common/lib/utilities/ensure.fresh.local.storage';
 import { WINDOW_SCRIPT_LAB_NAVIGATING_AWAY_TO_DIFFERENT_ENVIRONMENT_KEY } from 'common/lib/utilities/script-loader/constants';
 
-(() => {
+export default () => {
   try {
     const params = parse(window.location.search) as {
       originEnvironment?: string;

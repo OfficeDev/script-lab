@@ -28,20 +28,6 @@ const PRECOMPILE_SPEC_LIST: {
       processor: webpackProcessor,
     },
     {
-      name: 'environment-redirect.js',
-      relativeFilePath: 'environment-redirect',
-      injectInto: [
-        'custom-functions-run.html',
-        'custom-functions.html',
-        'dogfood.html',
-        'external-page.html',
-        'functions.html',
-        'index.html',
-        'tutorial.html',
-      ],
-      processor: webpackProcessor,
-    },
-    {
       name: 'external-page.js',
       relativeFilePath: 'external-page',
       injectInto: ['external-page.html'],
