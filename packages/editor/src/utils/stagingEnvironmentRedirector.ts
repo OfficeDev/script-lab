@@ -80,7 +80,7 @@ export default () => {
   } catch (e) {
     console.error('Error redirecting the environments, staying on current page', e);
   }
-})();
+};
 
 ///////////////////////////////////////
 
