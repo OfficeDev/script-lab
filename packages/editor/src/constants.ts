@@ -41,6 +41,9 @@ export const PATHS = {
   BACKSTAGE: '/backstage',
   GITHUB_ISSUE: 'https://github.com/OfficeDev/script-lab-react/issues/new/choose',
   CustomFunctions: '/custom-functions',
+  // Pages
+  Editor: '/',
+  Heartbeat: '/heartbeat',
   Run: '/run',
 }; // stand alone page with no back button
 

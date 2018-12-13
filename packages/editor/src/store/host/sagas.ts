@@ -15,8 +15,8 @@ export function* hostChangedSaga() {
   const host = yield select(selectors.host.get);
   setupFabricTheme(host);
   const { router } = yield select();
-  if (router.location.pathname === PATHS.CUSTOM_FUNCTIONS) {
-    // For custom functions dashboard, don't need to do anything else
+  if (router.location.pathname !== PATHS.EDITOR) {
+    // For non-editor, don't need to do anything else
     return;
   }
 

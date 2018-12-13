@@ -12,6 +12,7 @@ import { localStorageKeys } from 'common/lib/constants';
 import { showSplashScreen } from 'common/lib/utilities/splash.screen';
 
 export default function* miscWatcher() {
+  // TODO: (nicobell): moving this initialize code to be inside of the editor constructor, so might want to rename
   yield takeEvery(getType(actions.misc.initialize), onInitializeSaga);
   yield takeEvery(getType(actions.misc.switchEnvironment), onSwitchEnvironmentSaga);
   yield takeEvery(

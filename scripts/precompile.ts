@@ -34,12 +34,6 @@ const PRECOMPILE_SPEC_LIST: {
       processor: webpackProcessor,
     },
     {
-      name: 'heartbeat.js',
-      relativeFilePath: 'heartbeat',
-      injectInto: ['heartbeat.html'],
-      processor: webpackProcessor,
-    },
-    {
       name: 'scripts-loader.js',
       relativeFilePath: 'scripts-loader',
       injectInto: ['index.html'],

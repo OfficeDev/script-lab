@@ -74,7 +74,8 @@ window.onerror = error => invokeGlobalErrorHandler(error);
     setupFabricTheme(selectors.host.get(store.getState()));
 
     // initial actions
-    store.dispatch(misc.initialize());
+    // TODO: move this to editor
+    // store.dispatch(misc.initialize());
 
     ReactDOM.render(
       <Root store={store} history={history} ui={<App />} />,

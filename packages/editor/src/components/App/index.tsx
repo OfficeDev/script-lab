@@ -32,7 +32,7 @@ const App = ({ theme }: IProps) => (
       ))}
       <Route exact path={PATHS.CustomFunctions} component={CustomFunctionsDashboard} />
       {/* Falling back on the IDE for an unknown route */}
-      <Route component={IDE} />
+      {/* <Route component={IDE} /> */}
     </Switch>
   </ThemeProvider>
 );
