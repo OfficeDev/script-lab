@@ -10,8 +10,8 @@ import {
 import { Spinner, SpinnerSize } from 'office-ui-fabric-react/lib/Spinner';
 
 import { connect } from 'react-redux';
-import { IState as IReduxState } from '../../../store/reducer';
-import selectors from '../../../store/selectors';
+import { IState as IReduxState } from '../../../../store/reducer';
+import selectors from '../../../../store/selectors';
 
 interface IPropsFromRedux {
   items: ICustomFunctionSummaryItem[];

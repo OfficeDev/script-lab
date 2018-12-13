@@ -5,10 +5,10 @@ import CommonConsole from 'common/lib/components/Console';
 
 import { Wrapper, NoLogsPlaceholderContainer, NoLogsPlaceholder } from './styles';
 
-import { setUpMomentJsDurationDefaults } from '../../../utils';
+import { setUpMomentJsDurationDefaults } from '../../../../utils';
 import { connect } from 'react-redux';
-import { IState as IReduxState } from '../../../store/reducer';
-import actions, { IRootAction } from '../../../store/actions';
+import { IState as IReduxState } from '../../../../store/reducer';
+import actions, { IRootAction } from '../../../../store/actions';
 import { Dispatch } from 'redux';
 
 export enum ConsoleLogTypes {

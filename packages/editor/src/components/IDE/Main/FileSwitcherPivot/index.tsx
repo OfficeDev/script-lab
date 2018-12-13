@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import PivotBar from '../../../PivotBar';
 
 import { LIBRARIES_FILE_NAME, SCRIPT_FILE_NAME } from '../../../../constants';
-import { actions, selectors } from '../../../../store';
+import { actions, selectors } from '../../../../pages/CustomFunctions';
 import { IState as IReduxState } from '../../../../store/reducer';
 import { IRootAction } from '../../../../store/actions';
 import { Dispatch } from 'redux';

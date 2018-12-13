@@ -7,7 +7,7 @@ import {
   Seperator,
   Description,
 } from './styles';
-import { CUSTOM_FUNCTIONS_INFO_URL } from '../../../constants';
+import { CUSTOM_FUNCTIONS_INFO_URL } from '../../../../constants';
 
 const ComingSoon = () => (
   <CenteredContent>

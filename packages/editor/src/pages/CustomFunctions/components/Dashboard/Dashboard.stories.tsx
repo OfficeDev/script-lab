@@ -4,7 +4,7 @@ import { Dashboard } from './';
 import { BasicSummary } from '../Summary/Summary.stories';
 import { BasicConsole } from '../Console/Console.stories';
 import { storiesOf } from '@storybook/react';
-import { getCommandBarFabricTheme } from '../../../theme';
+import { getCommandBarFabricTheme } from '../../../../theme';
 
 const commandBarFabricTheme = getCommandBarFabricTheme('EXCEL');
 const Dummy = ({ letter }) => <div>I AM {letter}</div>;

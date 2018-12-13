@@ -14,7 +14,7 @@ import { HostType } from '@microsoft/office-js-helpers';
 
 import { connect } from 'react-redux';
 
-import { actions, selectors } from '../../../../store';
+import { actions, selectors } from '../../../../pages/CustomFunctions';
 
 import CommonFooter from 'common/lib/components/Footer';
 import { Dispatch } from 'redux';

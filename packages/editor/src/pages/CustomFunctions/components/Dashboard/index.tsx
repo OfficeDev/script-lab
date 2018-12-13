@@ -1,5 +1,5 @@
 import React from 'react';
-import PivotBar from '../../PivotBar';
+import PivotBar from '../../../../components/PivotBar';
 import { Layout, Header, Content } from './styles';
 
 import { Customizer, filteredAssign } from 'office-ui-fabric-react/lib/Utilities';
@@ -7,16 +7,16 @@ import { MessageBar, MessageBarType } from 'office-ui-fabric-react/lib/MessageBa
 import { DefaultButton } from 'office-ui-fabric-react/lib/Button';
 import { CommandBar, ICommandBarItemProps } from 'office-ui-fabric-react/lib/CommandBar';
 import { ITheme as IFabricTheme } from 'office-ui-fabric-react/lib/Styling';
-import { getCommandBarFabricTheme } from '../../../theme';
+import { getCommandBarFabricTheme } from '../../../../theme';
 
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-import { IState as IReduxState } from '../../../store/reducer';
-import selectors from '../../../store/selectors';
-import { customFunctions as customFunctionsActions } from '../../../store/actions';
+import { IState as IReduxState } from '../../../../store/reducer';
+import selectors from '../../../../store/selectors';
+import { customFunctions as customFunctionsActions } from '../../../../store/actions';
 import { goBack } from 'connected-react-router';
-import Only from '../../Only';
-import Notifications from '../../Notifications';
+import Only from '../../../../components/Only';
+import Notifications from '../../../../components/Notifications';
 
 interface IPropsFromRedux {
   commandBarFabricTheme: IFabricTheme;

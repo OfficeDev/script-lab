@@ -9,11 +9,11 @@ import ComingSoon from './ComingSoon';
 import Welcome from './Welcome';
 
 import { connect } from 'react-redux';
-import selectors from '../../store/selectors';
-import { IState as IReduxState } from '../../store/reducer';
+import selectors from '../../../store/selectors';
+import { IState as IReduxState } from '../../../store/reducer';
 
-import { misc, IRootAction } from '../../store/actions';
-import { getCustomFunctionEngineStatus } from '../../store/customFunctions/utilities';
+import { misc, IRootAction } from '../../../store/actions';
+import { getCustomFunctionEngineStatus } from '../store/utilities';
 import { getCustomFunctionCodeLastUpdated } from 'common/lib/utilities/localStorage';
 import { Dispatch } from 'redux';
 

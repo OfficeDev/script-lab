@@ -4,7 +4,7 @@ import { Route, Switch } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 
 import IDE from '../IDE';
-import CustomFunctionsDashboard from '../CustomFunctionsDashboard';
+import CustomFunctionsDashboard from '../../pages/CustomFunctions/components';
 import Pages from '../../pages';
 
 import selectors from '../../store/selectors';

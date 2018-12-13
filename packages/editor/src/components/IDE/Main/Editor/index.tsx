@@ -5,7 +5,7 @@ import ReactMonaco from './ReactMonaco';
 import debounce from 'lodash/debounce';
 
 import { connect } from 'react-redux';
-import { actions, selectors } from '../../../../store';
+import { actions, selectors } from '../../../../pages/CustomFunctions';
 import { IState as IReduxState } from '../../../../store/reducer';
 import { IRootAction } from '../../../../store/actions';
 
