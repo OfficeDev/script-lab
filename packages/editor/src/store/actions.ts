@@ -1,6 +1,6 @@
 import { ActionType } from 'typesafe-actions';
 
-import * as customFunctions from './customFunctions/actions';
+import * as customFunctions from '../pages/CustomFunctions/store/actions';
 import * as dialog from './dialog/actions';
 import * as editor from './editor/actions';
 import * as gists from './gists/actions';

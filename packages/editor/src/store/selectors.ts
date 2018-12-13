@@ -1,4 +1,4 @@
-import * as customFunctions from './customFunctions/selectors';
+import * as customFunctions from '../pages/CustomFunctions/store/selectors';
 import * as editor from './editor/selectors';
 import * as gists from './gists/selectors';
 import * as github from './github/selectors';

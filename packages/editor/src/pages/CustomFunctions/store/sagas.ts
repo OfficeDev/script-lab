@@ -2,11 +2,11 @@ import { put, takeEvery, call, select } from 'redux-saga/effects';
 import { getType, ActionType } from 'typesafe-actions';
 import flatten from 'lodash/flatten';
 
-import { request } from '../../services/general';
-import { customFunctions, solutions } from '../actions';
-import selectors from '../selectors';
+import { request } from '../../../services/general';
+import { customFunctions, solutions } from '../../../store/actions';
+import selectors from '../../../store/selectors';
 
-import { convertSolutionToSnippet } from '../../utils';
+import { convertSolutionToSnippet } from '../../../utils';
 import {
   getCustomFunctionEngineStatus,
   isCustomFunctionScript,

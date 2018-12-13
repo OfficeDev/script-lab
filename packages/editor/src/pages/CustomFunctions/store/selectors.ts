@@ -1,16 +1,16 @@
-import { IState } from '../reducer';
+import { IState } from '../../../store/reducer';
 import { createSelector } from 'reselect';
 import flatten from 'lodash/flatten';
 import queryString from 'query-string';
 
-import { getActiveSolution } from '../editor/selectors';
+import { getActiveSolution } from '../../../store/editor/selectors';
 import {
   getAll as getAllSolutions,
   getInLastModifiedOrder as getSolutionsInLastModifiedOrder,
-} from '../solutions/selectors';
+} from '../../../store/solutions/selectors';
 
 import { isCustomFunctionScript } from './utilities';
-import { PATHS, SCRIPT_FILE_NAME } from '../../constants';
+import { PATHS, SCRIPT_FILE_NAME } from '../../../constants';
 
 export const getMetadata = (state: IState) => state.customFunctions.metadata;
 export const getMetadataSummaryItems: (

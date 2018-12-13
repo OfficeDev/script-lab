@@ -1,6 +1,6 @@
 import { takeEvery, put, call, select } from 'redux-saga/effects';
 import { getType, ActionType } from 'typesafe-actions';
-import { actions, selectors } from '../';
+import { actions, selectors } from '../../pages/CustomFunctions';
 import {
   getCurrentEnv,
   editorUrls,
