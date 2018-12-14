@@ -9,9 +9,10 @@ export interface IProps {
   goBack?: () => void;
   refresh: () => void;
   hardRefresh: () => void;
+  openCode: () => void;
 }
 
-const Header = ({ solution, goBack, refresh, hardRefresh }: IProps) => {
+const Header = ({ solution, goBack, refresh, hardRefresh, openCode }: IProps) => {
   const items = [
     {
       hidden: !goBack,
@@ -45,6 +46,12 @@ const Header = ({ solution, goBack, refresh, hardRefresh }: IProps) => {
             iconProps: { iconName: 'Refresh' },
             text: 'Hard Refresh',
             onClick: hardRefresh,
+          },
+          {
+            key: 'pop-out',
+            iconProps: { iconName: 'OpenInNewWindow' },
+            text: 'Open Code Editor',
+            onClick: openCode,
           },
         ],
       },

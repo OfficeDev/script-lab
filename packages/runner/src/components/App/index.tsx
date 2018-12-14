@@ -127,6 +127,8 @@ export class App extends React.Component<{}, IState> {
   openConsole = () => this.setState({ isConsoleOpen: true });
   closeConsole = () => this.setState({ isConsoleOpen: false });
 
+  openCode = () => Office.context.ui.displayDialogAsync(currentEditorUrl);
+
   onReceiveNewActiveSolution = (solution: ISolution | null) => {
     if (solution !== null) {
       this.respondToOfficeJsMismatchIfAny(solution);
@@ -192,6 +194,7 @@ export class App extends React.Component<{}, IState> {
                     ? () => (window.location.href = currentEditorUrl)
                     : undefined
                 }
+                openCode={this.openCode}
               />
             }
             footer={
