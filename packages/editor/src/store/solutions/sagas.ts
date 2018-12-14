@@ -23,6 +23,7 @@ export default function* solutionsWatcher() {
   yield takeEvery(getType(solutions.updateOptions), updateOptionsSaga);
 
   yield takeEvery(getType(solutions.remove), removeSolutionSaga);
+  yield takeEvery(getType(solutions.scriptNeedsParsing), checkIfIsCustomFunctionSaga);
 }
 
 function* onSolutionOpenOrFileEditSaga(
@@ -148,6 +149,29 @@ export function* openLastModifiedOrBackstageSaga() {
   } else {
     yield put(
       editor.openFile({ solutionId: solutions[0].id, fileId: solutions[0].files[0].id }),
+    );
+  }
+}
+
+const isCustomFunctionRegex = /@customfunction/i;
+export function isCustomFunctionScript(content: string) {
+  return isCustomFunctionRegex.test(content);
+}
+
+function* checkIfIsCustomFunctionSaga(
+  action: ActionType<typeof solutions.scriptNeedsParsing>,
+) {
+  const { solution, file } = action.payload;
+
+  const isCustomFunctionsSolution = isCustomFunctionScript(file.content);
+
+  // Compare what is currently in the solution with what we want to update it to (via XOR)
+  const optionsChanged =
+    (!solution.options.isCustomFunctionsSolution && isCustomFunctionsSolution) ||
+    (solution.options.isCustomFunctionsSolution && !isCustomFunctionsSolution);
+  if (optionsChanged) {
+    yield put(
+      solutions.updateOptions({ solution, options: { isCustomFunctionsSolution } }),
     );
   }
 }
