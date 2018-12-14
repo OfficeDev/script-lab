@@ -30,25 +30,13 @@ const mapStateToProps = (state: IReduxState): IPropsFromRedux => ({
   activeFile: selectors.editor.getActiveFile(state),
 });
 
-interface IActionsFromRedux {
-  openFile: (solutionId: string, fileId: string) => void;
-}
-
-const mapDispatchToProps = (dispatch: Dispatch<IRootAction>): IActionsFromRedux => ({
-  openFile: (solutionId: string, fileId: string) =>
-    dispatch(editorActions.openFile({ solutionId, fileId })),
-});
-
-export interface IIDE extends IPropsFromRedux, IActionsFromRedux {}
+export interface IIDE extends IPropsFromRedux {}
 
 class IDE extends Component<IIDE> {
   static defaultProps: Partial<IIDE> = {
     activeSolution: NULL_SOLUTION,
     activeFile: NULL_FILE,
   };
-
-  changeActiveFile = (fileId: string) =>
-    this.props.openFile(this.props.activeSolution.id, fileId);
 
   render() {
     const { isVisible, hasLoaded, activeSolution, activeFile } = this.props;
@@ -77,7 +65,4 @@ class IDE extends Component<IIDE> {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(IDE);
+export default connect(mapStateToProps)(IDE);

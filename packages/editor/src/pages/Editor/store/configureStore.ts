@@ -7,12 +7,6 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import createSagaMiddleware from 'redux-saga';
 import rootSaga from './sagas';
 
-// router
-import { connectRouter, routerMiddleware } from 'connected-react-router';
-import { supportsHistory } from 'history/es/DOMUtils';
-import createMemoryHistory from 'history/createMemoryHistory';
-import createHashHistory from 'history/createHashHistory';
-
 const addLoggingToDispatch = store => {
   const rawDispatch = store.dispatch;
   if (!console.group) {
@@ -30,14 +24,10 @@ const addLoggingToDispatch = store => {
 };
 
 export interface IConfigureStoreProps {
-  history?: any;
   initialState: Partial<IState>;
 }
 
-const configureStore = ({
-  history = createMemoryHistory(),
-  initialState = {},
-}: IConfigureStoreProps) => {
+const configureStore = ({ initialState = {} }: IConfigureStoreProps) => {
   // UPDATE: https://github.com/ReactTraining/history/issues/509
   // it is office.js
   // TODO: (nicobell) find out why supportsHistory() says true for the agave window or use another condition
@@ -46,9 +36,9 @@ const configureStore = ({
   const sagaMiddleware = createSagaMiddleware();
 
   const store = createStore(
-    connectRouter(history)<IState>(rootReducer),
+    rootReducer,
     initialState as any,
-    composeWithDevTools(applyMiddleware(sagaMiddleware, routerMiddleware(history))),
+    composeWithDevTools(applyMiddleware(sagaMiddleware)),
   );
   sagaMiddleware.run(rootSaga);
 
@@ -56,7 +46,7 @@ const configureStore = ({
     store.dispatch = addLoggingToDispatch(store);
   }
 
-  return { store, history };
+  return store;
 };
 
 export default configureStore;

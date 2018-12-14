@@ -55,8 +55,7 @@ window.onerror = error => invokeGlobalErrorHandler(error);
     }
     initializeIcons();
 
-    const { store, history } = configureStore({
-      history: createHashHistory(),
+    const store = configureStore({
       initialState: {
         ...(await loadStateFromLocalStorage()),
         ...loadStateFromSessionStorage(),

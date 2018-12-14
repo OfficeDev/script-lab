@@ -20,6 +20,9 @@ import { editor, solutions, samples, gists, github } from '../../store/actions';
 import { IState as IReduxState } from '../../store/reducer';
 import Only from 'common/lib/components/Only';
 
+import { withRouter } from 'react-router';
+import { RouteComponentProps } from 'react-router-dom';
+
 interface IBackstageItem {
   key: string;
   icon: string;
@@ -60,7 +63,10 @@ interface IActionsFromRedux {
   signIn: () => void;
 }
 
-const mapDispatchToProps = (dispatch: Dispatch<IRootAction>): IActionsFromRedux => ({
+const mapDispatchToProps = (
+  dispatch: Dispatch<IRootAction>,
+  ownProps: IProps,
+): IActionsFromRedux => ({
   createNewSolution: () => dispatch(solutions.create()),
   openSolution: (solutionId: string, fileId: string) =>
     dispatch(editor.openFile({ solutionId, fileId })),
@@ -72,11 +78,12 @@ const mapDispatchToProps = (dispatch: Dispatch<IRootAction>): IActionsFromRedux 
   ) => dispatch(gists.get.request({ rawUrl, gistId, conflictResolution })),
   importGist: (gistId?: string, gist?: string) =>
     dispatch(gists.importSnippet.request({ gistId, gist })),
-  goBack: () => dispatch(editor.open()),
+  goBack: () =>
+    dispatch(editor.open({ history: ownProps.history, location: ownProps.location })),
   signIn: () => dispatch(github.login.request()),
 });
 
-export interface IProps extends IPropsFromRedux, IActionsFromRedux {}
+export interface IProps extends IPropsFromRedux, IActionsFromRedux, RouteComponentProps {}
 
 interface IState {
   isLoading: boolean;
@@ -255,7 +262,9 @@ export class Backstage extends Component<IProps, IState> {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(Backstage);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  )(Backstage),
+);
