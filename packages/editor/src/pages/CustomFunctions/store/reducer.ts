@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import { getType } from 'typesafe-actions';
 
-import { customFunctions, ICustomFunctionsAction } from '../actions';
+import { customFunctions, ICustomFunctionsAction } from '../../../store/actions';
 
 type IMetadataState = ICFVisualSnippetMetadata[];
 

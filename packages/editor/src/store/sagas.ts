@@ -1,6 +1,6 @@
 import { all, select } from 'redux-saga/effects';
 
-import customFunctionsWatcher from './customFunctions/sagas';
+import customFunctionsWatcher from '../pages/CustomFunctions/store/sagas';
 import dialogWatcher from './dialog/sagas';
 import editorWatcher from './editor/sagas';
 import gistsWatcher from './gists/sagas';
