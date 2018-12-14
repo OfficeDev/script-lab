@@ -1,7 +1,7 @@
 import React from 'react';
 import styled, { withTheme } from 'styled-components';
 import IMenuItem from './IMenuItem';
-import PivotBar from '../../PivotBar';
+import PivotBar from '../../../PivotBar';
 
 const Wrapper = styled.div`
   box-shadow: 0px 2px 4px 2px ${props => props.theme.neutralSecondary};

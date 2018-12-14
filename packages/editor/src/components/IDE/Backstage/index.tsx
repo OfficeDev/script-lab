@@ -10,15 +10,15 @@ import Samples from './Samples';
 import ImportSolution from './ImportSolution';
 
 import ConflictResolutionDialog from './ConflictResolutionDialog/ConflictResolutionDialog';
-import { ConflictResolutionOptions } from '../../interfaces/enums';
+import { ConflictResolutionOptions } from '../../../interfaces/enums';
 
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-import { IRootAction } from '../../store/actions';
-import selectors from '../../store/selectors';
-import { editor, solutions, samples, gists, github } from '../../store/actions';
-import { IState as IReduxState } from '../../store/reducer';
-import Only from '../Only';
+import { IRootAction } from '../../../../store/actions';
+import selectors from '../../../store/selectors';
+import { editor, solutions, samples, gists, github } from '../../../../store/actions';
+import { IState as IReduxState } from '../../../store/reducer';
+import Only from '../../Only';
 
 interface IBackstageItem {
   key: string;
