@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { connect } from 'react-redux';
-import actions, { IRootAction } from '../../store/actions';
+import actions, { IRootAction } from '../../pages/Editor/store/actions';
 import { Dispatch } from 'redux';
 
 interface IActionsFromRedux {

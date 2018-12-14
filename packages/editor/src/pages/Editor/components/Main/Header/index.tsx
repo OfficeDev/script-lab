@@ -20,9 +20,9 @@ import { NULL_SOLUTION_ID, PATHS, IS_TASK_PANE_WIDTH } from '../../../../../cons
 import { getPlatform, PlatformType } from 'common/lib/environment';
 
 import { connect } from 'react-redux';
-import actions, { dialog, IRootAction } from '../../../../../store/actions';
-import selectors from '../../../../../store/selectors';
-import { IState as IReduxState } from '../../../../../store/reducer';
+import actions, { dialog, IRootAction } from '../../../store/actions';
+import selectors from '../../../store/selectors';
+import { IState as IReduxState } from '../../../store/reducer';
 import { getCommandBarFabricTheme } from '../../../../../theme';
 import { push } from 'connected-react-router';
 import { Dispatch } from 'redux';
@@ -47,7 +47,7 @@ interface IPropsFromRedux {
 const mapStateToProps = (state: IReduxState): IPropsFromRedux => ({
   isNullSolution: selectors.editor.getActiveSolution(state).id === NULL_SOLUTION_ID,
   isSettingsView: selectors.settings.getIsOpen(state),
-  isCustomFunctionsView: selectors.customFunctions.getIsCurrentSolutionCF(state),
+  isCustomFunctionsView: selectors.editor.getIsActiveSolutionCF(state),
   isLoggedIn: !!selectors.github.getToken(state),
   isLoggingInOrOut: selectors.github.getIsLoggingInOrOut(state),
   isRunnableOnThisHost: selectors.host.getIsRunnableOnThisHost(state),

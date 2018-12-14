@@ -6,21 +6,21 @@ redirectToProperEnvIfNeeded();
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Authenticator } from '@microsoft/office-js-helpers';
-import configureStore from './store/configureStore';
+import configureStore from './pages/Editor/store/configureStore';
 import { setupFabricTheme } from './theme';
 import { unregister } from './registerServiceWorker';
-import { misc } from './store/actions';
-import selectors from './store/selectors';
+import { misc } from './pages/Editor/store/actions';
+import selectors from './pages/Editor/store/selectors';
 import { initializeIcons } from 'office-ui-fabric-react/lib/Icons';
 import createHashHistory from 'history/createHashHistory';
 import {
   loadState as loadStateFromLocalStorage,
   saveState as saveStateToLocalStorage,
-} from './store/localStorage';
+} from './pages/Editor/store/localStorage';
 import {
   loadState as loadStateFromSessionStorage,
   saveState as saveStateToSessionStorage,
-} from './store/sessionStorage';
+} from './pages/Editor/store/sessionStorage';
 
 import throttle from 'lodash/throttle';
 
@@ -29,7 +29,7 @@ import Root from './components/Root';
 import App from './components/App';
 import { waitForAllDynamicScriptsToBeLoaded } from 'common/lib/utilities/script-loader/consumer';
 import { invokeGlobalErrorHandler } from 'common/lib/utilities/splash.screen';
-import { IState } from './store/reducer';
+import { IState } from './pages/Editor/store/reducer';
 
 document.addEventListener(
   'keydown',

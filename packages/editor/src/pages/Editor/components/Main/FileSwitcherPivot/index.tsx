@@ -4,9 +4,9 @@ import { connect } from 'react-redux';
 import PivotBar from '../../../../../components/PivotBar';
 
 import { LIBRARIES_FILE_NAME, SCRIPT_FILE_NAME } from '../../../../../constants';
-import { actions, selectors } from '../../../../../store';
-import { IState as IReduxState } from '../../../../../store/reducer';
-import { IRootAction } from '../../../../../store/actions';
+import { actions, selectors } from '../../../store';
+import { IState as IReduxState } from '../../../store/reducer';
+import { IRootAction } from '../../../store/actions';
 import { Dispatch } from 'redux';
 
 const FILE_NAME_MAP = {
@@ -25,7 +25,7 @@ interface IPropsFromRedux {
 const mapStateToProps = (state: IReduxState): IPropsFromRedux => ({
   files: selectors.editor.getActiveSolution(state).files,
   activeFile: selectors.editor.getActiveFile(state),
-  isCustomFunctionSolution: selectors.customFunctions.getIsCurrentSolutionCF(state),
+  isCustomFunctionSolution: selectors.editor.getIsActiveSolutionCF(state),
 });
 
 interface IActionsFromRedux {

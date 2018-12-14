@@ -2,7 +2,7 @@ import React from 'react';
 import IDE from './components';
 
 import { connect } from 'react-redux';
-import actions from '../../store/actions';
+import actions from './store/actions';
 
 class Editor extends React.Component<{ initialize: () => void }> {
   constructor(props) {

@@ -5,7 +5,7 @@ import { FocusZone } from 'office-ui-fabric-react/lib/FocusZone';
 import { Icon } from 'office-ui-fabric-react/lib/Icon';
 
 import GalleryListItem, { IGalleryListItem } from './GalleryListItem';
-import Only from '../../../../../components/Only';
+import Only from 'common/lib/components/Only';
 
 export interface IProps {
   title: string;

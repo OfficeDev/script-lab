@@ -7,8 +7,8 @@ import IDE from '../../pages/Editor/components';
 // import CustomFunctionsDashboard from '../../pages/CustomFunctions/components/CustomFunctionsDashboard';
 import Pages from '../../pages';
 
-import selectors from '../../store/selectors';
-import { IState } from '../../store/reducer';
+import selectors from '../../pages/Editor/store/selectors';
+import { IState } from '../../pages/Editor/store/reducer';
 import { getTheme } from '../../theme';
 
 import { PATHS } from '../../constants';

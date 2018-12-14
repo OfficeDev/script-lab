@@ -5,9 +5,9 @@ import ReactMonaco from './ReactMonaco';
 import debounce from 'lodash/debounce';
 
 import { connect } from 'react-redux';
-import { actions, selectors } from '../../../../../store';
-import { IState as IReduxState } from '../../../../../store/reducer';
-import { IRootAction } from '../../../../../store/actions';
+import { actions, selectors } from '../../../store';
+import { IState as IReduxState } from '../../../store/reducer';
+import { IRootAction } from '../../../store/actions';
 
 import {
   SETTINGS_SOLUTION_ID,

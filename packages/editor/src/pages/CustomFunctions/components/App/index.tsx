@@ -14,7 +14,7 @@ import {
   getCustomFunctionLogsFromLocalStorage,
 } from 'common/lib/utilities/localStorage';
 import { getLogsFromAsyncStorage } from './utilities/logs';
-import { loadAllSolutionsAndFiles } from '../../../../store/localStorage';
+import { loadAllSolutionsAndFiles } from '../../../Editor/store/localStorage';
 import Theme from 'common/lib/components/Theme';
 interface IState {
   hasCustomFunctionsInSolutions: boolean;

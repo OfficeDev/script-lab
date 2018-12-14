@@ -1,6 +1,6 @@
 import React from 'react';
-import { dialog } from '../../../store/actions';
-import { IState as IDialogState } from '../../../store/dialog/reducer';
+import { dialog } from '../../../pages/Editor/store/actions';
+import { IState as IDialogState } from '../../../pages/Editor/store/dialog/reducer';
 import {
   Dialog as FabricDialog,
   DialogType,

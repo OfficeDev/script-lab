@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import Only from '../../../../../components/Only';
+import Only from 'common/lib/components/Only';
 
 import { Dialog, DialogType, DialogFooter } from 'office-ui-fabric-react/lib/Dialog';
 import { TextField } from 'office-ui-fabric-react/lib/TextField';

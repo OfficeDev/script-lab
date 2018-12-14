@@ -4,11 +4,11 @@ import { createStore } from 'redux';
 import { ConnectedRouter } from 'connected-react-router';
 import { Provider } from 'react-redux';
 
-import reducer, { IState as IReduxState } from '../store/reducer';
+import reducer, { IState as IReduxState } from '../pages/Editor/store/reducer';
 import { ThemeProvider } from 'styled-components';
 import { getTheme } from '../theme';
 import Root from '../components/Root';
-import configureStore from '../store/configureStore';
+import configureStore from '../pages/Editor/store/configureStore';
 const customRender = node => {
   return render(<ThemeProvider theme={getTheme('EXCEL')}>{node}</ThemeProvider>);
 };

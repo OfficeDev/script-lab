@@ -1,7 +1,7 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 
-import { IState as IMessageBarState } from '../../../store/messageBar/reducer';
+import { IState as IMessageBarState } from '../../../pages/Editor/store/messageBar/reducer';
 import { MessageBar } from './';
 import { MessageBarType } from 'office-ui-fabric-react/lib/MessageBar';
 

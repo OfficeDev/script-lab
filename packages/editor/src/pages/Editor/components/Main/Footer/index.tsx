@@ -14,12 +14,12 @@ import { HostType } from '@microsoft/office-js-helpers';
 
 import { connect } from 'react-redux';
 
-import { actions, selectors } from '../../../../../store';
+import { actions, selectors } from '../../../store';
 
 import CommonFooter from 'common/lib/components/Footer';
 import { Dispatch } from 'redux';
-import { IRootAction } from '../../../../../store/actions';
-import { IState as IReduxState } from '../../../../../store/reducer';
+import { IRootAction } from '../../../store/actions';
+import { IState as IReduxState } from '../../../store/reducer';
 
 const languageMap = {
   typescript: 'TypeScript',

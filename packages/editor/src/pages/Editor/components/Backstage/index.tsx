@@ -14,11 +14,11 @@ import { ConflictResolutionOptions } from '../../../../interfaces/enums';
 
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-import { IRootAction } from '../../../../../../store/actions';
-import selectors from '../../../../store/selectors';
-import { editor, solutions, samples, gists, github } from '../../../../../../store/actions';
-import { IState as IReduxState } from '../../../../store/reducer';
-import Only from '../../../../components/Only';
+import { IRootAction } from '../../store/actions';
+import selectors from '../../store/selectors';
+import { editor, solutions, samples, gists, github } from '../../store/actions';
+import { IState as IReduxState } from '../../store/reducer';
+import Only from 'common/lib/components/Only';
 
 interface IBackstageItem {
   key: string;
