@@ -16,26 +16,16 @@ interface IProps {
   clearLogs();
 }
 
-interface IState {
-  filterQuery: string;
-}
-
-class Console extends React.Component<IProps, IState> {
+class Console extends React.Component<IProps> {
   private logFetchInterval: any;
-  state: IState = { filterQuery: '' };
 
   componentDidMount() {
-    this.logFetchInterval = setInterval(this.props.fetchLogs, 500);
+    this.logFetchInterval = setInterval(this.props.fetchLogs, 250);
   }
 
   componentWillUnmount() {
     clearInterval(this.logFetchInterval);
   }
-
-  updateFilterQuery = () =>
-    this.setState({
-      filterQuery: (this.refs.filterTextInput as any).value.toLowerCase(),
-    });
 
   render() {
     const { logs, clearLogs } = this.props;
