@@ -6,7 +6,7 @@ import { storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import { object } from '@storybook/addon-knobs';
 
-import { SCRIPT_FILE_NAME } from '../../../../constants';
+import { SCRIPT_FILE_NAME } from '../../../../../constants';
 
 export const exampleSolutions = [
   {

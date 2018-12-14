@@ -13,7 +13,7 @@ import {
   IDropdownOption,
 } from 'office-ui-fabric-react/lib/Dropdown';
 
-import { ConflictResolutionOptions } from '../../../../interfaces/enums';
+import { ConflictResolutionOptions } from '../../../../../interfaces/enums';
 
 interface IGistConflictDialog {
   conflictingGist: ISharedGistMetadata;

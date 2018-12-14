@@ -5,7 +5,7 @@ import { TextField } from 'office-ui-fabric-react/lib/TextField';
 import { PrimaryButton } from 'office-ui-fabric-react/lib/Button';
 
 import YAML from 'js-yaml';
-import { convertSnippetToSolution } from '../../../../utils';
+import { convertSnippetToSolution } from '../../../../../utils';
 
 interface IProps {
   importGist: (gistId?: string, gist?: string) => void;

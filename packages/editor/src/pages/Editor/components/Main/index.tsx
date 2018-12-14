@@ -5,15 +5,15 @@ import FileSwitcherPivot from './FileSwitcherPivot';
 import Editor from './Editor';
 import Footer from './Footer';
 
-import Notifications from '../../Notifications';
+import Notifications from '../../../../components/Notifications';
 
 import { Layout, ContentWrapper } from './styles';
-import { NULL_SOLUTION, NULL_FILE } from '../../../constants';
+import { NULL_SOLUTION, NULL_FILE } from '../../../../constants';
 
 import { connect } from 'react-redux';
-import { IState as IReduxState } from '../../../store/reducer';
-import selectors from '../../../store/selectors';
-import { editor as editorActions, IRootAction } from '../../../store/actions';
+import { IState as IReduxState } from '../../../../store/reducer';
+import selectors from '../../../../store/selectors';
+import { editor as editorActions, IRootAction } from '../../../../store/actions';
 import { Dispatch } from 'redux';
 
 interface IPropsFromRedux {

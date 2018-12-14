@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 
-import IDE from '../IDE';
+import IDE from '../../pages/Editor/components';
 // import CustomFunctionsDashboard from '../../pages/CustomFunctions/components/CustomFunctionsDashboard';
 import Pages from '../../pages';
 

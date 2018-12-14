@@ -1,12 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import PivotBar from '../../../PivotBar';
+import PivotBar from '../../../../../components/PivotBar';
 
-import { LIBRARIES_FILE_NAME, SCRIPT_FILE_NAME } from '../../../../constants';
-import { actions, selectors } from '../../../../store';
-import { IState as IReduxState } from '../../../../store/reducer';
-import { IRootAction } from '../../../../store/actions';
+import { LIBRARIES_FILE_NAME, SCRIPT_FILE_NAME } from '../../../../../constants';
+import { actions, selectors } from '../../../../../store';
+import { IState as IReduxState } from '../../../../../store/reducer';
+import { IRootAction } from '../../../../../store/actions';
 import { Dispatch } from 'redux';
 
 const FILE_NAME_MAP = {

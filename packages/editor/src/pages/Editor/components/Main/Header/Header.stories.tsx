@@ -2,9 +2,9 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 
 import { Header } from './';
-import { getCommandBarFabricTheme } from '../../../../theme';
-import { getBoilerplate, getBoilerplateSolution } from '../../../../newSolutionData';
-import { SCRIPT_FILE_NAME } from '../../../../constants';
+import { getCommandBarFabricTheme } from '../../../../../theme';
+import { getBoilerplate, getBoilerplateSolution } from '../../../../../newSolutionData';
+import { SCRIPT_FILE_NAME } from '../../../../../constants';
 
 const voidFunc = () => {};
 const solution = getBoilerplate('EXCEL');
