@@ -9,7 +9,7 @@ window.onmessage = event => {
 
   ensureFreshLocalStorage();
 
-  if (event.data.indexOf('GET_ACTIVE_SOLUTION') >= 0) {
+  if (event.data.indexOf('GET_ACTIVE_SOLUTION') === 0) {
     const host = event.data.split('/')[1];
     const solution = localStorage.getItem('activeSolution_' + host);
     window.parent.postMessage(solution, event.origin);

@@ -89,3 +89,16 @@ export const getHasCustomFunctions = createSelector(
 
 export const getIsStandalone = (state: IState): boolean =>
   !queryString.parse(window.location.href.split('?').slice(-1)[0]).backButton;
+
+export const getIsNativeRuntime = (state: IState): boolean =>
+  !!state.customFunctions.engineStatus.nativeRuntime;
+
+export const getIsUsingAsyncStorage = createSelector(
+  [getIsNativeRuntime],
+  (isNativeRuntime: boolean) =>
+    isNativeRuntime &&
+    (window as any).Office &&
+    (window as any).Office.context &&
+    (window as any).Office.context.requirements &&
+    (window as any).Office.context.requirements.isSetSupported('CustomFunctions', 1.4),
+);

@@ -14,7 +14,7 @@ import { IState as IReduxState } from '../../store/reducer';
 
 import { misc, IRootAction } from '../../store/actions';
 import { getCustomFunctionEngineStatus } from '../../store/customFunctions/utilities';
-import { getCustomFunctionCodeLastUpdated } from '../../store/localStorage';
+import { getCustomFunctionCodeLastUpdated } from 'common/lib/utilities/localStorage';
 import { Dispatch } from 'redux';
 
 interface IPropsFromRedux {
@@ -44,7 +44,10 @@ interface IState {
 
 export class CustomFunctionsDashboard extends React.Component<IProps, IState> {
   localStoragePollingInterval: any;
-  state: IState = { engineStatus: null, customFunctionsSolutionLastModified: 0 };
+  state: IState = {
+    engineStatus: null,
+    customFunctionsSolutionLastModified: getCustomFunctionCodeLastUpdated(),
+  };
 
   constructor(props: IProps) {
     super(props);
