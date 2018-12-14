@@ -4,7 +4,7 @@ import {
   CenteredContent,
   WelcomeTitle,
   WelcomeSubTitle,
-  Seperator,
+  Separator,
   Instructions,
   InstructionsDescription,
   List,
@@ -24,7 +24,7 @@ export const Welcome = ({ isRefreshEnabled }: IProps) => (
     <WelcomeSubTitle>
       Discover what custom functions can do for you today!
     </WelcomeSubTitle>
-    <Seperator />
+    <Separator />
     <Instructions>
       <InstructionsDescription>
         Get started with your first custom function.

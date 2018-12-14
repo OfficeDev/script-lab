@@ -4,7 +4,7 @@ import { Route, Switch } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 
 import IDE from '../IDE';
-import CustomFunctionsDashboard from '../../pages/CustomFunctions/components/CustomFunctionsDashboard';
+// import CustomFunctionsDashboard from '../../pages/CustomFunctions/components/CustomFunctionsDashboard';
 import Pages from '../../pages';
 
 import selectors from '../../store/selectors';
@@ -30,7 +30,7 @@ const App = ({ theme }: IProps) => (
       {Object.keys(Pages).map(page => (
         <Route exact path={PATHS[page]} component={Pages[page]} key={page} />
       ))}
-      <Route exact path={PATHS.CustomFunctions} component={CustomFunctionsDashboard} />
+      {/* <Route exact path={PATHS.CustomFunctions} component={CustomFunctionsDashboard} /> */}
       {/* Falling back on the IDE for an unknown route */}
       {/* <Route component={IDE} /> */}
     </Switch>

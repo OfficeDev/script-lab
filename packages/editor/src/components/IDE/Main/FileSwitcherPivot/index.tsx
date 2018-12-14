@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import PivotBar from '../../../PivotBar';
 
 import { LIBRARIES_FILE_NAME, SCRIPT_FILE_NAME } from '../../../../constants';
-import { actions, selectors } from '../../../../pages/CustomFunctions';
+import { actions, selectors } from '../../../../store';
 import { IState as IReduxState } from '../../../../store/reducer';
 import { IRootAction } from '../../../../store/actions';
 import { Dispatch } from 'redux';
@@ -32,7 +32,7 @@ interface IActionsFromRedux {
   openFile: (fileId: string) => void;
 }
 
-const mapDipatchToProps = (dispatch: Dispatch<IRootAction>): IActionsFromRedux => ({
+const mapDispatchToProps = (dispatch: Dispatch<IRootAction>): IActionsFromRedux => ({
   openFile: (fileId: string) => dispatch(actions.editor.openFile({ fileId })),
 });
 
@@ -65,5 +65,5 @@ const FileSwitcherPivot = ({
 
 export default connect(
   mapStateToProps,
-  mapDipatchToProps,
+  mapDispatchToProps,
 )(FileSwitcherPivot);

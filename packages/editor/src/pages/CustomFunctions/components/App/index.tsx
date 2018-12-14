@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import queryString from 'query-string';
 import flatten from 'lodash/flatten';
+import { Utilities } from '@microsoft/office-js-helpers';
 import {
   getCustomFunctionsInfoForRegistrationFromSolutions as getCFInfoForRegistration,
   getSummaryItems,
@@ -14,10 +15,10 @@ import {
 } from 'common/lib/utilities/localStorage';
 import { getLogsFromAsyncStorage } from './utilities/logs';
 import { loadAllSolutionsAndFiles } from '../../../../store/localStorage';
-
+import Theme from 'common/lib/components/Theme';
 interface IState {
   hasCustomFunctionsInSolutions: boolean;
-  customFunctionsSummaryItems: ICustomFunctionSummaryItem[];
+  customFunctionsSummaryItems: ICustomFunctionSummaryItem[] | null;
   runnerLastUpdated: number;
   customFunctionsSolutionLastModified: number;
 
@@ -33,19 +34,21 @@ export interface IPropsToUI extends IState {
 }
 
 const AppHOC = (UI: React.ComponentType<IPropsToUI>) =>
-  class App extends Component<{ hideLoadingSplashScreen() }, IState> {
+  class App extends Component<{}, IState> {
+    localStoragePollingInterval: any;
+
     constructor(props) {
       super(props);
 
       const cfSolutions = this.getCustomFunctionsSolutions();
 
       this.state = {
-        hasCustomFunctionsInSolutions: cfSolutions.length > 1,
+        hasCustomFunctionsInSolutions: cfSolutions.length > 0,
         runnerLastUpdated: Date.now(),
         customFunctionsSolutionLastModified: getCFCodeLastModified(),
         isStandalone: !queryString.parse(window.location.href.split('?').slice(-1)[0])
           .backButton,
-        customFunctionsSummaryItems: [],
+        customFunctionsSummaryItems: null,
         engineStatus: null,
         logs: [],
       };
@@ -57,9 +60,22 @@ const AppHOC = (UI: React.ComponentType<IPropsToUI>) =>
       getCustomFunctionEngineStatus().then(status => {
         if (status) {
           this.setState({ engineStatus: status });
-          this.props.hideLoadingSplashScreen(); // TODO: right location?
         }
       });
+    }
+
+    componentDidMount() {
+      this.localStoragePollingInterval = setInterval(
+        () =>
+          this.setState({
+            customFunctionsSolutionLastModified: getCFCodeLastModified(),
+          }),
+        500,
+      );
+    }
+
+    componentWillUnmount() {
+      clearInterval(this.localStoragePollingInterval);
     }
 
     fetchLogs = async () => {
@@ -83,7 +99,11 @@ const AppHOC = (UI: React.ComponentType<IPropsToUI>) =>
     clearLogs = () => this.setState({ logs: [] });
 
     render() {
-      return <UI {...this.state} fetchLogs={this.fetchLogs} clearLogs={this.clearLogs} />;
+      return (
+        <Theme host={Utilities.host}>
+          <UI {...this.state} fetchLogs={this.fetchLogs} clearLogs={this.clearLogs} />
+        </Theme>
+      );
     }
 
     // helpers

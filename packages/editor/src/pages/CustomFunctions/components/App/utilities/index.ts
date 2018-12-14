@@ -1,13 +1,11 @@
 import flatten from 'lodash/flatten';
-import semver from 'semver';
 import { SCRIPT_FILE_NAME } from '../../../../../constants';
 import compileScript from 'common/lib/utilities/compile.script';
 import { stripSpaces } from 'common/lib/utilities/string';
-import { pause } from '../../../../../utils';
 import { parseMetadata } from 'common/lib/utilities/custom.functions.metadata.parser';
 import { consoleMonkeypatch } from './console.monkeypatch';
 import { getCurrentEnv } from 'common/lib/environment';
-import { convertSolutionToSnippet } from '../../../../../utils';
+import { pause, convertSolutionToSnippet } from '../../../../../utils';
 
 const isCustomFunctionRegex = /@customfunction/i;
 export function isCustomFunctionScript(content: string) {

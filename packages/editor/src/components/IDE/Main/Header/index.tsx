@@ -123,7 +123,8 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps: IProps): IActionsFromR
       }),
     ),
 
-  navigateToCustomFunctions: () => dispatch(actions.customFunctions.openDashboard()),
+  navigateToCustomFunctions: () =>
+    (window.location.href = './#/custom-functions?backButton=true'),
   navigateToRun: () => dispatch(actions.editor.navigateToRun()),
   showTrustError: () =>
     dispatch(

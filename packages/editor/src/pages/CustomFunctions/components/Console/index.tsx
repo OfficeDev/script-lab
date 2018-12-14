@@ -1,15 +1,7 @@
 import React from 'react';
-import { withTheme } from 'styled-components';
-import moment from 'moment';
 import CommonConsole from 'common/lib/components/Console';
 
 import { Wrapper, NoLogsPlaceholderContainer, NoLogsPlaceholder } from './styles';
-
-import { setUpMomentJsDurationDefaults } from '../../../../utils';
-import { connect } from 'react-redux';
-import { IState as IReduxState } from '../../../../store/reducer';
-import actions, { IRootAction } from '../../../../store/actions';
-import { Dispatch } from 'redux';
 
 export enum ConsoleLogTypes {
   Info = 'info',
@@ -18,41 +10,19 @@ export enum ConsoleLogTypes {
   Error = 'error',
 }
 
-interface IPropsFromRedux {
+interface IProps {
   logs: ILogData[];
-}
-
-const mapStateToProps = (state: IReduxState): IPropsFromRedux => ({
-  logs: state.customFunctions.logs,
-});
-
-interface IActionsFromRedux {
-  fetchLogs: () => void;
-  clearLogs: () => void;
-}
-
-const mapDispatchToProps = (dispatch: Dispatch<IRootAction>): IActionsFromRedux => ({
-  fetchLogs: () => dispatch(actions.customFunctions.fetchLogs()),
-  clearLogs: () => dispatch(actions.customFunctions.clearLogs()),
-});
-
-interface IConsole extends IPropsFromRedux, IActionsFromRedux {
-  theme: ITheme; // from withTheme
+  fetchLogs();
+  clearLogs();
 }
 
 interface IState {
   filterQuery: string;
 }
 
-class ConsoleWithoutTheme extends React.Component<IConsole, IState> {
+class Console extends React.Component<IProps, IState> {
   private logFetchInterval: any;
-  state = { filterQuery: '' };
-
-  constructor(props: IConsole) {
-    super(props);
-
-    setUpMomentJsDurationDefaults(moment);
-  }
+  state: IState = { filterQuery: '' };
 
   componentDidMount() {
     this.logFetchInterval = setInterval(this.props.fetchLogs, 500);
@@ -68,7 +38,7 @@ class ConsoleWithoutTheme extends React.Component<IConsole, IState> {
     });
 
   render() {
-    const { theme, logs, clearLogs } = this.props;
+    const { logs, clearLogs } = this.props;
 
     return (
       <Wrapper>
@@ -96,9 +66,4 @@ class ConsoleWithoutTheme extends React.Component<IConsole, IState> {
   }
 }
 
-export const Console = withTheme(ConsoleWithoutTheme);
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(Console);
+export default Console;

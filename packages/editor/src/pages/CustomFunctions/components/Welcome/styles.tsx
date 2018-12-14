@@ -22,7 +22,7 @@ export const WelcomeSubTitle = styled.h3.attrs({ className: 'ms-font-s-plus' })`
   text-align: center;
 `;
 
-export const Seperator = styled.hr`
+export const Separator = styled.hr`
   width: 14.1rem;
   margin-top: 2.4rem;
   margin-bottom: 3.2rem;

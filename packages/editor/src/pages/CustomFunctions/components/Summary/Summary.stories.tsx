@@ -5,8 +5,6 @@ import { Summary } from './';
 import { checkA11y } from '@storybook/addon-a11y';
 import { storiesOf } from '@storybook/react';
 
-import { Layout, Content } from '../Dashboard/styles';
-
 enum Status {
   Good = 'good',
   Skipped = 'skipped',
@@ -15,14 +13,6 @@ enum Status {
 }
 
 const stories = storiesOf('Custom Functions|Summary', module);
-
-const containerWrapper = (storyFn: () => React.ReactNode) => (
-  <Layout>
-    <Content>{storyFn()}</Content>
-  </Layout>
-);
-
-stories.addDecorator(containerWrapper);
 
 const snippetName = 'SnippetName';
 const funcName = 'foo';
@@ -40,7 +30,7 @@ export const basicSummaryProps = {
   ],
 };
 
-export const BasicSummary = () => <Summary {...basicSummaryProps} isLoading={false} />;
+export const BasicSummary = () => <Summary {...basicSummaryProps} />;
 
 stories
   .addDecorator(checkA11y)
@@ -48,13 +38,11 @@ stories
   .add('all good', () => (
     <Summary
       items={basicSummaryProps.items.filter(item => item.status === Status.Good)}
-      isLoading={false}
     />
   ))
   .add('all bad', () => (
     <Summary
       items={basicSummaryProps.items.filter(item => item.status !== Status.Good)}
-      isLoading={false}
     />
   ))
-  .add('loading', () => <Summary items={[]} isLoading={true} />);
+  .add('loading', () => <Summary items={[]} />);

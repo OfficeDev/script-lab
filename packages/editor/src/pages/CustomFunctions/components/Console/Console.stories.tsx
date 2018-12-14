@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Console, ConsoleLogTypes } from './';
+import Console, { ConsoleLogTypes } from './';
 
 import { storiesOf } from '@storybook/react';
 
@@ -53,28 +53,9 @@ const sampleLogs = [
 const voidFunc = () => {};
 
 export const BasicConsole = () => (
-  <Console
-    logs={sampleLogs}
-    engineStatus={{
-      enabled: true,
-      nativeRuntime: false,
-    }}
-    runnerIsAlive={true}
-    runnerLastUpdated={Date.now()}
-    fetchLogs={voidFunc}
-    clearLogs={voidFunc}
-  />
+  <Console logs={sampleLogs} fetchLogs={voidFunc} clearLogs={voidFunc} />
 );
 
 stories
   .add('basic', () => <BasicConsole />)
-  .add('empty', () => (
-    <Console
-      clearLogs={voidFunc}
-      fetchLogs={voidFunc}
-      runnerIsAlive={false}
-      runnerLastUpdated={Date.now()}
-      engineStatus={{ enabled: false, nativeRuntime: false }}
-      logs={[]}
-    />
-  ));
+  .add('empty', () => <Console clearLogs={voidFunc} fetchLogs={voidFunc} logs={[]} />);
