@@ -162,7 +162,7 @@ export function deleteSolutionFromStorage(id: string) {
   deleteItem(SOLUTION_ROOT, id);
 }
 
-function loadAllSolutionsAndFiles(): {
+export function loadAllSolutionsAndFiles(): {
   solutions: { [id: string]: ISolutionWithFileIds };
   files: { [id: string]: IFile };
 } {

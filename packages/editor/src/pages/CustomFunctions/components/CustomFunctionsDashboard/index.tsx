@@ -1,41 +1,54 @@
 import React from 'react';
 
-import Dashboard from './Dashboard';
+import Dashboard from '../Dashboard';
 
-import Summary from './Summary';
-import Console from './Console';
+import Summary from '../Summary';
+import Console from '../Console';
 
-import ComingSoon from './ComingSoon';
-import Welcome from './Welcome';
+import ComingSoon from '../ComingSoon';
+import Welcome from '../Welcome';
 
 import { connect } from 'react-redux';
-import selectors from '../../../store/selectors';
-import { IState as IReduxState } from '../../../store/reducer';
+import selectors from '../../../../store/selectors';
+import { IState as IReduxState } from '../../../../store/reducer';
 
-import { misc, IRootAction } from '../../../store/actions';
+import { misc, IRootAction } from '../../../../store/actions';
 import { getCustomFunctionEngineStatus } from '../store/utilities';
 import { getCustomFunctionCodeLastUpdated } from 'common/lib/utilities/localStorage';
 import { Dispatch } from 'redux';
+import { IPropsToUI as IProps } from '../App';
+// interface IProps {
+//   customFunctionsSummaryItems: ICustomFunctionSummaryItem[];
+//   runnerLastUpdated: number;
+//   customFunctionsSolutionLastModified: number;
 
-interface IPropsFromRedux {
-  hasCustomFunctionsInSolutions: boolean;
-  runnerLastUpdated: number;
-}
+//   hasCustomFunctionsInSolutions: boolean;
+//   logs: ILogData[];
+//   fetchLogs: () => void;
+//   clearLogs: () => void;
+//   isStandalone: boolean;
+//   engineStatus: ICustomFunctionEngineStatus | null;
+// }
 
-const mapStateToProps = (state: IReduxState): IPropsFromRedux => ({
-  hasCustomFunctionsInSolutions: selectors.customFunctions.getSolutions(state).length > 0,
-  runnerLastUpdated: state.customFunctions.runner.lastUpdated,
-});
+// interface IPropsFromRedux {
+//   hasCustomFunctionsInSolutions: boolean;
+//   runnerLastUpdated: number;
+// }
 
-interface IActionsFromRedux {
-  hideLoadingSplashScreen: () => void;
-}
+// const mapStateToProps = (state: IReduxState): IPropsFromRedux => ({
+//   hasCustomFunctionsInSolutions: selectors.customFunctions.getSolutions(state).length > 0,
+//   runnerLastUpdated: state.customFunctions.runner.lastUpdated,
+// });
 
-const mapDispatchToProps = (dispatch: Dispatch<IRootAction>): IActionsFromRedux => ({
-  hideLoadingSplashScreen: () => dispatch(misc.hideLoadingSplashScreen()),
-});
+// interface IActionsFromRedux {
+//   hideLoadingSplashScreen: () => void;
+// }
 
-interface IProps extends IPropsFromRedux, IActionsFromRedux {}
+// const mapDispatchToProps = (dispatch: Dispatch<IRootAction>): IActionsFromRedux => ({
+//   hideLoadingSplashScreen: () => dispatch(misc.hideLoadingSplashScreen()),
+// });
+
+// interface IProps extends IPropsFromRedux, IActionsFromRedux {}
 
 interface IState {
   customFunctionsSolutionLastModified: number;
