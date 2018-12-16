@@ -1,4 +1,5 @@
 import { createAction, createAsyncAction } from 'typesafe-actions';
+import { History } from 'history';
 
 export const open = createAction('EDITOR_OPEN');
 export const hide = createAction('EDITOR_HIDE');

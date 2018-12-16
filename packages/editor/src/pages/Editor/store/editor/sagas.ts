@@ -4,7 +4,6 @@ import selectors from '../selectors';
 import { editor, settings, screen, misc, solutions } from '../actions';
 import zip from 'lodash/zip';
 import flatten from 'lodash/flatten';
-import { push, RouterState } from 'connected-react-router';
 import { PATHS, LIBRARIES_FILE_NAME, NULL_SOLUTION_ID } from '../../../../constants';
 
 import {
@@ -37,16 +36,6 @@ export default function* editorWatcher() {
   yield takeEvery(getType(editor.applyFormatting), applyFormattingSaga);
   yield takeEvery(getType(editor.navigateToRun), navigateToRunSaga);
 }
-
-// function* onEditorOpenSaga() {
-//   yield
-//   const { editor } = yield select();
-//   if (editor.)
-//   if (router.location.pathname !== PATHS.EDITOR) {
-
-//     yield put(push(PATHS.EDITOR));
-//   }
-// }
 
 export function* onEditorOpenFileSaga(action: ActionType<typeof editor.openFile>) {
   const currentOpenSolution: ISolution = yield select(selectors.editor.getActiveSolution);
