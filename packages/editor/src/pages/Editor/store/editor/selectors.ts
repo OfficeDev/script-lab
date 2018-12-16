@@ -61,5 +61,5 @@ export const getIsActiveSolutionCF = (state: IState): boolean => {
   const solution = getActiveSolution(state);
 
   const script = solution.files.find(file => file.name === SCRIPT_FILE_NAME);
-  return isCustomFunctionScript(script.content);
+  return script ? isCustomFunctionScript(script.content) : false;
 };

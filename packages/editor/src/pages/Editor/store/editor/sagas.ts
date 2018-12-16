@@ -20,7 +20,6 @@ import { currentRunnerUrl } from 'common/lib/environment';
 let monacoEditor;
 
 export default function* editorWatcher() {
-  yield takeEvery(getType(editor.open), onEditorOpenSaga);
   yield takeEvery(getType(editor.openFile), onEditorOpenFileSaga);
   yield takeEvery(getType(solutions.edit), onSolutionEditSaga);
   yield takeEvery(getType(editor.newSolutionOpened), onSolutionOpenSaga);
@@ -39,12 +38,15 @@ export default function* editorWatcher() {
   yield takeEvery(getType(editor.navigateToRun), navigateToRunSaga);
 }
 
-function* onEditorOpenSaga() {
-  const { router } = yield select();
-  if (router.location.pathname !== PATHS.EDITOR) {
-    yield put(push(PATHS.EDITOR));
-  }
-}
+// function* onEditorOpenSaga() {
+//   yield
+//   const { editor } = yield select();
+//   if (editor.)
+//   if (router.location.pathname !== PATHS.EDITOR) {
+
+//     yield put(push(PATHS.EDITOR));
+//   }
+// }
 
 export function* onEditorOpenFileSaga(action: ActionType<typeof editor.openFile>) {
   const currentOpenSolution: ISolution = yield select(selectors.editor.getActiveSolution);
@@ -62,7 +64,7 @@ export function* onEditorOpenFileSaga(action: ActionType<typeof editor.openFile>
 
   yield put(editor.setActive({ solutionId, fileId }));
   if (solutionId !== NULL_SOLUTION_ID) {
-    yield call(onEditorOpenSaga);
+    yield put(editor.open());
   }
 
   const solutionToOpen = yield select(selectors.solutions.get, solutionId);

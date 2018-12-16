@@ -1,21 +1,37 @@
 import React from 'react';
-import IDE from './components';
+import App from './components';
 
-import { connect } from 'react-redux';
-import actions from './store/actions';
+import { Provider } from 'react-redux';
+import {
+  loadState as loadStateFromLocalStorage,
+  saveState as saveStateToLocalStorage,
+} from './store/localStorage';
+import {
+  loadState as loadStateFromSessionStorage,
+  saveState as saveStateToSessionStorage,
+} from './store/sessionStorage';
 
-class Editor extends React.Component<{ initialize: () => void }> {
-  constructor(props) {
-    super(props);
-    this.props.initialize();
-  }
+import configureStore from './store/configureStore';
+import throttle from 'lodash/throttle';
 
-  render() {
-    return <IDE />;
-  }
-}
+const store = configureStore({
+  initialState: {
+    ...loadStateFromLocalStorage(),
+    ...loadStateFromSessionStorage(),
+  },
+});
 
-export default connect(
-  null,
-  { initialize: actions.misc.initialize },
-)(Editor);
+store.subscribe(
+  throttle(() => {
+    const state = store.getState();
+    saveStateToLocalStorage(state);
+    saveStateToSessionStorage(state);
+  }, 1000),
+);
+
+const Editor = () => (
+  <Provider store={store}>
+    <App />
+  </Provider>
+);
+export default Editor;

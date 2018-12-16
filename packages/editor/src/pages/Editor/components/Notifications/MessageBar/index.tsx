@@ -1,16 +1,16 @@
 import React from 'react';
 import { MessageBar as FabricMessageBar } from 'office-ui-fabric-react/lib/MessageBar';
 import { Link } from 'office-ui-fabric-react/lib/Link';
-import { IState as IMessageBarState } from '../../../pages/Editor/store/messageBar/reducer';
+import { IState as IMessageBarState } from '../../../store/messageBar/reducer';
 
 import { connect } from 'react-redux';
-import { messageBar } from '../../../pages/Editor/store/actions';
+import { messageBar } from '../../../store/actions';
 import { getMessageBarStyle } from './helpers';
-import { IState as IReduxState } from '../../../pages/Editor/store/reducer';
+import { IState as IReduxState } from '../../../store/reducer';
 
 import './animations.css';
 import { DefaultButton } from 'office-ui-fabric-react/lib/Button';
-import selectors from '../../../pages/Editor/store/selectors';
+import selectors from '../../../store/selectors';
 import { Dispatch } from 'redux';
 
 interface IPropsFromRedux {

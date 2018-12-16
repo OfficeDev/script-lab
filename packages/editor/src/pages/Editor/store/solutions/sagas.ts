@@ -150,7 +150,7 @@ export function* openLastModifiedOrBackstageSaga() {
 
   if (solutions.length === 0) {
     yield put(editor.openFile({ solutionId: NULL_SOLUTION_ID, fileId: NULL_FILE_ID }));
-    yield put(push(PATHS.BACKSTAGE));
+    yield put(editor.openBackstage());
   } else {
     yield put(
       editor.openFile({ solutionId: solutions[0].id, fileId: solutions[0].files[0].id }),

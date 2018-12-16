@@ -95,7 +95,7 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps: IProps): IActionsFromR
   login: () => dispatch(actions.github.login.request()),
   logout: () => dispatch(actions.github.logout.request()),
 
-  showBackstage: () => dispatch(push(PATHS.BACKSTAGE)),
+  showBackstage: () => dispatch(actions.editor.openBackstage()),
   closeSettings: () => dispatch(actions.settings.close()),
 
   editSolution: (solutionId: string, solution: Partial<IEditableSolutionProperties>) =>

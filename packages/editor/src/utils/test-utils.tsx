@@ -1,16 +1,14 @@
 import React from 'react';
 import { render } from 'react-testing-library';
-import { createStore } from 'redux';
-import { ConnectedRouter } from 'connected-react-router';
+
 import { Provider } from 'react-redux';
 
-import reducer, { IState as IReduxState } from '../pages/Editor/store/reducer';
-import { ThemeProvider } from 'styled-components';
-import { getTheme } from '../theme';
-import Root from '../components/Root';
+import Theme from 'common/lib/components/Theme';
+
 import configureStore from '../pages/Editor/store/configureStore';
+
 const customRender = node => {
-  return render(<ThemeProvider theme={getTheme('EXCEL')}>{node}</ThemeProvider>);
+  return render(<Theme host={'EXCEL'}>{node}</Theme>);
 };
 
 // re-export everything
@@ -20,9 +18,9 @@ export * from 'react-testing-library';
 export { customRender as render };
 
 export function renderWithReduxAndRouter(ui, { initialState }) {
-  const { store, history } = configureStore({ initialState });
+  const store = configureStore({ initialState });
   return {
-    ...customRender(<Root store={store} history={history} ui={ui} />),
+    ...customRender(<Provider store={store}>{ui}</Provider>),
     // adding `store` to the returned utilities to allow us
     // to reference it in our tests (just try to avoid using
     // this to test implementation details).

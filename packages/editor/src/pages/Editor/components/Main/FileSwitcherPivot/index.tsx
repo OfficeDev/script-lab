@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import PivotBar from '../../../../../components/PivotBar';
+import PivotBar from 'common/lib/components/PivotBar';
 
 import { LIBRARIES_FILE_NAME, SCRIPT_FILE_NAME } from '../../../../../constants';
 import { actions, selectors } from '../../../store';

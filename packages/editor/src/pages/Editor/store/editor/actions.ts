@@ -1,6 +1,10 @@
 import { createAction, createAsyncAction } from 'typesafe-actions';
 
 export const open = createAction('EDITOR_OPEN');
+export const hide = createAction('EDITOR_HIDE');
+
+export const openBackstage = createAction('BACKSTAGE_OPEN');
+export const hideBackstage = createAction('BACKSTAGE_HIDE');
 
 export const openFile = createAction('EDITOR_OPEN_FILE', resolve => {
   return (props: { solutionId?: string; fileId: string }) => resolve(props);

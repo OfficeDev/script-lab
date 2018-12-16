@@ -5,7 +5,7 @@ import FileSwitcherPivot from './FileSwitcherPivot';
 import Editor from './Editor';
 import Footer from './Footer';
 
-import Notifications from '../../../../components/Notifications';
+import Notifications from '../Notifications';
 
 import { Layout, ContentWrapper } from './styles';
 import { NULL_SOLUTION, NULL_FILE } from '../../../../constants';

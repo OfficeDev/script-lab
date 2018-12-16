@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import queryString from 'query-string';
 import flatten from 'lodash/flatten';
-import { Utilities } from '@microsoft/office-js-helpers';
 import {
   getCustomFunctionsInfoForRegistrationFromSolutions as getCFInfoForRegistration,
   getSummaryItems,
@@ -15,7 +14,7 @@ import {
 } from 'common/lib/utilities/localStorage';
 import { getLogsFromAsyncStorage } from './utilities/logs';
 import { loadAllSolutionsAndFiles } from '../../../Editor/store/localStorage';
-import Theme from 'common/lib/components/Theme';
+
 interface IState {
   hasCustomFunctionsInSolutions: boolean;
   customFunctionsSummaryItems: ICustomFunctionSummaryItem[] | null;
@@ -99,11 +98,7 @@ const AppHOC = (UI: React.ComponentType<IPropsToUI>) =>
     clearLogs = () => this.setState({ logs: [] });
 
     render() {
-      return (
-        <Theme host={Utilities.host}>
-          <UI {...this.state} fetchLogs={this.fetchLogs} clearLogs={this.clearLogs} />
-        </Theme>
-      );
+      return <UI {...this.state} fetchLogs={this.fetchLogs} clearLogs={this.clearLogs} />;
     }
 
     // helpers

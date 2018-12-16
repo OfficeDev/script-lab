@@ -6,14 +6,43 @@ import omit from 'lodash/omit';
 
 type IIsVisibleState = boolean;
 
-const initialVisibility =
-  location.hash.replace('#', '') === PATHS.EDITOR ||
-  (window.location.pathname === PATHS.EDITOR && window.location.hash === '');
+const initialVisibility = true;
+// location.hash.replace('#', '') === PATHS.EDITOR ||
+// (window.location.pathname === PATHS.EDITOR && window.location.hash === '');
 
 const isVisible = (state: IIsVisibleState = initialVisibility, action) => {
   switch (action.type) {
-    case '@@router/LOCATION_CHANGE':
-      return action.payload.location.pathname === PATHS.EDITOR;
+    case getType(editor.open):
+      return true;
+    case getType(editor.hide):
+      return false;
+    case getType(editor.openBackstage):
+      return false;
+    case getType(editor.hideBackstage):
+      return true;
+    // case '@@router/LOCATION_CHANGE':
+    //   return action.payload.location.pathname === PATHS.EDITOR;
+    default:
+      return state;
+  }
+};
+
+type IIsBackstageVisibleState = boolean;
+
+const initialBackstageVisibility = false;
+
+const isBackstageVisible = (
+  state: IIsBackstageVisibleState = initialBackstageVisibility,
+  action: IEditorAction,
+) => {
+  switch (action.type) {
+    case getType(editor.openBackstage):
+      return true;
+    case getType(editor.hideBackstage):
+      return false;
+    case getType(editor.open):
+      return false;
+
     default:
       return state;
   }
@@ -67,6 +96,7 @@ const active = (
 
 export interface IState {
   isVisible: IIsVisibleState;
+  isBackstageVisible: IIsBackstageVisibleState;
   hasLoaded: IHasLoadedState;
   intellisenseFiles: IIntellisenseFilesState;
   active: IActiveState;
@@ -74,6 +104,7 @@ export interface IState {
 
 export default combineReducers({
   isVisible,
+  isBackstageVisible,
   hasLoaded,
   intellisenseFiles,
   active,

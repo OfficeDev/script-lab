@@ -13,13 +13,7 @@ export default function* hostWatcher() {
 
 export function* hostChangedSaga() {
   const host = yield select(selectors.host.get);
-  setupFabricTheme(host);
-  const { router } = yield select();
-  if (router.location.pathname !== PATHS.EDITOR) {
-    // For non-editor, don't need to do anything else
-    return;
-  }
-
+  // setupFabricTheme(host);
   yield call(openLastModifiedOrBackstageSaga);
 
   yield put(samples.fetchMetadata.request());
