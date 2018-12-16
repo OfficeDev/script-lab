@@ -20,7 +20,6 @@ import { editor, solutions, samples, gists, github } from '../../store/actions';
 import { IState as IReduxState } from '../../store/reducer';
 import Only from 'common/lib/components/Only';
 
-import { withRouter } from 'react-router';
 import { RouteComponentProps } from 'react-router-dom';
 
 interface IBackstageItem {
@@ -78,8 +77,7 @@ const mapDispatchToProps = (
   ) => dispatch(gists.get.request({ rawUrl, gistId, conflictResolution })),
   importGist: (gistId?: string, gist?: string) =>
     dispatch(gists.importSnippet.request({ gistId, gist })),
-  goBack: () =>
-    dispatch(editor.open({ history: ownProps.history, location: ownProps.location })),
+  goBack: () => dispatch(editor.open()),
   signIn: () => dispatch(github.login.request()),
 });
 
@@ -262,9 +260,7 @@ export class Backstage extends Component<IProps, IState> {
   }
 }
 
-export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
-  )(Backstage),
-);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Backstage);
