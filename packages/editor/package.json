@@ -45,7 +45,7 @@
     "react-scripts:build": "react-scripts build",
     "test": "jest --env=jsdom",
     "test-coverage": "yarn test -- --coverage",
-    "show-coverage": "yarn test-coverage && coverage\\lcov-report\\index.html",
+    "show-coverage": "yarn test-coverage && coverage\\lcov-report\\index.html"
   },
   "devDependencies": {
     "@babel/core": "^7.1.6",
