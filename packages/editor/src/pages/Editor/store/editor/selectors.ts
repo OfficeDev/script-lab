@@ -1,4 +1,5 @@
 import { IState } from '../reducer';
+import { createSelector } from 'reselect';
 import {
   get as getSolution,
   getSolutionWithHiddenFiles,
@@ -63,3 +64,8 @@ export const getIsActiveSolutionCF = (state: IState): boolean => {
   const script = solution.files.find(file => file.name === SCRIPT_FILE_NAME);
   return script ? isCustomFunctionScript(script.content) : false;
 };
+
+export const getIsActiveSolutionTrusted = createSelector(
+  [getActiveSolution],
+  (activeSolution: ISolution) => !activeSolution.options.isUntrusted,
+);
