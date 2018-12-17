@@ -1,430 +1,165 @@
-// import React from 'react';
-// import styled, { withTheme } from 'styled-components';
+// general 3rd party
+import Clipboard from 'clipboard';
+import YAML from 'js-yaml';
 
-// import { Customizer } from 'office-ui-fabric-react/lib/Utilities';
-// import { CommandBar, ICommandBarItemProps } from 'office-ui-fabric-react/lib/CommandBar';
-// import { PersonaSize, PersonaCoin } from 'office-ui-fabric-react/lib/Persona';
-// import { MessageBarType } from 'office-ui-fabric-react/lib/MessageBar';
-// import { Spinner, SpinnerSize } from 'office-ui-fabric-react/lib/Spinner';
+// general 1st party
+import { convertSolutionToSnippet } from '../../../../../utils';
 
-// import Clipboard from 'clipboard';
-// import { convertSolutionToSnippet } from '../../../../../utils';
-// import YAML from 'js-yaml';
+// React
+import React, { Component } from 'react';
 
-// import DeleteConfirmationDialog from './DeleteConfirmationDialog';
-// import SolutionSettings from './SolutionSettings';
-// import { getRunButton, IProps as IRunButtonProps } from './Buttons/Run';
+// office-ui-fabric-react
+import { MessageBarType } from 'office-ui-fabric-react/lib/components/MessageBar';
+import { Spinner, SpinnerSize } from 'office-ui-fabric-react/lib/Spinner';
+import { PersonaSize, PersonaCoin } from 'office-ui-fabric-react/lib/Persona';
 
-// import { ITheme as IFabricTheme } from 'office-ui-fabric-react/lib/Styling';
-// import { NULL_SOLUTION_ID, PATHS, IS_TASK_PANE_WIDTH } from '../../../../../constants';
-// import { getPlatform, PlatformType } from 'common/lib/environment';
+// common
+import CommonHeader from 'common/lib/components/Header';
+import { ThemeContext } from 'common/lib/components/Theme';
 
-// import { connect } from 'react-redux';
-// import actions, { dialog, IRootAction } from '../../../store/actions';
-// import selectors from '../../../store/selectors';
-// import { IState as IReduxState } from '../../../store/reducer';
-// import { Dispatch } from 'redux';
+// local
+import SolutionSettings from './SolutionSettings';
 
-// const HeaderWrapper = styled.header`
-//   background-color: ${props => props.theme.primary};
-//   z-index: 1000;
-// `;
+// redux
+import { connect } from 'react-redux';
+import { IState as IReduxState } from '../../../store/reducer';
+import { actions, selectors } from '../../../store';
+import { IHeaderItem } from '../../../store/header/selectors';
 
-// interface IPropsFromRedux {
-//   profilePicUrl: string | null;
-//   isNullSolution: boolean;
-//   isRunnableOnThisHost: boolean;
-//   isSettingsView: boolean;
-//   isCustomFunctionsView: boolean;
-//   isLoggedIn: boolean;
-//   isLoggingInOrOut: boolean;
-//   commandBarFabricTheme: IFabricTheme;
-//   screenWidth: number;
-// }
+interface IProps {
+  items: IHeaderItem[];
+  farItems: IHeaderItem[];
+  dispatch: (action: { type: string; payload?: any }) => void;
 
-// const mapStateToProps = (state: IReduxState): IPropsFromRedux => ({
-//   isNullSolution: selectors.editor.getActiveSolution(state).id === NULL_SOLUTION_ID,
-//   isSettingsView: selectors.settings.getIsOpen(state),
-//   isCustomFunctionsView: selectors.editor.getIsActiveSolutionCF(state),
-//   isLoggedIn: !!selectors.github.getToken(state),
-//   isLoggingInOrOut: selectors.github.getIsLoggingInOrOut(state),
-//   isRunnableOnThisHost: selectors.host.getIsRunnableOnThisHost(state),
-//   profilePicUrl: selectors.github.getProfilePicUrl(state),
-//   commandBarFabricTheme: getCommandBarFabricTheme(selectors.host.get(state)),
-//   screenWidth: selectors.screen.getWidth(state),
-// });
+  activeSolution: ISolution;
+  notifyClipboardCopySuccess();
+  notifyClipboardCopyFailure();
 
-// interface IActionsFromRedux {
-//   login: () => void;
-//   logout: () => void;
+  isLoggingInOrOut: boolean;
+  profilePicUrl?: string;
+}
 
-//   showBackstage: () => void;
-//   closeSettings: () => void;
+interface IState {
+  isSolutionSettingsVisible: boolean;
+}
 
-//   editSolution: (
-//     solutionId: string,
-//     solution: Partial<IEditableSolutionProperties>,
-//   ) => void;
-//   deleteSolution: () => void;
+class Header extends Component<IProps, IState> {
+  clipboard: Clipboard;
+  state: IState = { isSolutionSettingsVisible: false };
 
-//   createPublicGist: () => void;
-//   createSecretGist: () => void;
-//   updateGist: () => void;
+  constructor(props: IProps) {
+    super(props);
+    this.clipboard = new Clipboard('.export-to-clipboard', {
+      text: this.getSnippetYAML,
+    });
+    this.clipboard.on('success', props.notifyClipboardCopySuccess);
+    this.clipboard.on('error', props.notifyClipboardCopyFailure);
+  }
 
-//   notifyClipboardCopySuccess: () => void;
-//   notifyClipboardCopyFailure: () => void;
+  getSnippetYAML = () =>
+    YAML.safeDump(convertSolutionToSnippet(this.props.activeSolution));
 
-//   navigateToCustomFunctions: () => void;
-//   navigateToRun: () => void;
-//   showTrustError: () => void;
+  showSolutionSettings = () => this.setState({ isSolutionSettingsVisible: true });
+  hideSolutionSettings = () => this.setState({ isSolutionSettingsVisible: false });
 
-//   showDialog: (
-//     title: string,
-//     subText: string,
-//     buttons: Array<{
-//       text: string;
-//       action: { type: string; payload?: any };
-//       isPrimary: boolean;
-//     }>,
-//   ) => void;
-// }
+  render() {
+    const { items, farItems } = this.props;
 
-// const mapDispatchToProps = (dispatch: Dispatch, ownProps: IProps): IActionsFromRedux => ({
-//   login: () => dispatch(actions.github.login.request()),
-//   logout: () => dispatch(actions.github.logout.request()),
+    return (
+      <>
+        <CommonHeader
+          items={items.map((item: IHeaderItem) => {
+            const renderedItem = this.renderItem(item);
+            if (item.key === 'solution-name') {
+              return {
+                ...renderedItem,
+                onClick: this.showSolutionSettings,
+              };
+            } else {
+              return renderedItem;
+            }
+          })}
+          farItems={farItems.map((item: IHeaderItem) => this.renderItem(item))}
+        />
+        <SolutionSettings
+          isOpen={this.state.isSolutionSettingsVisible}
+          closeSolutionSettings={this.hideSolutionSettings}
+        />
+      </>
+    );
+  }
 
-//   showBackstage: () => dispatch(actions.editor.openBackstage()),
-//   closeSettings: () => dispatch(actions.settings.close()),
+  private renderItem = (item: IHeaderItem): IHeaderItem => {
+    const customRenderIcons = this.getCustomOnRenderIconButtons();
+    const onClickReadyItem = this.convertActionCreatorToOnClick(item);
+    if (item.key in customRenderIcons) {
+      return {
+        ...onClickReadyItem,
+        onRenderIcon: customRenderIcons[item.key],
+      };
+    } else {
+      return onClickReadyItem;
+    }
+  };
 
-//   editSolution: (solutionId: string, solution: Partial<IEditableSolutionProperties>) =>
-//     dispatch(actions.solutions.edit({ id: solutionId, solution })),
-//   deleteSolution: () => dispatch(actions.solutions.remove(ownProps.solution)),
+  private convertActionCreatorToOnClick = (item: IHeaderItem): IHeaderItem => ({
+    ...item,
+    onClick: item.actionCreator
+      ? () => {
+          console.log(item.actionCreator);
+          this.props.dispatch(item.actionCreator());
+        }
+      : undefined,
+  });
 
-//   createPublicGist: () =>
-//     dispatch(
-//       actions.gists.create.request({ solutionId: ownProps.solution.id, isPublic: true }),
-//     ),
-//   createSecretGist: () =>
-//     dispatch(
-//       actions.gists.create.request({ solutionId: ownProps.solution.id, isPublic: false }),
-//     ),
-//   updateGist: () =>
-//     dispatch(actions.gists.update.request({ solutionId: ownProps.solution.id })),
+  private getCustomOnRenderIconButtons = (): { [key: string]: () => JSX.Element } => {
+    const { isLoggingInOrOut, profilePicUrl } = this.props;
 
-//   notifyClipboardCopySuccess: () =>
-//     dispatch(actions.messageBar.show({ text: 'Snippet copied to clipboard.' })),
-//   notifyClipboardCopyFailure: () =>
-//     dispatch(
-//       actions.messageBar.show({
-//         text: 'Snippet failed to copy to clipboard.',
-//         style: MessageBarType.error,
-//       }),
-//     ),
+    return {
+      account: () => (
+        <div style={{ width: '28px', overflow: 'hidden' }}>
+          {isLoggingInOrOut ? (
+            <Spinner size={SpinnerSize.medium} />
+          ) : (
+            <ThemeContext.Consumer>
+              {theme => (
+                <PersonaCoin
+                  imageUrl={profilePicUrl}
+                  size={PersonaSize.size28}
+                  initialsColor="white"
+                  styles={{
+                    initials: {
+                      color: (theme && theme.primary) || 'black',
+                    },
+                  }}
+                />
+              )}
+            </ThemeContext.Consumer>
+          )}
+        </div>
+      ),
+    };
+  };
+}
 
-//   navigateToCustomFunctions: () =>
-//     (window.location.href = './#/custom-functions?backButton=true'),
-//   navigateToRun: () => dispatch(actions.editor.navigateToRun()),
-//   showTrustError: () =>
-//     dispatch(
-//       actions.messageBar.show({
-//         style: MessageBarType.error,
-//         text: 'You must trust the snippet before you can run it.',
-//         button: {
-//           text: 'Trust',
-//           action: actions.solutions.updateOptions({
-//             solution: ownProps.solution,
-//             options: { isUntrusted: false },
-//           }),
-//         },
-//       }),
-//     ),
-
-//   showDialog: (
-//     title: string,
-//     subText: string,
-//     buttons: Array<{
-//       text: string;
-//       action: { type: string; payload?: any };
-//       isPrimary: boolean;
-//     }>,
-//   ) => dispatch(dialog.show({ title, subText, buttons })),
-// });
-
-// export interface IProps extends IPropsFromRedux, IActionsFromRedux {
-//   solution: ISolution;
-//   file: IFile;
-//   theme?: ITheme; // from withTheme
-// }
-
-// interface IState {
-//   showSolutionSettings: boolean;
-//   isDeleteConfirmationDialogVisible: boolean;
-//   isNavigatingAwayToRun: boolean;
-// }
-
-// class HeaderWithoutTheme extends React.Component<IProps, IState> {
-//   state = {
-//     showSolutionSettings: false,
-//     isDeleteConfirmationDialogVisible: false,
-//     isNavigatingAwayToRun: false,
-//   };
-//   clipboard: Clipboard;
-
-//   constructor(props: IProps) {
-//     super(props);
-//     this.clipboard = new Clipboard('.export-to-clipboard', { text: this.getSnippetYaml });
-//     this.clipboard.on('success', props.notifyClipboardCopySuccess);
-//     this.clipboard.on('error', props.notifyClipboardCopyFailure);
-//   }
-
-//   getSnippetYaml = (): string =>
-//     YAML.safeDump(convertSolutionToSnippet(this.props.solution));
-
-//   openDeleteConfirmationDialog = () =>
-//     this.setState({ isDeleteConfirmationDialogVisible: true });
-//   closeDeleteConfirmationDialog = () =>
-//     this.setState({ isDeleteConfirmationDialogVisible: false });
-
-//   onConfirmDelete = () => {
-//     this.closeDeleteConfirmationDialog();
-//     this.props.deleteSolution();
-//   };
-
-//   navigateToRun = () => {
-//     this.setState({ isNavigatingAwayToRun: true });
-//     this.props.navigateToRun();
-//   };
-
-//   showNotLoggedIntoGitHubDialog = () =>
-//     this.props.showDialog(
-//       'Please sign in to GitHub',
-//       'In order to use the gist functionality, you must first sign in to GitHub.',
-//       [
-//         { text: 'Sign in', action: actions.github.login.request(), isPrimary: true },
-//         { text: 'Cancel', action: dialog.dismiss(), isPrimary: false },
-//       ],
-//     );
-
-//   render() {
-//     const {
-//       solution,
-//       showBackstage,
-//       editSolution,
-//       isSettingsView,
-//       isNullSolution,
-//       profilePicUrl,
-//       isLoggedIn,
-//       isLoggingInOrOut,
-//       screenWidth,
-//       theme,
-//       commandBarFabricTheme,
-//       logout,
-//       login,
-//       closeSettings,
-//       updateGist,
-//       createPublicGist,
-//       createSecretGist,
-//     } = this.props;
-//     const solutionName = solution ? solution.name : 'Solution Name';
-
-//     const shareOptions = [
-//       {
-//         hidden: !(solution.source && solution.source.origin === 'gist' && isLoggedIn),
-//         key: 'update-gist',
-//         text: 'Update existing gist',
-//         iconProps: { iconName: 'Save' },
-//         onClick: updateGist,
-//       },
-//       {
-//         key: 'new-public-gist',
-//         text: 'New public gist',
-//         iconProps: { iconName: 'PageCheckedIn' },
-//         onClick: isLoggedIn ? createPublicGist : this.showNotLoggedIntoGitHubDialog,
-//       },
-//       {
-//         key: 'new-secret-gist',
-//         text: 'New secret gist',
-//         iconProps: { iconName: 'ProtectedDocument' },
-//         onClick: isLoggedIn ? createSecretGist : this.showNotLoggedIntoGitHubDialog,
-//       },
-//       {
-//         key: 'export-to-clipboard',
-//         text: 'Copy to clipboard',
-//         iconProps: {
-//           iconName: 'ClipboardSolid',
-//         },
-//         className: 'export-to-clipboard',
-//       },
-//     ]
-//       .filter(option => !option.hidden)
-//       .map(option => {
-//         const { hidden, ...rest } = option;
-//         return rest;
-//       });
-
-//     const nonSettingsButtons: ICommandBarItemProps[] = [
-//       {
-//         hidden: isNullSolution,
-//         key: 'delete',
-//         text: 'Delete',
-//         iconProps: { iconName: 'Delete' },
-//         onClick: this.openDeleteConfirmationDialog,
-//       },
-//       {
-//         hidden: isNullSolution,
-//         key: 'share',
-//         text: 'Share',
-//         iconProps: { iconName: 'Share' },
-//         subMenuProps: {
-//           items: shareOptions,
-//         },
-//       },
-//     ]
-//       .filter(({ hidden }) => !hidden)
-//       .map(option => {
-//         const { hidden, ...rest } = option;
-//         return { ...rest, iconOnly: screenWidth < IS_TASK_PANE_WIDTH };
-//       });
-
-//     const name = {
-//       hidden: isNullSolution,
-//       key: 'solution-name',
-//       text: solutionName,
-//       onClick: isSettingsView ? undefined : this.openSolutionSettings,
-//       style: { paddingRight: '3rem' },
-//       iconProps: {},
-//       iconOnly: false,
-//     };
-
-//     if (screenWidth < IS_TASK_PANE_WIDTH) {
-//       name.style.paddingRight = '0';
-//       name.iconProps = { iconName: 'OfficeAddinsLogo' };
-//       name.iconOnly = true;
-//     }
-
-//     const nav = {
-//       hidden: isSettingsView,
-//       key: 'nav',
-//       ariaLabel: 'Backstage',
-//       iconOnly: true,
-//       iconProps: { iconName: 'GlobalNavButton' },
-//       onClick: showBackstage,
-//     };
-
-//     const back = {
-//       hidden: !isSettingsView,
-//       key: 'back',
-//       ariaLabel: 'Back',
-//       iconOnly: true,
-//       iconProps: { iconName: 'Back' },
-//       onClick: closeSettings,
-//     };
-
-//     const commonItems = [back, nav, name]
-//       .filter(({ hidden }) => !hidden)
-//       .map(option => {
-//         const { hidden, ...rest } = option;
-//         return rest;
-//       });
-
-//     const items: ICommandBarItemProps[] = [
-//       ...commonItems,
-//       ...(isSettingsView
-//         ? []
-//         : [
-//             getRunButton({
-//               ...this.props,
-//               navigateToRun: this.navigateToRun,
-//               isNavigatingAwayToRun: this.state.isNavigatingAwayToRun,
-//             } as IRunButtonProps),
-//             ...nonSettingsButtons,
-//           ]),
-//     ].filter(item => item !== null) as ICommandBarItemProps[];
-
-//     const profilePic = {
-//       key: 'account',
-//       onRenderIcon: () => (
-//         <div style={{ width: '28px', overflow: 'hidden' }}>
-//           {isLoggingInOrOut ? (
-//             <Spinner size={SpinnerSize.medium} />
-//           ) : (
-//             <PersonaCoin
-//               imageUrl={profilePicUrl || undefined}
-//               size={PersonaSize.size28}
-//               initialsColor="white"
-//               styles={{
-//                 initials: {
-//                   color: (theme && theme.primary) || 'black',
-//                 },
-//               }}
-//             />
-//           )}
-//         </div>
-//       ),
-//       ariaLabel: isLoggedIn ? 'Logout' : 'Login',
-//       subMenuProps: isLoggedIn
-//         ? {
-//             items: [
-//               {
-//                 key: 'logout',
-//                 text: 'Logout',
-//                 onClick: logout,
-//               },
-//             ],
-//           }
-//         : undefined,
-//       iconOnly: true,
-//       onClick: isLoggingInOrOut ? () => {} : login,
-//     };
-
-//     return (
-//       <>
-//         <Customizer settings={{ theme: commandBarFabricTheme }}>
-//           <HeaderWrapper>
-//             <CommandBar
-//               items={items}
-//               styles={{
-//                 root: {
-//                   paddingLeft: 0,
-//                   paddingRight: {
-//                     [PlatformType.PC]: '20px',
-//                     [PlatformType.Mac]: '40px',
-//                     [PlatformType.OfficeOnline]: '0px',
-//                   }[getPlatform()],
-//                 },
-//               }}
-//               farItems={[profilePic]}
-//               ariaLabel={'Use left and right arrow keys to navigate between commands'}
-//             />
-//           </HeaderWrapper>
-//         </Customizer>
-
-//         <SolutionSettings
-//           isOpen={this.state.showSolutionSettings}
-//           closeSolutionSettings={this.closeSolutionSettings}
-//           solution={solution}
-//           editSolutionMetadata={editSolution}
-//         />
-
-//         <DeleteConfirmationDialog
-//           isVisible={this.state.isDeleteConfirmationDialogVisible}
-//           solutionName={solution.name}
-//           onYes={this.onConfirmDelete}
-//           onCancel={this.closeDeleteConfirmationDialog}
-//         />
-//       </>
-//     );
-//   }
-
-//   private openSolutionSettings = () => this.setState({ showSolutionSettings: true });
-//   private closeSolutionSettings = () => this.setState({ showSolutionSettings: false });
-// }
-
-// export const Header = withTheme(HeaderWithoutTheme);
-
-// export default connect(
-//   mapStateToProps,
-//   mapDispatchToProps,
-// )(Header);
-
-export default () => {};
+export default connect(
+  (state: IReduxState) => ({
+    items: selectors.header.getItems(state),
+    farItems: selectors.header.getFarItems(state),
+    activeSolution: selectors.editor.getActiveSolution(state),
+    isLoggingInOrOut: selectors.github.getIsLoggingInOrOut(state),
+    profilePicUrl: selectors.github.getProfilePicUrl(state) || undefined,
+  }),
+  dispatch => ({
+    dispatch,
+    notifyClipboardCopySuccess: () =>
+      dispatch(actions.messageBar.show({ text: 'Snippet copied to clipboard.' })),
+    notifyClipboardCopyFailure: () =>
+      dispatch(
+        actions.messageBar.show({
+          text: 'Snippet failed to copy to clipboard.',
+          style: MessageBarType.error,
+        }),
+      ),
+  }),
+)(Header);
