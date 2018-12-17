@@ -6,7 +6,7 @@ import {
   READ_ONLY_FILE_IDS,
   ABOUT_FILE_ID,
 } from '../../../../constants';
-import { getTheme } from '../../../../theme';
+import { getTheme } from 'common/lib/theme';
 import { defaultSettings } from '../../../../settings';
 
 export const getIsOpen = (state: IState): boolean =>

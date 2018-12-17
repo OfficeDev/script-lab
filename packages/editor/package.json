@@ -19,7 +19,7 @@
     "moment": "^2.22.2",
     "monaco-editor": "^0.14.3",
     "normalizr": "^3.2.4",
-    "office-ui-fabric-react": "6.79.0",
+    "office-ui-fabric-react": "^6.114.0",
     "query-string": "5.1.1",
     "react": "^16.7.0-alpha.2",
     "react-dom": "^16.7.0-alpha.2",

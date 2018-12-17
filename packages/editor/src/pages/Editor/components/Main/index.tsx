@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import Header from './Header';
+import Header from './Header/newHeader';
 import FileSwitcherPivot from './FileSwitcherPivot';
 import Editor from './Editor';
 import Footer from './Footer';
@@ -48,7 +48,7 @@ class IDE extends Component<IIDE> {
             : { visibility: 'hidden', opacity: hasLoaded ? 1 : 0 }
         }
       >
-        <Header solution={activeSolution} file={activeFile} />
+        <Header />
         <FileSwitcherPivot />
         <Notifications />
         <ContentWrapper>

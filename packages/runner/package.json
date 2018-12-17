@@ -10,7 +10,7 @@
     "@microsoft/office-js-helpers": "0.7.4",
     "color": "^3.0.0",
     "common": "0.0.1",
-    "office-ui-fabric-react": "^6.69.0",
+    "office-ui-fabric-react": "^6.114.0",
     "query-string": "5.1.1",
     "react": "^16.5.0",
     "react-dom": "^16.5.0",

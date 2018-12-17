@@ -7,7 +7,7 @@
     "color": "^3.0.0",
     "core-js": "^2.5.7",
     "lodash": "^4.17.11",
-    "office-ui-fabric-react": "^6.69.0",
+    "office-ui-fabric-react": "^6.114.0",
     "react": "^16.5.0",
     "react-dom": "^16.5.0",
     "styled-components": "^4.1.1",

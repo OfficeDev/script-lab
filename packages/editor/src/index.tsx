@@ -7,7 +7,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Authenticator, Utilities } from '@microsoft/office-js-helpers';
 import configureStore from './pages/Editor/store/configureStore';
-import { setupFabricTheme } from './theme';
 import { unregister } from './registerServiceWorker';
 import { misc } from './pages/Editor/store/actions';
 import selectors from './pages/Editor/store/selectors';
