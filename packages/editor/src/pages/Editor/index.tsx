@@ -1,4 +1,8 @@
-import React from 'react';
+import { SCRIPT_URLS } from 'common/lib/constants';
+import { addScriptTags } from 'common/lib/utilities/script-loader';
+// todo hwo to do async?
+
+import React, { Component } from 'react';
 import App from './components';
 
 import { Provider } from 'react-redux';
@@ -29,9 +33,28 @@ store.subscribe(
   }, 1000),
 );
 
-const Editor = () => (
-  <Provider store={store}>
-    <App />
-  </Provider>
-);
+interface IState {
+  hasLoadedScripts: boolean;
+}
+
+class Editor extends Component<{}, IState> {
+  state: IState = { hasLoadedScripts: false };
+
+  constructor(props: any) {
+    super(props);
+    addScriptTags([SCRIPT_URLS.OFFICE_JS_FOR_EDITOR, SCRIPT_URLS.MONACO_LOADER])
+      .then(() => Office.onReady())
+      .then(() => this.setState({ hasLoadedScripts: true }));
+  }
+
+  render() {
+    const { hasLoadedScripts } = this.state;
+    return hasLoadedScripts ? (
+      <Provider store={store}>
+        <App />
+      </Provider>
+    ) : null;
+  }
+}
+
 export default Editor;

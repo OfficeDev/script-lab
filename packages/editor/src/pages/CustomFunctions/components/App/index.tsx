@@ -40,9 +40,10 @@ const AppHOC = (UI: React.ComponentType<IPropsToUI>) =>
       super(props);
 
       const cfSolutions = this.getCustomFunctionsSolutions();
+      const hasCustomFunctionsInSolutions = cfSolutions.length > 0;
 
       this.state = {
-        hasCustomFunctionsInSolutions: cfSolutions.length > 0,
+        hasCustomFunctionsInSolutions,
         runnerLastUpdated: Date.now(),
         customFunctionsSolutionLastModified: getCFCodeLastModified(),
         isStandalone: !queryString.parse(window.location.href.split('?').slice(-1)[0])
@@ -51,10 +52,13 @@ const AppHOC = (UI: React.ComponentType<IPropsToUI>) =>
         engineStatus: null,
         logs: [],
       };
-
-      this.fetchAndRegisterMetadata(cfSolutions).then(metadata =>
-        this.setState({ customFunctionsSummaryItems: getSummaryItems(metadata) }),
-      );
+      console.log('has CUSTOM FUNCTIONS IN SOLUTIONS');
+      console.log({ cfSolutions });
+      if (hasCustomFunctionsInSolutions) {
+        this.fetchAndRegisterMetadata(cfSolutions).then(metadata =>
+          this.setState({ customFunctionsSummaryItems: getSummaryItems(metadata) }),
+        );
+      }
 
       getCustomFunctionEngineStatus().then(status => {
         if (status) {
@@ -133,6 +137,7 @@ const AppHOC = (UI: React.ComponentType<IPropsToUI>) =>
       } catch (e) {
         console.error(`Error: Failed during the fetch and registration of CF metadata.`);
         console.error(e);
+        return [];
       }
     }
   };

@@ -5,19 +5,12 @@ redirectToProperEnvIfNeeded();
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Authenticator, Utilities } from '@microsoft/office-js-helpers';
-import configureStore from './pages/Editor/store/configureStore';
+import { Authenticator } from '@microsoft/office-js-helpers';
 import { unregister } from './registerServiceWorker';
-import { misc } from './pages/Editor/store/actions';
-import selectors from './pages/Editor/store/selectors';
-import { initializeIcons } from 'office-ui-fabric-react/lib/Icons';
-import createHashHistory from 'history/createHashHistory';
 
 import './index.css';
 
-import { waitForAllDynamicScriptsToBeLoaded } from 'common/lib/utilities/script-loader/consumer';
 import { invokeGlobalErrorHandler } from 'common/lib/utilities/splash.screen';
-import { IState } from './pages/Editor/store/reducer';
 
 import PageSwitcher from './pages';
 
@@ -38,8 +31,8 @@ window.onerror = error => invokeGlobalErrorHandler(error);
 
 (async () => {
   try {
-    await waitForAllDynamicScriptsToBeLoaded();
-    await Office.onReady();
+    // await waitForAllDynamicScriptsToBeLoaded();
+    // await Office.onReady();
     if (Authenticator.isAuthDialog()) {
       return;
     }
