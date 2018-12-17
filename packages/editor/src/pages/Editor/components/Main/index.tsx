@@ -44,7 +44,12 @@ class IDE extends Component<IProps> {
     return (
       <HeaderFooterLayout
         fullscreen={true}
-        header={<Header />}
+        header={
+          <>
+            <Header />
+            <FileSwitcherPivot />
+          </>
+        }
         footer={<Footer />}
         wrapperStyle={
           isVisible && hasLoaded
@@ -53,7 +58,6 @@ class IDE extends Component<IProps> {
         }
       >
         <>
-          <FileSwitcherPivot />
           <Notifications />
           <ContentWrapper>
             <Editor

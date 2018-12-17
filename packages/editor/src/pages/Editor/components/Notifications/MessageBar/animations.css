@@ -28,6 +28,6 @@
 
 .message-bar.active {
   top: 0;
-  height: auto;
+  height: auto; /* TODO: (nicobell) */
   opacity: 1;
 }
