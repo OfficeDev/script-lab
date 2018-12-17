@@ -48,45 +48,44 @@ class Dashboard extends React.Component<IProps, IState> {
     const headerItems = !isStandalone ? [goBackItem, titleItem] : [titleItem];
 
     return (
-      <div style={{ height: '100vh' }}>
-        <HeaderFooterLayout
-          header={
-            <>
-              <Header items={headerItems} />
-              <PivotBar
-                items={Object.keys(items).map(key => ({
-                  key,
-                  text: key,
-                }))}
-                selectedKey={selectedKey}
-                onSelect={this.setSelectedKey}
-              />
-            </>
-          }
-          footer={<Footer items={[]} />}
-        >
+      <HeaderFooterLayout
+        fullscreen={true}
+        header={
           <>
-            <Only when={shouldPromptRefresh}>
-              <MessageBar
-                messageBarType={MessageBarType.info}
-                isMultiline={true}
-                actions={
-                  <div>
-                    <DefaultButton primary={true} onClick={this.reload}>
-                      Reload
-                    </DefaultButton>
-                  </div>
-                }
-              >
-                You have made changes to your Custom Functions. Would you like to
-                re-register?
-              </MessageBar>
-            </Only>
-
-            {items[selectedKey]}
+            <Header items={headerItems} />
+            <PivotBar
+              items={Object.keys(items).map(key => ({
+                key,
+                text: key,
+              }))}
+              selectedKey={selectedKey}
+              onSelect={this.setSelectedKey}
+            />
           </>
-        </HeaderFooterLayout>
-      </div>
+        }
+        footer={<Footer items={[]} />}
+      >
+        <>
+          <Only when={shouldPromptRefresh}>
+            <MessageBar
+              messageBarType={MessageBarType.info}
+              isMultiline={true}
+              actions={
+                <div>
+                  <DefaultButton primary={true} onClick={this.reload}>
+                    Reload
+                  </DefaultButton>
+                </div>
+              }
+            >
+              You have made changes to your Custom Functions. Would you like to
+              re-register?
+            </MessageBar>
+          </Only>
+
+          {items[selectedKey]}
+        </>
+      </HeaderFooterLayout>
     );
   }
 }

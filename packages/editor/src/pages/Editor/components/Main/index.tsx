@@ -15,6 +15,7 @@ import { IState as IReduxState } from '../../store/reducer';
 import selectors from '../../store/selectors';
 import { editor as editorActions, IRootAction } from '../../store/actions';
 import { Dispatch } from 'redux';
+import HeaderFooterLayout from 'common/lib/components/HeaderFooterLayout';
 
 interface IPropsFromRedux {
   isVisible: boolean;
@@ -30,10 +31,10 @@ const mapStateToProps = (state: IReduxState): IPropsFromRedux => ({
   activeFile: selectors.editor.getActiveFile(state),
 });
 
-export interface IIDE extends IPropsFromRedux {}
+export interface IProps extends IPropsFromRedux {}
 
-class IDE extends Component<IIDE> {
-  static defaultProps: Partial<IIDE> = {
+class IDE extends Component<IProps> {
+  static defaultProps: Partial<IProps> = {
     activeSolution: NULL_SOLUTION,
     activeFile: NULL_FILE,
   };
@@ -41,26 +42,29 @@ class IDE extends Component<IIDE> {
   render() {
     const { isVisible, hasLoaded, activeSolution, activeFile } = this.props;
     return (
-      <Layout
-        style={
+      <HeaderFooterLayout
+        fullscreen={true}
+        header={<Header />}
+        footer={<Footer />}
+        wrapperStyle={
           isVisible && hasLoaded
             ? { visibility: 'visible' }
             : { visibility: 'hidden', opacity: hasLoaded ? 1 : 0 }
         }
       >
-        <Header />
-        <FileSwitcherPivot />
-        <Notifications />
-        <ContentWrapper>
-          <Editor
-            activeSolution={activeSolution}
-            activeFiles={activeSolution.files}
-            activeFile={activeFile}
-            isVisible={isVisible && hasLoaded}
-          />
-        </ContentWrapper>
-        <Footer />
-      </Layout>
+        <>
+          <FileSwitcherPivot />
+          <Notifications />
+          <ContentWrapper>
+            <Editor
+              activeSolution={activeSolution}
+              activeFiles={activeSolution.files}
+              activeFile={activeFile}
+              isVisible={isVisible && hasLoaded}
+            />
+          </ContentWrapper>
+        </>
+      </HeaderFooterLayout>
     );
   }
 }

@@ -58,9 +58,9 @@ export class ReactMonaco extends Component<IProps, IState> {
   initializeMonaco = () => {
     if (!this.container.current) {
       // Adding throw here mostly for the type-safety of using current below
-      throw new Error(
-        "Trying to initialize but ref isn't even valid. This should not be reachable.",
-      );
+      // throw new Error(
+      //   "Trying to initialize but ref isn't even valid. This should not be reachable.",
+      // );
     }
 
     this.editor = monaco.editor.create(this.container.current, {});
