@@ -128,7 +128,7 @@ const showLoginToGithubDialog = actions.dialog.show({
   ],
 });
 
-export const getItems /*: (state: IState) => IHeaderItem[] */ = createSelector(
+export const getItems = createSelector(
   [getMode, getActiveSolution, getShouldHideTitle, getIsLoggedIn, getRunButton],
   (mode, activeSolution, shouldHideTitle, isLoggedIn, runButton) => {
     const titleStyles = {
@@ -168,10 +168,6 @@ export const getItems /*: (state: IState) => IHeaderItem[] */ = createSelector(
           {
             key: 'solution-name',
             text: activeSolution.name,
-            actionCreator: () => {
-              // actions.dialog.show();
-              /*  TODO: OPEN SOLUTION SETTINGS */
-            },
             ...titleStyles,
           },
           ...runButton,
@@ -251,7 +247,7 @@ export const getItems /*: (state: IState) => IHeaderItem[] */ = createSelector(
   },
 );
 
-export const getFarItems /* (state: IState) => IHeaderItem[] */ = createSelector(
+export const getFarItems = createSelector(
   [getMode, getIsLoggedIn, getIsLoggingInOrOut],
   (mode, isLoggedIn, isLoggingInOrOut) => {
     switch (mode) {
