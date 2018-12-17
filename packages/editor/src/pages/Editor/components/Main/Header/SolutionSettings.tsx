@@ -9,6 +9,10 @@ import { PrimaryButton, DefaultButton } from 'office-ui-fabric-react/lib/Button'
 import { Label } from 'office-ui-fabric-react/lib/Label';
 import { Link } from 'office-ui-fabric-react/lib/Link';
 
+import { connect } from 'react-redux';
+import { IState as IReduxState } from '../../../store/reducer';
+import { actions, selectors } from '../../../store';
+
 const DialogBodyWrapper = styled.div`
   & > * {
     margin-bottom: 1.5rem;
@@ -114,4 +118,12 @@ class SolutionSettings extends React.Component<ISolutionSettings, IState> {
   };
 }
 
-export default SolutionSettings;
+export default connect(
+  (state: IReduxState) => ({ solution: selectors.editor.getActiveSolution(state) }),
+  dispatch => ({
+    editSolutionMetadata: (
+      solutionId: string,
+      solution: Partial<IEditableSolutionProperties>,
+    ) => dispatch(actions.solutions.edit({ id: solutionId, solution })),
+  }),
+)(SolutionSettings);
