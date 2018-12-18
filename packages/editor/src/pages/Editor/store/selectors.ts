@@ -1,4 +1,5 @@
 import * as editor from './editor/selectors';
+import * as footer from './footer/selectors';
 import * as gists from './gists/selectors';
 import * as github from './github/selectors';
 import * as header from './header/selectors';
@@ -9,6 +10,7 @@ import * as settings from './settings/selectors';
 import * as solutions from './solutions/selectors';
 
 export { editor };
+export { footer };
 export { gists };
 export { github };
 export { header };
@@ -20,6 +22,7 @@ export { solutions };
 
 export default {
   editor,
+  footer,
   gists,
   github,
   header,

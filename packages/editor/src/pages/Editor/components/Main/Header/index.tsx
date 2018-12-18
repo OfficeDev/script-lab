@@ -22,14 +22,14 @@ import SolutionSettings from './SolutionSettings';
 
 // redux
 import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
 import { IState as IReduxState } from '../../../store/reducer';
 import { actions, selectors } from '../../../store';
 import { IHeaderItem } from '../../../store/header/selectors';
-import { Dispatch } from 'redux';
 
 export const convertActionCreatorToOnClick = (
   item: IHeaderItem,
-  dispatch: any,
+  dispatch: any, // TODO: why is this complaining about being a Dispatch?
 ): IHeaderItem => ({
   ...item,
   onClick: item.actionCreator ? () => dispatch(item.actionCreator()) : undefined,
@@ -53,7 +53,7 @@ export const convertActionCreatorToOnClick = (
 interface IProps {
   items: IHeaderItem[];
   farItems: IHeaderItem[];
-  dispatch: (action: { type: string; payload?: any }) => void;
+  dispatch: Dispatch;
 
   activeSolution: ISolution;
   notifyClipboardCopySuccess();
@@ -164,7 +164,7 @@ export default connect(
     isLoggingInOrOut: selectors.github.getIsLoggingInOrOut(state),
     profilePicUrl: selectors.github.getProfilePicUrl(state) || undefined,
   }),
-  dispatch => ({
+  (dispatch: Dispatch) => ({
     dispatch,
     notifyClipboardCopySuccess: () =>
       dispatch(actions.messageBar.show({ text: 'Snippet copied to clipboard.' })),
