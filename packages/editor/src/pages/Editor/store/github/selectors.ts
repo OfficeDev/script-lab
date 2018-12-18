@@ -1,4 +1,5 @@
 import { IState } from '../reducer';
+import { createSelector } from 'reselect';
 
 export const getToken = (state: IState): string | null => state.github.token;
 
@@ -9,3 +10,8 @@ export const getUsername = (state: IState): string | null => state.github.userna
 
 export const getIsLoggingInOrOut = (state: IState): boolean =>
   state.github.isLoggingInOrOut;
+
+export const getIsLoggedIn: (state: IState) => boolean = createSelector(
+  [getToken],
+  token => !!token,
+);

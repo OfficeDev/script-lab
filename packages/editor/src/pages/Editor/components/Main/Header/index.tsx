@@ -25,6 +25,30 @@ import { connect } from 'react-redux';
 import { IState as IReduxState } from '../../../store/reducer';
 import { actions, selectors } from '../../../store';
 import { IHeaderItem } from '../../../store/header/selectors';
+import { Dispatch } from 'redux';
+
+export const convertActionCreatorToOnClick = (
+  item: IHeaderItem,
+  dispatch: any,
+): IHeaderItem => ({
+  ...item,
+  onClick: item.actionCreator ? () => dispatch(item.actionCreator()) : undefined,
+
+  subMenuProps: item.subMenuProps
+    ? {
+        ...item.subMenuProps,
+        items:
+          item.subMenuProps.items !== undefined
+            ? item.subMenuProps.items.map(subItem => ({
+                ...subItem,
+                onClick: subItem.actionCreator
+                  ? () => dispatch(subItem.actionCreator())
+                  : undefined,
+              }))
+            : undefined,
+      }
+    : undefined,
+});
 
 interface IProps {
   items: IHeaderItem[];
@@ -64,7 +88,7 @@ class Header extends Component<IProps, IState> {
 
   private renderItem = (item: IHeaderItem): IHeaderItem => {
     const customRenderIcons = this.getCustomOnRenderIconButtons();
-    const onClickReadyItem = this.convertActionCreatorToOnClick(item);
+    const onClickReadyItem = convertActionCreatorToOnClick(item, this.props.dispatch);
     if (item.key in customRenderIcons) {
       return {
         ...onClickReadyItem,
@@ -74,16 +98,6 @@ class Header extends Component<IProps, IState> {
       return onClickReadyItem;
     }
   };
-
-  private convertActionCreatorToOnClick = (item: IHeaderItem): IHeaderItem => ({
-    ...item,
-    onClick: item.actionCreator
-      ? () => {
-          console.log(item.actionCreator);
-          this.props.dispatch(item.actionCreator());
-        }
-      : undefined,
-  });
 
   private getCustomOnRenderIconButtons = (): { [key: string]: () => JSX.Element } => {
     const { isLoggingInOrOut, profilePicUrl } = this.props;

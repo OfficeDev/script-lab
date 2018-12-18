@@ -1,11 +1,8 @@
 import { ICommandBarItemProps } from 'office-ui-fabric-react/lib/CommandBar';
+import { MessageBarType } from 'office-ui-fabric-react/lib/components/MessageBar';
 import { IState } from '../reducer';
 
-import {
-  NULL_SOLUTION_ID,
-  SETTINGS_SOLUTION_ID,
-  IS_TASK_PANE_WIDTH,
-} from '../../../../constants';
+import { NULL_SOLUTION_ID, SETTINGS_SOLUTION_ID } from '../../../../constants';
 
 // selectors
 import { createSelector } from 'reselect';
@@ -14,8 +11,8 @@ import {
   getIsActiveSolutionCF,
   getIsActiveSolutionTrusted,
 } from '../editor/selectors';
-import { getToken, getIsLoggingInOrOut } from '../github/selectors';
-import { getWidth } from '../screen/selectors';
+import { getToken, getIsLoggingInOrOut, getIsLoggedIn } from '../github/selectors';
+import { getIsTaskPane } from '../screen/selectors';
 import { getIsRunnableOnThisHost } from '../host/selectors';
 
 // actions
@@ -26,7 +23,6 @@ import * as github from '../github/actions';
 import * as messageBar from '../messageBar/actions';
 import * as solutions from '../solutions/actions';
 import * as settings from '../settings/actions';
-import { MessageBarType } from 'office-ui-fabric-react/lib/components/MessageBar';
 
 const actions = { dialog, editor, gists, github, messageBar, solutions, settings };
 
@@ -48,16 +44,6 @@ export const getMode: (
         return 'normal';
     }
   },
-);
-
-export const getIsLoggedIn: (state: IState) => boolean = createSelector(
-  [getToken],
-  token => !!token,
-);
-
-export const getShouldHideTitle: (state: IState) => boolean = createSelector(
-  [getWidth],
-  screenWidth => screenWidth < IS_TASK_PANE_WIDTH,
 );
 
 const getRunButton = createSelector(
@@ -130,7 +116,7 @@ const showLoginToGithubDialog = actions.dialog.show({
 });
 
 export const getItems = createSelector(
-  [getMode, getActiveSolution, getShouldHideTitle, getIsLoggedIn, getRunButton],
+  [getMode, getActiveSolution, getIsTaskPane, getIsLoggedIn, getRunButton],
   (mode, activeSolution, iconOnly, isLoggedIn, runButton) => {
     const titleStyles = {
       style: { paddingRight: iconOnly ? '0' : '3rem' },

@@ -127,9 +127,7 @@ const FooterWithoutTheme = ({
         })),
       },
     },
-  ]
-    .filter(({ hidden }) => !hidden)
-    .map(item => ({ ...item, style: { fontSize: '1.2rem' } }));
+  ].map(item => ({ ...item, style: { fontSize: '1.2rem' } }));
 
   const farItems = [
     {
@@ -163,9 +161,7 @@ const FooterWithoutTheme = ({
       ariaLabel: 'Settings',
       onClick: onSettingsIconClick,
     },
-  ]
-    .filter(({ hidden }) => !hidden)
-    .map(item => ({ ...item, style: { fontSize: '1.2rem' } }));
+  ].map(item => ({ ...item, style: { fontSize: '1.2rem' } }));
 
   return <CommonFooter items={items} farItems={farItems} />;
 };
