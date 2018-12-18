@@ -62,33 +62,6 @@ class Header extends Component<IProps, IState> {
   showSolutionSettings = () => this.setState({ isSolutionSettingsVisible: true });
   hideSolutionSettings = () => this.setState({ isSolutionSettingsVisible: false });
 
-  render() {
-    const { items, farItems } = this.props;
-
-    return (
-      <>
-        <CommonHeader
-          items={items.map((item: IHeaderItem) => {
-            const renderedItem = this.renderItem(item);
-            if (item.key === 'solution-name') {
-              return {
-                ...renderedItem,
-                onClick: this.showSolutionSettings,
-              };
-            } else {
-              return renderedItem;
-            }
-          })}
-          farItems={farItems.map((item: IHeaderItem) => this.renderItem(item))}
-        />
-        <SolutionSettings
-          isOpen={this.state.isSolutionSettingsVisible}
-          closeSolutionSettings={this.hideSolutionSettings}
-        />
-      </>
-    );
-  }
-
   private renderItem = (item: IHeaderItem): IHeaderItem => {
     const customRenderIcons = this.getCustomOnRenderIconButtons();
     const onClickReadyItem = this.convertActionCreatorToOnClick(item);
@@ -140,6 +113,33 @@ class Header extends Component<IProps, IState> {
       ),
     };
   };
+
+  render() {
+    const { items, farItems } = this.props;
+
+    return (
+      <>
+        <CommonHeader
+          items={items.map((item: IHeaderItem) => {
+            const renderedItem = this.renderItem(item);
+            if (item.key === 'solution-name') {
+              return {
+                ...renderedItem,
+                onClick: this.showSolutionSettings,
+              };
+            } else {
+              return renderedItem;
+            }
+          })}
+          farItems={farItems.map((item: IHeaderItem) => this.renderItem(item))}
+        />
+        <SolutionSettings
+          isOpen={this.state.isSolutionSettingsVisible}
+          closeSolutionSettings={this.hideSolutionSettings}
+        />
+      </>
+    );
+  }
 }
 
 export default connect(
