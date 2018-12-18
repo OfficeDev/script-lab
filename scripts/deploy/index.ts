@@ -56,10 +56,12 @@ if (fs.existsSync(FINAL_OUTPUT_DIRECTORY)) {
 
 console.log('Proceeding to main body of the deploy script');
 
+const DEPLOYMENT_LOG_FILENAME = new Date().toISOString().replace(/\:/g, '_') + '.txt';
 mergeNewAndExistingBuildAssets({
   BUILD_DIRECTORY,
   PREVIOUS_BUILD_DIRECTORIES,
   FINAL_OUTPUT_DIRECTORY,
+  DEPLOYMENT_LOG_FILENAME,
 });
 
 deploy(BUILD_DIRECTORY, SITE_NAME, `${SITE_NAME}${deploymentSlot}`);

@@ -6,10 +6,12 @@ export function mergeNewAndExistingBuildAssets({
   BUILD_DIRECTORY,
   PREVIOUS_BUILD_DIRECTORIES,
   FINAL_OUTPUT_DIRECTORY,
+  DEPLOYMENT_LOG_FILENAME,
 }: {
   BUILD_DIRECTORY: string;
   PREVIOUS_BUILD_DIRECTORIES: string[];
   FINAL_OUTPUT_DIRECTORY: string;
+  DEPLOYMENT_LOG_FILENAME: string;
 }): void {
   const allFiles = listAllFilesRecursive(BUILD_DIRECTORY);
   const gitIgnoreFiles = allFiles.filter((filepath: string) =>
@@ -24,7 +26,11 @@ export function mergeNewAndExistingBuildAssets({
     );
   }
 
-  writeAssetLog(BUILD_DIRECTORY, allFiles);
+  writeAssetLog(BUILD_DIRECTORY, allFiles, DEPLOYMENT_LOG_FILENAME);
+
+  if (!fs.existsSync(FINAL_OUTPUT_DIRECTORY)) {
+    fs.mkdirSync(FINAL_OUTPUT_DIRECTORY);
+  }
 
   [...PREVIOUS_BUILD_DIRECTORIES, BUILD_DIRECTORY].forEach(sourceDir => {
     mergeDir(sourceDir, FINAL_OUTPUT_DIRECTORY);
@@ -46,8 +52,11 @@ function listAllFilesRecursive(initialDir: string): string[] {
   }
 }
 
-function writeAssetLog(buildDirectory: string, files: string[]) {
-  const deploymentLogFilename = new Date().toISOString().replace(/\:/g, '_') + '.txt';
+function writeAssetLog(
+  buildDirectory: string,
+  files: string[],
+  deploymentLogFilename: string,
+) {
   shell.echo('Deploying the following files from the build directory:');
   shell.echo(files.join('\n'));
 
