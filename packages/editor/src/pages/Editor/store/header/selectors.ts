@@ -82,7 +82,8 @@ const getRunButton = createSelector(
           key: 'register-cf',
           text: 'Register',
           iconProps: { iconName: 'Play' },
-          onClick: window.location.href = './#/custom-functions?backButton=true',
+          actionCreator: () =>
+            (window.location.href = './#/custom-functions?backButton=true'),
         },
       ];
     } else {
@@ -130,11 +131,11 @@ const showLoginToGithubDialog = actions.dialog.show({
 
 export const getItems = createSelector(
   [getMode, getActiveSolution, getShouldHideTitle, getIsLoggedIn, getRunButton],
-  (mode, activeSolution, shouldHideTitle, isLoggedIn, runButton) => {
+  (mode, activeSolution, iconOnly, isLoggedIn, runButton) => {
     const titleStyles = {
-      style: { paddingRight: shouldHideTitle ? '0' : '3rem' },
-      iconProps: shouldHideTitle ? { iconName: 'OfficeAddinsLogo' } : {},
-      iconOnly: shouldHideTitle,
+      style: { paddingRight: iconOnly ? '0' : '3rem' },
+      iconProps: iconOnly ? { iconName: 'OfficeAddinsLogo' } : {},
+      iconOnly,
     };
 
     switch (mode) {
@@ -175,6 +176,7 @@ export const getItems = createSelector(
             key: 'delete',
             text: 'Delete',
             iconProps: { iconName: 'Delete' },
+            iconOnly,
             actionCreator: () =>
               actions.dialog.show({
                 title: 'Delete Snippet?',
@@ -197,6 +199,7 @@ export const getItems = createSelector(
             key: 'share',
             text: 'Share',
             iconProps: { iconName: 'Share' },
+            iconOnly,
             subMenuProps: {
               items: [
                 {

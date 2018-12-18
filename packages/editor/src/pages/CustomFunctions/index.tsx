@@ -5,6 +5,8 @@ import React, { Component } from 'react';
 
 import App from './components/App';
 import CustomFunctionsDashboard from './components/CustomFunctionsDashboard';
+import Theme from 'common/lib/components/Theme';
+import { Utilities } from '@microsoft/office-js-helpers';
 
 interface IState {
   hasLoadedScripts: boolean;
@@ -28,7 +30,11 @@ class CustomFunctions extends Component<{}, IState> {
 
   render() {
     const Component = App(CustomFunctionsDashboard);
-    return <Component />;
+    return (
+      <Theme host={Utilities.host}>
+        <Component />
+      </Theme>
+    );
   }
 }
 

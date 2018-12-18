@@ -1,12 +1,13 @@
 import { SCRIPT_URLS } from 'common/lib/constants';
 import { addScriptTags } from 'common/lib/utilities/script-loader';
-// todo hwo to do async?
 
 import React, { Component } from 'react';
 import App from './components';
 
+// redux
 import { Store } from 'redux';
 import { Provider } from 'react-redux';
+import configureStore from './store/configureStore';
 import {
   loadState as loadStateFromLocalStorage,
   saveState as saveStateToLocalStorage,
@@ -16,7 +17,6 @@ import {
   saveState as saveStateToSessionStorage,
 } from './store/sessionStorage';
 
-import configureStore from './store/configureStore';
 import throttle from 'lodash/throttle';
 
 interface IState {
