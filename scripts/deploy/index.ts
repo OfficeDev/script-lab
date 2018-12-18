@@ -1,9 +1,8 @@
-// cSpell:ignore pushd, popd
-
 import path from 'path';
 import shell from 'shelljs';
 import fs from 'fs-extra';
-import { partition } from 'lodash';
+
+import { mergeNewAndExistingBuildAssets } from './helper';
 
 interface IDeployEnvironments<T> {
   master: T;
@@ -43,30 +42,27 @@ if (!deploymentSlot) {
 }
 
 const BUILD_DIRECTORY = path.join(PACKAGE_LOCATION, 'build');
-
 if (!shell.test('-d', BUILD_DIRECTORY)) {
   exit('ERROR: No build directory found!');
 }
 
-shell.echo('Proceeding to main body of the deploy script');
+const PREVIOUS_BUILD_DIRECTORIES: string[] = [];
+// FIXME: Zlatkovsky clone existing into here: path.join(PACKAGE_LOCATION, 'previous_builds', '1' /** or 2 */);
 
-const allFiles = listAllFilesRecursive(BUILD_DIRECTORY);
-const [gitIgnoreFiles, allOtherFiles] = partition(allFiles, (filepath: string) =>
-  filepath.toLowerCase().endsWith('.gitignore'),
-);
-
-if (gitIgnoreFiles.length > 0) {
-  throw new Error(
-    [
-      'Unexpectedly found 1 or more .gitignore files. This should not happen: ',
-      ...gitIgnoreFiles.map(filepath => ' - ' + filepath),
-    ].join('\n'),
-  );
+const FINAL_OUTPUT_DIRECTORY = path.join(PACKAGE_LOCATION, 'final_output');
+if (fs.existsSync(FINAL_OUTPUT_DIRECTORY)) {
+  fs.unlinkSync(FINAL_OUTPUT_DIRECTORY);
 }
 
-writeDeploymentLog(BUILD_DIRECTORY, allOtherFiles);
+console.log('Proceeding to main body of the deploy script');
 
-deploy(`${PACKAGE_LOCATION}/build`, SITE_NAME, `${SITE_NAME}${deploymentSlot}`);
+mergeNewAndExistingBuildAssets({
+  BUILD_DIRECTORY,
+  PREVIOUS_BUILD_DIRECTORIES,
+  FINAL_OUTPUT_DIRECTORY,
+});
+
+deploy(BUILD_DIRECTORY, SITE_NAME, `${SITE_NAME}${deploymentSlot}`);
 
 exit(`Deployment to ${SITE_NAME} completed!`);
 
@@ -194,36 +190,6 @@ function deploy(path: string, site: string, siteWithStaging: string) {
   shell.popd();
 }
 
-function listAllFilesRecursive(initialDir: string): string[] {
-  const prefixLength = initialDir.length;
-  return getAllFilesHelper(initialDir).map(filename => filename.substr(prefixLength));
-
-  function getAllFilesHelper(dir: string): string[] {
-    return fs.readdirSync(dir).reduce((files: string[], file) => {
-      const fullPath = path.join(dir, file);
-      const isDirectory = fs.statSync(fullPath).isDirectory();
-      return isDirectory
-        ? [...files, ...getAllFilesHelper(fullPath)]
-        : [...files, fullPath];
-    }, []);
-  }
-}
-
-function writeDeploymentLog(buildDirectory: string, files: string[]) {
-  const deploymentLogFilename = new Date().toISOString().replace(/\:/g, '_') + '.txt';
-  shell.echo('Deploying the following files from the build directory:');
-  shell.echo(files.join('\n'));
-
-  if (!fs.existsSync(path.join(buildDirectory, 'DeploymentLog'))) {
-    fs.mkdirSync(path.join(buildDirectory, 'DeploymentLog'));
-  }
-
-  fs.writeFileSync(
-    path.join(buildDirectory, 'DeploymentLog', deploymentLogFilename),
-    files.join('\n'),
-  );
-}
-
 function exit(reason: string, abort?: boolean) {
   if (reason) {
     abort ? console.error(reason) : console.log(reason);
@@ -231,3 +197,5 @@ function exit(reason: string, abort?: boolean) {
 
   return abort ? process.exit(1) : process.exit(0);
 }
+
+// cSpell:ignore pushd, popd

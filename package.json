@@ -12,7 +12,7 @@
     "build": "cd packages/editor && yarn build && cd ../server && yarn build",
     "prettier": "prettier --list-different \"./**/*.@(ts|tsx|js|jsx|html)\"",
     "prettier:write": "prettier --write \"./**/*.@(ts|tsx|js|jsx|html)\"",
-    "deploy": "ts-node --project scripts/tsconfig.json scripts/deploy.ts",
+    "deploy": "ts-node --project scripts/tsconfig.json scripts/deploy/index.ts",
     "common": "yarn workspace common start",
     "editor": "yarn workspace editor start",
     "runner": "yarn workspace runner start",
