@@ -31,10 +31,11 @@ class Editor extends Component<{}, IState> {
     super(props);
     addScriptTags([SCRIPT_URLS.OFFICE_JS_FOR_EDITOR, SCRIPT_URLS.MONACO_LOADER])
       .then(() => Office.onReady())
-      .then(() => {
+      .then(() => loadStateFromLocalStorage())
+      .then(localStorageState => {
         const store = configureStore({
           initialState: {
-            ...loadStateFromLocalStorage(),
+            ...localStorageState,
             ...loadStateFromSessionStorage(),
           },
         });

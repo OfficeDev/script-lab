@@ -31,7 +31,7 @@ interface IStoredGitHubState {
 
 let lastSavedState: IState;
 
-export function loadState(): Partial<IState> {
+export async function loadState(): Promise<Partial<IState>> {
   try {
     ensureFreshLocalStorage();
 
@@ -54,7 +54,7 @@ export function loadState(): Partial<IState> {
       lastActive: { solutionId: null, fileId: null },
     };
 
-    const github = loadGitHubInfo();
+    const github = await loadGitHubInfo();
 
     return { solutions: { metadata: solutions, files }, settings: settingsState, github };
   } catch (err) {
@@ -128,29 +128,28 @@ export const saveState = (state: IState) => {
 };
 
 // github
-function loadGitHubInfo(): IGitHubState {
+async function loadGitHubInfo(): Promise<IGitHubState> {
   const githubInfo: string = localStorage.getItem(GITHUB_KEY);
   if (githubInfo) {
     return { ...JSON.parse(githubInfo), isLoggingInOrOut: false };
   }
 
-  // TODO: (Nico): FIXMEFIXMEFIXME STOPSTOP REFACTOR THIS TAKING OUT FROM HERR TO MAKE sync
-  // const tokenStorage = localStorage.getItem('OAuth2Tokens');
-  // if (tokenStorage) {
-  //   const parsedTokenStorage = JSON.parse(tokenStorage);
-  //   if (parsedTokenStorage && 'GitHub' in parsedTokenStorage) {
-  //     const token = parsedTokenStorage.GitHub.access_token;
-  //     if (token) {
-  //       return {
-  //         profilePicUrl: null,
-  //         username: null,
-  //         ...(await getProfilePicUrlAndUsername(token)),
-  //         token,
-  //         isLoggingInOrOut: false,
-  //       };
-  //     }
-  //   }
-  // }
+  const tokenStorage = localStorage.getItem('OAuth2Tokens');
+  if (tokenStorage) {
+    const parsedTokenStorage = JSON.parse(tokenStorage);
+    if (parsedTokenStorage && 'GitHub' in parsedTokenStorage) {
+      const token = parsedTokenStorage.GitHub.access_token;
+      if (token) {
+        return {
+          profilePicUrl: null,
+          username: null,
+          ...(await getProfilePicUrlAndUsername(token)),
+          token,
+          isLoggingInOrOut: false,
+        };
+      }
+    }
+  }
   return {
     profilePicUrl: null,
     username: null,
