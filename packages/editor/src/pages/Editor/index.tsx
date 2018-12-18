@@ -5,6 +5,7 @@ import { addScriptTags } from 'common/lib/utilities/script-loader';
 import React, { Component } from 'react';
 import App from './components';
 
+import { Store } from 'redux';
 import { Provider } from 'react-redux';
 import {
   loadState as loadStateFromLocalStorage,
@@ -18,23 +19,9 @@ import {
 import configureStore from './store/configureStore';
 import throttle from 'lodash/throttle';
 
-const store = configureStore({
-  initialState: {
-    ...loadStateFromLocalStorage(),
-    ...loadStateFromSessionStorage(),
-  },
-});
-
-store.subscribe(
-  throttle(() => {
-    const state = store.getState();
-    saveStateToLocalStorage(state);
-    saveStateToSessionStorage(state);
-  }, 1000),
-);
-
 interface IState {
   hasLoadedScripts: boolean;
+  store?: Store;
 }
 
 class Editor extends Component<{}, IState> {
@@ -44,11 +31,28 @@ class Editor extends Component<{}, IState> {
     super(props);
     addScriptTags([SCRIPT_URLS.OFFICE_JS_FOR_EDITOR, SCRIPT_URLS.MONACO_LOADER])
       .then(() => Office.onReady())
-      .then(() => this.setState({ hasLoadedScripts: true }));
+      .then(() => {
+        const store = configureStore({
+          initialState: {
+            ...loadStateFromLocalStorage(),
+            ...loadStateFromSessionStorage(),
+          },
+        });
+
+        store.subscribe(
+          throttle(() => {
+            const state = store.getState();
+            saveStateToLocalStorage(state);
+            saveStateToSessionStorage(state);
+          }, 1000),
+        );
+
+        this.setState({ hasLoadedScripts: true, store });
+      });
   }
 
   render() {
-    const { hasLoadedScripts } = this.state;
+    const { hasLoadedScripts, store } = this.state;
     return hasLoadedScripts ? (
       <Provider store={store}>
         <App />
