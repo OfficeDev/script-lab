@@ -3,7 +3,7 @@ import { getType, ActionType } from 'typesafe-actions';
 
 import selectors from '../selectors';
 import { samples } from '../actions';
-import { fetchYaml } from '../../../../services/general';
+import { fetchYaml } from '../../services/general';
 import { convertSnippetToSolution } from '../../../../utils';
 import { createSolutionSaga } from '../solutions/sagas';
 import { currentOfficeJsRawSnippetsBaseRepoUrl } from 'common/lib/environment';

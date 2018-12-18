@@ -2,8 +2,8 @@ import { put, takeEvery, call, select } from 'redux-saga/effects';
 import { getType, ActionType } from 'typesafe-actions';
 import YAML from 'js-yaml';
 
-import * as github from '../../../../services/github';
-import { fetchYaml } from '../../../../services/general';
+import * as github from '../../services/github';
+import { fetchYaml } from '../../services/general';
 import { gists, editor, solutions } from '../actions';
 import selectors from '../selectors';
 

@@ -3,7 +3,7 @@ import { getType, ActionType } from 'typesafe-actions';
 import { push } from 'connected-react-router';
 
 import { messageBar, solutions, editor } from '../actions';
-import { fetchYaml } from '../../../../services/general';
+import { fetchYaml } from '../../services/general';
 import selectors from '../selectors';
 import { convertSnippetToSolution, isCustomFunctionScript } from '../../../../utils';
 import { getBoilerplate } from '../../../../newSolutionData';

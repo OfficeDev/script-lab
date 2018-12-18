@@ -2,7 +2,7 @@ import { put, takeEvery, call, select } from 'redux-saga/effects';
 import { getType, ActionType } from 'typesafe-actions';
 
 import { github } from '../actions';
-import { login, logout } from '../../../../services/github';
+import { login, logout } from '../../services/github';
 import { fetchAllGistMetadataSaga } from '../gists/sagas';
 import selectors from '../selectors';
 
