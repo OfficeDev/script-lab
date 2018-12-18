@@ -11,7 +11,7 @@ import selectors from '../selectors';
 
 import isEqual from 'lodash/isEqual';
 
-import { allowedSettings, defaultSettings } from '../../../../settings';
+import { allowedSettings, defaultSettings } from './utilities';
 
 import {
   SETTINGS_SOLUTION_ID,

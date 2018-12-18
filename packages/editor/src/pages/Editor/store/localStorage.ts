@@ -6,7 +6,7 @@ import selectors from './selectors';
 import { convertSolutionToSnippet, convertSnippetToSolution } from '../../../utils';
 import { localStorageKeys } from 'common/lib/constants';
 import { SETTINGS_SOLUTION_ID, NULL_SOLUTION_ID } from '../../../constants';
-import { getSettingsSolutionAndFiles } from '../../../settings';
+import { getSettingsSolutionAndFiles } from './settings/utilities';
 import { verifySettings } from './settings/sagas';
 import { getBoilerplate } from '../../../newSolutionData';
 import ensureFreshLocalStorage from 'common/lib/utilities/ensure.fresh.local.storage';

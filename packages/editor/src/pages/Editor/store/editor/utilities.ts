@@ -1,6 +1,6 @@
 import prettier from 'prettier/standalone';
 import librariesIntellisenseJSON from './librariesIntellisense';
-import { schema as SettingsSchema } from '../../../../settings';
+import { schema as SettingsSchema } from '../settings/utilities';
 import { USER_SETTINGS_FILE_ID } from '../../../../constants';
 
 export function doesMonacoExist() {

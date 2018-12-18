@@ -7,7 +7,7 @@ import {
   ABOUT_FILE_ID,
 } from '../../../../constants';
 import { getTheme } from 'common/lib/theme';
-import { defaultSettings } from '../../../../settings';
+import { defaultSettings } from './utilities';
 
 export const getIsOpen = (state: IState): boolean =>
   getActiveSolution(state).id === SETTINGS_SOLUTION_ID;

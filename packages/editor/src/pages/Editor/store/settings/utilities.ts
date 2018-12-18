@@ -4,7 +4,7 @@ import {
   DEFAULT_SETTINGS_FILE_ID,
   SETTINGS_JSON_LANGUAGE,
   ABOUT_FILE_ID,
-} from './constants';
+} from '../../../../constants';
 
 import { environmentDisplayName } from 'common/lib/environment';
 
