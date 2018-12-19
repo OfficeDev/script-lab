@@ -8,6 +8,7 @@ import CustomFunctionsDashboard from './components/CustomFunctionsDashboard';
 import Theme from 'common/lib/components/Theme';
 import { Utilities } from '@microsoft/office-js-helpers';
 import { AwaitPromiseThenRender } from '../utilities/AwaitPromiseThenRender';
+import { hideLoadingIndicator } from '../utilities/loadingIndicator';
 
 const CFD = App(CustomFunctionsDashboard);
 
@@ -15,10 +16,7 @@ const CustomFunctions = () => (
   <AwaitPromiseThenRender
     promise={addScriptTags([SCRIPT_URLS.OFFICE_JS_FOR_CUSTOM_FUNCTIONS_DASHBOARD])
       .then(() => Office.onReady())
-      .then(() => {
-        const loadingIndicator = document.getElementById('loading')!;
-        loadingIndicator.style.visibility = 'hidden';
-      })}
+      .then(() => hideLoadingIndicator())}
   >
     <Theme host={Utilities.host}>
       <CFD />
