@@ -5,6 +5,7 @@ import { PATHS } from '../constants';
 
 import AddinCommands from './AddinCommands';
 import CustomFunctions from './CustomFunctions';
+import CustomFunctionsRun from './CustomFunctionsRun';
 import Editor from './Editor';
 import Heartbeat from './Heartbeat';
 import Run from './Run';
@@ -15,6 +16,7 @@ export const Pages = {
   AddinCommands,
   Editor,
   CustomFunctions,
+  CustomFunctionsRun,
   Heartbeat,
   Run,
 };
