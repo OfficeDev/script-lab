@@ -48,12 +48,6 @@ const PRECOMPILE_SPEC_LIST: {
       processor: webpackProcessor,
     },
     {
-      name: 'scripts-loader.js',
-      relativeFilePath: 'scripts-loader',
-      injectInto: ['index.html'],
-      processor: webpackProcessor,
-    },
-    {
       name: 'style.css',
       relativeFilePath: '../../editor/precompile-sources/style.css',
       injectInto: ['index.html'],
