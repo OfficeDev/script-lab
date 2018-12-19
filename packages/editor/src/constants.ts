@@ -41,6 +41,7 @@ export const PATHS = {
   BACKSTAGE: '/backstage',
   GITHUB_ISSUE: 'https://github.com/OfficeDev/script-lab-react/issues/new/choose',
   // Pages
+  AddinCommands: '/functions',
   CustomFunctions: '/custom-functions',
   Editor: '/',
   Heartbeat: '/heartbeat',
