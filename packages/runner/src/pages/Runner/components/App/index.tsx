@@ -20,7 +20,7 @@ import SnippetContainer from '../SnippetContainer';
 import { currentEditorUrl } from 'common/lib/environment';
 import processLibraries from 'common/lib/utilities/process.libraries';
 import { showSplashScreen } from 'common/lib/utilities/splash.screen';
-import { SILENT_SNIPPET_SWITCHING } from '../../constants';
+import { SILENT_SNIPPET_SWITCHING } from '../../../../constants';
 
 const AppWrapper = styled.div`
   height: 100vh;

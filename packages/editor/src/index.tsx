@@ -12,7 +12,7 @@ import './index.css';
 
 import { invokeGlobalErrorHandler } from 'common/lib/utilities/splash.screen';
 
-import PageSwitcher from './pages';
+import Pages from './pages';
 
 document.addEventListener(
   'keydown',
@@ -31,17 +31,11 @@ window.onerror = error => invokeGlobalErrorHandler(error);
 
 (async () => {
   try {
-    // await waitForAllDynamicScriptsToBeLoaded();
-    // await Office.onReady();
     if (Authenticator.isAuthDialog()) {
       return;
     }
 
-    // initial actions
-    // TODO: move this to editor
-    // store.dispatch(misc.initialize());
-
-    ReactDOM.render(<PageSwitcher />, document.getElementById('root') as HTMLElement);
+    ReactDOM.render(<Pages />, document.getElementById('root') as HTMLElement);
 
     unregister(); // need more testing to determine if this can be removed. seems to help with the caching of the html file issues
   } catch (e) {

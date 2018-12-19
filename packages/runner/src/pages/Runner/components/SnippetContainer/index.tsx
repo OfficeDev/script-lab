@@ -7,7 +7,7 @@ import runTemplate from './templates/run';
 import errorTemplate from './templates/error';
 import noSnippet from './templates/noSnippet';
 
-import { officeNamespacesForIframe } from '../../constants';
+import { officeNamespacesForIframe } from '../../../../constants';
 import { ProgressIndicator } from 'office-ui-fabric-react/lib/ProgressIndicator';
 import { compileTypeScript, SyntaxError } from './utilities';
 import untrusted from './templates/untrusted';
