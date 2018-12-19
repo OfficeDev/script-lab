@@ -2,7 +2,7 @@ import { SCRIPT_URLS } from 'common/lib/constants';
 import { addScriptTags } from 'common/lib/utilities/script-loader';
 
 import React, { Component } from 'react';
-import App from './components';
+import App from './components/App';
 
 // redux
 import { Store } from 'redux';
