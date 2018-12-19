@@ -6,9 +6,9 @@ import './index.css';
 import App from './components/App';
 
 import { parse } from 'query-string';
-import { SCRIPT_URLS } from 'common/src/constants';
-import { OFFICE_JS_URL_QUERY_PARAMETER_KEY } from 'common/src/utilities/script-loader/constants';
-import { addScriptTags } from 'common/src/utilities/script-loader';
+import { SCRIPT_URLS } from 'common/lib/constants';
+import { OFFICE_JS_URL_QUERY_PARAMETER_KEY } from 'common/lib/utilities/script-loader/constants';
+import { addScriptTags } from 'common/lib/utilities/script-loader';
 
 import { invokeGlobalErrorHandler } from 'common/lib/utilities/splash.screen';
 
