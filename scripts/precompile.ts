@@ -2,14 +2,7 @@ const PRECOMPILE_SPEC_LIST: {
   editor: ISpecArray;
   runner: ISpecArray;
 } = {
-  editor: [
-    {
-      name: 'style.css',
-      relativeFilePath: 'style.css',
-      injectInto: ['index.html'],
-      processor: readAsIsProcessor,
-    },
-  ],
+  editor: [],
   runner: [
     {
       name: 'custom-functions.js',
