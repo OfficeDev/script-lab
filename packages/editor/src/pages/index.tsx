@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { HashRouter, Route, Switch } from 'react-router-dom';
+import PageSwitcher from 'common/lib/components/PageSwitcher';
 import { PATHS } from '../constants';
 
 import AddinCommands from './AddinCommands';
@@ -14,7 +14,7 @@ import Run from './Run';
 
 // Note: To add a page you must add the path for the page in
 // src/constants.ts and the key must be the same!
-export const Pages = {
+const pages = {
   AddinCommands,
   CustomFunctions,
   CustomFunctionsHeartbeat,
@@ -25,17 +25,6 @@ export const Pages = {
   Run,
 };
 
-const PageSwitcher = () => (
-  <HashRouter>
-    <Switch>
-      {/* Render a route for each page */}
-      {Object.keys(Pages).map(page => (
-        <Route exact path={PATHS[page]} component={Pages[page]} key={page} />
-      ))}
-      {/* Falling back on the IDE for an unknown route */}
-      <Route component={Pages.Editor} />
-    </Switch>
-  </HashRouter>
+export default () => (
+  <PageSwitcher pages={pages} paths={PATHS} defaultComponent={pages.Editor} />
 );
-
-export default PageSwitcher;
