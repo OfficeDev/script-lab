@@ -7,8 +7,8 @@ import App from './components/App';
 import CustomFunctionsDashboard from './components/CustomFunctionsDashboard';
 import Theme from 'common/lib/components/Theme';
 import { Utilities } from '@microsoft/office-js-helpers';
-import { AwaitPromiseThenRender } from '../utilities/AwaitPromiseThenRender';
-import { hideLoadingIndicator } from '../utilities/loadingIndicator';
+import { AwaitPromiseThenRender } from 'common/lib/components/PageSwitcher/utilities/AwaitPromiseThenRender';
+import { hideLoadingIndicator } from 'common/lib/components/PageSwitcher/utilities/loadingIndicator';
 
 const CFD = App(CustomFunctionsDashboard);
 

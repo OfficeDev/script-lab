@@ -3,7 +3,7 @@ import React from 'react';
 import { parse } from 'query-string';
 import safeExternalUrls from 'common/lib/safe.external.urls';
 
-import { RunOnLoad } from '../utilities/RunOnLoad';
+import { RunOnLoad } from 'common/lib/components/PageSwitcher/utilities/RunOnLoad';
 
 function setup() {
   const { destination } = parse(window.location.search) as {
