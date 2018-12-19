@@ -4,24 +4,6 @@ const PRECOMPILE_SPEC_LIST: {
 } = {
   editor: [
     {
-      name: 'addin-commands.js',
-      relativeFilePath: 'addin-commands',
-      injectInto: ['functions.html'],
-      processor: webpackProcessor,
-    },
-    {
-      name: 'custom-functions-dashboard-redirect.js',
-      relativeFilePath: 'custom-functions-dashboard-redirect',
-      injectInto: ['custom-functions.html'],
-      processor: webpackProcessor,
-    },
-    {
-      name: 'custom-functions-run-redirect.js',
-      relativeFilePath: 'custom-functions-run-redirect',
-      injectInto: ['custom-functions-run.html'],
-      processor: webpackProcessor,
-    },
-    {
       name: 'custom-functions-heartbeat.js',
       relativeFilePath: 'custom-functions-heartbeat',
       injectInto: ['custom-functions-heartbeat.html'],
