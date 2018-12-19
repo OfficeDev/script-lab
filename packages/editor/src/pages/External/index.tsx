@@ -1,7 +1,11 @@
+import React from 'react';
+
 import { parse } from 'query-string';
 import safeExternalUrls from 'common/lib/safe.external.urls';
 
-(() => {
+import { RunOnLoad } from '../utilities/RunOnLoad';
+
+function setup() {
   const { destination } = parse(window.location.search) as {
     destination: string;
   };
@@ -15,4 +19,8 @@ import safeExternalUrls from 'common/lib/safe.external.urls';
   }
   // Otherwise can just stay on empty page.  This should never happen in normal behavior,
   // and if someone tweaks the URL, then so be it.
-})();
+}
+
+const External = () => <RunOnLoad funcToRun={setup} />;
+
+export default External;

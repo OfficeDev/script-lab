@@ -8,6 +8,7 @@ import CustomFunctions from './CustomFunctions';
 import CustomFunctionsHeartbeat from './CustomFunctionsHeartbeat';
 import CustomFunctionsRun from './CustomFunctionsRun';
 import Editor from './Editor';
+import External from './External';
 import Heartbeat from './Heartbeat';
 import Run from './Run';
 
@@ -15,10 +16,11 @@ import Run from './Run';
 // src/constants.ts and the key must be the same!
 export const Pages = {
   AddinCommands,
-  Editor,
   CustomFunctions,
   CustomFunctionsHeartbeat,
   CustomFunctionsRun,
+  Editor,
+  External,
   Heartbeat,
   Run,
 };

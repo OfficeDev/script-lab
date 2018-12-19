@@ -33,6 +33,8 @@ export const READ_ONLY_FILE_IDS = [NULL_FILE_ID, ABOUT_FILE_ID, DEFAULT_SETTINGS
 export const CUSTOM_FUNCTIONS_INFO_URL = 'https://aka.ms/customfunctions';
 
 export const EDITOR_PATH = '/';
+
+// TODO: consolidate these paths
 export const PATHS = {
   EDITOR: '/',
   RUNNER_REDIRECT: '/run',
@@ -46,6 +48,7 @@ export const PATHS = {
   CustomFunctionsHeartbeat: '/custom-functions-heartbeat',
   CustomFunctionsRun: '/custom-functions-run',
   Editor: '/',
+  External: '/external-page',
   Heartbeat: '/heartbeat',
   Run: '/run',
 };

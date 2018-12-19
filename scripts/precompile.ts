@@ -4,12 +4,6 @@ const PRECOMPILE_SPEC_LIST: {
 } = {
   editor: [
     {
-      name: 'external-page.js',
-      relativeFilePath: 'external-page',
-      injectInto: ['external-page.html'],
-      processor: webpackProcessor,
-    },
-    {
       name: 'style.css',
       relativeFilePath: 'style.css',
       injectInto: ['index.html'],

@@ -86,7 +86,7 @@ function launchDialogNavigation(
   options?: { width?: number; height?: number; displayInIframe?: boolean },
 ): void {
   launchInDialog(
-    `${window.location.origin}/external-page.html?destination=${encodeURIComponent(url)}`,
+    `${window.location.origin}/#/external-page?destination=${encodeURIComponent(url)}`,
     event,
     options,
   );
