@@ -101,10 +101,6 @@ const AppHOC = (UI: React.ComponentType<IPropsToUI>) =>
 
     clearLogs = () => this.setState({ logs: [] });
 
-    render() {
-      return <UI {...this.state} fetchLogs={this.fetchLogs} clearLogs={this.clearLogs} />;
-    }
-
     // helpers
 
     private getCustomFunctionsSolutions(): ISolution[] {
@@ -139,6 +135,10 @@ const AppHOC = (UI: React.ComponentType<IPropsToUI>) =>
         console.error(e);
         return [];
       }
+    }
+
+    render() {
+      return <UI {...this.state} fetchLogs={this.fetchLogs} clearLogs={this.clearLogs} />;
     }
   };
 
