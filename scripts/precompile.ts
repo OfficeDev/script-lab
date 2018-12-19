@@ -4,12 +4,6 @@ const PRECOMPILE_SPEC_LIST: {
 } = {
   editor: [
     {
-      name: 'custom-functions-heartbeat.js',
-      relativeFilePath: 'custom-functions-heartbeat',
-      injectInto: ['custom-functions-heartbeat.html'],
-      processor: webpackProcessor,
-    },
-    {
       name: 'external-page.js',
       relativeFilePath: 'external-page',
       injectInto: ['external-page.html'],

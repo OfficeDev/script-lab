@@ -43,6 +43,7 @@ export const PATHS = {
   // Pages
   AddinCommands: '/functions',
   CustomFunctions: '/custom-functions',
+  CustomFunctionsHeartbeat: '/custom-functions-heartbeat',
   CustomFunctionsRun: '/custom-functions-run',
   Editor: '/',
   Heartbeat: '/heartbeat',
