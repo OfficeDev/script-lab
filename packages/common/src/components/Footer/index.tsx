@@ -95,6 +95,15 @@ function normalizeItems(
           : {}),
 
         style: { fontSize: '1.2rem' },
+        iconProps: item.iconProps
+          ? {
+              style: {
+                fontSize: '1.4rem',
+                ...(item.iconProps.style ? item.iconProps.style : {}),
+              },
+              ...item.iconProps,
+            }
+          : undefined,
       });
     });
 }
