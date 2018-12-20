@@ -60,10 +60,7 @@ interface IActionsFromRedux {
   signIn: () => void;
 }
 
-const mapDispatchToProps = (
-  dispatch: Dispatch<IRootAction>,
-  ownProps: IProps,
-): IActionsFromRedux => ({
+const mapDispatchToProps = (dispatch: Dispatch<IRootAction>): IActionsFromRedux => ({
   createNewSolution: () => dispatch(solutions.create()),
   openSolution: (solutionId: string, fileId: string) =>
     dispatch(editor.openFile({ solutionId, fileId })),
