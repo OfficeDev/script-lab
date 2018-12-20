@@ -28,6 +28,6 @@
 
 .message-bar.active {
   top: 0;
-  height: auto; /* TODO: (nicobell) */
+  height: auto; /* TODO: (nicobell): https://github.com/OfficeDev/script-lab-react/issues/481 */
   opacity: 1;
 }
