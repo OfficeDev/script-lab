@@ -7,8 +7,6 @@ import omit from 'lodash/omit';
 type IIsVisibleState = boolean;
 
 const initialVisibility = true;
-// location.hash.replace('#', '') === PATHS.EDITOR ||
-// (window.location.pathname === PATHS.EDITOR && window.location.hash === '');
 
 const isVisible = (state: IIsVisibleState = initialVisibility, action) => {
   switch (action.type) {
@@ -20,8 +18,7 @@ const isVisible = (state: IIsVisibleState = initialVisibility, action) => {
       return false;
     case getType(editor.hideBackstage):
       return true;
-    // case '@@router/LOCATION_CHANGE':
-    //   return action.payload.location.pathname === PATHS.EDITOR;
+
     default:
       return state;
   }

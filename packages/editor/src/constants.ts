@@ -36,7 +36,6 @@ export const EDITOR_PATH = '/';
 
 // TODO: consolidate these paths
 export const PATHS = {
-  EDITOR: '/',
   RUNNER_REDIRECT: '/run',
   CUSTOM_FUNCTIONS: '/custom-functions',
   CUSTOM_FUNCTIONS_DASHBOARD: '/custom-functions-dashboard',
