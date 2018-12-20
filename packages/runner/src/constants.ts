@@ -23,5 +23,6 @@ export const officeNamespacesForCustomFunctionsIframe = [
 export const SILENT_SNIPPET_SWITCHING = true;
 
 export const PATHS = {
+  CustomFunctionsRunner: '/custom-functions',
   Runner: '/',
 };

@@ -1,17 +1,17 @@
-import { officeNamespacesForCustomFunctionsIframe } from '../../src/constants';
+import { officeNamespacesForCustomFunctionsIframe } from '../../constants';
 import { currentEditorUrl } from 'common/lib/environment';
 import { generateLogString, stringifyPlusPlus } from 'common/lib/utilities/string';
-import 'core-js/fn/array/find';
 
 import generateCustomFunctionIframe, {
   ICustomFunctionPayload,
 } from './run.customFunctions';
 
 const HEARTBEAT_URL = `${currentEditorUrl}/custom-functions-heartbeat.html`;
-const VERBOSE_MODE = false; // FIXME: Nico: you'll probably want to turn this off before going to production
+const VERBOSE_MODE = false;
 
-(() => {
-  // FIXME: Start heartbeat and hook up refresh event.  Note, might not need refresh if reloading the taskpane (which calls "CustomFunctionsManager.register" destroys the old iframe)
+export default () => {
+  // tslint:disable-next-line:no-string-literal
+  // (window as any).CustomFunctionMapping['__delay__'] = true;
 
   // set up heartbeat listener
   window.onmessage = async ({ origin, data }) => {
@@ -43,7 +43,7 @@ const VERBOSE_MODE = false; // FIXME: Nico: you'll probably want to turn this of
   logIfExtraLoggingEnabled(
     'Custom functions runner is ready to evaluate your functions!',
   );
-})();
+};
 ///////////////////////////////////////
 
 let heartbeat: HTMLIFrameElement;
@@ -151,7 +151,6 @@ function tryToSendLog(data: { source: string; severity: string; message: string 
         HEARTBEAT_URL,
       );
     }
-    // FIXME: Nico: pass this to the heartbeat and also add a counter for the ID
   } catch (e) {
     // If couldn't log, not much you can do about it.
   }

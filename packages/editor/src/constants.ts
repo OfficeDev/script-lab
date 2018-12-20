@@ -32,15 +32,7 @@ export const READ_ONLY_FILE_IDS = [NULL_FILE_ID, ABOUT_FILE_ID, DEFAULT_SETTINGS
 
 export const CUSTOM_FUNCTIONS_INFO_URL = 'https://aka.ms/customfunctions';
 
-export const EDITOR_PATH = '/';
-
-// TODO: consolidate these paths
 export const PATHS = {
-  EDITOR: '/',
-  RUNNER_REDIRECT: '/run',
-  CUSTOM_FUNCTIONS: '/custom-functions',
-  CUSTOM_FUNCTIONS_DASHBOARD: '/custom-functions-dashboard',
-  BACKSTAGE: '/backstage',
   GITHUB_ISSUE: 'https://github.com/OfficeDev/script-lab-react/issues/new/choose',
   // Pages
   AddinCommands: '/functions',

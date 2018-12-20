@@ -185,6 +185,14 @@
         }
       }
     </style>
+
+    <!-- TODO: Move this out to be dynamically loaded for CFRunner -->
+    <!-- For some reason, it wouldn't work for me when I tried to do so -->
+    <!-- I would get errors like, can't set __delay__ of undefined  -->
+    <script src="https://appsforoffice.microsoft.com/lib/preview/hosted/custom-functions-runtime.js"></script>
+    <script>
+      CustomFunctionMappings['__delay__'] = true;
+    </script>
   </head>
 
   <body class="ms-Fabric">

@@ -11,7 +11,7 @@ import {
   getIsActiveSolutionCF,
   getIsActiveSolutionTrusted,
 } from '../editor/selectors';
-import { getToken, getIsLoggingInOrOut, getIsLoggedIn } from '../github/selectors';
+import { getIsLoggingInOrOut, getIsLoggedIn } from '../github/selectors';
 import { getIsTaskPane } from '../screen/selectors';
 import { getIsRunnableOnThisHost, getIsInAddin } from '../host/selectors';
 
@@ -71,8 +71,7 @@ const getRunButton = createSelector(
           key: 'register-cf',
           text: 'Register',
           iconProps: { iconName: 'Play' },
-          actionCreator: () =>
-            (window.location.href = './#/custom-functions?backButton=true'),
+          actionCreator: actions.misc.goToCustomFunctionsDashboard,
         },
       ];
     } else {
