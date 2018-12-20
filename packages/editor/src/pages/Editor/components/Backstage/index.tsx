@@ -20,8 +20,6 @@ import { editor, solutions, samples, gists, github } from '../../store/actions';
 import { IState as IReduxState } from '../../store/reducer';
 import Only from 'common/lib/components/Only';
 
-import { RouteComponentProps } from 'react-router-dom';
-
 interface IBackstageItem {
   key: string;
   icon: string;
@@ -81,7 +79,7 @@ const mapDispatchToProps = (
   signIn: () => dispatch(github.login.request()),
 });
 
-export interface IProps extends IPropsFromRedux, IActionsFromRedux, RouteComponentProps {}
+export interface IProps extends IPropsFromRedux, IActionsFromRedux {}
 
 interface IState {
   isLoading: boolean;
