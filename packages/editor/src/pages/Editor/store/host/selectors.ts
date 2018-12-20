@@ -2,9 +2,13 @@ import { IState } from '../reducer';
 import { createSelector } from 'reselect';
 import { Utilities, HostType } from '@microsoft/office-js-helpers';
 
+const getHostsMatch = (state: IState): boolean => state.host === Utilities.host;
+
 export const get = (state: IState): string => state.host;
-export const getIsWeb = (state?: IState): boolean => Utilities.host === HostType.WEB;
+export const getIsWeb = (_?: IState): boolean => Utilities.host === HostType.WEB;
+export const getIsInAddin = (_?: IState): boolean =>
+  Utilities.isAddin && !window.location.href.includes('isDialog');
 export const getIsRunnableOnThisHost = createSelector(
-  [getIsWeb, get],
-  (isWeb, host) => (isWeb ? host === HostType.WEB : host !== HostType.WEB),
+  [get, getHostsMatch],
+  (host, hostsMatch) => host !== HostType.OUTLOOK && hostsMatch,
 );

@@ -6,19 +6,20 @@ import {
   editorUrls,
   environmentDisplayNames,
   currentEditorUrl,
+  currentRunnerUrl,
 } from 'common/lib/environment';
 import ensureFreshLocalStorage from 'common/lib/utilities/ensure.fresh.local.storage';
 import { localStorageKeys } from 'common/lib/constants';
 import { showSplashScreen } from 'common/lib/utilities/splash.screen';
 
 export default function* miscWatcher() {
-  // TODO: (nicobell): moving this initialize code to be inside of the editor constructor, so might want to rename
   yield takeEvery(getType(actions.misc.initialize), onInitializeSaga);
   yield takeEvery(getType(actions.misc.switchEnvironment), onSwitchEnvironmentSaga);
   yield takeEvery(
     getType(actions.misc.confirmSwitchEnvironment),
     onConfirmSwitchEnvironmentSaga,
   );
+  yield takeEvery(getType(actions.misc.popOutEditor), onPopOutEditorSaga);
 }
 
 function* onInitializeSaga() {
@@ -84,4 +85,9 @@ function* onConfirmSwitchEnvironmentSaga(
       currentEditorUrl,
     )}`;
   }
+}
+
+function* onPopOutEditorSaga() {
+  Office.context.ui.displayDialogAsync(window.location.href);
+  window.location.href = currentRunnerUrl;
 }

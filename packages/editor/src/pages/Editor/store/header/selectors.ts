@@ -13,18 +13,21 @@ import {
 } from '../editor/selectors';
 import { getToken, getIsLoggingInOrOut, getIsLoggedIn } from '../github/selectors';
 import { getIsTaskPane } from '../screen/selectors';
-import { getIsRunnableOnThisHost } from '../host/selectors';
+import { getIsRunnableOnThisHost, getIsInAddin } from '../host/selectors';
 
 // actions
-import * as dialog from '../dialog/actions';
-import * as editor from '../editor/actions';
-import * as gists from '../gists/actions';
-import * as github from '../github/actions';
-import * as messageBar from '../messageBar/actions';
-import * as solutions from '../solutions/actions';
-import * as settings from '../settings/actions';
+import {
+  dialog,
+  editor,
+  gists,
+  github,
+  messageBar,
+  misc,
+  solutions,
+  settings,
+} from '../actions';
 
-const actions = { dialog, editor, gists, github, messageBar, solutions, settings };
+const actions = { dialog, editor, gists, github, messageBar, misc, solutions, settings };
 
 export interface IHeaderItem extends ICommandBarItemProps {
   actionCreator?: () => { type: string; payload?: any };
@@ -116,8 +119,8 @@ const showLoginToGithubDialog = actions.dialog.show({
 });
 
 export const getItems = createSelector(
-  [getMode, getActiveSolution, getIsTaskPane, getIsLoggedIn, getRunButton],
-  (mode, activeSolution, iconOnly, isLoggedIn, runButton) => {
+  [getMode, getActiveSolution, getIsTaskPane, getIsLoggedIn, getRunButton, getIsInAddin],
+  (mode, activeSolution, iconOnly, isLoggedIn, runButton, isInAddin) => {
     const titleStyles = {
       style: { paddingRight: iconOnly ? '0' : '3rem' },
       iconProps: iconOnly ? { iconName: 'OfficeAddinsLogo' } : {},
@@ -220,6 +223,12 @@ export const getItems = createSelector(
                   text: 'Copy to clipboard',
                   iconProps: { iconName: 'ClipboardSolid' },
                   className: 'export-to-clipboard',
+                },
+                {
+                  key: 'pop-out',
+                  iconOnly,
+                  iconProps: { iconName: 'OpenInNewWindow' },
+                  actionCreator: actions.misc.popOutEditor,
                 },
               ]
                 .filter(option => !option.hidden)
