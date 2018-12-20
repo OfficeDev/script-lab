@@ -1,14 +1,5 @@
-import { ICommandBarItemProps } from 'office-ui-fabric-react/lib/CommandBar';
-import { MessageBarType } from 'office-ui-fabric-react/lib/components/MessageBar';
-import { IState } from '../reducer';
-
 import { HostType } from '@microsoft/office-js-helpers';
-import {
-  NULL_SOLUTION_ID,
-  SETTINGS_SOLUTION_ID,
-  IS_TASK_PANE_WIDTH,
-  PATHS,
-} from '../../../../constants';
+import { PATHS } from '../../../../constants';
 import {
   getCurrentEnv,
   getVisibleEnvironmentKeysToSwitchTo,
@@ -18,28 +9,23 @@ import {
 
 // selectors
 import { createSelector } from 'reselect';
-import {
-  getActiveSolution,
-  getIsActiveSolutionCF,
-  getIsActiveSolutionTrusted,
-  getActiveFile,
-} from '../editor/selectors';
-import { getToken, getIsLoggingInOrOut } from '../github/selectors';
-import { getIsTaskPane } from '../screen/selectors';
-import { getIsRunnableOnThisHost, getIsWeb, get as getHost } from '../host/selectors';
+import { getActiveFile } from '../editor/selectors';
+import { getIsWeb, get as getHost } from '../host/selectors';
 import { getMode, IHeaderItem } from '../header/selectors';
 import { getPrettyEditorTheme } from '../settings/selectors';
 
 // actions
-import * as dialog from '../dialog/actions';
-import * as editor from '../editor/actions';
-import * as gists from '../gists/actions';
-import * as github from '../github/actions';
-import * as host from '../host/actions';
-import * as misc from '../misc/actions';
-import * as messageBar from '../messageBar/actions';
-import * as solutions from '../solutions/actions';
-import * as settings from '../settings/actions';
+import {
+  dialog,
+  editor,
+  gists,
+  github,
+  host,
+  messageBar,
+  misc,
+  solutions,
+  settings,
+} from '../actions';
 
 const actions = {
   dialog,
@@ -83,7 +69,6 @@ export const getItems = createSelector(
               key: v,
               text: v,
               actionCreator: () => actions.host.change(v),
-              // onClick: () => changeHost(v),
             })),
         },
       },
@@ -96,7 +81,6 @@ export const getItems = createSelector(
             key: env,
             text: environmentDisplayNames[env],
             actionCreator: () => actions.misc.switchEnvironment(env),
-            // onClick: () => switchEnvironment(env),
           })),
         },
       },
