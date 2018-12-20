@@ -20,6 +20,10 @@ export default function* miscWatcher() {
     onConfirmSwitchEnvironmentSaga,
   );
   yield takeEvery(getType(actions.misc.popOutEditor), onPopOutEditorSaga);
+  yield takeEvery(
+    getType(actions.misc.goToCustomFunctionsDashboard),
+    onGoToCustomFunctionsSaga,
+  );
 }
 
 function* onInitializeSaga() {
@@ -90,4 +94,8 @@ function* onConfirmSwitchEnvironmentSaga(
 function* onPopOutEditorSaga() {
   Office.context.ui.displayDialogAsync(window.location.href);
   window.location.href = currentRunnerUrl;
+}
+
+function* onGoToCustomFunctionsSaga() {
+  window.location.href = './#/custom-functions?backButton=true';
 }

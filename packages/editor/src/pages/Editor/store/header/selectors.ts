@@ -71,8 +71,7 @@ const getRunButton = createSelector(
           key: 'register-cf',
           text: 'Register',
           iconProps: { iconName: 'Play' },
-          actionCreator: () =>
-            (window.location.href = './#/custom-functions?backButton=true'),
+          actionCreator: actions.misc.goToCustomFunctionsDashboard,
         },
       ];
     } else {

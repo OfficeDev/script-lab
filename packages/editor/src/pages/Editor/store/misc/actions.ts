@@ -16,3 +16,4 @@ export const confirmSwitchEnvironment = createAction(
 export const hideLoadingSplashScreen = createAction('HIDE_LOADING_SPLASH_SCREEN');
 
 export const popOutEditor = createAction('POP_OUT_EDITOR');
+export const goToCustomFunctionsDashboard = createAction('GOTO_CUSTOM_FUNC_DASH');
