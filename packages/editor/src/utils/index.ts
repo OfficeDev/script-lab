@@ -3,9 +3,6 @@ import { LIBRARIES_FILE_NAME, SCRIPT_FILE_NAME } from '../constants';
 import { getBoilerplateFiles } from '../newSolutionData';
 import { stringifyPlusPlus } from 'common/lib/utilities/string';
 
-export const getObjectValues = (dict: object): any[] =>
-  Object.keys(dict).map(key => dict[key]);
-
 export function setUpMomentJsDurationDefaults(momentInstance: {
   relativeTimeThreshold(threshold: string, limit: number): boolean;
 }) {

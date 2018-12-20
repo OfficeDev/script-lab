@@ -1,5 +1,4 @@
 import { IState } from '../reducer';
-import { getObjectValues } from '../../../../utils';
 import {
   NULL_SOLUTION_ID,
   SETTINGS_SOLUTION_ID,
@@ -49,7 +48,7 @@ export const getSolutionWithHiddenFiles = (
 };
 
 export const getAll = (state: IState): ISolution[] =>
-  getObjectValues(state.solutions.metadata)
+  Object.values(state.solutions.metadata)
     .filter(solution => solution.host === state.host || solution.host === 'ALL')
     .filter(({ id }) => ![NULL_SOLUTION_ID, SETTINGS_SOLUTION_ID].includes(id))
     .map(solution => ({
