@@ -10,12 +10,6 @@ const PRECOMPILE_SPEC_LIST: {
       injectInto: ['custom-functions.html'],
       processor: webpackProcessor,
     },
-    {
-      name: 'style.css',
-      relativeFilePath: '../../editor/precompile-sources/style.css',
-      injectInto: ['index.html'],
-      processor: readAsIsProcessor,
-    },
   ],
 };
 
