@@ -11,7 +11,7 @@ import {
   getIsActiveSolutionCF,
   getIsActiveSolutionTrusted,
 } from '../editor/selectors';
-import { getToken, getIsLoggingInOrOut, getIsLoggedIn } from '../github/selectors';
+import { getIsLoggingInOrOut, getIsLoggedIn } from '../github/selectors';
 import { getIsTaskPane } from '../screen/selectors';
 import { getIsRunnableOnThisHost, getIsInAddin } from '../host/selectors';
 
