@@ -52,8 +52,7 @@ const AppHOC = (UI: React.ComponentType<IPropsToUI>) =>
         engineStatus: null,
         logs: [],
       };
-      console.log('has CUSTOM FUNCTIONS IN SOLUTIONS');
-      console.log({ cfSolutions });
+
       if (hasCustomFunctionsInSolutions) {
         this.fetchAndRegisterMetadata(cfSolutions).then(metadata =>
           this.setState({ customFunctionsSummaryItems: getSummaryItems(metadata) }),
