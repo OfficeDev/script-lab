@@ -37,6 +37,7 @@
     "uuid": "^3.2.1"
   },
   "scripts": {
+    "postinstall": "ts-node --project ../../scripts/tsconfig.json scripts/postinstall.ts",
     "analyze": "source-map-explorer build/static/js/main.*",
     "start": "set HTTPS=true&&react-scripts start",
     "lint": "tslint \"src/**/*.ts?(x)\"",
