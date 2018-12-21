@@ -42,7 +42,6 @@
     "start": "set HTTPS=true&&react-scripts start",
     "lint": "tslint \"src/**/*.ts?(x)\"",
     "build": "node scripts/build.js",
-    "react-scripts:build": "react-scripts build",
     "test": "jest --env=jsdom",
     "test-coverage": "yarn test -- --coverage",
     "show-coverage": "yarn test-coverage && coverage\\lcov-report\\index.html"
