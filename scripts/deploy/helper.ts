@@ -66,7 +66,7 @@ function writeAssetLog(
 
   fs.writeFileSync(
     path.join(buildDirectory, 'DeploymentLog', deploymentLogFilename),
-    files.join('\n'),
+    files.map(filepath => filepath.replace(/\\/g, '/')).join('\n'),
   );
 }
 
@@ -81,6 +81,8 @@ function mergeDir(src: string, dest: string) {
       if (!fs.existsSync(fullDestPath)) {
         fs.mkdirSync(fullDestPath);
       }
+
+      mergeDir(fullSrcPath, fullDestPath);
     } else if (stats.isFile()) {
       // Note: will overwrite existing file if any, which is what we want
       fs.copyFileSync(fullSrcPath, fullDestPath);

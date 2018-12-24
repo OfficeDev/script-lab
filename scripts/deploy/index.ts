@@ -20,6 +20,13 @@ const {
   DEPLOYMENT_PASSWORD,
 } = process.env; // from travis
 
+if (!TRAVIS_BRANCH) {
+  exit(
+    'Expecting to run the deploy script from within Travis ' +
+      '(or at least, with all environmental variables set up). Exiting.',
+  );
+}
+
 /* If running inside of a pull request then skip deploy.
    (Note, this is actually a triple safe-guard, as travis.yml already will not call deploy for pull requests.
    And in any case, pull requests don't get secret variables like username or password
@@ -51,7 +58,7 @@ const PREVIOUS_BUILD_DIRECTORIES: string[] = [];
 
 const FINAL_OUTPUT_DIRECTORY = path.join(PACKAGE_LOCATION, 'final_output');
 if (fs.existsSync(FINAL_OUTPUT_DIRECTORY)) {
-  fs.unlinkSync(FINAL_OUTPUT_DIRECTORY);
+  fs.removeSync(FINAL_OUTPUT_DIRECTORY);
 }
 
 console.log('Proceeding to main body of the deploy script');
