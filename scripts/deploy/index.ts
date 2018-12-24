@@ -3,6 +3,7 @@ import shell from 'shelljs';
 import fs from 'fs-extra';
 
 import { mergeNewAndExistingBuildAssets } from './helper';
+import { ChildProcess } from 'child_process';
 
 interface IDeployEnvironments<T> {
   master: T;
@@ -36,15 +37,13 @@ if (TRAVIS_PULL_REQUEST !== 'false') {
   exit('Skipping deploy for pull requests');
 }
 
-const deploymentSlotsDictionary: IDeployEnvironments<string> = {
-  master: '-alpha',
-  beta: '-beta',
-  production: '-staging',
+const DEPLOYMENT_SLOTS_DICTIONARY: IDeployEnvironments<string> = {
+  master: 'alpha',
+  beta: 'beta',
+  production: 'staging',
 };
 
-const deploymentSlot = deploymentSlotsDictionary[TRAVIS_BRANCH];
-
-if (!deploymentSlot) {
+if (!DEPLOYMENT_SLOTS_DICTIONARY[TRAVIS_BRANCH]) {
   exit('Invalid branch name. Skipping deploy.');
 }
 
@@ -53,133 +52,108 @@ if (!shell.test('-d', BUILD_DIRECTORY)) {
   exit('ERROR: No build directory found!');
 }
 
-const PREVIOUS_BUILD_DIRECTORIES: string[] = [];
-// FIXME: Zlatkovsky clone existing into here: path.join(PACKAGE_LOCATION, 'previous_builds', '1' /** or 2 */);
+(async () => {
+  const PREVIOUS_BUILD_DIRECTORIES: string[] = await fetchPreviousBuildsFromLiveSite();
 
-const FINAL_OUTPUT_DIRECTORY = path.join(PACKAGE_LOCATION, 'final_output');
-if (fs.existsSync(FINAL_OUTPUT_DIRECTORY)) {
-  fs.removeSync(FINAL_OUTPUT_DIRECTORY);
+  const FINAL_OUTPUT_DIRECTORY = path.join(PACKAGE_LOCATION, 'final_output');
+  if (fs.existsSync(FINAL_OUTPUT_DIRECTORY)) {
+    fs.removeSync(FINAL_OUTPUT_DIRECTORY);
+  }
+
+  const DEPLOYMENT_LOG_FILENAME = new Date().toISOString().replace(/\:/g, '_') + '.txt';
+  mergeNewAndExistingBuildAssets({
+    BUILD_DIRECTORY,
+    PREVIOUS_BUILD_DIRECTORIES,
+    FINAL_OUTPUT_DIRECTORY,
+    DEPLOYMENT_LOG_FILENAME,
+  });
+
+  deploy(FINAL_OUTPUT_DIRECTORY, DEPLOYMENT_SLOTS_DICTIONARY[TRAVIS_BRANCH]);
+
+  exit(
+    `Deployment to ${SITE_NAME}-${DEPLOYMENT_SLOTS_DICTIONARY[TRAVIS_BRANCH]} completed!`,
+  );
+})();
+
+///////////////////////////////////////
+///////////////////////////////////////
+///////////////////////////////////////
+
+async function fetchPreviousBuildsFromLiveSite(): Promise<string[]> {
+  // Not: If deploying to production, production has an extra layer of a "staging" slot.
+  // So, make sure to copy both from the staging slot and actual direct production.
+  // Order shouldn't matter too much (any file that's going to get overridden will get
+  // overridden by the newly-build assets), but the "staging" slot will be older
+  // than what's actually in production (since the staging and prod gets swapped out),
+  // so put the slot first, and the production assets second.
+
+  const spec: Array<{ friendlyName: string; urlWithUsernameAndPassword: string }> = [
+    {
+      friendlyName: 'current_slot',
+      urlWithUsernameAndPassword: getGitUrlWithUsernameAndPassword(
+        DEPLOYMENT_SLOTS_DICTIONARY[TRAVIS_BRANCH],
+      ),
+    },
+    TRAVIS_BRANCH === 'production'
+      ? {
+          friendlyName: 'production',
+          urlWithUsernameAndPassword: getGitUrlWithUsernameAndPassword(null),
+        }
+      : null,
+  ];
+
+  return Promise.all(spec.filter(item => item).map(item => cloneExistingRepo(item)));
 }
 
-console.log('Proceeding to main body of the deploy script');
+async function cloneExistingRepo(source: {
+  friendlyName: string;
+  urlWithUsernameAndPassword: string;
+}): Promise<string> {
+  const allPreviousBuildsFolder = path.join(PACKAGE_LOCATION, 'previous_builds');
 
-const DEPLOYMENT_LOG_FILENAME = new Date().toISOString().replace(/\:/g, '_') + '.txt';
-mergeNewAndExistingBuildAssets({
-  BUILD_DIRECTORY,
-  PREVIOUS_BUILD_DIRECTORIES,
-  FINAL_OUTPUT_DIRECTORY,
-  DEPLOYMENT_LOG_FILENAME,
-});
+  if (!fs.existsSync(allPreviousBuildsFolder)) {
+    fs.mkdirSync(allPreviousBuildsFolder);
+  }
 
-deploy(BUILD_DIRECTORY, SITE_NAME, `${SITE_NAME}${deploymentSlot}`);
+  const fullFolderPath = path.join(allPreviousBuildsFolder, source.friendlyName);
+  if (!fs.existsSync(fullFolderPath)) {
+    fs.mkdirSync(fullFolderPath);
+  }
 
-exit(`Deployment to ${SITE_NAME} completed!`);
+  log(
+    `Fetching existing assets from "${
+      source.friendlyName
+    }" and copying them into "${fullFolderPath}"`,
+  );
 
-///////////////////////////////////////
-///////////////////////////////////////
-///////////////////////////////////////
+  shell.pushd(fullFolderPath);
 
-// async function cloneExistingRepoIfRelevant(
-//   source: { friendlyName: string; urlWithUsernameAndPassword: string },
-//   folder: string,
-// ) {
-//   log('Copying existing assets from ' + source.friendlyName);
+  // For some reason, seems to need to be an ASYNCHRONOUS command, or else was
+  //    moving on with the logic before finishing!
+  await new Promise((resolve, reject) => {
+    const process = shell.exec(
+      'git clone ' + source.urlWithUsernameAndPassword + ' existing_build',
+      {
+        async: true,
+      },
+    ) as ChildProcess;
+    process.on('error', error => reject(error));
+    process.on('message', message => console.log(message));
+    process.on('exit', (code: number, signal: string) => {
+      if (code === 0) {
+        resolve();
+      } else {
+        reject(new Error('Unexpected error: ' + signal));
+      }
+    });
+  });
 
-//   // For some reason, seems to need to be an ASYNCHRONOUS command, or else was
-//   //    moving on with the logic before finishing!
-//   await new Promise((resolve, reject) => {
-//     const process = shell.exec(
-//       'git clone ' + source.urlWithUsernameAndPassword + ' existing_build',
-//       {
-//         async: true,
-//       },
-//     );
-//     process.on('error', error => reject(error));
-//     process.on('message', message => console.log(message));
-//     process.on('exit', (code: number, signal: string) => {
-//       if (code === 0) {
-//         resolve();
-//       } else {
-//         reject(new Error('Unexpected error: ' + signal));
-//       }
-//     });
-//   });
+  shell.popd();
 
-//   shell.cp('-n', ['existing_build/*.js', 'existing_build/*.css'], '.');
+  return fullFolderPath;
+}
 
-//   let oldLibsPath = path.resolve(folder, 'existing_build/libs');
-
-//   if (fs.existsSync(oldLibsPath)) {
-//     let newLibsPath = path.resolve(folder, 'libs');
-
-//     for (let asset of fs.readdirSync(oldLibsPath)) {
-//       let libPath = path.resolve(newLibsPath, asset);
-//       // Check if old assets don't name-conflict
-//       if (fs.existsSync(libPath)) {
-//         console.log(
-//           `The library "${asset}" is already in current build, so skipping copying it from a previous build`,
-//         );
-//       } else {
-//         console.log(
-//           `Copying "${asset}" from a previous build into the current "libs" folder`,
-//         );
-//         fs.copySync(path.resolve(oldLibsPath, asset), libPath);
-//       }
-//     }
-
-//     // Note: dividing by 1000 to go from JS dates to UNIX epoch dates
-//     let now = new Date().getTime() / 1000;
-
-//     let oldHistoryPath = path.resolve(folder, 'existing_build/history.json');
-//     let newHistoryPath = path.resolve(folder, 'history.json');
-//     let oldAssetsPath = path.resolve(folder, 'existing_build/bundles');
-//     let newAssetsPath = path.resolve(folder, 'bundles');
-
-//     let history = {};
-//     if (fs.existsSync(newHistoryPath)) {
-//       log(`The new history path ("${newHistoryPath}") already exists, re-using it`);
-//       history = JSON.parse(fs.readFileSync(newHistoryPath).toString());
-//     }
-
-//     if (fs.existsSync(oldHistoryPath)) {
-//       // Parse old history file if it exists
-//       printHistoryDetailsIfAvailable('History of existing build:', oldHistoryPath);
-//       log('\n\n');
-//       let oldHistory = JSON.parse(fs.readFileSync(oldHistoryPath).toString());
-//       for (let key in oldHistory) {
-//         history[key] = oldHistory[key];
-//       }
-//     }
-
-//     // Add new asset files to history, with current timestamp; exclude chunk files
-//     let newAssets = fs.readdirSync(newAssetsPath);
-//     for (let asset of newAssets) {
-//       if (!/chunk.js/i.test(asset)) {
-//         history[asset] = { time: now };
-//       }
-//     }
-
-//     let existingAssets = fs.readdirSync(oldAssetsPath);
-//     for (let asset of existingAssets) {
-//       let assetPath = path.resolve(newAssetsPath, asset);
-//       // Check if old assets don't name-conflict and are still young enough to keep
-//       if (
-//         history[asset] &&
-//         !fs.existsSync(assetPath) &&
-//         now - history[asset].time < 60 * 60 * 24 * DAYS_TO_KEEP_HISTORY
-//       ) {
-//         fs.writeFileSync(assetPath, fs.readFileSync(path.resolve(oldAssetsPath, asset)));
-//       }
-//     }
-
-//     fs.writeFileSync(newHistoryPath, JSON.stringify(history));
-//   }
-
-//   // At the end, remove the existing_build directory:
-//   shell.rm('-rf', 'existing_build');
-// }
-
-function deploy(path: string, site: string, siteWithStaging: string) {
+function deploy(path: string, deploymentSlot: string) {
   const commitMessageSanitized = TRAVIS_COMMIT_MESSAGE.replace(/\W/g, '_');
 
   shell.pushd(path);
@@ -193,10 +167,20 @@ function deploy(path: string, site: string, siteWithStaging: string) {
   shell.exec(`git commit -m "${commitMessageSanitized}"`);
 
   shell.exec(
-    `git push https://${DEPLOYMENT_USERNAME}:${DEPLOYMENT_PASSWORD}@${siteWithStaging}.scm.azurewebsites.net:443/${site}.git -f -u HEAD:refs/heads/master`,
+    `git push ${getGitUrlWithUsernameAndPassword(
+      deploymentSlot,
+    )} -f -u HEAD:refs/heads/master`,
   );
 
   shell.popd();
+}
+
+function getGitUrlWithUsernameAndPassword(deploymentSlotIfAny: string | null) {
+  return (
+    `https://${DEPLOYMENT_USERNAME}:${DEPLOYMENT_PASSWORD}@` +
+    (SITE_NAME + (deploymentSlotIfAny ? '-' + deploymentSlotIfAny : '')) +
+    `.scm.azurewebsites.net:443/${SITE_NAME}.git`
+  );
 }
 
 function exit(reason: string, abort?: boolean) {

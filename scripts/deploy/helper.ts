@@ -2,6 +2,8 @@ import path from 'path';
 import shell from 'shelljs';
 import fs from 'fs-extra';
 
+import { stripSpaces } from 'common/lib/utilities/string';
+
 export function mergeNewAndExistingBuildAssets({
   BUILD_DIRECTORY,
   PREVIOUS_BUILD_DIRECTORIES,
@@ -13,6 +15,15 @@ export function mergeNewAndExistingBuildAssets({
   FINAL_OUTPUT_DIRECTORY: string;
   DEPLOYMENT_LOG_FILENAME: string;
 }): void {
+  console.log(
+    stripSpaces(`
+    Merging new and existing build assets, using:
+    - Current build: ${BUILD_DIRECTORY}
+    - Previous build directories: ${JSON.stringify(PREVIOUS_BUILD_DIRECTORIES)}
+    - Final output destination: ${FINAL_OUTPUT_DIRECTORY}
+    `),
+  );
+
   const allFiles = listAllFilesRecursive(BUILD_DIRECTORY);
   const gitIgnoreFiles = allFiles.filter((filepath: string) =>
     filepath.toLowerCase().endsWith('.gitignore'),
