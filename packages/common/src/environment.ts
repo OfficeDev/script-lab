@@ -77,21 +77,19 @@ export const currentOfficeJsRawSnippetsBaseRepoUrl = `https://raw.githubusercont
 export function getVisibleEnvironmentKeysToSwitchTo(): Array<
   keyof IAllSwitchableEnvironments
 > {
+  const basicEnvironments: Array<keyof IAllSwitchableEnvironments> = [
+    'cdn',
+    'beta',
+    'alpha',
+    'beta2017',
+  ];
+
   switch (getCurrentEnv()) {
     case 'local':
     case 'alpha':
-      return [
-        'local',
-        'alpha',
-        'beta',
-        'staging',
-        'production',
-        'cdn',
-        'alpha2017',
-        'beta2017',
-      ];
+      return [...basicEnvironments, 'alpha2017', 'production', 'staging', 'local'];
     default:
-      return ['alpha', 'beta', 'cdn', 'beta2017'];
+      return basicEnvironments;
   }
 }
 

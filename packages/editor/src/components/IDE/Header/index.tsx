@@ -17,7 +17,7 @@ import { getRunButton, IProps as IRunButtonProps } from './Buttons/Run';
 
 import { ITheme as IFabricTheme } from 'office-ui-fabric-react/lib/Styling';
 import { NULL_SOLUTION_ID, PATHS, IS_TASK_PANE_WIDTH } from '../../../constants';
-import { getPlatform, PlatformType } from 'common/lib/environment';
+import { getPlatform, PlatformType, currentRunnerUrl } from 'common/lib/environment';
 
 import { connect } from 'react-redux';
 import actions, { dialog, IRootAction } from '../../../store/actions';
@@ -42,6 +42,7 @@ interface IPropsFromRedux {
   isLoggingInOrOut: boolean;
   commandBarFabricTheme: IFabricTheme;
   screenWidth: number;
+  shouldShowPopOutButton: boolean;
 }
 
 const mapStateToProps = (state: IReduxState): IPropsFromRedux => ({
@@ -54,6 +55,7 @@ const mapStateToProps = (state: IReduxState): IPropsFromRedux => ({
   profilePicUrl: selectors.github.getProfilePicUrl(state),
   commandBarFabricTheme: getCommandBarFabricTheme(selectors.host.get(state)),
   screenWidth: selectors.screen.getWidth(state),
+  shouldShowPopOutButton: selectors.host.getIsInAddin(state),
 });
 
 interface IActionsFromRedux {
@@ -89,6 +91,8 @@ interface IActionsFromRedux {
       isPrimary: boolean;
     }>,
   ) => void;
+
+  openEditor: () => void;
 }
 
 const mapDispatchToProps = (dispatch: Dispatch, ownProps: IProps): IActionsFromRedux => ({
@@ -149,6 +153,10 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps: IProps): IActionsFromR
       isPrimary: boolean;
     }>,
   ) => dispatch(dialog.show({ title, subText, buttons })),
+  openEditor: () => {
+    Office.context.ui.displayDialogAsync(window.location.href);
+    window.location.href = currentRunnerUrl;
+  },
 });
 
 export interface IProps extends IPropsFromRedux, IActionsFromRedux {
@@ -225,6 +233,8 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
       updateGist,
       createPublicGist,
       createSecretGist,
+      shouldShowPopOutButton,
+      openEditor,
     } = this.props;
     const solutionName = solution ? solution.name : 'Solution Name';
 
@@ -378,6 +388,15 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
       onClick: isLoggingInOrOut ? () => {} : login,
     };
 
+    const popOutButton = {
+      key: 'pop-out',
+      iconOnly: true,
+      iconProps: { iconName: 'OpenInNewWindow' },
+      onClick: openEditor,
+    };
+
+    const farItems = shouldShowPopOutButton ? [profilePic, popOutButton] : [profilePic];
+
     return (
       <>
         <Customizer settings={{ theme: commandBarFabricTheme }}>
@@ -394,7 +413,7 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
                   }[getPlatform()],
                 },
               }}
-              farItems={[profilePic]}
+              farItems={farItems}
               ariaLabel={'Use left and right arrow keys to navigate between commands'}
             />
           </HeaderWrapper>

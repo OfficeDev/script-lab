@@ -1,5 +1,6 @@
 import React from 'react';
 import { Spinner, SpinnerSize } from 'office-ui-fabric-react/lib/Spinner';
+import { Icon } from 'office-ui-fabric-react/lib/Icon';
 import CommonHeader from 'common/lib/components/Header';
 
 export interface IProps {
@@ -8,9 +9,10 @@ export interface IProps {
   goBack?: () => void;
   refresh: () => void;
   hardRefresh: () => void;
+  openCode: () => void;
 }
 
-const Header = ({ solution, goBack, refresh, hardRefresh }: IProps) => {
+const Header = ({ solution, goBack, refresh, hardRefresh, openCode }: IProps) => {
   const items = [
     {
       hidden: !goBack,
@@ -24,7 +26,9 @@ const Header = ({ solution, goBack, refresh, hardRefresh }: IProps) => {
       onRenderIcon: (props, defaultRender) => {
         return solution === undefined ? (
           <Spinner size={SpinnerSize.small} style={{ padding: '.1rem' }} />
-        ) : null;
+        ) : (
+          <Icon iconName="Refresh" style={{ padding: '.4rem' }} />
+        );
       },
       style: { padding: '0 1rem' },
       onClick: refresh,
@@ -42,6 +46,12 @@ const Header = ({ solution, goBack, refresh, hardRefresh }: IProps) => {
             iconProps: { iconName: 'Refresh' },
             text: 'Hard Refresh',
             onClick: hardRefresh,
+          },
+          {
+            key: 'pop-out',
+            iconProps: { iconName: 'OpenInNewWindow' },
+            text: 'Open Code Editor',
+            onClick: openCode,
           },
         ],
       },

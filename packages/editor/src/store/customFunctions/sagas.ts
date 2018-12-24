@@ -15,11 +15,14 @@ import {
 import { registerMetadata } from './utilities';
 
 import {
-  getCustomFunctionLogs,
+  getCustomFunctionLogsFromLocalStorage,
   getIsCustomFunctionRunnerAlive,
-} from '../../store/localStorage';
-import { fetchLogsAndHeartbeat, updateEngineStatus, openDashboard } from './actions';
+  setCustomFunctionsLastRegisteredTimestamp,
+} from 'common/lib/utilities/localStorage';
+
+import { updateEngineStatus } from './actions';
 import { push } from 'connected-react-router';
+import { getLogsFromAsyncStorage } from './utilities/logs';
 
 export default function* customFunctionsWatcher() {
   yield takeEvery(
@@ -31,10 +34,7 @@ export default function* customFunctionsWatcher() {
     registerCustomFunctionsMetadataSaga,
   );
 
-  yield takeEvery(
-    getType(customFunctions.fetchLogsAndHeartbeat),
-    fetchLogsAndHeartbeatSaga,
-  );
+  yield takeEvery(getType(customFunctions.fetchLogs), fetchLogsSaga);
 
   yield takeEvery(getType(customFunctions.openDashboard), openDashboardSaga);
 
@@ -73,28 +73,29 @@ function* registerCustomFunctionsMetadataSaga(
     const engineStatus = yield call(getCustomFunctionEngineStatus);
     yield put(updateEngineStatus(engineStatus));
 
-    yield put(customFunctions.updateRunner({ isAlive: true, lastUpdated: Date.now() }));
+    const timestamp = Date.now();
+    yield put(customFunctions.updateRunner({ isAlive: true, lastUpdated: timestamp }));
+    setCustomFunctionsLastRegisteredTimestamp(timestamp);
   } catch (error) {
     console.error(error);
     yield put(customFunctions.registerMetadata.failure(error));
   }
 }
 
-function* fetchLogsAndHeartbeatSaga() {
-  const logs = yield call(getCustomFunctionLogs);
-  if (logs) {
-    yield put(customFunctions.pushLogs(logs));
-  }
+function* fetchLogsSaga() {
+  const isUsingAsyncStorage: boolean = yield select(
+    selectors.customFunctions.getIsUsingAsyncStorage,
+  );
+
+  const logs: ILogData[] = isUsingAsyncStorage
+    ? yield call(getLogsFromAsyncStorage)
+    : yield call(getCustomFunctionLogsFromLocalStorage);
+
+  yield put(customFunctions.pushLogs(logs));
 }
-// TODO: Zlatkovsky when heartbeat for cf is in place
-// function* fetchHeartbeatSaga() {
-//   const lastUpdated = yield call(getCustomFunctionRunnerLastUpdated);
-//   const isAlive = yield call(getIsCustomFunctionRunnerAlive);
-//   yield put(customFunctions.updateRunner({ isAlive, lastUpdated }));
-// }
 
 function* openDashboardSaga() {
-  window.location.href = './custom-functions.html';
+  window.location.href = './custom-functions.html?backButton=true';
 }
 
 function* checkIfIsCustomFunctionSaga(

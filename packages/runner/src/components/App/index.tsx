@@ -19,6 +19,8 @@ import MessageBar from '../MessageBar';
 import SnippetContainer from '../SnippetContainer';
 import { currentEditorUrl } from 'common/lib/environment';
 import processLibraries from 'common/lib/utilities/process.libraries';
+import { showSplashScreen } from 'common/lib/utilities/splash.screen';
+import { SILENT_SNIPPET_SWITCHING } from '../../constants';
 
 const AppWrapper = styled.div`
   height: 100vh;
@@ -125,16 +127,16 @@ export class App extends React.Component<{}, IState> {
   openConsole = () => this.setState({ isConsoleOpen: true });
   closeConsole = () => this.setState({ isConsoleOpen: false });
 
+  openCode = () => Office.context.ui.displayDialogAsync(currentEditorUrl);
+
   onReceiveNewActiveSolution = (solution: ISolution | null) => {
     if (solution !== null) {
       this.respondToOfficeJsMismatchIfAny(solution);
 
       if (!this.state.solution) {
-        console.info(`Your snippet "${solution.name}" has been loaded.`);
-      } else if (this.state.solution.id === solution.id) {
-        console.info(`Updating your snippet "${solution.name}".`);
+        informSnippetSwitch(`Your snippet "${solution.name}" has been loaded.`);
       } else {
-        console.info(`Switching to snippet "${solution.name}".`);
+        informSnippetSwitch(`Switching to snippet "${solution.name}".`);
       }
     }
     this.setState({ solution });
@@ -145,7 +147,9 @@ export class App extends React.Component<{}, IState> {
       this.setState({
         solution: { ...this.state.solution, dateLastModified: Date.now() },
       });
-      console.info(`Your snippet '${this.state.solution.name}' has been reloaded.`);
+      informSnippetSwitch(
+        `Your snippet '${this.state.solution.name}' has been reloaded.`,
+      );
     }
   };
 
@@ -190,6 +194,7 @@ export class App extends React.Component<{}, IState> {
                     ? () => (window.location.href = currentEditorUrl)
                     : undefined
                 }
+                openCode={this.openCode}
               />
             }
             footer={
@@ -270,19 +275,18 @@ export class App extends React.Component<{}, IState> {
       // straight to an office.js beta snippet, don't change out the title, keep as is
       // so that the load appears continuous).
       if (this.hasRenderedContent) {
-        const loadingIndicator = document.getElementById('loading')!;
-        loadingIndicator.style.visibility = 'initial';
-        const subtitleElement = document.querySelectorAll(
-          '#loading h2',
-        )[0] as HTMLElement;
-        subtitleElement.textContent = 'Re-loading office.js, please wait...';
-
-        (document.getElementById('root') as HTMLElement).style.display = 'none';
+        showSplashScreen('Re-loading office.js, please wait...');
       }
 
       this.isTransitioningAwayFromPage = true;
       this.reloadPageWithDifferentOfficeJsUrl(newOfficeJsUrl!);
     }
+  }
+}
+
+function informSnippetSwitch(message: string) {
+  if (!SILENT_SNIPPET_SWITCHING) {
+    console.log(message);
   }
 }
 
