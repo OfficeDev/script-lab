@@ -18,8 +18,8 @@ describe('deployment tests', () => {
       ['previous', 'DeploymentLog', 'previous.log.txt'],
       [
         `/index.html`,
-        `/nested_abandoned/also_old.txt`,
         `/nested/nested.html`,
+        `/nested_abandoned/also_old.txt`,
         `/old.txt`,
       ].join('\n'),
     );
@@ -42,14 +42,46 @@ describe('deployment tests', () => {
       ['DeploymentLog', 'previous.log.txt'],
       [
         '/index.html',
-        '/nested_abandoned/also_old.txt',
         '/nested/nested.html',
+        '/nested_abandoned/also_old.txt',
         '/old.txt',
       ].join('\n'),
     );
     checkFinal(
       ['DeploymentLog', 'current.log.txt'],
       ['/index.html', '/nested/nested.html'].join('\n'),
+    );
+  });
+
+  it('order matters', () => {
+    createTestFile(['previous', 'old.txt'], 'old');
+    createTestFile(['previous', 'nested_abandoned', 'also_old.txt'], 'also old');
+    createTestFile(['previous', 'nested', 'nested.html'], 'old nested');
+    createTestFile(['previous', 'index.html'], 'old index');
+
+    createTestFile(['current', 'index.html'], 'new index');
+    createTestFile(['current', 'nested', 'nested.html'], 'new nested');
+
+    // Note the reversal of the "previous" and "current" for this test, to check that ordering matters
+    mergeNewAndExistingBuildAssets({
+      BUILD_DIRECTORY: path.join(TEMP_DIRECTORY, 'previous'),
+      PREVIOUS_BUILD_DIRECTORIES: [path.join(TEMP_DIRECTORY, 'current')],
+      FINAL_OUTPUT_DIRECTORY: path.join(TEMP_DIRECTORY, 'final'),
+      DEPLOYMENT_LOG_FILENAME: 'previous.log.txt',
+    });
+
+    checkFinal(['index.html'], 'old index');
+    checkFinal(['nested', 'nested.html'], 'old nested');
+    checkFinal(['old.txt'], 'old');
+    checkFinal(['nested_abandoned', 'also_old.txt'], 'also old');
+    checkFinal(
+      ['DeploymentLog', 'previous.log.txt'],
+      [
+        '/index.html',
+        '/nested/nested.html',
+        '/nested_abandoned/also_old.txt',
+        '/old.txt',
+      ].join('\n'),
     );
   });
 
