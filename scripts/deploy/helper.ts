@@ -57,7 +57,7 @@ function writeAssetLog(
   files: string[],
   deploymentLogFilename: string,
 ) {
-  shell.echo('Deploying the following files from the build directory:');
+  shell.echo('The following assets were created as part of this build:');
   shell.echo(files.join('\n'));
 
   if (!fs.existsSync(path.join(buildDirectory, 'DeploymentLog'))) {
@@ -78,11 +78,13 @@ function mergeDir(src: string, dest: string) {
 
     const stats = fs.lstatSync(fullSrcPath);
     if (stats.isDirectory()) {
-      if (!fs.existsSync(fullDestPath)) {
-        fs.mkdirSync(fullDestPath);
-      }
+      if (fs.readdirSync(fullSrcPath).length > 0) {
+        if (!fs.existsSync(fullDestPath)) {
+          fs.mkdirSync(fullDestPath);
+        }
 
-      mergeDir(fullSrcPath, fullDestPath);
+        mergeDir(fullSrcPath, fullDestPath);
+      }
     } else if (stats.isFile()) {
       // Note: will overwrite existing file if any, which is what we want
       fs.copyFileSync(fullSrcPath, fullDestPath);

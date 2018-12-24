@@ -3,10 +3,9 @@ import { mergeNewAndExistingBuildAssets } from './helper';
 import path from 'path';
 import fs from 'fs-extra';
 
-const TEMP_DIRECTORY = path.join(__dirname, '__test__');
+const TEMP_DIRECTORY = path.join(__dirname, '__temp__');
 
 beforeEach(() => emptyTempDir());
-
 afterEach(() => fs.removeSync(TEMP_DIRECTORY));
 
 describe('deployment tests', () => {
@@ -53,6 +52,32 @@ describe('deployment tests', () => {
       ['/index.html', '/nested/nested.html'].join('\n'),
     );
   });
+
+  it('empty folders are skipped', () => {
+    createTestFile(['previous', 'old.txt'], 'old');
+    const fileToDelete = createTestFile(
+      ['previous', 'empty_folder', 'file_to_delete.txt'],
+      'data',
+    );
+    fs.removeSync(fileToDelete);
+
+    createTestFile(['current', 'index.html'], 'new index');
+    createTestFile(['current', 'nested', 'nested.html'], 'new nested');
+
+    mergeNewAndExistingBuildAssets({
+      BUILD_DIRECTORY: path.join(TEMP_DIRECTORY, 'current'),
+      PREVIOUS_BUILD_DIRECTORIES: [path.join(TEMP_DIRECTORY, 'previous')],
+      FINAL_OUTPUT_DIRECTORY: path.join(TEMP_DIRECTORY, 'final'),
+      DEPLOYMENT_LOG_FILENAME: 'current.log.txt',
+    });
+
+    checkFinal(['index.html'], 'new index');
+    checkFinal(['nested', 'nested.html'], 'new nested');
+    checkFinal(['old.txt'], 'old');
+
+    expect(fs.existsSync(path.join(TEMP_DIRECTORY, 'final', 'nested'))).toBeTruthy();
+    expect(fs.existsSync(path.join(TEMP_DIRECTORY, 'final', 'empty_folder'))).toBeFalsy();
+  });
 });
 
 ///////////////////////////////////////
@@ -65,7 +90,8 @@ function emptyTempDir() {
   fs.mkdir(TEMP_DIRECTORY);
 }
 
-function createTestFile(relativePathComponents: string[], contents: string) {
+/** Creates a file with the requested contents, and returns the final full path */
+function createTestFile(relativePathComponents: string[], contents: string): string {
   const filename = relativePathComponents.pop();
   let fullDirPathGradual = TEMP_DIRECTORY;
   relativePathComponents.forEach(part => {
@@ -75,7 +101,9 @@ function createTestFile(relativePathComponents: string[], contents: string) {
     }
   });
 
-  fs.writeFileSync(path.join(fullDirPathGradual, filename), contents);
+  const fullPath = path.join(fullDirPathGradual, filename);
+  fs.writeFileSync(fullPath, contents);
+  return fullPath;
 }
 
 function checkFinal(relativePathComponents: string[], contents: string) {
