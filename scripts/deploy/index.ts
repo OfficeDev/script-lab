@@ -12,6 +12,7 @@ interface IDeployEnvironments<T> {
 }
 
 const {
+  HOME,
   TRAVIS_BRANCH,
   TRAVIS_PULL_REQUEST,
   TRAVIS_COMMIT_MESSAGE,
@@ -60,7 +61,7 @@ if (!shell.test('-d', BUILD_DIRECTORY)) {
 (async () => {
   const PREVIOUS_BUILD_DIRECTORIES: string[] = await fetchPreviousBuildsFromLiveSite();
 
-  const FINAL_OUTPUT_DIRECTORY = path.join(PACKAGE_LOCATION, 'final_output');
+  const FINAL_OUTPUT_DIRECTORY = path.join(HOME, 'final_output');
   if (fs.existsSync(FINAL_OUTPUT_DIRECTORY)) {
     fs.removeSync(FINAL_OUTPUT_DIRECTORY);
   }
@@ -114,15 +115,12 @@ async function cloneExistingRepo(source: {
   friendlyName: string;
   urlWithUsernameAndPassword: string;
 }): Promise<string> {
-  const allPreviousBuildsFolder = path.join(PACKAGE_LOCATION, 'previous_builds');
+  const sanitizedFriendlyName = superSanitize(source.friendlyName);
+  const allPreviousBuildsFolder = path.join(HOME, 'previous_builds');
+  const fullFolderPath = path.join(allPreviousBuildsFolder, sanitizedFriendlyName);
 
   if (!fs.existsSync(allPreviousBuildsFolder)) {
     fs.mkdirSync(allPreviousBuildsFolder);
-  }
-
-  const fullFolderPath = path.join(allPreviousBuildsFolder, source.friendlyName);
-  if (!fs.existsSync(fullFolderPath)) {
-    fs.mkdirSync(fullFolderPath);
   }
 
   console.log(
@@ -130,14 +128,15 @@ async function cloneExistingRepo(source: {
       source.friendlyName
     }" and copying them into "${fullFolderPath}"`,
   );
+  console.log('Start: ' + new Date().toString());
 
-  shell.pushd(fullFolderPath);
+  shell.pushd(allPreviousBuildsFolder);
 
   // For some reason, seems to need to be an ASYNCHRONOUS command, or else was
   //    moving on with the logic before finishing!
   await new Promise((resolve, reject) => {
     const process = shell.exec(
-      `git clone ${source.urlWithUsernameAndPassword} ${source.friendlyName}`,
+      `git clone ${source.urlWithUsernameAndPassword} ${sanitizedFriendlyName}`,
       {
         async: true,
       },
@@ -145,6 +144,7 @@ async function cloneExistingRepo(source: {
     process.on('error', error => reject(error));
     process.on('message', message => console.log(message));
     process.on('exit', (code: number, signal: string) => {
+      console.log('Done: ' + new Date().toString());
       if (code === 0) {
         resolve();
       } else {
@@ -162,7 +162,7 @@ async function cloneExistingRepo(source: {
 }
 
 function deploy(path: string, deploymentSlot: string) {
-  const commitMessageSanitized = TRAVIS_COMMIT_MESSAGE.replace(/\W/g, '_');
+  const commitMessageSanitized = superSanitize(TRAVIS_COMMIT_MESSAGE);
 
   shell.pushd(path);
 
@@ -189,6 +189,10 @@ function getGitUrlWithUsernameAndPassword(deploymentSlotIfAny: string | null) {
     (SITE_NAME + (deploymentSlotIfAny ? '-' + deploymentSlotIfAny : '')) +
     `.scm.azurewebsites.net:443/${SITE_NAME}.git`
   );
+}
+
+function superSanitize(text: string) {
+  return text.replace(/\W/g, '_');
 }
 
 function exit(reason: string, abort?: boolean) {
