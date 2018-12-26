@@ -48,7 +48,7 @@ export function mergeNewAndExistingBuildAssets({
   });
 }
 
-function listAllFilesRecursive(initialDir: string): string[] {
+export function listAllFilesRecursive(initialDir: string): string[] {
   const prefixLength = initialDir.length;
   return getAllFilesHelper(initialDir).map(filename => filename.substr(prefixLength));
 
