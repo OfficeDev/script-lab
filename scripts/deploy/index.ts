@@ -2,7 +2,7 @@ import path from 'path';
 import shell from 'shelljs';
 import fs from 'fs-extra';
 
-import { mergeNewAndExistingBuildAssets } from './helper';
+import { mergeNewAndExistingBuildAssets, listAllFilesRecursive } from './helper';
 import { ChildProcess } from 'child_process';
 
 interface IDeployEnvironments<T> {
@@ -137,7 +137,7 @@ async function cloneExistingRepo(source: {
   //    moving on with the logic before finishing!
   await new Promise((resolve, reject) => {
     const process = shell.exec(
-      'git clone ' + source.urlWithUsernameAndPassword + ' existing_build',
+      `git clone ${source.urlWithUsernameAndPassword} ${source.friendlyName}`,
       {
         async: true,
       },
@@ -154,6 +154,9 @@ async function cloneExistingRepo(source: {
   });
 
   shell.popd();
+
+  console.log(`The following files were cloned into "${fullFolderPath}":`);
+  listAllFilesRecursive(fullFolderPath);
 
   return fullFolderPath;
 }
