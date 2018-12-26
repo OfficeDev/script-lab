@@ -21,6 +21,11 @@ const {
   DEPLOYMENT_PASSWORD,
 } = process.env; // from travis
 
+// Make any unhandled rejections terminate Node (rather than having it quit with a mere warning)
+process.on('unhandledRejection', error => {
+  throw error;
+});
+
 if (!TRAVIS_BRANCH) {
   exit(
     'Expecting to run the deploy script from within Travis ' +
@@ -120,7 +125,7 @@ async function cloneExistingRepo(source: {
     fs.mkdirSync(fullFolderPath);
   }
 
-  log(
+  console.log(
     `Fetching existing assets from "${
       source.friendlyName
     }" and copying them into "${fullFolderPath}"`,
