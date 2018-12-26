@@ -2,6 +2,7 @@
   "compilerOptions": {
     "target": "es6",
     "module": "commonjs",
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "allowJs": true
   }
 }

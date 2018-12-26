@@ -119,7 +119,7 @@ function emptyTempDir() {
     fs.removeSync(TEMP_DIRECTORY);
   }
 
-  fs.mkdir(TEMP_DIRECTORY);
+  fs.mkdirSync(TEMP_DIRECTORY);
 }
 
 /** Creates a file with the requested contents, and returns the final full path */
