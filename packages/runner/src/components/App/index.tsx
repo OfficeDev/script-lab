@@ -137,13 +137,14 @@ export class App extends React.Component<{}, IState> {
         informSnippetSwitch(`Switching to snippet "${solution.name}".`);
       }
     }
-    this.setState({ solution });
+    this.setState({ solution, logs: [] });
   };
 
   softRefresh = () => {
     if (this.state.solution) {
       this.setState({
         solution: { ...this.state.solution, dateLastModified: Date.now() },
+        logs: []
       });
       informSnippetSwitch(
         `Your snippet '${this.state.solution.name}' has been reloaded.`,
