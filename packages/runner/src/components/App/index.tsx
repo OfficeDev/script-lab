@@ -144,7 +144,7 @@ export class App extends React.Component<{}, IState> {
     if (this.state.solution) {
       this.setState({
         solution: { ...this.state.solution, dateLastModified: Date.now() },
-        logs: []
+        logs: [],
       });
       informSnippetSwitch(
         `Your snippet '${this.state.solution.name}' has been reloaded.`,
