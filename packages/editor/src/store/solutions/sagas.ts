@@ -28,10 +28,10 @@ export default function* solutionsWatcher() {
 function* onSolutionOpenOrFileEditSaga(
   action: ActionType<typeof solutions.edit> | ActionType<typeof editor.newSolutionOpened>,
 ) {
-  let solutionId;
+  let solutionId: string;
   switch (action.type) {
     case getType(editor.newSolutionOpened):
-      solutionId = action.payload;
+      solutionId = action.payload.id;
       break;
 
     case getType(solutions.edit):
