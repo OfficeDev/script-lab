@@ -42,6 +42,7 @@ const SnippetName = styled.div.attrs({ className: 'ms-font-s' })`
   color: ${props => props.theme.neutralSecondaryLight};
 
   font-variant: small-caps;
+  white-space: nowrap;
 `;
 
 const SummaryItem = ({
