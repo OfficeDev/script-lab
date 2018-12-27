@@ -156,7 +156,7 @@ async function cloneExistingRepo(source: {
   shell.popd();
 
   console.log(`The following files were cloned into "${fullFolderPath}":`);
-  console.log(getAllFilesRecursive(fullFolderPath));
+  getAllFilesRecursive(fullFolderPath).forEach(item => console.log(' - ' + item));
 
   return fullFolderPath;
 }
