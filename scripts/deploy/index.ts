@@ -2,7 +2,7 @@ import path from 'path';
 import shell from 'shelljs';
 import fs from 'fs-extra';
 
-import { mergeNewAndExistingBuildAssets, listAllFilesRecursive } from './helper';
+import { mergeNewAndExistingBuildAssets, getAllFilesRecursive } from './helper';
 import { ChildProcess } from 'child_process';
 
 interface IDeployEnvironments<T> {
@@ -156,7 +156,7 @@ async function cloneExistingRepo(source: {
   shell.popd();
 
   console.log(`The following files were cloned into "${fullFolderPath}":`);
-  listAllFilesRecursive(fullFolderPath);
+  console.log(getAllFilesRecursive(fullFolderPath));
 
   return fullFolderPath;
 }

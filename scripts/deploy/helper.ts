@@ -24,7 +24,7 @@ export function mergeNewAndExistingBuildAssets({
     `),
   );
 
-  const allFiles = listAllFilesRecursive(BUILD_DIRECTORY);
+  const allFiles = getAllFilesRecursive(BUILD_DIRECTORY);
   const gitIgnoreFiles = allFiles.filter((filepath: string) =>
     filepath.toLowerCase().endsWith('.gitignore'),
   );
@@ -48,7 +48,7 @@ export function mergeNewAndExistingBuildAssets({
   });
 }
 
-export function listAllFilesRecursive(initialDir: string): string[] {
+export function getAllFilesRecursive(initialDir: string): string[] {
   const prefixLength = initialDir.length;
   return getAllFilesHelper(initialDir).map(filename => filename.substr(prefixLength));
 
@@ -83,24 +83,26 @@ function writeAssetLog(
 
 function mergeDir(src: string, dest: string) {
   const contents = fs.readdirSync(src);
-  contents.forEach(name => {
-    const fullSrcPath = path.join(src, name);
-    const fullDestPath = path.join(dest, name);
+  contents
+    .filter(name => name !== '.git')
+    .forEach(name => {
+      const fullSrcPath = path.join(src, name);
+      const fullDestPath = path.join(dest, name);
 
-    const stats = fs.lstatSync(fullSrcPath);
-    if (stats.isDirectory()) {
-      if (fs.readdirSync(fullSrcPath).length > 0) {
-        if (!fs.existsSync(fullDestPath)) {
-          fs.mkdirSync(fullDestPath);
+      const stats = fs.lstatSync(fullSrcPath);
+      if (stats.isDirectory()) {
+        if (fs.readdirSync(fullSrcPath).length > 0) {
+          if (!fs.existsSync(fullDestPath)) {
+            fs.mkdirSync(fullDestPath);
+          }
+
+          mergeDir(fullSrcPath, fullDestPath);
         }
-
-        mergeDir(fullSrcPath, fullDestPath);
+      } else if (stats.isFile()) {
+        // Note: will overwrite existing file if any, which is what we want
+        fs.copyFileSync(fullSrcPath, fullDestPath);
+      } else {
+        throw new Error(`Unexpected file/folder type at "${fullSrcPath}"`);
       }
-    } else if (stats.isFile()) {
-      // Note: will overwrite existing file if any, which is what we want
-      fs.copyFileSync(fullSrcPath, fullDestPath);
-    } else {
-      throw new Error(`Unexpected file/folder type at "${fullSrcPath}"`);
-    }
-  });
+    });
 }

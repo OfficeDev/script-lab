@@ -110,6 +110,23 @@ describe('deployment tests', () => {
     expect(fs.existsSync(path.join(TEMP_DIRECTORY, 'final', 'nested'))).toBeTruthy();
     expect(fs.existsSync(path.join(TEMP_DIRECTORY, 'final', 'empty_folder'))).toBeFalsy();
   });
+
+  it('.git folder is skipped', () => {
+    createTestFile(['previous', '.git', 'something.txt'], '.git contents');
+    createTestFile(['previous', 'old.txt'], 'old');
+    createTestFile(['current', 'index.html'], 'new index');
+
+    mergeNewAndExistingBuildAssets({
+      BUILD_DIRECTORY: path.join(TEMP_DIRECTORY, 'current'),
+      PREVIOUS_BUILD_DIRECTORIES: [path.join(TEMP_DIRECTORY, 'previous')],
+      FINAL_OUTPUT_DIRECTORY: path.join(TEMP_DIRECTORY, 'final'),
+      DEPLOYMENT_LOG_FILENAME: 'current.log.txt',
+    });
+
+    expect(fs.existsSync(path.join(TEMP_DIRECTORY, 'final', 'index.html'))).toBeTruthy();
+    expect(fs.existsSync(path.join(TEMP_DIRECTORY, 'final', 'old.txt'))).toBeTruthy();
+    expect(fs.existsSync(path.join(TEMP_DIRECTORY, 'final', '.git'))).toBeFalsy();
+  });
 });
 
 ///////////////////////////////////////
