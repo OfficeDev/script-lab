@@ -69,7 +69,7 @@ function writeAssetLog(
   deploymentLogFilename: string,
 ) {
   console.log('The following assets were created as part of this build:');
-  files.forEach(item => ' - ' + item);
+  files.forEach(item => console.log(' - ' + item));
 
   if (!fs.existsSync(path.join(buildDirectory, 'DeploymentLog'))) {
     fs.mkdirSync(path.join(buildDirectory, 'DeploymentLog'));
