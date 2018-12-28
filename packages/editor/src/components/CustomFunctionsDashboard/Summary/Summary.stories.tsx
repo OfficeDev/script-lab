@@ -1,11 +1,11 @@
-import React from 'react'
+import React from 'react';
 
-import { Summary } from './'
+import { Summary } from './';
 
-import { checkA11y } from '@storybook/addon-a11y'
-import { storiesOf } from '@storybook/react'
+import { checkA11y } from '@storybook/addon-a11y';
+import { storiesOf } from '@storybook/react';
 
-import { Layout, Content } from '../Dashboard/styles'
+import { Layout, Content } from '../Dashboard/styles';
 
 enum Status {
   Good = 'good',
@@ -14,18 +14,18 @@ enum Status {
   Untrusted = 'untrusted',
 }
 
-const stories = storiesOf('Custom Functions|Summary', module)
+const stories = storiesOf('Custom Functions|Summary', module);
 
-const containerWrapper = storyFn => (
+const containerWrapper = (storyFn: () => React.ReactNode) => (
   <Layout>
     <Content>{storyFn()}</Content>
   </Layout>
-)
+);
 
-stories.addDecorator(containerWrapper)
+stories.addDecorator(containerWrapper);
 
-const snippetName = 'SnippetName'
-const funcName = 'foo'
+const snippetName = 'SnippetName';
+const funcName = 'foo';
 
 export const basicSummaryProps = {
   items: [
@@ -38,9 +38,9 @@ export const basicSummaryProps = {
     { snippetName, funcName: `${funcName}7`, status: Status.Good },
     { snippetName, funcName: `${funcName}8`, status: Status.Good },
   ],
-}
+};
 
-export const BasicSummary = () => <Summary {...basicSummaryProps} isLoading={false} />
+export const BasicSummary = () => <Summary {...basicSummaryProps} isLoading={false} />;
 
 stories
   .addDecorator(checkA11y)
@@ -57,4 +57,4 @@ stories
       isLoading={false}
     />
   ))
-  .add('loading', () => <Summary items={[]} isLoading={true} />)
+  .add('loading', () => <Summary items={[]} isLoading={true} />);

@@ -1,10 +1,10 @@
-import React from 'react'
+import React from 'react';
 
-import Samples from './'
+import Samples from './';
 
-import { storiesOf } from '@storybook/react'
-import { action } from '@storybook/addon-actions'
-import { object } from '@storybook/addon-knobs'
+import { storiesOf } from '@storybook/react';
+import { action } from '@storybook/addon-actions';
+import { object } from '@storybook/addon-knobs';
 
 export const exampleSamples = {
   Basics: [
@@ -1229,12 +1229,12 @@ export const exampleSamples = {
       host: 'EXCEL',
     },
   ],
-}
+};
 
-const samplesKnob = object('samples', exampleSamples)
+const samplesKnob = object('samples', exampleSamples);
 
 export const BasicSamples = () => (
   <Samples samplesByGroup={samplesKnob} openSample={action('open-sample')} />
-)
+);
 
-storiesOf('Backstage|Samples', module).add('basic', () => <BasicSamples />)
+storiesOf('Backstage|Samples', module).add('basic', () => <BasicSamples />);

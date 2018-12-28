@@ -1,8 +1,8 @@
-import { getType } from 'typesafe-actions'
-import { host as hostActions, IHostAction } from '../actions'
-import { Utilities, HostType } from '@microsoft/office-js-helpers'
+import { getType } from 'typesafe-actions';
+import { host as hostActions, IHostAction } from '../actions';
+import { Utilities, HostType } from '@microsoft/office-js-helpers';
 
-export type IState = string
+export type IState = string;
 
 const host = (state: IState = Utilities.host, action: IHostAction) => {
   switch (action.type) {
@@ -11,10 +11,10 @@ const host = (state: IState = Utilities.host, action: IHostAction) => {
         .map(k => HostType[k])
         .includes(action.payload)
         ? action.payload
-        : state
+        : state;
     default:
-      return state
+      return state;
   }
-}
+};
 
-export default host
+export default host;

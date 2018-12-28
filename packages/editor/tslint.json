@@ -1,21 +1,12 @@
 {
-  "rulesDirectory": "warning",
-  "extends": ["tslint:recommended", "tslint-react", "tslint-config-prettier"],
+  "defaultSeverity": "warning",
+  "extends": [
+    "tslint:recommended",
+    "tslint-react",
+    "tslint-config-prettier",
+    "../../tslint.json"
+  ],
   "linterOptions": {
-    "exclude": ["config/**/*.js", "node_modules/**/*.ts"]
-  },
-  "rules": {
-    "member-access": [true, "no-public"],
-    "member-ordering": false,
-    "ordered-imports": false,
-    "object-literal-sort-keys": false,
-    "no-console": false,
-    "jsx-boolean-value": false,
-    "jsx-no-string-ref": false,
-    "no-shadowed-variable": false,
-    "no-bitwise": false,
-    "no-empty": false,
-    "no-empty-interface": false,
-    "no-misused-new": false
+    "exclude": ["config/**/*.js", "node_modules/**/*.ts", "src/interfaces/monaco.d.ts"]
   }
 }

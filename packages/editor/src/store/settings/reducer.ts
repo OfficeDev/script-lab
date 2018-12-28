@@ -1,26 +1,29 @@
-import { combineReducers } from 'redux'
-import { getType } from 'typesafe-actions'
-import { defaultSettings } from '../../defaultSettings'
-import { settings as settingsActions, ISettingsAction } from '../actions'
+import { combineReducers } from 'redux';
+import { getType } from 'typesafe-actions';
+import { defaultSettings } from '../../settings';
+import { settings as settingsActions, ISettingsAction } from '../actions';
 
-const values = (state: ISettings = defaultSettings, action: ISettingsAction) => {
+const userSettings = (
+  state: Partial<ISettings> = defaultSettings,
+  action: ISettingsAction,
+) => {
   switch (action.type) {
     case getType(settingsActions.edit.success):
-      return action.payload.settings
+      return action.payload.userSettings;
     default:
-      return state
+      return state;
   }
-}
+};
 
 interface ILastActive {
-  solutionId: string | null
-  fileId: string | null
+  solutionId: string | null;
+  fileId: string | null;
 }
 
 const initialLastActiveState = {
   solutionId: null,
   fileId: null,
-}
+};
 
 const lastActive = (
   state: ILastActive = initialLastActiveState,
@@ -28,16 +31,16 @@ const lastActive = (
 ) => {
   switch (action.type) {
     case getType(settingsActions.setLastActive):
-      const { solutionId, fileId } = action.payload
-      return { solutionId, fileId }
+      const { solutionId, fileId } = action.payload;
+      return { solutionId, fileId };
     default:
-      return state
+      return state;
   }
-}
+};
 
 export interface IState {
-  values: ISettings
-  lastActive: ILastActive
+  userSettings: Partial<ISettings>;
+  lastActive: ILastActive;
 }
 
-export default combineReducers({ values, lastActive })
+export default combineReducers({ userSettings, lastActive });

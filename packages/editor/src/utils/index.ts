@@ -1,22 +1,25 @@
-import uuidv4 from 'uuid'
+import createGUID from 'uuid';
+import { LIBRARIES_FILE_NAME, SCRIPT_FILE_NAME } from '../constants';
+import { getBoilerplateFiles } from '../newSolutionData';
+import { stringifyPlusPlus } from 'common/lib/utilities/string';
 
 export const getObjectValues = (dict: object): any[] =>
-  Object.keys(dict).map(key => dict[key])
+  Object.keys(dict).map(key => dict[key]);
 
 export function setUpMomentJsDurationDefaults(momentInstance: {
-  relativeTimeThreshold(threshold: string, limit: number): boolean
+  relativeTimeThreshold(threshold: string, limit: number): boolean;
 }) {
-  momentInstance.relativeTimeThreshold('s', 40)
+  momentInstance.relativeTimeThreshold('s', 40);
   // Note, per documentation, "ss" must be set after "s"
-  momentInstance.relativeTimeThreshold('ss', 1)
-  momentInstance.relativeTimeThreshold('m', 40)
-  momentInstance.relativeTimeThreshold('h', 20)
-  momentInstance.relativeTimeThreshold('d', 25)
-  momentInstance.relativeTimeThreshold('M', 10)
+  momentInstance.relativeTimeThreshold('ss', 1);
+  momentInstance.relativeTimeThreshold('m', 40);
+  momentInstance.relativeTimeThreshold('h', 20);
+  momentInstance.relativeTimeThreshold('d', 25);
+  momentInstance.relativeTimeThreshold('M', 10);
 }
 
 export function pause(ms: number) {
-  return new Promise(r => setTimeout(r, ms))
+  return new Promise(r => setTimeout(r, ms));
 }
 
 const EXT_TO_LANG_MAP = {
@@ -24,80 +27,87 @@ const EXT_TO_LANG_MAP = {
   ts: 'TypeScript',
   html: 'HTML',
   css: 'CSS',
-}
+};
 
 export function convertExtensionToLanguage(file): string {
   if (!file) {
-    return ''
+    return '';
   }
 
-  const extension = file.name.split('.').pop()
+  const extension = file.name.split('.').pop();
   if (extension) {
-    return EXT_TO_LANG_MAP[extension.toLowerCase()] || ''
+    return EXT_TO_LANG_MAP[extension.toLowerCase()] || '';
   }
-  return ''
+  return '';
 }
 
 const createFile = (name, { content, language }): IFile => ({
-  id: uuidv4(),
+  id: createGUID(),
   name,
   content,
   language,
   dateCreated: Date.now(),
   dateLastModified: Date.now(),
-})
+});
 
 export const convertSnippetToSolution = (snippet: ISnippet): ISolution => {
-  const { name, description, script, template, style, libraries, host } = snippet
+  const { name, description, script, template, style, libraries, host } = snippet;
 
-  const files = [
-    createFile('index.ts', script),
-    createFile('index.html', template),
-    createFile('index.css', style),
-    createFile('libraries.txt', { content: libraries, language: 'libraries' }),
-  ]
+  const defaultFiles = getBoilerplateFiles(Date.now());
+
+  const files = Object.entries({
+    [SCRIPT_FILE_NAME]: script,
+    'index.html': template,
+    'index.css': style,
+    [LIBRARIES_FILE_NAME]: { content: libraries, language: 'libraries' },
+  }).map(([fileName, file]) =>
+    file
+      ? createFile(fileName, file)
+      : defaultFiles.find(file => file.name === fileName)!,
+  ) as IFile[];
 
   const solution = {
-    id: uuidv4(),
+    id: createGUID(),
     name,
     host,
     description,
+    options: {},
     files,
     dateCreated: Date.now(),
     dateLastModified: Date.now(),
-  }
+  };
 
-  return solution
-}
+  return solution;
+};
 
 export const convertSolutionToSnippet = (solution: ISolution): ISnippet => {
-  const { id, name, description, dateCreated, dateLastModified, host, files } = solution
+  const { name, description, host, files } = solution;
 
-  const script: IFile = files.find(file => file.name === 'index.ts')!
-  const template: IFile = files.find(file => file.name === 'index.html')!
-  const style: IFile = files.find(file => file.name === 'index.css')!
-  const libraries: IFile = files.find(file => file.name === 'libraries.txt')!
+  const snippetFiles = Object.entries({
+    script: file => file.name === SCRIPT_FILE_NAME,
+    template: file => file.name === 'index.html',
+    style: file => file.name === 'index.css',
+    libraries: file => file.name === LIBRARIES_FILE_NAME,
+  })
+    .map(([fileName, fileSelector]) => [fileName, files.find(fileSelector)])
+    .filter(([fileName, file]) => file !== undefined)
+    .reduce((obj, [fileName, file]) => {
+      const name = fileName as string;
+      const f = file as IFile;
+      return {
+        ...obj,
+        [name]:
+          f.name === LIBRARIES_FILE_NAME
+            ? f.content
+            : { content: f.content, language: f.language },
+      };
+    }, {});
 
   return {
-    id,
     name,
     description,
-    created_at: dateCreated,
-    modified_at: dateLastModified,
     host,
-    platform: host,
-    script: {
-      content: script.content,
-      language: script.language,
-    },
-    template: {
-      content: template.content,
-      language: template.language,
-    },
-    style: {
-      content: style.content,
-      language: style.language,
-    },
-    libraries: libraries.content,
-  }
-}
+    api_set: {},
+    ...snippetFiles,
+  };
+};

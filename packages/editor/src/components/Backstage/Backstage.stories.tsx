@@ -1,12 +1,12 @@
-import React from 'react'
+import React from 'react';
 
-import { Backstage, IProps } from './'
+import { Backstage, IProps } from './';
 
-import { exampleSolutions, exampleGistMetadata } from './MySolutions/MySolutions.stories'
-import { exampleSamples } from './Samples/Samples.stories'
+import { exampleSolutions, exampleGistMetadata } from './MySolutions/MySolutions.stories';
+import { exampleSamples } from './Samples/Samples.stories';
 
-import { storiesOf } from '@storybook/react'
-import { action } from '@storybook/addon-actions'
+import { storiesOf } from '@storybook/react';
+import { action } from '@storybook/addon-actions';
 
 const defaultBackstageProps: IProps = {
   activeSolution: exampleSolutions[2],
@@ -19,8 +19,9 @@ const defaultBackstageProps: IProps = {
   openGist: action('open-gist'),
   openSample: action('open-sample'),
   openSolution: action('open-solution'),
-}
+  signIn: action('sign-in'),
+};
 
 storiesOf('Backstage|All', module).add('basic', () => (
   <Backstage {...defaultBackstageProps} />
-))
+));

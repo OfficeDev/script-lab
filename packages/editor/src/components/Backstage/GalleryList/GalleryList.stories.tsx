@@ -1,17 +1,17 @@
-import React from 'react'
+import React from 'react';
 
-import GalleryList from './'
+import GalleryList from './';
 
-import { getBasicGalleryListItemProps } from './GalleryListItem/GalleryListItem.stories'
+import { getBasicGalleryListItemProps } from './GalleryListItem/GalleryListItem.stories';
 
-import { storiesOf } from '@storybook/react'
+import { storiesOf } from '@storybook/react';
 
 export const BasicGalleryList = () => (
   <GalleryList
     title="Example Title"
     items={Array.from({ length: 5 }, (v, k) => getBasicGalleryListItemProps(k))}
   />
-)
+);
 
 export const GalleryListWithActive = () => (
   <GalleryList
@@ -21,7 +21,7 @@ export const GalleryListWithActive = () => (
       ...(k === 2 ? { isActive: true } : {}),
     }))}
   />
-)
+);
 
 storiesOf('Backstage|GalleryList', module)
   .add('basic', () => <BasicGalleryList />)
@@ -34,4 +34,4 @@ storiesOf('Backstage|GalleryList', module)
       <BasicGalleryList />
       <BasicGalleryList />
     </div>
-  ))
+  ));

@@ -1,32 +1,43 @@
-import React from 'react'
-import { SearchBox } from 'office-ui-fabric-react/lib/SearchBox'
+import React from 'react';
+import { SearchBox } from 'office-ui-fabric-react/lib/SearchBox';
 
-import Content from '../Content'
-import GalleryList from '../GalleryList'
+import Content from '../Content';
+import GalleryList from '../GalleryList';
+import { DefaultButton } from 'office-ui-fabric-react/lib/Button';
+import { Label } from 'office-ui-fabric-react/lib/Label';
 
 interface IProps {
-  solutions: ISolution[]
-  openSolution: (solutionId: string) => void
-  activeSolution?: ISolution
-  gistMetadata: ISharedGistMetadata[]
-  openGist: (gistMetadata: ISharedGistMetadata) => void
+  solutions: ISolution[];
+  openSolution: (solutionId: string) => void;
+  activeSolution?: ISolution;
+  gistMetadata: ISharedGistMetadata[];
+  openGist: (gistMetadata: ISharedGistMetadata) => void;
+  isSignedIn: boolean;
+  signIn: () => void;
 }
 
 interface IState {
-  filterQuery: string
+  filterQuery: string;
 }
 
 class MySolutions extends React.Component<IProps> {
-  state = { filterQuery: '' }
+  state: IState = { filterQuery: '' };
 
   componentWillMount() {
-    this.setFilterQuery('')
+    this.setFilterQuery('');
   }
 
-  setFilterQuery = filterQuery => this.setState({ filterQuery })
+  setFilterQuery = (filterQuery: string) => this.setState({ filterQuery });
 
   render() {
-    const { solutions, openSolution, activeSolution, gistMetadata, openGist } = this.props
+    const {
+      solutions,
+      openSolution,
+      activeSolution,
+      gistMetadata,
+      openGist,
+      isSignedIn,
+    } = this.props;
 
     return (
       <Content title="My Snippets" description="Choose a snippet that you have saved">
@@ -36,7 +47,7 @@ class MySolutions extends React.Component<IProps> {
           items={solutions
             .filter(solution => {
               if (this.state.filterQuery === '') {
-                return true
+                return true;
               }
 
               const megastring = [
@@ -45,9 +56,9 @@ class MySolutions extends React.Component<IProps> {
                 ...solution.files.map(file => file.content),
               ]
                 .filter(Boolean)
-                .join(' ')
+                .join(' ');
 
-              return megastring.includes(this.state.filterQuery)
+              return megastring.includes(this.state.filterQuery);
             })
             .map(sol => ({
               key: sol.id,
@@ -57,7 +68,13 @@ class MySolutions extends React.Component<IProps> {
               isActive: activeSolution && activeSolution.id === sol.id,
             }))}
         />
-        {gistMetadata.length > 0 && (
+        {/*
+        We want to show the "My shared gists" either when:
+        1) You're not signed in, so that we can tell you that you should. And so that you still see this UI
+        2) You have 1 or more gists.
+        For signed in case but with empty gists, omit this section.
+        */}
+        {(!isSignedIn || gistMetadata.length > 0) && (
           <GalleryList
             title="My shared gists on GitHub"
             items={gistMetadata.map(gist => ({
@@ -68,9 +85,19 @@ class MySolutions extends React.Component<IProps> {
             }))}
           />
         )}
+        {!isSignedIn && (
+          <div style={{ margin: '1rem', marginLeft: '2rem' }}>
+            <Label>You must be logged in to see your gists</Label>
+            <DefaultButton
+              text="Sign In"
+              label="You must be logged in to see your gists"
+              onClick={this.props.signIn}
+            />
+          </div>
+        )}
       </Content>
-    )
+    );
   }
 }
 
-export default MySolutions
+export default MySolutions;

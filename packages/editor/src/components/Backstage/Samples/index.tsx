@@ -1,11 +1,11 @@
-import React from 'react'
+import React from 'react';
 
-import Content from '../Content'
-import GalleryList from '../GalleryList'
+import Content from '../Content';
+import GalleryList from '../GalleryList';
 
 interface IProps {
-  samplesByGroup: ISampleMetadataByGroup
-  openSample: (rawUrl: string) => void
+  samplesByGroup: ISampleMetadataByGroup;
+  openSample: (rawUrl: string) => void;
 }
 
 const Samples = ({ samplesByGroup, openSample }: IProps) => (
@@ -27,6 +27,6 @@ const Samples = ({ samplesByGroup, openSample }: IProps) => (
       <span className="ms-font-m">There aren't any samples for this host yet.</span>
     )}
   </Content>
-)
+);
 
-export default Samples
+export default Samples;

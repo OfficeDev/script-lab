@@ -2,11 +2,9 @@
   "name": "server",
   "version": "1.0.0",
   "scripts": {
-    "start": "node index.ts",
-    "build": "webpack --mode production",
-    "lint:tslint": "tslint 'src/**/*.ts?(x)'",
-    "lint:prettier": "prettier --list-different './**/*.ts?(x)'",
-    "lint": "yarn lint:tslint && yarn lint:prettier",
+    "start": "node src/index.ts",
+    "build": "webpack-cli",
+    "lint": "tslint \"src/**/*.ts?(x)\"",
     "test": "echo 'no tests'"
   },
   "dependencies": {
@@ -14,6 +12,8 @@
     "cors": "^2.8.4",
     "dotenv": "^6.0.0",
     "express": "^4.16.2",
+    "https": "^1.0.0",
+    "path": "^0.12.7",
     "request": "^2.87.0"
   },
   "devDependencies": {
@@ -21,11 +21,10 @@
     "@types/node": "^10.10.3",
     "copy-webpack-plugin": "^4.5.2",
     "nodemon": "^1.18.3",
-    "prettier": "^1.14.3",
     "shelljs": "^0.8.2",
     "ts-loader": "^5.2.0",
     "tslint": "^5.11.0",
-    "typescript": "^2.9.2",
+    "typescript": "^3.1.6",
     "webpack": "^4.19.1",
     "webpack-cli": "^3.1.1"
   }

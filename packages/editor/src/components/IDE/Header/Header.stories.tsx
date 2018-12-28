@@ -1,18 +1,20 @@
-import React from 'react'
-import { storiesOf } from '@storybook/react'
+import React from 'react';
+import { storiesOf } from '@storybook/react';
 
-import { Header } from './'
-import { getCommandBarFabricTheme } from '../../../theme'
-import { getBoilerplate, getBoilerplateSolution } from '../../../newSolutionData'
+import { Header } from './';
+import { getCommandBarFabricTheme } from '../../../theme';
+import { getBoilerplate, getBoilerplateSolution } from '../../../newSolutionData';
+import { SCRIPT_FILE_NAME } from '../../../constants';
 
-const voidFunc = () => {}
-
+const voidFunc = () => {};
+const solution = getBoilerplate('EXCEL');
 const defaultHeaderProps = {
   isRunnableOnThisHost: true,
   isSettingsView: false,
   isCustomFunctionsView: false,
   isLoggedIn: false,
   isLoggingInOrOut: false,
+  isNullSolution: false,
   profilePicUrl: null,
   screenWidth: 700,
   commandBarFabricTheme: getCommandBarFabricTheme('EXCEL'),
@@ -34,8 +36,29 @@ const defaultHeaderProps = {
 
   navigateToCustomFunctions: voidFunc,
 
-  solution: getBoilerplate('EXCEL'),
-}
+  solution,
+  file: solution.files.find(file => file.name === SCRIPT_FILE_NAME)!,
+  isDirectScriptExecutionSolution: false,
+  runnableFunctions: [],
+  directScriptExecutionFunction: (
+    solutionId: string,
+    fileId: string,
+    functionName: string,
+  ) => {},
+  terminateAllDirectScriptExecutionFunctions: () => {},
+  showDialog: (
+    title: string,
+    subText: string,
+    buttons: Array<{
+      text: string;
+      action: { type: string; payload?: any };
+      isPrimary: boolean;
+    }>,
+  ) => {},
+
+  navigateToRun: () => {},
+  showTrustError: () => {},
+};
 
 storiesOf('IDE|Header', module)
   .add('basic', () => <Header {...defaultHeaderProps} />)
@@ -47,4 +70,4 @@ storiesOf('IDE|Header', module)
   ))
   .add('logging in', () => (
     <Header {...{ ...defaultHeaderProps, isLoggingInOrOut: true }} />
-  ))
+  ));

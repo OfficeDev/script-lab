@@ -1,19 +1,19 @@
-const webpack = require("webpack");
-const path = require("path");
-const CopyWebpackPlugin = require("copy-webpack-plugin");
+const webpack = require('webpack');
+const path = require('path');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
-  entry: "./index.ts",
+  entry: './src/index.ts',
   output: {
-    path: path.resolve("./build"),
-    filename: "index.js"
+    path: path.resolve('./build'),
+    filename: 'index.js',
   },
-  target: "node",
+  target: 'node',
   resolve: {
-    extensions: [".ts", ".js"]
+    extensions: ['.ts', '.js'],
   },
   module: {
-    rules: [{ test: /\.ts$/, loader: "ts-loader" }]
+    rules: [{ test: /\.ts$/, loader: 'ts-loader' }],
   },
-  plugins: [new CopyWebpackPlugin(["web.config"])]
+  plugins: [new CopyWebpackPlugin(['web.config'])],
 };

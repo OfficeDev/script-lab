@@ -1,36 +1,36 @@
-import { combineReducers } from 'redux'
-import { getType } from 'typesafe-actions'
+import { combineReducers } from 'redux';
+import { getType } from 'typesafe-actions';
 
-import { solutions as solutionActions, ISolutionsAction } from '../actions'
+import { solutions as solutionActions, ISolutionsAction } from '../actions';
 
 function normalizeSolutionName(
   state: IMetadataState,
   id: string,
   currentName?: string,
 ): { name?: string } {
-  let name = currentName
+  let name = currentName;
   if (!name) {
-    return {}
+    return {};
   }
 
   const allNames = Object.keys(state)
     .map(k => state[k])
     .filter(s => s.id !== id)
-    .map(s => s.name)
+    .map(s => s.name);
 
   if (allNames.includes(name)) {
-    name = name.replace(/\(\d+\)$/gm, '').trim()
-    let suffix = 1
+    name = name.replace(/\(\d+\)$/gm, '').trim();
+    let suffix = 1;
     while (allNames.includes(`${name} (${suffix})`)) {
-      suffix++
+      suffix++;
     }
-    name = `${name} (${suffix})`
+    name = `${name} (${suffix})`;
   }
-  return { name }
+  return { name };
 }
 
 interface IMetadataState {
-  [id: string]: ISolutionWithFileIds
+  [id: string]: ISolutionWithFileIds;
 }
 
 const metadata = (
@@ -46,7 +46,7 @@ const metadata = (
           ...normalizeSolutionName(state, action.payload.id, action.payload.name),
           files: action.payload.files.map(file => file.id),
         },
-      }
+      };
 
     case getType(solutionActions.edit):
       return {
@@ -61,19 +61,19 @@ const metadata = (
           ),
           dateLastModified: action.payload.timestamp,
         },
-      }
+      };
 
     case getType(solutionActions.remove):
-      const { [action.payload.id]: omit, ...rest } = state
-      return rest
+      const { [action.payload.id]: omit, ...rest } = state;
+      return rest;
 
     default:
-      return state
+      return state;
   }
-}
+};
 
 interface IFilesState {
-  [id: string]: IFile
+  [id: string]: IFile;
 }
 
 const files = (state: IFilesState = {}, action: ISolutionsAction): IFilesState => {
@@ -82,17 +82,17 @@ const files = (state: IFilesState = {}, action: ISolutionsAction): IFilesState =
       const filesById = action.payload.files.reduce(
         (all, file) => ({ ...all, [file.id]: file }),
         {},
-      )
+      );
 
       return {
         ...state,
         ...filesById,
-      }
+      };
 
     case getType(solutionActions.edit):
-      const { file, fileId } = action.payload
+      const { file, fileId } = action.payload;
       if (!file || !fileId) {
-        return state
+        return state;
       }
 
       return {
@@ -102,30 +102,30 @@ const files = (state: IFilesState = {}, action: ISolutionsAction): IFilesState =
           ...file,
           dateLastModified: action.payload.timestamp,
         },
-      }
+      };
 
     case getType(solutionActions.remove):
-      const fileIdsToRemove = action.payload.files.map(file => file.id)
+      const fileIdsToRemove = action.payload.files.map(file => file.id);
       return Object.keys(state)
         .map(k => state[k])
         .reduce((newState, f) => {
           if (!fileIdsToRemove.includes(f.id)) {
-            newState[f.id] = f
+            newState[f.id] = f;
           }
-          return newState
-        }, {})
+          return newState;
+        }, {});
 
     default:
-      return state
+      return state;
   }
-}
+};
 
 export interface IState {
-  metadata: IMetadataState
-  files: IFilesState
+  metadata: IMetadataState;
+  files: IFilesState;
 }
 
 export default combineReducers({
   metadata,
   files,
-})
+});

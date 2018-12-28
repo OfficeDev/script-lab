@@ -1,9 +1,10 @@
-import uuidv4 from 'uuid'
+import createGUID from 'uuid';
+import { LIBRARIES_FILE_NAME, SCRIPT_FILE_NAME } from './constants';
 
 export const getBoilerplateFiles = (timestamp: number): IFile[] =>
   [
     {
-      name: 'index.ts',
+      name: SCRIPT_FILE_NAME,
       language: 'TypeScript',
       content: `$("#run").click(() => tryCatch(run));
 
@@ -34,7 +35,7 @@ async function tryCatch(callback) {
     },
     { name: 'index.css', language: 'CSS', content: '' },
     {
-      name: 'libraries.txt',
+      name: LIBRARIES_FILE_NAME,
       language: 'libraries',
       content: `https://appsforoffice.microsoft.com/lib/1/hosted/office.js
 https://appsforoffice.microsoft.com/lib/1/hosted/office.d.ts
@@ -53,29 +54,30 @@ jquery@3.1.1
     },
   ].map(file => ({
     ...file,
-    id: uuidv4(),
+    id: createGUID(),
     dateCreated: timestamp,
     dateLastModified: timestamp,
-  }))
+  }));
 
 export const getBoilerplateSolution = (
   host: string,
   files: IFile[],
   timestamp: number,
 ): ISolution => ({
-  id: uuidv4(),
+  id: createGUID(),
   name: `Blank Snippet`,
   host,
   dateCreated: timestamp,
   dateLastModified: timestamp,
+  options: {},
   files,
-})
+});
 
 export const getBoilerplate = (host: string): ISolution => {
-  const timestamp = Date.now()
+  const timestamp = Date.now();
 
-  const files = getBoilerplateFiles(timestamp)
-  const solution = getBoilerplateSolution(host, files, timestamp)
+  const files = getBoilerplateFiles(timestamp);
+  const solution = getBoilerplateSolution(host, files, timestamp);
 
-  return solution
-}
+  return solution;
+};

@@ -1,88 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Script Lab</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="theme-color" content="#000000" />
+    <link rel="shortcut icon" type="image/x-icon" href="/assets/images/favicon.ico" />
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="theme-color" content="#000000">
-  <!--
-      manifest.json provides metadata used when your web app is added to the
-      homescreen on Android. See https://developers.google.com/web/fundamentals/engage-and-retain/web-app-manifest/
-    -->
-  <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
-  <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
-  <!--
-      Notice the use of %PUBLIC_URL% in the tags above.
-      It will be replaced with the URL of the `public` folder during the build.
-      Only files inside the `public` folder can be referenced from the HTML.
+    <!-- Begin precompile placeholder: environment-redirect.js -->
+    <script src="/precompiled/environment-redirect-1fa6076f5edc4b48940e21521cf9bb32.js"></script>
+    <!-- End precompile placeholder: environment-redirect.js -->
 
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running `npm run build`.
-    -->
-  <link rel="stylesheet" href="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-core/9.6.0/css/fabric.min.css">
+    <link
+      rel="stylesheet"
+      href="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-core/9.6.0/css/fabric.min.css"
+    />
 
-  <title>Script Lab React</title>
-  <style>
-    *,
-    *::before,
-    *::after {
-      padding: 0;
-      margin: 0;
-      box-sizing: inherit;
-    }
-  </style>
-</head>
+    <!-- Begin precompile placeholder: style.css -->
+    <link
+      rel="stylesheet"
+      href="/precompiled/style-17dd7f5af03b8bd9c8402fb67d5a8e30.css"
+    />
+    <!-- End precompile placeholder: style.css -->
+  </head>
 
-<body class="ms-Fabric">
-  <div style="background-color: #212121; height: 100vh; width: 100vw; display: flex; align-items: center; justify-content: center;">
-    <span id="message" class="ms-font-xl" style="color: white; text-align: center;">Loading...</span>
-  </div>
-  <noscript>
-    You need to enable JavaScript to run this app.
-  </noscript>
-  <script>
-    // In order to fix the IE cross-tab issue (#147)
-    localStorage.setItem('playground_dummy_key', 'null')
+  <body class="ms-Fabric">
+    <noscript> You need to enable JavaScript to run this app. </noscript>
 
-    var snippet = JSON.parse(localStorage.getItem('activeSnippet'));
-    if (snippet) {
-      const state = {
-        snippet: snippet,
-        displayLanguage: 'en-us',
-        isInsideOfficeApp: true,
-        returnUrl: 'NONE',
-        refreshUrl: window.location.origin + '/run.html',
-        hideSyncWithEditorButton: true
-      };
+    <div id="loading">
+      <img src="/assets/images/icon-large.svg" alt="Script Lab logo" />
+      <h1 class="ms-font-xxl">Script Lab</h1>
+      <h2 class="ms-font-m">Code ● Run ● Share</h2>
+      <div class="loading-indicator">
+        <div class="ball1"></div>
+        <div class="ball2"></div>
+        <div class="ball3"></div>
+        <div class="ball4"></div>
+        <div class="ball5"></div>
+      </div>
+    </div>
 
-      const data = JSON.stringify(state);
-      const params = { data: data, isTrustedSnippet: true }
-
-      var useAlphaRunner =
-          /^http(s?):\/\/script-lab-react-alpha\./.test(window.location.href) ||
-          /^http(s?):\/\/localhost/.test(window.location.href);
-      var path = 'https://bornholm-runner-' + (useAlphaRunner ? 'edge' : 'insiders') + '.azurewebsites.net/compile/page';
-      let form = document.createElement('form');
-      form.setAttribute('method', 'post');
-      form.setAttribute('action', path);
-
-      for (let key in params) {
-        if (params.hasOwnProperty(key)) {
-          let hiddenField = document.createElement('input');
-          hiddenField.setAttribute('type', 'hidden');
-          hiddenField.setAttribute('name', key);
-          hiddenField.setAttribute('value', params[key]);
-          form.appendChild(hiddenField);
-        }
-      }
-
-      document.body.appendChild(form);
-      form.submit();
-    } else {
-      document.getElementById('message').innerHTML = "Error: No snippet found.<br>Please open the editor to create a snippet."
-    }
-  </script>
-</body>
-
+    <!-- Begin precompile placeholder: run-page-redirect.js -->
+    <script src="/precompiled/run-page-redirect-6d46bb9678915a4adb898ccc2a5b1d30.js"></script>
+    <!-- End precompile placeholder: run-page-redirect.js -->
+  </body>
 </html>

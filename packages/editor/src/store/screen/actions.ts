@@ -1,5 +1,5 @@
-import { createAction } from 'typesafe-actions'
+import { createAction } from 'typesafe-actions';
 
-export const updateWidth = createAction('SCREEN_UPDATE_WIDTH', resolve => {
-  return (width: number) => resolve(width)
-})
+export const updateSize = createAction('SCREEN_UPDATE_SIZE', resolve => {
+  return (props: { width: number; height: number }) => resolve(props);
+});

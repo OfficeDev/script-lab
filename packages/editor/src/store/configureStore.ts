@@ -1,76 +1,60 @@
 // redux
-import { createStore, applyMiddleware } from 'redux'
-import rootReducer from './reducer'
-import { composeWithDevTools } from 'redux-devtools-extension'
-import {
-  loadState as loadStateFromLocalStorage,
-  saveState as saveStateToLocalStorage,
-} from './localStorage'
-import {
-  loadState as loadStateFromSessionStorage,
-  saveState as saveStateToSessionStorage,
-} from './sessionStorage'
+import { createStore, applyMiddleware } from 'redux';
+import rootReducer, { IState } from './reducer';
+import { composeWithDevTools } from 'redux-devtools-extension';
 
 // saga
-import createSagaMiddleware from 'redux-saga'
-import rootSaga from './sagas'
+import createSagaMiddleware from 'redux-saga';
+import rootSaga from './sagas';
 
 // router
-import { connectRouter, routerMiddleware } from 'connected-react-router'
-import { supportsHistory } from 'history/es/DOMUtils'
-import createBrowserHistory from 'history/createBrowserHistory'
-import createHashHistory from 'history/createHashHistory'
-
-// utilities
-import throttle from 'lodash/throttle'
+import { connectRouter, routerMiddleware } from 'connected-react-router';
+import { supportsHistory } from 'history/es/DOMUtils';
+import createMemoryHistory from 'history/createMemoryHistory';
+import createHashHistory from 'history/createHashHistory';
 
 const addLoggingToDispatch = store => {
-  const rawDispatch = store.dispatch
+  const rawDispatch = store.dispatch;
   if (!console.group) {
-    return rawDispatch
+    return rawDispatch;
   }
   return action => {
-    console.group(action.type)
-    console.log('%c prev state', 'color: gray', store.getState())
-    console.log('%c action', 'color: blue', action)
-    const returnValue = rawDispatch(action)
-    console.log('%c next state', 'color: green', store.getState())
-    console.groupEnd()
-    return returnValue
-  }
+    console.group(action.type);
+    console.log('%c prev state', 'color: gray', store.getState());
+    console.log('%c action', 'color: blue', action);
+    const returnValue = rawDispatch(action);
+    console.log('%c next state', 'color: green', store.getState());
+    console.groupEnd();
+    return returnValue;
+  };
+};
+
+export interface IConfigureStoreProps {
+  history?: any;
+  initialState: Partial<IState>;
 }
 
-const configureStore = () => {
+const configureStore = ({
+  history = createMemoryHistory(),
+  initialState = {},
+}: IConfigureStoreProps) => {
   // TODO: (nicobell) find out why supportsHistory() says true for the agave window or use another condition
   // NOTE: editor/reducer will need to be updated as it currently is hardcoded to depend on window.location.hash
   // const history = supportsHistory() ? createBrowserHistory() : createHashHistory()
-  const history = createHashHistory()
-  const sagaMiddleware = createSagaMiddleware()
+  const sagaMiddleware = createSagaMiddleware();
 
-  const persistedState = {
-    ...loadStateFromLocalStorage(),
-    ...loadStateFromSessionStorage(),
-  }
   const store = createStore(
-    connectRouter(history)(rootReducer),
-    persistedState as any,
+    connectRouter(history)<IState>(rootReducer),
+    initialState as any,
     composeWithDevTools(applyMiddleware(sagaMiddleware, routerMiddleware(history))),
-  )
-  sagaMiddleware.run(rootSaga)
+  );
+  sagaMiddleware.run(rootSaga);
 
   if (process.env.NODE_ENV !== 'production') {
-    store.dispatch = addLoggingToDispatch(store)
+    store.dispatch = addLoggingToDispatch(store);
   }
 
-  store.subscribe(
-    throttle(() => {
-      const state = store.getState()
-      saveStateToLocalStorage(state)
-      saveStateToSessionStorage(state)
-    }, 1000),
-  )
+  return { store, history };
+};
 
-  return { store, history }
-}
-
-export default configureStore
+export default configureStore;

@@ -1,5 +1,5 @@
-import { IState } from '../reducer'
-import { getObjectValues } from '../../utils'
+import { IState } from '../reducer';
+import { getObjectValues } from '../../utils';
 
 export const getMetadataByGroup = (state: IState): ISampleMetadataByGroup =>
   getObjectValues(state.samples)
@@ -10,4 +10,4 @@ export const getMetadataByGroup = (state: IState): ISampleMetadataByGroup =>
         [sample.group]: [...(byGroup[sample.group] || []), sample],
       }),
       {},
-    )
+    );

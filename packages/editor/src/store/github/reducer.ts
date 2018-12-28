@@ -1,35 +1,50 @@
-import { combineReducers } from 'redux'
-import { github, IGithubAction } from '../actions'
-import { getType } from 'typesafe-actions'
+import { combineReducers } from 'redux';
+import { github, IGithubAction } from '../actions';
+import { getType } from 'typesafe-actions';
 
-type ITokenState = string | null
+type ITokenState = string | null;
 const token = (state: ITokenState = null, action: IGithubAction): ITokenState => {
   switch (action.type) {
     case getType(github.login.success):
-      return action.payload.token
+      return action.payload.token;
     case getType(github.logout.success):
-      return null
+      return null;
     default:
-      return state
+      return state;
   }
-}
+};
 
-type IProfilePicUrlState = string | null
+type IProfilePicUrlState = string | null;
 const profilePicUrl = (
   state: IProfilePicUrlState = null,
   action: IGithubAction,
 ): IProfilePicUrlState => {
   switch (action.type) {
     case getType(github.login.success):
-      return action.payload.profilePicUrl
+      return action.payload.profilePicUrl;
     case getType(github.logout.success):
-      return null
+      return null;
     default:
-      return state
+      return state;
   }
-}
+};
 
-type IIsLoggingInOrOutState = boolean
+type IUsernameState = string | null;
+const username = (
+  state: IUsernameState = null,
+  action: IGithubAction,
+): IUsernameState => {
+  switch (action.type) {
+    case getType(github.login.success):
+      return action.payload.username;
+    case getType(github.logout.success):
+      return null;
+    default:
+      return state;
+  }
+};
+
+type IIsLoggingInOrOutState = boolean;
 const isLoggingInOrOut = (
   state: IIsLoggingInOrOutState = false,
   action: IGithubAction,
@@ -37,21 +52,22 @@ const isLoggingInOrOut = (
   switch (action.type) {
     case getType(github.login.request):
     case getType(github.logout.request):
-      return true
+      return true;
     case getType(github.login.success):
     case getType(github.login.failure):
     case getType(github.logout.success):
     case getType(github.logout.failure):
-      return false
+      return false;
     default:
-      return state
+      return state;
   }
-}
+};
 
 export interface IState {
-  token: ITokenState
-  profilePicUrl: IProfilePicUrlState
-  isLoggingInOrOut: IIsLoggingInOrOutState
+  token: ITokenState;
+  profilePicUrl: IProfilePicUrlState;
+  username: IUsernameState;
+  isLoggingInOrOut: IIsLoggingInOrOutState;
 }
 
-export default combineReducers({ token, profilePicUrl, isLoggingInOrOut })
+export default combineReducers({ token, profilePicUrl, username, isLoggingInOrOut });

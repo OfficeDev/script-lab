@@ -1,0 +1,18 @@
+{
+  "rules": {
+    "member-access": [true, "no-public"],
+    "member-ordering": false,
+    "object-literal-shorthand": false,
+    "ordered-imports": false,
+    "object-literal-sort-keys": false,
+    "no-console": false,
+    "jsx-boolean-value": false,
+    "jsx-no-string-ref": false,
+    "no-shadowed-variable": false,
+    "no-bitwise": false,
+    "no-empty": false,
+    "no-empty-interface": false,
+    "no-misused-new": false,
+    "forin": false
+  }
+}

@@ -1,26 +1,25 @@
-import React from 'react'
-import { withTheme } from 'styled-components'
-
-import { Customizer } from 'office-ui-fabric-react/lib/Utilities'
-import { CommandBar, ICommandBarItemProps } from 'office-ui-fabric-react/lib/CommandBar'
-import { ITheme as IFabricTheme } from 'office-ui-fabric-react/lib/Styling'
-
-import { getCurrentEnv } from '../../../environment'
-import { PATHS } from '../../../constants'
+import React from 'react';
+import { withTheme } from 'styled-components';
 
 import {
-  DirectionalHint,
-  ContextualMenuItemType,
-} from 'office-ui-fabric-react/lib/ContextualMenu'
-import { getCommandBarFabricTheme } from '../../../theme'
+  getCurrentEnv,
+  getVisibleEnvironmentKeysToSwitchTo,
+  environmentDisplayNames,
+  environmentDisplayName,
+} from 'common/lib/environment';
 
-import { HostType } from '@microsoft/office-js-helpers'
+import { PATHS } from '../../../constants';
 
-import { Wrapper } from './styles'
+import { HostType } from '@microsoft/office-js-helpers';
 
-import { connect } from 'react-redux'
-import selectors from '../../../store/selectors'
-import actions from '../../../store/actions'
+import { connect } from 'react-redux';
+
+import { actions, selectors } from '../../../store';
+
+import CommonFooter from 'common/lib/components/Footer';
+import { Dispatch } from 'redux';
+import { IRootAction } from '../../../store/actions';
+import { IState as IReduxState } from '../../../store/reducer';
 
 const languageMap = {
   typescript: 'TypeScript',
@@ -28,43 +27,40 @@ const languageMap = {
   css: 'CSS',
   html: 'HTML',
   json: 'JSON',
-}
+};
 
 interface IPropsFromRedux {
-  language: string
-  currentHost: string
-  isWeb: boolean
-  hasCustomFunctions: boolean
-  commandBarFabricTheme: IFabricTheme
-  currentEditorTheme: string
+  language: string;
+  currentHost: string;
+  isWeb: boolean;
+  currentEditorTheme: string;
+  isSettingsView: boolean;
 }
 
-const mapStateToProps = (state, ownProps: IProps): IPropsFromRedux => ({
+const mapStateToProps = (state: IReduxState): IPropsFromRedux => ({
   language: selectors.editor.getActiveFile(state).language,
   currentHost: selectors.host.get(state),
   isWeb: selectors.host.getIsWeb(state),
-  hasCustomFunctions: selectors.customFunctions.getHasCustomFunctions(state),
-  commandBarFabricTheme: getCommandBarFabricTheme(selectors.host.get(state)),
   currentEditorTheme: selectors.settings.getPrettyEditorTheme(state),
-})
+  isSettingsView: selectors.settings.getIsOpen(state),
+});
 
 interface IActionsFromRedux {
-  onSettingsIconClick: () => void
-  changeHost: (host: string) => void
-  navigateToCustomFunctionsDashboard: () => void
-  cycleEditorTheme: () => void
+  onSettingsIconClick: () => void;
+  changeHost: (host: string) => void;
+  cycleEditorTheme: () => void;
+  switchEnvironment: (env: string) => void;
 }
 
-const mapDispatchToProps = (dispatch): IActionsFromRedux => ({
+const mapDispatchToProps = (dispatch: Dispatch<IRootAction>): IActionsFromRedux => ({
   onSettingsIconClick: () => dispatch(actions.settings.open()),
   changeHost: (host: string) => dispatch(actions.host.change(host)),
-  navigateToCustomFunctionsDashboard: () =>
-    dispatch(actions.customFunctions.openDashboard()),
   cycleEditorTheme: () => dispatch(actions.settings.cycleEditorTheme()),
-})
+  switchEnvironment: (env: string) => dispatch(actions.misc.switchEnvironment(env)),
+});
 
 export interface IProps extends IPropsFromRedux, IActionsFromRedux {
-  theme: ITheme // from withTheme
+  theme: ITheme; // from withTheme
 }
 
 const FooterWithoutTheme = ({
@@ -72,15 +68,14 @@ const FooterWithoutTheme = ({
   theme,
   currentHost,
   isWeb,
-  hasCustomFunctions,
   onSettingsIconClick,
-  navigateToCustomFunctionsDashboard,
   changeHost,
-  commandBarFabricTheme,
   currentEditorTheme,
   cycleEditorTheme,
+  switchEnvironment,
+  isSettingsView,
 }: IProps) => {
-  const iconStyles = { root: { fontSize: '1.4rem' } }
+  const iconStyles = { root: { fontSize: '1.4rem' } };
   const items = [
     {
       hidden: !isWeb,
@@ -115,20 +110,26 @@ const FooterWithoutTheme = ({
               },
             },
           })),
-        styles: props => ({
+        styles: () => ({
           root: { backgroundColor: theme.primary, color: theme.white },
         }),
       },
     },
     {
-      hidden: !hasCustomFunctions,
-      key: 'custom-functions-dashboard',
-      text: 'Custom Functions Dashboard',
-      onClick: navigateToCustomFunctionsDashboard,
+      hidden: !isSettingsView,
+      key: 'environment-switcher',
+      text: environmentDisplayName,
+      subMenuProps: {
+        items: getVisibleEnvironmentKeysToSwitchTo().map(env => ({
+          key: env,
+          text: environmentDisplayNames[env],
+          onClick: () => switchEnvironment(env),
+        })),
+      },
     },
   ]
     .filter(({ hidden }) => !hidden)
-    .map(item => ({ ...item, style: { fontSize: '1.2rem' } }))
+    .map(item => ({ ...item, style: { fontSize: '1.2rem' } }));
 
   const farItems = [
     {
@@ -137,6 +138,7 @@ const FooterWithoutTheme = ({
       text: languageMap[language.toLowerCase()],
     },
     {
+      hidden: isSettingsView,
       key: 'cycle-theme',
       iconProps: { iconName: 'Color', styles: { root: { fontSize: '1.2rem' } } },
       text: currentEditorTheme,
@@ -144,7 +146,7 @@ const FooterWithoutTheme = ({
       onClick: cycleEditorTheme,
     },
     {
-      hidden: getCurrentEnv() === 'prod',
+      hidden: getCurrentEnv() === 'cdn',
       key: 'report-an-issue',
       iconOnly: true,
       iconProps: { iconName: 'Emoji2', styles: iconStyles },
@@ -153,7 +155,6 @@ const FooterWithoutTheme = ({
       text: 'Report an Issue',
       ariaLabel: 'Report an issue',
     },
-
     {
       key: 'settings',
       iconOnly: true,
@@ -164,31 +165,14 @@ const FooterWithoutTheme = ({
     },
   ]
     .filter(({ hidden }) => !hidden)
-    .map(item => ({ ...item, style: { fontSize: '1.2rem' } }))
+    .map(item => ({ ...item, style: { fontSize: '1.2rem' } }));
 
-  return (
-    <Customizer settings={{ theme: commandBarFabricTheme }}>
-      <Wrapper>
-        <CommandBar
-          items={items}
-          farItems={farItems}
-          styles={{
-            root: {
-              paddingLeft: 0,
-              paddingRight: 0,
-              height: '2rem',
-            },
-          }}
-          ariaLabel={'Use left and right arrow keys to navigate between commands'}
-        />
-      </Wrapper>
-    </Customizer>
-  )
-}
+  return <CommonFooter items={items} farItems={farItems} />;
+};
 
-export const Footer = withTheme(FooterWithoutTheme)
+export const Footer = withTheme(FooterWithoutTheme);
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(withTheme(Footer))
+)(withTheme(Footer));
