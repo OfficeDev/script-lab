@@ -1,10 +1,10 @@
 document.getElementById('go').onclick = function() {
-  window.document.write(
-    atob(ENCODED_HTML_TO_REPLACE).replace(
-      /MONACO_BASE_URL/g,
-      document.getElementById('monaco-base-url').value,
-    ),
+  var html = atob(ENCODED_HTML_TO_REPLACE).replace(
+    /MONACO_BASE_URL/g,
+    document.getElementById('monaco-base-url').value
   );
+  console.log(html);
+  window.document.write(html);
 };
 
 // Note: HTML taken more-or-less verbatim from https://github.com/Microsoft/monaco-editor-samples/blob/master/browser-script-editor/index.html,
