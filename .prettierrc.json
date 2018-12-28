@@ -5,5 +5,14 @@
   "cursorOffset": -1,
   "trailingComma": "all",
   "singleQuote": true,
-  "printWidth": 90
+  "printWidth": 90,
+
+  "overrides": [
+    {
+      "files": "*.js",
+      "options": {
+        "trailingComma": "es5"
+      }
+    }
+  ]
 }

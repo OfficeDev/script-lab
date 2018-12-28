@@ -1,3 +1,5 @@
+import { PACKAGE_VERSIONS, hyphenate } from '../../common/src/package-versions';
+
 const expectedPackages: {
   [key: string]: {
     name: string;
@@ -9,14 +11,14 @@ const expectedPackages: {
 } = {
   monaco: {
     name: 'monaco-editor',
-    version: '0.14.3',
+    version: PACKAGE_VERSIONS['monaco-editor'],
     copyAsName: 'monaco-editor',
     pathToCopyFrom: 'min/vs',
     pathToCopyTo: 'vs',
   },
   officeJs: {
     name: '@microsoft/office-js',
-    version: '1.1.11-adhoc.28',
+    version: PACKAGE_VERSIONS['@microsoft/office-js'],
     copyAsName: 'office-js',
     pathToCopyFrom: 'dist',
     pathToCopyTo: '',
@@ -70,7 +72,7 @@ for (const key in expectedPackages) {
 
   foldersToCopy.push({
     from: `../../node_modules/${packageToCheck.name}/${packageToCheck.pathToCopyFrom}`,
-    to: `./public/external/${packageToCheck.copyAsName}-${getVersionNumberHyphenated(
+    to: `./public/external/${packageToCheck.copyAsName}-${hyphenate(
       packageToCheck.version,
     )}${packageToCheck.pathToCopyTo ? '/' + packageToCheck.pathToCopyTo : ''}`,
   });
@@ -82,8 +84,3 @@ for (const key in expectedPackages) {
   fs.removeSync(pair.to);
   fs.copySync(pair.from, pair.to);
 });
-
-// Helper
-function getVersionNumberHyphenated(versionString: string) {
-  return versionString.replace(/\./g, '-');
-}
