@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-const monacoEditorVersionNumber = '0-14-3';
+const monacoEditorVersionNumber = '0.10.1'.replace(/\./, '-');
 
 export interface IProps {
   solutionId: string;
