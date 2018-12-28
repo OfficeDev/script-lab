@@ -70,8 +70,9 @@
     "uppercased"
   ],
   "cSpell.ignorePaths": [
-    "**/node_modules", // the same for this one
-    "**/node_modules/**", // the same for this one
+    "**/node_modules",
+    "**/node_modules/**",
+    "packages/editor/src/interfaces/monaco.d.ts",
     "package.json",
     "yarn.lock"
   ],

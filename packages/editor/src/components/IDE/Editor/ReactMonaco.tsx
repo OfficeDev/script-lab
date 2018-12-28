@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-
-const monacoEditorVersionNumber = '0-14-3';
+import { HYPHENATED_PACKAGE_VERSIONS } from 'common/lib/package-versions';
 
 export interface IProps {
   solutionId: string;
@@ -26,7 +25,7 @@ export class ReactMonaco extends Component<IProps, IState> {
       (window as any).require.config({
         baseUrl: '/',
         paths: {
-          vs: `external/monaco-editor-${monacoEditorVersionNumber}/vs`,
+          vs: `external/monaco-editor-${HYPHENATED_PACKAGE_VERSIONS['monaco-editor']}/vs`,
         },
       });
       (window as any).require(['vs/editor/editor.main'], () => this.initializeMonaco());
