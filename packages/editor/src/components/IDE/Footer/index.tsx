@@ -146,7 +146,6 @@ const FooterWithoutTheme = ({
       onClick: cycleEditorTheme,
     },
     {
-      hidden: getCurrentEnv() === 'cdn',
       key: 'report-an-issue',
       iconOnly: true,
       iconProps: { iconName: 'Emoji2', styles: iconStyles },

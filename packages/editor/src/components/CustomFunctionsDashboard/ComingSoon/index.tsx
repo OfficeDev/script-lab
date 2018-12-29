@@ -16,8 +16,8 @@ const ComingSoon = () => (
     <CustomFunctionsTitle>Custom Functions</CustomFunctionsTitle>
     <Seperator />
     <Description>
-      Currently, Script Lab only supports Custom Functions (Preview) on Windows Desktop,
-      and only on the latest Insider builds.
+      Currently, Script Lab only supports Custom Functions (Preview) on Windows Desktop on
+      the latest Insider builds, and on Office Online.
       <br />
       <br />
       For more info, see{' '}
