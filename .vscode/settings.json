@@ -32,6 +32,7 @@
     "dogfood",
     "dogfooding",
     "dropdown",
+    "else's",
     "filepath",
     "flexbox",
     "gitignore",
@@ -67,7 +68,8 @@
     "unminified",
     "unpkg",
     "untrusted",
-    "uppercased"
+    "uppercased",
+    "youtube"
   ],
   "cSpell.ignorePaths": [
     "**/node_modules",
