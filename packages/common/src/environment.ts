@@ -40,7 +40,9 @@ export const environmentDisplayNames: IAllSwitchableEnvironments = {
   production: 'Production (direct)',
   cdn: 'Production',
   alpha2017: 'Script Lab 2017 - Alpha',
-  beta2017: 'Script Lab 2017 - Beta',
+  beta2017:
+    'Script Lab 2017' /* even though it's a URL pointing at "bornholm-insiders",
+    don't include "beta" in the title to avoid needless confusion */,
 };
 
 export const editorUrls: IAllSwitchableEnvironments = {
