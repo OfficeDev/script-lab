@@ -33,7 +33,6 @@ const PRECOMPILE_SPEC_LIST: {
       injectInto: [
         'custom-functions-run.html',
         'custom-functions.html',
-        'dogfood.html',
         'external-page.html',
         'functions.html',
         'index.html',
