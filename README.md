@@ -4,7 +4,7 @@
 
 Experiment with the Office JavaScript API without ever leaving Excel, Word, or PowerPoint! [**Get Script Lab for free, from the Office Store**](https://store.office.com/app.aspx?assetid=WA104380862).
 
-> Note: Script Lab has been re-written from the ground up in 2018, on a brand-new technology stack, including React and Fabric React.  To access the older archived version of Script Lab 2017, see <https://github.com/OfficeDev/script-lab-2017>.  More info [below](README.md#2017).
+> Note: Script Lab has been re-written from the ground up in 2018, on a brand-new technology stack, including React and Fabric React.  For the older version of Script Lab 2017, see more [below](README.md#2017).
 
 ## Topics
 
@@ -80,12 +80,16 @@ Finally, if you have a **question**, please ask it on <https://stackoverflow.com
 ## Script Lab vs. "Script Lab 2017"
 
 Script Lab was re-written from scratch in 2018. Though its visual design remains similar to the 2017 version, its technology stack was overhauled to make us of React and Fabric React.  Among the improvements are keyboard accessibility, a much faster runner, and user-configurable settings.
+
 If you encounter issues or need one of the few features that haven't been ported over yet, you can -- for the time being -- switch to the 2017 version of Script Lab.  To do so:
+
 1. Open the editor pane and select or create a snippet.
 2. In the bottom right of the editor, click the cog icon to open the settings.
 3. In a dropdown that will now appear on the left side of the footer, choose "Script Lab 2017" (instead of your current environment).
 
 ![Switching to Script Lab 2017](.github/images/switch-to-2017.png)
+
+The original repo of the 2017 version, now in a mostly-archival state, can be found at <https://github.com/OfficeDev/script-lab-2017>.
 
 <a id="office-2013"></a>
 
