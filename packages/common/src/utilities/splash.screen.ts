@@ -3,6 +3,7 @@ import { stringifyPlusPlus } from './string';
 export function invokeGlobalErrorHandler(error: any) {
   console.error('Global error handler:');
   console.error(error);
+  debugger;
 
   const loadingElement = document.getElementById('loading')!;
   const rootElement = document.getElementById('root');
@@ -37,7 +38,7 @@ export function invokeGlobalErrorHandler(error: any) {
   closeElement.textContent = 'Close';
   closeElement.addEventListener('click', () => {
     loadingElement.style.visibility = 'hidden';
-    rootElement!.style.display = 'initial';
+    rootElement!.style.display = '';
   });
   loadingElement.insertBefore(closeElement, null);
 
@@ -58,14 +59,14 @@ export function invokeGlobalErrorHandler(error: any) {
   }
 
   rootElement!.style.display = 'none';
-  loadingElement.style.visibility = 'initial';
+  loadingElement.style.visibility = '';
 
   return true;
 }
 
 export function showSplashScreen(subtitle: string) {
   const loadingIndicator = document.getElementById('loading')!;
-  loadingIndicator.style.visibility = 'initial';
+  loadingIndicator.style.visibility = '';
   const subtitleElement = document.querySelectorAll('#loading h2')[0] as HTMLElement;
   subtitleElement.textContent = subtitle;
 
