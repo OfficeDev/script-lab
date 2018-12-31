@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { HYPHENATED_PACKAGE_VERSIONS } from 'common/lib/package-versions';
+import { Utilities, PlatformType } from '@microsoft/office-js-helpers';
 
 export interface IProps {
   solutionId: string;
@@ -22,10 +23,25 @@ export class ReactMonaco extends Component<IProps, IState> {
     if ((window as any).monaco !== undefined) {
       this.initializeMonaco();
     } else {
+      /* On the Mac Office (but not in regular Safari),
+        never versions of Monaco have a mouse-focus issue
+        (see https://github.com/OfficeDev/script-lab/issues/506 and related) --
+        though on the other hand the older Monaco also has a crashing issue
+        described by https://github.com/OfficeDev/script-lab/issues/514, which
+        isn't great either.
+
+        But in any case, for now, will load an older version of Monaco for Mac,
+        and a newer one for any other platform type
+      */
+      const monacoVersionToLoad =
+        Utilities.platform === PlatformType.MAC
+          ? HYPHENATED_PACKAGE_VERSIONS['monaco-editor-old']
+          : HYPHENATED_PACKAGE_VERSIONS['monaco-editor'];
+
       (window as any).require.config({
         baseUrl: '/',
         paths: {
-          vs: `external/monaco-editor-${HYPHENATED_PACKAGE_VERSIONS['monaco-editor']}/vs`,
+          vs: `external/monaco-editor-${monacoVersionToLoad}/vs`,
         },
       });
       (window as any).require(['vs/editor/editor.main'], () => this.initializeMonaco());
