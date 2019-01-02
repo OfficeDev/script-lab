@@ -45,7 +45,18 @@ export default function processLibraries(
        * it is special because of how it needs to be *outside* of the iframe,
        * whereas the rest of the script references need to be inside the iframe.
        */
-      if (/(?:office|office.debug).js$/.test(resolvedUrlPath.toLowerCase())) {
+      const officeJsRegex = /.*office(\.(experimental))?(\.debug)?\.js$/;
+      /* captures:
+          https://office.js
+          https://office.debug.js
+          https://office.experimental.js
+          https://office.experimental.debug.js
+        fails on:
+          https://office.fooooo.debug.js
+          https://officedebug.js
+          https://officeydebug.js
+      */
+      if (officeJsRegex.test(resolvedUrlPath.toLowerCase())) {
         officeJs = resolvedUrlPath;
         return null;
       }
