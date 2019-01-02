@@ -19,10 +19,19 @@
 
     <script>
       // For now, set Office.initialize to an empty function, to work around an issue with onReady
-      // (As of Nov 1st 2018, onReady works, but requires Office.initialize to still be set).
+      // (As of Jan 1st 2019, onReady works, but requires Office.initialize to still be set).
       // See the note at https://docs.microsoft.com/en-us/office/dev/add-ins/develop/understanding-the-javascript-api-for-office
       window.Office = window.Office || {};
       Office.initialize = function() {};
+
+      // Because of the dynamic way in which we load the Office.js script,
+      // it looks like just setting "Office.initialize" isn't enough.
+      // Instead, need to set "Microsoft.Office.WebExtension.initialize"
+      // (see bug https://github.com/OfficeDev/script-lab/issues/528)
+      window.Microsoft = window.Microsoft || {};
+      Microsoft.Office = Microsoft.Office || {};
+      Microsoft.Office.WebExtension = Microsoft.Office.WebExtension || {};
+      Microsoft.Office.WebExtension.initialize = Office.initialize;
     </script>
 
     <link
