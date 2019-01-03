@@ -55,7 +55,7 @@ const mapStateToProps = (state: IReduxState): IPropsFromRedux => ({
   profilePicUrl: selectors.github.getProfilePicUrl(state),
   commandBarFabricTheme: getCommandBarFabricTheme(selectors.host.get(state)),
   screenWidth: selectors.screen.getWidth(state),
-  shouldShowPopOutButton: selectors.host.getIsInAddin(state),
+  shouldShowPopOutButton: selectors.host.shouldShowPopoutControls(state),
 });
 
 interface IActionsFromRedux {
@@ -153,10 +153,16 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps: IProps): IActionsFromR
       isPrimary: boolean;
     }>,
   ) => dispatch(dialog.show({ title, subText, buttons })),
-  openEditor: () => {
-    Office.context.ui.displayDialogAsync(window.location.href);
-    window.location.href = currentRunnerUrl;
-  },
+  openEditor: () =>
+    Office.context.ui.displayDialogAsync(
+      window.location.href,
+      { height: 60, width: 60, promptBeforeOpen: false },
+      (result: Office.AsyncResult<any>) => {
+        if (result.status === Office.AsyncResultStatus.Succeeded) {
+          window.location.href = currentRunnerUrl;
+        }
+      },
+    ),
 });
 
 export interface IProps extends IPropsFromRedux, IActionsFromRedux {

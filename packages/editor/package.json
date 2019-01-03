@@ -65,7 +65,7 @@
     "@types/js-yaml": "^3.11.2",
     "@types/lodash": "^4.14.118",
     "@types/node": "^10.0.9",
-    "@types/office-js": "^0.0.135",
+    "@types/office-js": "^0.0.143",
     "@types/office-runtime": "^1.0.6",
     "@types/prettier": "^1.13.2",
     "@types/query-string": "^5.1.0",

@@ -127,7 +127,12 @@ export class App extends React.Component<{}, IState> {
   openConsole = () => this.setState({ isConsoleOpen: true });
   closeConsole = () => this.setState({ isConsoleOpen: false });
 
-  openCode = () => Office.context.ui.displayDialogAsync(currentEditorUrl);
+  openCode = () =>
+    Office.context.ui.displayDialogAsync(currentEditorUrl, {
+      height: 60,
+      width: 60,
+      promptBeforeOpen: false,
+    });
 
   onReceiveNewActiveSolution = (solution: ISolution | null) => {
     if (solution !== null) {
