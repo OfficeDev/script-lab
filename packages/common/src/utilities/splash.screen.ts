@@ -3,7 +3,6 @@ import { stringifyPlusPlus } from './string';
 export function invokeGlobalErrorHandler(error: any) {
   console.error('Global error handler:');
   console.error(error);
-  debugger;
 
   const loadingElement = document.getElementById('loading')!;
   const rootElement = document.getElementById('root');
