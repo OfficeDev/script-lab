@@ -6,6 +6,7 @@ import zip from 'lodash/zip';
 import flatten from 'lodash/flatten';
 import { push, RouterState } from 'connected-react-router';
 import { PATHS, LIBRARIES_FILE_NAME, NULL_SOLUTION_ID } from '../../constants';
+import { hideSplashScreen } from 'common/lib/utilities/splash.screen';
 
 import {
   registerLibrariesMonacoLanguage,
@@ -26,7 +27,7 @@ export default function* editorWatcher() {
   yield takeEvery(getType(editor.newSolutionOpened), onSolutionOpenSaga);
   yield takeEvery(getType(editor.newFileOpened), onFileOpenSaga);
   yield takeEvery(getType(editor.onMount), initializeMonacoSaga);
-  yield takeEvery(getType(misc.hideLoadingSplashScreen), hideLoadingSplashScreen);
+  yield takeEvery(getType(misc.hideLoadingSplashScreen), hideLoadingSplashScreenSaga);
   yield takeEvery(getType(editor.applyMonacoOptions), applyMonacoOptionsSaga);
   yield takeEvery(getType(settings.edit.success), applyMonacoOptionsSaga);
   yield takeEvery(
@@ -106,9 +107,8 @@ function* onFileOpenSaga(action: ActionType<typeof editor.newFileOpened>) {
   }
 }
 
-export function* hideLoadingSplashScreen() {
-  const loadingIndicator = document.getElementById('loading')!;
-  loadingIndicator.style.visibility = 'hidden';
+export function* hideLoadingSplashScreenSaga() {
+  hideSplashScreen();
 }
 
 function* initializeMonacoSaga(action: ActionType<typeof editor.onMount>) {
