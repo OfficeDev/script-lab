@@ -8,11 +8,7 @@ export const get = (state: IState): string => state.host;
 export const getIsWeb = (_?: IState): boolean => Utilities.host === HostType.WEB;
 export const getIsInAddin = (_?: IState): boolean =>
   Utilities.isAddin && !window.location.href.includes('isDialog');
-export const getIsInOutlookAddin = (_?: IState): boolean =>
-  getIsInAddin() && Utilities.host === HostType.OUTLOOK;
 export const getIsInDesktop = (_?: IState) => Utilities.platform === PlatformType.PC;
-export const shouldShowPopoutControls = (_?: IState) =>
-  getIsInAddin() && (getIsInOutlookAddin() || !getIsInDesktop());
 export const getIsRunnableOnThisHost = createSelector(
   [get, getHostsMatch],
   (host, hostsMatch) => host !== HostType.OUTLOOK && hostsMatch,

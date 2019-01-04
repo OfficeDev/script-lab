@@ -1,4 +1,5 @@
 import { stringifyPlusPlus } from './string';
+import { ScriptLabError } from './error';
 
 export function invokeGlobalErrorHandler(error: any) {
   console.error('Global error handler:');
@@ -17,7 +18,8 @@ export function invokeGlobalErrorHandler(error: any) {
     item.parentNode!.removeChild(item);
   }
 
-  subtitleElement.innerHTML = 'An unexpected error has occurred.';
+  subtitleElement.innerHTML =
+    error instanceof ScriptLabError ? error.message : 'An unexpected error has occurred.';
 
   const clickForMoreInfoElement = document.createElement('a');
   clickForMoreInfoElement.href = '#';
@@ -25,7 +27,9 @@ export function invokeGlobalErrorHandler(error: any) {
   clickForMoreInfoElement.textContent = 'Click for more info';
   clickForMoreInfoElement.addEventListener('click', () => {
     const errorMessageElement = document.createElement('pre');
-    errorMessageElement.textContent = stringifyPlusPlus(error);
+    errorMessageElement.textContent = stringifyPlusPlus(
+      error instanceof ScriptLabError ? error.innerError : error,
+    );
     loadingElement.insertBefore(errorMessageElement, clickForMoreInfoElement);
     clickForMoreInfoElement!.parentNode!.removeChild(clickForMoreInfoElement);
   });
