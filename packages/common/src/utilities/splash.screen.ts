@@ -27,7 +27,9 @@ export function invokeGlobalErrorHandler(error: any) {
   clickForMoreInfoElement.textContent = 'Click for more info';
   clickForMoreInfoElement.addEventListener('click', () => {
     const errorMessageElement = document.createElement('pre');
-    errorMessageElement.textContent = stringifyPlusPlus(error);
+    errorMessageElement.textContent = stringifyPlusPlus(
+      error instanceof ScriptLabError ? error.innerError : error,
+    );
     loadingElement.insertBefore(errorMessageElement, clickForMoreInfoElement);
     clickForMoreInfoElement!.parentNode!.removeChild(clickForMoreInfoElement);
   });

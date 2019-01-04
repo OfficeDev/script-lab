@@ -6,5 +6,6 @@ import { CustomError } from '@microsoft/office-js-helpers';
 export class ScriptLabError extends CustomError {
   constructor(message: string, innerError?: Error) {
     super('Script Lab Error', message, innerError);
+    Object.setPrototypeOf(this, ScriptLabError.prototype);
   }
 }
