@@ -59,7 +59,7 @@ const FileSwitcherPivot = ({
       }))}
     selectedKey={activeFile.id}
     onSelect={openFile}
-    data-test-id="file-switcher-pivot"
+    testId="file-switcher-pivot"
   />
 );
 

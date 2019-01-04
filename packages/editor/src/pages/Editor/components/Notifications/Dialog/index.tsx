@@ -55,6 +55,8 @@ export class Dialog extends React.Component<IProps> {
         <DialogFooter>
           {dialogProps.buttons.map(button => (
             <DefaultButton
+              key={button.key}
+              data-testid={button.key}
               text={button.text}
               onClick={this.getDispatchFunctionForOnClick(button.action)}
               primary={button.isPrimary}

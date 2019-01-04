@@ -48,11 +48,13 @@ function* onSwitchEnvironmentSaga(
 
     const buttons = [
       {
+        key: 'ok-button',
         text: 'OK',
         isPrimary: true,
         action: actions.misc.confirmSwitchEnvironment(newEnvironment),
       },
       {
+        key: 'cancel-button',
         text: 'Cancel',
         isPrimary: false,
         action: actions.dialog.hide(),

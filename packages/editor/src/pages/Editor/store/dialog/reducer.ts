@@ -9,6 +9,7 @@ export interface IState {
   subText: string;
   isBlocking: boolean;
   buttons: Array<{
+    key: string;
     text: string;
     action: { type: string; payload?: any };
     isPrimary: boolean;

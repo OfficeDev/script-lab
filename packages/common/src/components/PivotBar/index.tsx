@@ -12,6 +12,7 @@ export interface IPivotBarItem {
   key: string;
   text?: string;
   iconName?: string;
+  testId?: string;
 }
 
 export interface IProps {
@@ -24,6 +25,7 @@ export interface IProps {
 
   onSelect: (selectedKey: string) => void;
 
+  testId?: string;
   theme: ITheme; // from withTheme
 }
 
@@ -40,11 +42,13 @@ class PivotBar extends React.Component<IProps> {
       backgroundColor,
       selectedColor,
       hideUnderline,
+      testId,
     } = this.props;
 
     return (
       <PivotBarWrapper>
         <Pivot
+          data-testid={testId}
           linkSize={PivotLinkSize.normal}
           linkFormat={PivotLinkFormat.tabs}
           onLinkClick={this.onLinkClick}
@@ -75,6 +79,7 @@ class PivotBar extends React.Component<IProps> {
               itemKey={item.key}
               linkText={item.text}
               itemIcon={item.iconName}
+              data-testid={item.testId}
             />
           ))}
         </Pivot>

@@ -17,7 +17,9 @@ interface IPrivateProps extends IProps {
 }
 
 const Header = (props: IPrivateProps) => {
-  const items = props.items.filter(({ hidden }) => !hidden);
+  const items = props.items
+    .filter(({ hidden }) => !hidden)
+    .map(item => ({ ...item, 'data-testid': item.key }));
   const farItems = props.farItems ? props.farItems.filter(({ hidden }) => !hidden) : [];
 
   return (

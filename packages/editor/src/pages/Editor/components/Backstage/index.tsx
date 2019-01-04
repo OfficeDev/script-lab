@@ -21,6 +21,7 @@ import { IState as IReduxState } from '../../store/reducer';
 import Only from 'common/lib/components/Only';
 
 interface IBackstageItem {
+  'data-testid'?: string;
   key: string;
   icon: string;
   label?: string;
@@ -168,12 +169,14 @@ export class Backstage extends Component<IProps, IState> {
     const showBack = this.props.solutions.length !== 0;
     const originalItems: IBackstageItem[] = [
       {
+        'data-testid': 'back',
         key: 'back',
         ariaLabel: 'Back',
         icon: showBack ? 'GlobalNavButton' : '',
         onClick: showBack ? this.props.goBack : () => {},
       },
       {
+        'data-testid': 'new',
         key: 'new',
         label: 'New Snippet',
         icon: 'Add',
@@ -182,6 +185,7 @@ export class Backstage extends Component<IProps, IState> {
         },
       },
       {
+        'data-testid': 'my-solutions',
         key: 'my-solutions',
         label: 'My Snippets',
         icon: 'DocumentSet',
@@ -198,6 +202,7 @@ export class Backstage extends Component<IProps, IState> {
         ),
       },
       {
+        'data-testid': 'samples',
         key: 'samples',
         label: 'Samples',
         icon: 'Dictionary',
@@ -209,6 +214,7 @@ export class Backstage extends Component<IProps, IState> {
         ),
       },
       {
+        'data-testid': 'import',
         key: 'import',
         label: 'Import',
         icon: 'Download',

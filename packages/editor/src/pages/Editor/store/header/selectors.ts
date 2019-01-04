@@ -105,11 +105,13 @@ const showLoginToGithubDialog = actions.dialog.show({
   subText: 'In order to use the gist functionality, you must first sign in to GitHub.',
   buttons: [
     {
+      key: 'sign-in',
       text: 'Sign in',
       action: actions.github.login.request(),
       isPrimary: true,
     },
     {
+      key: 'cancel',
       text: 'Cancel',
       action: dialog.dismiss(),
       isPrimary: false,
@@ -171,11 +173,13 @@ export const getItems = createSelector(
                 subText: `Are you sure you want to delete '${activeSolution.name}'?`,
                 buttons: [
                   {
+                    key: 'yes-button',
                     isPrimary: true,
                     text: 'Yes',
                     action: actions.solutions.remove(activeSolution),
                   },
                   {
+                    key: 'no-button',
                     isPrimary: false,
                     text: 'No',
                     action: actions.dialog.dismiss(),

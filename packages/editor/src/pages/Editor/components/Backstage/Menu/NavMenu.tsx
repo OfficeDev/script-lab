@@ -64,6 +64,7 @@ class NavMenu extends React.Component<IProps> {
         groups={[
           {
             links: items.map(item => ({
+              'data-testid': item['data-testid'],
               name: item.label || '',
               key: item.key,
               icon: item.icon,
