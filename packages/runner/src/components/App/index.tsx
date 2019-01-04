@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Utilities, HostType } from '@microsoft/office-js-helpers';
+import { Utilities, HostType, CustomError } from '@microsoft/office-js-helpers';
 import queryString from 'query-string';
 import { stringifyPlusPlus } from 'common/lib/utilities/string';
 
@@ -18,8 +18,12 @@ import MessageBar from '../MessageBar';
 
 import SnippetContainer from '../SnippetContainer';
 import { currentEditorUrl } from 'common/lib/environment';
+import { ScriptLabError } from 'common/lib/utilities/error';
 import processLibraries from 'common/lib/utilities/process.libraries';
-import { showSplashScreen } from 'common/lib/utilities/splash.screen';
+import {
+  showSplashScreen,
+  invokeGlobalErrorHandler,
+} from 'common/lib/utilities/splash.screen';
 import { SILENT_SNIPPET_SWITCHING } from '../../constants';
 
 const AppWrapper = styled.div`
@@ -127,7 +131,26 @@ export class App extends React.Component<{}, IState> {
   openConsole = () => this.setState({ isConsoleOpen: true });
   closeConsole = () => this.setState({ isConsoleOpen: false });
 
-  openCode = () => Office.context.ui.displayDialogAsync(currentEditorUrl);
+  openCode = () =>
+    Office.context.ui.displayDialogAsync(
+      currentEditorUrl,
+      {
+        height: 60,
+        width: 60,
+        promptBeforeOpen: false,
+      },
+      (result: Office.AsyncResult<any>) => {
+        if (result.status === Office.AsyncResultStatus.Failed) {
+          console.error(result);
+          invokeGlobalErrorHandler(
+            new ScriptLabError(
+              'Could not open a standalone code editor window.',
+              new Error(result.error.message),
+            ),
+          );
+        }
+      },
+    );
 
   onReceiveNewActiveSolution = (solution: ISolution | null) => {
     if (solution !== null) {
