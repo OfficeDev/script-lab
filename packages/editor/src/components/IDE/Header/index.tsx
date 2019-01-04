@@ -26,6 +26,8 @@ import { IState as IReduxState } from '../../../store/reducer';
 import { getCommandBarFabricTheme } from '../../../theme';
 import { push } from 'connected-react-router';
 import { Dispatch } from 'redux';
+import { getIsInAddin, getIsInDesktop } from '../../../store/host/selectors';
+import { Utilities, HostType } from '@microsoft/office-js-helpers';
 
 const HeaderWrapper = styled.header`
   background-color: ${props => props.theme.primary};
@@ -55,7 +57,7 @@ const mapStateToProps = (state: IReduxState): IPropsFromRedux => ({
   profilePicUrl: selectors.github.getProfilePicUrl(state),
   commandBarFabricTheme: getCommandBarFabricTheme(selectors.host.get(state)),
   screenWidth: selectors.screen.getWidth(state),
-  shouldShowPopOutButton: selectors.host.shouldShowPopoutControls(state),
+  shouldShowPopOutButton: shouldShowPopoutControls(),
 });
 
 interface IActionsFromRedux {
@@ -124,6 +126,13 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps: IProps): IActionsFromR
       actions.messageBar.show({
         text: 'Snippet failed to copy to clipboard.',
         style: MessageBarType.error,
+        button: {
+          text: 'Trust',
+          action: actions.solutions.updateOptions({
+            solution: ownProps.solution,
+            options: { isUntrusted: false },
+          }),
+        },
       }),
     ),
 
@@ -160,6 +169,19 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps: IProps): IActionsFromR
       (result: Office.AsyncResult<any>) => {
         if (result.status === Office.AsyncResultStatus.Succeeded) {
           window.location.href = currentRunnerUrl;
+        } else {
+          console.error(result);
+          actions.messageBar.show({
+            text: 'Could not open a standalone code editor window.',
+            style: MessageBarType.error,
+            button: {
+              text: 'More info',
+              action: actions.messageBar.show({
+                text: result.error.message,
+                style: MessageBarType.error,
+              }),
+            },
+          });
         }
       },
     ),
@@ -444,6 +466,20 @@ class HeaderWithoutTheme extends React.Component<IProps, IState> {
 
   private openSolutionSettings = () => this.setState({ showSolutionSettings: true });
   private closeSolutionSettings = () => this.setState({ showSolutionSettings: false });
+}
+
+function shouldShowPopoutControls() {
+  // On desktop, show the popout control in Outlook -- but DON'T for Word/Excel/PPT,
+  //    since on those hosts, you can just resize the taskpane (or even drag it out!).
+  //    And relative to a popped-out taskpane, this has a few advantages:
+  // 1. With a dialog, closing the underlying "run" pane (to which the taskpane redirects)
+  //       closes the editor, which is awkward.
+  // 2. With a dialog, re-clicking on "Code" in the ribbon (e.g. accidentally)
+  //       also closes the popped-out editor, which is unexpected
+  // 3. With a dialog, the "Run" actually happens inside a pane called "Code", which is awkward
+  // 4. Clicking on "Run" in the ribbon produces two runners, which is confusing.
+
+  return getIsInAddin() && (Utilities.host === HostType.OUTLOOK || !getIsInDesktop());
 }
 
 export const Header = withTheme(HeaderWithoutTheme);

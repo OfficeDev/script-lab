@@ -1,3 +1,5 @@
+import { ScriptLabError } from './error';
+
 // tslint:disable
 export function stripSpaces(text: string) {
   let lines: string[] = text.split('\n');
@@ -81,7 +83,11 @@ export function stringifyPlusPlus(object: any): string {
 
   if (object instanceof Error) {
     try {
-      return 'Error: ' + '\n' + jsonStringify(object);
+      return (
+        (object instanceof ScriptLabError ? object.message : 'Error: ') +
+        '\n' +
+        jsonStringify(object)
+      );
     } catch (e) {
       return stringifyPlusPlus(object.toString());
     }
