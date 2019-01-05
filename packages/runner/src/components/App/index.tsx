@@ -22,6 +22,7 @@ import { ScriptLabError } from 'common/lib/utilities/error';
 import processLibraries from 'common/lib/utilities/process.libraries';
 import {
   showSplashScreen,
+  hideSplashScreen,
   invokeGlobalErrorHandler,
 } from 'common/lib/utilities/splash.screen';
 import { SILENT_SNIPPET_SWITCHING } from '../../constants';
@@ -196,8 +197,7 @@ export class App extends React.Component<{}, IState> {
         this.hasRenderedContent = true;
 
         // Also, hide the loading indicators, if they were still up
-        const loadingIndicator = document.getElementById('loading')!;
-        loadingIndicator.style.visibility = 'hidden';
+        hideSplashScreen();
       }
     }
   };
