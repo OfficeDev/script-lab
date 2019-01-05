@@ -19,7 +19,7 @@ import MessageBar from '../MessageBar';
 import SnippetContainer from '../SnippetContainer';
 import { currentEditorUrl } from 'common/lib/environment';
 import processLibraries from 'common/lib/utilities/process.libraries';
-import { showSplashScreen } from 'common/lib/utilities/splash.screen';
+import { showSplashScreen, hideSplashScreen } from 'common/lib/utilities/splash.screen';
 import { SILENT_SNIPPET_SWITCHING } from '../../constants';
 
 const AppWrapper = styled.div`
@@ -171,8 +171,7 @@ export class App extends React.Component<{}, IState> {
         this.hasRenderedContent = true;
 
         // Also, hide the loading indicators, if they were still up
-        const loadingIndicator = document.getElementById('loading')!;
-        loadingIndicator.style.visibility = 'hidden';
+        hideSplashScreen();
       }
     }
   };
