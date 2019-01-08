@@ -234,17 +234,25 @@ function* setIntellisenseFilesSaga(
   const urlsToFetch = currentUrls.filter(url => !existingUrls.includes(url));
   const newIntellisenseFiles = yield call(() =>
     Promise.all(
-      urlsToFetch.map(url =>
-        fetch(url)
-          .then(resp => resp.text())
-          .then(content => {
-            const disposable = monaco.languages.typescript.typescriptDefaults.addExtraLib(
-              content,
-              url,
-            );
-            return { url, disposable };
-          }),
-      ),
+      [...new Set(urlsToFetch)] // to uniquify values
+        .map(url =>
+          fetch(url)
+            .then(resp => (resp.ok ? resp.text() : Promise.reject(resp.statusText)))
+            .then(content => {
+              const disposable = monaco.languages.typescript.typescriptDefaults.addExtraLib(
+                content,
+                url,
+              );
+              return { url, disposable };
+            })
+            .catch(error => {
+              // this should theoretically never get hit unless
+              // the library author has an invalid url in their index.d.ts
+              console.error(error);
+              return null;
+            }),
+        )
+        .filter(x => x !== null),
     ),
   );
   yield put(
