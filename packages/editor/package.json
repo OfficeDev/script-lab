@@ -37,12 +37,11 @@
     "uuid": "^3.2.1"
   },
   "scripts": {
-    "analyze": "source-map-explorer build/static/js/main.*",
     "postinstall": "ts-node --project ../../scripts/tsconfig.json scripts/postinstall.ts",
+    "analyze": "source-map-explorer build/static/js/main.*",
     "start": "set HTTPS=true&&react-scripts start",
     "lint": "tslint \"src/**/*.ts?(x)\"",
     "build": "node scripts/build.js",
-    "react-scripts:build": "react-scripts build",
     "test": "jest --env=jsdom",
     "test-coverage": "yarn test -- --coverage",
     "show-coverage": "yarn test-coverage && coverage\\lcov-report\\index.html"

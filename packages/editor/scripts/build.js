@@ -12,7 +12,7 @@ var commands = [
   // I believe this is being caused by the introduction of typescript as a non-dev dependency for the fhl stuff
   // something about them using source-map-support is messing things up
   // By setting this env var, the warning will not make travis fail and stop deployment
-  'yarn react-scripts:build',
+  'yarn react-scripts --max_old_space_size=4096 build',
 ].join(' && ');
 
 shell.exec(commands);
