@@ -170,8 +170,13 @@ function* makeAddIntellisenseRequestSaga() {
 
   const { content } = libraries;
 
-  content.split('\n').forEach(library => {
+  content.split('\n').forEach((library: string) => {
     library = library.trim();
+
+    if (library.startsWith('//') || library.startsWith('#')) {
+      return;
+    }
+
     if (/^@types/.test(library)) {
       const url = `https://unpkg.com/${library}/index.d.ts`;
       urls.push(url);
@@ -187,6 +192,7 @@ function* makeAddIntellisenseRequestSaga() {
       }
     }
   });
+
   let urlsToFetch = urls.filter(url => /^.*\/index\.d\.ts$/.test(url));
 
   while (urlsToFetch.length > 0) {
