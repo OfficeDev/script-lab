@@ -16,7 +16,7 @@ import {
   doesMonacoExist,
 } from './utilities';
 
-import { currentRunnerUrl } from 'common/lib/environment';
+import { currentRunnerUrl, getCurrentEnv } from 'common/lib/environment';
 
 let monacoEditor;
 
@@ -160,15 +160,14 @@ function* makeAddIntellisenseRequestSaga() {
     return;
   }
 
-  const solution = yield select(selectors.editor.getActiveSolution);
+  const solution: ISolution = yield select(selectors.editor.getActiveSolution);
   const libraries = solution.files.find(file => file.name === LIBRARIES_FILE_NAME);
-  let urls: string[] = [];
-
   if (!libraries) {
     return;
   }
 
   const { content } = libraries;
+  let pendingUrls: string[] = [];
 
   content.split('\n').forEach((library: string) => {
     library = library.trim();
@@ -179,48 +178,67 @@ function* makeAddIntellisenseRequestSaga() {
 
     if (/^@types/.test(library)) {
       const url = `https://unpkg.com/${library}/index.d.ts`;
-      urls.push(url);
+      pendingUrls.push(url);
     } else if (/^dt~/.test(library)) {
       const libName = library.split('dt~')[1];
       const url = `https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/master/types/${libName}/index.d.ts`;
-      urls.push(url);
+      pendingUrls.push(url);
     } else if (/\.d\.ts$/i.test(library)) {
       if (/^https?:/i.test(library)) {
-        urls.push(library);
+        pendingUrls.push(library);
       } else {
-        urls.push(`https://unpkg.com/${library}`);
+        pendingUrls.push(`https://unpkg.com/${library}`);
       }
     }
   });
 
-  let urlsToFetch = urls.filter(url => /^.*\/index\.d\.ts$/.test(url));
-  let validUrls = [];
+  const validUrls = [];
 
-  while (urlsToFetch.length > 0) {
-    const urlContents = yield all(
-      urlsToFetch
-        .map(url =>
-          fetch(url)
-            .then(resp => (resp.ok ? resp.text() : Promise.reject(resp.statusText)))
-            .catch(err => {
-              console.error(err);
-              return null;
-            }),
-        )
-        .filter(x => x !== null),
+  while (pendingUrls.length > 0) {
+    const currentUrlsToFetch = [...pendingUrls];
+    pendingUrls = [];
+
+    // TODO: we seem to be wasteful in getting the contents but not caching it.
+    // Should fix this as part of https://github.com/OfficeDev/script-lab/issues/38.
+    // Should also be caching to avoid circular-reference issues when we do
+    // "parseTripleSlashRefs" (i.e., cross-reference against existing).
+    // See https://github.com/OfficeDev/script-lab/issues/337 for related issue.
+    yield all(
+      currentUrlsToFetch.map(
+        async (url: string): Promise<{ url: string; content: string } | null> => {
+          try {
+            const resp = await fetch(url);
+            if (resp.ok) {
+              const content = await resp.text();
+              validUrls.push(url);
+              logIfVerbose(`Fetched IntelliSense for ${url}`);
+              const followUpFetches = parseTripleSlashRefs(url, content);
+              if (followUpFetches.length > 0) {
+                logIfVerbose(
+                  'Need to follow up with IntelliSense fetch for ',
+                  followUpFetches,
+                );
+                pendingUrls = [...pendingUrls, ...followUpFetches];
+              }
+
+              return { url, content };
+            } else {
+              throw new Error(
+                `Could not fetch library "${url}", error "${resp.statusText}".`,
+              );
+            }
+          } catch (e) {
+            console.error(e);
+            return null;
+          }
+        },
+      ),
     );
-
-    const urlContentPairing = zip(urlsToFetch, urlContents) as string[][];
-
-    urlsToFetch = flatten(
-      urlContentPairing.map(([url, content]) => parseTripleSlashRefs(url, content)),
-    );
-    validUrls = [
-      ...validUrls,
-      ...urlContentPairing.map(([first, ...rest]) => first),
-      ...urlsToFetch,
-    ];
   }
+
+  logIfVerbose(
+    ['Ready to give URLS to Monaco: ', ...validUrls.map(url => ' - ' + url)].join('\n'),
+  );
 
   yield put(editor.setIntellisenseFiles.request({ urls: validUrls }));
 }
@@ -288,4 +306,11 @@ function* applyFormattingSaga() {
 
 function* navigateToRunSaga() {
   window.location.href = `${currentRunnerUrl}?backButton=true`;
+}
+
+// TODO: (MZ to Nico): After refactor, move to common place where we can use it across the codebase.
+function logIfVerbose(...args: any) {
+  if (getCurrentEnv() === 'local') {
+    console.log('Verbose (localhost only):', ...args);
+  }
 }
