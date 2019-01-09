@@ -28,7 +28,7 @@ function openExcelFromBlank() {
 // - open editor this localStorage and this sessionStorage
 // - Select Item on Backstage Menu
 
-context('Script Lab', () => {
+context('Script Lab Solutions', () => {
   it('create new solution', () => {
     // setup
     const solutions = [Solution1, BlankExcel, ReportGeneration];
