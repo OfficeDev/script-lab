@@ -2,6 +2,11 @@ var shell = require('shelljs');
 
 var { TRAVIS_COMMIT } = process.env; // from travis
 
+// Make any unhandled rejections terminate Node (rather than having it quit with a mere warning)
+process.on('unhandledRejection', error => {
+  throw error;
+});
+
 var commands = [
   `export REACT_APP_COMMIT='${TRAVIS_COMMIT}'`,
   `export REACT_APP_LAST_UPDATED='${new Date().toUTCString()}'`,
