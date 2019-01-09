@@ -1,7 +1,8 @@
 import 'common/lib/polyfills';
+window.onerror = error => invokeGlobalErrorHandler(error);
 
-import redirectToProperEnvIfNeeded from './utils/stagingEnvironmentRedirector';
-redirectToProperEnvIfNeeded();
+import redirectToProperEnvIfNeeded from 'common/lib/utilities/environment.redirector';
+const isRedirectingAway = redirectToProperEnvIfNeeded();
 
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -14,31 +15,31 @@ import { invokeGlobalErrorHandler } from 'common/lib/utilities/splash.screen';
 
 import Pages from './pages';
 
-document.addEventListener(
-  'keydown',
-  e => {
-    if (
-      e.keyCode === 83 /*s key*/ &&
-      (navigator.platform.match('Mac') ? e.metaKey : e.ctrlKey)
-    ) {
-      e.preventDefault();
+if (!isRedirectingAway) {
+  document.addEventListener(
+    'keydown',
+    e => {
+      if (
+        e.keyCode === 83 /*s key*/ &&
+        (navigator.platform.match('Mac') ? e.metaKey : e.ctrlKey)
+      ) {
+        e.preventDefault();
+      }
+    },
+    false,
+  );
+
+  (async () => {
+    try {
+      if (Authenticator.isAuthDialog()) {
+        return;
+      }
+
+      ReactDOM.render(<Pages />, document.getElementById('root') as HTMLElement);
+
+      unregister(); // need more testing to determine if this can be removed. seems to help with the caching of the html file issues
+    } catch (e) {
+      invokeGlobalErrorHandler(e);
     }
-  },
-  false,
-);
-
-window.onerror = error => invokeGlobalErrorHandler(error);
-
-(async () => {
-  try {
-    if (Authenticator.isAuthDialog()) {
-      return;
-    }
-
-    ReactDOM.render(<Pages />, document.getElementById('root') as HTMLElement);
-
-    unregister(); // need more testing to determine if this can be removed. seems to help with the caching of the html file issues
-  } catch (e) {
-    invokeGlobalErrorHandler(e);
-  }
-})();
+  })();
+}

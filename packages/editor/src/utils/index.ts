@@ -1,7 +1,6 @@
 import createGUID from 'uuid';
 import { LIBRARIES_FILE_NAME, SCRIPT_FILE_NAME } from '../constants';
 import { getBoilerplateFiles } from '../newSolutionData';
-import { stringifyPlusPlus } from 'common/lib/utilities/string';
 
 export function setUpMomentJsDurationDefaults(momentInstance: {
   relativeTimeThreshold(threshold: string, limit: number): boolean;

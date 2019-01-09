@@ -4,7 +4,10 @@ import { editorUrls } from 'common/lib/environment';
 import ensureFreshLocalStorage from 'common/lib/utilities/ensure.fresh.local.storage';
 import { WINDOW_SCRIPT_LAB_NAVIGATING_AWAY_TO_DIFFERENT_ENVIRONMENT_KEY } from 'common/lib/utilities/script-loader/constants';
 
-export default () => {
+/** Checks (and redirects) if needs to go to a different environment.
+ * Returns `true` if will be redirecting away
+ */
+function redirectIfNeeded(): boolean {
   try {
     const params = parse(window.location.search) as {
       originEnvironment?: string;
@@ -27,7 +30,7 @@ export default () => {
       // the user has returned back to the root site)
       if (window.location.href.toLowerCase().indexOf(targetUrl) === 0) {
         window.localStorage.removeItem(localStorageKeys.editor.redirectEnvironmentUrl);
-        return;
+        return false;
       }
 
       // If hasn't quit above, then set the redirect URL into storage
@@ -71,16 +74,21 @@ export default () => {
         ].join(''),
       );
 
-      return;
+      return true;
     }
 
-    // If reached here, environment is already configured.
-    // Quit this script, and keep going with the other scripts just the way they normally would.
-    return;
+    // If reached here, environment is already configured. No need to redirect anywhere.
+    return false;
   } catch (e) {
     console.error('Error redirecting the environments, staying on current page', e);
   }
-};
+
+  return false;
+}
+
+export default redirectIfNeeded;
+
+
 
 ///////////////////////////////////////
 
