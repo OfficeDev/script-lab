@@ -15,19 +15,19 @@ export default function processLibraries(
   return { linkReferences, scriptReferences, officeJs };
 
   function processLibrary(text: string) {
-    if (text == null || text.trim() === '') {
+    if (text == null) {
       return null;
     }
 
     text = text.trim();
 
-    const isNotScriptOrStyle =
-      /^#.*|^\/\/.*|^\/\*.*|.*\*\/$.*/im.test(text) ||
-      /^@types/.test(text) ||
-      /^dt~/.test(text) ||
-      /\.d\.ts$/i.test(text);
+    if (text === '' || text.startsWith('#') || text.startsWith('//')) {
+      return null;
+    }
 
-    if (isNotScriptOrStyle) {
+    const isDts = /^@types/.test(text) || /^dt~/.test(text) || /\.d\.ts$/i.test(text);
+
+    if (isDts) {
       return null;
     }
 
