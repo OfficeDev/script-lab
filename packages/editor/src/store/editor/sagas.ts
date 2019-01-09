@@ -194,6 +194,7 @@ function* makeAddIntellisenseRequestSaga() {
   });
 
   let urlsToFetch = urls.filter(url => /^.*\/index\.d\.ts$/.test(url));
+  let validUrls = [];
 
   while (urlsToFetch.length > 0) {
     const urlContents = yield all(
@@ -214,10 +215,14 @@ function* makeAddIntellisenseRequestSaga() {
     urlsToFetch = flatten(
       urlContentPairing.map(([url, content]) => parseTripleSlashRefs(url, content)),
     );
-    urls = [...urls, ...urlsToFetch];
+    validUrls = [
+      ...validUrls,
+      ...urlContentPairing.map(([first, ...rest]) => first),
+      ...urlsToFetch,
+    ];
   }
 
-  yield put(editor.setIntellisenseFiles.request({ urls }));
+  yield put(editor.setIntellisenseFiles.request({ urls: validUrls }));
 }
 
 function* setIntellisenseFilesSaga(
@@ -234,17 +239,25 @@ function* setIntellisenseFilesSaga(
   const urlsToFetch = currentUrls.filter(url => !existingUrls.includes(url));
   const newIntellisenseFiles = yield call(() =>
     Promise.all(
-      urlsToFetch.map(url =>
-        fetch(url)
-          .then(resp => resp.text())
-          .then(content => {
-            const disposable = monaco.languages.typescript.typescriptDefaults.addExtraLib(
-              content,
-              url,
-            );
-            return { url, disposable };
-          }),
-      ),
+      [...new Set(urlsToFetch)] // to uniquify values
+        .map(url =>
+          fetch(url)
+            .then(resp => (resp.ok ? resp.text() : Promise.reject(resp.statusText)))
+            .then(content => {
+              const disposable = monaco.languages.typescript.typescriptDefaults.addExtraLib(
+                content,
+                url,
+              );
+              return { url, disposable };
+            })
+            .catch(error => {
+              // this should theoretically never get hit unless
+              // the library author has an invalid url in their index.d.ts
+              console.error(error);
+              return null;
+            }),
+        )
+        .filter(x => x !== null),
     ),
   );
   yield put(
