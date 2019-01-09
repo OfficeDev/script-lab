@@ -1,5 +1,11 @@
 import { stringifyPlusPlus } from './string';
 
+// Keep the state for whether or not currently showing an error --
+//   that way, even if get a request to dismiss the splash screen,
+//   don't do it if an error is currently showing
+//   (fixes https://github.com/OfficeDev/script-lab/issues/527)
+let isCurrentlyShowingError = false;
+
 export function invokeGlobalErrorHandler(error: any) {
   console.error('Global error handler:');
   console.error(error);
@@ -37,7 +43,8 @@ export function invokeGlobalErrorHandler(error: any) {
   closeElement.textContent = 'Close';
   closeElement.addEventListener('click', () => {
     loadingElement.style.visibility = 'hidden';
-    rootElement!.style.display = 'initial';
+    rootElement!.style.display = '';
+    isCurrentlyShowingError = false;
   });
   loadingElement.insertBefore(closeElement, null);
 
@@ -58,16 +65,27 @@ export function invokeGlobalErrorHandler(error: any) {
   }
 
   rootElement!.style.display = 'none';
-  loadingElement.style.visibility = 'initial';
+  loadingElement.style.visibility = '';
+  isCurrentlyShowingError = true;
 
   return true;
 }
 
 export function showSplashScreen(subtitle: string) {
   const loadingIndicator = document.getElementById('loading')!;
-  loadingIndicator.style.visibility = 'initial';
+  loadingIndicator.style.visibility = '';
   const subtitleElement = document.querySelectorAll('#loading h2')[0] as HTMLElement;
   subtitleElement.textContent = subtitle;
 
   (document.getElementById('root') as HTMLElement).style.display = 'none';
+}
+
+export function hideSplashScreen() {
+  // If currently showing an error, ignore the request to hide the splash screen
+  if (isCurrentlyShowingError) {
+    return;
+  }
+
+  const loadingIndicator = document.getElementById('loading')!;
+  loadingIndicator.style.visibility = 'hidden';
 }

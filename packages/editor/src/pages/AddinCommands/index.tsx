@@ -4,7 +4,7 @@ import { addScriptTags } from 'common/lib/utilities/script-loader';
 
 import { RunOnLoad } from 'common/lib/components/PageSwitcher/utilities/RunOnLoad';
 import { AwaitPromiseThenRender } from 'common/lib/components/PageSwitcher/utilities/AwaitPromiseThenRender';
-import { hideLoadingIndicator } from 'common/lib/components/PageSwitcher/utilities/loadingIndicator';
+import { hideSplashScreen } from 'common/lib/utilities/splash.screen';
 
 import setup from './setup';
 
@@ -12,7 +12,7 @@ const AddinCommands = () => (
   <AwaitPromiseThenRender
     promise={addScriptTags([SCRIPT_URLS.OFFICE_JS_FOR_EDITOR])
       .then(() => Office.onReady())
-      .then(() => hideLoadingIndicator())}
+      .then(() => hideSplashScreen())}
   >
     <RunOnLoad funcToRun={setup} />
   </AwaitPromiseThenRender>
