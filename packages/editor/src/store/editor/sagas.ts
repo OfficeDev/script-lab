@@ -194,6 +194,7 @@ function* makeAddIntellisenseRequestSaga() {
   });
 
   let urlsToFetch = urls.filter(url => /^.*\/index\.d\.ts$/.test(url));
+  let validUrls = [];
 
   while (urlsToFetch.length > 0) {
     const urlContents = yield all(
@@ -214,10 +215,14 @@ function* makeAddIntellisenseRequestSaga() {
     urlsToFetch = flatten(
       urlContentPairing.map(([url, content]) => parseTripleSlashRefs(url, content)),
     );
-    urls = [...urls, ...urlsToFetch];
+    validUrls = [
+      ...validUrls,
+      ...urlContentPairing.map(([first, ...rest]) => first),
+      ...urlsToFetch,
+    ];
   }
 
-  yield put(editor.setIntellisenseFiles.request({ urls }));
+  yield put(editor.setIntellisenseFiles.request({ urls: validUrls }));
 }
 
 function* setIntellisenseFilesSaga(
