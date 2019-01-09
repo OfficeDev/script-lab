@@ -12,7 +12,7 @@ import {
   getIsActiveSolutionTrusted,
 } from '../editor/selectors';
 import { getIsLoggingInOrOut, getIsLoggedIn } from '../github/selectors';
-import { getIsTaskPane } from '../screen/selectors';
+import { getIsTaskPaneWidth } from '../screen/selectors';
 import { getIsRunnableOnThisHost, getIsInAddin } from '../host/selectors';
 
 // actions
@@ -47,7 +47,7 @@ export const getMode: (
         return 'normal';
     }
   },
-);
+  );
 
 const getRunButton = createSelector(
   [
@@ -83,17 +83,17 @@ const getRunButton = createSelector(
           actionCreator: isTrusted
             ? actions.editor.navigateToRun
             : () =>
-                actions.messageBar.show({
-                  style: MessageBarType.error,
-                  text: 'You must trust the snippet before you can run it.',
-                  button: {
-                    text: 'Trust',
-                    action: actions.solutions.updateOptions({
-                      solution,
-                      options: { isUntrusted: false },
-                    }),
-                  },
-                }),
+              actions.messageBar.show({
+                style: MessageBarType.error,
+                text: 'You must trust the snippet before you can run it.',
+                button: {
+                  text: 'Trust',
+                  action: actions.solutions.updateOptions({
+                    solution,
+                    options: { isUntrusted: false },
+                  }),
+                },
+              }),
         },
       ];
     }
@@ -118,7 +118,7 @@ const showLoginToGithubDialog = actions.dialog.show({
 });
 
 export const getItems = createSelector(
-  [getMode, getActiveSolution, getIsTaskPane, getIsLoggedIn, getRunButton, getIsInAddin],
+  [getMode, getActiveSolution, getIsTaskPaneWidth, getIsLoggedIn, getRunButton, getIsInAddin],
   (mode, activeSolution, iconOnly, isLoggedIn, runButton, isInAddin) => {
     const titleStyles = {
       style: { paddingRight: iconOnly ? '0' : '3rem' },
@@ -258,17 +258,17 @@ export const getFarItems = createSelector(
             ariaLabel: isLoggedIn ? 'Logout' : 'Login',
             subMenuProps: isLoggedIn
               ? {
-                  items: [
-                    {
-                      key: 'logout',
-                      text: 'Logout',
-                      actionCreator: actions.github.logout,
-                    },
-                  ],
-                }
+                items: [
+                  {
+                    key: 'logout',
+                    text: 'Logout',
+                    actionCreator: actions.github.logout,
+                  },
+                ],
+              }
               : undefined,
             iconOnly: true,
-            actionCreator: isLoggingInOrOut ? () => {} : actions.github.login.request,
+            actionCreator: isLoggingInOrOut ? () => { } : actions.github.login.request,
           },
         ];
       default:
