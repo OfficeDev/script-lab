@@ -46,7 +46,7 @@ interface IState {
 
 class Console extends React.Component<IPrivateProps, IState> {
   private lastLog = React.createRef<HTMLDivElement>();
-  private clipboard;
+  private clipboard: Clipboard;
   state: IState = { shouldScrollToBottom: true, filterQuery: '' };
 
   static defaultProps = {
