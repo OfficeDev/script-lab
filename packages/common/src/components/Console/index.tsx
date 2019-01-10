@@ -59,8 +59,8 @@ class Console extends React.Component<IPrivateProps, IState> {
     this.clipboard = new Clipboard('.copy-to-clipboard', {
       text: this.getTextToCopy,
     });
-    this.clipboard.on('error', e => {
-      // FIXME: Zlatkovsky
+    this.clipboard.on('error', (e: Error) => {
+      console.error(e);
       throw new Error('Could not copy to clipboard');
     });
   }
