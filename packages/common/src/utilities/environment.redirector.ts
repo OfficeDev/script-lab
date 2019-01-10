@@ -1,8 +1,8 @@
 import { parse } from 'query-string';
-import { localStorageKeys } from 'common/lib/constants';
-import { editorUrls } from 'common/lib/environment';
-import ensureFreshLocalStorage from 'common/lib/utilities/ensure.fresh.local.storage';
-import { WINDOW_SCRIPT_LAB_NAVIGATING_AWAY_TO_DIFFERENT_ENVIRONMENT_KEY } from 'common/lib/utilities/script-loader/constants';
+import { localStorageKeys } from '../constants';
+import { editorUrls } from '../environment';
+import ensureFreshLocalStorage from './ensure.fresh.local.storage';
+import { WINDOW_SCRIPT_LAB_NAVIGATING_AWAY_TO_DIFFERENT_ENVIRONMENT_KEY } from './script-loader/constants';
 
 /** Checks (and redirects) if needs to go to a different environment.
  * Returns `true` if will be redirecting away

@@ -3,12 +3,11 @@
 - Basic editing experience:
   - Create a snippet, both "new" and from a sample
   - Deletes/renames/etc should work correctly and persist even if you close/re-open the app.
-  - When deleting last snippet, editor experience should feel like it's doing "the right thing" (which currently is just creating a new blank snippet; we can consider later popping up the samples/new gallery instead, if we get feedback on this).
+  - When deleting the last snippet, the backstage should pop up, showing the samples gallery.
 - Login to github
   - Should be able to log in
   - Should see your snippets in snippets list
-    - Note: This is currently broken on IE (WAC), and somewhat broken on EDGE (WAC). An error appears saying "The security settings in your browser prevent us from creating a dialog box..."
-    - Note: Separately, there's an issue with IE on both WAC and Win32 that does not allow for consenting to GitHub OAuth apps via IE. The current workaround is to load [this](https://script-lab-react-beta.azurewebsites.net/) url in Chrome and sign-in and consent in that window. After consenting in Chrome, you should be able to use the GitHub functionality in Win32.
+    - Note: there's an issue with IE 11 on both Win32 and Office Online that does not allow for consenting to GitHub OAuth apps via IE (issue [#248](https://github.com/OfficeDev/script-lab-react/issues/248)). The current workaround is to load [this](https://script-lab.azureedge.net/) url in Chrome/Edge/Firefox/etc. and sign-in and consent in that window. After consenting in that browser, you should be able to use the GitHub functionality within the app by signing in again, and this time it should succeed.
 - Import someone elses' snippet
   - From YAML
   - From Gist
@@ -24,11 +23,6 @@
   - Update option should not appear in share menu after importing a gist that you do not own
   - Update option appears in share menu after initial publish of a new gist or a gist that you did not previously own
   - Deleting a gist (on the github website) and then trying to update it from Script Lab should have a reasonable behavior (some sort of error message?)
-- Misc:
-  - On both editor and runner, should be able to trigger a runtime error via the browser (e.g., type the following into the console: `setTimeout(function() { throw new Error("Test") } , 500)`), and it should trigger an error experience.
-
-By the end of Nov 2018, should also be able to test the following (can skip for now, since we're currently re-using the Script Lab 2017 runner experience):
-
 - Run snippet, in both in-editor runner (the only option for Office 2016 RTM and earlier) and via the "Run" button (run.html), testing that:
   - Snippet renders correctly
   - "Run" from editor or run gallery, in-place refresh, and full refresh all work correctly (render the snippet, don't double-refresh, etc.). The run (either type) doesn't show a "snippet needs reloading" message if the snippet is already fresh.
@@ -42,3 +36,5 @@ By the end of Nov 2018, should also be able to test the following (can skip for 
 - Ribbon buttons (Add-in):
   - The Script Lab tab is visible with its buttons
   - The buttons aside from Run/Code/Functions open web pages (and this works on all platforms)
+- Misc:
+  - On both editor and runner, should be able to trigger a runtime error via the browser (e.g., type the following into the console: `setTimeout(function() { throw new Error("Test") } , 500)`), and it should trigger an error experience.

@@ -12,12 +12,15 @@
     "Customizer",
     "DOCTYPE",
     "Env's",
+    "Intelli",
     "IntelliSense",
     "Menlo",
     "Nico",
+    "Popout",
     "PowerPoint",
     "STOPSTOP",
     "Stringifiable",
+    "Truthy",
     "Unmount",
     "Visio",
     "Zlatkovsky",
@@ -31,6 +34,7 @@
     "dogfood",
     "dogfooding",
     "dropdown",
+    "else's",
     "filepath",
     "flexbox",
     "gitignore",
@@ -62,16 +66,19 @@
     "sideloading",
     "stylesheet",
     "subfolders",
+    "taskpane",
     "typesafe",
     "uncomment",
     "unminified",
     "unpkg",
     "untrusted",
-    "uppercased"
+    "uppercased",
+    "youtube"
   ],
   "cSpell.ignorePaths": [
-    "**/node_modules", // the same for this one
-    "**/node_modules/**", // the same for this one
+    "**/node_modules",
+    "**/node_modules/**",
+    "packages/editor/src/interfaces/monaco.d.ts",
     "package.json",
     "yarn.lock"
   ],

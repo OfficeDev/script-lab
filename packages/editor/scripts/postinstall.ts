@@ -1,3 +1,5 @@
+import { PACKAGE_VERSIONS, hyphenate } from '../../common/src/package-versions';
+
 const expectedPackages: {
   [key: string]: {
     name: string;
@@ -9,14 +11,21 @@ const expectedPackages: {
 } = {
   monaco: {
     name: 'monaco-editor',
-    version: '0.14.3',
+    version: PACKAGE_VERSIONS['monaco-editor'],
+    copyAsName: 'monaco-editor',
+    pathToCopyFrom: 'min/vs',
+    pathToCopyTo: 'vs',
+  },
+  'monaco-old': {
+    name: 'monaco-editor-old',
+    version: PACKAGE_VERSIONS['monaco-editor-old'],
     copyAsName: 'monaco-editor',
     pathToCopyFrom: 'min/vs',
     pathToCopyTo: 'vs',
   },
   officeJs: {
     name: '@microsoft/office-js',
-    version: '1.1.11-adhoc.28',
+    version: PACKAGE_VERSIONS['@microsoft/office-js'],
     copyAsName: 'office-js',
     pathToCopyFrom: 'dist',
     pathToCopyTo: '',
@@ -46,7 +55,7 @@ oldFilesToRemove.forEach(filename => {
 for (const key in expectedPackages) {
   const packageToCheck = expectedPackages[key];
   console.log(
-    `Checking that "${packageToCheck.name} matches expected version "${
+    `Checking that "${packageToCheck.name}" matches expected version "${
       packageToCheck.version
     }"`,
   );
@@ -58,8 +67,7 @@ for (const key in expectedPackages) {
     throw new Error(
       `The ${packageToCheck.copyAsName} package does NOT match expected version. ` +
         'Please update the expected number above, ' +
-        `then search for "external/${packageToCheck.copyAsName}" ` +
-        `within the codebase and ensure that the versions match.`,
+        `then update the version numbers at "packages/common/src/package-versions.ts".`,
     );
   }
 }
@@ -70,7 +78,7 @@ for (const key in expectedPackages) {
 
   foldersToCopy.push({
     from: `../../node_modules/${packageToCheck.name}/${packageToCheck.pathToCopyFrom}`,
-    to: `./public/external/${packageToCheck.copyAsName}-${getVersionNumberHyphenated(
+    to: `./public/external/${packageToCheck.copyAsName}-${hyphenate(
       packageToCheck.version,
     )}${packageToCheck.pathToCopyTo ? '/' + packageToCheck.pathToCopyTo : ''}`,
   });
@@ -82,8 +90,3 @@ for (const key in expectedPackages) {
   fs.removeSync(pair.to);
   fs.copySync(pair.from, pair.to);
 });
-
-// Helper
-function getVersionNumberHyphenated(versionString: string) {
-  return versionString.replace(/\./g, '-');
-}

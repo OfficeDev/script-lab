@@ -29,7 +29,7 @@
     "@types/jest": "^23.3.2",
     "@types/lodash": "^4.14.118",
     "@types/node": "^10.9.4",
-    "@types/office-js": "^0.0.111",
+    "@types/office-js": "^0.0.143",
     "@types/query-string": "^5.1.0",
     "@types/react": "^16.4.14",
     "@types/react-dom": "^16.0.7",

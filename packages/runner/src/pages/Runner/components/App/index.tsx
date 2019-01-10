@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Utilities, HostType } from '@microsoft/office-js-helpers';
+import { Utilities, HostType, CustomError } from '@microsoft/office-js-helpers';
 import queryString from 'query-string';
 import { stringifyPlusPlus } from 'common/lib/utilities/string';
 
@@ -18,8 +18,13 @@ import MessageBar from '../MessageBar';
 
 import SnippetContainer from '../SnippetContainer';
 import { currentEditorUrl } from 'common/lib/environment';
+import { ScriptLabError } from 'common/lib/utilities/error';
 import processLibraries from 'common/lib/utilities/process.libraries';
-import { showSplashScreen } from 'common/lib/utilities/splash.screen';
+import {
+  showSplashScreen,
+  hideSplashScreen,
+  invokeGlobalErrorHandler,
+} from 'common/lib/utilities/splash.screen';
 import { SILENT_SNIPPET_SWITCHING } from '../../../../constants';
 
 const AppWrapper = styled.div`
@@ -68,8 +73,8 @@ export class App extends React.Component<{}, IState> {
       Utilities.host === HostType.WEB
         ? null
         : (
-            params[OFFICE_JS_URL_QUERY_PARAMETER_KEY] || SCRIPT_URLS.OFFICE_JS_FOR_EDITOR
-          ).toLowerCase();
+          params[OFFICE_JS_URL_QUERY_PARAMETER_KEY] || SCRIPT_URLS.OFFICE_JS_FOR_EDITOR
+        ).toLowerCase();
   }
 
   componentDidMount() {
@@ -127,7 +132,26 @@ export class App extends React.Component<{}, IState> {
   openConsole = () => this.setState({ isConsoleOpen: true });
   closeConsole = () => this.setState({ isConsoleOpen: false });
 
-  openCode = () => Office.context.ui.displayDialogAsync(currentEditorUrl);
+  openCode = () =>
+    Office.context.ui.displayDialogAsync(
+      currentEditorUrl,
+      {
+        height: 60,
+        width: 60,
+        promptBeforeOpen: false,
+      },
+      (result: Office.AsyncResult<any>) => {
+        if (result.status === Office.AsyncResultStatus.Failed) {
+          console.error(result);
+          invokeGlobalErrorHandler(
+            new ScriptLabError(
+              'Could not open a standalone code editor window.',
+              new Error(result.error.message),
+            ),
+          );
+        }
+      },
+    );
 
   onReceiveNewActiveSolution = (solution: ISolution | null) => {
     if (solution !== null) {
@@ -139,13 +163,14 @@ export class App extends React.Component<{}, IState> {
         informSnippetSwitch(`Switching to snippet "${solution.name}".`);
       }
     }
-    this.setState({ solution });
+    this.setState({ solution, logs: [] });
   };
 
   softRefresh = () => {
     if (this.state.solution) {
       this.setState({
         solution: { ...this.state.solution, dateLastModified: Date.now() },
+        logs: [],
       });
       informSnippetSwitch(
         `Your snippet '${this.state.solution.name}' has been reloaded.`,
@@ -161,9 +186,9 @@ export class App extends React.Component<{}, IState> {
     lastRendered,
     hasContent,
   }: {
-    lastRendered: number;
-    hasContent: boolean;
-  }) => {
+      lastRendered: number;
+      hasContent: boolean;
+    }) => {
     // If staying on this page (rather than being in the process of reloading)
     if (!this.isTransitioningAwayFromPage) {
       this.setState({ lastRendered });
@@ -172,8 +197,7 @@ export class App extends React.Component<{}, IState> {
         this.hasRenderedContent = true;
 
         // Also, hide the loading indicators, if they were still up
-        const loadingIndicator = document.getElementById('loading')!;
-        loadingIndicator.style.visibility = 'hidden';
+        hideSplashScreen();
       }
     }
   };
