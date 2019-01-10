@@ -15,6 +15,9 @@ import {
   LogText,
 } from './styles';
 import HeaderFooterLayout from '../HeaderFooterLayout';
+import { Button } from 'office-ui-fabric-react/lib/Button';
+
+import Clipboard from 'clipboard';
 
 const MAX_LOGS_SHOWN = 100;
 
@@ -58,6 +61,22 @@ class Console extends React.Component<IPrivateProps, IState> {
 
   setShouldScrollToBottom = (ev: React.FormEvent<HTMLElement>, checked: boolean) =>
     this.setState({ shouldScrollToBottom: checked });
+
+  getTextToCopy = () => {
+    return this.props.logs
+      .map(item => {
+        let prefix = '';
+        if (item.severity === 'warn') {
+          prefix = '[WARNING]: ';
+        } else if (item.severity === 'error') {
+          prefix = '[ERROR]: ';
+        }
+
+        return prefix + item.message;
+      })
+      .join('\n\n');
+  };
+  private alreadyAttached = false;
 
   updateFilterQuery = () =>
     this.setState({
@@ -109,6 +128,19 @@ class Console extends React.Component<IPrivateProps, IState> {
         };
       });
 
+    setTimeout(() => {
+      if (!this.alreadyAttached) {
+        this.alreadyAttached = true;
+
+        const clipboard = new Clipboard('#copy-to-clipboard', {
+          text: this.getTextToCopy,
+        });
+        clipboard.on('error', e => {
+          throw new Error('Could not copy to clipboard');
+        });
+      }
+    }, 1000);
+
     return (
       <Wrapper style={{ backgroundColor: theme.neutralLighter, ...style }}>
         <HeaderFooterLayout
@@ -142,6 +174,7 @@ class Console extends React.Component<IPrivateProps, IState> {
                 defaultChecked={true}
                 onChange={this.setShouldScrollToBottom}
               />
+              <Button id="copy-to-clipboard">Copy</Button>
             </CheckboxWrapper>
           }
         >
