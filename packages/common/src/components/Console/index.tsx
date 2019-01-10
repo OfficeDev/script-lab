@@ -45,6 +45,7 @@ interface IState {
 
 class Console extends React.Component<IPrivateProps, IState> {
   private lastLog = React.createRef<HTMLDivElement>();
+  private clipboard;
   state: IState = { shouldScrollToBottom: true, filterQuery: '' };
 
   static defaultProps = {
@@ -53,6 +54,18 @@ class Console extends React.Component<IPrivateProps, IState> {
 
   componentDidMount() {
     this.scrollToBottom();
+
+    this.clipboard = new Clipboard('.copy-to-clipboard', {
+      text: this.getTextToCopy,
+    });
+    this.clipboard.on('error', e => {
+      // FIXME: Zlatkovsky
+      throw new Error('Could not copy to clipboard');
+    });
+  }
+
+  componentWillUnmount() {
+    this.clipboard.destroy();
   }
 
   componentDidUpdate() {
@@ -62,8 +75,8 @@ class Console extends React.Component<IPrivateProps, IState> {
   setShouldScrollToBottom = (ev: React.FormEvent<HTMLElement>, checked: boolean) =>
     this.setState({ shouldScrollToBottom: checked });
 
-  getTextToCopy = () => {
-    return this.props.logs
+  getTextToCopy = () =>
+    this.props.logs
       .map(item => {
         let prefix = '';
         if (item.severity === 'warn') {
@@ -75,8 +88,6 @@ class Console extends React.Component<IPrivateProps, IState> {
         return prefix + item.message;
       })
       .join('\n\n');
-  };
-  private alreadyAttached = false;
 
   updateFilterQuery = () =>
     this.setState({
@@ -128,19 +139,6 @@ class Console extends React.Component<IPrivateProps, IState> {
         };
       });
 
-    setTimeout(() => {
-      if (!this.alreadyAttached) {
-        this.alreadyAttached = true;
-
-        const clipboard = new Clipboard('#copy-to-clipboard', {
-          text: this.getTextToCopy,
-        });
-        clipboard.on('error', e => {
-          throw new Error('Could not copy to clipboard');
-        });
-      }
-    }, 1000);
-
     return (
       <Wrapper style={{ backgroundColor: theme.neutralLighter, ...style }}>
         <HeaderFooterLayout
@@ -168,14 +166,16 @@ class Console extends React.Component<IPrivateProps, IState> {
             </FilterWrapper>
           }
           footer={
-            <CheckboxWrapper>
-              <Checkbox
-                label="Auto-scroll"
-                defaultChecked={true}
-                onChange={this.setShouldScrollToBottom}
-              />
-              <Button id="copy-to-clipboard">Copy</Button>
-            </CheckboxWrapper>
+            <div>
+              <CheckboxWrapper>
+                <Checkbox
+                  label="Auto-scroll"
+                  defaultChecked={true}
+                  onChange={this.setShouldScrollToBottom}
+                />
+              </CheckboxWrapper>
+              <Button className="copy-to-clipboard">Copy</Button>
+            </div>
           }
         >
           <LogsArea>
