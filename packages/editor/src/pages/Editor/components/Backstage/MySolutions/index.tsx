@@ -41,8 +41,13 @@ class MySolutions extends React.Component<IProps> {
 
     return (
       <Content title="My Snippets" description="Choose a snippet that you have saved">
-        <SearchBox placeholder="Search your snippets" onChange={this.setFilterQuery} />
+        <SearchBox
+          data-testid="solution-search"
+          placeholder="Search your snippets"
+          onChange={this.setFilterQuery}
+        />
         <GalleryList
+          testId="my-solution-list"
           title="My snippets on this computer"
           items={solutions
             .filter(solution => {
@@ -51,6 +56,7 @@ class MySolutions extends React.Component<IProps> {
               }
 
               const megastring = [
+                solution.id,
                 solution.name,
                 solution.description,
                 ...solution.files.map(file => file.content),

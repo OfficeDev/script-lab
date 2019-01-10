@@ -5,6 +5,7 @@ interface IShowDialogProps {
   title: string;
   subText: string;
   buttons: Array<{
+    key: string;
     text: string;
     action: { type: string; payload?: any };
     isPrimary: boolean;

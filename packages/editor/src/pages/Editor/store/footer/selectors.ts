@@ -57,6 +57,7 @@ export const getItems = createSelector(
     return [
       {
         hidden: !isWeb,
+        'data-testid': 'host-selector',
         key: 'host-selector',
         text: currentHost,
         subMenuProps: {
