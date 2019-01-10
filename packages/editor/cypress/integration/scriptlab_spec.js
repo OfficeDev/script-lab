@@ -167,7 +167,7 @@ context('Script Lab Solutions', () => {
 
     openSolutionFromEditor(ReportGeneration.id);
 
-    const textToSet = '// This is a test\n ';
+    const textToSet = '// This is a test\n';
     clearEditor()
       .then(() => editTextInMonacoEditor(textToSet))
       .then(() => formatDocument());
@@ -194,7 +194,7 @@ context('Script Lab Solutions', () => {
 
     openSolutionFromEditor(ReportGeneration.id);
 
-    const textToSet = '// This is a test\n ';
+    const textToSet = '// This is a test\n';
     clearEditor()
       .then(() => editTextInMonacoEditor(textToSet))
       .then(() => formatDocument());
