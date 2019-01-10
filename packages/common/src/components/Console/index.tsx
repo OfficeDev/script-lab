@@ -10,14 +10,15 @@ import {
   ClearButton,
   FilterWrapper,
   LogsArea,
-  LogsList,
   Log,
   LogText,
+  FooterWrapper,
 } from './styles';
 import HeaderFooterLayout from '../HeaderFooterLayout';
-import { Button } from 'office-ui-fabric-react/lib/Button';
+import { IconButton } from 'office-ui-fabric-react/lib/Button';
 
 import Clipboard from 'clipboard';
+import Only from '../Only';
 
 const MAX_LOGS_SHOWN = 100;
 
@@ -166,7 +167,7 @@ class Console extends React.Component<IPrivateProps, IState> {
             </FilterWrapper>
           }
           footer={
-            <div>
+            <FooterWrapper>
               <CheckboxWrapper>
                 <Checkbox
                   label="Auto-scroll"
@@ -174,8 +175,15 @@ class Console extends React.Component<IPrivateProps, IState> {
                   onChange={this.setShouldScrollToBottom}
                 />
               </CheckboxWrapper>
-              <Button className="copy-to-clipboard">Copy</Button>
-            </div>
+              <Only when={logs.length > 0}>
+                <IconButton
+                  className="copy-to-clipboard"
+                  iconProps={{ iconName: 'Copy' }}
+                  style={{ height: '3.8rem' }}
+                  ariaLabel="Copy to clipboard"
+                />
+              </Only>
+            </FooterWrapper>
           }
         >
           <LogsArea>
