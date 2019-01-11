@@ -7,9 +7,12 @@
   },
   "dependencies": {
     "@microsoft/office-js-helpers": "0.7.4",
+    "@types/loglevel": "^1.5.3",
     "color": "^3.0.0",
     "core-js": "^2.5.7",
     "lodash": "^4.17.11",
+    "loglevel": "^1.4.1",
+    "loglevel-plugin-prefix": "^0.8.4",
     "office-ui-fabric-react": "^6.114.0",
     "query-string": "5.1.1",
     "react": "^16.5.0",

@@ -1461,6 +1461,11 @@
   resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.118.tgz#247bab39bfcc6d910d4927c6e06cbc70ec376f27"
   integrity sha512-iiJbKLZbhSa6FYRip/9ZDX6HXhayXLDGY2Fqws9cOkEQ6XeKfaxB0sC541mowZJueYyMnVUmmG+al5/4fCDrgw==
 
+"@types/loglevel@^1.5.3":
+  version "1.5.3"
+  resolved "https://registry.yarnpkg.com/@types/loglevel/-/loglevel-1.5.3.tgz#adfce55383edc5998a2170ad581b3e23d6adb5b8"
+  integrity sha512-TzzIZihV+y9kxSg5xJMkyIkaoGkXi50isZTtGHObNHRqAAwjGNjSCNPI7AUAv0tZUKTq9f2cdkCUd/2JVZUTrA==
+
 "@types/md5@^2.1.33":
   version "2.1.33"
   resolved "https://registry.yarnpkg.com/@types/md5/-/md5-2.1.33.tgz#8c8dba30df4ad0e92296424f08c4898dd808e8df"
@@ -1488,10 +1493,10 @@
   resolved "https://registry.yarnpkg.com/@types/office-js/-/office-js-0.0.111.tgz#ced69601ce5dc5c475e239c4395d3a7d216dd93d"
   integrity sha512-GsndAPhH1nizbq1kOpognz8Rfoai/QeeJ+hxiY0MqIpJu4EejqXUAqU+HJZy6fMP1Z53FvWnR4XMdWvLSWVN0Q==
 
-"@types/office-js@^0.0.135":
-  version "0.0.135"
-  resolved "https://registry.yarnpkg.com/@types/office-js/-/office-js-0.0.135.tgz#70372e05fa86607f13946195ee25bc30289dad02"
-  integrity sha512-Og8W2rLjNJlMoyN+huWzTHJlvPKTDmRdNsW8awMLHnLzVSG6nPrp65clfIOyyhImdGMSgidI8kY1rlcIn5rxpQ==
+"@types/office-js@^0.0.143":
+  version "0.0.143"
+  resolved "https://registry.yarnpkg.com/@types/office-js/-/office-js-0.0.143.tgz#d83f95f4738b91c0157d04efacf6853ca4297c66"
+  integrity sha512-M2mrOu/+/njYETrvftlU8c/90OeY1PZF7DiSx2rnzDcOcovZo2s/jL2qr3qT8WwbAYrxSAiFSN6o1DFtbUNfww==
 
 "@types/office-runtime@^1.0.6":
   version "1.0.6"
@@ -7855,6 +7860,11 @@ log-symbols@^2.1.0:
   integrity sha512-VeIAFslyIerEJLXHziedo2basKbMKtTw3vfn5IzG0XTjhAVEJyNHnL2p7vc+wBDSdQuUpNw3M2u6xb9QsAY5Eg==
   dependencies:
     chalk "^2.0.1"
+
+loglevel-plugin-prefix@^0.8.4:
+  version "0.8.4"
+  resolved "https://registry.yarnpkg.com/loglevel-plugin-prefix/-/loglevel-plugin-prefix-0.8.4.tgz#2fe0e05f1a820317d98d8c123e634c1bd84ff644"
+  integrity sha512-WpG9CcFAOjz/FtNht+QJeGpvVl/cdR6P0z6OcXSkr8wFJOsV2GRj2j10JLfjuA4aYkcKCNIEqRGCyTife9R8/g==
 
 loglevel@^1.4.1:
   version "1.6.1"

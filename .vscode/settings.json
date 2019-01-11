@@ -45,6 +45,7 @@
     "jsyaml",
     "keyframes",
     "localstorage",
+    "loglevel",
     "minified",
     "monkeypatch",
     "officejs",
