@@ -83,8 +83,6 @@ function redirectIfNeeded(): boolean {
 
 export default redirectIfNeeded;
 
-
-
 ///////////////////////////////////////
 
 function isAllowedUrl(url: string) {

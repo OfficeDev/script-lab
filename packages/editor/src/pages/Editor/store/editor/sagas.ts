@@ -263,7 +263,7 @@ function* setIntellisenseFilesSaga(
               console.error(error);
               return null;
             }),
-      )
+        )
         .filter(x => x !== null),
     ),
   );
