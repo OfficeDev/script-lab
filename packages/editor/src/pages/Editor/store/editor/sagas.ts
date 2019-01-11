@@ -13,9 +13,12 @@ import {
   doesMonacoExist,
 } from './utilities';
 
-import { currentRunnerUrl, getCurrentEnv } from 'common/lib/environment';
+import * as log from 'common/lib/utilities/log';
+const logger = log.getLogger('Editor');
 
-let monacoEditor;
+import { currentRunnerUrl } from 'common/lib/environment';
+
+let monacoEditor: monaco.editor.IStandaloneCodeEditor;
 
 export default function* editorWatcher() {
   yield takeEvery(getType(editor.openFile), onEditorOpenFileSaga);
@@ -200,10 +203,10 @@ function* makeAddIntellisenseRequestSaga() {
             if (resp.ok) {
               const content = await resp.text();
               validUrls.push(url);
-              logIfVerbose(`Fetched IntelliSense for ${url}`);
+              logger.info(`Fetched IntelliSense for ${url}`);
               const followUpFetches = parseTripleSlashRefs(url, content);
               if (followUpFetches.length > 0) {
-                logIfVerbose(
+                logger.info(
                   'Need to follow up with IntelliSense fetch for ',
                   followUpFetches,
                 );
@@ -225,7 +228,7 @@ function* makeAddIntellisenseRequestSaga() {
     );
   }
 
-  logIfVerbose(
+  logger.info(
     ['Ready to give URLS to Monaco: ', ...validUrls.map(url => ' - ' + url)].join('\n'),
   );
 
@@ -295,11 +298,4 @@ function* applyFormattingSaga() {
 
 function* navigateToRunSaga() {
   window.location.href = `${currentRunnerUrl}?backButton=true`;
-}
-
-// TODO: (MZ to Nico): After refactor, move to common place where we can use it across the codebase.
-function logIfVerbose(...args: any[]) {
-  if (getCurrentEnv() === 'local') {
-    console.log('Verbose (localhost only):', ...args);
-  }
 }
