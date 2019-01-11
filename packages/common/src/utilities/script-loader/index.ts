@@ -3,7 +3,7 @@ export async function addScriptTags(urls: string[]): Promise<void[]> {
 }
 
 async function addScriptTag(url: string): Promise<void> {
-  return new Promise(resolve => {
+  return new Promise<void>(resolve => {
     const allScriptElements = document.getElementsByTagName('script');
     const thisScriptElement = allScriptElements[allScriptElements.length - 1];
     const scriptElement = document.createElement('script');

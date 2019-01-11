@@ -93,5 +93,3 @@ Please see "[TESTING.md](TESTING.md)".
 
 - `packages/common`:
   - When adding code to the `packages/common`, run `yarn workspace common build:package` in order to get Intellisense and the compiler to pick it up. In VS Code, you may need to `F12` into the file references before Intellisense is able to see the updated contents.
-- Precompile scripts
-  - To avoid different md5 hashes when building on different machines, the precompile script (`/scripts/precompile.ts`) uses `const WEBPACK_MODE = 'production'`. You can temporarily switch it to 'development' to see the result of the precompile scripts.

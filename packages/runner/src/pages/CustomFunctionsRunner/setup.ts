@@ -10,6 +10,8 @@ const HEARTBEAT_URL = `${currentEditorUrl}/custom-functions-heartbeat.html`;
 const VERBOSE_MODE = false;
 
 export default () => {
+  window.document.title = "Script Lab - Custom Functions runner";
+
   // tslint:disable-next-line:no-string-literal
   // (window as any).CustomFunctionMapping['__delay__'] = true;
 

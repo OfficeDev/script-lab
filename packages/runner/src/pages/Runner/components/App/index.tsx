@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Utilities, HostType, CustomError } from '@microsoft/office-js-helpers';
+import { Utilities, HostType } from '@microsoft/office-js-helpers';
 import queryString from 'query-string';
 import { stringifyPlusPlus } from 'common/lib/utilities/string';
 

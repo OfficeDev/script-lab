@@ -39,7 +39,8 @@ const additionalFilesToCopy = [
   },
 ];
 
-const oldFilesToRemove = ['./public/vs', './public/external/vs'];
+// cspell:ignore precompiled
+const oldFilesToRemove = ['./public/vs', './public/external/vs', './public/precompiled'];
 
 ////////////////////////////////////////
 
@@ -56,7 +57,7 @@ for (const key in expectedPackages) {
   const packageToCheck = expectedPackages[key];
   console.log(
     `Checking that "${packageToCheck.name}" matches expected version "${
-      packageToCheck.version
+    packageToCheck.version
     }"`,
   );
 
@@ -66,8 +67,8 @@ for (const key in expectedPackages) {
   ) {
     throw new Error(
       `The ${packageToCheck.copyAsName} package does NOT match expected version. ` +
-        'Please update the expected number above, ' +
-        `then update the version numbers at "packages/common/src/package-versions.ts".`,
+      'Please update the expected number above, ' +
+      `then update the version numbers at "packages/common/src/package-versions.ts".`,
     );
   }
 }
