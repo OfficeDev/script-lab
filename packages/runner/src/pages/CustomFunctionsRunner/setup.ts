@@ -26,7 +26,9 @@ export default () => {
     switch (type) {
       case 'metadata':
         await initializeRunnableSnippets(payload);
-        (CustomFunctions as any).associate(ScriptLabCustomFunctionsDictionary);
+        for (const key in ScriptLabCustomFunctionsDictionary) {
+          CustomFunctions.associate(key, ScriptLabCustomFunctionsDictionary[key]);
+        }
         break;
       case 'refresh':
         window.location.reload();
