@@ -84,6 +84,11 @@ export class ReactMonaco extends Component<IProps, IState> {
     model.updateOptions({ tabSize: this.props.tabSize });
     this.editor.setModel(model);
 
+    if (process.env.NODE_ENV !== 'production') {
+      // exposing monaco editor on the window for cypress to be able to edit text
+      (window as any).MONACO_EDITOR = this.editor;
+    }
+
     this.editor.onDidChangeModelContent(() => {
       this.onValueChange();
     });

@@ -63,8 +63,14 @@ class SolutionSettings extends React.Component<ISolutionSettings, IState> {
         modalProps={{ isBlocking: false }}
       >
         <DialogBodyWrapper>
-          <TextField label="Name" onChange={this.updateSolutionName} value={name} />
           <TextField
+            data-testid="solution-name-field"
+            label="Name"
+            onChange={this.updateSolutionName}
+            value={name}
+          />
+          <TextField
+            data-testid="solution-desc-field"
             label="Description"
             multiline={true}
             rows={4}
@@ -85,11 +91,13 @@ class SolutionSettings extends React.Component<ISolutionSettings, IState> {
         </DialogBodyWrapper>
         <DialogFooter>
           <DefaultButton
+            data-testid="cancel"
             text="Cancel"
             secondaryText="Cancels the update to snippet settings"
             onClick={closeSolutionSettings}
           />{' '}
           <PrimaryButton
+            data-testid="update"
             text="Update"
             secondaryText="Updates the snippet settings"
             onClick={this.updateSolutionMetadata}

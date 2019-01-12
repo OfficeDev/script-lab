@@ -10,6 +10,7 @@ import Only from 'common/lib/components/Only';
 export interface IProps {
   title: string;
   items: IGalleryListItem[];
+  testId?: string;
 }
 
 interface IState {
@@ -22,7 +23,7 @@ class GalleryList extends Component<IProps, IState> {
   toggleExpansion = () => this.setState({ isExpanded: !this.state.isExpanded });
 
   render() {
-    const { title, items } = this.props;
+    const { title, items, testId } = this.props;
     const { isExpanded } = this.state;
     return (
       <GalleryListWrapper>
@@ -34,9 +35,11 @@ class GalleryList extends Component<IProps, IState> {
             </ArrowWrapper>
           </TitleBar>
           <Only when={isExpanded}>
-            {items.map(item => (
-              <GalleryListItem key={item.key} {...item} />
-            ))}
+            <div data-testid={testId}>
+              {items.map(item => (
+                <GalleryListItem key={item.key} {...item} />
+              ))}
+            </div>
           </Only>
         </FocusZone>
       </GalleryListWrapper>
