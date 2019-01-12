@@ -39,8 +39,13 @@ const additionalFilesToCopy = [
   },
 ];
 
-// cspell:ignore precompiled
-const oldFilesToRemove = ['./public/vs', './public/external/vs', './public/precompiled'];
+// cspell:ignore precompile, precompiled
+const oldFilesToRemove = [
+  './precompile-sources',
+  './public/vs',
+  './public/external/vs',
+  './public/precompiled',
+];
 
 ////////////////////////////////////////
 
