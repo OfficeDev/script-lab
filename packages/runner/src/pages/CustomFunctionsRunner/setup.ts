@@ -12,8 +12,8 @@ const VERBOSE_MODE = false;
 export default () => {
   window.document.title = 'Script Lab - Custom Functions runner';
 
-  // tslint:disable-next-line:no-string-literal
-  // (window as any).CustomFunctionMapping['__delay__'] = true;
+  const ScriptLabCustomFunctionsDictionary = {};
+  (window as any).ScriptLabCustomFunctionsDictionary = ScriptLabCustomFunctionsDictionary;
 
   // set up heartbeat listener
   window.onmessage = async ({ origin, data }) => {
@@ -26,8 +26,7 @@ export default () => {
     switch (type) {
       case 'metadata':
         await initializeRunnableSnippets(payload);
-        // tslint:disable-next-line:no-string-literal
-        delete CustomFunctionMappings['__delay__'];
+        (CustomFunctions as any).associate(ScriptLabCustomFunctionsDictionary);
         break;
       case 'refresh':
         window.location.reload();

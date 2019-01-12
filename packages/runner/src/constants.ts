@@ -14,7 +14,8 @@ export const officeNamespacesForIframe = [
 
 /** Namespaces for the custom functions Iframe-s to share with their overarching page. */
 export const officeNamespacesForCustomFunctionsIframe = [
-  'CustomFunctionMappings',
+  'ScriptLabCustomFunctionsDictionary',
+  'CustomFunctions',
   'OfficeRuntime',
   'Office',
   'OfficeExtension',
