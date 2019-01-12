@@ -49,6 +49,9 @@ const oldFilesToRemove = [
 
 ////////////////////////////////////////
 
+import path from 'path';
+console.log('Running postinstall on ' + path.resolve('.'));
+
 import fs from 'fs-extra';
 
 oldFilesToRemove.forEach(filename => {
