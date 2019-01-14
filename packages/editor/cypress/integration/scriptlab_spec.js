@@ -35,7 +35,7 @@ context('Script Lab Solutions', () => {
     const host = 'EXCEL';
     const localStorage = solutions.reduce(
       (all, solution) => ({ ...all, [`solution#${solution.id}`]: solution }),
-      {},
+      {}
     );
 
     const startingSolutionCount = solutions.reduce((count, solution) => {
@@ -64,7 +64,7 @@ context('Script Lab Solutions', () => {
     const host = 'EXCEL';
     const localStorage = solutions.reduce(
       (all, solution) => ({ ...all, [`solution#${solution.id}`]: solution }),
-      {},
+      {}
     );
 
     const startingSolutionCount = solutions.reduce((count, solution) => {
@@ -118,7 +118,7 @@ context('Script Lab Solutions', () => {
     const host = 'EXCEL';
     const localStorage = solutions.reduce(
       (all, solution) => ({ ...all, [`solution#${solution.id}`]: solution }),
-      {},
+      {}
     );
 
     openEditorWithState({ sessionStorage: { host }, localStorage });
@@ -157,7 +157,7 @@ context('Script Lab Solutions', () => {
     const host = 'EXCEL';
     const localStorage = solutions.reduce(
       (all, solution) => ({ ...all, [`solution#${solution.id}`]: solution }),
-      {},
+      {}
     );
 
     openEditorWithState({
@@ -184,7 +184,7 @@ context('Script Lab Solutions', () => {
     const host = 'EXCEL';
     const localStorage = solutions.reduce(
       (all, solution) => ({ ...all, [`solution#${solution.id}`]: solution }),
-      {},
+      {}
     );
 
     openEditorWithState({
@@ -224,8 +224,8 @@ function openEditorWithState({ localStorage, sessionStorage }) {
       Object.entries(sessionStorage).forEach(([key, value]) =>
         win.sessionStorage.setItem(
           key,
-          typeof value === 'string' ? value : JSON.stringify(value),
-        ),
+          typeof value === 'string' ? value : JSON.stringify(value)
+        )
       );
     }
 
@@ -233,8 +233,8 @@ function openEditorWithState({ localStorage, sessionStorage }) {
       Object.entries(localStorage).forEach(([key, value]) =>
         win.localStorage.setItem(
           key,
-          typeof value === 'string' ? value : JSON.stringify(value),
-        ),
+          typeof value === 'string' ? value : JSON.stringify(value)
+        )
       );
     }
 
@@ -274,7 +274,7 @@ function formatDocument() {
       win.MONACO_EDITOR.trigger(
         'editor' /* source, unused */,
         'editor.action.formatDocument',
-        '' /* payload, unused */,
-      ),
+        '' /* payload, unused */
+      )
     );
 }
