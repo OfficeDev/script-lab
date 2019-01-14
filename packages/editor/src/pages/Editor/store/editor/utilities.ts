@@ -192,3 +192,17 @@ export function parseTripleSlashRefs(url: string, content: string) {
 
   return additionalUrls;
 }
+
+const libraryCache: { [url: string]: string | null } = {};
+export async function fetchLibraryContent(url: string): Promise<string | null> {
+  if (url in libraryCache) {
+    return libraryCache[url];
+  }
+
+  const response = await fetch(url);
+  const content = response.ok ? await response.text() : null;
+
+  libraryCache[url] = content;
+
+  return content;
+}
