@@ -71,19 +71,9 @@ export function* onEditorOpenFileSaga(action: ActionType<typeof editor.openFile>
   }
 }
 
-function* onSolutionEditSaga(action: ActionType<typeof solutions.edit>) {
-  if (!action.payload.fileId) {
-    return;
-  }
-  const file = yield select(selectors.solutions.getFile, action.payload.fileId);
-  if (file.language === 'libraries') {
-    yield put(editor.shouldUpdateIntellisense());
-  }
-}
+function* onSolutionEditSaga(action: ActionType<typeof solutions.edit>) {}
 
-function* onSolutionOpenSaga() {
-  yield put(editor.shouldUpdateIntellisense());
-}
+function* onSolutionOpenSaga() {}
 
 function* onFileOpenSaga(action: ActionType<typeof editor.newFileOpened>) {
   if (doesMonacoExist()) {
@@ -97,6 +87,10 @@ function* onFileOpenSaga(action: ActionType<typeof editor.newFileOpened>) {
     action.payload.file.language === 'typescript'
   ) {
     yield put(editor.applyFormatting());
+  }
+
+  if (action.payload.file.language === 'typescript') {
+    yield put(editor.shouldUpdateIntellisense());
   }
 }
 
