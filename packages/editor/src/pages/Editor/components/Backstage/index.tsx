@@ -27,6 +27,7 @@ interface IBackstageItem {
   label?: string;
   onClick?: any /* for some reason, if specified as "() => void",
   would get error "Return type annotation circularly references itself." */;
+  isHidden?: boolean;
   content?: JSX.Element;
   ariaLabel?: string;
 }
@@ -170,6 +171,7 @@ export class Backstage extends Component<IProps, IState> {
         key: 'back',
         ariaLabel: 'Back',
         icon: showBack ? 'GlobalNavButton' : '',
+        isHidden: !showBack,
         onClick: showBack ? this.props.goBack : () => {},
       },
       {

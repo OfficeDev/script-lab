@@ -24,20 +24,22 @@ class PivotMenu extends React.Component<IProps> {
         <PivotBar
           selectedKey={selectedKey}
           onSelect={this.onSelect}
-          items={items.map(({ label, icon, key, ariaLabel }) => {
-            if (['back', 'new'].includes(key)) {
-              return {
-                iconName: icon,
-                key,
-                ariaLabel,
-              };
-            } else {
-              return {
-                text: label,
-                key,
-              };
-            }
-          })}
+          items={items
+            .filter(({ isHidden }) => !isHidden)
+            .map(({ label, icon, key, ariaLabel }) => {
+              if (['back', 'new'].includes(key)) {
+                return {
+                  iconName: icon,
+                  key,
+                  ariaLabel,
+                };
+              } else {
+                return {
+                  text: label,
+                  key,
+                };
+              }
+            })}
           backgroundColor={theme.primary}
           selectedColor={theme.primaryDark}
         />

@@ -4,4 +4,5 @@ export default interface IMenuItem {
   icon: string;
   onClick: () => void;
   ariaLabel?: string;
+  isHidden?: boolean;
 }

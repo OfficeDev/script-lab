@@ -71,9 +71,13 @@ class NavMenu extends React.Component<IProps> {
               iconProps: {
                 iconName: item.icon,
                 styles: {
-                  root: { color: `${theme.white} !important`, marginRight: '1rem' },
+                  root: {
+                    color: `${theme.white} !important`,
+                    marginRight: '1rem',
+                  },
                 },
               },
+              style: { visibility: item.isHidden ? 'hidden' : 'visible' },
               ariaLabel: item.ariaLabel,
               onClick: item.onClick,
               url: '',
