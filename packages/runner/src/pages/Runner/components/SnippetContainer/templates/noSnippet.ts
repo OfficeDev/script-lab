@@ -43,9 +43,6 @@ export default () => `<!DOCTYPE html>
         -webkit-box-sizing: border-box;
                 box-sizing: border-box;
         white-space: pre-wrap;
-        word-wrap: break-word;
-        word-break: break-all;
-        white-space: pre-wrap;
         overflow-y: auto;
       }
     </style>
