@@ -13,34 +13,173 @@
     <meta name="theme-color" content="#000000" />
     <link rel="shortcut icon" type="image/x-icon" href="/assets/images/favicon.ico" />
 
-    <script>
-      // For now, set Office.initialize to an empty function, to work around an issue with onReady
-      // (As of Jan 1st 2019, onReady works, but requires Office.initialize to still be set).
-      // See the note at https://docs.microsoft.com/en-us/office/dev/add-ins/develop/understanding-the-javascript-api-for-office
-      window.Office = window.Office || {};
-      Office.initialize = function() {};
-
-      // Because of the dynamic way in which we load the Office.js script,
-      // it looks like just setting "Office.initialize" isn't enough.
-      // Instead, need to set "Microsoft.Office.WebExtension.initialize"
-      // (see bug https://github.com/OfficeDev/script-lab/issues/528)
-      window.Microsoft = window.Microsoft || {};
-      Microsoft.Office = Microsoft.Office || {};
-      Microsoft.Office.WebExtension = Microsoft.Office.WebExtension || {};
-      Microsoft.Office.WebExtension.initialize = Office.initialize;
-    </script>
-
     <link
       rel="stylesheet"
       href="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-core/9.6.0/css/fabric.min.css"
     />
 
-    <!-- Begin precompile placeholder: style.css -->
-    <link
-      rel="stylesheet"
-      href="/precompiled/style-17dd7f5af03b8bd9c8402fb67d5a8e30.css"
-    />
-    <!-- End precompile placeholder: style.css -->
+    <style>
+      /* Note: this section is duplicated with the styles on file packages/runner/public/index.html. if you make a change here, make a change there too and vice-versa */
+      /* Note: these styles must be run through autoprefixer manually, anytime you make a change */
+
+      *,
+      *::before,
+      *::after {
+        padding: 0;
+        margin: 0;
+        -webkit-box-sizing: inherit;
+        box-sizing: inherit;
+      }
+
+      html {
+        font-size: 62.5%;
+      }
+
+      body {
+        font-family: sans-serif;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        overscroll-behavior-y: none;
+        background-color: white;
+        overflow: hidden;
+      }
+
+      #loading {
+        position: absolute;
+        z-index: 1000000;
+        color: #212121;
+        background: white;
+        height: 100%;
+        width: 100%;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+      }
+
+      #loading > img {
+        height: 120px;
+        margin-bottom: 15px;
+      }
+
+      #loading > h1 {
+        color: #666;
+        margin-top: 10px;
+        margin-bottom: 10px;
+      }
+
+      #loading > h2 {
+        color: #999;
+        max-width: 250px;
+        text-align: center;
+      }
+
+      #loading > a {
+        color: #999 !important;
+        margin-top: 10px;
+      }
+
+      /* Used for error display */
+
+      #loading > pre {
+        color: #999;
+        margin-top: 10px;
+        max-height: 50%;
+        max-width: 100%;
+        padding: 0px 80px;
+        word-break: break-all;
+        white-space: pre-wrap;
+        overflow-y: auto;
+      }
+
+      @media only screen and (max-width: 500px) {
+        #loading > pre {
+          padding: 0px 30px;
+        }
+      }
+
+      #loading > .loading-indicator {
+        margin: 20px auto 0;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        width: 140px;
+        text-align: center;
+      }
+
+      #loading > .loading-indicator > div {
+        width: 10px;
+        height: 10px;
+        background-color: #d83b01;
+        margin: 3px;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+
+        border-radius: 100%;
+        display: inline-block;
+        -webkit-animation: loading-animation 1.4s infinite ease-in-out both;
+        animation: loading-animation 1.4s infinite ease-in-out both;
+      }
+
+      #loading > .loading-indicator .ball1 {
+        -webkit-animation-delay: -0.8s;
+        animation-delay: -0.8s;
+      }
+
+      #loading > .loading-indicator .ball2 {
+        -webkit-animation-delay: -0.64s;
+        animation-delay: -0.64s;
+      }
+
+      #loading > .loading-indicator .ball3 {
+        -webkit-animation-delay: -0.48s;
+        animation-delay: -0.48s;
+      }
+
+      #loading > .loading-indicator .ball4 {
+        -webkit-animation-delay: -0.32s;
+        animation-delay: -0.32s;
+      }
+
+      #loading > .loading-indicator .ball5 {
+        -webkit-animation-delay: -0.16s;
+        animation-delay: -0.16s;
+      }
+
+      @-webkit-keyframes loading-animation {
+        0%,
+        80%,
+        100% {
+          -webkit-transform: scale(0);
+        }
+
+        40% {
+          -webkit-transform: scale(1);
+        }
+      }
+
+      @keyframes loading-animation {
+        0%,
+        80%,
+        100% {
+          -webkit-transform: scale(0);
+          transform: scale(0);
+        }
+
+        40% {
+          -webkit-transform: scale(1);
+          transform: scale(1);
+        }
+      }
+    </style>
   </head>
 
   <body class="ms-Fabric">
@@ -60,9 +199,5 @@
     </div>
 
     <div id="root"></div>
-
-    <!-- Begin precompile placeholder: scripts-loader.js -->
-    <script src="/precompiled/scripts-loader-56916fb6f44e1d1da199ebcee3064724.js"></script>
-    <!-- End precompile placeholder: scripts-loader.js -->
   </body>
 </html>

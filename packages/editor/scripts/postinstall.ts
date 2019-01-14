@@ -39,9 +39,18 @@ const additionalFilesToCopy = [
   },
 ];
 
-const oldFilesToRemove = ['./public/vs', './public/external/vs'];
+// cspell:ignore precompile, precompiled
+const oldFilesToRemove = [
+  './precompile-sources',
+  './public/vs',
+  './public/external/vs',
+  './public/precompiled',
+];
 
 ////////////////////////////////////////
+
+import path from 'path';
+console.log('Running postinstall on ' + path.resolve('.'));
 
 import fs from 'fs-extra';
 

@@ -5,6 +5,8 @@ const OFFICE_JS_LOCAL_PACKAGE_URL = `/external/office-js-${
 }/office.js`;
 
 export const SCRIPT_URLS = {
+  CUSTOM_FUNCTIONS_RUNNER:
+    'https://appsforoffice.microsoft.com/lib/preview/hosted/custom-functions-runtime.js',
   OFFICE_JS_FOR_EDITOR: 'https://appsforoffice.microsoft.com/lib/1/hosted/office.js',
   OFFICE_JS_FOR_CUSTOM_FUNCTIONS_DASHBOARD: OFFICE_JS_LOCAL_PACKAGE_URL,
   MONACO_LOADER: `/external/monaco-editor-${

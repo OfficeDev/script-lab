@@ -45,6 +45,7 @@
     "jsyaml",
     "keyframes",
     "localstorage",
+    "loglevel",
     "minified",
     "monkeypatch",
     "officejs",
@@ -54,10 +55,9 @@
     "polyfill",
     "polyfills",
     "powepoint",
-    "precompile",
-    "precompiled",
     "prereq",
     "proxying",
+    "redirector",
     "repo",
     "reselect",
     "scriptlab",
@@ -68,6 +68,7 @@
     "taskpane",
     "typesafe",
     "uncomment",
+    "uniquify",
     "unminified",
     "unpkg",
     "untrusted",
@@ -81,5 +82,7 @@
     "package.json",
     "yarn.lock"
   ],
-  "cSpell.flagWords": ["hte"]
+  "cSpell.flagWords": [
+    "hte"
+  ]
 }

@@ -43,6 +43,7 @@ interface IState {
 class Console extends React.Component<IPrivateProps, IState> {
   private lastLog = React.createRef<HTMLDivElement>();
   state: IState = { shouldScrollToBottom: true, filterQuery: '' };
+  inputRef = React.createRef<HTMLInputElement>();
 
   static defaultProps = {
     style: {},
@@ -61,7 +62,7 @@ class Console extends React.Component<IPrivateProps, IState> {
 
   updateFilterQuery = () =>
     this.setState({
-      filterQuery: (this.refs.filterTextInput as any).value.toLowerCase(),
+      filterQuery: this.inputRef.current.value.toLowerCase(),
     });
 
   scrollToBottom() {
@@ -125,7 +126,7 @@ class Console extends React.Component<IPrivateProps, IState> {
                 type="text"
                 placeholder="Filter"
                 onChange={this.updateFilterQuery}
-                ref="filterTextInput"
+                ref={this.inputRef}
                 style={{
                   width: '100%',
                   height: '3.2rem',

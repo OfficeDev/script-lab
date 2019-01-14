@@ -2,14 +2,23 @@
   "name": "common",
   "version": "0.0.1",
   "private": true,
+  "dependencies_comments": {
+    "query-string": "Restricing query-string to version 5.1.1 because later versions (6+) started targeting ES6 rather than ES5, making it not work for the precompile scripts. See more at https://stackoverflow.com/a/49985749/678505"
+  },
   "dependencies": {
     "@microsoft/office-js-helpers": "0.7.4",
+    "@types/loglevel": "^1.5.3",
     "color": "^3.0.0",
     "core-js": "^2.5.7",
     "lodash": "^4.17.11",
-    "office-ui-fabric-react": "^6.69.0",
+    "loglevel": "^1.4.1",
+    "loglevel-plugin-prefix": "^0.8.4",
+    "office-ui-fabric-react": "^6.114.0",
+    "query-string": "5.1.1",
     "react": "^16.5.0",
     "react-dom": "^16.5.0",
+    "react-router": "^4.3.1",
+    "react-router-dom": "^4.3.1",
     "styled-components": "^4.1.1",
     "typescript": "^3.1.6"
   },

@@ -32,14 +32,19 @@ export const READ_ONLY_FILE_IDS = [NULL_FILE_ID, ABOUT_FILE_ID, DEFAULT_SETTINGS
 
 export const CUSTOM_FUNCTIONS_INFO_URL = 'https://aka.ms/customfunctions';
 
-export const EDITOR_PATH = '/';
 export const PATHS = {
-  EDITOR: '/',
-  CUSTOM_FUNCTIONS: '/custom-functions',
-  CUSTOM_FUNCTIONS_DASHBOARD: '/custom-functions-dashboard',
-  BACKSTAGE: '/backstage',
   GITHUB_ISSUE: 'https://aka.ms/script-lab/issues',
-}; // stand alone page with no back button
+
+  // Pages
+  AddinCommands: '/functions',
+  CustomFunctions: '/custom-functions',
+  CustomFunctionsHeartbeat: '/custom-functions-heartbeat',
+  CustomFunctionsRun: '/custom-functions-run',
+  Editor: '/',
+  External: '/external-page',
+  Heartbeat: '/heartbeat',
+  Run: '/run',
+};
 
 export const IS_TASK_PANE_WIDTH = 475;
 
