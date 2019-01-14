@@ -12,18 +12,8 @@ describe('Editor utilities', () => {
         };
 
         Object.keys(validRefs).forEach((ref: string) => {
-          console.log(ref);
           const tsr = new RegExp(Regex.TRIPLE_SLASH_REF);
           expect(tsr.exec(ref)).toContain(validRefs[ref]);
-        });
-      });
-
-      it('should not be able to parse these refs', () => {
-        const invalidRefs = ['/// <reference types="sizzle" />'];
-
-        invalidRefs.forEach((ref: string) => {
-          const tsr = new RegExp(Regex.TRIPLE_SLASH_REF);
-          expect(tsr.exec(ref)).toBeNull();
         });
       });
     });

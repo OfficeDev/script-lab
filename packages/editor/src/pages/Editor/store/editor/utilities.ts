@@ -13,7 +13,7 @@ export const Regex = {
   ENDS_WITH_CSS: /.*\.css$/i,
   ENDS_WITH_DTS: /.*\.d\.ts$/i,
   GLOBAL: /^.*/i,
-  TRIPLE_SLASH_REF: /\/\/\/\s*<reference\spath="([\w\.\/\d]+\.d\.ts)"\s*\/>/gm,
+  TRIPLE_SLASH_REF: /\/\/\/\s*<reference\spath="(.+\.d\.ts)"\s*\/>/gm,
 };
 
 export function registerLibrariesMonacoLanguage() {
