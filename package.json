@@ -7,11 +7,11 @@
   ],
   "scripts": {
     "postinstall": "yarn postinstall:iterate",
-    "postinstall:iterate": "yarn workspace common postinstall && yarn workspace editor postinstall",
+    "postinstall:iterate": "yarn workspace common postinstall && yarn workspace editor postinstall && yarn workspace runner postinstall",
     "build": "cd packages/editor && yarn build && cd ../server && yarn build",
     "prettier": "prettier --list-different \"./**/*.@(ts|tsx|js|jsx|html)\"",
     "prettier:write": "prettier --write \"./**/*.@(ts|tsx|js|jsx|html)\"",
-    "deploy": "ts-node --project scripts/tsconfig.json scripts/deploy.ts",
+    "deploy": "jest --config scripts/deploy/jest.config.js && ts-node --project scripts/tsconfig.json scripts/deploy/index.ts",
     "common": "yarn workspace common start",
     "editor": "yarn workspace editor start",
     "runner": "yarn workspace runner start",

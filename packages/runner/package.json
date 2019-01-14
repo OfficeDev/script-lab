@@ -19,17 +19,18 @@
     "typescript": "^3.1.6"
   },
   "scripts": {
+    "postinstall": "ts-node --project ../../scripts/tsconfig.json scripts/postinstall.ts",
     "start": "react-scripts start",
     "build": "export CI=false&&react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "lint": "tslint \"src/**/*.ts?(x)\""
   },
   "devDependencies": {
-    "@types/custom-functions-runtime": "^1.4.7",
+    "@types/custom-functions-runtime": "^1.4.8",
     "@types/jest": "^23.3.2",
     "@types/lodash": "^4.14.118",
     "@types/node": "^10.9.4",
-    "@types/office-js": "^0.0.111",
+    "@types/office-js": "^0.0.143",
     "@types/query-string": "^5.1.0",
     "@types/react": "^16.4.14",
     "@types/react-dom": "^16.0.7",

@@ -44,7 +44,8 @@ export default ({
 
     ${functionNames
       .map(
-        funcName => `CustomFunctionMappings["${namespace}.${funcName}"] = ${funcName};`,
+        funcName =>
+          `ScriptLabCustomFunctionsDictionary["${namespace}.${funcName}"] = ${funcName};`,
       )
       .join('\n  ')}
 

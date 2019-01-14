@@ -33,7 +33,8 @@ export const READ_ONLY_FILE_IDS = [NULL_FILE_ID, ABOUT_FILE_ID, DEFAULT_SETTINGS
 export const CUSTOM_FUNCTIONS_INFO_URL = 'https://aka.ms/customfunctions';
 
 export const PATHS = {
-  GITHUB_ISSUE: 'https://github.com/OfficeDev/script-lab-react/issues/new/choose',
+  GITHUB_ISSUE: 'https://aka.ms/script-lab/issues',
+
   // Pages
   AddinCommands: '/functions',
   CustomFunctions: '/custom-functions',

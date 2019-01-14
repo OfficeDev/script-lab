@@ -10,8 +10,10 @@ const HEARTBEAT_URL = `${currentEditorUrl}/custom-functions-heartbeat.html`;
 const VERBOSE_MODE = false;
 
 export default () => {
-  // tslint:disable-next-line:no-string-literal
-  // (window as any).CustomFunctionMapping['__delay__'] = true;
+  window.document.title = 'Script Lab - Custom Functions runner';
+
+  const ScriptLabCustomFunctionsDictionary = {};
+  (window as any).ScriptLabCustomFunctionsDictionary = ScriptLabCustomFunctionsDictionary;
 
   // set up heartbeat listener
   window.onmessage = async ({ origin, data }) => {
@@ -24,8 +26,9 @@ export default () => {
     switch (type) {
       case 'metadata':
         await initializeRunnableSnippets(payload);
-        // tslint:disable-next-line:no-string-literal
-        delete CustomFunctionMappings['__delay__'];
+        for (const key in ScriptLabCustomFunctionsDictionary) {
+          CustomFunctions.associate(key, ScriptLabCustomFunctionsDictionary[key]);
+        }
         break;
       case 'refresh':
         window.location.reload();

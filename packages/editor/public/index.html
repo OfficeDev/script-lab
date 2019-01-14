@@ -13,14 +13,6 @@
     <meta name="theme-color" content="#FFFFFF" />
     <link rel="shortcut icon" type="image/x-icon" href="/assets/images/favicon.ico" />
 
-    <script>
-      // For now, set Office.initialize to an empty function, to work around an issue with onReady
-      // (As of Nov 1st 2018, onReady works, but requires Office.initialize to still be set).
-      // See the note at https://docs.microsoft.com/en-us/office/dev/add-ins/develop/understanding-the-javascript-api-for-office
-      window.Office = window.Office || {};
-      Office.initialize = function() {};
-    </script>
-
     <link
       rel="stylesheet"
       href="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-core/9.6.0/css/fabric.min.css"
@@ -28,6 +20,7 @@
 
     <style>
       /* Note: these styles must be run through autoprefixer manually, anytime you make a change */
+
       *,
       *::before,
       *::after {
@@ -95,6 +88,7 @@
       }
 
       /* Used for error display */
+
       #loading > pre {
         color: #999;
         margin-top: 10px;

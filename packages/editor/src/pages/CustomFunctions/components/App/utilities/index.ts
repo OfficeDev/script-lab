@@ -264,7 +264,7 @@ function wrapCustomFunctionSnippetCode(
     return functionNames
       .map(name => {
         const fullUppercaseName = `${namespace.toUpperCase()}.${name.toUpperCase()}`;
-        return `CustomFunctionMappings["${fullUppercaseName}"] = ${getRightSide()};`;
+        return `CustomFunctions.associate("${fullUppercaseName}", ${getRightSide()});`;
 
         function getRightSide() {
           return success
