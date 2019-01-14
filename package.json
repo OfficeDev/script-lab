@@ -8,6 +8,7 @@
   "scripts": {
     "postinstall": "yarn postinstall:iterate",
     "postinstall:iterate": "yarn workspace common postinstall && yarn workspace editor postinstall && yarn workspace runner postinstall",
+    "pre-ci": "ts-node --project scripts/tsconfig.json scripts/pre-ci.ts",
     "build": "cd packages/editor && yarn build && cd ../server && yarn build",
     "prettier": "prettier --list-different \"./**/*.@(ts|tsx|js|jsx|html)\"",
     "prettier:write": "prettier --write \"./**/*.@(ts|tsx|js|jsx|html)\"",
