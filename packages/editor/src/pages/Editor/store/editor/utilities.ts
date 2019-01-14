@@ -7,13 +7,13 @@ export function doesMonacoExist() {
   return !!(window as any).monaco;
 }
 
-const Regex = {
+export const Regex = {
   STARTS_WITH_TYPINGS: /^.types\/.+|^dt~.+/i,
   STARTS_WITH_COMMENT: /^#.*|^\/\/.*|^\/\*.*|.*\*\/$.*/im,
   ENDS_WITH_CSS: /.*\.css$/i,
   ENDS_WITH_DTS: /.*\.d\.ts$/i,
   GLOBAL: /^.*/i,
-  TRIPLE_SLASH_REF: /\/\/\/\s*<reference\spath="([\w\.\d]+\.d\.ts)"\s*\/>/gm,
+  TRIPLE_SLASH_REF: /\/\/\/\s*<reference\spath="(.+\.d\.ts)"\s*\/>/gm,
 };
 
 export function registerLibrariesMonacoLanguage() {
@@ -191,4 +191,18 @@ export function parseTripleSlashRefs(url: string, content: string) {
   }
 
   return additionalUrls;
+}
+
+const libraryCache: { [url: string]: string | null } = {};
+export async function fetchLibraryContent(url: string): Promise<string | null> {
+  if (url in libraryCache) {
+    return libraryCache[url];
+  }
+
+  const response = await fetch(url);
+  const content = response.ok ? await response.text() : null;
+
+  libraryCache[url] = content;
+
+  return content;
 }

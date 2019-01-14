@@ -11,6 +11,7 @@ import {
   enablePrettierInMonaco,
   parseTripleSlashRefs,
   doesMonacoExist,
+  fetchLibraryContent,
 } from './utilities';
 
 import * as log from 'common/lib/utilities/log';
@@ -71,19 +72,9 @@ export function* onEditorOpenFileSaga(action: ActionType<typeof editor.openFile>
   }
 }
 
-function* onSolutionEditSaga(action: ActionType<typeof solutions.edit>) {
-  if (!action.payload.fileId) {
-    return;
-  }
-  const file = yield select(selectors.solutions.getFile, action.payload.fileId);
-  if (file.language === 'libraries') {
-    yield put(editor.shouldUpdateIntellisense());
-  }
-}
+function* onSolutionEditSaga(action: ActionType<typeof solutions.edit>) {}
 
-function* onSolutionOpenSaga() {
-  yield put(editor.shouldUpdateIntellisense());
-}
+function* onSolutionOpenSaga() {}
 
 function* onFileOpenSaga(action: ActionType<typeof editor.newFileOpened>) {
   if (doesMonacoExist()) {
@@ -97,6 +88,10 @@ function* onFileOpenSaga(action: ActionType<typeof editor.newFileOpened>) {
     action.payload.file.language === 'typescript'
   ) {
     yield put(editor.applyFormatting());
+  }
+
+  if (action.payload.file.language === 'typescript') {
+    yield put(editor.shouldUpdateIntellisense());
   }
 }
 
@@ -191,40 +186,24 @@ function* makeAddIntellisenseRequestSaga() {
     const currentUrlsToFetch = [...pendingUrls];
     pendingUrls = [];
 
-    // TODO: we seem to be wasteful in getting the contents but not caching it.
-    // Should fix this as part of https://github.com/OfficeDev/script-lab/issues/38.
-    // Should also be caching to avoid circular-reference issues when we do
-    // "parseTripleSlashRefs" (i.e., cross-reference against existing).
-    // See https://github.com/OfficeDev/script-lab/issues/337 for related issue.
     yield all(
-      currentUrlsToFetch.map(
-        async (url: string): Promise<{ url: string; content: string } | null> => {
-          try {
-            const resp = await fetch(url);
-            if (resp.ok) {
-              const content = await resp.text();
-              validUrls.push(url);
-              logger.info(`Fetched IntelliSense for ${url}`);
-              const followUpFetches = parseTripleSlashRefs(url, content);
-              if (followUpFetches.length > 0) {
-                logger.info(
-                  'Need to follow up with IntelliSense fetch for ',
-                  followUpFetches,
-                );
-                pendingUrls = [...pendingUrls, ...followUpFetches];
-              }
-
-              return { url, content };
-            } else {
-              throw new Error(
-                `Could not fetch library "${url}", error "${resp.statusText}".`,
+      currentUrlsToFetch.map((url: string) =>
+        fetchLibraryContent(url).then((content: string | null) => {
+          if (content) {
+            validUrls.push(url);
+            logger.info(`Fetched IntelliSense for ${url}`);
+            const followUpFetches = parseTripleSlashRefs(url, content);
+            if (followUpFetches.length > 0) {
+              logger.info(
+                'Need to follow up with IntelliSense fetch for ',
+                followUpFetches,
               );
+              pendingUrls = [...pendingUrls, ...followUpFetches];
             }
-          } catch (e) {
-            console.error(e);
-            return null;
+          } else {
+            logger.error(`Could not fetch library "${url}".`);
           }
-        },
+        }),
       ),
     );
   }
@@ -251,22 +230,18 @@ function* setIntellisenseFilesSaga(
   const newIntellisenseFiles = yield call(() =>
     Promise.all(
       [...new Set(urlsToFetch)] // to uniquify values
-        .map(url =>
-          fetch(url)
-            .then(resp => (resp.ok ? resp.text() : Promise.reject(resp.statusText)))
-            .then(content => {
+        .map((url: string) =>
+          fetchLibraryContent(url).then((content: string | null) => {
+            if (content) {
               const disposable = monaco.languages.typescript.typescriptDefaults.addExtraLib(
                 content,
                 url,
               );
               return { url, disposable };
-            })
-            .catch(error => {
-              // this should theoretically never get hit unless
-              // the library author has an invalid url in their index.d.ts
-              console.error(error);
+            } else {
               return null;
-            }),
+            }
+          }),
         )
         .filter(x => x !== null),
     ),
