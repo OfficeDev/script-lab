@@ -3,7 +3,7 @@ import {
   render,
   fireEvent,
   cleanup,
-  renderWithReduxAndRouter,
+  renderWithRedux,
 } from '../../../../../utils/test-utils';
 
 import FileSwitcherPivot from './';
@@ -123,7 +123,7 @@ const setup = () => {
     host: 'WEB',
   };
 
-  return renderWithReduxAndRouter(<FileSwitcherPivot />, { initialState });
+  return renderWithRedux(<FileSwitcherPivot />, { initialState });
 };
 
 test('it should be able to switch files', () => {

@@ -14,5 +14,5 @@ export * from 'react-testing-library';
 
 export const renderWithRedux = (ui, { initialState }) => {
   const store = configureStore({ initialState });
-  return { ...render(<Provider store={store}>{ui}</Provider>), store };
+  return { ...renderWithTheme(<Provider store={store}>{ui}</Provider>), store };
 };
