@@ -1,7 +1,7 @@
 import { put, takeEvery, select, call, all } from 'redux-saga/effects';
 import { getType, ActionType } from 'typesafe-actions';
 import selectors from '../selectors';
-import { editor, settings, screen, misc, solutions } from '../actions';
+import { editor, settings, screen, misc, solutions, messageBar } from '../actions';
 import { LIBRARIES_FILE_NAME, NULL_SOLUTION_ID } from '../../../../constants';
 import { hideSplashScreen } from 'common/lib/utilities/splash.screen';
 
@@ -35,6 +35,7 @@ export default function* editorWatcher() {
   );
   yield takeEvery(getType(editor.setIntellisenseFiles.request), setIntellisenseFilesSaga);
   yield takeEvery(getType(screen.updateSize), resizeEditorSaga);
+  yield takeEvery(getType(messageBar.dismiss), resizeEditorSaga);
   yield takeEvery(getType(editor.applyFormatting), applyFormattingSaga);
   yield takeEvery(getType(editor.navigateToRun), navigateToRunSaga);
 }
