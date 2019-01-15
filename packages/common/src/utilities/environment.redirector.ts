@@ -2,11 +2,12 @@ import { parse } from 'query-string';
 import { localStorageKeys } from '../constants';
 import { editorUrls } from '../environment';
 import ensureFreshLocalStorage from './ensure.fresh.local.storage';
+import { showSplashScreen, hideSplashScreen } from './splash.screen';
 
 /** Checks (and redirects) if needs to go to a different environment.
  * Returns `true` if will be redirecting away
  */
-function redirectIfNeeded(): boolean {
+async function redirectIfNeeded(): Promise<boolean> {
   try {
     const params = parse(window.location.search) as {
       originEnvironment?: string;
@@ -58,6 +59,50 @@ function redirectIfNeeded(): boolean {
         'originEnvironment=',
         encodeURIComponent(window.location.origin),
       ].join('');
+
+      // When redirecting to localhost (dev scenario), it's very common that localhost
+      // might not be running, and suddenly you're in a broken state and can't even
+      // load the production add-in/site.
+      // As such, if will be redirecting to localhost, first check that localhost is running
+      if (redirectUrl.startsWith(editorUrls.local)) {
+        const aliveChecker = document.createElement('iframe');
+        aliveChecker.style.display = 'none';
+        aliveChecker.src = `${editorUrls.local}/alive.html`;
+        showSplashScreen(`Attempting to redirect to ${editorUrls.local}...`);
+
+        const AMOUNT_OF_TIME_TO_WAIT_ON_LOCALHOST = 5000;
+        const resultOfWaiting = await new Promise<boolean>(resolve => {
+          const timeout = setTimeout(() => {
+            resolve(false);
+          }, AMOUNT_OF_TIME_TO_WAIT_ON_LOCALHOST);
+
+          const handler = (event: MessageEvent) => {
+            if (
+              isAllowedUrl(event.origin) &&
+              event.data === 'alive' /* the message sent in "alive.html" */
+            ) {
+              document.removeEventListener('message', handler);
+              clearTimeout(timeout);
+              showSplashScreen(`Success! "${editorUrls.local}" found`);
+              resolve(true);
+            }
+          };
+
+          window.addEventListener('message', handler, false);
+          document.body.appendChild(aliveChecker);
+        });
+
+        if (!resultOfWaiting) {
+          showSplashScreen(
+            `"${editorUrls.local}" NOT responding. Staying on ` + window.location.origin,
+          );
+          window.localStorage.removeItem(localStorageKeys.editor.redirectEnvironmentUrl);
+          // Give the developer two seconds to absorb this bit of info
+          await new Promise(resolve => setTimeout(resolve, 2000));
+          hideSplashScreen();
+          return false;
+        }
+      }
 
       window.location.replace(
         [
