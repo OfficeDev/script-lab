@@ -92,4 +92,9 @@ export function hideSplashScreen() {
 
   const loadingIndicator = document.getElementById('loading')!;
   loadingIndicator.style.visibility = 'hidden';
+
+  const rootElement = document.getElementById('root') as HTMLElement;
+  if (rootElement) {
+    rootElement.style.display = '';
+  }
 }
