@@ -127,7 +127,7 @@ export function* createSolutionSaga(solution: ISolution) {
 
 function* removeSolutionSaga(action: ActionType<typeof solutions.remove>) {
   yield call(deleteSolutionFromStorage, action.payload.id);
-  yield call(openLastModifiedOrBackstageSaga);
+  yield call(openLastOpenedOrBackstageSaga);
 }
 
 function* updateOptionsSaga(action: ActionType<typeof solutions.updateOptions>) {
@@ -145,8 +145,8 @@ function* updateOptionsSaga(action: ActionType<typeof solutions.updateOptions>) 
   );
 }
 
-export function* openLastModifiedOrBackstageSaga() {
-  const solutions = yield select(selectors.solutions.getInLastModifiedOrder);
+export function* openLastOpenedOrBackstageSaga() {
+  const solutions = yield select(selectors.solutions.getInLastOpenedOrder);
 
   if (solutions.length === 0) {
     yield put(editor.openFile({ solutionId: NULL_SOLUTION_ID, fileId: NULL_FILE_ID }));

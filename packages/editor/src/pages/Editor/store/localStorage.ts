@@ -258,8 +258,19 @@ function normalizeSolutions(solutions: {
 }
 
 function loadSolution(id: string): ISolution {
-  const solution = readItem(SOLUTION_ROOT, id);
+  const solution: ISolution = readItem(SOLUTION_ROOT, id);
   const defaults = getBoilerplate('');
+  if (!solution.dateLastOpened) {
+    solution.dateLastOpened = solution.dateLastModified;
+  }
+
+  solution.files = solution.files.map((file: IFile) => {
+    if (!file.dateLastOpened) {
+      file.dateLastOpened = file.dateLastModified;
+    }
+
+    return file;
+  });
 
   return { ...defaults, ...solution };
 }

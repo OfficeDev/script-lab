@@ -93,6 +93,13 @@ function* onFileOpenSaga(action: ActionType<typeof editor.newFileOpened>) {
   if (action.payload.file.language === 'typescript') {
     yield put(editor.shouldUpdateIntellisense());
   }
+
+  yield put(
+    solutions.updateLastOpened({
+      solutionId: action.payload.solution.id,
+      fileId: action.payload.file.id,
+    }),
+  );
 }
 
 export function* hideLoadingSplashScreenSaga() {

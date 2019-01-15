@@ -59,6 +59,9 @@ export const getAll = (state: IState): ISolution[] =>
 export const getInLastModifiedOrder = (state: IState): ISolution[] =>
   getAll(state).sort((a, b) => b.dateLastModified - a.dateLastModified);
 
+export const getInLastOpenedOrder = (state: IState): ISolution[] =>
+  getAll(state).sort((a, b) => b.dateLastOpened - a.dateLastOpened);
+
 // NOTE: might need to make a getLastModifiedCustomFunctionSolution or something of that nature
 //       that filters for only custom functions to prevent false positive refreshes
 export const getEditorLastModifiedDate = (state: IState): number => {
