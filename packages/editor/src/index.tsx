@@ -21,31 +21,31 @@ import Pages from './pages';
 (async () => {
   const isRedirectingAway = await isRedirectingAwayPromise;
   if (!isRedirectingAway) {
-    document.addEventListener(
-      'keydown',
-      e => {
-        if (
-          e.keyCode === 83 /*s key*/ &&
-          (navigator.platform.match('Mac') ? e.metaKey : e.ctrlKey)
-        ) {
-          e.preventDefault();
-        }
-      },
-      false,
-    );
-
-    (async () => {
-      try {
-        if (Authenticator.isAuthDialog()) {
-          return;
-        }
-
-        ReactDOM.render(<Pages />, document.getElementById('root') as HTMLElement);
-
-        unregister(); // need more testing to determine if this can be removed. seems to help with the caching of the html file issues
-      } catch (e) {
-        invokeGlobalErrorHandler(e);
+    try {
+      if (Authenticator.isAuthDialog()) {
+        return;
       }
-    })();
+
+      // Add a keyboard listener to [try to] intercept "ctrl+save", since we auto-save anyway
+      // and since the browser/host "save as" dialog would be unwanted here
+      document.addEventListener(
+        'keydown',
+        e => {
+          if (
+            e.keyCode === 83 /*s key*/ &&
+            (navigator.platform.match('Mac') ? e.metaKey : e.ctrlKey)
+          ) {
+            e.preventDefault();
+          }
+        },
+        false,
+      );
+
+      ReactDOM.render(<Pages />, document.getElementById('root') as HTMLElement);
+
+      unregister(); // need more testing to determine if this can be removed. seems to help with the caching of the html file issues
+    } catch (e) {
+      invokeGlobalErrorHandler(e);
+    }
   }
 })();
