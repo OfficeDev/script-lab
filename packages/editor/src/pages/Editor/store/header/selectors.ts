@@ -1,3 +1,4 @@
+import queryString from 'query-string';
 import { ICommandBarItemProps } from 'office-ui-fabric-react/lib/CommandBar';
 import { MessageBarType } from 'office-ui-fabric-react/lib/components/MessageBar';
 import { IState } from '../reducer';
@@ -62,6 +63,18 @@ const getRunButton = createSelector(
     isCustomFunctionsView: boolean,
     isTrusted: boolean,
   ) => {
+    const youMustTrustBeforeRunMessageBarAction = actions.messageBar.show({
+      style: MessageBarType.error,
+      text: 'You must trust the snippet before you can run it.',
+      button: {
+        text: 'Trust',
+        action: actions.solutions.updateOptions({
+          solution,
+          options: { isUntrusted: false },
+        }),
+      },
+    });
+
     // NOTE: wrapping each item inside of an array so that it can be ... by the consumer getItems
     if (!isRunnableOnThisHost) {
       return [];
@@ -80,20 +93,49 @@ const getRunButton = createSelector(
           key: 'run',
           text: 'Run',
           iconProps: { iconName: 'Play' },
-          actionCreator: isTrusted
-            ? actions.editor.navigateToRun
-            : () =>
-                actions.messageBar.show({
-                  style: MessageBarType.error,
-                  text: 'You must trust the snippet before you can run it.',
-                  button: {
-                    text: 'Trust',
-                    action: actions.solutions.updateOptions({
-                      solution,
-                      options: { isUntrusted: false },
-                    }),
-                  },
-                }),
+          ...(!!queryString.parse(window.location.search).commands
+            ? {
+                // is in add-in
+                subMenuProps: {
+                  items: [
+                    {
+                      key: 'run-in-this-pane',
+                      text: 'Run in this pane',
+                      iconProps: { iconName: 'Play' },
+                      actionCreator: isTrusted
+                        ? actions.editor.navigateToRun
+                        : () => youMustTrustBeforeRunMessageBarAction,
+                    },
+                    {
+                      key: 'run-side-by-side',
+                      text: 'Run side-by-side',
+                      iconProps: { iconName: 'OpenPaneMirrored' },
+                      actionCreator: isTrusted
+                        ? () =>
+                            actions.dialog.show({
+                              title: 'Run side-by-side with editor',
+                              subText: `To run the snippet side-by-side with the editor, choose "Run" in the Ribbon.
+  Running side-by-side offers both a quicker refresh, and the added advantage of keeping your position and undo-history in the editor.`,
+                              buttons: [
+                                {
+                                  key: 'got-it-button',
+                                  text: 'Got it',
+                                  isPrimary: true,
+                                  action: actions.dialog.dismiss(),
+                                },
+                              ],
+                            })
+                        : () => youMustTrustBeforeRunMessageBarAction,
+                    },
+                  ],
+                },
+              }
+            : {
+                // not in add-in
+                actionCreator: isTrusted
+                  ? actions.editor.navigateToRun
+                  : () => youMustTrustBeforeRunMessageBarAction,
+              }),
         },
       ];
     }
