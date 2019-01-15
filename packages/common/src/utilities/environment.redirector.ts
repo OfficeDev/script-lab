@@ -64,11 +64,11 @@ async function redirectIfNeeded(): Promise<boolean> {
       // might not be running, and suddenly you're in a broken state and can't even
       // load the production add-in/site.
       // As such, if will be redirecting to localhost, first check that localhost is running
-      if (redirectUrl.startsWith(editorUrls.local)) {
+      if (redirectUrl.startsWith('https://localhost')) {
         const aliveChecker = document.createElement('iframe');
         aliveChecker.style.display = 'none';
         aliveChecker.src = `${editorUrls.local}/alive.html`;
-        showSplashScreen(`Attempting to redirect to ${editorUrls.local}...`);
+        showSplashScreen(`Attempting to redirect to ${redirectUrl}...`);
 
         const AMOUNT_OF_TIME_TO_WAIT_ON_LOCALHOST = 5000;
         const resultOfWaiting = await new Promise<boolean>(resolve => {
@@ -83,7 +83,7 @@ async function redirectIfNeeded(): Promise<boolean> {
             ) {
               document.removeEventListener('message', handler);
               clearTimeout(timeout);
-              showSplashScreen(`Success! "${editorUrls.local}" found`);
+              showSplashScreen(`Success! Localhost is up and running!`);
               resolve(true);
             }
           };

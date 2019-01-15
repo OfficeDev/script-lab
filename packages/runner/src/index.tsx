@@ -19,12 +19,10 @@ import { invokeGlobalErrorHandler } from 'common/lib/utilities/splash.screen';
 (async () => {
   const isRedirectingAway = await isRedirectingAwayPromise;
   if (!isRedirectingAway) {
-    (async () => {
-      try {
-        ReactDOM.render(<Pages />, document.getElementById('root') as HTMLElement);
-      } catch (e) {
-        invokeGlobalErrorHandler(e);
-      }
-    })();
+    try {
+      ReactDOM.render(<Pages />, document.getElementById('root') as HTMLElement);
+    } catch (e) {
+      invokeGlobalErrorHandler(e);
+    }
   }
 })();
