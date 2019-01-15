@@ -83,12 +83,24 @@ class MySolutions extends React.Component<IProps> {
         {(!isSignedIn || gistMetadata.length > 0) && (
           <GalleryList
             title="My shared gists on GitHub"
-            items={gistMetadata.map(gist => ({
-              key: gist.id,
-              title: gist.title,
-              description: gist.description,
-              onClick: () => openGist(gist),
-            }))}
+            items={gistMetadata
+              .filter((meta: ISharedGistMetadata) => {
+                if (this.state.filterQuery === '') {
+                  return true;
+                }
+
+                const megastring = [meta.title, meta.description]
+                  .filter(Boolean)
+                  .join(' ');
+
+                return megastring.includes(this.state.filterQuery);
+              })
+              .map(gist => ({
+                key: gist.id,
+                title: gist.title,
+                description: gist.description,
+                onClick: () => openGist(gist),
+              }))}
           />
         )}
         {!isSignedIn && (
