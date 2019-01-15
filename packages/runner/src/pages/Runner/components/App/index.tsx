@@ -34,14 +34,6 @@ const AppWrapper = styled.div`
   flex-direction: column;
 `;
 
-const RefreshBar = props => (
-  <MessageBar
-    message="The snippet has changed, would you like to refresh?"
-    acceptMessage="Refresh"
-    {...props}
-  />
-);
-
 let logCount = 0;
 
 interface IState {
@@ -232,7 +224,6 @@ export class App extends React.Component<{}, IState> {
               />
             }
           >
-            <RefreshBar isVisible={false} />
             <SnippetContainer
               solution={this.state.solution}
               onRender={this.onSnippetRender}
