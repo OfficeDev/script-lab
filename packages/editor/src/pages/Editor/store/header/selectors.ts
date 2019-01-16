@@ -1,4 +1,3 @@
-import queryString from 'query-string';
 import { ICommandBarItemProps } from 'office-ui-fabric-react/lib/CommandBar';
 import { MessageBarType } from 'office-ui-fabric-react/lib/components/MessageBar';
 import { IState } from '../reducer';
@@ -27,6 +26,7 @@ import {
   solutions,
   settings,
 } from '../actions';
+import { getShouldSplitRunButton } from '../../../../utils/config';
 
 const actions = { dialog, editor, gists, github, messageBar, misc, solutions, settings };
 
@@ -88,18 +88,12 @@ const getRunButton = createSelector(
         },
       ];
     } else {
-      // If the URL has "commands=1" on it (from the URL specified in the manifest),
-      //     it means that it's run in an Office host that supports ribbon commands.
-      //     For such hosts, we want to split out the "run" button to alert them that
-      //     a better experience is to run in side-by-side mode.
-      const shouldSplitRun = !!queryString.parse(window.location.search).commands;
-
       return [
         {
           key: 'run',
           text: 'Run',
           iconProps: { iconName: 'Play' },
-          ...(shouldSplitRun
+          ...(getShouldSplitRunButton()
             ? {
                 // is in add-in
                 subMenuProps: {
