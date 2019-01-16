@@ -11,6 +11,7 @@ import {
 import ensureFreshLocalStorage from 'common/lib/utilities/ensure.fresh.local.storage';
 import { localStorageKeys } from 'common/lib/constants';
 import { showSplashScreen } from 'common/lib/utilities/splash.screen';
+import { MessageBarType } from 'office-ui-fabric-react/lib/MessageBar';
 
 export default function* miscWatcher() {
   yield takeEvery(getType(actions.misc.initialize), onInitializeSaga);
@@ -94,8 +95,28 @@ function* onConfirmSwitchEnvironmentSaga(
 }
 
 function* onPopOutEditorSaga() {
-  Office.context.ui.displayDialogAsync(window.location.href);
-  window.location.href = currentRunnerUrl;
+  Office.context.ui.displayDialogAsync(
+    window.location.href,
+    { height: 60, width: 60, promptBeforeOpen: false },
+    (result: Office.AsyncResult<any>) => {
+      if (result.status === Office.AsyncResultStatus.Succeeded) {
+        window.location.href = currentRunnerUrl;
+      } else {
+        console.error(result);
+        actions.messageBar.show({
+          text: 'Could not open a standalone code editor window.',
+          style: MessageBarType.error,
+          button: {
+            text: 'More info',
+            action: actions.messageBar.show({
+              text: result.error.message,
+              style: MessageBarType.error,
+            }),
+          },
+        });
+      }
+    },
+  );
 }
 
 function* onGoToCustomFunctionsSaga() {
