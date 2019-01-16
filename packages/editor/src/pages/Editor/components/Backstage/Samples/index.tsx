@@ -29,10 +29,11 @@ class Samples extends Component<IProps, IState> {
             (all, group) => ({
               ...all,
               [group]: samplesByGroup[group].filter((sample: ISampleMetadata) => {
-                const megastring = [sample.name, sample.description]
+                const megastring = [group, sample.name, sample.description]
                   .filter(Boolean)
-                  .join(' ');
-                return megastring.includes(this.state.filterQuery);
+                  .join(' ')
+                  .toLowerCase();
+                return megastring.includes(this.state.filterQuery.toLowerCase());
               }),
             }),
             {},

@@ -85,16 +85,12 @@ class MySolutions extends React.Component<IProps> {
                 return true;
               }
 
-              const megastring = [
-                solution.id,
-                solution.name,
-                solution.description,
-                ...solution.files.map(file => file.content),
-              ]
+              const megaString = [solution.name, solution.description]
                 .filter(Boolean)
-                .join(' ');
+                .join(' ')
+                .toLowerCase();
 
-              return megastring.includes(this.state.filterQuery);
+              return megaString.includes(this.state.filterQuery.toLowerCase());
             })
             .map(sol => ({
               key: sol.id,
@@ -119,11 +115,12 @@ class MySolutions extends React.Component<IProps> {
                   return true;
                 }
 
-                const megastring = [meta.title, meta.description]
+                const megaString = [meta.title, meta.description]
                   .filter(Boolean)
-                  .join(' ');
+                  .join(' ')
+                  .toLowerCase();
 
-                return megastring.includes(this.state.filterQuery);
+                return megaString.includes(this.state.filterQuery.toLowerCase());
               })
               .map(gist => ({
                 key: gist.id,
