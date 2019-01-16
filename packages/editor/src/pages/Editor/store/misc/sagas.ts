@@ -1,4 +1,4 @@
-import { takeEvery, put, call, select } from 'redux-saga/effects';
+import { takeEvery, put, select } from 'redux-saga/effects';
 import { getType, ActionType } from 'typesafe-actions';
 import { actions, selectors } from '../../store';
 import {
@@ -10,8 +10,11 @@ import {
 } from 'common/lib/environment';
 import ensureFreshLocalStorage from 'common/lib/utilities/ensure.fresh.local.storage';
 import { localStorageKeys } from 'common/lib/constants';
-import { showSplashScreen } from 'common/lib/utilities/splash.screen';
-import { MessageBarType } from 'office-ui-fabric-react/lib/MessageBar';
+import {
+  showSplashScreen,
+  invokeGlobalErrorHandler,
+} from 'common/lib/utilities/splash.screen';
+import { ScriptLabError } from 'common/lib/utilities/error';
 
 export default function* miscWatcher() {
   yield takeEvery(getType(actions.misc.initialize), onInitializeSaga);
@@ -103,17 +106,12 @@ function* onPopOutEditorSaga() {
         window.location.href = currentRunnerUrl;
       } else {
         console.error(result);
-        actions.messageBar.show({
-          text: 'Could not open a standalone code editor window.',
-          style: MessageBarType.error,
-          button: {
-            text: 'More info',
-            action: actions.messageBar.show({
-              text: result.error.message,
-              style: MessageBarType.error,
-            }),
-          },
-        });
+        invokeGlobalErrorHandler(
+          new ScriptLabError(
+            'Could not open a standalone code editor window.',
+            new Error(result.error.message),
+          ),
+        );
       }
     },
   );
