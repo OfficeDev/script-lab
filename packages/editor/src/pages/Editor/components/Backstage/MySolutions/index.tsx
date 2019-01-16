@@ -9,6 +9,8 @@ import Only from 'common/lib/components/Only';
 import Content from '../Content';
 import GalleryList from '../GalleryList';
 
+const localStorageKeyHasDismissedWarning = 'has_dismissed_local_storage_warning';
+
 interface IProps {
   solutions: ISolution[];
   openSolution: (solutionId: string) => void;
@@ -28,7 +30,7 @@ class MySolutions extends React.Component<IProps> {
   state: IState = {
     filterQuery: '',
     localStorageWarningIsVisible: !localStorage.getItem(
-      'has_dismissed_local_storage_warning',
+      localStorageKeyHasDismissedWarning,
     ),
   };
 
@@ -40,7 +42,7 @@ class MySolutions extends React.Component<IProps> {
 
   hideLocalStorageWarning = () => {
     this.setState({ localStorageWarningIsVisible: false }, () =>
-      localStorage.setItem('has_dismissed_local_storage_warning', 'true'),
+      localStorage.setItem(localStorageKeyHasDismissedWarning, 'true'),
     );
   };
 
