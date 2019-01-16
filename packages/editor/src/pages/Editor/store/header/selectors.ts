@@ -14,7 +14,7 @@ import {
 } from '../editor/selectors';
 import { getIsLoggingInOrOut, getIsLoggedIn } from '../github/selectors';
 import { getIsTaskPaneWidth } from '../screen/selectors';
-import { getIsRunnableOnThisHost, getIsInAddin } from '../host/selectors';
+import { getIsRunnableOnThisHost, getIsInAddin, getIsInDesktop } from '../host/selectors';
 
 // actions
 import {
@@ -27,6 +27,7 @@ import {
   solutions,
   settings,
 } from '../actions';
+import { Utilities, HostType } from '@microsoft/office-js-helpers';
 
 const actions = { dialog, editor, gists, github, messageBar, misc, solutions, settings };
 
@@ -168,15 +169,8 @@ const showLoginToGithubDialog = actions.dialog.show({
 });
 
 export const getItems = createSelector(
-  [
-    getMode,
-    getActiveSolution,
-    getIsTaskPaneWidth,
-    getIsLoggedIn,
-    getRunButton,
-    getIsInAddin,
-  ],
-  (mode, activeSolution, iconOnly, isLoggedIn, runButton, isInAddin) => {
+  [getMode, getActiveSolution, getIsTaskPaneWidth, getIsLoggedIn, getRunButton],
+  (mode, activeSolution, iconOnly, isLoggedIn, runButton) => {
     const titleStyles = {
       style: { paddingRight: iconOnly ? '0' : '3rem' },
       iconProps: iconOnly ? { iconName: 'OfficeAddinsLogo' } : {},
@@ -282,12 +276,6 @@ export const getItems = createSelector(
                   iconProps: { iconName: 'ClipboardSolid' },
                   className: 'export-to-clipboard',
                 },
-                {
-                  key: 'pop-out',
-                  iconOnly,
-                  iconProps: { iconName: 'OpenInNewWindow' },
-                  actionCreator: actions.misc.popOutEditor,
-                },
               ]
                 .filter(option => !option.hidden)
                 .map(option => {
@@ -329,9 +317,32 @@ export const getFarItems = createSelector(
             iconOnly: true,
             actionCreator: isLoggingInOrOut ? () => {} : actions.github.login.request,
           },
-        ];
+          shouldShowPopoutControls()
+            ? {
+                key: 'pop-out',
+                ariaLabel: 'Pop out editor',
+                iconOnly: true,
+                iconProps: { iconName: 'OpenInNewWindow' },
+                actionCreator: actions.misc.popOutEditor,
+              }
+            : null,
+        ].filter(item => item != null);
       default:
         throw new Error(`Unknown mode: ${mode}`);
     }
   },
 );
+
+function shouldShowPopoutControls() {
+  // On desktop, show the popout control in Outlook -- but DON'T for Word/Excel/PPT,
+  //    since on those hosts, you can just resize the taskpane (or even drag it out!).
+  //    And relative to a popped-out taskpane, this has a few advantages:
+  // 1. With a dialog, closing the underlying "run" pane (to which the taskpane redirects)
+  //       closes the editor, which is awkward.
+  // 2. With a dialog, re-clicking on "Code" in the ribbon (e.g. accidentally)
+  //       also closes the popped-out editor, which is unexpected
+  // 3. With a dialog, the "Run" actually happens inside a pane called "Code", which is awkward
+  // 4. Clicking on "Run" in the ribbon produces two runners, which is confusing.
+
+  return getIsInAddin() && (Utilities.host === HostType.OUTLOOK || !getIsInDesktop());
+}
