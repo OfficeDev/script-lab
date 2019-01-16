@@ -72,14 +72,7 @@ class Heartbeat extends Component<IProps, IState> {
 
   private checkIfSolutionChanged(solution: ISolution | null) {
     // If I didn't have a solution before, but do now, things changed
-    if (!this.state.activeSolution && solution) {
-      return true;
-    }
-
-    // if the solution was undefined initially, and got an explicit null,
-    // tell the parent that I got a null from the heartbeat and hence pass it on to show a message
-    // to the user that no solution was found:
-    if (this.state.activeSolution === undefined && solution === null) {
+    if ((!this.state.activeSolution && solution) || solution === null) {
       return true;
     }
 
