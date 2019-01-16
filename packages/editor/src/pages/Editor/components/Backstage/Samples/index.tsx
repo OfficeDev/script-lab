@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import Only from 'common/lib/components/Only';
+
 import Content from '../Content';
 import GalleryList from '../GalleryList';
 import { SearchBox } from 'office-ui-fabric-react/lib/components/SearchBox';
@@ -42,11 +44,14 @@ class Samples extends Component<IProps, IState> {
         title="Samples"
         description="Choose one of the samples below to get started."
       >
-        <SearchBox
-          data-testid="samples-search"
-          placeholder="Search our samples"
-          onChange={this.setFilterQuery}
-        />
+        <Only when={Object.keys(samplesByGroup).length > 0}>
+          <SearchBox
+            data-testid="samples-search"
+            placeholder="Search our samples"
+            onChange={this.setFilterQuery}
+          />
+        </Only>
+
         {Object.keys(filteredSamplesByGroup).length > 0 ? (
           Object.keys(filteredSamplesByGroup)
             .map(group =>
