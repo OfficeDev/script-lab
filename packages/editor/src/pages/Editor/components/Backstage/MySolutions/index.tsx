@@ -1,10 +1,15 @@
 import React from 'react';
 import { SearchBox } from 'office-ui-fabric-react/lib/SearchBox';
+import { DefaultButton, MessageBarButton } from 'office-ui-fabric-react/lib/Button';
+import { Label } from 'office-ui-fabric-react/lib/Label';
+import { MessageBar, MessageBarType } from 'office-ui-fabric-react/lib/MessageBar';
+
+import Only from 'common/lib/components/Only';
 
 import Content from '../Content';
 import GalleryList from '../GalleryList';
-import { DefaultButton } from 'office-ui-fabric-react/lib/Button';
-import { Label } from 'office-ui-fabric-react/lib/Label';
+
+const localStorageKeyHasDismissedWarning = 'has_dismissed_local_storage_warning';
 
 interface IProps {
   solutions: ISolution[];
@@ -18,16 +23,28 @@ interface IProps {
 
 interface IState {
   filterQuery: string;
+  localStorageWarningIsVisible: boolean;
 }
 
 class MySolutions extends React.Component<IProps> {
-  state: IState = { filterQuery: '' };
+  state: IState = {
+    filterQuery: '',
+    localStorageWarningIsVisible: !localStorage.getItem(
+      localStorageKeyHasDismissedWarning,
+    ),
+  };
 
   componentWillMount() {
     this.setFilterQuery('');
   }
 
   setFilterQuery = (filterQuery: string) => this.setState({ filterQuery });
+
+  hideLocalStorageWarning = () => {
+    this.setState({ localStorageWarningIsVisible: false }, () =>
+      localStorage.setItem(localStorageKeyHasDismissedWarning, 'true'),
+    );
+  };
 
   render() {
     const {
@@ -49,6 +66,19 @@ class MySolutions extends React.Component<IProps> {
         <GalleryList
           testId="my-solution-list"
           title="My snippets on this computer"
+          messageBar={
+            <Only when={this.state.localStorageWarningIsVisible}>
+              <MessageBar
+                messageBarType={MessageBarType.severeWarning}
+                isMultiline={true}
+                dismissButtonAriaLabel="Close"
+                onDismiss={this.hideLocalStorageWarning}
+              >
+                Snippets you create get erased if you clear your browser cache. To save
+                snippets permanently, export them as gists from the Share menu.
+              </MessageBar>
+            </Only>
+          }
           items={solutions
             .filter(solution => {
               if (this.state.filterQuery === '') {
@@ -83,12 +113,24 @@ class MySolutions extends React.Component<IProps> {
         {(!isSignedIn || gistMetadata.length > 0) && (
           <GalleryList
             title="My shared gists on GitHub"
-            items={gistMetadata.map(gist => ({
-              key: gist.id,
-              title: gist.title,
-              description: gist.description,
-              onClick: () => openGist(gist),
-            }))}
+            items={gistMetadata
+              .filter((meta: ISharedGistMetadata) => {
+                if (this.state.filterQuery === '') {
+                  return true;
+                }
+
+                const megastring = [meta.title, meta.description]
+                  .filter(Boolean)
+                  .join(' ');
+
+                return megastring.includes(this.state.filterQuery);
+              })
+              .map(gist => ({
+                key: gist.id,
+                title: gist.title,
+                description: gist.description,
+                onClick: () => openGist(gist),
+              }))}
           />
         )}
         {!isSignedIn && (

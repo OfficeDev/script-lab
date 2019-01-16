@@ -9,6 +9,7 @@ import Only from 'common/lib/components/Only';
 
 export interface IProps {
   title: string;
+  messageBar?: React.ReactElement<any>;
   items: IGalleryListItem[];
   testId?: string;
 }
@@ -23,7 +24,7 @@ class GalleryList extends Component<IProps, IState> {
   toggleExpansion = () => this.setState({ isExpanded: !this.state.isExpanded });
 
   render() {
-    const { title, items, testId } = this.props;
+    const { title, messageBar, items, testId } = this.props;
     const { isExpanded } = this.state;
     return (
       <GalleryListWrapper>
@@ -34,6 +35,7 @@ class GalleryList extends Component<IProps, IState> {
               <Icon iconName={isExpanded ? 'ChevronUp' : 'ChevronDown'} />
             </ArrowWrapper>
           </TitleBar>
+          <Only when={messageBar !== undefined}>{messageBar}</Only>
           <Only when={isExpanded}>
             <div data-testid={testId}>
               {items.map(item => (

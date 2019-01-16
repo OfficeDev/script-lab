@@ -1,32 +1,77 @@
-import React from 'react';
+import React, { Component } from 'react';
 
 import Content from '../Content';
 import GalleryList from '../GalleryList';
+import { SearchBox } from 'office-ui-fabric-react/lib/components/SearchBox';
 
 interface IProps {
   samplesByGroup: ISampleMetadataByGroup;
   openSample: (rawUrl: string) => void;
 }
 
-const Samples = ({ samplesByGroup, openSample }: IProps) => (
-  <Content title="Samples" description="Choose one of the samples below to get started.">
-    {Object.keys(samplesByGroup).length > 0 ? (
-      Object.keys(samplesByGroup).map(group => (
-        <GalleryList
-          key={group}
-          title={group}
-          items={samplesByGroup[group].map(({ id, name, description, rawUrl }) => ({
-            key: id,
-            title: name,
-            description,
-            onClick: () => openSample(rawUrl),
-          }))}
+interface IState {
+  filterQuery: string;
+}
+
+class Samples extends Component<IProps, IState> {
+  state: IState = { filterQuery: '' };
+
+  setFilterQuery = (filterQuery: string) => this.setState({ filterQuery });
+
+  render() {
+    const { samplesByGroup, openSample } = this.props;
+
+    const filteredSamplesByGroup =
+      this.state.filterQuery !== ''
+        ? Object.keys(samplesByGroup).reduce(
+            (all, group) => ({
+              ...all,
+              [group]: samplesByGroup[group].filter((sample: ISampleMetadata) => {
+                const megastring = [sample.name, sample.description]
+                  .filter(Boolean)
+                  .join(' ');
+                return megastring.includes(this.state.filterQuery);
+              }),
+            }),
+            {},
+          )
+        : samplesByGroup;
+
+    return (
+      <Content
+        title="Samples"
+        description="Choose one of the samples below to get started."
+      >
+        <SearchBox
+          data-testid="samples-search"
+          placeholder="Search our samples"
+          onChange={this.setFilterQuery}
         />
-      ))
-    ) : (
-      <span className="ms-font-m">There aren't any samples for this host yet.</span>
-    )}
-  </Content>
-);
+        {Object.keys(filteredSamplesByGroup).length > 0 ? (
+          Object.keys(filteredSamplesByGroup)
+            .map(group =>
+              filteredSamplesByGroup[group].length > 0 ? (
+                <GalleryList
+                  key={group}
+                  title={group}
+                  items={filteredSamplesByGroup[group].map(
+                    ({ id, name, description, rawUrl }) => ({
+                      key: id,
+                      title: name,
+                      description,
+                      onClick: () => openSample(rawUrl),
+                    }),
+                  )}
+                />
+              ) : null,
+            )
+            .filter(Boolean)
+        ) : (
+          <span className="ms-font-m">There aren't any samples for this host yet.</span>
+        )}
+      </Content>
+    );
+  }
+}
 
 export default Samples;
