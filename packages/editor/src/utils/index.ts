@@ -44,6 +44,7 @@ const createFile = (name, { content, language }): IFile => ({
   language,
   dateCreated: Date.now(),
   dateLastModified: Date.now(),
+  dateLastOpened: Date.now(),
 });
 
 export const convertSnippetToSolution = (snippet: ISnippet): ISolution => {
@@ -71,6 +72,7 @@ export const convertSnippetToSolution = (snippet: ISnippet): ISolution => {
     files,
     dateCreated: Date.now(),
     dateLastModified: Date.now(),
+    dateLastOpened: Date.now(),
   };
 
   return solution;

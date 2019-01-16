@@ -12,6 +12,7 @@ export const NULL_FILE: IFile = {
   language: '',
   dateCreated: 0,
   dateLastModified: 0,
+  dateLastOpened: 0,
 };
 
 export const NULL_SOLUTION_ID = 'null-solution';
@@ -21,6 +22,7 @@ export const NULL_SOLUTION: ISolution = {
   host: 'ALL',
   dateCreated: 0,
   dateLastModified: 0,
+  dateLastOpened: 0,
   options: {},
   files: [],
 };

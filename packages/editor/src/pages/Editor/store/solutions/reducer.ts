@@ -63,6 +63,15 @@ const metadata = (
         },
       };
 
+    case getType(solutionActions.updateLastOpened):
+      return {
+        ...state,
+        [action.payload.solutionId]: {
+          ...state[action.payload.solutionId],
+          dateLastOpened: action.payload.timestamp,
+        },
+      };
+
     case getType(solutionActions.remove):
       const { [action.payload.id]: omit, ...rest } = state;
       return rest;
@@ -101,6 +110,15 @@ const files = (state: IFilesState = {}, action: ISolutionsAction): IFilesState =
           ...state[fileId],
           ...file,
           dateLastModified: action.payload.timestamp,
+        },
+      };
+
+    case getType(solutionActions.updateLastOpened):
+      return {
+        ...state,
+        [action.payload.fileId]: {
+          ...state[action.payload.fileId],
+          dateLastOpened: action.payload.timestamp,
         },
       };
 

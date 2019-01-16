@@ -18,6 +18,11 @@ export const edit = createAction('SOLUTIONS_EDIT', resolve => {
     resolve({ id, solution, fileId, file, timestamp: Date.now() });
 });
 
+export const updateLastOpened = createAction('SOLUTIONS_UPDATE_LAST_OPENED', resolve => {
+  return ({ solutionId, fileId }) =>
+    resolve({ solutionId, fileId, timestamp: Date.now() });
+});
+
 export const remove = createAction('SOLUTIONS_REMOVE', resolve => {
   return (solution: ISolution) => resolve(solution);
 });
