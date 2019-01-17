@@ -1,4 +1,3 @@
-import queryString from 'query-string';
 import { ICommandBarItemProps } from 'office-ui-fabric-react/lib/CommandBar';
 import { MessageBarType } from 'office-ui-fabric-react/lib/components/MessageBar';
 import { IState } from '../reducer';
@@ -27,6 +26,7 @@ import {
   solutions,
   settings,
 } from '../actions';
+import { getShouldSplitRunButton } from '../../../../utils/config';
 
 const actions = { dialog, editor, gists, github, messageBar, misc, solutions, settings };
 
