@@ -5,6 +5,7 @@ import Only from 'common/lib/components/Only';
 import Content from '../Content';
 import GalleryList from '../GalleryList';
 import { SearchBox } from 'office-ui-fabric-react/lib/components/SearchBox';
+import { matchesSearch } from 'common/lib/utilities/string';
 
 interface IProps {
   samplesByGroup: ISampleMetadataByGroup;

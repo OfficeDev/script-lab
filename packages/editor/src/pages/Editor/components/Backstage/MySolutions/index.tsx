@@ -5,6 +5,7 @@ import { Label } from 'office-ui-fabric-react/lib/Label';
 import { MessageBar, MessageBarType } from 'office-ui-fabric-react/lib/MessageBar';
 
 import Only from 'common/lib/components/Only';
+import { matchesSearch } from 'common/lib/utilities/string';
 
 import Content from '../Content';
 import GalleryList from '../GalleryList';
@@ -22,23 +23,20 @@ interface IProps {
 }
 
 interface IState {
-  filterQuery: string;
+  filterQueryLowercase: string;
   localStorageWarningIsVisible: boolean;
 }
 
 class MySolutions extends React.Component<IProps> {
   state: IState = {
-    filterQuery: '',
+    filterQueryLowercase: '',
     localStorageWarningIsVisible: !localStorage.getItem(
       localStorageKeyHasDismissedWarning,
     ),
   };
 
-  componentWillMount() {
-    this.setFilterQuery('');
-  }
-
-  setFilterQuery = (filterQuery: string) => this.setState({ filterQuery });
+  setFilterQuery = (filterQuery: string) =>
+    this.setState({ filterQueryLowercase: filterQuery.toLowerCase() });
 
   hideLocalStorageWarning = () => {
     this.setState({ localStorageWarningIsVisible: false }, () =>
@@ -80,24 +78,15 @@ class MySolutions extends React.Component<IProps> {
             </Only>
           }
           items={solutions
-            .filter(solution => {
-              if (this.state.filterQuery === '') {
-                return true;
-              }
-
-              const megaString = [
+            .filter(solution =>
+              matchesSearch(this.state.filterQueryLowercase, [
                 process.env.NODE_ENV === 'production'
                   ? null
                   : solution.id /* For Cypress test framework, need to include the solution ID so can search based on it */,
                 solution.name,
                 solution.description,
-              ]
-                .filter(Boolean)
-                .join(' ')
-                .toLowerCase();
-
-              return megaString.includes(this.state.filterQuery.toLowerCase());
-            })
+              ]),
+            )
             .map(sol => ({
               key: sol.id,
               title: sol.name,
@@ -116,18 +105,12 @@ class MySolutions extends React.Component<IProps> {
           <GalleryList
             title="My shared gists on GitHub"
             items={gistMetadata
-              .filter((meta: ISharedGistMetadata) => {
-                if (this.state.filterQuery === '') {
-                  return true;
-                }
-
-                const megaString = [meta.title, meta.description]
-                  .filter(Boolean)
-                  .join(' ')
-                  .toLowerCase();
-
-                return megaString.includes(this.state.filterQuery.toLowerCase());
-              })
+              .filter((meta: ISharedGistMetadata) =>
+                matchesSearch(this.state.filterQueryLowercase, [
+                  meta.title,
+                  meta.description,
+                ]),
+              )
               .map(gist => ({
                 key: gist.id,
                 title: gist.title,
