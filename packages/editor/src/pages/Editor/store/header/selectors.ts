@@ -26,7 +26,6 @@ import {
   solutions,
   settings,
 } from '../actions';
-import { getShouldSplitRunButton } from '../../../../utils/config';
 
 const actions = { dialog, editor, gists, github, messageBar, misc, solutions, settings };
 

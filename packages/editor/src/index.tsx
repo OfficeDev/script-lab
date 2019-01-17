@@ -17,7 +17,6 @@ import './index.css';
 import { invokeGlobalErrorHandler } from 'common/lib/utilities/splash.screen';
 
 import Pages from './pages';
-import { init as initConfig } from './utils/config';
 
 (async () => {
   const isRedirectingAway = await isRedirectingAwayPromise;
@@ -41,8 +40,6 @@ import { init as initConfig } from './utils/config';
         },
         false,
       );
-
-      initConfig();
 
       ReactDOM.render(<Pages />, document.getElementById('root') as HTMLElement);
 
