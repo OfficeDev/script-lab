@@ -85,7 +85,13 @@ class MySolutions extends React.Component<IProps> {
                 return true;
               }
 
-              const megaString = [solution.name, solution.description]
+              const megaString = [
+                process.env.NODE_ENV === 'production'
+                  ? null
+                  : solution.id /* For Cypress test framework, need to include the solution ID so can search based on it */,
+                solution.name,
+                solution.description,
+              ]
                 .filter(Boolean)
                 .join(' ')
                 .toLowerCase();
