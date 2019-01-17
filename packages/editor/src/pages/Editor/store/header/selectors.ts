@@ -1,3 +1,4 @@
+import queryString from 'query-string';
 import { ICommandBarItemProps } from 'office-ui-fabric-react/lib/CommandBar';
 import { MessageBarType } from 'office-ui-fabric-react/lib/components/MessageBar';
 import { IState } from '../reducer';
