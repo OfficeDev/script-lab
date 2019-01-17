@@ -7,6 +7,7 @@ export const getExampleFile = (i: number) => ({
   language: 'TypeScript',
   dateCreated: i,
   dateLastModified: 2 * i,
+  dateLastOpened: 3 * i,
   content: `// hello world ${i}`,
 });
 
@@ -16,6 +17,7 @@ export const getExampleSolution = (i: number): ISolution => ({
   host: 'WEB',
   dateCreated: i,
   dateLastModified: 2 * i,
+  dateLastOpened: 3 * i,
   options: {},
   files: [getExampleFile(i + 1)],
 });

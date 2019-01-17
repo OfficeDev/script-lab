@@ -41,7 +41,7 @@ interface IPropsFromRedux {
 }
 
 const mapStateToProps = (state: IReduxState): IPropsFromRedux => ({
-  solutions: selectors.solutions.getInLastModifiedOrder(state),
+  solutions: selectors.solutions.getInLastOpenedOrder(state),
   activeSolution: selectors.editor.getActiveSolution(state),
   sharedGistMetadata: selectors.gists.getGistMetadata(state),
   samplesByGroup: selectors.samples.getMetadataByGroup(state),
