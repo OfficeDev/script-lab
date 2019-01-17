@@ -23,7 +23,13 @@ export const updateLastOpened = createAction('SOLUTIONS_UPDATE_LAST_OPENED', res
     resolve({ solutionId, fileId, timestamp: Date.now() });
 });
 
+// NOTE: remove is called from UI, it handles multiple things inside sagas
+// delete is what remove will call which will ultimately delete the solution from redux's state
 export const remove = createAction('SOLUTIONS_REMOVE', resolve => {
+  return (solution: ISolution) => resolve(solution);
+});
+
+export const deleteFromState = createAction('SOLUTIONS_DELETE', resolve => {
   return (solution: ISolution) => resolve(solution);
 });
 

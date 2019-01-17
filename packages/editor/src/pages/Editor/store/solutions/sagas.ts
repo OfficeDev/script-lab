@@ -1,6 +1,5 @@
 import { put, takeEvery, call, select } from 'redux-saga/effects';
 import { getType, ActionType } from 'typesafe-actions';
-import { push } from 'connected-react-router';
 
 import { messageBar, solutions, editor } from '../actions';
 import { fetchYaml } from '../../services/general';
@@ -126,8 +125,9 @@ export function* createSolutionSaga(solution: ISolution) {
 }
 
 function* removeSolutionSaga(action: ActionType<typeof solutions.remove>) {
+  yield call(open2ndToLastOpenedOrBackstageSaga);
+  yield put(solutions.deleteFromState(action.payload));
   yield call(deleteSolutionFromStorage, action.payload.id);
-  yield call(openLastOpenedOrBackstageSaga);
 }
 
 function* updateOptionsSaga(action: ActionType<typeof solutions.updateOptions>) {
@@ -154,6 +154,19 @@ export function* openLastOpenedOrBackstageSaga() {
   } else {
     yield put(
       editor.openFile({ solutionId: solutions[0].id, fileId: solutions[0].files[0].id }),
+    );
+  }
+}
+
+export function* open2ndToLastOpenedOrBackstageSaga() {
+  const solutions = yield select(selectors.solutions.getInLastOpenedOrder);
+
+  if (solutions.length <= 1) {
+    yield put(editor.openFile({ solutionId: NULL_SOLUTION_ID, fileId: NULL_FILE_ID }));
+    yield put(editor.openBackstage());
+  } else {
+    yield put(
+      editor.openFile({ solutionId: solutions[1].id, fileId: solutions[1].files[0].id }),
     );
   }
 }
