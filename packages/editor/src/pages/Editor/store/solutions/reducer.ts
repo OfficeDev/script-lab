@@ -72,7 +72,7 @@ const metadata = (
         },
       };
 
-    case getType(solutionActions.remove):
+    case getType(solutionActions.deleteFromState):
       const { [action.payload.id]: omit, ...rest } = state;
       return rest;
 
@@ -122,7 +122,7 @@ const files = (state: IFilesState = {}, action: ISolutionsAction): IFilesState =
         },
       };
 
-    case getType(solutionActions.remove):
+    case getType(solutionActions.deleteFromState):
       const fileIdsToRemove = action.payload.files.map(file => file.id);
       return Object.keys(state)
         .map(k => state[k])
