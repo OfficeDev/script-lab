@@ -60,7 +60,10 @@ describe('solutions reducer', () => {
 
   test('remove solution', () => {
     expect(
-      reducer(getStateWith([1, 2]), solutionsActions.remove(getExampleSolution(2))),
+      reducer(
+        getStateWith([1, 2]),
+        solutionsActions.deleteFromState(getExampleSolution(2)),
+      ),
     ).toEqual(getStateWith([1]));
   });
 
