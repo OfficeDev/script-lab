@@ -5,7 +5,7 @@ export interface IState {
   [id: string]: ISampleMetadata;
 }
 
-const initialState = {};
+const initialState = null;
 const samples = (state: IState = initialState, action: ISamplesAction): IState => {
   switch (action.type) {
     case getType(sampleActions.fetchMetadata.success):
@@ -13,6 +13,8 @@ const samples = (state: IState = initialState, action: ISamplesAction): IState =
         (allSamples, sample) => ({ ...allSamples, [sample.id]: sample }),
         { ...state },
       );
+    case getType(sampleActions.fetchMetadata.failure):
+      return {};
 
     default:
       return state;
