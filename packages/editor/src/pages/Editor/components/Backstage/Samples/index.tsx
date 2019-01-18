@@ -13,29 +13,30 @@ interface IProps {
 }
 
 interface IState {
-  filterQuery: string;
+  filterQueryLowercase: string;
 }
 
 class Samples extends Component<IProps, IState> {
-  state: IState = { filterQuery: '' };
+  state: IState = { filterQueryLowercase: '' };
 
-  setFilterQuery = (filterQuery: string) => this.setState({ filterQuery });
+  setFilterQuery = (filterQuery: string) =>
+    this.setState({ filterQueryLowercase: filterQuery.toLowerCase() });
 
   render() {
     const { samplesByGroup, openSample } = this.props;
 
     const filteredSamplesByGroup =
-      this.state.filterQuery !== ''
+      this.state.filterQueryLowercase !== ''
         ? Object.keys(samplesByGroup).reduce(
             (all, group) => ({
               ...all,
-              [group]: samplesByGroup[group].filter((sample: ISampleMetadata) => {
-                const megastring = [group, sample.name, sample.description]
-                  .filter(Boolean)
-                  .join(' ')
-                  .toLowerCase();
-                return megastring.includes(this.state.filterQuery.toLowerCase());
-              }),
+              [group]: samplesByGroup[group].filter((sample: ISampleMetadata) =>
+                matchesSearch(this.state.filterQueryLowercase, [
+                  group,
+                  sample.name,
+                  sample.description,
+                ]),
+              ),
             }),
             {},
           )
