@@ -2,7 +2,7 @@
   "name": "server",
   "version": "1.0.0",
   "scripts": {
-    "start": "node src/index.ts",
+    "start": "nodemon --inspect src/index.ts",
     "build": "webpack-cli",
     "lint": "tslint \"src/**/*.ts?(x)\"",
     "test": "echo 'no tests'"

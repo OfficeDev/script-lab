@@ -42,8 +42,9 @@ export function* fetchAllGistMetadataSaga() {
 
   const { response, error } = yield call(github.request, {
     method: 'GET',
-    path: 'gists',
+    path: 'gists?per_page=100',
     token,
+    isArrayResponse: true,
   });
 
   if (response) {
@@ -166,6 +167,7 @@ function* createGistSaga(action: ActionType<typeof gists.create.request>) {
   const { response, error } = yield call(github.request, {
     method: 'POST',
     path: 'gists',
+    isArrayResponse: false,
     token,
     jsonPayload: JSON.stringify({
       public: action.payload.isPublic,
@@ -212,6 +214,7 @@ function* updateGistSaga(action: ActionType<typeof gists.update.request>) {
     const { response, error } = yield call(github.request, {
       method: 'PATCH',
       path: `gists/${gistId}`,
+      isArrayResponse: false,
       token,
       jsonPayload: JSON.stringify({
         description: `${solution.description}`,

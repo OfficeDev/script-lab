@@ -11,7 +11,6 @@ export interface IRequest {
   token?: string;
   jsonPayload?: string;
 }
-const addIf = (condition, payload) => (condition ? payload : {});
 
 export const fetchYaml = (url: string): Promise<{ content?: object; error?: Error }> =>
   fetch(url)
@@ -24,27 +23,35 @@ export const fetchYaml = (url: string): Promise<{ content?: object; error?: Erro
     .then(value => ({ content: YAML.safeLoad(value) }))
     .catch(error => ({ error }));
 
-export const request = ({
+export const request = async ({
   method,
   url,
   token,
   jsonPayload,
-}: IRequest): Promise<IResponseOrError> => {
+}: IRequest): Promise<IResponseOrError & { headers?: Headers }> => {
   const headers = {
-    ...addIf(token, { Authorization: `Bearer ${token}` }),
-    ...addIf(method !== 'GET', {
+    ...getPayloadOrEmpty(token, { Authorization: `Bearer ${token}` }),
+    ...getPayloadOrEmpty(method !== 'GET', {
       'Content-Type': 'application/json; charset=utf-8',
     }),
   };
 
-  return fetch(url, {
-    method,
-    headers,
-    body: jsonPayload,
-  })
-    .then(response =>
-      response.ok ? response.json() : Promise.reject(response.statusText),
-    )
-    .then(response => ({ response }))
-    .catch(error => ({ error }));
+  try {
+    const response = await fetch(url, {
+      method,
+      headers,
+      body: jsonPayload,
+    });
+    if (response.ok) {
+      return { response: await response.json(), headers: response.headers };
+    } else {
+      return Promise.reject(response.statusText);
+    }
+  } catch (error) {
+    return { error };
+  }
 };
+
+function getPayloadOrEmpty(condition: any, payload: { [key: string]: string }) {
+  return condition ? payload : {};
+}
