@@ -1,5 +1,24 @@
 import { ScriptLabError } from './error';
 
+export function matchesSearch(
+  queryLowercase: string,
+  texts: Array<string | null>,
+): boolean {
+  if (queryLowercase.length === 0) {
+    return true;
+  }
+
+  for (const item of texts) {
+    if (item) {
+      if (item.toLowerCase().includes(queryLowercase)) {
+        return true;
+      }
+    }
+  }
+
+  return false;
+}
+
 // tslint:disable
 export function stripSpaces(text: string) {
   let lines: string[] = text.split('\n');
