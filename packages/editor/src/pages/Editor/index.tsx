@@ -18,6 +18,8 @@ import {
 } from './store/sessionStorage';
 
 import throttle from 'lodash/throttle';
+import { ScriptLabError } from 'common/lib/utilities/error';
+import { invokeGlobalErrorHandler } from 'common/lib/utilities/splash.screen';
 
 interface IState {
   hasLoadedScripts: boolean;
@@ -31,6 +33,7 @@ class Editor extends Component<{}, IState> {
     super(props);
     addScriptTags([SCRIPT_URLS.OFFICE_JS_FOR_EDITOR, SCRIPT_URLS.MONACO_LOADER])
       .then(() => Office.onReady())
+      .then(() => ensureProperOfficeBuildIfRelevant())
       .then(() => loadStateFromLocalStorage())
       .then(localStorageState => {
         const store = configureStore({
@@ -63,3 +66,50 @@ class Editor extends Component<{}, IState> {
 }
 
 export default Editor;
+
+///////////////////////////////////////
+
+async function ensureProperOfficeBuildIfRelevant() {
+  const hostInfo = await Office.onReady();
+  if (hostInfo.host && hostInfo.platform === Office.PlatformType.PC) {
+    if (isO16orHigher()) {
+      // For Office 2016 MSI, need to have a build that supports the "GetHostInfo" API.
+      // Otherwise, the code will never run, because switching to the runner domain will lose the host info.
+      try {
+        (window.external as any).GetHostInfoFIXME();
+      } catch (e) {
+        invokeGlobalErrorHandler(
+          new ScriptLabError(
+            'Office Update Required',
+            `Your Office version is missing important updates, that Script Lab can't run without. ` +
+              `Please install the latest Office updates from ` +
+              `https://docs.microsoft.com/en-us/officeupdates/office-updates-msi`,
+          ),
+        );
+      }
+    }
+  }
+
+  /////////////////////////////////////
+
+  function isO16orHigher(): boolean {
+    const hasVersion =
+      Office &&
+      Office.context &&
+      Office.context.diagnostics &&
+      Office.context.diagnostics.version;
+    if (hasVersion) {
+      const versionString = Office.context.diagnostics.version;
+      const num = Number.parseInt(
+        versionString.substr(0, versionString.indexOf('.')),
+        10,
+      );
+      return num >= 16;
+    }
+
+    // The only hosts that don't support Office.context.diagnostics.version are the 2016 hosts that
+    //     still use the non-updated "16.00" files (by contrast, 15.XX files do support it)
+    // So it's actually a giveaway that they *are* O16.
+    return true;
+  }
+}
