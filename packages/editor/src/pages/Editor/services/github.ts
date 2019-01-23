@@ -29,30 +29,34 @@ export const request = async ({
   jsonPayload,
   isArrayResponse,
 }: IRequest & { isArrayResponse: boolean }): Promise<IResponseOrError> => {
-  let nextUrl = `${baseApiUrl}/${path}`;
-  let aggregate = [];
+  try {
+    let nextUrl = `${baseApiUrl}/${path}`;
+    let aggregate = [];
 
-  while (nextUrl) {
-    const { response, headers, error } = await generalRequest({
-      url: nextUrl,
-      method,
-      token,
-      jsonPayload,
-    });
+    while (nextUrl) {
+      const { response, headers, error } = await generalRequest({
+        url: nextUrl,
+        method,
+        token,
+        jsonPayload,
+      });
 
-    if (error) {
-      return { error };
+      if (error) {
+        return { error };
+      }
+
+      if (!isArrayResponse) {
+        return { response };
+      }
+
+      aggregate = [...aggregate, ...response];
+      nextUrl = getNextLinkIfAny(headers.get('Link'));
     }
 
-    if (!isArrayResponse) {
-      return { response };
-    }
-
-    aggregate = [...aggregate, ...response];
-    nextUrl = getNextLinkIfAny(headers.get('Link'));
+    return { response: aggregate };
+  } catch (error) {
+    return { error };
   }
-
-  return { response: aggregate };
 };
 
 export const login = async (): Promise<{

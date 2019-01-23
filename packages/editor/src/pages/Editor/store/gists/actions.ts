@@ -28,7 +28,7 @@ export const fetchMetadata = createAsyncAction(
   'FETCH_GIST_METADATA_REQUEST',
   'FETCH_GIST_METADATA_SUCCESS',
   'FETCH_GIST_METADATA_FAILURE',
-)<void, ISharedGistMetadata[], Error>();
+)<void, ISharedGistMetadata[], { shouldLogUserOut: boolean }>();
 
 export const get = createAsyncAction(
   'GET_GIST_REQUEST',

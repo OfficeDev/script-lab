@@ -45,7 +45,7 @@ export const request = async ({
     if (response.ok) {
       return { response: await response.json(), headers: response.headers };
     } else {
-      return Promise.reject(response.statusText);
+      return Promise.reject(new Error(response.statusText));
     }
   } catch (error) {
     return { error };
