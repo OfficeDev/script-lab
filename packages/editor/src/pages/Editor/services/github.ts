@@ -52,7 +52,6 @@ export const request = async ({
     nextUrl = getNextLinkIfAny(headers.get('Link'));
   }
 
-  debugger;
   return { response: aggregate };
 };
 
