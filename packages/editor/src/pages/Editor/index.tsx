@@ -76,13 +76,18 @@ async function ensureProperOfficeBuildIfRelevant() {
       // For Office 2016 MSI, need to have a build that supports the "GetHostInfo" API.
       // Otherwise, the code will never run, because switching to the runner domain will lose the host info.
       try {
-        (window.external as any).GetHostInfoFIXME();
+        (window.external as any).GetHostInfo();
       } catch (e) {
         invokeGlobalErrorHandler(
+          // Note: we're still allowing the user to close out of the error and see the editor,
+          //   hence the text talks specifically about Script Lab needing the Office update
+          //   for *running* the snippets.  However, still showing it in the editor,
+          //   since want the developer to get onto the path of success (go update) as soon as possible.
           new ScriptLabError(
             'Office Update Required',
-            `Your Office version is missing important updates, that Script Lab can't run without. ` +
-              `Please install the latest Office updates from ` +
+            `Your Office version is missing important updates, and Script Lab snippets ` +
+              `won't be able to run until you install those updates. ` +
+              `To install, please follow the instructions at ` +
               `https://docs.microsoft.com/en-us/officeupdates/office-updates-msi`,
           ),
         );
