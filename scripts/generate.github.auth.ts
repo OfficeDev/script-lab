@@ -35,7 +35,7 @@ import * as SimplePrompt from './helpers/simple.prompt';
   );
 
   fs.writeFileSync(
-    path.resolve(root, 'packages/server/.env.development.local'),
+    path.resolve(root, 'packages/server/.env'),
     stripSpaces(`
       GITHUB_CLIENT_ID=${clientId}
       GITHUB_CLIENT_SECRET=${clientSecret}

@@ -6,22 +6,29 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 // saga
 import createSagaMiddleware from 'redux-saga';
 import rootSaga from './sagas';
+import { invokeGlobalErrorHandler } from 'common/lib/utilities/splash.screen';
+import { ScriptLabError } from 'common/lib/utilities/error';
 
-const addLoggingToDispatch = store => {
+const addDevLoggingToDispatch = store => {
   const rawDispatch = store.dispatch;
   if (!console.group) {
     return rawDispatch;
   }
   return action => {
-    if (action && action.type) {
-      console.group(action.type);
-      console.log('%c prev state', 'color: gray', store.getState());
-      console.log('%c action', 'color: blue', action);
-      const returnValue = rawDispatch(action);
-      console.log('%c next state', 'color: green', store.getState());
-      console.groupEnd();
-      return returnValue;
+    if (!action.type) {
+      invokeGlobalErrorHandler(
+        new ScriptLabError('[Dev only] Unexpected error, action is undefined!'),
+      );
+      console.log('Previous state', store.getState());
     }
+
+    console.group(action.type);
+    console.log('%c prev state', 'color: gray', store.getState());
+    console.log('%c action', 'color: blue', action);
+    const returnValue = rawDispatch(action);
+    console.log('%c next state', 'color: green', store.getState());
+    console.groupEnd();
+    return returnValue;
   };
 };
 
@@ -45,7 +52,7 @@ const configureStore = ({ initialState = {} }: IConfigureStoreProps) => {
   sagaMiddleware.run(rootSaga);
 
   if (process.env.NODE_ENV !== 'production') {
-    store.dispatch = addLoggingToDispatch(store);
+    store.dispatch = addDevLoggingToDispatch(store);
   }
 
   return store;
