@@ -318,7 +318,7 @@ export const getFarItems = createSelector(
                     {
                       key: 'logout',
                       text: 'Logout',
-                      actionCreator: actions.github.logout,
+                      actionCreator: actions.github.logout.request,
                     },
                   ],
                 }

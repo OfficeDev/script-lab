@@ -3,7 +3,7 @@ import { getType, ActionType } from 'typesafe-actions';
 import YAML from 'js-yaml';
 
 import * as github from '../../services/github';
-import { fetchYaml } from '../../services/general';
+import { fetchYaml, IResponseOrError } from '../../services/general';
 import { gists, editor, solutions } from '../actions';
 import selectors from '../selectors';
 
@@ -11,13 +11,12 @@ import { convertSnippetToSolution, convertSolutionToSnippet } from '../../../../
 import { ConflictResolutionOptions } from '../../../../interfaces/enums';
 
 import { createSolutionSaga } from '../solutions/sagas';
-import { push } from 'connected-react-router';
-import { PATHS } from '../../../../constants';
 import { checkForUnsupportedAPIsIfRelevant } from './utilities';
 
 export default function* gistsWatcher() {
   yield takeEvery(getType(gists.fetchMetadata.request), fetchAllGistMetadataSaga);
   yield takeEvery(getType(gists.fetchMetadata.success), onFetchGistMetadataSuccessSaga);
+  yield takeEvery(getType(gists.fetchMetadata.failure), onFetchGistMetadataFailureSaga);
 
   yield takeEvery(getType(gists.get.request), getGistSaga);
   yield takeEvery(getType(gists.get.success), handleGetGistSuccessSaga);
@@ -40,10 +39,11 @@ export function* fetchAllGistMetadataSaga() {
 
   const currentHost = yield select(selectors.host.get);
 
-  const { response, error } = yield call(github.request, {
+  const { response, error }: IResponseOrError = yield call(github.request, {
     method: 'GET',
-    path: 'gists',
+    path: 'gists?per_page=100',
     token,
+    isArrayResponse: true,
   });
 
   if (response) {
@@ -82,7 +82,9 @@ export function* fetchAllGistMetadataSaga() {
 
     yield put(gists.fetchMetadata.success(gistsMetadata));
   } else {
-    yield put(gists.fetchMetadata.failure(error));
+    yield put(
+      gists.fetchMetadata.failure({ shouldLogUserOut: error.message === 'Unauthorized' }),
+    );
   }
 }
 
@@ -101,6 +103,14 @@ function* onFetchGistMetadataSuccessSaga(
 
   for (const solution of solutionsToClean) {
     yield put(solutions.edit({ id: solution.id, solution: { source: undefined } }));
+  }
+}
+
+function* onFetchGistMetadataFailureSaga(
+  action: ActionType<typeof gists.fetchMetadata.failure>,
+) {
+  if (action.payload.shouldLogUserOut) {
+    github.logout();
   }
 }
 
@@ -166,6 +176,7 @@ function* createGistSaga(action: ActionType<typeof gists.create.request>) {
   const { response, error } = yield call(github.request, {
     method: 'POST',
     path: 'gists',
+    isArrayResponse: false,
     token,
     jsonPayload: JSON.stringify({
       public: action.payload.isPublic,
@@ -212,6 +223,7 @@ function* updateGistSaga(action: ActionType<typeof gists.update.request>) {
     const { response, error } = yield call(github.request, {
       method: 'PATCH',
       path: `gists/${gistId}`,
+      isArrayResponse: false,
       token,
       jsonPayload: JSON.stringify({
         description: `${solution.description}`,

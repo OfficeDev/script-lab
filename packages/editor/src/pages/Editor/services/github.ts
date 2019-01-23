@@ -22,27 +22,56 @@ auth.endpoints.add('GitHub', {
   tokenUrl: `${currentServerUrl}/auth`,
 });
 
-export const request = ({
+export const request = async ({
   method,
   path,
   token,
   jsonPayload,
-}: IRequest): Promise<IResponseOrError> =>
-  generalRequest({ url: `${baseApiUrl}/${path}`, method, token, jsonPayload });
+  isArrayResponse,
+}: IRequest & { isArrayResponse: boolean }): Promise<IResponseOrError> => {
+  try {
+    let nextUrl = `${baseApiUrl}/${path}`;
+    let aggregate = [];
+
+    while (nextUrl) {
+      const { response, headers, error } = await generalRequest({
+        url: nextUrl,
+        method,
+        token,
+        jsonPayload,
+      });
+
+      if (error) {
+        return { error };
+      }
+
+      if (!isArrayResponse) {
+        return { response };
+      }
+
+      aggregate = [...aggregate, ...response];
+      nextUrl = getNextLinkIfAny(headers.get('Link'));
+    }
+
+    return { response: aggregate };
+  } catch (error) {
+    return { error };
+  }
+};
 
 export const login = async (): Promise<{
   token?: string;
   profilePicUrl?: string;
   username?: string;
 }> => {
-  let itoken: IToken;
+  let iToken: IToken;
   try {
-    itoken = await auth.authenticate('GitHub');
+    iToken = await auth.authenticate('GitHub');
   } catch (err) {
     console.error(err);
     throw err;
   }
-  const token = itoken.access_token;
+  const token = iToken.access_token;
 
   return {
     token,
@@ -57,6 +86,7 @@ export const getProfilePicUrlAndUsername = (
     method: 'GET',
     path: 'user',
     token,
+    isArrayResponse: false,
   }).then(({ response, error }) => {
     if (error) {
       console.error(error);
@@ -69,4 +99,18 @@ export const getProfilePicUrlAndUsername = (
     }
   });
 
-export const logout = (token: string) => auth.tokens.clear();
+export const logout = () => auth.tokens.clear();
+
+function getNextLinkIfAny(linkText: string): string | null {
+  const regex = /\<(https:[^\>]*)\>; rel="next"/;
+  // Matches the rel="next" section of a longer entry, like:
+  // <https://api.github.com/gists?page=5>; rel="next", <https://api.github.com/gists?page=1>; rel="first"
+
+  const pair = regex.exec(linkText);
+
+  if (pair) {
+    return pair[1]; // Group 1, the URL portion
+  }
+
+  return null;
+}

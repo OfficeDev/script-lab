@@ -6,6 +6,12 @@ import { login, logout } from '../../services/github';
 import { fetchAllGistMetadataSaga } from '../gists/sagas';
 import selectors from '../selectors';
 
+export default function* githubWatcher() {
+  yield takeEvery(getType(github.login.request), gitHubLoginSaga);
+  yield takeEvery(getType(github.login.success), fetchAllGistMetadataSaga);
+  yield takeEvery(getType(github.logout.request), gitHubLogoutSaga);
+}
+
 function* gitHubLoginSaga(action: ActionType<typeof github.login.request>) {
   try {
     const profile = yield call(login);
@@ -20,10 +26,4 @@ function* gitHubLogoutSaga(action: ActionType<typeof github.logout.request>) {
   const token = yield select(selectors.github.getToken);
   yield call(logout, token);
   yield put(github.logout.success());
-}
-
-export default function* githubWatcher() {
-  yield takeEvery(getType(github.login.request), gitHubLoginSaga);
-  yield takeEvery(getType(github.login.success), fetchAllGistMetadataSaga);
-  yield takeEvery(getType(github.logout.request), gitHubLogoutSaga);
 }

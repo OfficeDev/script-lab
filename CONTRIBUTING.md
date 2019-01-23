@@ -81,9 +81,8 @@ This is a particularly critical step for loading the Add-in inside of Office on 
 
 ## [Optional] Testing GitHub auth locally (on localhost)
 
-1. Go to <https://github.com/settings/developers>, and click "[Register new application](https://github.com/settings/applications/new)" if you haven't done it before for your own dev copy of ScriptLab.
-2. Give it a name like "ScriptLab Local Dev", with a Homepage and Auth callback URL of `https://localhost:3000`.
-3. Plumb this client ID and secret through (instructions TBD -- TODO).
+1. Run `yarn generate:github` and follow the instructions there.
+2. If your local website is already running, you will need to re-start it (re-`yarn start`)
 
 # Manual-testing scenarios
 
@@ -92,4 +91,6 @@ Please see "[TESTING.md](TESTING.md)".
 # Dev tips & tricks:
 
 - `packages/common`:
-  - When adding code to the `packages/common`, run `yarn workspace common build:package` in order to get Intellisense and the compiler to pick it up. In VS Code, you may need to `F12` into the file references before Intellisense is able to see the updated contents.
+  - When adding code to the `packages/common`, run `yarn workspace common build:package` in order to get Intellisense and the compiler to pick it up -- or just have `yarn start` already running and watching. In VS Code, you may need to `F12` into the file references before Intellisense is able to see the updated contents.
+- `packages/server`:
+  - To debug server code, navigate to `chrome://inspect/` and choose your server node process from there. Note that if your code changes and `nodemon` reloads the server, you will need to close the Inspector tool and re-open again from the link above.
