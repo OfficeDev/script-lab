@@ -27,7 +27,7 @@ import {
   solutions,
   settings,
 } from '../actions';
-import { Utilities, HostType } from '@microsoft/office-js-helpers';
+import { Utilities, HostType, PlatformType } from '@microsoft/office-js-helpers';
 
 const actions = { dialog, editor, gists, github, messageBar, misc, solutions, settings };
 
@@ -343,9 +343,14 @@ export const getFarItems = createSelector(
 );
 
 function shouldShowPopoutControls() {
-  // On desktop, show the popout control in Outlook -- but DON'T for Word/Excel/PPT,
-  //    since on those hosts, you can just resize the taskpane (or even drag it out!).
-  //    And relative to a popped-out taskpane, this has a few advantages:
+  // IMPORTANT: IF YOU MAKE ANY CHANGES HERE, UPDATE THE RUNNER'S
+  // "shouldShowPopoutControls" logic to be similar!
+
+  // Show the popout control in Outlook and on Office Online, but not anywhere else.
+
+  // On desktop, decided not to show it because on that platform,
+  // you can just resize the taskpane (or even drag it out!).
+  // And relative to a popped-out taskpane, this has a few advantages:
   // 1. With a dialog, closing the underlying "run" pane (to which the taskpane redirects)
   //       closes the editor, which is awkward.
   // 2. With a dialog, re-clicking on "Code" in the ribbon (e.g. accidentally)
@@ -353,5 +358,19 @@ function shouldShowPopoutControls() {
   // 3. With a dialog, the "Run" actually happens inside a pane called "Code", which is awkward
   // 4. Clicking on "Run" in the ribbon produces two runners, which is confusing.
 
-  return getIsInAddin() && (Utilities.host === HostType.OUTLOOK || !getIsInDesktop());
+  // On the Mac (at least for Excel/Word/PPT), it doesn't seem to work
+  // (due to some interaction between Office.js and our routing behavior),
+  // and it's not worth it for now to try to investigate.
+  // See https://github.com/OfficeDev/script-lab/issues/578
+  // For now, only enabling it where we tested it (and where it's most useful),
+  //     which is Office Online
+
+  if (!getIsInAddin()) {
+    return false;
+  }
+
+  return (
+    Utilities.host === HostType.OUTLOOK ||
+    Utilities.platform === PlatformType.OFFICE_ONLINE
+  );
 }
