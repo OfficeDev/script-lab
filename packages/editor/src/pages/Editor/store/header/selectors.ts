@@ -179,7 +179,7 @@ const showLoginToGithubDialog = actions.dialog.show({
 
 export const getItems = createSelector(
   [getMode, getActiveSolution, getIsTaskPaneWidth, getIsLoggedIn, getRunButton],
-  (mode, activeSolution, iconOnly, isLoggedIn, runButton) => {
+  (mode, activeSolution, iconOnly, isLoggedIn, runButton): IHeaderItem[] => {
     const titleStyles = {
       style: { paddingRight: iconOnly ? '0' : '3rem' },
       iconProps: iconOnly ? { iconName: 'OfficeAddinsLogo' } : {},
@@ -302,7 +302,7 @@ export const getItems = createSelector(
 
 export const getFarItems = createSelector(
   [getMode, getIsLoggedIn, getIsLoggingInOrOut],
-  (mode, isLoggedIn, isLoggingInOrOut) => {
+  (mode, isLoggedIn, isLoggingInOrOut): IHeaderItem[] => {
     switch (mode) {
       case 'null-solution':
       case 'settings':
@@ -324,7 +324,7 @@ export const getFarItems = createSelector(
                 }
               : undefined,
             iconOnly: true,
-            actionCreator: isLoggingInOrOut ? () => {} : actions.github.login.request,
+            actionCreator: !isLoggingInOrOut ? actions.github.login.request : undefined,
           },
           shouldShowPopoutControl('editor')
             ? {
