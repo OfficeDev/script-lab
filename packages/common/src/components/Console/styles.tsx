@@ -40,10 +40,14 @@ export const FilterWrapper = styled.div`
   box-sizing: border-box;
 `;
 
-export const CheckboxWrapper = styled.div`
-  height: 3.8rem;
+export const FooterWrapper = styled.div`
   background: ${props => props.theme.neutralLight};
-  box-sizing: border-box;
+  height: 3.8rem;
+  display: flex;
+  justify-content: space-between;
+`;
+
+export const CheckboxWrapper = styled.div`
   padding: 0.9rem;
 `;
 
