@@ -1,6 +1,3 @@
-import { SCRIPT_URLS } from 'common/lib/constants';
-import { addScriptTags } from 'common/lib/utilities/script-loader';
-
 import React from 'react';
 
 import App from './components/App';
@@ -14,7 +11,7 @@ const CFD = App(CustomFunctionsDashboard);
 
 const CustomFunctions = () => (
   <AwaitPromiseThenRender
-    promise={addScriptTags([SCRIPT_URLS.OFFICE_JS_FOR_CUSTOM_FUNCTIONS_DASHBOARD])
+    promise={Promise.resolve()
       .then(() => Office.onReady())
       .then(() => hideSplashScreen())}
   >

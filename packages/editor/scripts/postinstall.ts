@@ -24,6 +24,7 @@ const expectedPackages: {
     pathToCopyTo: 'vs',
   },
   officeJs: {
+    // Note: this package is now used only for offline development
     name: '@microsoft/office-js',
     version: PACKAGE_VERSIONS['@microsoft/office-js'],
     copyAsName: 'office-js',

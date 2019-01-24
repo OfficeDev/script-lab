@@ -13,6 +13,12 @@
     <meta name="theme-color" content="#FFFFFF" />
     <link rel="shortcut icon" type="image/x-icon" href="/assets/images/favicon.ico" />
 
+    <!-- Use the *BETA* endpoint, since the Custom Functions dashboard needs BETA APIs,
+    and since there is no harm in pointing at the Beta endpoint for the editor at large.
+    This is preferable to loading Office.js dynamically, because doing so was
+    causing a failure in the auth dialog (https://github.com/OfficeDev/script-lab/issues/587) -->
+    <script src="https://appsforoffice.microsoft.com/lib/beta/hosted/office.js"></script>
+
     <link
       rel="stylesheet"
       href="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-core/9.6.0/css/fabric.min.css"
