@@ -1,13 +1,15 @@
 import loglevel, { Logger } from 'loglevel';
 import prefix from 'loglevel-plugin-prefix';
 
-export function initializeLoggers() {
-  prefix.reg(loglevel);
-}
-
+let prefixAlreadyRegistered = false;
 const initializedLoggers: { [key: string]: Logger } = {};
 
 export function getLogger(name: string): Logger {
+  if (!prefixAlreadyRegistered) {
+    prefix.reg(loglevel);
+    prefixAlreadyRegistered = true;
+  }
+
   if (!initializedLoggers[name]) {
     const logger = loglevel.getLogger(name);
     logger.setLevel(

@@ -1,9 +1,6 @@
 import 'common/lib/polyfills';
 window.onerror = error => invokeGlobalErrorHandler(error);
 
-import * as log from 'common/lib/utilities/log';
-log.initializeLoggers();
-
 import redirectToProperEnvIfNeeded from 'common/lib/utilities/environment.redirector';
 const isRedirectingAwayPromise = redirectToProperEnvIfNeeded();
 
