@@ -27,19 +27,20 @@ export function invokeGlobalErrorHandler(error: any) {
   subtitleElement.innerHTML =
     error instanceof ScriptLabError ? error.message : 'An unexpected error has occurred.';
 
-  const clickForMoreInfoElement = document.createElement('a');
-  clickForMoreInfoElement.href = '#';
-  clickForMoreInfoElement.className = 'ms-font-m error';
-  clickForMoreInfoElement.textContent = 'Click for more info';
-  clickForMoreInfoElement.addEventListener('click', () => {
-    const errorMessageElement = document.createElement('pre');
-    errorMessageElement.textContent = stringifyPlusPlus(
-      error instanceof ScriptLabError ? error.innerError : error,
-    );
-    loadingElement.insertBefore(errorMessageElement, clickForMoreInfoElement);
-    clickForMoreInfoElement!.parentNode!.removeChild(clickForMoreInfoElement);
-  });
-  loadingElement.insertBefore(clickForMoreInfoElement, null);
+  const moreDetailsError = error instanceof ScriptLabError ? error.innerError : error;
+  if (moreDetailsError) {
+    const clickForMoreInfoElement = document.createElement('a');
+    clickForMoreInfoElement.href = '#';
+    clickForMoreInfoElement.className = 'ms-font-m error';
+    clickForMoreInfoElement.textContent = 'Click for more info';
+    clickForMoreInfoElement.addEventListener('click', () => {
+      const errorMessageElement = document.createElement('pre');
+      errorMessageElement.textContent = stringifyPlusPlus(moreDetailsError);
+      loadingElement.insertBefore(errorMessageElement, clickForMoreInfoElement);
+      clickForMoreInfoElement!.parentNode!.removeChild(clickForMoreInfoElement);
+    });
+    loadingElement.insertBefore(clickForMoreInfoElement, null);
+  }
 
   const closeElement = document.createElement('a');
   closeElement.href = '#';

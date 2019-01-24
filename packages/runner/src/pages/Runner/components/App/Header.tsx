@@ -2,6 +2,7 @@ import React from 'react';
 import { Spinner, SpinnerSize } from 'office-ui-fabric-react/lib/Spinner';
 import { Icon } from 'office-ui-fabric-react/lib/Icon';
 import CommonHeader from 'common/lib/components/Header';
+import { shouldShowPopoutControl } from 'common/lib/utilities/popout.control';
 
 export interface IProps {
   solution?: ISolution | null;
@@ -47,13 +48,15 @@ const Header = ({ solution, goBack, refresh, hardRefresh, openCode }: IProps) =>
             text: 'Hard Refresh',
             onClick: hardRefresh,
           },
-          {
-            key: 'pop-out',
-            iconProps: { iconName: 'OpenInNewWindow' },
-            text: 'Open Code Editor',
-            onClick: openCode,
-          },
-        ],
+          shouldShowPopoutControl('runner')
+            ? {
+                key: 'pop-out',
+                iconProps: { iconName: 'OpenInNewWindow' },
+                text: 'Open Code Editor',
+                onClick: openCode,
+              }
+            : null,
+        ].filter(Boolean),
       },
     },
   ];

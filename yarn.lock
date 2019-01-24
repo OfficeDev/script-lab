@@ -1571,15 +1571,10 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-10.12.10.tgz#4fa76e6598b7de3f0cb6ec3abacc4f59e5b3a2ce"
   integrity sha512-8xZEYckCbUVgK8Eg7lf5Iy4COKJ5uXlnIOnePN0WUwSQggy9tolM+tDJf7wMOnT/JT/W9xDYIaYggt3mRV2O5w==
 
-"@types/office-js@^0.0.111":
-  version "0.0.111"
-  resolved "https://registry.yarnpkg.com/@types/office-js/-/office-js-0.0.111.tgz#ced69601ce5dc5c475e239c4395d3a7d216dd93d"
-  integrity sha512-GsndAPhH1nizbq1kOpognz8Rfoai/QeeJ+hxiY0MqIpJu4EejqXUAqU+HJZy6fMP1Z53FvWnR4XMdWvLSWVN0Q==
-
-"@types/office-js@^0.0.143":
-  version "0.0.143"
-  resolved "https://registry.yarnpkg.com/@types/office-js/-/office-js-0.0.143.tgz#d83f95f4738b91c0157d04efacf6853ca4297c66"
-  integrity sha512-M2mrOu/+/njYETrvftlU8c/90OeY1PZF7DiSx2rnzDcOcovZo2s/jL2qr3qT8WwbAYrxSAiFSN6o1DFtbUNfww==
+"@types/office-js@^0.0.148":
+  version "0.0.148"
+  resolved "https://registry.yarnpkg.com/@types/office-js/-/office-js-0.0.148.tgz#a7d360bad45b5ac86ad011b0444899d0ab552c9d"
+  integrity sha512-kh9zT3/Q0QYEX7ZS4sprH6pG6XyICPmui5yXon7wIZ7L19Y9qtqfc/2eyBJYfzyT3+97ZbpsStsTG7NY7OJQ9w==
 
 "@types/office-runtime@^1.0.6":
   version "1.0.6"

@@ -15,6 +15,7 @@ import {
   invokeGlobalErrorHandler,
 } from 'common/lib/utilities/splash.screen';
 import { ScriptLabError } from 'common/lib/utilities/error';
+import { openPopoutCodeEditor } from 'common/lib/utilities/popout.control';
 
 export default function* miscWatcher() {
   yield takeEvery(getType(actions.misc.initialize), onInitializeSaga);
@@ -98,23 +99,9 @@ function* onConfirmSwitchEnvironmentSaga(
 }
 
 function* onPopOutEditorSaga() {
-  Office.context.ui.displayDialogAsync(
-    window.location.href,
-    { height: 60, width: 60, promptBeforeOpen: false },
-    (result: Office.AsyncResult<any>) => {
-      if (result.status === Office.AsyncResultStatus.Succeeded) {
-        window.location.href = currentRunnerUrl;
-      } else {
-        console.error(result);
-        invokeGlobalErrorHandler(
-          new ScriptLabError(
-            'Could not open a standalone code editor window.',
-            new Error(result.error.message),
-          ),
-        );
-      }
-    },
-  );
+  openPopoutCodeEditor({
+    onSuccess: () => (window.location.href = currentRunnerUrl),
+  });
 }
 
 function* onGoToCustomFunctionsSaga() {
