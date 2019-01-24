@@ -10,11 +10,15 @@ import {
   ClearButton,
   FilterWrapper,
   LogsArea,
-  LogsList,
   Log,
   LogText,
+  FooterWrapper,
 } from './styles';
 import HeaderFooterLayout from '../HeaderFooterLayout';
+import { IconButton } from 'office-ui-fabric-react/lib/Button';
+
+import Clipboard from 'clipboard';
+import Only from '../Only';
 
 const MAX_LOGS_SHOWN = 100;
 
@@ -42,6 +46,7 @@ interface IState {
 
 class Console extends React.Component<IPrivateProps, IState> {
   private lastLog = React.createRef<HTMLDivElement>();
+  private clipboard: Clipboard;
   state: IState = { shouldScrollToBottom: true, filterQuery: '' };
   inputRef = React.createRef<HTMLInputElement>();
 
@@ -51,6 +56,18 @@ class Console extends React.Component<IPrivateProps, IState> {
 
   componentDidMount() {
     this.scrollToBottom();
+
+    this.clipboard = new Clipboard('.copy-to-clipboard', {
+      text: this.getTextToCopy,
+    });
+    this.clipboard.on('error', (e: Error) => {
+      console.error(e);
+      throw new Error('Could not copy to clipboard');
+    });
+  }
+
+  componentWillUnmount() {
+    this.clipboard.destroy();
   }
 
   componentDidUpdate() {
@@ -59,6 +76,20 @@ class Console extends React.Component<IPrivateProps, IState> {
 
   setShouldScrollToBottom = (ev: React.FormEvent<HTMLElement>, checked: boolean) =>
     this.setState({ shouldScrollToBottom: checked });
+
+  getTextToCopy = () =>
+    this.props.logs
+      .map(item => {
+        let prefix = '';
+        if (item.severity === 'warn') {
+          prefix = '[WARNING]: ';
+        } else if (item.severity === 'error') {
+          prefix = '[ERROR]: ';
+        }
+
+        return prefix + item.message;
+      })
+      .join('\n\n');
 
   updateFilterQuery = () =>
     this.setState({
@@ -137,13 +168,23 @@ class Console extends React.Component<IPrivateProps, IState> {
             </FilterWrapper>
           }
           footer={
-            <CheckboxWrapper>
-              <Checkbox
-                label="Auto-scroll"
-                defaultChecked={true}
-                onChange={this.setShouldScrollToBottom}
-              />
-            </CheckboxWrapper>
+            <FooterWrapper>
+              <CheckboxWrapper>
+                <Checkbox
+                  label="Auto-scroll"
+                  defaultChecked={true}
+                  onChange={this.setShouldScrollToBottom}
+                />
+              </CheckboxWrapper>
+              <Only when={logs.length > 0}>
+                <IconButton
+                  className="copy-to-clipboard"
+                  iconProps={{ iconName: 'Copy' }}
+                  style={{ height: '3.8rem' }}
+                  ariaLabel="Copy to clipboard"
+                />
+              </Only>
+            </FooterWrapper>
           }
         >
           <LogsArea>
