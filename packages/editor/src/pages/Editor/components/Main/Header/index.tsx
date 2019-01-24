@@ -80,6 +80,10 @@ class Header extends Component<IProps, IState> {
     this.clipboard.on('error', props.notifyClipboardCopyFailure);
   }
 
+  componentWillUnmount() {
+    this.clipboard.destroy();
+  }
+
   getSnippetYAML = () =>
     YAML.safeDump(convertSolutionToSnippet(this.props.activeSolution));
 
