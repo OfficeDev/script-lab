@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies_comments": {
-    "@microsoft/office-js": "For the custom functions dashboard, need a custom build of office-js with 'CustomFunctionManager.getStatus()' and other APIs that hasn't made it to prod yet (as of Dec 2 2018 -- though should in a few weeks)",
     "query-string": "Restricing query-string to version 5.1.1 because later versions (6+) started targeting ES6 rather than ES5, making it not work for the precompile scripts. See more at https://stackoverflow.com/a/49985749/678505",
     "monaco-editor": "On Mac add-ins, versions of Monaco 0.11.0 - 0.15.6 all DON'T WORK (can't click on anything other than last line of text!).  So for now sticking with the last working version, 0.10.1"
   },

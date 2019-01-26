@@ -31,7 +31,7 @@ class Editor extends Component<{}, IState> {
 
   constructor(props: any) {
     super(props);
-    addScriptTags([SCRIPT_URLS.OFFICE_JS_FOR_EDITOR, SCRIPT_URLS.MONACO_LOADER])
+    addScriptTags([SCRIPT_URLS.DEFAULT_OFFICE_JS, SCRIPT_URLS.MONACO_LOADER])
       .then(() => Office.onReady())
       .then(() => ensureProperOfficeBuildIfRelevant())
       .then(() => loadStateFromLocalStorage())

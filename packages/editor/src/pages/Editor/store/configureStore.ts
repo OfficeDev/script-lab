@@ -15,7 +15,7 @@ const addDevLoggingToDispatch = store => {
     return rawDispatch;
   }
   return action => {
-    if (!action.type) {
+    if (!action) {
       invokeGlobalErrorHandler(
         new ScriptLabError('[Dev only] Unexpected error, action is undefined!'),
       );

@@ -8,6 +8,14 @@ import { ScriptLabError } from './error';
 let isCurrentlyShowingError = false;
 
 export function invokeGlobalErrorHandler(error: any) {
+  if (isCurrentlyShowingError) {
+    // If already showing an error, don't show the subsequent one, since the first one
+    // in the chain is likely the more important one.
+    console.error('Global error handler -- FOLLOW-UP ERROR (not showing in the UI)');
+    console.error(error);
+    return;
+  }
+
   console.error('Global error handler:');
   console.error(error);
 

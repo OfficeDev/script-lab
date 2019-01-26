@@ -3,8 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies_comments": {
-    "query-string": "Restricing query-string to version 5.1.1 because later versions (6+) started targeting ES6 rather than ES5, making it not work for the precompile scripts. See more at https://stackoverflow.com/a/49985749/678505",
-    "@microsoft/office-js": "For the custom functions dashboard, need a custom build of office-js that hasn't made it to prod yet (as of mid-Nov 2018)"
+    "query-string": "Restricing query-string to version 5.1.1 because later versions (6+) started targeting ES6 rather than ES5, making it not work for the precompile scripts. See more at https://stackoverflow.com/a/49985749/678505"
   },
   "dependencies": {
     "@microsoft/office-js-helpers": "0.7.4",

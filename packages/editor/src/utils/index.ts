@@ -114,3 +114,8 @@ const isCustomFunctionRegex = /@customfunction/i;
 export function isCustomFunctionScript(content: string) {
   return isCustomFunctionRegex.test(content);
 }
+
+export function isInternetExplorer() {
+  // From https://stackoverflow.com/a/19868056/678505
+  return 'ActiveXObject' in window;
+}
