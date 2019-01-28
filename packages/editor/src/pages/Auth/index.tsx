@@ -15,39 +15,56 @@ import { HostType } from '@microsoft/office-js-helpers';
 import { TextBoxClipboardWrapper } from './styles';
 import { generateGithubLoginUrl } from '../Editor/services/github';
 
-const KEY_QUERY_PARAMETER = 'key';
 const SESSION_STORAGE_AUTH_KEY_PARAMETER = 'auth_key';
-const SESSION_STORAGE_STATE_PARAMETER = 'auth_state';
+const SESSION_STORAGE_AUTH_STATE_PARAMETER = 'auth_state';
 
 interface IProps {}
 
 interface IState {
   isIE: boolean;
   key: string | undefined;
+  isCompleted: boolean;
+  textToCopy: string;
+}
+
+interface IPossibleQueryParams {
+  // The public key from the taskpane, if arriving on this page the first time
+  key?: string;
+
+  // Code from GitHub, if auth is successful
+  code?: string;
+  // State from GitHub, if auth is successful
+  state?: string;
 }
 
 class AuthPage extends React.Component<IProps, IState> {
   private clipboard: Clipboard;
+  params: IPossibleQueryParams;
 
   constructor(props: IProps) {
     super(props);
 
     const isIE = isInternetExplorer();
 
-    const possibleKey: any = QueryString.parse(QueryString.extract(window.location.href))[
-      KEY_QUERY_PARAMETER
-    ];
+    this.params = QueryString.parse(QueryString.extract(window.location.href));
+
     let key: string | undefined;
-    if (typeof possibleKey === 'string' && possibleKey.trim().length > 0) {
-      key = possibleKey;
+    if (typeof this.params.key === 'string' && this.params.key.trim().length > 0) {
+      key = this.params.key;
     }
+
+    const isCompleted = Boolean(this.params.code && this.params.state);
 
     this.state = {
       isIE,
       key,
+      isCompleted,
+      textToCopy: isIE ? window.location.href : 'FIXME',
     };
 
-    this.clipboard = new Clipboard('.export-to-clipboard');
+    this.clipboard = new Clipboard('.export-to-clipboard', {
+      text: () => this.state.textToCopy, // FIXME
+    });
     this.clipboard.on('error', invokeGlobalErrorHandler);
   }
 
@@ -58,7 +75,7 @@ class AuthPage extends React.Component<IProps, IState> {
       const random = generateCryptoSafeRandom();
 
       sessionStorage.setItem(SESSION_STORAGE_AUTH_KEY_PARAMETER, this.state.key);
-      sessionStorage.setItem(SESSION_STORAGE_STATE_PARAMETER, random.toString());
+      sessionStorage.setItem(SESSION_STORAGE_AUTH_STATE_PARAMETER, random.toString());
 
       window.location.href = generateGithubLoginUrl(random);
       return;
@@ -70,6 +87,20 @@ class AuthPage extends React.Component<IProps, IState> {
 
   render() {
     const renderInner = () => {
+      if (this.state.isCompleted) {
+        const key = sessionStorage.getItem(SESSION_STORAGE_AUTH_KEY_PARAMETER);
+        const state = sessionStorage.getItem(SESSION_STORAGE_AUTH_STATE_PARAMETER);
+        if (!key || !state || state !== this.params.state) {
+          return (
+            <MessageBar messageBarType={MessageBarType.severeWarning}>
+              Something went wrong. Please return to the login dialog and try again.
+            </MessageBar>
+          );
+        }
+
+        return <div>FIXME, now need to exchange the code...</div>;
+      }
+
       if (!this.state.key) {
         return (
           <MessageBar messageBarType={MessageBarType.severeWarning}>
@@ -88,15 +119,10 @@ class AuthPage extends React.Component<IProps, IState> {
               Chrome, Firefox, etc.
             </MessageBar>
             <TextBoxClipboardWrapper style={{ marginTop: '20px' }}>
-              <TextField
-                readOnly={true}
-                value={window.location.href}
-                id="url-textfield"
-              />
+              <TextField readOnly={true} value={window.location.href} />
               <IconButton
                 iconProps={{ iconName: 'Copy' }}
                 ariaLabel="Copy to clipboard"
-                data-clipboard-target="#url-textfield"
               />
             </TextBoxClipboardWrapper>
           </>
