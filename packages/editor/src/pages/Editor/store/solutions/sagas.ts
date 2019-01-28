@@ -6,12 +6,7 @@ import { fetchYaml } from '../../services/general';
 import selectors from '../selectors';
 import { convertSnippetToSolution, isCustomFunctionScript } from '../../../../utils';
 import { getBoilerplate } from '../../../../newSolutionData';
-import {
-  SCRIPT_FILE_NAME,
-  PATHS,
-  NULL_SOLUTION_ID,
-  NULL_FILE_ID,
-} from '../../../../constants';
+import { SCRIPT_FILE_NAME, NULL_SOLUTION_ID, NULL_FILE_ID } from '../../../../constants';
 import { deleteSolutionFromStorage } from '../localStorage';
 import { formatTypeScriptFile } from '../editor/utilities';
 import { currentOfficeJsRawSnippetsBaseRepoUrl } from 'common/lib/environment';

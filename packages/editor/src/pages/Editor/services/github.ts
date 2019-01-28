@@ -1,6 +1,7 @@
-import { Authenticator, IToken } from '@microsoft/office-js-helpers';
+import QueryString from 'query-string';
 import { request as generalRequest, IResponseOrError } from './general';
-import { currentServerUrl, githubAppClientId } from 'common/lib/environment';
+import { githubAppClientId } from 'common/lib/environment';
+import { GITHUB_KEY } from 'common/lib/utilities/localStorage';
 
 const baseApiUrl = 'https://api.github.com';
 
@@ -11,16 +12,18 @@ interface IRequest {
   jsonPayload?: string;
 }
 
-const auth = new Authenticator();
-
-auth.endpoints.add('GitHub', {
-  clientId: githubAppClientId,
-  baseUrl: 'https://github.com/login',
-  authorizeUrl: '/oauth/authorize',
-  scope: 'gist',
-  state: true,
-  tokenUrl: `${currentServerUrl}/auth`,
-});
+export function generateGithubLoginUrl(randomNumberForState: number) {
+  return (
+    'https://github.com/login/oauth/authorize' +
+    '?' +
+    QueryString.stringify({
+      client_id: githubAppClientId,
+      redirect_uri: window.location.origin,
+      scope: 'gist',
+      state: randomNumberForState.toString(),
+    })
+  );
+}
 
 export const request = async ({
   method,
@@ -64,19 +67,20 @@ export const login = async (): Promise<{
   profilePicUrl?: string;
   username?: string;
 }> => {
-  let iToken: IToken;
-  try {
-    iToken = await auth.authenticate('GitHub');
-  } catch (err) {
-    console.error(err);
-    throw err;
-  }
-  const token = iToken.access_token;
+  throw new Error('FIXME!');
+  // let iToken: IToken;
+  // try {
+  //   iToken = await auth.authenticate('GitHub');
+  // } catch (err) {
+  //   console.error(err);
+  //   throw err;
+  // }
+  // const token = iToken.access_token;
 
-  return {
-    token,
-    ...(await getProfilePicUrlAndUsername(token)),
-  };
+  // return {
+  //   token,
+  //   ...(await getProfilePicUrlAndUsername(token)),
+  // };
 };
 
 export const getProfilePicUrlAndUsername = (
@@ -99,7 +103,12 @@ export const getProfilePicUrlAndUsername = (
     }
   });
 
-export const logout = () => auth.tokens.clear();
+export const logout = () => {
+  localStorage.removeItem(GITHUB_KEY);
+
+  // Also remove the old office-js-helpers key that stored the auth token
+  localStorage.removeItem('OAuth2Tokens');
+};
 
 function getNextLinkIfAny(linkText: string): string | null {
   const regex = /\<(https:[^\>]*)\>; rel="next"/;
