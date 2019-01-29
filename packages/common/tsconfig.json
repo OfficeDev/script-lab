@@ -20,7 +20,8 @@
     "jsx": "react",
     "alwaysStrict": false,
     "strictFunctionTypes": false,
-    "strictPropertyInitialization": false
+    "strictPropertyInitialization": false,
+    "declarationMap": true
   },
   "include": [
     "./src/**/*"
