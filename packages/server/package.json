@@ -2,12 +2,15 @@
   "name": "server",
   "version": "1.0.0",
   "scripts": {
-    "start": "nodemon --inspect src/index.ts",
+    "start": "nodemon -e ts -w ./src -x npm run start:serve",
+    "start:serve": "ts-node --inspect -- src/index.ts",
     "build": "webpack-cli",
     "lint": "tslint \"src/**/*.ts?(x)\"",
     "test": "echo 'no tests'"
   },
   "dependencies": {
+    "@types/cors": "^2.8.4",
+    "@types/request": "^2.48.1",
     "body-parser": "^1.18.3",
     "cors": "^2.8.4",
     "dotenv": "^6.0.0",

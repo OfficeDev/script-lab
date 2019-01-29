@@ -7,8 +7,10 @@ import { MessageBar, MessageBarType } from 'office-ui-fabric-react/lib/MessageBa
 import Theme from 'common/lib/components/Theme';
 import { HostType } from '@microsoft/office-js-helpers';
 import { generateGithubLoginUrl } from '../Editor/services/github';
-import TextboxClipboardWrapper from './components/TextboxClipboardWrapper';
 import IEError from './components/IEError';
+import SomethingWentWrong from './components/SomethingWentWrong';
+import UILessCodeToTokenExchanger from './components/UILessCodeToTokenExchanger';
+import EncodedToken from './components/EncodedToken';
 
 const SESSION_STORAGE_AUTH_KEY_PARAMETER = 'auth_key';
 const SESSION_STORAGE_AUTH_STATE_PARAMETER = 'auth_state';
@@ -19,6 +21,8 @@ interface IState {
   isIE: boolean;
   key: string | undefined;
   hasCodeAndState: boolean;
+  encodedToken?: string;
+  error?: string;
 }
 
 interface IPossibleQueryParams {
@@ -53,56 +57,87 @@ class AuthPage extends React.Component<IProps, IState> {
     };
   }
 
-  componentDidMount() {
-    const shouldNavigateAway = this.state.key && !this.state.isIE;
-
-    if (shouldNavigateAway) {
-      const random = generateCryptoSafeRandom();
-
-      sessionStorage.setItem(SESSION_STORAGE_AUTH_KEY_PARAMETER, this.state.key);
-      sessionStorage.setItem(SESSION_STORAGE_AUTH_STATE_PARAMETER, random.toString());
-
-      window.location.href = generateGithubLoginUrl(random);
-      return;
-    }
-
-    if (this.state.hasCodeAndState) {
-      // Don't hide the splash screen quite yet, need to exchange it for the token first.
-      // Will hide it once the call to the server is finished.
-    } else {
-      hideSplashScreen();
-    }
-  }
-
   render() {
-    const renderInner = () => {
+    const {
+      component,
+      showUI,
+    }: { component: React.ReactElement<any>; showUI: boolean } = (() => {
+      if (this.state.error) {
+        return {
+          component: <SomethingWentWrong additionalInfo={this.state.error} />,
+          showUI: true,
+        };
+      }
+
+      if (this.state.encodedToken) {
+        return {
+          component: <EncodedToken encodedToken={this.state.encodedToken} />,
+          showUI: true,
+        };
+      }
+
       if (this.state.hasCodeAndState) {
         const key = sessionStorage.getItem(SESSION_STORAGE_AUTH_KEY_PARAMETER);
         const state = sessionStorage.getItem(SESSION_STORAGE_AUTH_STATE_PARAMETER);
         if (!key || !state || state !== this.params.state) {
-          return (
-            <MessageBar messageBarType={MessageBarType.severeWarning}>
-              Something went wrong. Please return to the login dialog and try again.
-            </MessageBar>
-          );
+          return {
+            component: <SomethingWentWrong />,
+            showUI: true,
+          };
         }
 
-        return <div>FIXME, now need to exchange the code...</div>;
+        return {
+          component: (
+            <UILessCodeToTokenExchanger
+              code={this.params.code}
+              state={state}
+              publicKey={key}
+              onToken={this.onToken}
+              onError={this.onError}
+            />
+          ),
+          showUI: false,
+        };
+      }
+
+      if (this.state.key && !this.state.isIE) {
+        const random = generateCryptoSafeRandom();
+
+        sessionStorage.setItem(SESSION_STORAGE_AUTH_KEY_PARAMETER, this.state.key);
+        sessionStorage.setItem(SESSION_STORAGE_AUTH_STATE_PARAMETER, random.toString());
+
+        window.location.href = generateGithubLoginUrl(random);
+        return { component: null, showUI: false };
       }
 
       if (!this.state.key) {
-        return (
-          <MessageBar messageBarType={MessageBarType.severeWarning}>
-            This page must be opened from a link that contains a "key" parameter in the
-            URL. Please go back to the sign-in dialog and be sure to copy the full URL.
-          </MessageBar>
-        );
+        return {
+          component: (
+            <MessageBar messageBarType={MessageBarType.severeWarning}>
+              This page must be opened from a link that contains a "key" parameter in the
+              URL. Please go back to the sign-in dialog and be sure to copy the full URL.
+            </MessageBar>
+          ),
+          showUI: true,
+        };
       }
 
       if (this.state.isIE) {
-        return <IEError />;
+        return {
+          component: <IEError />,
+          showUI: true,
+        };
       }
-    };
+
+      return {
+        component: <SomethingWentWrong />,
+        showUI: true,
+      };
+    })();
+
+    if (showUI) {
+      hideSplashScreen();
+    }
 
     return (
       <Theme host={HostType.WEB}>
@@ -110,11 +145,14 @@ class AuthPage extends React.Component<IProps, IState> {
           <h1 style={{ marginBottom: '20px', fontSize: '28px', fontWeight: 100 }}>
             Script Lab – Sign in with GitHub
           </h1>
-          {renderInner()}
+          {component}
         </div>
       </Theme>
     );
   }
+
+  onToken = (token: string) => this.setState({ encodedToken: token });
+  onError = (error: string) => this.setState({ error: error });
 }
 
 export default AuthPage;
