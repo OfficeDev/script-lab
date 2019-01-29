@@ -1,19 +1,14 @@
 import React from 'react';
 import QueryString from 'query-string';
-import Clipboard from 'clipboard';
 
-import {
-  hideSplashScreen,
-  invokeGlobalErrorHandler,
-} from 'common/lib/utilities/splash.screen';
+import { hideSplashScreen } from 'common/lib/utilities/splash.screen';
 import { isInternetExplorer, generateCryptoSafeRandom } from '../../utils';
 import { MessageBar, MessageBarType } from 'office-ui-fabric-react/lib/MessageBar';
-import { TextField } from 'office-ui-fabric-react/lib/TextField';
-import { IconButton } from 'office-ui-fabric-react/lib/Button';
 import Theme from 'common/lib/components/Theme';
 import { HostType } from '@microsoft/office-js-helpers';
-import { TextBoxClipboardWrapper } from './styles';
 import { generateGithubLoginUrl } from '../Editor/services/github';
+import TextboxClipboardWrapper from './components/TextboxClipboardWrapper';
+import IEError from './components/IEError';
 
 const SESSION_STORAGE_AUTH_KEY_PARAMETER = 'auth_key';
 const SESSION_STORAGE_AUTH_STATE_PARAMETER = 'auth_state';
@@ -23,8 +18,7 @@ interface IProps {}
 interface IState {
   isIE: boolean;
   key: string | undefined;
-  isCompleted: boolean;
-  textToCopy: string;
+  hasCodeAndState: boolean;
 }
 
 interface IPossibleQueryParams {
@@ -38,7 +32,6 @@ interface IPossibleQueryParams {
 }
 
 class AuthPage extends React.Component<IProps, IState> {
-  private clipboard: Clipboard;
   params: IPossibleQueryParams;
 
   constructor(props: IProps) {
@@ -53,19 +46,11 @@ class AuthPage extends React.Component<IProps, IState> {
       key = this.params.key;
     }
 
-    const isCompleted = Boolean(this.params.code && this.params.state);
-
     this.state = {
       isIE,
       key,
-      isCompleted,
-      textToCopy: isIE ? window.location.href : 'FIXME',
+      hasCodeAndState: Boolean(this.params.code && this.params.state),
     };
-
-    this.clipboard = new Clipboard('.export-to-clipboard', {
-      text: () => this.state.textToCopy, // FIXME
-    });
-    this.clipboard.on('error', invokeGlobalErrorHandler);
   }
 
   componentDidMount() {
@@ -81,13 +66,17 @@ class AuthPage extends React.Component<IProps, IState> {
       return;
     }
 
-    // Otherwise, render and hide the splash screen:
-    hideSplashScreen();
+    if (this.state.hasCodeAndState) {
+      // Don't hide the splash screen quite yet, need to exchange it for the token first.
+      // Will hide it once the call to the server is finished.
+    } else {
+      hideSplashScreen();
+    }
   }
 
   render() {
     const renderInner = () => {
-      if (this.state.isCompleted) {
+      if (this.state.hasCodeAndState) {
         const key = sessionStorage.getItem(SESSION_STORAGE_AUTH_KEY_PARAMETER);
         const state = sessionStorage.getItem(SESSION_STORAGE_AUTH_STATE_PARAMETER);
         if (!key || !state || state !== this.params.state) {
@@ -111,22 +100,7 @@ class AuthPage extends React.Component<IProps, IState> {
       }
 
       if (this.state.isIE) {
-        return (
-          <>
-            <MessageBar messageBarType={MessageBarType.severeWarning}>
-              Script Lab's authentication with GitHub is no longer supported on Internet
-              Explorer. Please re-open this URL in an alternate browser, such as Edge,
-              Chrome, Firefox, etc.
-            </MessageBar>
-            <TextBoxClipboardWrapper style={{ marginTop: '20px' }}>
-              <TextField readOnly={true} value={window.location.href} />
-              <IconButton
-                iconProps={{ iconName: 'Copy' }}
-                ariaLabel="Copy to clipboard"
-              />
-            </TextBoxClipboardWrapper>
-          </>
-        );
+        return <IEError />;
       }
     };
 
