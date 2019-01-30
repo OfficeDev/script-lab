@@ -36,12 +36,7 @@ export function respondWithAccessTokenCommon({
         state,
       },
     },
-    (error, httpResponse, body) => {
-      console.log('Error', error);
-      console.log('httpResponse', httpResponse);
-      console.log('body', body);
-      // FIXME
-
+    (error, _httpResponse, body) => {
       response
         .contentType('application/json')
         .status(200)

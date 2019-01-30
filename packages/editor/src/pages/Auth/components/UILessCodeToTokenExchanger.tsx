@@ -24,20 +24,26 @@ class UILessCodeToTokenExchanger extends React.Component<IProps, IState> {
 
   async startFetchToken() {
     try {
+      const body = JSON.stringify({
+        code: this.props.code,
+        state: this.props.state,
+        key: this.props.publicKey,
+      });
+
       const response = await fetch(currentServerUrl + '/auth/encoded', {
         method: 'POST',
-
-        body: JSON.stringify({
-          code: this.props.code,
-          state: this.props.state,
-          key: this.props.publicKey,
-        }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: body,
       });
+
       if (response.ok) {
         const data: { error?: string; encodedToken?: string } = await response.json();
         if (data.error) {
           this.props.onError(data.error);
         } else if (data.encodedToken) {
+          debugger;
           this.props.onToken(data.encodedToken);
         } else {
           this.props.onError("Unexpected error, response doesn't match expected form.");
