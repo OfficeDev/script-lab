@@ -61,6 +61,6 @@ export function respondWithAccessTokenCommon({
   }
 }
 
-export function encodeToken(accessToken: string, key: string): { encodedToken: string } {
-  return { encodedToken: '!FIXME!' + accessToken + '!FIXME!' + key };
+export function encodeToken(accessToken: string, key: string): string {
+  return '!FIXME!' + accessToken + '!FIXME!' + key;
 }
