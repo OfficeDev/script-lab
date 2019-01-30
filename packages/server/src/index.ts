@@ -45,4 +45,19 @@ app.post('/auth/encoded', (req, res) => {
   });
 });
 
+// // FIXME remove this
+// app.post('/auth/test', (req, res) => {
+//   const { key } = req.body;
+//   console.log('FIXME auth/test.  Key = ' + key);
+//   const encoded = encodeToken('Hello Michael!', key);
+//   console.log('Encoded = ' + encoded);
+
+//   res
+//     .contentType('application/json')
+//     .status(200)
+//     .send({
+//       encodedToken: encoded,
+//     });
+// });
+
 app.listen(port, () => console.log(`Listening on port ${port}`));

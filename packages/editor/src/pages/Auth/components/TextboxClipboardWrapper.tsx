@@ -7,7 +7,7 @@ import { IconButton } from 'office-ui-fabric-react/lib/Button';
 
 interface IProps {
   text: string;
-  style: React.CSSProperties;
+  style?: React.CSSProperties;
 }
 
 interface IState {}
@@ -32,6 +32,7 @@ class TextboxClipboardWrapper extends React.Component<IProps, IState> {
     return (
       <>
         <OuterStyle style={this.props.style}>
+          {/* FIXME: how to call "setSelectionStart?" on ITextField interface? */}
           <TextField readOnly={true} value={this.props.text} />
           <IconButton
             iconProps={{ iconName: 'Copy' }}

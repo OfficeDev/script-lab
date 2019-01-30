@@ -47,6 +47,7 @@ export const PATHS = {
   Heartbeat: '/heartbeat',
   Run: '/run',
   Auth: '/auth',
+  AuthTest: '/authtest',
 };
 
 export const IS_TASK_PANE_WIDTH = 475;

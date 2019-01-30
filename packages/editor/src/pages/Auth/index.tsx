@@ -12,6 +12,8 @@ import SomethingWentWrong from './components/SomethingWentWrong';
 import UILessCodeToTokenExchanger from './components/UILessCodeToTokenExchanger';
 import EncodedToken from './components/EncodedToken';
 
+// FIXME polish to prevent bad refresh
+const SESSION_STORAGE_AUTH_COMPLETED_PARAMETER = 'auth_completed';
 const SESSION_STORAGE_AUTH_KEY_PARAMETER = 'auth_key';
 const SESSION_STORAGE_AUTH_STATE_PARAMETER = 'auth_state';
 
@@ -19,14 +21,16 @@ interface IProps {}
 
 interface IState {
   isIE: boolean;
-  key: string | undefined;
+  base64Key: string | undefined;
   hasCodeAndState: boolean;
   encodedToken?: string;
   error?: string;
+  username?: string;
+  profilePicUrl?: string;
 }
 
 interface IPossibleQueryParams {
-  // The public key from the taskpane, if arriving on this page the first time
+  // The base64-encoded public key from the taskpane, if arriving on this page the first time
   key?: string;
 
   // Code from GitHub, if auth is successful
@@ -45,14 +49,14 @@ class AuthPage extends React.Component<IProps, IState> {
 
     this.params = QueryString.parse(QueryString.extract(window.location.href));
 
-    let key: string | undefined;
+    let base64Key: string | undefined;
     if (typeof this.params.key === 'string' && this.params.key.trim().length > 0) {
-      key = this.params.key;
+      base64Key = this.params.key;
     }
 
     this.state = {
       isIE,
-      key,
+      base64Key,
       hasCodeAndState: Boolean(this.params.code && this.params.state),
     };
   }
@@ -71,7 +75,13 @@ class AuthPage extends React.Component<IProps, IState> {
 
       if (this.state.encodedToken) {
         return {
-          component: <EncodedToken encodedToken={this.state.encodedToken} />,
+          component: (
+            <EncodedToken
+              encodedToken={this.state.encodedToken}
+              username={this.state.username}
+              profilePicUrl={this.state.profilePicUrl}
+            />
+          ),
           showUI: true,
         };
       }
@@ -91,8 +101,8 @@ class AuthPage extends React.Component<IProps, IState> {
             <UILessCodeToTokenExchanger
               code={this.params.code}
               state={state}
-              publicKey={key}
-              onToken={this.onToken}
+              publicKeyBase64={key}
+              onSuccess={this.onSuccessfulServerResponse}
               onError={this.onError}
             />
           ),
@@ -100,17 +110,17 @@ class AuthPage extends React.Component<IProps, IState> {
         };
       }
 
-      if (this.state.key && !this.state.isIE) {
+      if (this.state.base64Key && !this.state.isIE) {
         const random = generateCryptoSafeRandom();
 
-        sessionStorage.setItem(SESSION_STORAGE_AUTH_KEY_PARAMETER, this.state.key);
+        sessionStorage.setItem(SESSION_STORAGE_AUTH_KEY_PARAMETER, this.state.base64Key);
         sessionStorage.setItem(SESSION_STORAGE_AUTH_STATE_PARAMETER, random.toString());
 
         window.location.href = generateGithubLoginUrl(random);
         return { component: null, showUI: false };
       }
 
-      if (!this.state.key) {
+      if (!this.state.base64Key) {
         return {
           component: (
             <MessageBar messageBarType={MessageBarType.severeWarning}>
@@ -151,7 +161,15 @@ class AuthPage extends React.Component<IProps, IState> {
     );
   }
 
-  onToken = (token: string) => this.setState({ encodedToken: token });
+  onSuccessfulServerResponse = ({
+    token,
+    username,
+    profilePicUrl,
+  }: {
+    token: string;
+    username: string;
+    profilePicUrl: string;
+  }) => this.setState({ encodedToken: token, username, profilePicUrl });
   onError = (error: string) => this.setState({ error: error });
 }
 

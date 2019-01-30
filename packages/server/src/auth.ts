@@ -1,12 +1,19 @@
 import express from 'express';
 import request from 'request';
+import NodeRSA from 'node-rsa';
 
 const { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, GITHUB_REDIRECT_URL } = process.env;
+const GENERIC_ERROR_STRING = 'An unexpected login error has occurred.';
 
 export interface IGithubAccessTokenResponse {
   access_token: string;
   error: string;
   error_description: string;
+}
+
+export interface IGithubProfileResponse {
+  login: string;
+  avatar_url: string;
 }
 
 export function respondWithAccessTokenCommon({
@@ -37,15 +44,52 @@ export function respondWithAccessTokenCommon({
       },
     },
     (error, _httpResponse, body) => {
+      let resultObject = getResultObjectBasedOnAuthResponse(error, body);
+
+      console.log('FIXME token = ' + body.access_token);
+
+      // If no access token, just send the error response as is.
+      // FIXME if (!body.access_token) {
       response
         .contentType('application/json')
         .status(200)
-        .send(getResultObjectBasedOnResponse(error, body));
+        .send(resultObject);
+
+      // }
+      // FIXME, why am I getting `{"message":"Not Found","documentation_url":"https://developer.github.com/v3"}`?
+      //   // Otherwise fetch some profile info for the user
+      //   const profileFetchRequest: request.Options = {
+      //     url: 'https://api.github.com/user',
+      //     headers: {
+      //       Authorization: `Bearer ${body.access_token}`,
+      //       'User-Agent': 'https://github.com/officedev/script-lab',
+      //     },
+      //   };
+      //   console.log('FIXME', profileFetchRequest);
+
+      //   request.post(
+      //     profileFetchRequest,
+      //     (_error2, _httpResponse2, body2: IGithubProfileResponse) => {
+      //       if (_httpResponse2.statusCode === 200) {
+      //         resultObject['username'] = body2.login;
+      //         resultObject['profilePicUrl'] = body2.avatar_url;
+      //       } else {
+      //         console.log('FIXME error', _error2);
+      //         console.log(body2);
+      //         resultObject = { error: GENERIC_ERROR_STRING };
+      //       }
+
+      //       response
+      //         .contentType('application/json')
+      //         .status(200)
+      //         .send(resultObject);
+      //     },
+      //   );
     },
   );
 
   // Helper
-  function getResultObjectBasedOnResponse(
+  function getResultObjectBasedOnAuthResponse(
     error: any,
     body: IGithubAccessTokenResponse,
   ): { [key: string]: any } {
@@ -56,11 +100,12 @@ export function respondWithAccessTokenCommon({
     } else if (body.access_token) {
       return onSuccessResponseMassager ? onSuccessResponseMassager(body) : body;
     } else {
-      return { error: 'An unexpected login error has occurred.' };
+      return { error: GENERIC_ERROR_STRING };
     }
   }
 }
 
-export function encodeToken(accessToken: string, key: string): string {
-  return '!FIXME!' + accessToken + '!FIXME!' + key;
+export function encodeToken(accessToken: string, base64key: string): string {
+  const publicKey = Buffer.from(base64key, 'base64');
+  return new NodeRSA(publicKey).encrypt(accessToken).toString('base64');
 }

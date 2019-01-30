@@ -8,6 +8,10 @@ import { ScriptLabError } from './error';
 let isCurrentlyShowingError = false;
 
 export function invokeGlobalErrorHandler(error: any) {
+  // For a global error handler, it seems OK (and useful) for it to pop a debugger if a debugger is attached.
+  // tslint:disable-next-line:no-debugger
+  debugger;
+
   if (isCurrentlyShowingError) {
     // If already showing an error, don't show the subsequent one, since the first one
     // in the chain is likely the more important one.
