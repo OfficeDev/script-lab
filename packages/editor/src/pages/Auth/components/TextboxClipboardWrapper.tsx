@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import Clipboard from 'clipboard';
 import { invokeGlobalErrorHandler } from 'common/lib/utilities/splash.screen';
-import { TextField } from 'office-ui-fabric-react/lib/TextField';
+import { TextField, ITextField } from 'office-ui-fabric-react/lib/TextField';
 import { IconButton } from 'office-ui-fabric-react/lib/Button';
 
 interface IProps {
@@ -32,8 +32,11 @@ class TextboxClipboardWrapper extends React.Component<IProps, IState> {
     return (
       <>
         <OuterStyle style={this.props.style}>
-          {/* FIXME: how to call "setSelectionStart?" on ITextField interface? */}
-          <TextField readOnly={true} value={this.props.text} />
+          <TextField
+            readOnly={true}
+            value={this.props.text}
+            componentRef={this.onTextFieldReceivedRef}
+          />
           <IconButton
             iconProps={{ iconName: 'Copy' }}
             ariaLabel="Copy to clipboard"
@@ -43,6 +46,8 @@ class TextboxClipboardWrapper extends React.Component<IProps, IState> {
       </>
     );
   }
+
+  onTextFieldReceivedRef = (ref: ITextField) => ref.setSelectionRange(0, -1);
 }
 
 export default TextboxClipboardWrapper;

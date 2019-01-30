@@ -29,8 +29,6 @@ interface IState {
   profilePicUrl?: string;
 }
 
-// FIXME why no global error handler showing?...
-
 class AuthPageTest extends React.Component<IProps, IState> {
   privateKey: string;
 
@@ -38,9 +36,9 @@ class AuthPageTest extends React.Component<IProps, IState> {
     super(props);
 
     // FIXME later is it ok to block while generating the key, or do we need to do it in a worker?
-    const pair: { public: string; private: string } = keypair();
+    const pair: { public: string; private: string } = keypair({ bits: 256 });
 
-    console.log('FIXME');
+    console.log('FIXME remove soon');
     console.log('public', pair.public);
     console.log('private', pair.private);
 
@@ -129,13 +127,8 @@ class AuthPageTest extends React.Component<IProps, IState> {
     });
   };
 
-  onTokenInput = (
-    _: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
-    newValue?: string,
-  ) => {
-    // FIXME probably a better way to read...
+  onTokenInput = (_: React.FormEvent<HTMLInputElement>, newValue?: string) =>
     this.setState({ encodedToken: newValue });
-  };
 }
 
 export default AuthPageTest;
