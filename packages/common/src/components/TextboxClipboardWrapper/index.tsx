@@ -51,6 +51,9 @@ class TextboxClipboardWrapper extends React.Component<IProps, IState> {
   }
 
   onTextFieldReceivedRef = (ref: ITextField) => {
+    // Do a best-effort to try to select the range
+    // (Note, doesn't always work -- for example, doesn't work in IE,
+    // and also doesn't seem to *always* select)
     if (ref) {
       ref.setSelectionRange(0, -1);
     }

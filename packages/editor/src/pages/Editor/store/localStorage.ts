@@ -10,7 +10,7 @@ import { getSettingsSolutionAndFiles } from './settings/utilities';
 import { verifySettings } from './settings/sagas';
 import { getBoilerplate } from '../../../newSolutionData';
 import ensureFreshLocalStorage from 'common/lib/utilities/ensure.fresh.local.storage';
-import { getProfilePicUrlAndUsername } from '../services/github';
+import { getProfileInfo } from '../services/github';
 import { HostType } from '@microsoft/office-js-helpers';
 
 import {
@@ -143,7 +143,7 @@ async function loadGitHubInfo(): Promise<IGitHubState> {
         return {
           profilePicUrl: null,
           username: null,
-          ...(await getProfilePicUrlAndUsername(token)),
+          ...(await getProfileInfo(token)),
           token,
           isLoggingInOrOut: false,
         };

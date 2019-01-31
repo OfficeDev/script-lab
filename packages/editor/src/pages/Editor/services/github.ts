@@ -2,6 +2,7 @@ import QueryString from 'query-string';
 import { request as generalRequest, IResponseOrError } from './general';
 import { githubAppClientId } from 'common/lib/environment';
 import { GITHUB_KEY } from 'common/lib/utilities/localStorage';
+import { IGithubProcessedLoginInfo } from '../store/github/actions';
 
 const baseApiUrl = 'https://api.github.com';
 
@@ -10,6 +11,12 @@ interface IRequest {
   path: string;
   token?: string;
   jsonPayload?: string;
+}
+
+export interface IGithubProfileResponse {
+  login: string;
+  avatar_url: string;
+  name: string;
 }
 
 export function generateGithubLoginUrl(randomNumberForState: number) {
@@ -25,13 +32,13 @@ export function generateGithubLoginUrl(randomNumberForState: number) {
   );
 }
 
-export const request = async ({
+export async function request<T>({
   method,
   path,
   token,
   jsonPayload,
   isArrayResponse,
-}: IRequest & { isArrayResponse: boolean }): Promise<IResponseOrError> => {
+}: IRequest & { isArrayResponse: boolean }): Promise<IResponseOrError<T>> {
   try {
     let nextUrl = `${baseApiUrl}/${path}`;
     let aggregate = [];
@@ -56,51 +63,27 @@ export const request = async ({
       nextUrl = getNextLinkIfAny(headers.get('Link'));
     }
 
-    return { response: aggregate };
+    return { response: aggregate as any };
   } catch (error) {
     return { error };
   }
-};
+}
 
-// FIXME probably remove
-export const loginUsingDialogApi = async (): Promise<{
-  token?: string;
-  profilePicUrl?: string;
-  username?: string;
-}> => {
-  throw new Error('FIXME!');
-
-  // let iToken: IToken;
-  // try {
-  //   iToken = await auth.authenticate('GitHub');
-  // } catch (err) {
-  //   console.error(err);
-  //   throw err;
-  // }
-  // const token = iToken.access_token;
-
-  // return {
-  //   token,
-  //   ...(await getProfilePicUrlAndUsername(token)),
-  // };
-};
-
-export const getProfilePicUrlAndUsername = (
-  token: string,
-): Promise<{ profilePicUrl?: string; username?: string }> =>
-  request({
+export const getProfileInfo = (token: string): Promise<IGithubProcessedLoginInfo> =>
+  request<IGithubProfileResponse>({
     method: 'GET',
     path: 'user',
     token,
     isArrayResponse: false,
   }).then(({ response, error }) => {
     if (error) {
-      console.error(error);
-      return {};
+      throw error;
     } else {
       return {
+        token: token,
         profilePicUrl: response!.avatar_url,
         username: response!.login,
+        fullName: response!.name,
       };
     }
   });

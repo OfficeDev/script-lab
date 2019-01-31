@@ -5,7 +5,7 @@ if (process.env.NODE_ENV !== 'production') {
 import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
-import { respondWithAccessTokenCommon, encodeToken } from './auth';
+import { respondWithAccessToken } from './auth';
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -23,25 +23,10 @@ app.get('/hello', (req, res) => {
 //      or `{ error: string }` in case of error
 app.post('/auth', (req, res) => {
   const { code, state } = req.body;
-  respondWithAccessTokenCommon({
+  respondWithAccessToken({
     code,
     state,
     response: res,
-  });
-});
-
-// An auth endpoint that taken in an additional "key" parameter on the body (corresponding to a
-// public key generated on the client), and returns `{ encodedToken: string }` or `{ error: string }`
-app.post('/auth/encoded', (req, res) => {
-  const { code, state, key } = req.body;
-
-  respondWithAccessTokenCommon({
-    code,
-    state,
-    response: res,
-    onSuccessResponseMassager: body => ({
-      encodedToken: encodeToken(body.access_token, key),
-    }),
   });
 });
 

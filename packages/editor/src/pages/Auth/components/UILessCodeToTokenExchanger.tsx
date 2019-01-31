@@ -4,7 +4,6 @@ import { currentServerUrl } from 'common/lib/environment';
 export interface IProps {
   code: string;
   state: string;
-  publicKeyBase64: string;
   onToken: (token: string) => void;
   onError: (error: string) => void;
 }
@@ -27,10 +26,9 @@ class UILessCodeToTokenExchanger extends React.Component<IProps, IState> {
       const body = JSON.stringify({
         code: this.props.code,
         state: this.props.state,
-        key: this.props.publicKeyBase64,
       });
 
-      const response = await fetch(currentServerUrl + '/auth/encoded', {
+      const response = await fetch(currentServerUrl + '/auth', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -41,12 +39,12 @@ class UILessCodeToTokenExchanger extends React.Component<IProps, IState> {
       if (response.ok) {
         const data: {
           error?: string;
-          encodedToken?: string;
+          access_token?: string;
         } = await response.json();
         if (data.error) {
           this.props.onError(data.error);
-        } else if (data.encodedToken) {
-          this.props.onToken(data.encodedToken);
+        } else if (data.access_token) {
+          this.props.onToken(data.access_token);
         } else {
           this.props.onError("Unexpected error, response doesn't match expected form.");
         }

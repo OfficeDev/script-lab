@@ -16,13 +16,13 @@ import TextboxClipboardWrapper from 'common/lib/components/TextboxClipboardWrapp
 import { currentEditorUrl } from 'common/lib/environment';
 
 import { actions } from '../../../store';
-import { IGithubLoginInfo } from '../../../store/github/actions';
-import { getProfilePicUrlAndUsername } from '../../../services/github';
+import { IGithubProcessedLoginInfo } from '../../../store/github/actions';
+import { getProfileInfo } from '../../../services/github';
 
 interface IProps {
   isOpen: boolean;
   hide: () => void;
-  onLoginSuccess: (info: IGithubLoginInfo) => void;
+  onLoginSuccess: (info: IGithubProcessedLoginInfo) => void;
 }
 
 interface IState {
@@ -99,14 +99,10 @@ class BrowserAuthDialog extends React.Component<IProps, IState> {
       .toString();
     this.setState({ dialogOpen: false, decodedToken: decodedToken });
 
-    getProfilePicUrlAndUsername(decodedToken)
+    getProfileInfo(decodedToken)
       .then(data => {
         this.props.hide();
-        this.props.onLoginSuccess({
-          token: decodedToken,
-          username: data.username,
-          profilePicUrl: data.profilePicUrl,
-        });
+        this.props.onLoginSuccess(data);
       })
       .catch(e => invokeGlobalErrorHandler(e) /* FIXME! on failure */);
   };

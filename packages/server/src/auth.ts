@@ -1,6 +1,5 @@
 import express from 'express';
 import request from 'request';
-import NodeRSA from 'node-rsa';
 
 const { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, GITHUB_REDIRECT_URL } = process.env;
 const GENERIC_ERROR_STRING = 'An unexpected login error has occurred.';
@@ -11,23 +10,14 @@ export interface IGithubAccessTokenResponse {
   error_description: string;
 }
 
-export interface IGithubProfileResponse {
-  login: string;
-  avatar_url: string;
-}
-
-export function respondWithAccessTokenCommon({
+export function respondWithAccessToken({
   code,
   state,
   response,
-  onSuccessResponseMassager,
 }: {
   code: string;
   state: string;
   response: express.Response;
-  onSuccessResponseMassager?: (
-    body: IGithubAccessTokenResponse,
-  ) => { [key: string]: any };
 }) {
   request.post(
     {
@@ -63,17 +53,9 @@ export function respondWithAccessTokenCommon({
     } else if (body.error) {
       return { error: body.error + ': ' + body.error_description };
     } else if (body.access_token) {
-      return onSuccessResponseMassager ? onSuccessResponseMassager(body) : body;
+      return { access_token: body.access_token };
     } else {
       return { error: GENERIC_ERROR_STRING };
     }
   }
-}
-
-export function encodeToken(accessToken: string, base64key: string): string {
-  console.log('FIXME the access token was ' + accessToken);
-  const publicKey = Buffer.from(base64key, 'base64');
-  const encoded = new NodeRSA(publicKey).encrypt(accessToken).toString('base64');
-  console.log('Encoding your token, ' + encoded);
-  return encoded;
 }

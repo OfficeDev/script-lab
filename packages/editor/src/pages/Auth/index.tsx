@@ -1,5 +1,6 @@
 import React from 'react';
 import QueryString from 'query-string';
+import NodeRSA from 'node-rsa';
 
 import {
   hideSplashScreen,
@@ -9,16 +10,12 @@ import { isInternetExplorer, generateCryptoSafeRandom } from 'common/lib/utiliti
 import { MessageBar, MessageBarType } from 'office-ui-fabric-react/lib/MessageBar';
 import Theme from 'common/lib/components/Theme';
 import { HostType } from '@microsoft/office-js-helpers';
-import {
-  generateGithubLoginUrl,
-  getProfilePicUrlAndUsername,
-} from '../Editor/services/github';
+import { generateGithubLoginUrl, getProfileInfo } from '../Editor/services/github';
 import IEError from './components/IEError';
 import SomethingWentWrong from './components/SomethingWentWrong';
 import UILessCodeToTokenExchanger from './components/UILessCodeToTokenExchanger';
-import EncodedToken from './components/OnTokenSuccess';
+import OnTokenSuccess from './components/OnTokenSuccess';
 
-// FIXME polish to prevent bad refresh
 const SESSION_STORAGE_AUTH_COMPLETED_PARAMETER = 'auth_completed';
 const SESSION_STORAGE_AUTH_KEY_PARAMETER = 'auth_key';
 const SESSION_STORAGE_AUTH_STATE_PARAMETER = 'auth_state';
@@ -29,9 +26,11 @@ interface IState {
   isIE: boolean;
   base64Key: string | undefined;
   hasCodeAndState: boolean;
-  encodedToken?: string;
   error?: string;
+
+  encodedToken?: string;
   username?: string;
+  fullName?: string;
   profilePicUrl?: string;
 }
 
@@ -58,12 +57,24 @@ class AuthPage extends React.Component<IProps, IState> {
     let base64Key: string | undefined;
     if (typeof this.params.key === 'string' && this.params.key.trim().length > 0) {
       base64Key = this.params.key;
+      sessionStorage.clear();
+    } else {
+      base64Key = sessionStorage.getItem(SESSION_STORAGE_AUTH_KEY_PARAMETER); // or undefined
+    }
+
+    let error: string;
+    if (sessionStorage.getItem(SESSION_STORAGE_AUTH_COMPLETED_PARAMETER)) {
+      error =
+        "You've already authenticated once on this page. " +
+        'If you need to re-authenticate, please close this page, go back to the code editor, ' +
+        'and retrieve a new sign-in URL to open in a new page.';
     }
 
     this.state = {
       isIE,
       base64Key,
-      hasCodeAndState: Boolean(this.params.code && this.params.state),
+      error,
+      hasCodeAndState: !error && Boolean(this.params.code && this.params.state),
     };
   }
 
@@ -82,9 +93,10 @@ class AuthPage extends React.Component<IProps, IState> {
       if (this.state.encodedToken) {
         return {
           component: (
-            <EncodedToken
+            <OnTokenSuccess
               encodedToken={this.state.encodedToken}
               username={this.state.username}
+              fullName={this.state.fullName}
               profilePicUrl={this.state.profilePicUrl}
             />
           ),
@@ -93,9 +105,8 @@ class AuthPage extends React.Component<IProps, IState> {
       }
 
       if (this.state.hasCodeAndState) {
-        const key = sessionStorage.getItem(SESSION_STORAGE_AUTH_KEY_PARAMETER);
         const state = sessionStorage.getItem(SESSION_STORAGE_AUTH_STATE_PARAMETER);
-        if (!key || !state || state !== this.params.state) {
+        if (!this.state.base64Key || !state || state !== this.params.state) {
           return {
             component: <SomethingWentWrong />,
             showUI: true,
@@ -107,7 +118,6 @@ class AuthPage extends React.Component<IProps, IState> {
             <UILessCodeToTokenExchanger
               code={this.params.code}
               state={state}
-              publicKeyBase64={key}
               onToken={this.onToken}
               onError={this.onError}
             />
@@ -168,12 +178,14 @@ class AuthPage extends React.Component<IProps, IState> {
   }
 
   onToken = async (token: string) => {
-    this.setState({ encodedToken: token });
-    // getProfilePicUrlAndUsername(token)
-    //   .then(({ username, profilePicUrl }) =>
-    //      this.setState({ encodedToken: token, username, profilePicUrl }),
-    //   )
-    //   .catch(e => invokeGlobalErrorHandler(e));
+    getProfileInfo(token)
+      .then(({ username, profilePicUrl, fullName }) => {
+        const key = this.state.base64Key;
+        const encodedToken = new NodeRSA(atob(key)).encrypt(token).toString('base64');
+        this.setState({ encodedToken, username, profilePicUrl, fullName });
+        window.sessionStorage.setItem(SESSION_STORAGE_AUTH_COMPLETED_PARAMETER, 'true');
+      })
+      .catch(e => invokeGlobalErrorHandler(e));
   };
 
   onError = (error: string) => this.setState({ error: error });
