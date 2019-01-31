@@ -62,6 +62,7 @@ export const request = async ({
   }
 };
 
+// FIXME probably remove
 export const loginUsingDialogApi = async (): Promise<{
   token?: string;
   profilePicUrl?: string;

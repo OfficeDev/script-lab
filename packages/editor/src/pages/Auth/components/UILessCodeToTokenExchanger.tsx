@@ -5,13 +5,7 @@ export interface IProps {
   code: string;
   state: string;
   publicKeyBase64: string;
-  onSuccess: (
-    data: {
-      token: string;
-      username: string;
-      profilePicUrl: string;
-    },
-  ) => void;
+  onToken: (token: string) => void;
   onError: (error: string) => void;
 }
 
@@ -45,22 +39,14 @@ class UILessCodeToTokenExchanger extends React.Component<IProps, IState> {
       });
 
       if (response.ok) {
-        debugger;
         const data: {
           error?: string;
           encodedToken?: string;
-          username: string;
-          profilePicUrl: string;
         } = await response.json();
         if (data.error) {
           this.props.onError(data.error);
         } else if (data.encodedToken) {
-          debugger;
-          this.props.onSuccess({
-            token: data.encodedToken,
-            username: data.username,
-            profilePicUrl: data.profilePicUrl,
-          });
+          this.props.onToken(data.encodedToken);
         } else {
           this.props.onError("Unexpected error, response doesn't match expected form.");
         }

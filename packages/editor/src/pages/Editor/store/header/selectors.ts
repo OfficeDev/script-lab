@@ -283,7 +283,7 @@ export const getItems = createSelector(
                   key: 'export-to-clipboard',
                   text: 'Copy to clipboard',
                   iconProps: { iconName: 'ClipboardSolid' },
-                  className: 'export-to-clipboard',
+                  className: 'export-snippet-to-clipboard',
                 },
               ]
                 .filter(option => !option.hidden)

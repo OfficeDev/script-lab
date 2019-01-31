@@ -1,16 +1,22 @@
 import React from 'react';
 import QueryString from 'query-string';
 
-import { hideSplashScreen } from 'common/lib/utilities/splash.screen';
-import { isInternetExplorer, generateCryptoSafeRandom } from '../../utils';
+import {
+  hideSplashScreen,
+  invokeGlobalErrorHandler,
+} from 'common/lib/utilities/splash.screen';
+import { isInternetExplorer, generateCryptoSafeRandom } from 'common/lib/utilities/misc';
 import { MessageBar, MessageBarType } from 'office-ui-fabric-react/lib/MessageBar';
 import Theme from 'common/lib/components/Theme';
 import { HostType } from '@microsoft/office-js-helpers';
-import { generateGithubLoginUrl } from '../Editor/services/github';
+import {
+  generateGithubLoginUrl,
+  getProfilePicUrlAndUsername,
+} from '../Editor/services/github';
 import IEError from './components/IEError';
 import SomethingWentWrong from './components/SomethingWentWrong';
 import UILessCodeToTokenExchanger from './components/UILessCodeToTokenExchanger';
-import EncodedToken from './components/EncodedToken';
+import EncodedToken from './components/OnTokenSuccess';
 
 // FIXME polish to prevent bad refresh
 const SESSION_STORAGE_AUTH_COMPLETED_PARAMETER = 'auth_completed';
@@ -102,7 +108,7 @@ class AuthPage extends React.Component<IProps, IState> {
               code={this.params.code}
               state={state}
               publicKeyBase64={key}
-              onSuccess={this.onSuccessfulServerResponse}
+              onToken={this.onToken}
               onError={this.onError}
             />
           ),
@@ -161,15 +167,15 @@ class AuthPage extends React.Component<IProps, IState> {
     );
   }
 
-  onSuccessfulServerResponse = ({
-    token,
-    username,
-    profilePicUrl,
-  }: {
-    token: string;
-    username: string;
-    profilePicUrl: string;
-  }) => this.setState({ encodedToken: token, username, profilePicUrl });
+  onToken = async (token: string) => {
+    this.setState({ encodedToken: token });
+    // getProfilePicUrlAndUsername(token)
+    //   .then(({ username, profilePicUrl }) =>
+    //      this.setState({ encodedToken: token, username, profilePicUrl }),
+    //   )
+    //   .catch(e => invokeGlobalErrorHandler(e));
+  };
+
   onError = (error: string) => this.setState({ error: error });
 }
 

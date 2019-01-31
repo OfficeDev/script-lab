@@ -45,10 +45,6 @@ class BrowserAuthDialog extends React.Component<IProps, IState> {
     // FIXME later is it ok to block while generating the key, or do we need to do it in a worker?
     const pair: { public: string; private: string } = keypair();
 
-    console.log('FIXME remove soon');
-    console.log('public', pair.public);
-    console.log('private', pair.private);
-
     this.privateKey = pair.private;
 
     this.state = {
@@ -98,13 +94,11 @@ class BrowserAuthDialog extends React.Component<IProps, IState> {
   }
 
   onOk = () => {
-    // FIXME close
     const decodedToken = new NodeRSA(this.privateKey)
       .decrypt(this.state.encodedToken)
       .toString();
     this.setState({ dialogOpen: false, decodedToken: decodedToken });
 
-    // FIXME: after validating can call hide.
     getProfilePicUrlAndUsername(decodedToken)
       .then(data => {
         this.props.hide();
@@ -114,7 +108,7 @@ class BrowserAuthDialog extends React.Component<IProps, IState> {
           profilePicUrl: data.profilePicUrl,
         });
       })
-      .catch(e => invokeGlobalErrorHandler(e) /* FIXME */);
+      .catch(e => invokeGlobalErrorHandler(e) /* FIXME! on failure */);
   };
 
   onTokenInput = (_: React.FormEvent<HTMLInputElement>, newValue?: string) =>

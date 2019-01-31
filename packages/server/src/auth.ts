@@ -46,10 +46,6 @@ export function respondWithAccessTokenCommon({
     (error, _httpResponse, body) => {
       let resultObject = getResultObjectBasedOnAuthResponse(error, body);
 
-      console.log('FIXME for debugging for now token = ' + body.access_token);
-      console.log("Cumulative thing that we're sending is:");
-      console.log(resultObject);
-
       response
         .contentType('application/json')
         .status(200)

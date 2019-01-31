@@ -75,7 +75,7 @@ class Header extends Component<IProps, IState> {
 
   constructor(props: IProps) {
     super(props);
-    this.clipboard = new Clipboard('.export-to-clipboard', {
+    this.clipboard = new Clipboard('.export-snippet-to-clipboard', {
       text: this.getSnippetYAML,
     });
     this.clipboard.on('success', props.notifyClipboardCopySuccess);
