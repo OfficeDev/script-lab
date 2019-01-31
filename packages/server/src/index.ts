@@ -19,8 +19,7 @@ app.get('/hello', (req, res) => {
   res.send({ express: 'Hello From Express' });
 });
 
-// An auth endpoint that returns the `{ access_token: string }` directly in un-encoded form,
-//      or `{ error: string }` in case of error
+// An auth endpoint for GitHub that returns either `{ access_token: string }` or `{ error: string }`
 app.post('/auth', (req, res) => {
   const { code, state } = req.body;
   respondWithAccessToken({
