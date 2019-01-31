@@ -47,6 +47,8 @@ export function respondWithAccessTokenCommon({
       let resultObject = getResultObjectBasedOnAuthResponse(error, body);
 
       console.log('FIXME for debugging for now token = ' + body.access_token);
+      console.log("Cumulative thing that we're sending is:");
+      console.log(resultObject);
 
       response
         .contentType('application/json')
@@ -73,6 +75,9 @@ export function respondWithAccessTokenCommon({
 }
 
 export function encodeToken(accessToken: string, base64key: string): string {
+  console.log('FIXME the access token was ' + accessToken);
   const publicKey = Buffer.from(base64key, 'base64');
-  return new NodeRSA(publicKey).encrypt(accessToken).toString('base64');
+  const encoded = new NodeRSA(publicKey).encrypt(accessToken).toString('base64');
+  console.log('Encoding your token, ' + encoded);
+  return encoded;
 }

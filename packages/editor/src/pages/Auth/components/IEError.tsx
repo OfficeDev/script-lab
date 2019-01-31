@@ -1,6 +1,6 @@
 import React from 'react';
 import { MessageBar, MessageBarType } from 'office-ui-fabric-react/lib/MessageBar';
-import TextboxClipboardWrapper from './TextboxClipboardWrapper';
+import TextboxClipboardWrapper from 'common/lib/components/TextboxClipboardWrapper';
 
 export default () => (
   <>

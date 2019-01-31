@@ -45,6 +45,7 @@ class UILessCodeToTokenExchanger extends React.Component<IProps, IState> {
       });
 
       if (response.ok) {
+        debugger;
         const data: {
           error?: string;
           encodedToken?: string;

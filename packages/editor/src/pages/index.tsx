@@ -4,7 +4,6 @@ import PageSwitcher from 'common/lib/components/PageSwitcher';
 import { PATHS } from '../constants';
 
 import Auth from './Auth';
-import AuthTest from './AuthTest';
 import AddinCommands from './AddinCommands';
 import CustomFunctions from './CustomFunctions';
 import CustomFunctionsHeartbeat from './CustomFunctionsHeartbeat';
@@ -18,7 +17,6 @@ import Run from './Run';
 // src/constants.ts and the key must be the same!
 const pages = {
   Auth,
-  AuthTest,
   AddinCommands,
   CustomFunctions,
   CustomFunctionsHeartbeat,

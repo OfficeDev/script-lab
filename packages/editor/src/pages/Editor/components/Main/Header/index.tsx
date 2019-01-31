@@ -26,6 +26,7 @@ import { Dispatch } from 'redux';
 import { IState as IReduxState } from '../../../store/reducer';
 import { actions, selectors } from '../../../store';
 import { IHeaderItem } from '../../../store/header/selectors';
+import BrowserAuthDialog from './BrowserAuthDialog';
 
 export const convertActionCreatorToOnClick = (
   item: IHeaderItem,
@@ -64,12 +65,13 @@ interface IProps {
 }
 
 interface IState {
-  isSolutionSettingsVisible: boolean;
+  isSolutionSettingsVisible?: boolean;
+  isBrowserAuthDialogVisible?: boolean;
 }
 
 class Header extends Component<IProps, IState> {
   clipboard: Clipboard;
-  state: IState = { isSolutionSettingsVisible: false };
+  state: IState = {};
 
   constructor(props: IProps) {
     super(props);
@@ -89,6 +91,8 @@ class Header extends Component<IProps, IState> {
 
   showSolutionSettings = () => this.setState({ isSolutionSettingsVisible: true });
   hideSolutionSettings = () => this.setState({ isSolutionSettingsVisible: false });
+  showBrowserAuthDialog = () => this.setState({ isBrowserAuthDialogVisible: true });
+  hideBrowserAuthDialog = () => this.setState({ isBrowserAuthDialogVisible: false });
 
   private renderItem = (item: IHeaderItem): IHeaderItem => {
     const customRenderIcons = this.getCustomOnRenderIconButtons();
@@ -149,11 +153,26 @@ class Header extends Component<IProps, IState> {
               return renderedItem;
             }
           })}
-          farItems={farItems.map((item: IHeaderItem) => this.renderItem(item))}
+          farItems={farItems.map((item: IHeaderItem) => {
+            const renderedItem = this.renderItem(item);
+            // FIXME minor cleanup
+            if (item.key === 'account') {
+              return {
+                ...renderedItem,
+                onClick: this.showBrowserAuthDialog,
+              };
+            } else {
+              return renderedItem;
+            }
+          })}
         />
         <SolutionSettings
           isOpen={this.state.isSolutionSettingsVisible}
           closeSolutionSettings={this.hideSolutionSettings}
+        />
+        <BrowserAuthDialog
+          isOpen={this.state.isBrowserAuthDialogVisible}
+          hide={this.hideBrowserAuthDialog}
         />
       </>
     );

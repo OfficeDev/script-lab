@@ -62,12 +62,13 @@ export const request = async ({
   }
 };
 
-export const login = async (): Promise<{
+export const loginUsingDialogApi = async (): Promise<{
   token?: string;
   profilePicUrl?: string;
   username?: string;
 }> => {
   throw new Error('FIXME!');
+
   // let iToken: IToken;
   // try {
   //   iToken = await auth.authenticate('GitHub');

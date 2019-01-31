@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import Clipboard from 'clipboard';
-import { invokeGlobalErrorHandler } from 'common/lib/utilities/splash.screen';
 import { TextField, ITextField } from 'office-ui-fabric-react/lib/TextField';
 import { IconButton } from 'office-ui-fabric-react/lib/Button';
+import { invokeGlobalErrorHandler } from '../../utilities/splash.screen';
 
 interface IProps {
   text: string;
@@ -47,7 +47,11 @@ class TextboxClipboardWrapper extends React.Component<IProps, IState> {
     );
   }
 
-  onTextFieldReceivedRef = (ref: ITextField) => ref.setSelectionRange(0, -1);
+  onTextFieldReceivedRef = (ref: ITextField) => {
+    if (ref) {
+      ref.setSelectionRange(0, -1);
+    }
+  };
 }
 
 export default TextboxClipboardWrapper;

@@ -1,5 +1,4 @@
 import { combineReducers } from 'redux';
-import { RouterState } from 'connected-react-router';
 
 // reducers
 import dialog, { IState as IDialogState } from './dialog/reducer';
@@ -26,7 +25,6 @@ export interface IState {
   host: IHostState;
   samples: ISamplesState;
   screen: IScreenState;
-  router?: RouterState; // from connected-react-router
 }
 
 const root = combineReducers<IState, IRootAction>({

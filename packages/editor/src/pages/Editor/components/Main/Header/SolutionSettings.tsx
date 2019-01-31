@@ -107,12 +107,12 @@ class SolutionSettings extends React.Component<ISolutionSettings, IState> {
     );
   }
   private updateSolutionName = (
-    nevent: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
+    _: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
     newValue?: string | undefined,
   ) => this.setState({ name: newValue! });
 
   private updateSolutionDescription = (
-    event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
+    _: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
     newValue?: string | undefined,
   ) => this.setState({ description: newValue! });
 

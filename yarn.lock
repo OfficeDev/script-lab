@@ -4086,15 +4086,6 @@ connect-history-api-fallback@^1.3.0:
   resolved "https://registry.yarnpkg.com/connect-history-api-fallback/-/connect-history-api-fallback-1.5.0.tgz#b06873934bc5e344fef611a196a6faae0aee015a"
   integrity sha1-sGhzk0vF40T+9hGhlqb6rgruAVo=
 
-connected-react-router@^4.3.0:
-  version "4.5.0"
-  resolved "https://registry.yarnpkg.com/connected-react-router/-/connected-react-router-4.5.0.tgz#b6f021cc284a244fbee70e16e5ff0f2a4613e3d3"
-  integrity sha512-SBBmAZrtmw4y7Rkl2PCct8lN/DuCftl7QSAFLgFyjjuYkeJKAzAvQjzNNNE4R3j2+6a4TUiv8qselxQ4+6H5eA==
-  dependencies:
-    immutable "^3.8.1"
-    redux-seamless-immutable "^0.4.0"
-    seamless-immutable "^7.1.3"
-
 console-browserify@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/console-browserify/-/console-browserify-1.1.0.tgz#f0241c45730a9fc6323b206dbf38edc741d0bb10"
@@ -10964,11 +10955,6 @@ react-router-dom@^4.2.2, react-router-dom@^4.3.1:
     react-router "^4.3.1"
     warning "^4.0.1"
 
-react-router-redux@^4.0.0:
-  version "4.0.8"
-  resolved "https://registry.yarnpkg.com/react-router-redux/-/react-router-redux-4.0.8.tgz#227403596b5151e182377dab835b5d45f0f8054e"
-  integrity sha1-InQDWWtRUeGCN32rg1tdRfD4BU4=
-
 react-router@^4.2.0, react-router@^4.3.1:
   version "4.3.1"
   resolved "https://registry.yarnpkg.com/react-router/-/react-router-4.3.1.tgz#aada4aef14c809cb2e686b05cee4742234506c4e"
@@ -11269,14 +11255,6 @@ redux-saga@^0.16.0:
   version "0.16.2"
   resolved "https://registry.yarnpkg.com/redux-saga/-/redux-saga-0.16.2.tgz#993662e86bc945d8509ac2b8daba3a8c615cc971"
   integrity sha512-iIjKnRThI5sKPEASpUvySemjzwqwI13e3qP7oLub+FycCRDysLSAOwt958niZW6LhxfmS6Qm1BzbU70w/Koc4w==
-
-redux-seamless-immutable@^0.4.0:
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/redux-seamless-immutable/-/redux-seamless-immutable-0.4.0.tgz#b50f8680ecc5ef04021551267f78fa1ffd3cf985"
-  integrity sha512-/oS3fhrize9D3RSHemgJxVllohybRrad5IjccotFy8Ni4IKAPTtX1mqszpiCIl12+7v0dNqBpq6ES6R236AliQ==
-  dependencies:
-    react-router-redux "^4.0.0"
-    seamless-immutable "^7.1.2"
 
 redux@^4.0.0, redux@^4.0.1:
   version "4.0.1"
@@ -11809,11 +11787,6 @@ schema-utils@^1.0.0:
     ajv "^6.1.0"
     ajv-errors "^1.0.0"
     ajv-keywords "^3.1.0"
-
-seamless-immutable@^7.1.2, seamless-immutable@^7.1.3:
-  version "7.1.4"
-  resolved "https://registry.yarnpkg.com/seamless-immutable/-/seamless-immutable-7.1.4.tgz#6e9536def083ddc4dea0207d722e0e80d0f372f8"
-  integrity sha512-XiUO1QP4ki4E2PHegiGAlu6r82o5A+6tRh7IkGGTVg/h+UoeX4nFBeCGPOhb4CYjvkqsfm/TUtvOMYC1xmV30A==
 
 select-hose@^2.0.0:
   version "2.0.0"

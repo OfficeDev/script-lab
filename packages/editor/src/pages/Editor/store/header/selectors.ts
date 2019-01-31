@@ -324,7 +324,6 @@ export const getFarItems = createSelector(
                 }
               : undefined,
             iconOnly: true,
-            actionCreator: isLoggingInOrOut ? () => {} : actions.github.login.request,
           },
           shouldShowPopoutControl('editor')
             ? {
