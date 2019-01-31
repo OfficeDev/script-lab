@@ -15,6 +15,7 @@ import IEError from './components/IEError';
 import SomethingWentWrong from './components/SomethingWentWrong';
 import UILessCodeToTokenExchanger from './components/UILessCodeToTokenExchanger';
 import OnTokenSuccess from './components/OnTokenSuccess';
+import Dialog, { DialogType } from 'office-ui-fabric-react/lib/Dialog';
 
 const SESSION_STORAGE_AUTH_COMPLETED_PARAMETER = 'auth_completed';
 const SESSION_STORAGE_AUTH_KEY_PARAMETER = 'auth_key';
@@ -141,7 +142,8 @@ class AuthPage extends React.Component<IProps, IState> {
           component: (
             <MessageBar messageBarType={MessageBarType.severeWarning}>
               This page must be opened from a link that contains a "key" parameter in the
-              URL. Please go back to the sign-in dialog and be sure to copy the full URL.
+              URL. Please go back to the sign-in dialog in the code editor, and be sure to
+              copy the full URL.
             </MessageBar>
           ),
           showUI: true,
@@ -167,12 +169,19 @@ class AuthPage extends React.Component<IProps, IState> {
 
     return (
       <Theme host={HostType.WEB}>
-        <div style={{ padding: '40px' }}>
-          <h1 style={{ marginBottom: '20px', fontSize: '28px', fontWeight: 100 }}>
-            Script Lab – Sign in with GitHub
-          </h1>
+        <Dialog
+          hidden={false}
+          dialogContentProps={{
+            type: DialogType.normal,
+            title: 'Script Lab – Sign in with GitHub',
+          }}
+          modalProps={{
+            isBlocking: true,
+            containerClassName: 'ms-dialogMainOverride',
+          }}
+        >
           {component}
-        </div>
+        </Dialog>
       </Theme>
     );
   }
