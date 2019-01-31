@@ -1,5 +1,6 @@
 import { stringifyPlusPlus } from './string';
 import { ScriptLabError } from './error';
+import { DEBUG_KEY } from './localStorage';
 
 // Keep the state for whether or not currently showing an error --
 //   that way, even if get a request to dismiss the splash screen,
@@ -8,9 +9,10 @@ import { ScriptLabError } from './error';
 let isCurrentlyShowingError = false;
 
 export function invokeGlobalErrorHandler(error: any) {
-  // For a global error handler, it seems OK (and useful) for it to pop a debugger if a debugger is attached.
-  // tslint:disable-next-line:no-debugger
-  debugger;
+  if (process.env.NODE_ENV !== 'production' || window.localStorage.getItem(DEBUG_KEY)) {
+    // tslint:disable-next-line:no-debugger
+    debugger;
+  }
 
   if (isCurrentlyShowingError) {
     // If already showing an error, don't show the subsequent one, since the first one
