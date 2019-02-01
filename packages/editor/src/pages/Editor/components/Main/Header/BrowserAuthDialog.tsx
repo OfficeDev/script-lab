@@ -11,7 +11,6 @@ import { Label } from 'office-ui-fabric-react/lib/Label';
 
 import TextboxClipboardWrapper from 'common/lib/components/TextboxClipboardWrapper';
 import { currentEditorUrl } from 'common/lib/environment';
-import Only from 'common/lib/components/Only';
 
 import { actions } from '../../../store';
 import { IGithubProcessedLoginInfo } from '../../../store/github/actions';
