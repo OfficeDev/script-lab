@@ -10,6 +10,7 @@ import Backstage from '../Backstage';
 import ScreenSizeMonitor from '../ScreenSizeMonitor';
 
 import { actions, selectors } from '../../store';
+import BrowserAuthDialog from '../Main/Header/BrowserAuthDialog';
 
 interface IProps {
   isBackstageVisible: boolean;
@@ -32,6 +33,7 @@ class IDE extends React.Component<IProps> {
         </Only>
         <Main />
         <ScreenSizeMonitor />
+        <BrowserAuthDialog />
       </Theme>
     );
   }

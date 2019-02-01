@@ -75,8 +75,7 @@ const mapDispatchToProps = (dispatch: Dispatch<IRootAction>): IActionsFromRedux 
   importGist: (gistId?: string, gist?: string) =>
     dispatch(gists.importSnippet.request({ gistId, gist })),
   goBack: () => dispatch(editor.open()),
-  signIn: () => dispatch(github.login.request()),
-  // FIXME what do do about the "sign in" experience in the backstage.  Should my BrowserAuthDialog have been at the root level of the app instead of in the header?
+  signIn: () => dispatch(github.showLoginDialog()),
 });
 
 export interface IProps extends IPropsFromRedux, IActionsFromRedux {}

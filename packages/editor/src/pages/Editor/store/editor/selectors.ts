@@ -5,12 +5,7 @@ import {
   getSolutionWithHiddenFiles,
   getInLastModifiedOrder as getSolutionsInLastModifiedOrder,
 } from '../solutions/selectors';
-import {
-  NULL_SOLUTION,
-  NULL_SOLUTION_ID,
-  NULL_FILE,
-  SCRIPT_FILE_NAME,
-} from '../../../../constants';
+import { NULL_SOLUTION, NULL_FILE, SCRIPT_FILE_NAME } from '../../../../constants';
 import { isCustomFunctionScript } from '../../../../utils';
 
 export const getActiveSolution = (

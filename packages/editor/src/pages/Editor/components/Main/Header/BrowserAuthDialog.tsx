@@ -16,9 +16,12 @@ import { actions } from '../../../store';
 import { IGithubProcessedLoginInfo } from '../../../store/github/actions';
 import { getProfileInfo } from '../../../services/github';
 
+import { createStructuredSelector } from 'reselect';
+import selectors from '../../../store/selectors';
+
 interface IProps {
   isOpen: boolean;
-  hide: () => void;
+  cancel: () => void;
   onLoginSuccess: (info: IGithubProcessedLoginInfo) => void;
 }
 
@@ -44,7 +47,7 @@ class BrowserAuthDialog extends React.Component<IProps, IState> {
     return (
       <Dialog
         hidden={!this.props.isOpen}
-        onDismiss={this.props.hide}
+        onDismiss={this.props.cancel}
         dialogContentProps={{
           type: DialogType.normal,
           title: 'Action required',
@@ -91,7 +94,7 @@ class BrowserAuthDialog extends React.Component<IProps, IState> {
         )}
         <DialogFooter>
           <PrimaryButton onClick={this.onOk} disabled={!this.shouldAllowOk()} text="OK" />
-          <DefaultButton onClick={this.props.hide} text="Cancel" />
+          <DefaultButton onClick={this.props.cancel} text="Cancel" />
         </DialogFooter>
       </Dialog>
     );
@@ -141,7 +144,6 @@ class BrowserAuthDialog extends React.Component<IProps, IState> {
     try {
       const profileInfo = await getProfileInfo(this.state.decodedToken);
       this.props.onLoginSuccess(profileInfo);
-      this.props.hide();
     } catch (e) {
       this.setState({
         errorMessage:
@@ -168,8 +170,10 @@ class BrowserAuthDialog extends React.Component<IProps, IState> {
 }
 
 export default connect(
-  null,
-  { onLoginSuccess: actions.github.login.success },
+  createStructuredSelector({
+    isOpen: selectors.github.getIsAuthDialogOpen,
+  }),
+  { onLoginSuccess: actions.github.loginSuccessful, cancel: actions.github.cancelLogin },
 )(BrowserAuthDialog);
 
 // cspell:ignore keypair

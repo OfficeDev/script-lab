@@ -1,17 +1,12 @@
-import { createAsyncAction } from 'typesafe-actions';
+import { createAction } from 'typesafe-actions';
 
-// FIXME this might be boil-down-able to just one action
-export const login = createAsyncAction(
-  'GITHUB_LOGIN_REQUEST',
-  'GITHUB_LOGIN_SUCCESS',
-  'GITHUB_LOGIN_FAILURE',
-)<void, IGithubProcessedLoginInfo, Error>();
+export const showLoginDialog = createAction('GITHUB_LOGIN_SHOW_DIALOG');
+export const loginSuccessful = createAction('GITHUB_LOGIN_SUCCESS', resolve => {
+  return (params: IGithubProcessedLoginInfo) => resolve(params);
+});
+export const cancelLogin = createAction('GITHUB_LOGIN_CANCEL');
 
-export const logout = createAsyncAction(
-  'GITHUB_LOGOUT_REQUEST',
-  'GITHUB_LOGOUT_SUCCESS',
-  'GITHUB_LOGOUT_FAILURE',
-)<void, void, Error>();
+export const logout = createAction('GITHUB_LOGOUT');
 
 export interface IGithubProcessedLoginInfo {
   token: string;

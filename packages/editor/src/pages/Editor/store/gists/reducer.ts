@@ -15,7 +15,7 @@ const gists = (state: IState = {}, action: IGistsAction | IGithubAction): IState
   switch (action.type) {
     case getType(gistActions.fetchMetadata.success):
       return action.payload.reduce((all, gist) => ({ ...all, [gist.id]: gist }), {});
-    case getType(githubActions.logout.success):
+    case getType(githubActions.logout):
       return {};
     default:
       return state;

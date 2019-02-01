@@ -165,7 +165,7 @@ const showLoginToGithubDialog = actions.dialog.show({
     {
       key: 'sign-in',
       text: 'Sign in',
-      action: actions.github.login.request(),
+      action: actions.github.showLoginDialog(),
       isPrimary: true,
     },
     {
@@ -179,7 +179,7 @@ const showLoginToGithubDialog = actions.dialog.show({
 
 export const getItems = createSelector(
   [getMode, getActiveSolution, getIsTaskPaneWidth, getIsLoggedIn, getRunButton],
-  (mode, activeSolution, iconOnly, isLoggedIn, runButton) => {
+  (mode, activeSolution, iconOnly, isLoggedIn, runButton): IHeaderItem[] => {
     const titleStyles = {
       style: { paddingRight: iconOnly ? '0' : '3rem' },
       iconProps: iconOnly ? { iconName: 'OfficeAddinsLogo' } : {},
@@ -302,7 +302,7 @@ export const getItems = createSelector(
 
 export const getFarItems = createSelector(
   [getMode, getIsLoggedIn, getIsLoggingInOrOut],
-  (mode, isLoggedIn, isLoggingInOrOut) => {
+  (mode, isLoggedIn, isLoggingInOrOut): IHeaderItem[] => {
     switch (mode) {
       case 'null-solution':
       case 'settings':
@@ -318,12 +318,15 @@ export const getFarItems = createSelector(
                     {
                       key: 'logout',
                       text: 'Logout',
-                      actionCreator: actions.github.logout.request,
+                      actionCreator: actions.github.logout,
                     },
                   ],
                 }
               : undefined,
             iconOnly: true,
+            actionCreator: isLoggingInOrOut
+              ? undefined /* do nothing if in the transitional state */
+              : actions.github.showLoginDialog,
           },
           shouldShowPopoutControl('editor')
             ? {
