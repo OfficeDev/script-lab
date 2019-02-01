@@ -37,6 +37,7 @@ class TextboxClipboardWrapper extends React.Component<IProps, IState> {
         <OuterStyle style={this.props.style}>
           <TextField
             readOnly={true}
+            spellCheck={false}
             value={this.props.text}
             componentRef={this.onTextFieldReceivedRef}
           />

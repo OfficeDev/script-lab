@@ -5,9 +5,8 @@
   - Deletes/renames/etc should work correctly and persist even if you close/re-open the app.
   - When deleting the last snippet, the backstage should pop up, showing the samples gallery.
 - Login to github
-  - Should be able to log in
+  - Should be able to log in, both from the header and the backstage.
   - Should see your snippets in snippets list
-    - Note: there's an issue with IE 11 on both Win32 and Office Online that does not allow for consenting to GitHub OAuth apps via IE (issue [#248](https://github.com/OfficeDev/script-lab-react/issues/248)). The current workaround is to load [this](https://script-lab.azureedge.net/) url in Chrome/Edge/Firefox/etc. and sign-in and consent in that window. After consenting in that browser, you should be able to use the GitHub functionality within the app by signing in again, and this time it should succeed.
 - Import someone elses' snippet
   - From YAML
   - From Gist

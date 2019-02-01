@@ -24,7 +24,7 @@ interface IProps {
 }
 
 interface IState {
-  authUrl: string;
+  authUrl?: string;
 
   errorMessage?: string;
 
@@ -34,19 +34,24 @@ interface IState {
 
 class BrowserAuthDialog extends React.Component<IProps, IState> {
   privateKey: NodeRSA;
+  state: IState = {};
 
   constructor(props: IProps) {
     super(props);
 
-    // FIXME later is it ok to block while generating the key, or do we need to do it in a worker?
-    const pair: { public: string; private: string } = keypair();
-    // const pair: { public: string; private: string } = keypair({ bits: 512 });
+    // FIXME! ensures that this only runs when needed, not on every load!
 
-    this.privateKey = new NodeRSA(pair.private);
+    // FIXME put into web worker:
+    setTimeout(() => {
+      const pair: { public: string; private: string } = keypair();
 
-    this.state = {
-      authUrl: currentEditorUrl + '/#/auth?key=' + encodeURIComponent(btoa(pair.public)),
-    };
+      this.privateKey = new NodeRSA(pair.private);
+
+      this.setState({
+        authUrl:
+          currentEditorUrl + '/#/auth?key=' + encodeURIComponent(btoa(pair.public)),
+      });
+    }, 0);
   }
 
   componentDidMount() {
@@ -54,7 +59,7 @@ class BrowserAuthDialog extends React.Component<IProps, IState> {
   }
 
   render() {
-    // FIXME how to add "esc" to cancel?
+    // FIXME accessibility: how to add "esc" to cancel and "enter" to continue?
 
     return (
       <Dialog
@@ -62,38 +67,45 @@ class BrowserAuthDialog extends React.Component<IProps, IState> {
         onDismiss={this.props.hide}
         dialogContentProps={{
           type: DialogType.normal,
-          title: 'Script Lab – Sign in with GitHub',
+          title: 'Action required for sign-in',
         }}
         modalProps={{
+          isBlocking: true,
           containerClassName: 'ms-dialogMainOverride',
         }}
       >
-        <Label>
-          To log in with GitHub, you must open the following URL in Edge, Chrome, Firefox,
-          or Safari.
-        </Label>
-        <TextboxClipboardWrapper text={this.state.authUrl} />
-        <br />
-        <Label>
-          After completing the authentication flow in the browser window, please paste in
-          the resulting encoded token:
-        </Label>
-        <TextField
-          placeholder="<Paste encoded token here>"
-          onChange={this.onTokenInput}
-          errorMessage={this.state.errorMessage}
-          iconProps={
-            this.state.decodedToken
-              ? {
-                  iconName: 'Checkmark',
-                }
-              : {}
-          }
-          required={
-            /* show required asterisk until it's already been fulfilled */
-            !this.state.decodedToken
-          }
-        />
+        {!this.state.authUrl ? (
+          <Label>
+            Please wait while we prepare the auth dialog. This may take a few seconds...
+          </Label>
+        ) : (
+          <>
+            <Label>
+              To log in with GitHub, please open the following URL in a browser window:
+            </Label>
+            <TextboxClipboardWrapper text={this.state.authUrl} />
+            <br />
+            <Label>
+              After completing the authentication flow, paste in the resulting token:
+            </Label>
+            <TextField
+              placeholder="<Paste token here>"
+              onChange={this.onTokenInput}
+              errorMessage={this.state.errorMessage}
+              iconProps={
+                this.state.decodedToken
+                  ? {
+                      iconName: 'Checkmark',
+                    }
+                  : {}
+              }
+              required={
+                /* show required asterisk until it's already been fulfilled */
+                !this.state.decodedToken
+              }
+            />
+          </>
+        )}
         <DialogFooter>
           <PrimaryButton onClick={this.onOk} disabled={!this.showOkButton()} text="OK" />
 

@@ -25,7 +25,7 @@ interface IProps {}
 
 interface IState {
   isIE: boolean;
-  base64Key: string | undefined;
+  publicKey: NodeRSA | undefined;
   hasCodeAndState: boolean;
   error?: string;
 
@@ -58,7 +58,12 @@ class AuthPage extends React.Component<IProps, IState> {
     let base64Key: string | undefined;
     if (typeof this.params.key === 'string' && this.params.key.trim().length > 0) {
       base64Key = this.params.key;
+
+      // If landed on the page and have a "key" query parameter, the window
+      // must be re-used of a new auth flow.  So just in case,
+      // clear the session storage, and then store the key parameter
       sessionStorage.clear();
+      sessionStorage.setItem(SESSION_STORAGE_AUTH_KEY_PARAMETER, base64Key);
     } else {
       base64Key = sessionStorage.getItem(SESSION_STORAGE_AUTH_KEY_PARAMETER); // or undefined
     }
@@ -71,9 +76,18 @@ class AuthPage extends React.Component<IProps, IState> {
         'and retrieve a new sign-in URL to open in a new page.';
     }
 
+    let publicKey: NodeRSA;
+    try {
+      publicKey = new NodeRSA(atob(base64Key));
+    } catch (e) {
+      error =
+        `The "key" parameter in the URL appears to be incomplete. ` +
+        `Please go back to the sign-in dialog in the code editor, and be sure to copy the full URL.`;
+    }
+
     this.state = {
       isIE,
-      base64Key,
+      publicKey,
       error,
       hasCodeAndState: !error && Boolean(this.params.code && this.params.state),
     };
@@ -107,7 +121,7 @@ class AuthPage extends React.Component<IProps, IState> {
 
       if (this.state.hasCodeAndState) {
         const state = sessionStorage.getItem(SESSION_STORAGE_AUTH_STATE_PARAMETER);
-        if (!this.state.base64Key || !state || state !== this.params.state) {
+        if (!this.state.publicKey || !state || state !== this.params.state) {
           return {
             component: <SomethingWentWrong />,
             showUI: true,
@@ -127,17 +141,16 @@ class AuthPage extends React.Component<IProps, IState> {
         };
       }
 
-      if (this.state.base64Key && !this.state.isIE) {
+      if (this.state.publicKey && !this.state.isIE) {
         const random = generateCryptoSafeRandom();
 
-        sessionStorage.setItem(SESSION_STORAGE_AUTH_KEY_PARAMETER, this.state.base64Key);
         sessionStorage.setItem(SESSION_STORAGE_AUTH_STATE_PARAMETER, random.toString());
 
         window.location.href = generateGithubLoginUrl(random);
         return { component: null, showUI: false };
       }
 
-      if (!this.state.base64Key) {
+      if (!this.state.publicKey) {
         return {
           component: (
             <MessageBar messageBarType={MessageBarType.severeWarning}>
@@ -189,8 +202,7 @@ class AuthPage extends React.Component<IProps, IState> {
   onToken = async (token: string) => {
     getProfileInfo(token)
       .then(({ username, profilePicUrl, fullName }) => {
-        const key = this.state.base64Key;
-        const encodedToken = new NodeRSA(atob(key)).encrypt(token).toString('base64');
+        const encodedToken = this.state.publicKey.encrypt(token).toString('base64');
         this.setState({ encodedToken, username, profilePicUrl, fullName });
         window.sessionStorage.setItem(SESSION_STORAGE_AUTH_COMPLETED_PARAMETER, 'true');
       })

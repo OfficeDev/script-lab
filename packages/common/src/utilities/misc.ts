@@ -5,6 +5,6 @@ export function isInternetExplorer(): boolean {
 
 export function generateCryptoSafeRandom(): number {
   const random = new Uint32Array(1);
-  window.crypto.getRandomValues(random);
+  ((window.crypto || (window as any).msCrypto) as Crypto).getRandomValues(random);
   return random[0];
 }
