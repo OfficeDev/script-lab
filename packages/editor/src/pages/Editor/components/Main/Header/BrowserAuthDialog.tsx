@@ -41,20 +41,20 @@ class BrowserAuthDialog extends React.Component<IProps, IState> {
   }
 
   render() {
-    // FIXME accessibility: how to add "esc" to cancel and "enter" to continue?
-
     return (
       <Dialog
         hidden={!this.props.isOpen}
         onDismiss={this.props.hide}
-        onLayerDidMount={this.onDialogShown} // FIXME minor why show as deprecated?
         dialogContentProps={{
           type: DialogType.normal,
-          title: 'Action required for sign-in',
+          title: 'Action required',
         }}
         modalProps={{
           isBlocking: true,
           containerClassName: 'ms-dialogMainOverride',
+          layerProps: {
+            onLayerDidMount: this.onDialogShown,
+          },
         }}
       >
         {!this.state.authUrl ? (
@@ -127,6 +127,13 @@ class BrowserAuthDialog extends React.Component<IProps, IState> {
         },
       );
     }
+
+    // Clear out any previous error state, or the token input
+    this.setState({
+      errorMessage: null,
+      encodedToken: null,
+      decodedToken: null,
+    });
   };
 
   shouldAllowOk = () => Boolean(!this.state.errorMessage && this.state.encodedToken);
@@ -136,15 +143,6 @@ class BrowserAuthDialog extends React.Component<IProps, IState> {
       const profileInfo = await getProfileInfo(this.state.decodedToken);
       this.props.onLoginSuccess(profileInfo);
       this.props.hide();
-
-      // Since this dialog is re-used if brought back up, clear out the encrypted and decoded token
-      // (so that if log out, open this dialog, leave everything empty and press OK, that don't get
-      // re-logged in)
-      this.setState({
-        encodedToken: null,
-        decodedToken: null,
-        errorMessage: null,
-      });
     } catch (e) {
       this.setState({
         errorMessage:
