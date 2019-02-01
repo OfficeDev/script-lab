@@ -1,18 +1,18 @@
 import 'common/lib/polyfills';
+import { invokeGlobalErrorHandler } from 'common/lib/utilities/splash.screen';
 window.onerror = error => invokeGlobalErrorHandler(error);
-
-import QueryString from 'query-string';
 
 import redirectToProperEnvIfNeeded from 'common/lib/utilities/environment.redirector';
 const isRedirectingAwayPromise = redirectToProperEnvIfNeeded();
 
+import './index.css';
+
+///////////////////////////////////////
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { unregister } from './registerServiceWorker';
-
-import './index.css';
-
-import { invokeGlobalErrorHandler } from 'common/lib/utilities/splash.screen';
+import QueryString from 'query-string';
 
 import Pages from './pages';
 import AuthPage from './pages/Auth';

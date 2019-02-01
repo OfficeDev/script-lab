@@ -184,13 +184,13 @@ class AuthPage extends React.Component<IProps, IState> {
       <Theme host={HostType.WEB}>
         <Dialog
           hidden={false}
+          minWidth="350px"
           dialogContentProps={{
             type: DialogType.normal,
             title: 'Script Lab – Sign in with GitHub',
           }}
           modalProps={{
             isBlocking: true,
-            containerClassName: 'ms-dialogMainOverride',
           }}
         >
           {component}

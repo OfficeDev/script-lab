@@ -3,7 +3,7 @@ import { MessageBar, MessageBarType } from 'office-ui-fabric-react/lib/MessageBa
 
 export default ({ additionalInfo }: { additionalInfo?: string }) => (
   <MessageBar messageBarType={MessageBarType.severeWarning}>
-    Something went wrong. Please return to the login dialog and try again.
+    Something went wrong. Please return to the code editor window and try again.
     {additionalInfo ? (
       <div>
         <br />

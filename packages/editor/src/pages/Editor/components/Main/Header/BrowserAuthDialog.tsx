@@ -51,7 +51,6 @@ class BrowserAuthDialog extends React.Component<IProps, IState> {
         }}
         modalProps={{
           isBlocking: true,
-          containerClassName: 'ms-dialogMainOverride',
           layerProps: {
             onLayerDidMount: this.onDialogShown,
           },
