@@ -12,7 +12,7 @@ import ImportSolution from './ImportSolution';
 import ConflictResolutionDialog from './ConflictResolutionDialog/ConflictResolutionDialog';
 import { ConflictResolutionOptions } from '../../../../interfaces/enums';
 
-import { connect } from 'react-redux';
+import { connect } from 'react-redux'; // Note, avoid the temptation to include '@types/react-redux', it will break compile-time!
 import { Dispatch } from 'redux';
 import { IRootAction } from '../../store/actions';
 import selectors from '../../store/selectors';

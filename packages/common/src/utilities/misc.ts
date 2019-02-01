@@ -5,6 +5,10 @@ export function isInternetExplorer(): boolean {
 
 export function generateCryptoSafeRandom(): number {
   const random = new Uint32Array(1);
-  window.crypto.getRandomValues(random);
+
+  // Note: NOT polyfilling all of "window.crypto" with "window.msCrypto"
+  // in polyfills.ts,  because not all functionality is the same.
+  // But this one method does exist on both:
+  ((window.crypto || (window as any).msCrypto) as Crypto).getRandomValues(random);
   return random[0];
 }

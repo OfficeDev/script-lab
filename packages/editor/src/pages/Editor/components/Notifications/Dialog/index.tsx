@@ -8,7 +8,7 @@ import {
 } from 'office-ui-fabric-react/lib/Dialog';
 import { DefaultButton } from 'office-ui-fabric-react/lib/Button';
 
-import { connect } from 'react-redux';
+import { connect } from 'react-redux'; // Note, avoid the temptation to include '@types/react-redux', it will break compile-time!
 
 interface IPropsFromRedux {
   dialogProps: IDialogState;

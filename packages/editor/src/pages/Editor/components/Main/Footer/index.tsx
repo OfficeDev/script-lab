@@ -10,7 +10,7 @@ import { PersonaSize, PersonaCoin } from 'office-ui-fabric-react/lib/Persona';
 import CommonFooter from 'common/lib/components/Footer';
 
 // redux
-import { connect } from 'react-redux';
+import { connect } from 'react-redux'; // Note, avoid the temptation to include '@types/react-redux', it will break compile-time!
 import { Dispatch } from 'redux';
 import { IState as IReduxState } from '../../../store/reducer';
 import { selectors } from '../../../store';

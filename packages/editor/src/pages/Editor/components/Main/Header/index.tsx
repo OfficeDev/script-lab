@@ -21,7 +21,7 @@ import { ThemeContext } from 'common/lib/components/Theme';
 import SolutionSettings from './SolutionSettings';
 
 // redux
-import { connect } from 'react-redux';
+import { connect } from 'react-redux'; // Note, avoid the temptation to include '@types/react-redux', it will break compile-time!
 import { Dispatch } from 'redux';
 import { IState as IReduxState } from '../../../store/reducer';
 import { actions, selectors } from '../../../store';

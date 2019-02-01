@@ -1,7 +1,7 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { connect } from 'react-redux'; // Note, avoid the temptation to include '@types/react-redux', it will break compile-time!
 import NodeRSA from 'node-rsa';
-import keypair from 'keypair';
+import forge from 'node-forge';
 
 import { hideSplashScreen } from 'common/lib/utilities/splash.screen';
 import Dialog, { DialogType, DialogFooter } from 'office-ui-fabric-react/lib/Dialog';
@@ -33,25 +33,8 @@ interface IState {
 
 class BrowserAuthDialog extends React.Component<IProps, IState> {
   privateKey: NodeRSA;
+  keyGenerationInProgress: boolean;
   state: IState = {};
-
-  constructor(props: IProps) {
-    super(props);
-
-    // FIXME! ensures that this only runs when needed, not on every load!
-
-    // FIXME put into web worker:
-    setTimeout(() => {
-      const pair: { public: string; private: string } = keypair();
-
-      this.privateKey = new NodeRSA(pair.private);
-
-      this.setState({
-        authUrl:
-          currentEditorUrl + '/#/auth?key=' + encodeURIComponent(btoa(pair.public)),
-      });
-    }, 0);
-  }
 
   componentDidMount() {
     hideSplashScreen();
@@ -64,6 +47,7 @@ class BrowserAuthDialog extends React.Component<IProps, IState> {
       <Dialog
         hidden={!this.props.isOpen}
         onDismiss={this.props.hide}
+        onLayerDidMount={this.onDialogShown} // FIXME minor why show as deprecated?
         dialogContentProps={{
           type: DialogType.normal,
           title: 'Action required for sign-in',
@@ -75,7 +59,8 @@ class BrowserAuthDialog extends React.Component<IProps, IState> {
       >
         {!this.state.authUrl ? (
           <Label>
-            Please wait while we prepare the auth dialog. This may take a few seconds...
+            Please wait while we prepare the authentication dialog. This may take a few
+            seconds...
           </Label>
         ) : (
           <>
@@ -106,15 +91,45 @@ class BrowserAuthDialog extends React.Component<IProps, IState> {
           </>
         )}
         <DialogFooter>
-          <PrimaryButton onClick={this.onOk} disabled={!this.showOkButton()} text="OK" />
-
+          <PrimaryButton onClick={this.onOk} disabled={!this.shouldAllowOk()} text="OK" />
           <DefaultButton onClick={this.props.hide} text="Cancel" />
         </DialogFooter>
       </Dialog>
     );
   }
 
-  showOkButton = () => Boolean(!this.state.errorMessage && this.state.encodedToken);
+  onDialogShown = () => {
+    if (!this.keyGenerationInProgress) {
+      this.keyGenerationInProgress = true;
+
+      forge.pki.rsa.generateKeyPair(
+        {
+          bits: 2048,
+          workers: 2 /* number of web workers to use */,
+        },
+        (err, keypair) => {
+          if (err) {
+            this.setState({ errorMessage: err.toString() });
+            return;
+          }
+
+          const publicKeyString = forge.pki.publicKeyToPem(keypair.publicKey);
+          const privateKeyString = forge.pki.privateKeyToPem(keypair.privateKey);
+
+          this.privateKey = new NodeRSA(privateKeyString);
+
+          this.setState({
+            authUrl:
+              currentEditorUrl +
+              '/#/auth?key=' +
+              encodeURIComponent(btoa(publicKeyString)),
+          });
+        },
+      );
+    }
+  };
+
+  shouldAllowOk = () => Boolean(!this.state.errorMessage && this.state.encodedToken);
 
   onOk = async () => {
     try {

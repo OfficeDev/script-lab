@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { IState as IReduxState } from '../../store/reducer';
-import { connect } from 'react-redux';
+import { connect } from 'react-redux'; // Note, avoid the temptation to include '@types/react-redux', it will break compile-time!
 
 import Theme from 'common/lib/components/Theme';
 import Only from 'common/lib/components/Only';

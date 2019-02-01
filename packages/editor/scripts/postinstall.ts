@@ -33,10 +33,17 @@ const expectedPackages: {
   },
 };
 
-const additionalFilesToCopy = [
+const additionalFilesToCopy: Array<{ from: string; to: string }> = [
   {
     from: '../../node_modules/monaco-editor/monaco.d.ts',
     to: './src/interfaces/monaco.d.ts',
+  },
+
+  // for the "node-forge" library, it makes a hard-coded assumption about
+  // where its file for the web-worker will go
+  {
+    from: '../../node_modules/node-forge/dist/prime.worker.min.js',
+    to: './public/forge/prime.worker.js',
   },
 ];
 

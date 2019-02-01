@@ -4,7 +4,7 @@ import ReactMonaco from './ReactMonaco';
 
 import debounce from 'lodash/debounce';
 
-import { connect } from 'react-redux';
+import { connect } from 'react-redux'; // Note, avoid the temptation to include '@types/react-redux', it will break compile-time!
 import { actions, selectors } from '../../../store';
 import { IState as IReduxState } from '../../../store/reducer';
 import { IRootAction } from '../../../store/actions';

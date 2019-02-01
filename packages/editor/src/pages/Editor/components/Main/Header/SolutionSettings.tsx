@@ -9,7 +9,7 @@ import { PrimaryButton, DefaultButton } from 'office-ui-fabric-react/lib/Button'
 import { Label } from 'office-ui-fabric-react/lib/Label';
 import { Link } from 'office-ui-fabric-react/lib/Link';
 
-import { connect } from 'react-redux';
+import { connect } from 'react-redux'; // Note, avoid the temptation to include '@types/react-redux', it will break compile-time!
 import { IState as IReduxState } from '../../../store/reducer';
 import { actions, selectors } from '../../../store';
 
