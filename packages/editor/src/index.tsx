@@ -38,6 +38,13 @@ function getReactElementBasedOnQueryParams() {
   const params: { state?: string; code?: string } = queryString.parse(
     queryString.extract(window.location.href),
   );
+
+  // For the GitHub auth callback, we've registered the root page.
+  // To avoid needing to change it at the GitHub layer (and thus breaking it across
+  // our redirected environments), it's best to stick with what the registration
+  // already expects.  And so, if we see "state" and "code" on the URL --
+  // which is a telltale sign of GitHub redirecting after successful auth --
+  // got ahead and render the AuthPage component.
   if (params.state && params.code) {
     return <AuthPage />;
   } else {

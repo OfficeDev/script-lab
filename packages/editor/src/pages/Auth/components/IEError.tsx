@@ -9,6 +9,6 @@ export default () => (
       Please re-open this URL in an alternate browser, such as Edge, Chrome, Firefox, etc.
     </MessageBar>
 
-    <TextboxClipboardWrapper style={{ marginTop: '20px' }} text={window.location.href} />
+    <TextboxClipboardWrapper style={{ marginTop: '2rem' }} text={window.location.href} />
   </>
 );

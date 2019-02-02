@@ -20,9 +20,12 @@ export default ({
       into the code editor window.
     </MessageBar>
 
-    <br />
-
     <Persona
+      styles={{
+        root: {
+          marginTop: '2rem',
+        },
+      }}
       imageUrl={profilePicUrl}
       size={PersonaSize.size48}
       text={username}
@@ -30,6 +33,6 @@ export default ({
       showSecondaryText={true}
     />
 
-    <TextboxClipboardWrapper style={{ marginTop: '20px' }} text={encodedToken} />
+    <TextboxClipboardWrapper style={{ marginTop: '2rem' }} text={encodedToken} />
   </>
 );

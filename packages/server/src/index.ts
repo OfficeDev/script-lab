@@ -5,7 +5,7 @@ if (process.env.NODE_ENV !== 'production') {
 import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
-import { respondWithAccessToken } from './auth';
+import { getAccessTokenOrErrorResponse } from './auth';
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -15,18 +15,23 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // routes
-app.get('/hello', (req, res) => {
+app.get('/hello', (_req, res) => {
   res.send({ express: 'Hello From Express' });
 });
 
 // An auth endpoint for GitHub that returns either `{ access_token: string }` or `{ error: string }`
-app.post('/auth', (req, res) => {
+app.post('/auth', async (req, res) => {
   const { code, state } = req.body;
-  respondWithAccessToken({
+
+  let payloadToSend = await getAccessTokenOrErrorResponse({
     code,
     state,
-    response: res,
   });
+
+  res
+    .contentType('application/json')
+    .status(200)
+    .send(payloadToSend);
 });
 
 app.listen(port, () => console.log(`Listening on port ${port}`));

@@ -52,7 +52,7 @@ class UILessCodeToTokenExchanger extends React.Component<IProps, IState> {
         this.props.onError(response.statusText);
       }
     } catch (error) {
-      return { error };
+      this.props.onError(error);
     }
   }
 }

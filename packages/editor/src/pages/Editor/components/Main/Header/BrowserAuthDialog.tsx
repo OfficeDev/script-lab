@@ -70,8 +70,8 @@ class BrowserAuthDialog extends React.Component<IProps, IState> {
               To log in with GitHub, please open the following URL in a browser window:
             </Label>
             <TextboxClipboardWrapper text={this.state.authUrl} />
-            <br />
-            <Label>
+
+            <Label styles={{ root: { marginTop: '1.5rem' } }}>
               After completing the authentication flow, paste in the resulting token:
             </Label>
             <TextField
