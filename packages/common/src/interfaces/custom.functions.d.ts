@@ -66,38 +66,9 @@ type CustomFunctionsSchemaDimensionality = 'invalid' | 'scalar' | 'matrix';
 
 type CustomFunctionsRegistrationStatus = 'good' | 'skipped' | 'error' | 'untrusted';
 
-/** The interface used by Excel to register custom functions (workbook.registerCustomFunctions(...))  */
+/** The interface used by Excel to register custom functions (CustomFunctionManager.register(...)) */
 interface ICustomFunctionsRegistrationApiMetadata {
   functions: ICFSchemaFunctionMetadata[];
-}
-
-interface ICustomFunctionsHeartbeatParams {
-  clientTimestamp: number;
-  loadFromOfficeJsPreviewCachedCopy: boolean;
-}
-
-interface ICustomFunctionsRunnerRelevantData {
-  name: string;
-  id: string;
-  libraries: string;
-  script: IContentLanguagePair;
-  metadata?: ICustomFunctionsSnippetRegistrationData;
-}
-
-interface ICustomFunctionsSnippetRegistrationData {
-  namespace: string;
-  functions: ICFVisualFunctionMetadata[];
-}
-
-interface ICustomFunctionsMetadataRequestPostData {
-  snippets: ISnippet[];
-}
-
-interface IRunnerCustomFunctionsPostData {
-  snippets: ICustomFunctionsRunnerRelevantData[];
-  loadFromOfficeJsPreviewCachedCopy: boolean;
-  displayLanguage: string;
-  heartbeatParams: ICustomFunctionsHeartbeatParams;
 }
 
 interface ICustomFunctionEngineStatus {
@@ -112,11 +83,6 @@ interface ICustomFunctionSummaryItem {
   snippetName: string;
   funcName: string;
   additionalInfo?: string[];
-}
-
-interface IRunnerState {
-  isAlive: boolean;
-  lastUpdated: number;
 }
 
 interface ICFHeartbeatMessage {
