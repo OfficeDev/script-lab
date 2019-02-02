@@ -1,10 +1,11 @@
 import React from 'react';
-import styled from 'styled-components';
 import Clipboard from 'clipboard';
 import { TextField, ITextField } from 'office-ui-fabric-react/lib/TextField';
 import { IconButton } from 'office-ui-fabric-react/lib/Button';
 import { invokeGlobalErrorHandler } from '../../utilities/splash.screen';
 import { generateCryptoSafeRandom } from '../../utilities/misc';
+
+import { Wrapper } from './styles';
 
 interface IProps {
   text: string;
@@ -33,7 +34,7 @@ class TextboxClipboardWrapper extends React.Component<IProps, IState> {
 
   render() {
     return (
-      <OuterStyle style={this.props.style}>
+      <Wrapper style={this.props.style}>
         <TextField
           readOnly={true}
           spellCheck={false}
@@ -45,7 +46,7 @@ class TextboxClipboardWrapper extends React.Component<IProps, IState> {
           ariaLabel="Copy to clipboard"
           className={this.clipboardButtonClassName}
         />
-      </OuterStyle>
+      </Wrapper>
     );
   }
 
@@ -60,15 +61,3 @@ class TextboxClipboardWrapper extends React.Component<IProps, IState> {
 }
 
 export default TextboxClipboardWrapper;
-
-///////////////////////////////////////
-
-const OuterStyle = styled.div`
-  display: flex;
-  border: 1px gray solid;
-  border-radius: 4px;
-
-  & > :nth-child(1) {
-    flex: 1;
-  }
-`;
