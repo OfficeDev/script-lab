@@ -95,7 +95,7 @@ class Console extends React.Component<IPrivateProps, IState> {
     const items = logs
       .slice(-1 * MAX_LOGS_SHOWN) // get the last X logs
       .filter(log => log.message.toLowerCase().includes(this.state.filterQuery))
-      .map(({ id, severity, message }) => {
+      .map(({ id, severity, message, underlyingObject }) => {
         const { backgroundColor, color, icon } = {
           [ConsoleLogSeverities.Log]: {
             backgroundColor: theme.white,
@@ -125,6 +125,7 @@ class Console extends React.Component<IPrivateProps, IState> {
           color,
           icon,
           message,
+          underlyingObject,
         };
       });
 
@@ -176,24 +177,29 @@ class Console extends React.Component<IPrivateProps, IState> {
           }
         >
           <LogsArea>
-            {items.map(({ backgroundColor, color, key, icon, message }) => (
-              <Log key={key} style={{ backgroundColor, color }}>
-                {icon ? (
-                  <Icon
-                    className="ms-font-m"
-                    iconName={icon.name}
-                    style={{
-                      fontSize: '1.2rem',
-                      color: icon.color,
-                      lineHeight: '1.2rem',
-                    }}
-                  />
+            {items.map(
+              ({ backgroundColor, color, key, icon, message, underlyingObject }) =>
+                underlyingObject ? (
+                  <div>FIXME show the underlyingObject here</div>
                 ) : (
-                  <div style={{ width: '1.2rem', height: '1.2rem' }} />
-                )}
-                <LogText>{message}</LogText>
-              </Log>
-            ))}
+                  <Log key={key} style={{ backgroundColor, color }}>
+                    {icon ? (
+                      <Icon
+                        className="ms-font-m"
+                        iconName={icon.name}
+                        style={{
+                          fontSize: '1.2rem',
+                          color: icon.color,
+                          lineHeight: '1.2rem',
+                        }}
+                      />
+                    ) : (
+                      <div style={{ width: '1.2rem', height: '1.2rem' }} />
+                    )}
+                    <LogText>{message}</LogText>
+                  </Log>
+                ),
+            )}
             <div ref={this.lastLog} />
           </LogsArea>
         </HeaderFooterLayout>

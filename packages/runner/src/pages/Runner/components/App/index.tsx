@@ -31,6 +31,8 @@ const AppWrapper = styled.div`
 
 let logCount = 0;
 
+const USE_NEW_CONSOLE = true;
+
 interface IState {
   solution?: ISolution | null;
   lastRendered: number | null;
@@ -81,13 +83,14 @@ export class App extends React.Component<{}, IState> {
         }
 
         try {
-          const message = stringifyPlusPlus(args);
+          // FIXME
+          const object = USE_NEW_CONSOLE ? args : stringifyPlusPlus(args);
 
           setTimeout(
             () =>
               this.addLog({
                 severity: method as ConsoleLogTypes,
-                message,
+                object,
               }),
             0,
           );
@@ -98,7 +101,7 @@ export class App extends React.Component<{}, IState> {
             () =>
               this.addLog({
                 severity: ConsoleLogSeverities.Error,
-                message: '[Could not display log entry]',
+                object: '[Could not display log entry]',
               }),
             0,
           );
@@ -107,13 +110,29 @@ export class App extends React.Component<{}, IState> {
     });
   };
 
-  addLog = (log: { severity: ConsoleLogTypes; message: string }) => {
+  addLog = ({
+    severity,
+    object,
+  }: {
+    severity: ConsoleLogTypes;
+    object: string | { [key: string]: any };
+  }) => {
+    const partial: {
+      message: string;
+      severity: typeof severity;
+      underlyingObject?: any;
+    } =
+      typeof object === 'string'
+        ? { message: object, severity }
+        : { message: stringifyOrEmpty(object), underlyingObject: object, severity };
+
     this.setState({
-      logs: [...this.state.logs, { id: logCount.toString(), ...log }],
+      logs: [...this.state.logs, { id: logCount.toString(), ...partial }],
       isConsoleOpen: true,
     });
     logCount++;
   };
+
   clearLogs = () => this.setState({ logs: [] });
 
   openConsole = () => this.setState({ isConsoleOpen: true });
@@ -290,4 +309,11 @@ function informSnippetSwitch(message: string) {
   }
 }
 
+function stringifyOrEmpty(args: any): string {
+  try {
+    return stringifyPlusPlus(args);
+  } catch {
+    return '';
+  }
+}
 export default App;
