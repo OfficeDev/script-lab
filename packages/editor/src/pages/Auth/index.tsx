@@ -1,6 +1,6 @@
 import React from 'react';
-import QueryString from 'query-string';
 import NodeRSA from 'node-rsa';
+import queryString from 'query-string';
 
 import {
   hideSplashScreen,
@@ -14,7 +14,7 @@ import { generateGithubLoginUrl, getProfileInfo } from '../Editor/services/githu
 import IEError from './components/IEError';
 import SomethingWentWrong from './components/SomethingWentWrong';
 import UILessCodeToTokenExchanger from './components/UILessCodeToTokenExchanger';
-import OnTokenSuccess from './components/OnTokenSuccess';
+import TokenSuccessPage from './components/TokenSuccessPage';
 import Dialog, { DialogType } from 'office-ui-fabric-react/lib/Dialog';
 
 const SESSION_STORAGE_AUTH_COMPLETED_PARAMETER = 'auth_completed';
@@ -53,7 +53,7 @@ class AuthPage extends React.Component<IProps, IState> {
 
     const isIE = isInternetExplorer();
 
-    this.params = QueryString.parse(QueryString.extract(window.location.href));
+    this.params = queryString.parse(queryString.extract(window.location.href));
 
     let base64Key: string | undefined;
     if (typeof this.params.key === 'string' && this.params.key.trim().length > 0) {
@@ -108,7 +108,7 @@ class AuthPage extends React.Component<IProps, IState> {
       if (this.state.encodedToken) {
         return {
           component: (
-            <OnTokenSuccess
+            <TokenSuccessPage
               encodedToken={this.state.encodedToken}
               username={this.state.username}
               fullName={this.state.fullName}

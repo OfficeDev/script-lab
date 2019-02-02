@@ -1,4 +1,4 @@
-import QueryString from 'query-string';
+import queryString from 'query-string';
 import { request as generalRequest, IResponseOrError } from './general';
 import { githubAppClientId } from 'common/lib/environment';
 import { GITHUB_KEY } from 'common/lib/utilities/localStorage';
@@ -23,7 +23,7 @@ export function generateGithubLoginUrl(randomNumberForState: number) {
   return (
     'https://github.com/login/oauth/authorize' +
     '?' +
-    QueryString.stringify({
+    queryString.stringify({
       client_id: githubAppClientId,
       redirect_uri: window.location.origin,
       scope: 'gist',

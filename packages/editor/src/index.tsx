@@ -12,7 +12,7 @@ import './index.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { unregister } from './registerServiceWorker';
-import QueryString from 'query-string';
+import queryString from 'query-string';
 
 import Pages from './pages';
 import AuthPage from './pages/Auth';
@@ -35,8 +35,8 @@ import AuthPage from './pages/Auth';
 ///////////////////////////////////////
 
 function getReactElementBasedOnQueryParams() {
-  const params: { state?: string; code?: string } = QueryString.parse(
-    QueryString.extract(window.location.href),
+  const params: { state?: string; code?: string } = queryString.parse(
+    queryString.extract(window.location.href),
   );
   if (params.state && params.code) {
     return <AuthPage />;

@@ -33,21 +33,19 @@ class TextboxClipboardWrapper extends React.Component<IProps, IState> {
 
   render() {
     return (
-      <>
-        <OuterStyle style={this.props.style}>
-          <TextField
-            readOnly={true}
-            spellCheck={false}
-            value={this.props.text}
-            componentRef={this.onTextFieldReceivedRef}
-          />
-          <IconButton
-            iconProps={{ iconName: 'Copy' }}
-            ariaLabel="Copy to clipboard"
-            className={this.clipboardButtonClassName}
-          />
-        </OuterStyle>
-      </>
+      <OuterStyle style={this.props.style}>
+        <TextField
+          readOnly={true}
+          spellCheck={false}
+          value={this.props.text}
+          componentRef={this.onTextFieldReceivedRef}
+        />
+        <IconButton
+          iconProps={{ iconName: 'Copy' }}
+          ariaLabel="Copy to clipboard"
+          className={this.clipboardButtonClassName}
+        />
+      </OuterStyle>
     );
   }
 

@@ -9,7 +9,6 @@
   "dependencies": {
     "@microsoft/office-js": "1.1.11-adhoc.28",
     "@microsoft/office-js-helpers": "0.7.4",
-    "@types/node-forge": "^0.7.11",
     "clipboard": "^2.0.1",
     "color": "^3.0.0",
     "common": "0.0.1",
@@ -58,6 +57,7 @@
     "@types/js-yaml": "^3.11.2",
     "@types/lodash": "^4.14.118",
     "@types/node": "^10.0.9",
+    "@types/node-forge": "^0.7.11",
     "@types/node-rsa": "^1.0.0",
     "@types/office-js": "^0.0.148",
     "@types/office-runtime": "^1.0.6",
