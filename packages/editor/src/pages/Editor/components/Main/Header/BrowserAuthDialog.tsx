@@ -89,6 +89,7 @@ class BrowserAuthDialog extends React.Component<IProps, IState> {
                 /* show required asterisk until it's already been fulfilled */
                 !this.state.decodedToken
               }
+              onKeyPress={this.onEnterKeyPress}
             />
           </>
         )}
@@ -165,6 +166,12 @@ class BrowserAuthDialog extends React.Component<IProps, IState> {
         // when the user pasted in the token -- they'll see the actual error message
         // when they press "OK", and until then we don't want to be obtrusive.
       }
+    }
+  };
+
+  onEnterKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      this.onOk();
     }
   };
 }

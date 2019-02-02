@@ -13,9 +13,10 @@ import { HostType } from '@microsoft/office-js-helpers';
 import { generateGithubLoginUrl, getProfileInfo } from '../Editor/services/github';
 import IEError from './components/IEError';
 import SomethingWentWrong from './components/SomethingWentWrong';
-import UILessCodeToTokenExchanger from './components/UILessCodeToTokenExchanger';
 import TokenSuccessPage from './components/TokenSuccessPage';
 import Dialog, { DialogType } from 'office-ui-fabric-react/lib/Dialog';
+import { RunOnLoad } from 'common/lib/components/PageSwitcher/utilities/RunOnLoad';
+import { currentServerUrl } from 'common/lib/environment';
 
 const SESSION_STORAGE_AUTH_COMPLETED_PARAMETER = 'auth_completed';
 const SESSION_STORAGE_AUTH_KEY_PARAMETER = 'auth_key';
@@ -129,14 +130,7 @@ class AuthPage extends React.Component<IProps, IState> {
         }
 
         return {
-          component: (
-            <UILessCodeToTokenExchanger
-              code={this.params.code}
-              state={state}
-              onToken={this.onToken}
-              onError={this.onError}
-            />
-          ),
+          component: <RunOnLoad funcToRun={this.exchangeCodeAndStateForAccessToken} />,
           showUI: false,
         };
       }
@@ -199,7 +193,42 @@ class AuthPage extends React.Component<IProps, IState> {
     );
   }
 
-  onToken = async (token: string) => {
+  private exchangeCodeAndStateForAccessToken = async () => {
+    try {
+      const body = JSON.stringify({
+        code: this.params.code,
+        state: sessionStorage.getItem(SESSION_STORAGE_AUTH_STATE_PARAMETER),
+      });
+
+      const response = await fetch(currentServerUrl + '/auth', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: body,
+      });
+
+      if (response.ok) {
+        const data: {
+          error?: string;
+          access_token?: string;
+        } = await response.json();
+        if (data.error) {
+          this.onError(data.error);
+        } else if (data.access_token) {
+          this.onToken(data.access_token);
+        } else {
+          this.onError("Unexpected error, response doesn't match expected form.");
+        }
+      } else {
+        this.onError(response.statusText);
+      }
+    } catch (error) {
+      this.onError(error);
+    }
+  };
+
+  private onToken = async (token: string) => {
     getProfileInfo(token)
       .then(({ username, profilePicUrl, fullName }) => {
         const encodedToken = this.state.publicKey.encrypt(token).toString('base64');
@@ -209,7 +238,7 @@ class AuthPage extends React.Component<IProps, IState> {
       .catch(e => invokeGlobalErrorHandler(e));
   };
 
-  onError = (error: string) => this.setState({ error: error });
+  private onError = (error: string) => this.setState({ error: error });
 }
 
 export default AuthPage;
