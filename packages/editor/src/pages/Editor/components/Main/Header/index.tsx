@@ -16,6 +16,7 @@ import { PersonaSize, PersonaCoin } from 'office-ui-fabric-react/lib/Persona';
 // common
 import CommonHeader from 'common/lib/components/Header';
 import { ThemeContext } from 'common/lib/components/Theme';
+import CopyableToClipboard from 'common/lib/components/CopyableToClipboard';
 
 // local
 import SolutionSettings from './SolutionSettings';
@@ -56,8 +57,8 @@ interface IProps {
   dispatch: Dispatch;
 
   activeSolution: ISolution;
-  notifyClipboardCopySuccess();
-  notifyClipboardCopyFailure();
+  notifyClipboardCopySuccess: () => void;
+  notifyClipboardCopyFailure: () => void;
 
   isLoggingInOrOut: boolean;
   profilePicUrl?: string;
@@ -70,19 +71,6 @@ interface IState {
 class Header extends Component<IProps, IState> {
   clipboard: Clipboard;
   state: IState = {};
-
-  constructor(props: IProps) {
-    super(props);
-    this.clipboard = new Clipboard('.export-snippet-to-clipboard', {
-      text: this.getSnippetYAML,
-    });
-    this.clipboard.on('success', props.notifyClipboardCopySuccess);
-    this.clipboard.on('error', props.notifyClipboardCopyFailure);
-  }
-
-  componentWillUnmount() {
-    this.clipboard.destroy();
-  }
 
   getSnippetYAML = () =>
     YAML.safeDump(convertSolutionToSnippet(this.props.activeSolution));
@@ -137,20 +125,27 @@ class Header extends Component<IProps, IState> {
 
     return (
       <>
-        <CommonHeader
-          items={items.map((item: IHeaderItem) => {
-            const renderedItem = this.renderItem(item);
-            if (item.key === 'solution-name') {
-              return {
-                ...renderedItem,
-                onClick: this.showSolutionSettings,
-              };
-            } else {
-              return renderedItem;
-            }
-          })}
-          farItems={farItems.map((item: IHeaderItem) => this.renderItem(item))}
-        />
+        <CopyableToClipboard
+          globallyUniqueSelector=".export-snippet-to-clipboard"
+          textGetter={this.getSnippetYAML}
+          onSuccess={this.props.notifyClipboardCopySuccess}
+          onError={this.props.notifyClipboardCopyFailure}
+        >
+          <CommonHeader
+            items={items.map((item: IHeaderItem) => {
+              const renderedItem = this.renderItem(item);
+              if (item.key === 'solution-name') {
+                return {
+                  ...renderedItem,
+                  onClick: this.showSolutionSettings,
+                };
+              } else {
+                return renderedItem;
+              }
+            })}
+            farItems={farItems.map((item: IHeaderItem) => this.renderItem(item))}
+          />
+        </CopyableToClipboard>
         <SolutionSettings
           isOpen={this.state.isSolutionSettingsVisible}
           closeSolutionSettings={this.hideSolutionSettings}
