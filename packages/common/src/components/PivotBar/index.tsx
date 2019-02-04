@@ -71,6 +71,7 @@ class PivotBar extends React.Component<IProps> {
               },
             },
             linkContent: { color: theme.white, fontWeight: '400' },
+            icon: { fontSize: '1.6rem' },
           }}
         >
           {items.map(item => (
