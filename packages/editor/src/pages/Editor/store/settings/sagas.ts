@@ -127,8 +127,8 @@ function* cycleEditorThemeSaga() {
   const nextThemeIndex = (currentThemeIndex + 1) % themes.length;
   const nextTheme = themes[nextThemeIndex];
 
-  const newUserSettings = yield select(selectors.settings.getUser);
-  newUserSettings['editor.theme'] = nextTheme;
+  const currentUserSettings = yield select(selectors.settings.getUser);
+  const newUserSettings = { ...currentUserSettings, 'editor.theme': nextTheme };
 
   const tabSize = settings['editor.tabSize'];
 
