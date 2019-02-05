@@ -18,7 +18,10 @@ const COLOR_ON_SUCCESS = '#78b597';
 const DURATION_AFTER_SUCCESS_BEFORE_RESETTING_TO_REGULAR_COLOR = 750;
 
 class TextboxClipboardWrapper extends React.Component<IProps, IState> {
-  private timeout: NodeJS.Timeout;
+  private timeout: any;
+  /* Note: using "any" rather than "NodeJS.Timeout" or "number"
+   * because TS was having issues when building it inside of the storybook context.
+   */
 
   state: IState = {};
 
