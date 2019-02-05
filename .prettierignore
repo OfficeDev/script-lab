@@ -3,6 +3,10 @@ packages/**/build/*
 packages/**/public/external/*
 packages/**/public/assets/*
 
+# A folder for a "node-forge" file that gets copied to the editor's "public" folder
+# (and whose path is hard-coded into the library, so it can't be moved under "external" like the others).
+packages/editor/public/forge/*
+
 tsconfig.json
 package.json
 node_modules

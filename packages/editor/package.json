@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies_comments": {
-    "@microsoft/office-js": "For the custom functions dashboard, need a custom build of office-js with 'CustomFunctionManager.getStatus()' and other APIs that hasn't made it to prod yet (as of Dec 2 2018 -- though should in a few weeks)",
     "query-string": "Restricing query-string to version 5.1.1 because later versions (6+) started targeting ES6 rather than ES5, making it not work for the precompile scripts. See more at https://stackoverflow.com/a/49985749/678505",
     "monaco-editor": "On Mac add-ins, versions of Monaco 0.11.0 - 0.15.6 all DON'T WORK (can't click on anything other than last line of text!).  So for now sticking with the last working version, 0.10.1"
   },
@@ -13,12 +12,13 @@
     "clipboard": "^2.0.1",
     "color": "^3.0.0",
     "common": "0.0.1",
-    "connected-react-router": "^4.3.0",
     "js-yaml": "^3.12.0",
     "lodash": "^4.17.10",
     "moment": "^2.22.2",
     "monaco-editor": "npm:monaco-editor@0.14.3",
     "monaco-editor-old": "npm:monaco-editor@0.10.1",
+    "node-forge": "^0.7.6",
+    "node-rsa": "^1.0.3",
     "normalizr": "^3.2.4",
     "office-ui-fabric-react": "^6.114.0",
     "query-string": "5.1.1",
@@ -34,7 +34,7 @@
     "semver": "^5.5.1",
     "styled-components": "^4.1.1",
     "typesafe-actions": "^2.0.4",
-    "typescript": "^3.1.6",
+    "typescript": "^3.2.4",
     "uuid": "^3.2.1"
   },
   "scripts": {
@@ -57,6 +57,8 @@
     "@types/js-yaml": "^3.11.2",
     "@types/lodash": "^4.14.118",
     "@types/node": "^10.0.9",
+    "@types/node-forge": "^0.7.11",
+    "@types/node-rsa": "^1.0.0",
     "@types/office-js": "^0.0.148",
     "@types/office-runtime": "^1.0.6",
     "@types/prettier": "^1.13.2",

@@ -3,7 +3,7 @@ import { MessageBar as FabricMessageBar } from 'office-ui-fabric-react/lib/Messa
 import { Link } from 'office-ui-fabric-react/lib/Link';
 import { IState as IMessageBarState } from '../../../store/messageBar/reducer';
 
-import { connect } from 'react-redux';
+import { connect } from 'react-redux'; // Note, avoid the temptation to include '@types/react-redux', it will break compile-time!
 import { messageBar } from '../../../store/actions';
 import { getMessageBarStyle } from './helpers';
 import { IState as IReduxState } from '../../../store/reducer';

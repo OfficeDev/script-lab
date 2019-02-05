@@ -1,44 +1,29 @@
 import 'common/lib/polyfills';
+import { invokeGlobalErrorHandler } from 'common/lib/utilities/splash.screen';
 window.onerror = error => invokeGlobalErrorHandler(error);
 
 import redirectToProperEnvIfNeeded from 'common/lib/utilities/environment.redirector';
 const isRedirectingAwayPromise = redirectToProperEnvIfNeeded();
 
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { Authenticator } from '@microsoft/office-js-helpers';
-import { unregister } from './registerServiceWorker';
-
 import './index.css';
 
-import { invokeGlobalErrorHandler } from 'common/lib/utilities/splash.screen';
+///////////////////////////////////////
+
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { unregister } from './registerServiceWorker';
+import queryString from 'query-string';
 
 import Pages from './pages';
+import AuthPage from './pages/Auth';
 
 (async () => {
   const isRedirectingAway = await isRedirectingAwayPromise;
   if (!isRedirectingAway) {
     try {
-      if (Authenticator.isAuthDialog()) {
-        return;
-      }
+      const rootElement = document.getElementById('root') as HTMLElement;
 
-      // Add a keyboard listener to [try to] intercept "ctrl+save", since we auto-save anyway
-      // and since the browser/host "save as" dialog would be unwanted here
-      document.addEventListener(
-        'keydown',
-        e => {
-          if (
-            e.keyCode === 83 /*s key*/ &&
-            (navigator.platform.match('Mac') ? e.metaKey : e.ctrlKey)
-          ) {
-            e.preventDefault();
-          }
-        },
-        false,
-      );
-
-      ReactDOM.render(<Pages />, document.getElementById('root') as HTMLElement);
+      ReactDOM.render(getReactElementBasedOnQueryParams(), rootElement);
 
       unregister(); // need more testing to determine if this can be removed. seems to help with the caching of the html file issues
     } catch (e) {
@@ -46,3 +31,38 @@ import Pages from './pages';
     }
   }
 })();
+
+///////////////////////////////////////
+
+function getReactElementBasedOnQueryParams() {
+  const params: { state?: string; code?: string } = queryString.parse(
+    queryString.extract(window.location.href),
+  );
+
+  // For the GitHub auth callback, we've registered the root page.
+  // To avoid needing to change it at the GitHub layer (and thus breaking it across
+  // our redirected environments), it's best to stick with what the registration
+  // already expects.  And so, if we see "state" and "code" on the URL --
+  // which is a telltale sign of GitHub redirecting after successful auth --
+  // got ahead and render the AuthPage component.
+  if (params.state && params.code) {
+    return <AuthPage />;
+  } else {
+    // Add a keyboard listener to [try to] intercept "ctrl+save", since we auto-save anyway
+    // and since the browser/host "save as" dialog would be unwanted here
+    document.addEventListener(
+      'keydown',
+      e => {
+        if (
+          e.keyCode === 83 /*s key*/ &&
+          (navigator.platform.match('Mac') ? e.metaKey : e.ctrlKey)
+        ) {
+          e.preventDefault();
+        }
+      },
+      false,
+    );
+
+    return <Pages />;
+  }
+}

@@ -16,12 +16,13 @@ import { PersonaSize, PersonaCoin } from 'office-ui-fabric-react/lib/Persona';
 // common
 import CommonHeader from 'common/lib/components/Header';
 import { ThemeContext } from 'common/lib/components/Theme';
+import CopyableToClipboard from 'common/lib/components/CopyableToClipboard';
 
 // local
 import SolutionSettings from './SolutionSettings';
 
 // redux
-import { connect } from 'react-redux';
+import { connect } from 'react-redux'; // Note, avoid the temptation to include '@types/react-redux', it will break compile-time!
 import { Dispatch } from 'redux';
 import { IState as IReduxState } from '../../../store/reducer';
 import { actions, selectors } from '../../../store';
@@ -56,33 +57,20 @@ interface IProps {
   dispatch: Dispatch;
 
   activeSolution: ISolution;
-  notifyClipboardCopySuccess();
-  notifyClipboardCopyFailure();
+  notifyClipboardCopySuccess: () => void;
+  notifyClipboardCopyFailure: () => void;
 
   isLoggingInOrOut: boolean;
   profilePicUrl?: string;
 }
 
 interface IState {
-  isSolutionSettingsVisible: boolean;
+  isSolutionSettingsVisible?: boolean;
 }
 
 class Header extends Component<IProps, IState> {
   clipboard: Clipboard;
-  state: IState = { isSolutionSettingsVisible: false };
-
-  constructor(props: IProps) {
-    super(props);
-    this.clipboard = new Clipboard('.export-to-clipboard', {
-      text: this.getSnippetYAML,
-    });
-    this.clipboard.on('success', props.notifyClipboardCopySuccess);
-    this.clipboard.on('error', props.notifyClipboardCopyFailure);
-  }
-
-  componentWillUnmount() {
-    this.clipboard.destroy();
-  }
+  state: IState = {};
 
   getSnippetYAML = () =>
     YAML.safeDump(convertSolutionToSnippet(this.props.activeSolution));
@@ -137,6 +125,19 @@ class Header extends Component<IProps, IState> {
 
     return (
       <>
+        {/* One of the header items will have the functionality to export the snippet to
+        clipboard. This component will hook up its globally-unique selector with the class
+        name of the same name (search for `export-snippet-to-clipboard` in the repo to
+        find the other spot). Note that unlike other instantiations of this component, it
+        is childless here, because the header children are absolute-positioned elements
+        that aren't DOM children of this component */}
+        <CopyableToClipboard
+          globallyUniqueSelector=".export-snippet-to-clipboard"
+          textGetter={this.getSnippetYAML}
+          onSuccess={this.props.notifyClipboardCopySuccess}
+          onError={this.props.notifyClipboardCopyFailure}
+        />
+
         <CommonHeader
           items={items.map((item: IHeaderItem) => {
             const renderedItem = this.renderItem(item);

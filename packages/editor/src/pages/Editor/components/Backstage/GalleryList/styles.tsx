@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 
 export const GalleryListWrapper = styled.section`
@@ -26,9 +25,10 @@ export const Title = styled.span`
 export const ArrowWrapper = styled.div`
   padding: 1.2rem;
 
-  &:hover, &:focus {
+  &:hover,
+  &:focus {
     background-color: ${props => props.theme.primary};
-    color: ${props => props.theme.white}
+    color: ${props => props.theme.white};
     cursor: pointer;
   }
 

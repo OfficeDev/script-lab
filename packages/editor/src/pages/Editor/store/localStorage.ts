@@ -10,7 +10,7 @@ import { getSettingsSolutionAndFiles } from './settings/utilities';
 import { verifySettings } from './settings/sagas';
 import { getBoilerplate } from '../../../newSolutionData';
 import ensureFreshLocalStorage from 'common/lib/utilities/ensure.fresh.local.storage';
-import { getProfilePicUrlAndUsername } from '../services/github';
+import { getProfileInfo } from '../services/github';
 import { HostType } from '@microsoft/office-js-helpers';
 
 import {
@@ -131,30 +131,38 @@ export const saveState = (state: IState) => {
 async function loadGitHubInfo(): Promise<IGitHubState> {
   const githubInfo: string = localStorage.getItem(GITHUB_KEY);
   if (githubInfo) {
-    return { ...JSON.parse(githubInfo), isLoggingInOrOut: false };
+    const rehydrated: IStoredGitHubState = JSON.parse(githubInfo);
+    return {
+      loginInfo: {
+        fullName: null,
+        ...rehydrated,
+      },
+      isLoggingInOrOut: false,
+      isAuthDialogVisible: false,
+    };
   }
 
   const tokenStorage = localStorage.getItem('OAuth2Tokens');
+  // Migration of old Script Lab tokens
   if (tokenStorage) {
     const parsedTokenStorage = JSON.parse(tokenStorage);
     if (parsedTokenStorage && 'GitHub' in parsedTokenStorage) {
-      const token = parsedTokenStorage.GitHub.access_token;
+      const token: string = parsedTokenStorage.GitHub.access_token;
       if (token) {
+        const profileInfo = await getProfileInfo(token);
         return {
-          profilePicUrl: null,
-          username: null,
-          ...(await getProfilePicUrlAndUsername(token)),
-          token,
+          loginInfo: profileInfo,
           isLoggingInOrOut: false,
+          isAuthDialogVisible: false,
         };
       }
     }
   }
+
   return {
-    profilePicUrl: null,
-    username: null,
-    token: null,
+    loginInfo: null,
     isLoggingInOrOut: false,
+    isAuthDialogVisible: false,
   };
 }
 // solutions

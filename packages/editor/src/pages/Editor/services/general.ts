@@ -1,7 +1,7 @@
 import YAML from 'js-yaml';
 
-export interface IResponseOrError {
-  response?: any;
+export interface IResponseOrError<T> {
+  response?: T;
   error?: Error;
 }
 
@@ -23,12 +23,12 @@ export const fetchYaml = (url: string): Promise<{ content?: object; error?: Erro
     .then(value => ({ content: YAML.safeLoad(value) }))
     .catch(error => ({ error }));
 
-export const request = async ({
+export async function request<T>({
   method,
   url,
   token,
   jsonPayload,
-}: IRequest): Promise<IResponseOrError & { headers?: Headers }> => {
+}: IRequest): Promise<IResponseOrError<T> & { headers?: Headers }> {
   const headers = {
     ...getPayloadOrEmpty(token, { Authorization: `Bearer ${token}` }),
     ...getPayloadOrEmpty(method !== 'GET', {
@@ -50,7 +50,7 @@ export const request = async ({
   } catch (error) {
     return { error };
   }
-};
+}
 
 function getPayloadOrEmpty(condition: any, payload: { [key: string]: string }) {
   return condition ? payload : {};

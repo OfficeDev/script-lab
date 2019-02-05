@@ -16,7 +16,7 @@ function getOfficeJsUrlToLoad(): string {
 
   return (params[OFFICE_JS_URL_QUERY_PARAMETER_KEY] || '').trim().length > 0
     ? params[OFFICE_JS_URL_QUERY_PARAMETER_KEY]
-    : SCRIPT_URLS.OFFICE_JS_FOR_EDITOR;
+    : SCRIPT_URLS.DEFAULT_OFFICE_JS;
 }
 
 const Runner = () => (

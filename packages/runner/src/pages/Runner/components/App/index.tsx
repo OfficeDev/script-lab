@@ -60,7 +60,7 @@ export class App extends React.Component<{}, IState> {
       Utilities.host === HostType.WEB
         ? null
         : (
-            params[OFFICE_JS_URL_QUERY_PARAMETER_KEY] || SCRIPT_URLS.OFFICE_JS_FOR_EDITOR
+            params[OFFICE_JS_URL_QUERY_PARAMETER_KEY] || SCRIPT_URLS.DEFAULT_OFFICE_JS
           ).toLowerCase();
   }
 

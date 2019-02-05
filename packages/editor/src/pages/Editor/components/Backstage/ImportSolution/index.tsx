@@ -16,7 +16,6 @@ interface IState {
   errorMessage: string | undefined;
 }
 
-// TODO: incorp. localization
 class ImportSolution extends Component<IProps, IState> {
   state = { importFieldText: '', errorMessage: undefined };
 

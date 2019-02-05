@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 
 export const BackstageWrapper = styled.div`
@@ -7,7 +6,6 @@ export const BackstageWrapper = styled.div`
 
   position: absolute;
   top: 0;
-  z-index: 10000000; /* 10 million to beat Fabric dialogs 1 million */
   background-color: ${props => props.theme.white};
   height: 100vh;
   width: 100%;

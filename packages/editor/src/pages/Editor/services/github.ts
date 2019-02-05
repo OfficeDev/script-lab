@@ -1,6 +1,8 @@
-import { Authenticator, IToken } from '@microsoft/office-js-helpers';
+import queryString from 'query-string';
 import { request as generalRequest, IResponseOrError } from './general';
-import { currentServerUrl, githubAppClientId } from 'common/lib/environment';
+import { githubAppClientId } from 'common/lib/environment';
+import { GITHUB_KEY } from 'common/lib/utilities/localStorage';
+import { IGithubProcessedLoginInfo } from '../store/github/actions';
 
 const baseApiUrl = 'https://api.github.com';
 
@@ -11,24 +13,32 @@ interface IRequest {
   jsonPayload?: string;
 }
 
-const auth = new Authenticator();
+export interface IGithubProfileResponse {
+  login: string;
+  avatar_url: string;
+  name: string;
+}
 
-auth.endpoints.add('GitHub', {
-  clientId: githubAppClientId,
-  baseUrl: 'https://github.com/login',
-  authorizeUrl: '/oauth/authorize',
-  scope: 'gist',
-  state: true,
-  tokenUrl: `${currentServerUrl}/auth`,
-});
+export function generateGithubLoginUrl(randomNumberForState: number) {
+  return (
+    'https://github.com/login/oauth/authorize' +
+    '?' +
+    queryString.stringify({
+      client_id: githubAppClientId,
+      redirect_uri: window.location.origin,
+      scope: 'gist',
+      state: randomNumberForState.toString(),
+    })
+  );
+}
 
-export const request = async ({
+export async function request<T>({
   method,
   path,
   token,
   jsonPayload,
   isArrayResponse,
-}: IRequest & { isArrayResponse: boolean }): Promise<IResponseOrError> => {
+}: IRequest & { isArrayResponse: boolean }): Promise<IResponseOrError<T>> {
   try {
     let nextUrl = `${baseApiUrl}/${path}`;
     let aggregate = [];
@@ -53,53 +63,37 @@ export const request = async ({
       nextUrl = getNextLinkIfAny(headers.get('Link'));
     }
 
-    return { response: aggregate };
+    return { response: aggregate as any };
   } catch (error) {
     return { error };
   }
-};
+}
 
-export const login = async (): Promise<{
-  token?: string;
-  profilePicUrl?: string;
-  username?: string;
-}> => {
-  let iToken: IToken;
-  try {
-    iToken = await auth.authenticate('GitHub');
-  } catch (err) {
-    console.error(err);
-    throw err;
-  }
-  const token = iToken.access_token;
-
-  return {
-    token,
-    ...(await getProfilePicUrlAndUsername(token)),
-  };
-};
-
-export const getProfilePicUrlAndUsername = (
-  token: string,
-): Promise<{ profilePicUrl?: string; username?: string }> =>
-  request({
+export const getProfileInfo = (token: string): Promise<IGithubProcessedLoginInfo> =>
+  request<IGithubProfileResponse>({
     method: 'GET',
     path: 'user',
     token,
     isArrayResponse: false,
   }).then(({ response, error }) => {
     if (error) {
-      console.error(error);
-      return {};
+      throw error;
     } else {
       return {
+        token: token,
         profilePicUrl: response!.avatar_url,
         username: response!.login,
+        fullName: response!.name,
       };
     }
   });
 
-export const logout = () => auth.tokens.clear();
+export const logout = () => {
+  localStorage.removeItem(GITHUB_KEY);
+
+  // Also remove the old office-js-helpers key that stored the auth token
+  localStorage.removeItem('OAuth2Tokens');
+};
 
 function getNextLinkIfAny(linkText: string): string | null {
   const regex = /\<(https:[^\>]*)\>; rel="next"/;

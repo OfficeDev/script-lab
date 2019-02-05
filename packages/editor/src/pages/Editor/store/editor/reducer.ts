@@ -1,7 +1,6 @@
 import { combineReducers } from 'redux';
 import { getType } from 'typesafe-actions';
 import { editor, IEditorAction } from '../actions';
-import { PATHS } from '../../../../constants';
 import omit from 'lodash/omit';
 
 type IIsVisibleState = boolean;

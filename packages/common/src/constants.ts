@@ -1,14 +1,16 @@
 import { HYPHENATED_PACKAGE_VERSIONS } from './package-versions';
 
-const OFFICE_JS_LOCAL_PACKAGE_URL = `/external/office-js-${
-  HYPHENATED_PACKAGE_VERSIONS['@microsoft/office-js']
-}/office.js`;
+// For offline debugging of Office.js:
+// const OFFICE_JS_LOCAL_PACKAGE_URL = `/external/office-js-${
+//   HYPHENATED_PACKAGE_VERSIONS['@microsoft/office-js']
+// }/office.js`;
 
 export const SCRIPT_URLS = {
   CUSTOM_FUNCTIONS_RUNNER:
     'https://appsforoffice.microsoft.com/lib/preview/hosted/custom-functions-runtime.js',
-  OFFICE_JS_FOR_EDITOR: 'https://appsforoffice.microsoft.com/lib/1/hosted/office.js',
-  OFFICE_JS_FOR_CUSTOM_FUNCTIONS_DASHBOARD: OFFICE_JS_LOCAL_PACKAGE_URL,
+  DEFAULT_OFFICE_JS: 'https://appsforoffice.microsoft.com/lib/1/hosted/office.js',
+  OFFICE_JS_FOR_CUSTOM_FUNCTIONS_DASHBOARD:
+    'https://appsforoffice.microsoft.com/lib/beta/hosted/office.js',
   MONACO_LOADER: `/external/monaco-editor-${
     HYPHENATED_PACKAGE_VERSIONS['monaco-editor']
   }/vs/loader.js`,

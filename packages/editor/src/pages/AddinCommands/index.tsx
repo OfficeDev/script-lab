@@ -10,7 +10,7 @@ import setup from './setup';
 
 const AddinCommands = () => (
   <AwaitPromiseThenRender
-    promise={addScriptTags([SCRIPT_URLS.OFFICE_JS_FOR_EDITOR])
+    promise={addScriptTags([SCRIPT_URLS.DEFAULT_OFFICE_JS])
       .then(() => Office.onReady())
       .then(() => hideSplashScreen())}
   >
