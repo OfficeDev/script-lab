@@ -10,9 +10,18 @@ interface IProps {
   style?: React.CSSProperties;
 }
 
-interface IState {}
+interface IState {
+  isJustAfterCopy?: boolean;
+}
+
+const COLOR_ON_SUCCESS = '#78b597';
+const DURATION_AFTER_SUCCESS_BEFORE_RESETTING_TO_REGULAR_COLOR = 750;
 
 class TextboxClipboardWrapper extends React.Component<IProps, IState> {
+  private timeout: NodeJS.Timeout;
+
+  state: IState = {};
+
   render() {
     return (
       <Wrapper style={this.props.style}>
@@ -22,8 +31,18 @@ class TextboxClipboardWrapper extends React.Component<IProps, IState> {
           value={this.props.text}
           componentRef={this.onTextFieldReceivedRef}
         />
-        <CopyableToClipboard textGetter={this.getTextToCopy}>
-          <IconButton iconProps={{ iconName: 'Copy' }} ariaLabel="Copy to clipboard" />
+        <CopyableToClipboard textGetter={this.getTextToCopy} onSuccess={this.onSuccess}>
+          <IconButton
+            styles={
+              this.state.isJustAfterCopy
+                ? {
+                    root: { background: COLOR_ON_SUCCESS },
+                  }
+                : {}
+            }
+            iconProps={{ iconName: 'Copy' }}
+            ariaLabel="Copy to clipboard"
+          />
         </CopyableToClipboard>
       </Wrapper>
     );
@@ -39,6 +58,18 @@ class TextboxClipboardWrapper extends React.Component<IProps, IState> {
   };
 
   private getTextToCopy = () => this.props.text;
+
+  private onSuccess = () => {
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+    }
+
+    this.setState({ isJustAfterCopy: true });
+    this.timeout = setTimeout(
+      () => this.setState({ isJustAfterCopy: false }),
+      DURATION_AFTER_SUCCESS_BEFORE_RESETTING_TO_REGULAR_COLOR,
+    );
+  };
 }
 
 export default TextboxClipboardWrapper;
