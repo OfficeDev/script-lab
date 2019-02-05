@@ -4,6 +4,8 @@ import { withTheme } from 'styled-components';
 import { Icon } from 'office-ui-fabric-react/lib/Icon';
 import { Checkbox } from 'office-ui-fabric-react/lib/Checkbox';
 
+import { ObjectInspector } from 'react-inspector';
+
 import {
   Wrapper,
   CheckboxWrapper,
@@ -178,27 +180,33 @@ class Console extends React.Component<IPrivateProps, IState> {
         >
           <LogsArea>
             {items.map(
-              ({ backgroundColor, color, key, icon, message, underlyingObject }) =>
-                underlyingObject ? (
-                  <div>FIXME show the underlyingObject here</div>
-                ) : (
-                  <Log key={key} style={{ backgroundColor, color }}>
-                    {icon ? (
-                      <Icon
-                        className="ms-font-m"
-                        iconName={icon.name}
-                        style={{
-                          fontSize: '1.2rem',
-                          color: icon.color,
-                          lineHeight: '1.2rem',
-                        }}
-                      />
-                    ) : (
-                      <div style={{ width: '1.2rem', height: '1.2rem' }} />
-                    )}
+              ({ backgroundColor, color, key, icon, message, underlyingObject }) => (
+                <Log key={key} style={{ backgroundColor, color }}>
+                  {icon ? (
+                    <Icon
+                      className="ms-font-m"
+                      iconName={icon.name}
+                      style={{
+                        fontSize: '1.2rem',
+                        color: icon.color,
+                        lineHeight: '1.2rem',
+                      }}
+                    />
+                  ) : (
+                    <div style={{ width: '1.2rem', height: '1.2rem' }} />
+                  )}
+                  {underlyingObject ? (
+                    <>
+                      <ObjectInspector data={underlyingObject} showNonenumerable={true} />
+                      {/* FIXME: how to get color to flow for errors/warnings? */}
+                      {/* FIXME: throws error "Unable to get property '_nextId' of undefined or null reference"
+                        when expanding Excel API object. */}
+                    </>
+                  ) : (
                     <LogText>{message}</LogText>
-                  </Log>
-                ),
+                  )}
+                </Log>
+              ),
             )}
             <div ref={this.lastLog} />
           </LogsArea>
