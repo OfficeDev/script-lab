@@ -7,8 +7,11 @@ interface IProps {
   textGetter: () => string;
 
   /** An optional globally-unique selector (like ".my-special-component").
-   * If provided, it will be used for finding the DOM element to attach the clipboard to.
-   * It should only be needed in special cases (see more in the comment to the class below).
+   * If provided, the selector will be used for finding the DOM element to attach the clipboard to,
+   * instead of assuming that it's the child of this component.
+   * The globallyUniqueSelector should only be needed in special cases.
+   * See more in the comment to the class below.  When it is used, it likely means that
+   * the component should be a childless one.
    */
   globallyUniqueSelector?: string;
 
@@ -16,7 +19,7 @@ interface IProps {
   onSuccess?: () => void;
 
   /** A function to call on failure.  If not provided, the default global error handler will be used. */
-  onError?: () => void;
+  onError?: (e: Error) => void;
 }
 
 interface IState {}
@@ -32,6 +35,13 @@ interface IState {}
  *    truly global and won't be repeated elsewhere by the app.
  */
 class CopyableToClipboard extends React.Component<IProps, IState> {
+  static defaultProps: Partial<IProps> = {
+    onError: invokeGlobalErrorHandler,
+    onSuccess: () => {
+      /* On success, do nothing. No notification is needed unless explicitly requested. */
+    },
+  };
+
   private static nextGlobalId = 0;
 
   private idIfAny: string;
@@ -51,14 +61,8 @@ class CopyableToClipboard extends React.Component<IProps, IState> {
       text: this.props.textGetter,
     });
 
-    if (this.props.onSuccess) {
-      this.clipboard.on('success', this.props.onSuccess);
-    }
-
-    this.clipboard.on(
-      'error',
-      this.props.onError ? this.props.onError : invokeGlobalErrorHandler,
-    );
+    this.clipboard.on('success', this.props.onSuccess);
+    this.clipboard.on('error', this.props.onError);
   }
 
   componentWillUnmount() {
@@ -67,7 +71,7 @@ class CopyableToClipboard extends React.Component<IProps, IState> {
 
   render() {
     if (this.props.globallyUniqueSelector) {
-      return this.props.children;
+      return this.props.children || null;
     } else {
       // Wrap it in a div so that this ID is captured
       return <div id={this.idIfAny}>{this.props.children}</div>;

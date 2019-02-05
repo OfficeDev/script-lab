@@ -8,7 +8,10 @@ import { DEBUG_KEY } from './localStorage';
 //   (fixes https://github.com/OfficeDev/script-lab/issues/527)
 let isCurrentlyShowingError = false;
 
-export function invokeGlobalErrorHandler(error: any) {
+/** A global error handler. Returns a boolean (always "true") to indicate that
+ * the error has been handled, and to prevent firing the default event handler.
+ */
+export function invokeGlobalErrorHandler(error: any): true {
   if (window.localStorage.getItem(DEBUG_KEY)) {
     // tslint:disable-next-line:no-debugger
     debugger;
@@ -19,7 +22,7 @@ export function invokeGlobalErrorHandler(error: any) {
     // in the chain is likely the more important one.
     console.error('Global error handler -- FOLLOW-UP ERROR (not showing in the UI)');
     console.error(error);
-    return;
+    return true;
   }
 
   console.error('Global error handler:');

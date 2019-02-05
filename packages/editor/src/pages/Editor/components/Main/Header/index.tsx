@@ -125,27 +125,33 @@ class Header extends Component<IProps, IState> {
 
     return (
       <>
+        {/* One of the header items will have the functionality to export the snippet to
+        clipboard. This component will hook up its globally-unique selector with the class
+        name of the same name (search for `export-snippet-to-clipboard` in the repo to
+        find the other spot). Note that unlike other instantiations of this component, it
+        is childless here, because the header children are absolute-positioned elements
+        that aren't DOM children of this component */}
         <CopyableToClipboard
           globallyUniqueSelector=".export-snippet-to-clipboard"
           textGetter={this.getSnippetYAML}
           onSuccess={this.props.notifyClipboardCopySuccess}
           onError={this.props.notifyClipboardCopyFailure}
-        >
-          <CommonHeader
-            items={items.map((item: IHeaderItem) => {
-              const renderedItem = this.renderItem(item);
-              if (item.key === 'solution-name') {
-                return {
-                  ...renderedItem,
-                  onClick: this.showSolutionSettings,
-                };
-              } else {
-                return renderedItem;
-              }
-            })}
-            farItems={farItems.map((item: IHeaderItem) => this.renderItem(item))}
-          />
-        </CopyableToClipboard>
+        />
+
+        <CommonHeader
+          items={items.map((item: IHeaderItem) => {
+            const renderedItem = this.renderItem(item);
+            if (item.key === 'solution-name') {
+              return {
+                ...renderedItem,
+                onClick: this.showSolutionSettings,
+              };
+            } else {
+              return renderedItem;
+            }
+          })}
+          farItems={farItems.map((item: IHeaderItem) => this.renderItem(item))}
+        />
         <SolutionSettings
           isOpen={this.state.isSolutionSettingsVisible}
           closeSolutionSettings={this.hideSolutionSettings}
