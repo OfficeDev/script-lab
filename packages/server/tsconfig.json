@@ -24,6 +24,6 @@
   },
   "include": [
     "./src/**/*",
-    "../common/src/interfaces/server.communication.ts"
+    "../common/src/interfaces/*"
   ],
 }

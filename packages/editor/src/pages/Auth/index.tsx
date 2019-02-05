@@ -71,7 +71,8 @@ class AuthPage extends React.Component<IProps, IState> {
 
       sessionStorage.setItem(AUTH_PAGE_SESSION_STORAGE_KEYS.auth_key, base64Key);
     } else {
-      base64Key = sessionStorage.getItem(AUTH_PAGE_SESSION_STORAGE_KEYS.auth_key); // or undefined
+      // Get from storage (or just have it resolve to null if it's not present)
+      base64Key = sessionStorage.getItem(AUTH_PAGE_SESSION_STORAGE_KEYS.auth_key);
     }
 
     let error: string;
