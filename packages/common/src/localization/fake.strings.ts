@@ -13,7 +13,9 @@ export function getFakeStringLong(text: string) {
   });
 }
 
-export function getFakeStringHelper(
+///////////////////////////////////////
+
+function getFakeStringHelper(
   text: string,
   letterAddingCallback?: (currentLetter: string, uppercaseIt: boolean) => string,
 ) {

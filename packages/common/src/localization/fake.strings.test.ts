@@ -1,6 +1,6 @@
 /* cspell:disable */
 
-import { getFakeString, getFakeStringLong } from './strings';
+import { getFakeString, getFakeStringLong } from './fake.strings';
 
 describe('localization fake strings', () => {
   it('basic string', () => expect(getFakeString('Hello World')).toEqual('Olleh Dlrow'));
