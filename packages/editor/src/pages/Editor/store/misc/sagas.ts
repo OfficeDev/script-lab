@@ -99,8 +99,13 @@ function* onConfirmSwitchEnvironmentSaga(
 }
 
 function* onPopOutEditorSaga() {
+  showSplashScreen('Navigating to the runner. Please wait...');
+
   openPopoutCodeEditor({
     onSuccess: () => (window.location.href = currentRunnerUrl),
+
+    // Note: on failure will show a dialog which will displace the splash screen.
+    // And which, when dismissed, will reveal the editor again.  So nothing special to do on failure.
   });
 }
 
