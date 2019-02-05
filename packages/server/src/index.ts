@@ -19,11 +19,11 @@ app.get('/hello', (_req, res) => {
   res.send({ express: 'Hello From Express' });
 });
 
-// An auth endpoint for GitHub that returns either `{ access_token: string }` or `{ error: string }`
+// An auth endpoint for GitHub that returns a JSON payload of type IServerAuthResponse
 app.post('/auth', async (req, res) => {
   const { code, state } = req.body;
 
-  let payloadToSend = await getAccessTokenOrErrorResponse({
+  let responsePayload: IServerAuthResponse = await getAccessTokenOrErrorResponse({
     code,
     state,
   });
@@ -31,7 +31,7 @@ app.post('/auth', async (req, res) => {
   res
     .contentType('application/json')
     .status(200)
-    .send(payloadToSend);
+    .send(responsePayload);
 });
 
 app.listen(port, () => console.log(`Listening on port ${port}`));

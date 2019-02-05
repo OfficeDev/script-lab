@@ -3,18 +3,14 @@ import { MessageBar, MessageBarType } from 'office-ui-fabric-react/lib/MessageBa
 import TextboxClipboardWrapper from 'common/lib/components/TextboxClipboardWrapper';
 import { PersonaSize, Persona } from 'office-ui-fabric-react/lib/Persona';
 
-export default ({
-  encodedToken,
-  username,
-  fullName,
-  profilePicUrl,
-}: {
+interface IProps {
   encodedToken: string;
   username: string;
   fullName: string;
   profilePicUrl: string;
-}) => (
-  <>
+}
+export default ({ encodedToken, username, fullName, profilePicUrl }: IProps) => (
+  <div>
     <MessageBar messageBarType={MessageBarType.success}>
       Your encoded GitHub auth token is ready. Please copy it from here, and paste it back
       into the code editor window.
@@ -34,5 +30,5 @@ export default ({
     />
 
     <TextboxClipboardWrapper style={{ marginTop: '2rem' }} text={encodedToken} />
-  </>
+  </div>
 );

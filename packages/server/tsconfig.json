@@ -5,7 +5,6 @@
     "allowJs": true,
     "sourceMap": true,
     "outDir": "./build",
-    "rootDir": "./" ,
     "strict": true,
     "noImplicitAny": true,
     "strictNullChecks": true ,
@@ -16,14 +15,15 @@
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
-    
     "moduleResolution": "node",
     "skipLibCheck": true,
     "typeRoots": [
-      "node_modules/@types",
-      "../../node_modules/@types"
+      "../../node_modules/@types",
     ],
     "esModuleInterop": true
   },
-  "exclude": ["node_modules", "build", "scripts"]
+  "include": [
+    "./src/**/*",
+    "../common/src/interfaces/server.communication.ts"
+  ],
 }

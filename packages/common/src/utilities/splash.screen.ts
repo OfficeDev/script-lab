@@ -9,7 +9,7 @@ import { DEBUG_KEY } from './localStorage';
 let isCurrentlyShowingError = false;
 
 export function invokeGlobalErrorHandler(error: any) {
-  if (process.env.NODE_ENV !== 'production' || window.localStorage.getItem(DEBUG_KEY)) {
+  if (window.localStorage.getItem(DEBUG_KEY)) {
     // tslint:disable-next-line:no-debugger
     debugger;
   }

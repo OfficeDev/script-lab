@@ -3,19 +3,15 @@ import request from 'request';
 const { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, GITHUB_REDIRECT_URL } = process.env;
 const GENERIC_ERROR_STRING = 'An unexpected login error has occurred.';
 
-export interface IGithubAccessTokenResponse {
+export interface IGithubApiAccessTokenResponse {
   access_token: string;
   error: string;
   error_description: string;
 }
 
-export function getAccessTokenOrErrorResponse({
-  code,
-  state,
-}: {
-  code: string;
-  state: string;
-}) {
+export function getAccessTokenOrErrorResponse(
+  input: IServerAuthRequest,
+): Promise<IServerAuthResponse> {
   return new Promise(resolve => {
     request.post(
       {
@@ -27,8 +23,8 @@ export function getAccessTokenOrErrorResponse({
           client_id: GITHUB_CLIENT_ID,
           client_secret: GITHUB_CLIENT_SECRET,
           redirect_uri: GITHUB_REDIRECT_URL,
-          code,
-          state,
+          code: input.code,
+          state: input.state,
         },
       },
       (error, _httpResponse, body) => {
@@ -39,8 +35,8 @@ export function getAccessTokenOrErrorResponse({
     // Helper
     function getResultObjectBasedOnAuthResponse(
       error: any,
-      body: IGithubAccessTokenResponse,
-    ): { [key: string]: any } {
+      body: IGithubApiAccessTokenResponse,
+    ): IServerAuthResponse {
       if (error) {
         return { error: error };
       } else if (body.error) {

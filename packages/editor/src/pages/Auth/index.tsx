@@ -18,9 +18,11 @@ import Dialog, { DialogType } from 'office-ui-fabric-react/lib/Dialog';
 import { RunOnLoad } from 'common/lib/components/PageSwitcher/utilities/RunOnLoad';
 import { currentServerUrl } from 'common/lib/environment';
 
-const SESSION_STORAGE_AUTH_COMPLETED_PARAMETER = 'auth_completed';
-const SESSION_STORAGE_AUTH_KEY_PARAMETER = 'auth_key';
-const SESSION_STORAGE_AUTH_STATE_PARAMETER = 'auth_state';
+const AUTH_PAGE_SESSION_STORAGE_KEYS = {
+  auth_completed: 'auth_completed',
+  auth_key: 'auth_key',
+  auth_state: 'auth_state',
+};
 
 interface IProps {}
 
@@ -57,20 +59,23 @@ class AuthPage extends React.Component<IProps, IState> {
     this.params = queryString.parse(queryString.extract(window.location.href));
 
     let base64Key: string | undefined;
-    if (typeof this.params.key === 'string' && this.params.key.trim().length > 0) {
+    if (this.params.key && this.params.key.trim().length > 0) {
       base64Key = this.params.key;
 
       // If landed on the page and have a "key" query parameter, the window
-      // must be re-used of a new auth flow.  So just in case,
+      // might be re-used for a new auth flow.  So just in case,
       // clear the session storage, and then store the key parameter
-      sessionStorage.clear();
-      sessionStorage.setItem(SESSION_STORAGE_AUTH_KEY_PARAMETER, base64Key);
+      for (const keyName in AUTH_PAGE_SESSION_STORAGE_KEYS) {
+        sessionStorage.removeItem(AUTH_PAGE_SESSION_STORAGE_KEYS[keyName]);
+      }
+
+      sessionStorage.setItem(AUTH_PAGE_SESSION_STORAGE_KEYS.auth_key, base64Key);
     } else {
-      base64Key = sessionStorage.getItem(SESSION_STORAGE_AUTH_KEY_PARAMETER); // or undefined
+      base64Key = sessionStorage.getItem(AUTH_PAGE_SESSION_STORAGE_KEYS.auth_key); // or undefined
     }
 
     let error: string;
-    if (sessionStorage.getItem(SESSION_STORAGE_AUTH_COMPLETED_PARAMETER)) {
+    if (sessionStorage.getItem(AUTH_PAGE_SESSION_STORAGE_KEYS.auth_completed)) {
       error =
         "You've already authenticated once on this page. " +
         'If you need to re-authenticate, please close this page, go back to the code editor, ' +
@@ -121,7 +126,7 @@ class AuthPage extends React.Component<IProps, IState> {
       }
 
       if (this.state.hasCodeAndState) {
-        const state = sessionStorage.getItem(SESSION_STORAGE_AUTH_STATE_PARAMETER);
+        const state = sessionStorage.getItem(AUTH_PAGE_SESSION_STORAGE_KEYS.auth_state);
         if (!this.state.publicKey || !state || state !== this.params.state) {
           return {
             component: <SomethingWentWrong />,
@@ -138,7 +143,10 @@ class AuthPage extends React.Component<IProps, IState> {
       if (this.state.publicKey && !this.state.isIE) {
         const random = generateCryptoSafeRandom();
 
-        sessionStorage.setItem(SESSION_STORAGE_AUTH_STATE_PARAMETER, random.toString());
+        sessionStorage.setItem(
+          AUTH_PAGE_SESSION_STORAGE_KEYS.auth_state,
+          random.toString(),
+        );
 
         window.location.href = generateGithubLoginUrl(random);
         return { component: null, showUI: false };
@@ -195,24 +203,21 @@ class AuthPage extends React.Component<IProps, IState> {
 
   private exchangeCodeAndStateForAccessToken = async () => {
     try {
-      const body = JSON.stringify({
+      const input: IServerAuthRequest = {
         code: this.params.code,
-        state: sessionStorage.getItem(SESSION_STORAGE_AUTH_STATE_PARAMETER),
-      });
+        state: sessionStorage.getItem(AUTH_PAGE_SESSION_STORAGE_KEYS.auth_state),
+      };
 
       const response = await fetch(currentServerUrl + '/auth', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: body,
+        body: JSON.stringify(input),
       });
 
       if (response.ok) {
-        const data: {
-          error?: string;
-          access_token?: string;
-        } = await response.json();
+        const data: IServerAuthResponse = await response.json();
         if (data.error) {
           this.onError(data.error);
         } else if (data.access_token) {
@@ -233,7 +238,10 @@ class AuthPage extends React.Component<IProps, IState> {
       .then(({ username, profilePicUrl, fullName }) => {
         const encodedToken = this.state.publicKey.encrypt(token).toString('base64');
         this.setState({ encodedToken, username, profilePicUrl, fullName });
-        window.sessionStorage.setItem(SESSION_STORAGE_AUTH_COMPLETED_PARAMETER, 'true');
+        window.sessionStorage.setItem(
+          AUTH_PAGE_SESSION_STORAGE_KEYS.auth_completed,
+          'true',
+        );
       })
       .catch(e => invokeGlobalErrorHandler(e));
   };

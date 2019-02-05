@@ -3,12 +3,12 @@ import { MessageBar, MessageBarType } from 'office-ui-fabric-react/lib/MessageBa
 import TextboxClipboardWrapper from 'common/lib/components/TextboxClipboardWrapper';
 
 export default () => (
-  <>
+  <div>
     <MessageBar messageBarType={MessageBarType.severeWarning}>
       Script Lab's authentication with GitHub is no longer supported on Internet Explorer.
       Please re-open this URL in an alternate browser, such as Edge, Chrome, Firefox, etc.
     </MessageBar>
 
     <TextboxClipboardWrapper style={{ marginTop: '2rem' }} text={window.location.href} />
-  </>
+  </div>
 );
