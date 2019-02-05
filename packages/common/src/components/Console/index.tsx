@@ -197,7 +197,10 @@ class Console extends React.Component<IPrivateProps, IState> {
                   )}
                   {underlyingObject ? (
                     <>
-                      <ObjectInspector data={underlyingObject} showNonenumerable={true} />
+                      <ObjectInspector
+                        data={createSnapshotForConsoleIfNeeded(underlyingObject)}
+                        showNonenumerable={true}
+                      />
                       {/* FIXME: how to get color to flow for errors/warnings? */}
                       {/* FIXME: throws error "Unable to get property '_nextId' of undefined or null reference"
                         when expanding Excel API object. */}
@@ -217,3 +220,37 @@ class Console extends React.Component<IPrivateProps, IState> {
 }
 
 export default withTheme(Console);
+
+///////////////////////////////////////
+
+function createSnapshotForConsoleIfNeeded(obj: OfficeExtension.ClientObject | any) {
+  if (obj instanceof OfficeExtension.ClientObject) {
+    const newObj = (obj as any).toJSON ? (obj as any).toJSON() : {};
+    recursivelyMassageObject(newObj, obj);
+    return newObj;
+  } else {
+    return obj;
+  }
+}
+
+function recursivelyMassageObject(
+  newObj: { [key: string]: any },
+  oldObj: { [key: string]: any },
+) {
+  for (const key in oldObj) {
+    if (['constructor'].indexOf(key) >= 0 || key.startsWith('_')) {
+      continue;
+    }
+
+    try {
+      const type = typeof oldObj[key];
+      if (type === 'function') {
+        newObj[key] = () => {};
+      } else if (oldObj[key] instanceof OfficeExtension.ClientObject) {
+        debugger;
+        newObj = newObj[key] || { __empty__: 'FIXME' };
+        recursivelyMassageObject(newObj[key], oldObj[key]);
+      }
+    } catch (e) {}
+  }
+}
