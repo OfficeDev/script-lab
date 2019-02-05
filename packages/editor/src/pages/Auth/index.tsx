@@ -65,9 +65,9 @@ class AuthPage extends React.Component<IProps, IState> {
       // If landed on the page and have a "key" query parameter, the window
       // might be re-used for a new auth flow.  So just in case,
       // clear the session storage, and then store the key parameter
-      for (const keyName in AUTH_PAGE_SESSION_STORAGE_KEYS) {
-        sessionStorage.removeItem(AUTH_PAGE_SESSION_STORAGE_KEYS[keyName]);
-      }
+      Object.values(AUTH_PAGE_SESSION_STORAGE_KEYS).forEach(keyName =>
+        sessionStorage.removeItem(keyName),
+      );
 
       sessionStorage.setItem(AUTH_PAGE_SESSION_STORAGE_KEYS.auth_key, base64Key);
     } else {
