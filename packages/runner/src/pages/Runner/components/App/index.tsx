@@ -236,8 +236,16 @@ export class App extends React.Component<{}, IState> {
       newQueryParams[OFFICE_JS_URL_QUERY_PARAMETER_KEY] = newOfficeJsUrl;
     }
 
-    const newParams = queryString.stringify(newQueryParams);
-    window.location.search = newParams;
+    const newParams = '?' + queryString.stringify(newQueryParams);
+    if (
+      newParams.length === 1 /* just the question mark */ ||
+      newParams === window.location.search
+    ) {
+      window.location.reload();
+    } else {
+      // Set the search, which will force a reload
+      window.location.search = newParams;
+    }
   }
 
   private respondToOfficeJsMismatchIfAny(solution: ISolution) {
