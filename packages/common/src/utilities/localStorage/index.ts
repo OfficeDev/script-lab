@@ -5,6 +5,7 @@ import ensureFreshLocalStorage from '../ensure.fresh.local.storage';
 export const GITHUB_KEY = 'github';
 export const SOLUTION_ROOT = 'solution#';
 export const CF_LOGS_ROOT = 'cf_logs#';
+export const DEBUG_KEY = 'debug';
 
 // custom functions
 export const getIsCustomFunctionRunnerAlive = (): boolean => {

@@ -2,6 +2,11 @@ var shell = require('shelljs');
 
 var { TRAVIS_COMMIT } = process.env; // from travis
 
+// Make any unhandled rejections terminate Node (rather than having it quit with a mere warning)
+process.on('unhandledRejection', error => {
+  throw error;
+});
+
 var commands = [
   `export REACT_APP_COMMIT='${TRAVIS_COMMIT}'`,
   `export REACT_APP_LAST_UPDATED='${new Date().toUTCString()}'`,
@@ -12,7 +17,7 @@ var commands = [
   // I believe this is being caused by the introduction of typescript as a non-dev dependency for the fhl stuff
   // something about them using source-map-support is messing things up
   // By setting this env var, the warning will not make travis fail and stop deployment
-  'yarn react-scripts:build',
+  'yarn react-scripts --max_old_space_size=4096 build',
 ].join(' && ');
 
 shell.exec(commands);

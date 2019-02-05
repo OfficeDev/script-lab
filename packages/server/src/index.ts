@@ -1,14 +1,11 @@
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').load();
 }
-const express = require('express');
-const cors = require('cors');
-const bodyParser = require('body-parser');
-const request = require('request');
-const path = require('path');
-const fs = require('fs');
 
-const { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, GITHUB_REDIRECT_URL } = process.env;
+import express from 'express';
+import cors from 'cors';
+import bodyParser from 'body-parser';
+import { getAccessTokenOrErrorResponse } from './auth';
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -18,42 +15,23 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // routes
-app.get('/hello', (req, res) => {
+app.get('/hello', (_req, res) => {
   res.send({ express: 'Hello From Express' });
 });
 
-app.post('/auth', (req, res) => {
+// An auth endpoint for GitHub that returns a JSON payload of type IServerAuthResponse
+app.post('/auth', async (req, res) => {
   const { code, state } = req.body;
-  request.post(
-    {
-      url: 'https://github.com/login/oauth/access_token',
-      headers: {
-        Accept: 'application/json',
-      },
-      json: {
-        client_id: GITHUB_CLIENT_ID,
-        client_secret: GITHUB_CLIENT_SECRET,
-        redirect_uri: GITHUB_REDIRECT_URL,
-        code,
-        state,
-      },
-    },
-    (error, httpResponse, body) => {
-      // TODO: pretty sure a 404 went into the else of this if
-      if (error) {
-        console.error('github login failed');
-        res
-          .contentType('application/json')
-          .status(500)
-          .send({ error });
-      } else {
-        res
-          .contentType('application/json')
-          .status(200)
-          .send(body);
-      }
-    },
-  );
+
+  let responsePayload: IServerAuthResponse = await getAccessTokenOrErrorResponse({
+    code,
+    state,
+  });
+
+  res
+    .contentType('application/json')
+    .status(200)
+    .send(responsePayload);
 });
 
 app.listen(port, () => console.log(`Listening on port ${port}`));

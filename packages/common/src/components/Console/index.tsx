@@ -17,8 +17,8 @@ import {
 import HeaderFooterLayout from '../HeaderFooterLayout';
 import { IconButton } from 'office-ui-fabric-react/lib/Button';
 
-import Clipboard from 'clipboard';
 import Only from '../Only';
+import CopyableToClipboard from '../CopyableToClipboard';
 
 const MAX_LOGS_SHOWN = 100;
 
@@ -46,8 +46,8 @@ interface IState {
 
 class Console extends React.Component<IPrivateProps, IState> {
   private lastLog = React.createRef<HTMLDivElement>();
-  private clipboard: Clipboard;
   state: IState = { shouldScrollToBottom: true, filterQuery: '' };
+  inputRef = React.createRef<HTMLInputElement>();
 
   static defaultProps = {
     style: {},
@@ -55,18 +55,6 @@ class Console extends React.Component<IPrivateProps, IState> {
 
   componentDidMount() {
     this.scrollToBottom();
-
-    this.clipboard = new Clipboard('.copy-to-clipboard', {
-      text: this.getTextToCopy,
-    });
-    this.clipboard.on('error', (e: Error) => {
-      console.error(e);
-      throw new Error('Could not copy to clipboard');
-    });
-  }
-
-  componentWillUnmount() {
-    this.clipboard.destroy();
   }
 
   componentDidUpdate() {
@@ -92,7 +80,7 @@ class Console extends React.Component<IPrivateProps, IState> {
 
   updateFilterQuery = () =>
     this.setState({
-      filterQuery: (this.refs.filterTextInput as any).value.toLowerCase(),
+      filterQuery: this.inputRef.current.value.toLowerCase(),
     });
 
   scrollToBottom() {
@@ -156,7 +144,7 @@ class Console extends React.Component<IPrivateProps, IState> {
                 type="text"
                 placeholder="Filter"
                 onChange={this.updateFilterQuery}
-                ref="filterTextInput"
+                ref={this.inputRef}
                 style={{
                   width: '100%',
                   height: '3.2rem',
@@ -176,12 +164,13 @@ class Console extends React.Component<IPrivateProps, IState> {
                 />
               </CheckboxWrapper>
               <Only when={logs.length > 0}>
-                <IconButton
-                  className="copy-to-clipboard"
-                  iconProps={{ iconName: 'Copy' }}
-                  style={{ height: '3.8rem' }}
-                  ariaLabel="Copy to clipboard"
-                />
+                <CopyableToClipboard textGetter={this.getTextToCopy}>
+                  <IconButton
+                    iconProps={{ iconName: 'Copy' }}
+                    style={{ height: '3.8rem' }}
+                    ariaLabel="Copy to clipboard"
+                  />
+                </CopyableToClipboard>
               </Only>
             </FooterWrapper>
           }

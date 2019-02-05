@@ -1,11 +1,18 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "typeRoots": ["./src/interfaces", "node_modules/@types", "../../node_modules/@types"],
-    "lib": ["dom", "es2015"],
+    "typeRoots": [
+      "./src/interfaces",
+      "node_modules/@types",
+      "../../node_modules/@types"
+    ],
+    "lib": [
+      "dom",
+      "es2015"
+    ],
     "skipLibCheck": true,
     "esModuleInterop": true,
-    "strict": false,
+    "strict": true,
     "outDir": "lib",
     "declaration": true,
     "allowJs": false,
@@ -13,9 +20,12 @@
     "jsx": "react",
     "alwaysStrict": false,
     "strictFunctionTypes": false,
-    "strictPropertyInitialization": false
+    "strictPropertyInitialization": false,
+    "declarationMap": true
   },
-  "include": ["./src/**/*"],
+  "include": [
+    "./src/**/*"
+  ],
   "exclude": [
     "node_modules",
     "**/node_modules/**/*",

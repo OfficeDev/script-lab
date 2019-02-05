@@ -57,6 +57,7 @@ jquery@3.1.1
     id: createGUID(),
     dateCreated: timestamp,
     dateLastModified: timestamp,
+    dateLastOpened: timestamp,
   }));
 
 export const getBoilerplateSolution = (
@@ -69,6 +70,7 @@ export const getBoilerplateSolution = (
   host,
   dateCreated: timestamp,
   dateLastModified: timestamp,
+  dateLastOpened: timestamp,
   options: {},
   files,
 });

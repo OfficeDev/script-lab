@@ -3,33 +3,34 @@
   "version": "0.1.0",
   "private": true,
   "dependencies_comments": {
-    "query-string": "Restricing query-string to version 5.1.1 because later versions (6+) started targeting ES6 rather than ES5, making it not work for the precompile scripts. See more at https://stackoverflow.com/a/49985749/678505",
-    "@microsoft/office-js": "For the custom functions dashboard, need a custom build of office-js that hasn't made it to prod yet (as of mid-Nov 2018)"
+    "query-string": "Restricing query-string to version 5.1.1 because later versions (6+) started targeting ES6 rather than ES5, making it not work for the precompile scripts. See more at https://stackoverflow.com/a/49985749/678505"
   },
   "dependencies": {
     "@microsoft/office-js-helpers": "0.7.4",
+    "@types/sanitize-html": "^1.18.2",
     "color": "^3.0.0",
     "common": "0.0.1",
-    "office-ui-fabric-react": "^6.69.0",
+    "office-ui-fabric-react": "^6.114.0",
     "query-string": "5.1.1",
     "react": "^16.5.0",
     "react-dom": "^16.5.0",
     "sanitize-html": "^1.19.2",
     "styled-components": "^3.4.6",
-    "typescript": "^3.1.6"
+    "typescript": "^3.2.4"
   },
   "scripts": {
+    "postinstall": "ts-node --project ../../scripts/tsconfig.json scripts/postinstall.ts",
     "start": "react-scripts start",
     "build": "export CI=false&&react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "lint": "tslint \"src/**/*.ts?(x)\""
   },
   "devDependencies": {
-    "@types/custom-functions-runtime": "^1.4.7",
+    "@types/custom-functions-runtime": "^1.4.8",
     "@types/jest": "^23.3.2",
     "@types/lodash": "^4.14.118",
     "@types/node": "^10.9.4",
-    "@types/office-js": "^0.0.111",
+    "@types/office-js": "^0.0.148",
     "@types/query-string": "^5.1.0",
     "@types/react": "^16.4.14",
     "@types/react-dom": "^16.0.7",

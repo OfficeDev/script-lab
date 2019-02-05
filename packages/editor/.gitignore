@@ -1,5 +1,8 @@
-/public/precompiled
 /public/external
+
+# also the "node-forge" library, whose webworker file needs to be
+# in a hardcoded location (copied by postinstall script)
+/public/forge
 
 # dependencies
 /node_modules

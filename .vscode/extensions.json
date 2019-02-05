@@ -8,6 +8,7 @@
     "robertohuertasm.vscode-icons",
     "coenraads.bracket-pair-colorizer",
     "wayou.vscode-todo-highlight",
-    "streetsidesoftware.code-spell-checker"
+    "streetsidesoftware.code-spell-checker",
+    "jpoissonnier.vscode-styled-components"
   ]
 }

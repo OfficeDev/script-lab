@@ -1,21 +1,26 @@
 import 'common/lib/polyfills';
+import { invokeGlobalErrorHandler } from 'common/lib/utilities/splash.screen';
+window.onerror = error => invokeGlobalErrorHandler(error);
+
+import redirectToProperEnvIfNeeded from 'common/lib/utilities/environment.redirector';
+const isRedirectingAwayPromise = redirectToProperEnvIfNeeded();
+
+import './index.css';
+
+///////////////////////////////////////
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import './index.css';
-import App from './components/App';
-
-import { waitForAllDynamicScriptsToBeLoaded } from 'common/lib/utilities/script-loader/consumer';
-import { invokeGlobalErrorHandler } from 'common/lib/utilities/splash.screen';
-
-window.onerror = error => invokeGlobalErrorHandler(error);
+import Pages from './pages';
 
 (async () => {
-  try {
-    await waitForAllDynamicScriptsToBeLoaded();
-    await Office.onReady();
-    ReactDOM.render(<App />, document.getElementById('root') as HTMLElement);
-  } catch (e) {
-    invokeGlobalErrorHandler(e);
+  const isRedirectingAway = await isRedirectingAwayPromise;
+  if (!isRedirectingAway) {
+    try {
+      ReactDOM.render(<Pages />, document.getElementById('root') as HTMLElement);
+    } catch (e) {
+      invokeGlobalErrorHandler(e);
+    }
   }
 })();
