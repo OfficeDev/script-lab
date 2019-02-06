@@ -61,7 +61,7 @@ export const LogsArea = styled.div`
 
 export const LogsList = styled.ul``;
 
-export const Log = styled.li`
+export const LogEntry = styled.li`
   position: relative;
   display: flex;
   align-items: center;
@@ -81,6 +81,21 @@ export const LogText = styled.pre`
   font-size: 1.2rem;
   margin-left: 1rem;
   width: 100%;
+`;
+
+export const ObjectInspectorLogEntry = styled.div`
+  display: flex;
+  width: 100%;
+  min-height: 3.2rem;
+  padding: 0.9rem;
+  padding-left: 1rem;
+  box-sizing: border-box;
+  border-top: 0.5px solid ${props => props.theme.neutralLight};
+  border-bottom: 0.5px solid ${props => props.theme.neutralLight};
+
+  & > li {
+    margin-left: 1rem;
+  }
 `;
 
 export const ClearButton = styled.button`

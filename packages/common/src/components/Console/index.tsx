@@ -12,7 +12,8 @@ import {
   ClearButton,
   FilterWrapper,
   LogsArea,
-  Log,
+  LogEntry,
+  ObjectInspectorLogEntry,
   LogText,
   FooterWrapper,
 } from './styles';
@@ -180,37 +181,47 @@ class Console extends React.Component<IPrivateProps, IState> {
         >
           <LogsArea>
             {items.map(
-              ({ backgroundColor, color, key, icon, message, underlyingObject }) => (
-                <Log key={key} style={{ backgroundColor, color }}>
-                  {icon ? (
-                    <Icon
-                      className="ms-font-m"
-                      iconName={icon.name}
-                      style={{
-                        fontSize: '1.2rem',
-                        color: icon.color,
-                        lineHeight: '1.2rem',
-                      }}
-                    />
-                  ) : (
-                    <div style={{ width: '1.2rem', height: '1.2rem' }} />
-                  )}
-                  {underlyingObject ? (
-                    <>
-                      <ObjectInspector
-                        data={createSnapshotForConsoleIfNeeded(underlyingObject)}
-                        showNonenumerable={true}
+              ({ backgroundColor, color, key, icon, message, underlyingObject }) =>
+                underlyingObject ? (
+                  <ObjectInspectorLogEntry key={key} style={{ backgroundColor, color }}>
+                    {icon ? (
+                      <Icon
+                        className="ms-font-m"
+                        iconName={icon.name}
+                        style={{
+                          fontSize: '1.2rem',
+                          color: icon.color,
+                          lineHeight: '1.2rem',
+                        }}
                       />
-                      {/* FIXME: how to get color to flow for errors/warnings? */}
-                      {/* FIXME: throws error "Unable to get property '_nextId' of undefined or null reference"
-                        when expanding Excel API object. */}
-                    </>
-                  ) : (
+                    ) : (
+                      <div style={{ width: '1.2rem', height: '1.2rem' }} />
+                    )}
+                    <ObjectInspector
+                      data={getJsonSnapshotForConsoleIfNeeded(underlyingObject)}
+                    />
+                    {/* FIXME: how to get color to flow for errors/warnings? */}
+                  </ObjectInspectorLogEntry>
+                ) : (
+                  <LogEntry key={key} style={{ backgroundColor, color }}>
+                    {icon ? (
+                      <Icon
+                        className="ms-font-m"
+                        iconName={icon.name}
+                        style={{
+                          fontSize: '1.2rem',
+                          color: icon.color,
+                          lineHeight: '1.2rem',
+                        }}
+                      />
+                    ) : (
+                      <div style={{ width: '1.2rem', height: '1.2rem' }} />
+                    )}
                     <LogText>{message}</LogText>
-                  )}
-                </Log>
-              ),
+                  </LogEntry>
+                ),
             )}
+
             <div ref={this.lastLog} />
           </LogsArea>
         </HeaderFooterLayout>
@@ -223,34 +234,10 @@ export default withTheme(Console);
 
 ///////////////////////////////////////
 
-function createSnapshotForConsoleIfNeeded(obj: OfficeExtension.ClientObject | any) {
-  if (obj instanceof OfficeExtension.ClientObject) {
-    const newObj = (obj as any).toJSON ? (obj as any).toJSON() : {};
-    recursivelyMassageObject(newObj, obj);
-    return newObj;
+function getJsonSnapshotForConsoleIfNeeded(obj: any) {
+  if ((obj as any).toJSON) {
+    return (obj as any).toJSON();
   } else {
     return obj;
-  }
-}
-
-function recursivelyMassageObject(
-  newObj: { [key: string]: any },
-  oldObj: { [key: string]: any },
-) {
-  for (const key in oldObj) {
-    if (['constructor'].indexOf(key) >= 0 || key.startsWith('_')) {
-      continue;
-    }
-
-    try {
-      const type = typeof oldObj[key];
-      if (type === 'function') {
-        newObj[key] = () => {};
-      } else if (oldObj[key] instanceof OfficeExtension.ClientObject) {
-        debugger;
-        newObj = newObj[key] || { __empty__: 'FIXME' };
-        recursivelyMassageObject(newObj[key], oldObj[key]);
-      }
-    } catch (e) {}
   }
 }
