@@ -228,16 +228,25 @@ export class App extends React.Component<{}, IState> {
   // and thus will get invoked with an object-based click-event parameter
   // rather than a string, messing up the reload.
   private reloadPageWithDifferentOfficeJsUrl(newOfficeJsUrl: string | null) {
-    const newQueryParams: { [key: string]: any } = queryString.parse(
+    const currentQueryParams: { [key: string]: any } = queryString.parse(
       window.location.search,
     );
 
-    if (newOfficeJsUrl) {
-      newQueryParams[OFFICE_JS_URL_QUERY_PARAMETER_KEY] = newOfficeJsUrl;
-    }
+    const isDifferentOfficeJs =
+      newOfficeJsUrl &&
+      newOfficeJsUrl !== currentQueryParams[OFFICE_JS_URL_QUERY_PARAMETER_KEY];
 
-    const newParams = queryString.stringify(newQueryParams);
-    window.location.search = newParams;
+    if (isDifferentOfficeJs) {
+      const newParams = {
+        ...currentQueryParams,
+        [OFFICE_JS_URL_QUERY_PARAMETER_KEY]: newOfficeJsUrl,
+      };
+
+      // Set the search, which will force a reload
+      window.location.search = queryString.stringify(newParams);
+    } else {
+      window.location.reload();
+    }
   }
 
   private respondToOfficeJsMismatchIfAny(solution: ISolution) {
