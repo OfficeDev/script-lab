@@ -183,7 +183,11 @@ class Console extends React.Component<IPrivateProps, IState> {
             {items.map(
               ({ backgroundColor, color, key, icon, message, underlyingObject }) =>
                 underlyingObject ? (
-                  <ObjectInspectorLogEntry key={key} style={{ backgroundColor, color }}>
+                  <ObjectInspectorLogEntry
+                    key={key}
+                    backgroundColor={backgroundColor}
+                    style={{ backgroundColor, color }}
+                  >
                     {icon ? (
                       <Icon
                         className="ms-font-m"
@@ -200,7 +204,6 @@ class Console extends React.Component<IPrivateProps, IState> {
                     <ObjectInspector
                       data={getJsonSnapshotForConsoleIfNeeded(underlyingObject)}
                     />
-                    {/* FIXME: how to get color to flow for errors/warnings? */}
                   </ObjectInspectorLogEntry>
                 ) : (
                   <LogEntry key={key} style={{ backgroundColor, color }}>

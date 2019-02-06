@@ -96,6 +96,10 @@ export const ObjectInspectorLogEntry = styled.div`
   & > li {
     margin-left: 1rem;
   }
+
+  & * {
+    background: ${props => (props as any) /*FIXME*/.backgroundColor};
+  }
 `;
 
 export const ClearButton = styled.button`
