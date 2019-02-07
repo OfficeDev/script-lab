@@ -1,6 +1,6 @@
 import React from 'react';
 import Clipboard from 'clipboard';
-import { invokeGlobalErrorHandler } from '../../utilities/splash.screen';
+import { invokeGlobalErrorHandler } from '../../../utilities/splash.screen';
 
 interface IProps {
   /** A function that will be invoked to get the text. */

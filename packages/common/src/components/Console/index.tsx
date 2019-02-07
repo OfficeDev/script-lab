@@ -19,7 +19,7 @@ import {
 } from './styles';
 import HeaderFooterLayout from '../HeaderFooterLayout';
 
-import CopyToClipboardIconButton from '../CopyToClipboardIconButton';
+import CopyToClipboardIconButton from '../Clipboard/CopyToClipboardIconButton';
 import Only from '../Only';
 import { stringifyPlusPlusOrErrorMessage } from '../../utilities/string';
 

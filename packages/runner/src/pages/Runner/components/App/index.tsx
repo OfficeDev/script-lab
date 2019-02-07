@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import { Utilities, HostType } from '@microsoft/office-js-helpers';
 import queryString from 'query-string';
-import { stringifyPlusPlus } from 'common/lib/utilities/string';
 
 import Theme from 'common/lib/components/Theme';
 import Console, { ConsoleLogSeverities } from 'common/lib/components/Console';
