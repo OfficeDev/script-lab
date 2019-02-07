@@ -294,10 +294,12 @@ function informSnippetSwitch(message: string) {
   }
 }
 
-function stringifyOrEmpty(args: any): string {
+// FIXME
+function stringifyOrEmpty(arg: any): string {
   try {
-    return stringifyPlusPlus(args);
+    return stringifyPlusPlus(arg);
   } catch {
+    debugger;
     return '';
   }
 }
