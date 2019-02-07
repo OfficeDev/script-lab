@@ -44,13 +44,11 @@ interface IPrivateProps extends IProps {
 
 interface IState {
   shouldScrollToBottom: boolean;
-  // FIXME remove filterQuery + UI
-  filterQuery: string;
 }
 
 class Console extends React.Component<IPrivateProps, IState> {
   private lastLog = React.createRef<HTMLDivElement>();
-  state: IState = { shouldScrollToBottom: true, filterQuery: '' };
+  state: IState = { shouldScrollToBottom: true };
   inputRef = React.createRef<HTMLInputElement>();
 
   static defaultProps = {
@@ -81,11 +79,6 @@ class Console extends React.Component<IPrivateProps, IState> {
         return prefix + stringifyPlusPlusOrErrorMessage(item.message);
       })
       .join('\n\n');
-
-  updateFilterQuery = () =>
-    this.setState({
-      filterQuery: this.inputRef.current.value.toLowerCase(),
-    });
 
   scrollToBottom() {
     if (this.state.shouldScrollToBottom && this.lastLog.current) {

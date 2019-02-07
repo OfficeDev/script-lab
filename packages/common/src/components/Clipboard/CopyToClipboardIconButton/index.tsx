@@ -12,7 +12,7 @@ interface IState {
   isJustAfterCopy?: boolean;
 }
 
-const COLOR_ON_SUCCESS = '#78b597';
+const COLOR_ON_SUCCESS = '#007500';
 const DURATION_AFTER_SUCCESS_BEFORE_RESETTING_TO_REGULAR_COLOR = 750;
 
 class CopyToClipboardIconButton extends React.Component<IProps, IState> {
@@ -29,12 +29,12 @@ class CopyToClipboardIconButton extends React.Component<IProps, IState> {
           styles={
             this.state.isJustAfterCopy
               ? {
-                  root: { background: COLOR_ON_SUCCESS },
+                  icon: { color: COLOR_ON_SUCCESS },
                 }
               : {}
           }
           style={this.props.iconHeight ? { height: this.props.iconHeight } : {}}
-          iconProps={{ iconName: 'Copy' }}
+          iconProps={{ iconName: this.state.isJustAfterCopy ? 'CheckMark' : 'Copy' }}
           title="Copy to clipboard"
         />
       </CopyableToClipboard>
