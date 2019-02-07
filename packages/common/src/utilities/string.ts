@@ -1,5 +1,7 @@
 import { ScriptLabError } from './error';
 
+const UNABLE_TO_DISPLAY_OBJECT_DEFAULT_MESSAGE = '<Unable to display object>';
+
 export function matchesSearch(
   queryLowercase: string,
   texts: Array<string | null>,
@@ -163,6 +165,14 @@ export function stringifyPlusPlus(object: any): string {
   }
 }
 
+export function stringifyPlusPlusOrErrorMessage(object: any): string {
+  try {
+    return stringifyPlusPlus(object);
+  } catch (e) {
+    return UNABLE_TO_DISPLAY_OBJECT_DEFAULT_MESSAGE;
+  }
+}
+
 export function generateLogString(
   args: any[],
   severityType: ConsoleLogTypes,
@@ -174,7 +184,7 @@ export function generateLogString(
       message += stringifyPlusPlus(element);
     } catch (e) {
       isSuccessfulMsg = false;
-      message += '<Unable to log>';
+      message += UNABLE_TO_DISPLAY_OBJECT_DEFAULT_MESSAGE;
     }
     message += '\n';
   });

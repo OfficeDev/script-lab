@@ -4,8 +4,7 @@ import flatten from 'lodash/flatten';
 import shuffle from 'lodash/shuffle';
 
 interface ILogDataMinusId {
-  message: string;
-  underlyingObject?: { [key: string]: any };
+  message: any;
   severity: ConsoleLogTypes;
 }
 
@@ -30,6 +29,33 @@ const logData: ILogDataMinusId[] = [
     message:
       "This is a test of an ERROR message. Also, this error message happens to be very very long. Super long. It's only purpose is to be super long. So long that we can test that the log container properly resizes itself and shows all of this super important, meaningful text that will help us understand if this log will be readable by the user.",
     severity: ConsoleLogSeverities.Error,
+  },
+  {
+    message: 5,
+    severity: ConsoleLogSeverities.Warn,
+  },
+  {
+    message: new Error('An error'),
+    severity: ConsoleLogSeverities.Error,
+  },
+  {
+    message: [11, 22],
+    severity: ConsoleLogSeverities.Log,
+  },
+  {
+    message: [['Product', 'Price'], ['Hammer', 17.99], ['Saw', 234.1]],
+    severity: ConsoleLogSeverities.Log,
+  },
+  {
+    message: {
+      type: 'nestedObject',
+      data: {
+        a: 5,
+        b: [4, 'hello'],
+      },
+      somethingElse: [['Product', 'Price'], ['Hammer', 17.99], ['Saw', 234.1]],
+    },
+    severity: ConsoleLogSeverities.Info,
   },
 ];
 

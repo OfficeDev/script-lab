@@ -16,7 +16,8 @@ const SimpleWrapper = ({ children }) => (
 
 class ConsoleWrapper extends React.Component<{ interval: number }> {
   loggingInterval: any;
-  state = { logs: [] };
+  counter = 0;
+  state: { logs: ILogData[] } = { logs: [] };
 
   componentDidMount() {
     this.setInterval();
@@ -32,16 +33,19 @@ class ConsoleWrapper extends React.Component<{ interval: number }> {
   }
 
   setInterval = () =>
-    (this.loggingInterval = setInterval(
-      () =>
-        this.setState({
-          logs: [
-            ...this.state.logs,
-            { severity: 'log', message: `I am log #${this.state.logs.length}` },
-          ],
-        }),
-      this.props.interval,
-    ));
+    (this.loggingInterval = setInterval(() => {
+      const { message, severity } = getRandomLogEntry();
+      this.setState({
+        logs: [
+          ...this.state.logs,
+          {
+            message,
+            severity,
+            id: (this.counter++).toString(),
+          },
+        ],
+      });
+    }, this.props.interval));
 
   clearLogs = () => this.setState({ logs: [] });
 
@@ -66,3 +70,9 @@ storiesOf('Console', module)
       <ConsoleWrapper interval={number('interval for adding logs', 1000)} />
     </SimpleWrapper>
   ));
+
+///////////////////////////////////////
+
+function getRandomLogEntry() {
+  return props.logs[Math.floor(Math.random() * props.logs.length)];
+}

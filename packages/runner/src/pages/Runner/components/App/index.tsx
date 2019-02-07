@@ -102,17 +102,8 @@ export class App extends React.Component<{}, IState> {
     severity: ConsoleLogTypes;
     object: string | { [key: string]: any };
   }) => {
-    const partial: {
-      message: string;
-      severity: typeof severity;
-      underlyingObject?: any;
-    } =
-      typeof object === 'string'
-        ? { message: object, severity }
-        : { message: stringifyOrEmpty(object), underlyingObject: object, severity };
-
     this.setState({
-      logs: [...this.state.logs, { id: logCount.toString(), ...partial }],
+      logs: [...this.state.logs, { id: logCount.toString(), message: object, severity }],
       isConsoleOpen: true,
     });
     logCount++;
@@ -294,13 +285,4 @@ function informSnippetSwitch(message: string) {
   }
 }
 
-// FIXME
-function stringifyOrEmpty(arg: any): string {
-  try {
-    return stringifyPlusPlus(arg);
-  } catch {
-    debugger;
-    return '';
-  }
-}
 export default App;

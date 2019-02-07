@@ -22,6 +22,7 @@ import { IconButton } from 'office-ui-fabric-react/lib/Button';
 
 import Only from '../Only';
 import CopyableToClipboard from '../CopyableToClipboard';
+import { stringifyPlusPlusOrErrorMessage } from '../../utilities/string';
 
 const MAX_LOGS_SHOWN = 100;
 
@@ -44,6 +45,7 @@ interface IPrivateProps extends IProps {
 
 interface IState {
   shouldScrollToBottom: boolean;
+  // FIXME remove filterQuery + UI
   filterQuery: string;
 }
 
@@ -77,7 +79,7 @@ class Console extends React.Component<IPrivateProps, IState> {
           prefix = '[ERROR]: ';
         }
 
-        return prefix + item.message;
+        return prefix + stringifyPlusPlusOrErrorMessage(item.message);
       })
       .join('\n\n');
 
@@ -97,8 +99,7 @@ class Console extends React.Component<IPrivateProps, IState> {
 
     const items = logs
       .slice(-1 * MAX_LOGS_SHOWN) // get the last X logs
-      .filter(log => log.message.toLowerCase().includes(this.state.filterQuery))
-      .map(({ id, severity, message, underlyingObject }) => {
+      .map(({ id, severity, message }) => {
         const { backgroundColor, color, icon } = {
           [ConsoleLogSeverities.Log]: {
             backgroundColor: theme.white,
@@ -128,7 +129,6 @@ class Console extends React.Component<IPrivateProps, IState> {
           color,
           icon,
           message,
-          underlyingObject,
         };
       });
 
@@ -180,49 +180,46 @@ class Console extends React.Component<IPrivateProps, IState> {
           }
         >
           <LogsArea>
-            {items.map(
-              ({ backgroundColor, color, key, icon, message, underlyingObject }) =>
-                underlyingObject ? (
-                  <ObjectInspectorLogEntry
-                    key={key}
-                    backgroundColor={backgroundColor}
-                    style={{ backgroundColor, color }}
-                  >
-                    {icon ? (
-                      <Icon
-                        className="ms-font-m"
-                        iconName={icon.name}
-                        style={{
-                          fontSize: '1.2rem',
-                          color: icon.color,
-                          lineHeight: '1.2rem',
-                        }}
-                      />
-                    ) : (
-                      <div style={{ width: '1.2rem', height: '1.2rem' }} />
-                    )}
-                    <ObjectInspector
-                      data={getJsonSnapshotForConsoleIfNeeded(underlyingObject)}
+            {items.map(({ backgroundColor, color, key, icon, message }) =>
+              typeof message === 'object' ? (
+                <ObjectInspectorLogEntry
+                  key={key}
+                  backgroundColor={backgroundColor}
+                  style={{ backgroundColor, color }}
+                >
+                  {icon ? (
+                    <Icon
+                      className="ms-font-m"
+                      iconName={icon.name}
+                      style={{
+                        fontSize: '1.2rem',
+                        color: icon.color,
+                        lineHeight: '1.2rem',
+                      }}
                     />
-                  </ObjectInspectorLogEntry>
-                ) : (
-                  <LogEntry key={key} style={{ backgroundColor, color }}>
-                    {icon ? (
-                      <Icon
-                        className="ms-font-m"
-                        iconName={icon.name}
-                        style={{
-                          fontSize: '1.2rem',
-                          color: icon.color,
-                          lineHeight: '1.2rem',
-                        }}
-                      />
-                    ) : (
-                      <div style={{ width: '1.2rem', height: '1.2rem' }} />
-                    )}
-                    <LogText>{message}</LogText>
-                  </LogEntry>
-                ),
+                  ) : (
+                    <div style={{ width: '1.2rem', height: '1.2rem' }} />
+                  )}
+                  <ObjectInspector data={getObjectOrJsonSnapshot(message)} />
+                </ObjectInspectorLogEntry>
+              ) : (
+                <LogEntry key={key} style={{ backgroundColor, color }}>
+                  {icon ? (
+                    <Icon
+                      className="ms-font-m"
+                      iconName={icon.name}
+                      style={{
+                        fontSize: '1.2rem',
+                        color: icon.color,
+                        lineHeight: '1.2rem',
+                      }}
+                    />
+                  ) : (
+                    <div style={{ width: '1.2rem', height: '1.2rem' }} />
+                  )}
+                  <LogText>{stringifyPlusPlusOrErrorMessage(message)}</LogText>
+                </LogEntry>
+              ),
             )}
 
             <div ref={this.lastLog} />
@@ -237,7 +234,7 @@ export default withTheme(Console);
 
 ///////////////////////////////////////
 
-function getJsonSnapshotForConsoleIfNeeded(obj: any) {
+function getObjectOrJsonSnapshot(obj: any) {
   if ((obj as any).toJSON) {
     return (obj as any).toJSON();
   } else {
