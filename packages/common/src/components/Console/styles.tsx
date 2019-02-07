@@ -31,24 +31,16 @@ export const RunnerLastUpdatedWrapper = styled.div.attrs({ className: 'ms-font-m
   overflow-wrap: normal;
 `;
 
-export const FilterWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  padding: 0.8rem;
-  height: 4.8rem;
+export const HeaderWrapper = styled.div`
   background: ${props => props.theme.neutralLight};
-  box-sizing: border-box;
-`;
-
-export const FooterWrapper = styled.div`
-  background: ${props => props.theme.neutralLight};
-  height: 3.8rem;
+  height: 3.2rem;
   display: flex;
   justify-content: space-between;
 `;
 
 export const CheckboxWrapper = styled.div`
-  padding: 0.9rem;
+  flex-grow: 1;
+  padding: 0.6rem;
 `;
 
 export const LogsArea = styled.div`
@@ -99,28 +91,5 @@ export const ObjectInspectorLogEntry = styled.div<{ backgroundColor: string }>`
 
   & * {
     background: ${props => props.backgroundColor};
-  }
-`;
-
-export const ClearButton = styled.button`
-  width: 2rem;
-  height: 2rem;
-  background: none;
-  border: 0px;
-  position: relative;
-  margin-right: 1.3rem;
-  margin-left: 0.5rem;
-
-  &:hover {
-    color: #b22222;
-    cursor: pointer;
-  }
-
-  &:active {
-    color: red;
-  }
-
-  &:focus {
-    outline: none;
   }
 `;

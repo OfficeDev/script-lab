@@ -1,30 +1,15 @@
 import React from 'react';
 import { TextField, ITextField } from 'office-ui-fabric-react/lib/TextField';
-import { IconButton } from 'office-ui-fabric-react/lib/Button';
 
 import { Wrapper } from './styles';
-import CopyableToClipboard from '../CopyableToClipboard';
+import CopyToClipboardIconButton from '../CopyToClipboardIconButton';
 
 interface IProps {
   text: string;
   style?: React.CSSProperties;
 }
 
-interface IState {
-  isJustAfterCopy?: boolean;
-}
-
-const COLOR_ON_SUCCESS = '#78b597';
-const DURATION_AFTER_SUCCESS_BEFORE_RESETTING_TO_REGULAR_COLOR = 750;
-
-class TextboxClipboardWrapper extends React.Component<IProps, IState> {
-  private timeout: any;
-  /* Note: using "any" rather than "NodeJS.Timeout" or "number"
-   * because TS was having issues when building it inside of the storybook context.
-   */
-
-  state: IState = {};
-
+class TextboxClipboardWrapper extends React.Component<IProps, {}> {
   render() {
     return (
       <Wrapper style={this.props.style}>
@@ -34,19 +19,7 @@ class TextboxClipboardWrapper extends React.Component<IProps, IState> {
           value={this.props.text}
           componentRef={this.onTextFieldReceivedRef}
         />
-        <CopyableToClipboard textGetter={this.getTextToCopy} onSuccess={this.onSuccess}>
-          <IconButton
-            styles={
-              this.state.isJustAfterCopy
-                ? {
-                    root: { background: COLOR_ON_SUCCESS },
-                  }
-                : {}
-            }
-            iconProps={{ iconName: 'Copy' }}
-            ariaLabel="Copy to clipboard"
-          />
-        </CopyableToClipboard>
+        <CopyToClipboardIconButton textGetter={this.getTextToCopy} />
       </Wrapper>
     );
   }
@@ -61,18 +34,6 @@ class TextboxClipboardWrapper extends React.Component<IProps, IState> {
   };
 
   private getTextToCopy = () => this.props.text;
-
-  private onSuccess = () => {
-    if (this.timeout) {
-      clearTimeout(this.timeout);
-    }
-
-    this.setState({ isJustAfterCopy: true });
-    this.timeout = setTimeout(
-      () => this.setState({ isJustAfterCopy: false }),
-      DURATION_AFTER_SUCCESS_BEFORE_RESETTING_TO_REGULAR_COLOR,
-    );
-  };
 }
 
 export default TextboxClipboardWrapper;
