@@ -1,5 +1,4 @@
 import { ConsoleLogSeverities } from './index';
-import cloneDeep from 'lodash/cloneDeep';
 import flatten from 'lodash/flatten';
 import shuffle from 'lodash/shuffle';
 
@@ -60,7 +59,7 @@ const logData: ILogDataMinusId[] = [
 ];
 
 export function getLogPages(pageCount: number): ILogData[] {
-  const pageCopies: ILogDataMinusId[][] = new Array(pageCount).fill(cloneDeep(logData));
+  const pageCopies: ILogDataMinusId[][] = new Array(pageCount).fill(logData);
 
   const logs: ILogData[] = flatten(pageCopies).map((log, i) => ({
     ...log,

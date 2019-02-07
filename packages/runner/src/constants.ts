@@ -10,6 +10,10 @@ export const officeNamespacesForIframe = [
   'PowerPoint',
   'Visio',
   'ExcelOp',
+
+  // Also transfer over the "Error" object, so that "instanceof Error" works correctly
+  //    when an error is moved from the iframe to the Console.
+  'Error',
 ];
 
 /** Namespaces for the custom functions Iframe-s to share with their overarching page. */

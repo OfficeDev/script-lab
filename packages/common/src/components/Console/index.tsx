@@ -190,7 +190,7 @@ class Console extends React.Component<IPrivateProps, IState> {
                     ) : (
                       <div style={{ width: '1.2rem', height: '1.2rem' }} />
                     )}
-                    <ObjectInspector data={getObjectOrJsonSnapshot(message)} />
+                    {getObjectInspectorForData(message)}
                   </ObjectInspectorLogEntry>
                 ) : (
                   <LogEntry key={key} style={{ backgroundColor, color }}>
@@ -225,10 +225,48 @@ export default withTheme(Console);
 
 ///////////////////////////////////////
 
-function getObjectOrJsonSnapshot(obj: any) {
+function getObjectInspectorForData(obj: any): React.ReactElement<any> {
   if ((obj as any).toJSON) {
-    return (obj as any).toJSON();
+    return <ObjectInspector data={(obj as any).toJSON()} />;
+  } else if (
+    typeof OfficeExtension !== 'undefined' &&
+    obj instanceof OfficeExtension.Error
+  ) {
+    return (
+      <ObjectInspector
+        data={obj}
+        expandPaths={['$', '$.debugInfo', '$.debugInfo.surroundingStatements']}
+      />
+    );
+  } else if (obj instanceof Error) {
+    // For errors, show the non-nonenumerables
+    return (
+      <ObjectInspector
+        data={obj}
+        showNonenumerable={true}
+        expandLevel={1}
+        sortObjectKeys={sortStackToTheBottom}
+      />
+    );
   } else {
-    return obj;
+    return <ObjectInspector data={obj} />;
   }
 }
+
+function sortStackToTheBottom(x: string, y: string) {
+  if (x === 'stack') {
+    return 1;
+  }
+  if (y === 'stack') {
+    return -1;
+  }
+  if (x < y) {
+    return -1;
+  }
+  if (x > y) {
+    return 1;
+  }
+  return 0;
+}
+
+// cspell:ignore nonenumerable, nonenumerables
