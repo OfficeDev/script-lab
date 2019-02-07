@@ -83,7 +83,7 @@ export const LogText = styled.pre`
   width: 100%;
 `;
 
-export const ObjectInspectorLogEntry = styled.div`
+export const ObjectInspectorLogEntry = styled.div<{ backgroundColor: string }>`
   display: flex;
   width: 100%;
   min-height: 3.2rem;
@@ -98,7 +98,7 @@ export const ObjectInspectorLogEntry = styled.div`
   }
 
   & * {
-    background: ${props => (props as any) /*FIXME*/.backgroundColor};
+    background: ${props => props.backgroundColor};
   }
 `;
 

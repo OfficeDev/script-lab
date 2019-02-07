@@ -31,8 +31,6 @@ const AppWrapper = styled.div`
 
 let logCount = 0;
 
-const USE_NEW_CONSOLE = true; // FIXME
-
 interface IState {
   solution?: ISolution | null;
   lastRendered: number | null;
@@ -45,7 +43,7 @@ export class App extends React.Component<{}, IState> {
   private hasRenderedContent = false;
   private isTransitioningAwayFromPage = false;
 
-  constructor(props) {
+  constructor(props: {}) {
     super(props);
 
     this.state = {
@@ -82,31 +80,17 @@ export class App extends React.Component<{}, IState> {
           // Silently ignore.  We'll still get notified via the UI anyway!
         }
 
-        args.forEach(arg => {
-          try {
-            const object = USE_NEW_CONSOLE ? arg : stringifyPlusPlus(arg);
-
-            setTimeout(
-              () =>
-                this.addLog({
-                  severity: method as ConsoleLogTypes,
-                  object,
-                }),
-              0,
-            );
-          } catch (error) {
-            // This shouldn't happen (stringifyPlusPlus should ensure there are no circular structures)
-            // But just in case...
-            setTimeout(
-              () =>
-                this.addLog({
-                  severity: ConsoleLogSeverities.Error,
-                  object: '[Could not display log entry]',
-                }),
-              0,
-            );
-          }
-        });
+        args.forEach(object =>
+          /* Note, the setTimeout is critical to make sure the UI doesn't freeze! */
+          setTimeout(
+            () =>
+              this.addLog({
+                severity: method as ConsoleLogTypes,
+                object,
+              }),
+            0,
+          ),
+        );
       };
     });
   };
