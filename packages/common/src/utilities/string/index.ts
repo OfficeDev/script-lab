@@ -1,4 +1,5 @@
-import { ScriptLabError } from './error';
+import { ScriptLabError } from '../error';
+import isPrimitive from 'is-primitive';
 
 const UNABLE_TO_DISPLAY_OBJECT_DEFAULT_MESSAGE = '<Unable to display object>';
 
@@ -88,7 +89,10 @@ export function stripSpaces(text: string) {
   return finalSetOfLines;
 }
 
-export function stringifyPlusPlus(object: any): string {
+export function stringifyPlusPlus(
+  object: any,
+  options = { quoteStrings: false },
+): string {
   if (object === null) {
     return 'null';
   }
@@ -97,9 +101,31 @@ export function stringifyPlusPlus(object: any): string {
     return 'undefined';
   }
 
-  // Don't JSON.stringify strings, because we don't want quotes in the output
+  // Don't JSON.stringify strings, because might not want quotes in the output
   if (typeof object === 'string') {
-    return object;
+    return options.quoteStrings ? `"${object}"` : object;
+  }
+
+  if (Array.isArray(object)) {
+    if (isEachObjectAPrimitiveType(object)) {
+      return (
+        '[' +
+        object.map(item => stringifyPlusPlus(item, { quoteStrings: true })).join(', ') +
+        ']'
+      );
+    } else {
+      return (
+        '[' +
+        '\n' +
+        indentAll(
+          object
+            .map(item => stringifyPlusPlus(item, { quoteStrings: true }))
+            .join(',' + '\n'),
+        ) +
+        '\n' +
+        ']'
+      );
+    }
   }
 
   if (object instanceof Error) {
@@ -122,11 +148,11 @@ export function stringifyPlusPlus(object: any): string {
 
   ////////////////////////////////////
 
-  // Helper:
+  // Helpers:
   function jsonStringify(object: any): string {
     return JSON.stringify(
       object,
-      (key, value) => {
+      (_key, value) => {
         if (value && typeof value === 'object' && !Array.isArray(value)) {
           return getStringifiableSnapshot(value);
         }
@@ -142,8 +168,12 @@ export function stringifyPlusPlus(object: any): string {
         let current = object;
 
         do {
-          Object.getOwnPropertyNames(current).forEach(tryAddName);
+          const ownPropNames = Object.getOwnPropertyNames(current);
+          ownPropNames.forEach(tryAddName);
           current = Object.getPrototypeOf(current);
+          if (isEmptyPrototype(current)) {
+            current = null;
+          }
         } while (current);
 
         return snapshot;
@@ -162,6 +192,37 @@ export function stringifyPlusPlus(object: any): string {
         }
       }
     }
+  }
+
+  function indentAll(text: string): string {
+    return text
+      .split('\n')
+      .map(line => new Array(4).fill(' ').join('') + line)
+      .join('\n');
+  }
+
+  function isEachObjectAPrimitiveType(objects: any[]): boolean {
+    for (let i = 0; i < objects.length; i++) {
+      if (!isPrimitive(objects[i])) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  function isEmptyPrototype(obj): boolean {
+    const ownPropNames = Object.getOwnPropertyNames(obj);
+    if (ownPropNames.length === 1 && ownPropNames[0] === '__proto__') {
+      const next = Object.getPrototypeOf(obj);
+      if (next === null) {
+        return false;
+      } else {
+        return isEmptyPrototype(next);
+      }
+    }
+
+    return false;
   }
 }
 
