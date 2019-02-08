@@ -1,4 +1,5 @@
 import { stringifyPlusPlus, stripSpaces } from '.';
+import { ScriptLabError } from '../error';
 
 describe('primitives', () => {
   it('basic', () => expect(stringifyPlusPlus('Hello World')).toEqual('Hello World'));
@@ -75,4 +76,54 @@ describe('objects', () => {
         }
       `),
     ));
+});
+
+describe('errors', () => {
+  it('simple', () =>
+    expect(stringifyPlusPlus(new Error('Test error'), { skipErrorStack: true })).toEqual(
+      stripSpaces(`
+        Error:
+        {
+            "message": "Test error"
+        }
+      `),
+    ));
+
+  it('ScriptLabError with string', () =>
+    expect(
+      stringifyPlusPlus(new ScriptLabError('Test error', 'Something'), {
+        skipErrorStack: true,
+      }),
+    ).toEqual(
+      stripSpaces(`
+        Test error:
+        {
+            "message": "Test error",
+            "name": "Script Lab Error",
+            "innerError": "Something"
+        }
+      `),
+    ));
+
+  it('ScriptLabError with inner error object', () =>
+    expect(
+      stringifyPlusPlus(new ScriptLabError('Test error', new Error('Inner')), {
+        skipErrorStack: true,
+      }),
+    ).toEqual(
+      stripSpaces(`
+        Test error:
+        {
+            "message": "Test error",
+            "name": "Script Lab Error",
+            "innerError": {
+                "message": "Inner"
+            }
+        }
+      `),
+    ));
+
+  // Note: cannot test OfficeExtension.Error, since "OfficeExtension"
+  //       is only loaded within an add-in (from the office.js script reference,
+  //       not via any dependent package)
 });

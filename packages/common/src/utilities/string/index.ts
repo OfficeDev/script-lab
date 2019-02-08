@@ -91,8 +91,15 @@ export function stripSpaces(text: string) {
 
 export function stringifyPlusPlus(
   object: any,
-  options = { quoteStrings: false },
+  options: { quoteStrings?: boolean; skipErrorStack?: boolean } = {},
 ): string {
+  const defaultOptions: typeof options = {
+    quoteStrings: false,
+    skipErrorStack: false,
+  };
+
+  options = { ...defaultOptions, ...options };
+
   if (object === null) {
     return 'null';
   }
@@ -110,7 +117,9 @@ export function stringifyPlusPlus(
     if (isEachObjectAPrimitiveType(object)) {
       return (
         '[' +
-        object.map(item => stringifyPlusPlus(item, { quoteStrings: true })).join(', ') +
+        object
+          .map(item => stringifyPlusPlus(item, { ...options, quoteStrings: true }))
+          .join(', ') +
         ']'
       );
     } else {
@@ -119,7 +128,7 @@ export function stringifyPlusPlus(
         '\n' +
         indentAll(
           object
-            .map(item => stringifyPlusPlus(item, { quoteStrings: true }))
+            .map(item => stringifyPlusPlus(item, { ...options, quoteStrings: true }))
             .join(',' + '\n'),
         ) +
         '\n' +
@@ -131,14 +140,15 @@ export function stringifyPlusPlus(
   if (object instanceof Error) {
     try {
       return (
-        (object instanceof ScriptLabError ? object.message : 'Error: ') +
+        (object instanceof ScriptLabError ? object.message + ':' : 'Error:') +
         '\n' +
         jsonStringify(object)
       );
     } catch (e) {
-      return stringifyPlusPlus(object.toString());
+      return stringifyPlusPlus(object.toString(), options);
     }
   }
+
   if (object.toString() !== '[object Object]') {
     return object.toString();
   }
@@ -150,9 +160,12 @@ export function stringifyPlusPlus(
 
   // Helpers:
   function jsonStringify(object: any): string {
-    return JSON.stringify(
+    let candidateString = JSON.stringify(
       object,
-      (_key, value) => {
+      (key, value) => {
+        if (object instanceof Error && options.skipErrorStack && key === 'stack') {
+          return undefined;
+        }
         if (value && typeof value === 'object' && !Array.isArray(value)) {
           return getStringifiableSnapshot(value);
         }
@@ -160,6 +173,10 @@ export function stringifyPlusPlus(
       },
       4,
     );
+
+    return candidateString;
+
+    ///////////////////////////////////
 
     function getStringifiableSnapshot(object: any) {
       const snapshot: any = {};
@@ -171,7 +188,8 @@ export function stringifyPlusPlus(
           const ownPropNames = Object.getOwnPropertyNames(current);
           ownPropNames.forEach(tryAddName);
           current = Object.getPrototypeOf(current);
-          if (isEmptyPrototype(current)) {
+
+          if (allNextPropertiesAlreadyExistOnSnapshot(current)) {
             current = null;
           }
         } while (current);
@@ -179,6 +197,18 @@ export function stringifyPlusPlus(
         return snapshot;
       } catch (e) {
         return object;
+      }
+
+      function allNextPropertiesAlreadyExistOnSnapshot(current: any): boolean {
+        const snapshotProps = Object.keys(snapshot);
+
+        for (const prop of Object.keys(current)) {
+          if (snapshotProps.indexOf(prop) < 0) {
+            return false;
+          }
+        }
+
+        return true;
       }
 
       function tryAddName(name: string) {
@@ -209,20 +239,6 @@ export function stringifyPlusPlus(
     }
 
     return true;
-  }
-
-  function isEmptyPrototype(obj): boolean {
-    const ownPropNames = Object.getOwnPropertyNames(obj);
-    if (ownPropNames.length === 1 && ownPropNames[0] === '__proto__') {
-      const next = Object.getPrototypeOf(obj);
-      if (next === null) {
-        return false;
-      } else {
-        return isEmptyPrototype(next);
-      }
-    }
-
-    return false;
   }
 }
 
