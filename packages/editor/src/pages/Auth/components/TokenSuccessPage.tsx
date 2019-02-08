@@ -1,6 +1,6 @@
 import React from 'react';
 import { MessageBar, MessageBarType } from 'office-ui-fabric-react/lib/MessageBar';
-import TextboxClipboardWrapper from 'common/lib/components/TextboxClipboardWrapper';
+import TextboxClipboardWrapper from 'common/lib/components/Clipboard/TextboxClipboardWrapper';
 import { PersonaSize, Persona } from 'office-ui-fabric-react/lib/Persona';
 
 interface IProps {

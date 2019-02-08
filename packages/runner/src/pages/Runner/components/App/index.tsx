@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import { Utilities, HostType } from '@microsoft/office-js-helpers';
 import queryString from 'query-string';
-import { stringifyPlusPlus } from 'common/lib/utilities/string';
 
 import Theme from 'common/lib/components/Theme';
 import Console, { ConsoleLogSeverities } from 'common/lib/components/Console';
@@ -43,7 +42,7 @@ export class App extends React.Component<{}, IState> {
   private hasRenderedContent = false;
   private isTransitioningAwayFromPage = false;
 
-  constructor(props) {
+  constructor(props: {}) {
     super(props);
 
     this.state = {
@@ -80,40 +79,35 @@ export class App extends React.Component<{}, IState> {
           // Silently ignore.  We'll still get notified via the UI anyway!
         }
 
-        try {
-          const message = stringifyPlusPlus(args);
-
+        args.forEach(object =>
+          /* Note, the setTimeout is critical to make sure the UI doesn't freeze! */
           setTimeout(
             () =>
               this.addLog({
                 severity: method as ConsoleLogTypes,
-                message,
+                object,
               }),
             0,
-          );
-        } catch (error) {
-          // This shouldn't happen (stringifyPlusPlus should ensure there are no circular structures)
-          // But just in case...
-          setTimeout(
-            () =>
-              this.addLog({
-                severity: ConsoleLogSeverities.Error,
-                message: '[Could not display log entry]',
-              }),
-            0,
-          );
-        }
+          ),
+        );
       };
     });
   };
 
-  addLog = (log: { severity: ConsoleLogTypes; message: string }) => {
+  addLog = ({
+    severity,
+    object,
+  }: {
+    severity: ConsoleLogTypes;
+    object: string | { [key: string]: any };
+  }) => {
     this.setState({
-      logs: [...this.state.logs, { id: logCount.toString(), ...log }],
+      logs: [...this.state.logs, { id: logCount.toString(), message: object, severity }],
       isConsoleOpen: true,
     });
     logCount++;
   };
+
   clearLogs = () => this.setState({ logs: [] });
 
   openConsole = () => this.setState({ isConsoleOpen: true });

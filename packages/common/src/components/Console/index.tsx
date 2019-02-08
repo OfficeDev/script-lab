@@ -3,22 +3,26 @@ import { withTheme } from 'styled-components';
 
 import { Icon } from 'office-ui-fabric-react/lib/Icon';
 import { Checkbox } from 'office-ui-fabric-react/lib/Checkbox';
+import { IconButton } from 'office-ui-fabric-react/lib/Button';
+
+import CustomTailoredObjectInspector from './custom.tailored.object.inspector';
 
 import {
   Wrapper,
   CheckboxWrapper,
-  ClearButton,
-  FilterWrapper,
   LogsArea,
-  Log,
+  LogEntry,
+  ObjectInspectorLogEntry,
   LogText,
-  FooterWrapper,
+  HeaderWrapper,
+  NoLogsPlaceholder,
+  NoLogsPlaceholderContainer,
 } from './styles';
 import HeaderFooterLayout from '../HeaderFooterLayout';
-import { IconButton } from 'office-ui-fabric-react/lib/Button';
 
+import CopyToClipboardIconButton from '../Clipboard/CopyToClipboardIconButton';
 import Only from '../Only';
-import CopyableToClipboard from '../CopyableToClipboard';
+import { stringifyPlusPlusOrErrorMessage } from '../../utilities/string';
 
 const MAX_LOGS_SHOWN = 100;
 
@@ -41,12 +45,11 @@ interface IPrivateProps extends IProps {
 
 interface IState {
   shouldScrollToBottom: boolean;
-  filterQuery: string;
 }
 
 class Console extends React.Component<IPrivateProps, IState> {
   private lastLog = React.createRef<HTMLDivElement>();
-  state: IState = { shouldScrollToBottom: true, filterQuery: '' };
+  state: IState = { shouldScrollToBottom: true };
   inputRef = React.createRef<HTMLInputElement>();
 
   static defaultProps = {
@@ -74,14 +77,9 @@ class Console extends React.Component<IPrivateProps, IState> {
           prefix = '[ERROR]: ';
         }
 
-        return prefix + item.message;
+        return prefix + stringifyPlusPlusOrErrorMessage(item.message);
       })
       .join('\n\n');
-
-  updateFilterQuery = () =>
-    this.setState({
-      filterQuery: this.inputRef.current.value.toLowerCase(),
-    });
 
   scrollToBottom() {
     if (this.state.shouldScrollToBottom && this.lastLog.current) {
@@ -94,7 +92,6 @@ class Console extends React.Component<IPrivateProps, IState> {
 
     const items = logs
       .slice(-1 * MAX_LOGS_SHOWN) // get the last X logs
-      .filter(log => log.message.toLowerCase().includes(this.state.filterQuery))
       .map(({ id, severity, message }) => {
         const { backgroundColor, color, icon } = {
           [ConsoleLogSeverities.Log]: {
@@ -132,70 +129,93 @@ class Console extends React.Component<IPrivateProps, IState> {
       <Wrapper style={{ backgroundColor: theme.neutralLighter, ...style }}>
         <HeaderFooterLayout
           header={
-            <FilterWrapper>
-              <ClearButton onClick={clearLogs}>
-                <Icon
-                  style={{ width: '2rem', height: '2rem', lineHeight: '2rem' }}
-                  iconName="EraseTool"
-                />
-              </ClearButton>
-              <input
-                className="ms-font-m"
-                type="text"
-                placeholder="Filter"
-                onChange={this.updateFilterQuery}
-                ref={this.inputRef}
-                style={{
-                  width: '100%',
-                  height: '3.2rem',
-                  padding: '0.6rem',
-                  boxSizing: 'border-box',
-                }}
-              />
-            </FilterWrapper>
-          }
-          footer={
-            <FooterWrapper>
-              <CheckboxWrapper>
-                <Checkbox
-                  label="Auto-scroll"
-                  defaultChecked={true}
-                  onChange={this.setShouldScrollToBottom}
-                />
-              </CheckboxWrapper>
-              <Only when={logs.length > 0}>
-                <CopyableToClipboard textGetter={this.getTextToCopy}>
-                  <IconButton
-                    iconProps={{ iconName: 'Copy' }}
-                    style={{ height: '3.8rem' }}
-                    ariaLabel="Copy to clipboard"
+            <Only when={logs.length > 0}>
+              <HeaderWrapper>
+                <CheckboxWrapper>
+                  <Checkbox
+                    label="Auto-scroll"
+                    defaultChecked={true}
+                    onChange={this.setShouldScrollToBottom}
                   />
-                </CopyableToClipboard>
-              </Only>
-            </FooterWrapper>
+                </CheckboxWrapper>
+
+                <IconButton
+                  iconProps={{ iconName: 'Clear' }}
+                  style={{ height: '3.2rem' }}
+                  styles={{ iconHovered: { color: '#b22222' } }}
+                  title="Clear"
+                  onClick={clearLogs}
+                />
+
+                <CopyToClipboardIconButton textGetter={this.getTextToCopy} />
+              </HeaderWrapper>
+            </Only>
           }
+          footer={null}
         >
-          <LogsArea>
-            {items.map(({ backgroundColor, color, key, icon, message }) => (
-              <Log key={key} style={{ backgroundColor, color }}>
-                {icon ? (
-                  <Icon
-                    className="ms-font-m"
-                    iconName={icon.name}
-                    style={{
-                      fontSize: '1.2rem',
-                      color: icon.color,
-                      lineHeight: '1.2rem',
-                    }}
-                  />
+          {items.length === 0 ? (
+            <NoLogsPlaceholderContainer>
+              <NoLogsPlaceholder>
+                There are no logs to display. Use{' '}
+                <pre
+                  style={{
+                    fontFamily: 'Consolas, monaco, monospace',
+                    fontWeight: 'bold',
+                    display: 'inline',
+                  }}
+                >
+                  console.log()
+                </pre>{' '}
+                to display logs here.
+              </NoLogsPlaceholder>
+            </NoLogsPlaceholderContainer>
+          ) : (
+            <LogsArea>
+              {items.map(({ backgroundColor, color, key, icon, message }) =>
+                typeof message === 'object' ? (
+                  <ObjectInspectorLogEntry
+                    key={key}
+                    backgroundColor={backgroundColor}
+                    style={{ backgroundColor, color }}
+                  >
+                    {icon ? (
+                      <Icon
+                        className="ms-font-m"
+                        iconName={icon.name}
+                        style={{
+                          fontSize: '1.2rem',
+                          color: icon.color,
+                          lineHeight: '1.2rem',
+                        }}
+                      />
+                    ) : (
+                      <div style={{ width: '1.2rem', height: '1.2rem' }} />
+                    )}
+                    <CustomTailoredObjectInspector obj={message} />
+                  </ObjectInspectorLogEntry>
                 ) : (
-                  <div style={{ width: '1.2rem', height: '1.2rem' }} />
-                )}
-                <LogText>{message}</LogText>
-              </Log>
-            ))}
-            <div ref={this.lastLog} />
-          </LogsArea>
+                  <LogEntry key={key} style={{ backgroundColor, color }}>
+                    {icon ? (
+                      <Icon
+                        className="ms-font-m"
+                        iconName={icon.name}
+                        style={{
+                          fontSize: '1.2rem',
+                          color: icon.color,
+                          lineHeight: '1.2rem',
+                        }}
+                      />
+                    ) : (
+                      <div style={{ width: '1.2rem', height: '1.2rem' }} />
+                    )}
+                    <LogText>{stringifyPlusPlusOrErrorMessage(message)}</LogText>
+                  </LogEntry>
+                ),
+              )}
+
+              <div ref={this.lastLog} />
+            </LogsArea>
+          )}
         </HeaderFooterLayout>
       </Wrapper>
     );

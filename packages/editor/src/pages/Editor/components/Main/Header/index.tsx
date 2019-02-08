@@ -16,7 +16,7 @@ import { PersonaSize, PersonaCoin } from 'office-ui-fabric-react/lib/Persona';
 // common
 import CommonHeader from 'common/lib/components/Header';
 import { ThemeContext } from 'common/lib/components/Theme';
-import CopyableToClipboard from 'common/lib/components/CopyableToClipboard';
+import CopyableToClipboard from 'common/lib/components/Clipboard/CopyableToClipboard';
 
 // local
 import SolutionSettings from './SolutionSettings';

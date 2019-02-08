@@ -9,7 +9,7 @@ import { PrimaryButton, DefaultButton } from 'office-ui-fabric-react/lib/Button'
 import { TextField } from 'office-ui-fabric-react/lib/TextField';
 import { Label } from 'office-ui-fabric-react/lib/Label';
 
-import TextboxClipboardWrapper from 'common/lib/components/TextboxClipboardWrapper';
+import TextboxClipboardWrapper from 'common/lib/components/Clipboard/TextboxClipboardWrapper';
 import { currentEditorUrl } from 'common/lib/environment';
 
 import { actions } from '../../../store';
