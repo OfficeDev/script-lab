@@ -4,7 +4,8 @@ import { withTheme } from 'styled-components';
 import { Icon } from 'office-ui-fabric-react/lib/Icon';
 import { Checkbox } from 'office-ui-fabric-react/lib/Checkbox';
 import { IconButton } from 'office-ui-fabric-react/lib/Button';
-import { ObjectInspector } from 'react-inspector';
+
+import CustomTailoredObjectInspector from './custom.tailored.object.inspector';
 
 import {
   Wrapper,
@@ -190,7 +191,7 @@ class Console extends React.Component<IPrivateProps, IState> {
                     ) : (
                       <div style={{ width: '1.2rem', height: '1.2rem' }} />
                     )}
-                    {getObjectInspectorForData(message)}
+                    <CustomTailoredObjectInspector obj={message} />
                   </ObjectInspectorLogEntry>
                 ) : (
                   <LogEntry key={key} style={{ backgroundColor, color }}>
@@ -222,51 +223,3 @@ class Console extends React.Component<IPrivateProps, IState> {
 }
 
 export default withTheme(Console);
-
-///////////////////////////////////////
-
-function getObjectInspectorForData(obj: any): React.ReactElement<any> {
-  if ((obj as any).toJSON) {
-    return <ObjectInspector data={(obj as any).toJSON()} />;
-  } else if (
-    typeof OfficeExtension !== 'undefined' &&
-    obj instanceof OfficeExtension.Error
-  ) {
-    return (
-      <ObjectInspector
-        data={obj}
-        expandPaths={['$', '$.debugInfo', '$.debugInfo.surroundingStatements']}
-      />
-    );
-  } else if (obj instanceof Error) {
-    // For errors, show the non-nonenumerables
-    return (
-      <ObjectInspector
-        data={obj}
-        showNonenumerable={true}
-        expandLevel={1}
-        sortObjectKeys={sortStackToTheBottom}
-      />
-    );
-  } else {
-    return <ObjectInspector data={obj} />;
-  }
-}
-
-function sortStackToTheBottom(x: string, y: string) {
-  if (x === 'stack') {
-    return 1;
-  }
-  if (y === 'stack') {
-    return -1;
-  }
-  if (x < y) {
-    return -1;
-  }
-  if (x > y) {
-    return 1;
-  }
-  return 0;
-}
-
-// cspell:ignore nonenumerable, nonenumerables
