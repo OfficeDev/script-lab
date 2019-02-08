@@ -171,49 +171,52 @@ class Console extends React.Component<IPrivateProps, IState> {
             </NoLogsPlaceholderContainer>
           ) : (
             <LogsArea>
-              {items.map(({ backgroundColor, color, key, icon, message }) =>
-                typeof message === 'object' ? (
-                  <ObjectInspectorLogEntry
-                    key={key}
-                    backgroundColor={backgroundColor}
-                    style={{ backgroundColor, color }}
-                  >
-                    {icon ? (
-                      <Icon
-                        className="ms-font-m"
-                        iconName={icon.name}
-                        style={{
-                          fontSize: '1.2rem',
-                          color: icon.color,
-                          lineHeight: '1.2rem',
-                        }}
-                      />
-                    ) : (
-                      <div style={{ width: '1.2rem', height: '1.2rem' }} />
-                    )}
-                    <CustomTailoredObjectInspector obj={message} />
-                  </ObjectInspectorLogEntry>
-                ) : (
-                  <LogEntry key={key} style={{ backgroundColor, color }}>
-                    {icon ? (
-                      <Icon
-                        className="ms-font-m"
-                        iconName={icon.name}
-                        style={{
-                          fontSize: '1.2rem',
-                          color: icon.color,
-                          lineHeight: '1.2rem',
-                        }}
-                      />
-                    ) : (
-                      <div style={{ width: '1.2rem', height: '1.2rem' }} />
-                    )}
-                    <LogText>{stringifyPlusPlusOrErrorMessage(message)}</LogText>
-                  </LogEntry>
-                ),
-              )}
-
-              <div ref={this.lastLog} />
+              {[
+                ...items.map(({ backgroundColor, color, key, icon, message }, index) => [
+                  index === items.length - 1 ? (
+                    <div key="last-long" ref={this.lastLog} />
+                  ) : null,
+                  typeof message === 'object' ? (
+                    <ObjectInspectorLogEntry
+                      key={key}
+                      backgroundColor={backgroundColor}
+                      style={{ backgroundColor, color }}
+                    >
+                      {icon ? (
+                        <Icon
+                          className="ms-font-m"
+                          iconName={icon.name}
+                          style={{
+                            fontSize: '1.2rem',
+                            color: icon.color,
+                            lineHeight: '1.2rem',
+                          }}
+                        />
+                      ) : (
+                        <div style={{ width: '1.2rem', height: '1.2rem' }} />
+                      )}
+                      <CustomTailoredObjectInspector obj={message} />
+                    </ObjectInspectorLogEntry>
+                  ) : (
+                    <LogEntry key={key} style={{ backgroundColor, color }}>
+                      {icon ? (
+                        <Icon
+                          className="ms-font-m"
+                          iconName={icon.name}
+                          style={{
+                            fontSize: '1.2rem',
+                            color: icon.color,
+                            lineHeight: '1.2rem',
+                          }}
+                        />
+                      ) : (
+                        <div style={{ width: '1.2rem', height: '1.2rem' }} />
+                      )}
+                      <LogText>{stringifyPlusPlusOrErrorMessage(message)}</LogText>
+                    </LogEntry>
+                  ),
+                ]),
+              ].filter(item => item != null)}
             </LogsArea>
           )}
         </HeaderFooterLayout>
