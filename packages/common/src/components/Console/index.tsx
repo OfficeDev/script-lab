@@ -139,7 +139,7 @@ class Console extends React.Component<IPrivateProps, IState> {
                 </CheckboxWrapper>
 
                 <IconButton
-                  iconProps={{ iconName: 'EraseTool' }}
+                  iconProps={{ iconName: 'Clear' }}
                   style={{ height: '3.2rem' }}
                   styles={{ iconHovered: { color: '#b22222' } }}
                   title="Clear"
