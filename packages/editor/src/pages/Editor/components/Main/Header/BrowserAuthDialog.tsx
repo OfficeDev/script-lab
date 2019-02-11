@@ -157,7 +157,7 @@ class BrowserAuthDialog extends React.Component<IProps, IState> {
   };
 
   onTokenInput = (_: React.FormEvent<HTMLInputElement>, newValue?: string) => {
-    this.setState({ encodedToken: newValue, errorMessage: null });
+    this.setState({ encodedToken: newValue, errorMessage: null, decodedToken: null });
     if (newValue) {
       try {
         this.setState({ decodedToken: this.privateKey.decrypt(newValue).toString() });
