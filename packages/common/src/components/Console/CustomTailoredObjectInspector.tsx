@@ -1,5 +1,6 @@
 import React from 'react';
 import { ObjectInspector } from 'react-inspector';
+import isError from 'lodash/isError';
 
 export interface IProps {
   obj: any;
@@ -18,7 +19,7 @@ export default ({ obj }: IProps): JSX.Element => {
         expandPaths={['$', '$.debugInfo', '$.debugInfo.surroundingStatements']}
       />
     );
-  } else if (obj instanceof Error) {
+  } else if (isError(obj)) {
     // cspell:ignore nonenumerable, nonenumerables
     // For errors, show the non-nonenumerables
     return (
@@ -34,7 +35,7 @@ export default ({ obj }: IProps): JSX.Element => {
   }
 };
 
-function sortStackToTheBottom(x: string, y: string) {
+function sortStackToTheBottom(x: string, y: string): number {
   if (x === 'stack') {
     return 1;
   }

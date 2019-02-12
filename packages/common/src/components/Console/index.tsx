@@ -5,15 +5,10 @@ import { Icon } from 'office-ui-fabric-react/lib/Icon';
 import { Checkbox } from 'office-ui-fabric-react/lib/Checkbox';
 import { IconButton } from 'office-ui-fabric-react/lib/Button';
 
-import CustomTailoredObjectInspector from './custom.tailored.object.inspector';
-
 import {
   Wrapper,
   CheckboxWrapper,
   LogsArea,
-  LogEntry,
-  ObjectInspectorLogEntry,
-  LogText,
   HeaderWrapper,
   NoLogsPlaceholder,
   NoLogsPlaceholderContainer,
@@ -23,6 +18,7 @@ import HeaderFooterLayout from '../HeaderFooterLayout';
 import CopyToClipboardIconButton from '../Clipboard/CopyToClipboardIconButton';
 import Only from '../Only';
 import { stringifyPlusPlusOrErrorMessage } from '../../utilities/string';
+import LogItem from './LogItem';
 
 const MAX_LOGS_SHOWN = 100;
 
@@ -90,7 +86,7 @@ class Console extends React.Component<IPrivateProps, IState> {
   render() {
     const { theme, logs, clearLogs, style } = this.props;
 
-    const items = logs
+    const logItems = logs
       .slice(-1 * MAX_LOGS_SHOWN) // get the last X logs
       .map(({ id, severity, message }) => {
         const { backgroundColor, color, icon } = {
@@ -123,7 +119,12 @@ class Console extends React.Component<IPrivateProps, IState> {
           icon,
           message,
         };
-      });
+      })
+      .map(props => <LogItem key={props.key} {...props} />);
+
+    if (logItems.length > 0) {
+      logItems.splice(logItems.length - 1, 0, <div key="last-long" ref={this.lastLog} />);
+    }
 
     return (
       <Wrapper style={{ backgroundColor: theme.neutralLighter, ...style }}>
@@ -153,7 +154,7 @@ class Console extends React.Component<IPrivateProps, IState> {
           }
           footer={null}
         >
-          {items.length === 0 ? (
+          {logItems.length === 0 ? (
             <NoLogsPlaceholderContainer>
               <NoLogsPlaceholder>
                 There are no logs to display. Use{' '}
@@ -170,51 +171,7 @@ class Console extends React.Component<IPrivateProps, IState> {
               </NoLogsPlaceholder>
             </NoLogsPlaceholderContainer>
           ) : (
-            <LogsArea>
-              {items.map(({ backgroundColor, color, key, icon, message }) =>
-                typeof message === 'object' ? (
-                  <ObjectInspectorLogEntry
-                    key={key}
-                    backgroundColor={backgroundColor}
-                    style={{ backgroundColor, color }}
-                  >
-                    {icon ? (
-                      <Icon
-                        className="ms-font-m"
-                        iconName={icon.name}
-                        style={{
-                          fontSize: '1.2rem',
-                          color: icon.color,
-                          lineHeight: '1.2rem',
-                        }}
-                      />
-                    ) : (
-                      <div style={{ width: '1.2rem', height: '1.2rem' }} />
-                    )}
-                    <CustomTailoredObjectInspector obj={message} />
-                  </ObjectInspectorLogEntry>
-                ) : (
-                  <LogEntry key={key} style={{ backgroundColor, color }}>
-                    {icon ? (
-                      <Icon
-                        className="ms-font-m"
-                        iconName={icon.name}
-                        style={{
-                          fontSize: '1.2rem',
-                          color: icon.color,
-                          lineHeight: '1.2rem',
-                        }}
-                      />
-                    ) : (
-                      <div style={{ width: '1.2rem', height: '1.2rem' }} />
-                    )}
-                    <LogText>{stringifyPlusPlusOrErrorMessage(message)}</LogText>
-                  </LogEntry>
-                ),
-              )}
-
-              <div ref={this.lastLog} />
-            </LogsArea>
+            <LogsArea>{logItems}</LogsArea>
           )}
         </HeaderFooterLayout>
       </Wrapper>

@@ -8,12 +8,12 @@ import * as SimplePrompt from './helpers/simple.prompt';
   console.log(
     stripSpaces(`
         This script will set you up with doing local GitHub auth.
-        
+
         If you haven't already, go to https://github.com/settings/developers
         and click "Register new application".
         Give it a name like "ScriptLab Local Dev",
         with a Homepage and Auth callback URL of https://localhost:3000
-        
+
         Once you've done that, please enter the following details from your app registration:
     `),
   );
