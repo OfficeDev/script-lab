@@ -123,9 +123,7 @@ class Console extends React.Component<IPrivateProps, IState> {
       .map(props => <LogItem key={props.key} {...props} />);
 
     if (logItems.length > 0) {
-      const originalLength = logItems.length;
-      logItems[originalLength] = logItems[originalLength - 1];
-      logItems[originalLength] = <div key="last-long" ref={this.lastLog} />;
+      logItems.splice(logItems.length - 1, 0, <div key="last-long" ref={this.lastLog} />);
     }
 
     return (
