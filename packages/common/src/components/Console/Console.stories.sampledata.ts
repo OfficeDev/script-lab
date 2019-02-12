@@ -34,7 +34,7 @@ const logData: ILogDataMinusId[] = [
     severity: ConsoleLogSeverities.Warn,
   },
   {
-    message: new Error('An error'),
+    message: new Error('A sample error'),
     severity: ConsoleLogSeverities.Error,
   },
   {
