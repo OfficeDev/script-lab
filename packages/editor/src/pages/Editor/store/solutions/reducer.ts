@@ -7,16 +7,22 @@ function normalizeSolutionName(
   state: IMetadataState,
   id: string,
   currentName?: string,
+  host?: string,
 ): { name?: string } {
   let name = currentName;
   if (!name) {
     return {};
   }
 
-  const allNames = Object.keys(state)
-    .map(k => state[k])
-    .filter(s => s.id !== id)
+  // if it is a new solution, host should be passed to this function
+  // if not, grab the host out of state
+  const currentHost = host || state[id].host;
+
+  const allNames = Object.values(state)
+    .filter(s => s.host === currentHost && s.id !== id)
     .map(s => s.name);
+
+  console.log({ allNames });
 
   if (allNames.includes(name)) {
     name = name.replace(/\(\d+\)$/gm, '').trim();
@@ -43,7 +49,12 @@ const metadata = (
         ...state,
         [action.payload.id]: {
           ...action.payload,
-          ...normalizeSolutionName(state, action.payload.id, action.payload.name),
+          ...normalizeSolutionName(
+            state,
+            action.payload.id,
+            action.payload.name,
+            action.payload.host,
+          ),
           files: action.payload.files.map(file => file.id),
         },
       };
