@@ -22,8 +22,6 @@ function normalizeSolutionName(
     .filter(s => s.host === currentHost && s.id !== id)
     .map(s => s.name);
 
-  console.log({ allNames });
-
   if (allNames.includes(name)) {
     name = name.replace(/\(\d+\)$/gm, '').trim();
     let suffix = 1;
