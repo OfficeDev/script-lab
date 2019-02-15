@@ -18,8 +18,8 @@ import { RunOnLoad } from 'common/lib/components/PageSwitcher/utilities/RunOnLoa
 import { currentServerUrl } from 'common/lib/environment';
 
 import {
-  bufferToNumericString,
-  numericStringToBuffer,
+  bufferToHexString,
+  hexStringToBuffer,
   unicodeStringToBuffer,
 } from 'common/lib/utilities/array.buffer';
 
@@ -254,7 +254,7 @@ class AuthPage extends React.Component<IProps, IState> {
         publicKey,
         unicodeStringToBuffer(token),
       );
-      const encodedToken = bufferToNumericString(encryptedArrayBuffer);
+      const encodedToken = bufferToHexString(encryptedArrayBuffer);
       this.setState({ encodedToken, username, profilePicUrl, fullName });
       window.sessionStorage.setItem(
         AUTH_PAGE_SESSION_STORAGE_KEYS.auth_completed,
@@ -279,7 +279,7 @@ function reconstructPublicKey(numericString: string): Promise<CryptoKey> {
       // don't need to worry about IE11.
       const value = await crypto.subtle.importKey(
         'spki',
-        numericStringToBuffer(numericString),
+        hexStringToBuffer(numericString),
         { name: 'RSA-OAEP', hash: { name: 'SHA-256' } },
         false,
         ['encrypt'],

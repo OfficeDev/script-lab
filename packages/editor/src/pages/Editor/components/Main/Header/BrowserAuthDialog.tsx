@@ -9,8 +9,8 @@ import { Label } from 'office-ui-fabric-react/lib/Label';
 import TextboxClipboardWrapper from 'common/lib/components/Clipboard/TextboxClipboardWrapper';
 import { currentEditorUrl } from 'common/lib/environment';
 import {
-  bufferToNumericString,
-  numericStringToBuffer,
+  bufferToHexString,
+  hexStringToBuffer,
   bufferToUnicodeString,
 } from 'common/lib/utilities/array.buffer';
 
@@ -131,7 +131,7 @@ class BrowserAuthDialog extends React.Component<IProps, IState> {
           authUrl:
             currentEditorUrl +
             '/#/auth?key=' +
-            bufferToNumericString(
+            bufferToHexString(
               await promisifyCryptoAction<ArrayBuffer>(
                 crypto.subtle.exportKey('spki', pair.publicKey),
               ),
@@ -178,7 +178,7 @@ class BrowserAuthDialog extends React.Component<IProps, IState> {
               hash: { name: 'SHA-256' },
             } as any /* note: hash is necessary for msCrypto */,
             this.privateKey,
-            numericStringToBuffer(newValue),
+            hexStringToBuffer(newValue),
           ),
         );
 

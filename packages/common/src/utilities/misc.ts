@@ -1,4 +1,4 @@
-import { bufferToNumericString } from './array.buffer';
+import { bufferToHexString } from './array.buffer';
 
 export function isInternetExplorer(): boolean {
   // From https://stackoverflow.com/a/19868056/678505
@@ -18,5 +18,5 @@ export function generateRandomToken(bits = 128): string {
   const crypto: Crypto = window.crypto || (window as any).msCrypto;
 
   crypto.getRandomValues(buffer);
-  return bufferToNumericString(buffer);
+  return bufferToHexString(buffer);
 }
