@@ -5,7 +5,7 @@ import {
   hideSplashScreen,
   invokeGlobalErrorHandler,
 } from 'common/lib/utilities/splash.screen';
-import { isInternetExplorer, generateCryptoSafeRandom } from 'common/lib/utilities/misc';
+import { isInternetExplorer, generateRandomToken } from 'common/lib/utilities/misc';
 import { MessageBar, MessageBarType } from 'office-ui-fabric-react/lib/MessageBar';
 import Theme from 'common/lib/components/Theme';
 import { HostType } from '@microsoft/office-js-helpers';
@@ -142,12 +142,9 @@ class AuthPage extends React.Component<IProps, IState> {
         // actually valid (e.g., that it wasn't accidentally cut off during copy-paste)
         reconstructPublicKey(this.state.publicKeyString)
           .then(_ => {
-            const random = generateCryptoSafeRandom();
+            const random = generateRandomToken();
 
-            sessionStorage.setItem(
-              AUTH_PAGE_SESSION_STORAGE_KEYS.auth_state,
-              random.toString(),
-            );
+            sessionStorage.setItem(AUTH_PAGE_SESSION_STORAGE_KEYS.auth_state, random);
 
             window.location.href = generateGithubLoginUrl(random);
           })

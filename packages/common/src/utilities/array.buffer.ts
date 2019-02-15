@@ -1,5 +1,5 @@
-export function bufferToNumericString(buffer: ArrayBuffer) {
-  return Array.from(new Uint8Array(buffer))
+export function bufferToNumericString(buffer: ArrayBuffer | Uint8Array) {
+  return Array.from(buffer instanceof Uint8Array ? buffer : new Uint8Array(buffer))
     .map(value => /* pad with 0s */ ('000' + value).slice(-3))
     .join('');
 }
