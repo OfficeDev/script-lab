@@ -1,8 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux'; // Note, avoid the temptation to include '@types/react-redux', it will break compile-time!
-import NodeRSA from 'node-rsa';
-import forge from 'node-forge';
-
 import { hideSplashScreen } from 'common/lib/utilities/splash.screen';
 import Dialog, { DialogType, DialogFooter } from 'office-ui-fabric-react/lib/Dialog';
 import { PrimaryButton, DefaultButton } from 'office-ui-fabric-react/lib/Button';
@@ -11,6 +8,11 @@ import { Label } from 'office-ui-fabric-react/lib/Label';
 
 import TextboxClipboardWrapper from 'common/lib/components/Clipboard/TextboxClipboardWrapper';
 import { currentEditorUrl } from 'common/lib/environment';
+import {
+  bufferToHexString,
+  hexStringToBuffer,
+  bufferToUnicodeString,
+} from 'common/lib/utilities/array.buffer';
 
 import { actions } from '../../../store';
 import { IGithubProcessedLoginInfo } from '../../../store/github/actions';
@@ -34,8 +36,12 @@ interface IState {
   decodedToken?: string;
 }
 
+// Define "crypto" variable for use by this component,
+// using either "window.crypto" or the IE11-specific msCrypto.
+const crypto: Crypto = window.crypto || (window as any).msCrypto;
+
 class BrowserAuthDialog extends React.Component<IProps, IState> {
-  privateKey: NodeRSA;
+  privateKey: CryptoKey;
   keyGenerationInProgress: boolean;
   state: IState = {};
 
@@ -101,34 +107,39 @@ class BrowserAuthDialog extends React.Component<IProps, IState> {
     );
   }
 
-  onDialogShown = () => {
+  onDialogShown = async () => {
     if (!this.keyGenerationInProgress) {
       this.keyGenerationInProgress = true;
 
-      forge.pki.rsa.generateKeyPair(
-        {
-          bits: 2048,
-          workers: 2 /* number of web workers to use */,
-        },
-        (err, keypair) => {
-          if (err) {
-            this.setState({ errorMessage: err.toString() });
-            return;
-          }
+      try {
+        const pair = await promisifyCryptoAction<CryptoKeyPair>(
+          crypto.subtle.generateKey(
+            {
+              name: 'RSA-OAEP',
+              modulusLength: 2048,
+              publicExponent: new Uint8Array([0x01, 0x00, 0x01]),
+              hash: { name: 'SHA-256' },
+            },
+            true,
+            ['encrypt', 'decrypt'],
+          ),
+        );
 
-          const publicKeyString = forge.pki.publicKeyToPem(keypair.publicKey);
-          const privateKeyString = forge.pki.privateKeyToPem(keypair.privateKey);
+        this.privateKey = pair.privateKey;
 
-          this.privateKey = new NodeRSA(privateKeyString);
-
-          this.setState({
-            authUrl:
-              currentEditorUrl +
-              '/#/auth?key=' +
-              encodeURIComponent(btoa(publicKeyString)),
-          });
-        },
-      );
+        this.setState({
+          authUrl:
+            currentEditorUrl +
+            '/#/auth?key=' +
+            bufferToHexString(
+              await promisifyCryptoAction<ArrayBuffer>(
+                crypto.subtle.exportKey('spki', pair.publicKey),
+              ),
+            ),
+        });
+      } catch (error) {
+        this.setState({ errorMessage: error.toString() });
+      }
     }
 
     // Clear out any previous error state, or the token input
@@ -156,11 +167,22 @@ class BrowserAuthDialog extends React.Component<IProps, IState> {
     }
   };
 
-  onTokenInput = (_: React.FormEvent<HTMLInputElement>, newValue?: string) => {
+  onTokenInput = async (_: React.FormEvent<HTMLInputElement>, newValue?: string) => {
     this.setState({ encodedToken: newValue, errorMessage: null, decodedToken: null });
     if (newValue) {
       try {
-        this.setState({ decodedToken: this.privateKey.decrypt(newValue).toString() });
+        const decryptedArrayBuffer = await promisifyCryptoAction<ArrayBuffer>(
+          crypto.subtle.decrypt(
+            {
+              name: 'RSA-OAEP',
+              hash: { name: 'SHA-256' },
+            } as any /* note: hash is necessary for msCrypto */,
+            this.privateKey,
+            hexStringToBuffer(newValue),
+          ),
+        );
+
+        this.setState({ decodedToken: bufferToUnicodeString(decryptedArrayBuffer) });
       } catch (e) {
         // If it doesn't work, that's OK.  This is only used for visual indication
         // when the user pasted in the token -- they'll see the actual error message
@@ -183,4 +205,26 @@ export default connect(
   { onLoginSuccess: actions.github.loginSuccessful, cancel: actions.github.cancelLogin },
 )(BrowserAuthDialog);
 
-// cspell:ignore keypair
+///////////////////////////////////////
+
+function promisifyCryptoAction<T>(
+  operation: IOncompleteOnerror<T> | PromiseLike<T>,
+): Promise<T> {
+  return new Promise((resolve, reject) => {
+    if ((window as any).msCrypto) {
+      (operation as IOncompleteOnerror<T>).onerror = error => reject(error);
+      (operation as IOncompleteOnerror<T>).oncomplete = event =>
+        resolve(event.target.result);
+    } else {
+      (operation as PromiseLike<T>).then(
+        result => resolve(result),
+        error => reject(error),
+      );
+    }
+  });
+}
+
+interface IOncompleteOnerror<T> {
+  onerror: (e: any) => void;
+  oncomplete: (event: { target: { result: T } }) => void;
+}

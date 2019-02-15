@@ -19,7 +19,7 @@ export interface IGithubProfileResponse {
   name: string;
 }
 
-export function generateGithubLoginUrl(randomNumberForState: number) {
+export function generateGithubLoginUrl(randomTokenForState: string) {
   return (
     'https://github.com/login/oauth/authorize' +
     '?' +
@@ -27,7 +27,7 @@ export function generateGithubLoginUrl(randomNumberForState: number) {
       client_id: githubAppClientId,
       redirect_uri: window.location.origin,
       scope: 'gist',
-      state: randomNumberForState.toString(),
+      state: randomTokenForState,
     })
   );
 }

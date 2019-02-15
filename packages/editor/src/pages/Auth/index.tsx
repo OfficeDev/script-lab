@@ -1,12 +1,11 @@
 import React from 'react';
-import NodeRSA from 'node-rsa';
 import queryString from 'query-string';
 
 import {
   hideSplashScreen,
   invokeGlobalErrorHandler,
 } from 'common/lib/utilities/splash.screen';
-import { isInternetExplorer, generateCryptoSafeRandom } from 'common/lib/utilities/misc';
+import { isInternetExplorer, generateRandomToken } from 'common/lib/utilities/misc';
 import { MessageBar, MessageBarType } from 'office-ui-fabric-react/lib/MessageBar';
 import Theme from 'common/lib/components/Theme';
 import { HostType } from '@microsoft/office-js-helpers';
@@ -18,6 +17,12 @@ import Dialog, { DialogType } from 'office-ui-fabric-react/lib/Dialog';
 import { RunOnLoad } from 'common/lib/components/PageSwitcher/utilities/RunOnLoad';
 import { currentServerUrl } from 'common/lib/environment';
 
+import {
+  bufferToHexString,
+  hexStringToBuffer,
+  unicodeStringToBuffer,
+} from 'common/lib/utilities/array.buffer';
+
 const AUTH_PAGE_SESSION_STORAGE_KEYS = {
   auth_completed: 'auth_completed',
   auth_key: 'auth_key',
@@ -28,7 +33,7 @@ interface IProps {}
 
 interface IState {
   isIE: boolean;
-  publicKey: NodeRSA | undefined;
+  publicKeyString: string;
   hasCodeAndState: boolean;
   error?: string;
 
@@ -58,9 +63,9 @@ class AuthPage extends React.Component<IProps, IState> {
 
     this.params = queryString.parse(queryString.extract(window.location.href));
 
-    let base64Key: string | undefined;
+    let publicKeyString: string | undefined;
     if (this.params.key && this.params.key.trim().length > 0) {
-      base64Key = this.params.key;
+      publicKeyString = this.params.key;
 
       // If landed on the page and have a "key" query parameter, the window
       // might be re-used for a new auth flow.  So just in case,
@@ -69,10 +74,10 @@ class AuthPage extends React.Component<IProps, IState> {
         sessionStorage.removeItem(keyName),
       );
 
-      sessionStorage.setItem(AUTH_PAGE_SESSION_STORAGE_KEYS.auth_key, base64Key);
+      sessionStorage.setItem(AUTH_PAGE_SESSION_STORAGE_KEYS.auth_key, publicKeyString);
     } else {
       // Get from storage (or just have it resolve to null if it's not present)
-      base64Key = sessionStorage.getItem(AUTH_PAGE_SESSION_STORAGE_KEYS.auth_key);
+      publicKeyString = sessionStorage.getItem(AUTH_PAGE_SESSION_STORAGE_KEYS.auth_key);
     }
 
     let error: string;
@@ -83,18 +88,9 @@ class AuthPage extends React.Component<IProps, IState> {
         'and retrieve a new sign-in URL to open in a new page.';
     }
 
-    let publicKey: NodeRSA;
-    try {
-      publicKey = new NodeRSA(atob(base64Key));
-    } catch (e) {
-      error =
-        `The "key" parameter in the URL appears to be incomplete. ` +
-        `Please go back to the sign-in dialog in the code editor, and be sure to copy the full URL.`;
-    }
-
     this.state = {
       isIE,
-      publicKey,
+      publicKeyString,
       error,
       hasCodeAndState: !error && Boolean(this.params.code && this.params.state),
     };
@@ -128,7 +124,7 @@ class AuthPage extends React.Component<IProps, IState> {
 
       if (this.state.hasCodeAndState) {
         const state = sessionStorage.getItem(AUTH_PAGE_SESSION_STORAGE_KEYS.auth_state);
-        if (!this.state.publicKey || !state || state !== this.params.state) {
+        if (!this.state.publicKeyString || !state || state !== this.params.state) {
           return {
             component: <SomethingWentWrong />,
             showUI: true,
@@ -141,19 +137,29 @@ class AuthPage extends React.Component<IProps, IState> {
         };
       }
 
-      if (this.state.publicKey && !this.state.isIE) {
-        const random = generateCryptoSafeRandom();
+      if (this.state.publicKeyString && !this.state.isIE) {
+        // Before navigating away, kick off a process to ensure that the key is
+        // actually valid (e.g., that it wasn't accidentally cut off during copy-paste)
+        reconstructPublicKey(this.state.publicKeyString)
+          .then(_ => {
+            const random = generateRandomToken();
 
-        sessionStorage.setItem(
-          AUTH_PAGE_SESSION_STORAGE_KEYS.auth_state,
-          random.toString(),
-        );
+            sessionStorage.setItem(AUTH_PAGE_SESSION_STORAGE_KEYS.auth_state, random);
 
-        window.location.href = generateGithubLoginUrl(random);
+            window.location.href = generateGithubLoginUrl(random);
+          })
+          .catch(e => {
+            this.setState({
+              error:
+                `The "key" parameter in the URL appears to be incomplete. ` +
+                `Please go back to the sign-in dialog in the code editor, and be sure to copy the full URL.`,
+            });
+          });
+
         return { component: null, showUI: false };
       }
 
-      if (!this.state.publicKey) {
+      if (!this.state.publicKeyString) {
         return {
           component: (
             <MessageBar messageBarType={MessageBarType.severeWarning}>
@@ -235,19 +241,52 @@ class AuthPage extends React.Component<IProps, IState> {
   };
 
   private onToken = async (token: string) => {
-    getProfileInfo(token)
-      .then(({ username, profilePicUrl, fullName }) => {
-        const encodedToken = this.state.publicKey.encrypt(token).toString('base64');
-        this.setState({ encodedToken, username, profilePicUrl, fullName });
-        window.sessionStorage.setItem(
-          AUTH_PAGE_SESSION_STORAGE_KEYS.auth_completed,
-          'true',
-        );
-      })
-      .catch(e => invokeGlobalErrorHandler(e));
+    try {
+      const { username, profilePicUrl, fullName } = await getProfileInfo(token);
+      const publicKey = await reconstructPublicKey(this.state.publicKeyString);
+
+      // Note: can use "crypto" directly here because by the time get to this code,
+      // don't need to worry about IE11.
+      const encryptedArrayBuffer = await crypto.subtle.encrypt(
+        {
+          name: 'RSA-OAEP',
+        },
+        publicKey,
+        unicodeStringToBuffer(token),
+      );
+      const encodedToken = bufferToHexString(encryptedArrayBuffer);
+      this.setState({ encodedToken, username, profilePicUrl, fullName });
+      window.sessionStorage.setItem(
+        AUTH_PAGE_SESSION_STORAGE_KEYS.auth_completed,
+        'true',
+      );
+    } catch (e) {
+      invokeGlobalErrorHandler(e);
+    }
   };
 
   private onError = (error: string) => this.setState({ error: error });
 }
 
 export default AuthPage;
+
+///////////////////////////////////////
+
+function reconstructPublicKey(numericString: string): Promise<CryptoKey> {
+  return new Promise(async (resolve, reject) => {
+    try {
+      // Note: can use "crypto" directly here because by the time get to this code,
+      // don't need to worry about IE11.
+      const value = await crypto.subtle.importKey(
+        'spki',
+        hexStringToBuffer(numericString),
+        { name: 'RSA-OAEP', hash: { name: 'SHA-256' } },
+        false,
+        ['encrypt'],
+      );
+      return resolve(value);
+    } catch (reason) {
+      return reject(reason);
+    }
+  });
+}
