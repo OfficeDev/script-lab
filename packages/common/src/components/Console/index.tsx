@@ -1,7 +1,6 @@
 import React from 'react';
 import { withTheme } from 'styled-components';
 
-import { Icon } from 'office-ui-fabric-react/lib/Icon';
 import { Checkbox } from 'office-ui-fabric-react/lib/Checkbox';
 import { IconButton } from 'office-ui-fabric-react/lib/Button';
 
@@ -21,13 +20,6 @@ import { stringifyPlusPlusOrErrorMessage } from '../../utilities/string';
 import LogItem from './LogItem';
 
 const MAX_LOGS_SHOWN = 100;
-
-export enum ConsoleLogSeverities {
-  Info = 'info',
-  Log = 'log',
-  Warn = 'warn',
-  Error = 'error',
-}
 
 export interface IProps {
   logs: ILogData[];
@@ -88,39 +80,9 @@ class Console extends React.Component<IPrivateProps, IState> {
 
     const logItems = logs
       .slice(-1 * MAX_LOGS_SHOWN) // get the last X logs
-      .map(({ id, severity, message }) => {
-        const { backgroundColor, color, icon } = {
-          [ConsoleLogSeverities.Log]: {
-            backgroundColor: theme.white,
-            color: theme.black,
-            icon: null,
-          },
-          [ConsoleLogSeverities.Info]: {
-            backgroundColor: '#cce6ff',
-            color: theme.black,
-            icon: { name: 'Info', color: '#002db3' },
-          },
-          [ConsoleLogSeverities.Warn]: {
-            backgroundColor: '#fff4ce',
-            color: theme.black,
-            icon: { name: 'Warning', color: 'gold' },
-          },
-          [ConsoleLogSeverities.Error]: {
-            backgroundColor: '#fde7e9',
-            color: theme.black,
-            icon: { name: 'Error', color: 'red' },
-          },
-        }[severity];
-
-        return {
-          key: `${severity}-${id}}`,
-          backgroundColor,
-          color,
-          icon,
-          message,
-        };
-      })
-      .map(props => <LogItem key={props.key} {...props} />);
+      .map(({ id, severity, message }) => (
+        <LogItem key={id} severity={severity} message={message} theme={theme} />
+      ));
 
     if (logItems.length > 0) {
       logItems.splice(logItems.length - 1, 0, <div key="last-long" ref={this.lastLog} />);

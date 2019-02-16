@@ -4,7 +4,7 @@ import { Utilities, HostType } from '@microsoft/office-js-helpers';
 import queryString from 'query-string';
 
 import Theme from 'common/lib/components/Theme';
-import Console, { ConsoleLogSeverities } from 'common/lib/components/Console';
+import Console from 'common/lib/components/Console';
 import HeaderFooterLayout from 'common/lib/components/HeaderFooterLayout';
 import { SCRIPT_URLS } from 'common/lib/constants';
 import { OFFICE_JS_URL_QUERY_PARAMETER_KEY } from 'common/lib/utilities/script-loader/constants';
