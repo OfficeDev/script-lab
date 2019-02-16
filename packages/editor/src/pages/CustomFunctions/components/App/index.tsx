@@ -5,7 +5,7 @@ import {
   getCustomFunctionsInfoForRegistrationFromSolutions as getCFInfoForRegistration,
   getSummaryItems,
   registerMetadata,
-  getCustomFunctionEngineStatus,
+  getCustomFunctionEngineStatusSafe,
   filterCustomFunctions,
 } from './utilities';
 import {
@@ -14,6 +14,7 @@ import {
 } from 'common/lib/utilities/localStorage';
 import { getLogsFromAsyncStorage } from './utilities/logs';
 import { loadAllSolutionsAndFiles } from '../../../Editor/store/localStorage';
+import { ScriptLabError } from 'common/lib/utilities/error';
 
 interface IState {
   hasCustomFunctionsInSolutions: boolean;
@@ -25,6 +26,7 @@ interface IState {
   engineStatus: ICustomFunctionEngineStatus | null;
 
   logs: ILogData[];
+  error?: Error;
 }
 
 export interface IPropsToUI extends IState {
@@ -34,13 +36,14 @@ export interface IPropsToUI extends IState {
 
 const AppHOC = (UI: React.ComponentType<IPropsToUI>) =>
   class App extends Component<{}, IState> {
-    localStoragePollingInterval: any;
+    private localStoragePollingInterval: any;
+    private cfSolutions: ISolution[];
 
-    constructor(props) {
+    constructor(props: {}) {
       super(props);
 
-      const cfSolutions = this.getCustomFunctionsSolutions();
-      const hasCustomFunctionsInSolutions = cfSolutions.length > 0;
+      this.cfSolutions = getCustomFunctionsSolutions();
+      const hasCustomFunctionsInSolutions = this.cfSolutions.length > 0;
 
       this.state = {
         hasCustomFunctionsInSolutions,
@@ -52,21 +55,23 @@ const AppHOC = (UI: React.ComponentType<IPropsToUI>) =>
         engineStatus: null,
         logs: [],
       };
-
-      if (hasCustomFunctionsInSolutions) {
-        this.fetchAndRegisterMetadata(cfSolutions).then(metadata =>
-          this.setState({ customFunctionsSummaryItems: getSummaryItems(metadata) }),
-        );
-      }
-
-      getCustomFunctionEngineStatus().then(status => {
-        if (status) {
-          this.setState({ engineStatus: status });
-        }
-      });
     }
 
-    componentDidMount() {
+    async componentDidMount() {
+      const engineStatus = await getCustomFunctionEngineStatusSafe();
+      this.setState({ engineStatus: engineStatus });
+
+      try {
+        if (this.state.hasCustomFunctionsInSolutions) {
+          const metadata = await this.fetchAndRegisterMetadata(this.cfSolutions);
+          this.setState({ customFunctionsSummaryItems: getSummaryItems(metadata) });
+        }
+      } catch (e) {
+        this.setState({
+          error: e,
+        });
+      }
+
       this.localStoragePollingInterval = setInterval(
         () =>
           this.setState({
@@ -100,22 +105,6 @@ const AppHOC = (UI: React.ComponentType<IPropsToUI>) =>
 
     clearLogs = () => this.setState({ logs: [] });
 
-    // helpers
-
-    private getCustomFunctionsSolutions(): ISolution[] {
-      const { solutions: allSolutions, files: allFiles } = loadAllSolutionsAndFiles();
-
-      const solutions = Object.values(allSolutions).map(solution => {
-        const files = Object.values(allFiles).filter(file =>
-          solution.files.includes(file.id),
-        );
-
-        return { ...solution, files };
-      });
-
-      return filterCustomFunctions(solutions);
-    }
-
     private async fetchAndRegisterMetadata(
       solutions: ISolution[],
     ): Promise<ICFVisualSnippetMetadata[]> {
@@ -130,9 +119,8 @@ const AppHOC = (UI: React.ComponentType<IPropsToUI>) =>
 
         return visual.snippets;
       } catch (e) {
-        console.error(`Error: Failed during the fetch and registration of CF metadata.`);
         console.error(e);
-        return [];
+        throw new ScriptLabError('Could not register Custom Functions', e);
       }
     }
 
@@ -142,3 +130,19 @@ const AppHOC = (UI: React.ComponentType<IPropsToUI>) =>
   };
 
 export default AppHOC;
+
+///////////////////////////////////////
+
+function getCustomFunctionsSolutions(): ISolution[] {
+  const { solutions: allSolutions, files: allFiles } = loadAllSolutionsAndFiles();
+
+  const solutions = Object.values(allSolutions).map(solution => {
+    const files = Object.values(allFiles).filter(file =>
+      solution.files.includes(file.id),
+    );
+
+    return { ...solution, files };
+  });
+
+  return filterCustomFunctions(solutions);
+}

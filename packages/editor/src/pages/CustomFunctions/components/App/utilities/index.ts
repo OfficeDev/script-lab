@@ -59,7 +59,7 @@ export async function registerMetadata(
   }
 }
 
-export async function getCustomFunctionEngineStatus(): Promise<
+export async function getCustomFunctionEngineStatusSafe(): Promise<
   ICustomFunctionEngineStatus
 > {
   try {

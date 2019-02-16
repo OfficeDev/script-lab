@@ -11,7 +11,10 @@ let isCurrentlyShowingError = false;
 /** A global error handler. Returns a boolean (always "true") to indicate that
  * the error has been handled, and to prevent firing the default event handler.
  */
-export function invokeGlobalErrorHandler(error: any): true {
+export function invokeGlobalErrorHandler(
+  error: any,
+  options?: { showExpanded: boolean },
+): true {
   if (window.localStorage.getItem(DEBUG_KEY)) {
     // tslint:disable-next-line:no-debugger
     debugger;
@@ -45,16 +48,18 @@ export function invokeGlobalErrorHandler(error: any): true {
     error instanceof ScriptLabError ? error.message : 'An unexpected error has occurred.';
 
   const moreDetailsError = error instanceof ScriptLabError ? error.innerError : error;
+  let clickForMoreInfoElement: HTMLAnchorElement;
   if (moreDetailsError) {
-    const clickForMoreInfoElement = document.createElement('a');
+    clickForMoreInfoElement = document.createElement('a');
     clickForMoreInfoElement.href = '#';
     clickForMoreInfoElement.className = 'ms-font-m error';
     clickForMoreInfoElement.textContent = 'Click for more info';
-    clickForMoreInfoElement.addEventListener('click', () => {
+    clickForMoreInfoElement.addEventListener('click', event => {
       const errorMessageElement = document.createElement('pre');
       errorMessageElement.textContent = stringifyPlusPlus(moreDetailsError);
       loadingElement.insertBefore(errorMessageElement, clickForMoreInfoElement);
       clickForMoreInfoElement!.parentNode!.removeChild(clickForMoreInfoElement);
+      event.preventDefault(); // So that doesn't try to navigate to "#"
     });
     loadingElement.insertBefore(clickForMoreInfoElement, null);
   }
@@ -63,10 +68,11 @@ export function invokeGlobalErrorHandler(error: any): true {
   closeElement.href = '#';
   closeElement.className = 'ms-font-m error';
   closeElement.textContent = 'Close';
-  closeElement.addEventListener('click', () => {
+  closeElement.addEventListener('click', event => {
     loadingElement.style.visibility = 'hidden';
     rootElement!.style.display = '';
     isCurrentlyShowingError = false;
+    event.preventDefault(); // So that doesn't try to navigate to "#"
   });
   loadingElement.insertBefore(closeElement, null);
 
@@ -89,6 +95,12 @@ export function invokeGlobalErrorHandler(error: any): true {
   rootElement!.style.display = 'none';
   loadingElement.style.visibility = '';
   isCurrentlyShowingError = true;
+
+  if (options && options.showExpanded) {
+    if (clickForMoreInfoElement) {
+      clickForMoreInfoElement.click();
+    }
+  }
 
   return true;
 }
