@@ -24,6 +24,7 @@ export class CustomFunctionsDashboard extends React.Component<IProps> {
       logs,
       fetchLogs,
       clearLogs,
+      error,
     } = this.props;
 
     if (!engineStatus) {
@@ -34,7 +35,7 @@ export class CustomFunctionsDashboard extends React.Component<IProps> {
           <Dashboard
             isStandalone={isStandalone}
             items={{
-              Summary: <Summary items={customFunctionsSummaryItems} />,
+              Summary: <Summary items={customFunctionsSummaryItems} error={error} />,
               Console: (
                 <Console logs={logs} fetchLogs={fetchLogs} clearLogs={clearLogs} />
               ),
