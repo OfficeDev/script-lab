@@ -16,7 +16,7 @@ export function parseMetadata(
     true,
   );
 
-  let info = parseTree(sourceFile);
+  const functions = parseTree(fileContent, 'someFileName');
   debugger;
   return [];
 }
