@@ -56,6 +56,45 @@ const logData: ILogDataMinusId[] = [
     },
     severity: ConsoleLogSeverities.Info,
   },
+  {
+    message: {
+      type: `a rather long text that is going to want to need some space. like, a lot of space. lots and lots of space. so much space that it's slightly ridiculous that you need so much space`,
+      data: {
+        a: `also a rather long text that is going to want to need some space. like, a lot of space. lots and lots of space. so much space that it's slightly ridiculous that you need so much space. wow, even more space. *So* much space`,
+        b: [4, 'hello'],
+      },
+      somethingElse: [
+        [
+          `A: also a rather long text that is going to want to need some space. like, a lot of space. lots and lots of space. so much space that it's slightly ridiculous that you need so much space. wow, even more space. *So* much space`,
+          `B: also a rather long text that is going to want to need some space. like, a lot of space. lots and lots of space. so much space that it's slightly ridiculous that you need so much space. wow, even more space. *So* much space`,
+        ],
+        ['Hammer', 17.99],
+        ['Saw', 234.1],
+      ],
+    },
+    severity: ConsoleLogSeverities.Info,
+  },
+  {
+    message: {
+      type: `a rather long text that is going to want to need some space. like, a lot of space. lots and lots of space. so much space that it's slightly ridiculous that you need so much space`,
+      longWord: new Array(10)
+        .fill('asdfjaskdfasldfasdfasdfasdf3453423234234safsdfasdfasdf2323432324432sdfasd')
+        .join(''),
+      data: {
+        a: `also a rather long text that is going to want to need some space. like, a lot of space. lots and lots of space. so much space that it's slightly ridiculous that you need so much space. wow, even more space. *So* much space`,
+        b: [4, 'hello'],
+      },
+      somethingElse: [
+        [
+          `A: also a rather long text that is going to want to need some space. like, a lot of space. lots and lots of space. so much space that it's slightly ridiculous that you need so much space. wow, even more space. *So* much space`,
+          `B: also a rather long text that is going to want to need some space. like, a lot of space. lots and lots of space. so much space that it's slightly ridiculous that you need so much space. wow, even more space. *So* much space`,
+        ],
+        ['Hammer', 17.99],
+        ['Saw', 234.1],
+      ],
+    },
+    severity: ConsoleLogSeverities.Info,
+  },
 ];
 
 export function getLogPages(pageCount: number): ILogData[] {
