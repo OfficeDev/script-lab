@@ -1,7 +1,6 @@
 import React from 'react';
 import { withTheme } from 'styled-components';
 
-import { Icon } from 'office-ui-fabric-react/lib/Icon';
 import { Checkbox } from 'office-ui-fabric-react/lib/Checkbox';
 import { IconButton } from 'office-ui-fabric-react/lib/Button';
 
