@@ -1,5 +1,5 @@
 import ts from 'typescript';
-import { parseTree } from 'custom-functions-metadata/lib/generate';
+import { parseTree } from 'custom-functions-metadata';
 /**
  * This function parses out the metadata for the various @customfunction's defined in the `fileContent`.
  * It will either either return an array of metadata objects, or throw a JSON.stringified error object if there are errors/unsupported types.
