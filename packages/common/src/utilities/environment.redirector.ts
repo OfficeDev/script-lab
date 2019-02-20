@@ -63,15 +63,28 @@ async function redirectIfNeeded(): Promise<boolean> {
       // When redirecting to localhost (dev scenario), it's very common that localhost
       // might not be running, and suddenly you're in a broken state and can't even
       // load the production add-in/site.
-      // As such, if will be redirecting to localhost, first check that localhost is running
+      // As such, if will be redirecting to localhost, first check that localhost is running.
+      // However, make the frame be **visible** so that if running on IE11/Desktop,
+      //   the developer will see the message about opening unsecure website, and be able
+      //   to proceed to it.
       if (redirectUrl.startsWith('https://localhost')) {
         const aliveChecker = document.createElement('iframe');
-        aliveChecker.style.display = 'none';
+        aliveChecker.style.zIndex = (
+          10000001 /* same as loading screen */ + 1
+        ).toString();
+        aliveChecker.style.border = 'none';
+        aliveChecker.style.width = '100%';
+        aliveChecker.style.height = window.innerHeight / 3 + 'px';
+        aliveChecker.style.position = 'absolute';
+        aliveChecker.style.bottom = '0';
         aliveChecker.src = `${editorUrls.local}/alive.html`;
-        showSplashScreen(`Attempting to redirect to ${redirectUrl}...`);
 
-        const AMOUNT_OF_TIME_TO_WAIT_ON_LOCALHOST = 5000;
+        let manuallyCancelled: boolean = false;
+
         const resultOfWaiting = await new Promise<boolean>(resolve => {
+          const AMOUNT_OF_TIME_TO_WAIT_ON_LOCALHOST = 20000; /* Enough to let the developer
+          click "continue to site" in case of https certificate issue */
+
           const timeout = setTimeout(() => {
             resolve(false);
           }, AMOUNT_OF_TIME_TO_WAIT_ON_LOCALHOST);
@@ -89,16 +102,30 @@ async function redirectIfNeeded(): Promise<boolean> {
           };
 
           window.addEventListener('message', handler, false);
+
+          showSplashScreen(
+            `Attempting to redirect to "${redirectUrl}"... Click to cancel.`,
+            () => {
+              manuallyCancelled = true;
+              clearTimeout(timeout);
+              resolve(false);
+            },
+          );
           document.body.appendChild(aliveChecker);
         });
 
         if (!resultOfWaiting) {
+          aliveChecker.parentNode.removeChild(aliveChecker);
           showSplashScreen(
             `"${editorUrls.local}" NOT responding. Staying on ` + window.location.origin,
           );
           window.localStorage.removeItem(localStorageKeys.editor.redirectEnvironmentUrl);
-          // Give the developer two seconds to absorb this bit of info
-          await new Promise(resolve => setTimeout(resolve, 2000));
+
+          if (!manuallyCancelled) {
+            // Give the developer two seconds to absorb this bit of info
+            await new Promise(resolve => setTimeout(resolve, 2000));
+          }
+
           hideSplashScreen();
           return false;
         }
