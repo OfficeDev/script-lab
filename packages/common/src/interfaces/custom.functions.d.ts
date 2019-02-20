@@ -98,12 +98,10 @@ interface IRunnerCustomFunctionsPostData {
   loadFromOfficeJsPreviewCachedCopy: boolean;
   displayLanguage: string;
   heartbeatParams: ICustomFunctionsHeartbeatParams;
-  experimentationFlags: object; // TODO:
 }
 
 interface ICustomFunctionEngineStatus {
   enabled: boolean;
-  error?: string;
   nativeRuntime?: boolean;
 }
 

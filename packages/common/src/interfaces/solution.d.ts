@@ -42,4 +42,5 @@ interface IEditableFileProperties {
 interface ITimestamps {
   dateCreated: number;
   dateLastModified: number;
+  dateLastOpened: number;
 }

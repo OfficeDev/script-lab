@@ -24,6 +24,7 @@ const expectedPackages: {
     pathToCopyTo: 'vs',
   },
   officeJs: {
+    // Note: this package is now used only for offline development
     name: '@microsoft/office-js',
     version: PACKAGE_VERSIONS['@microsoft/office-js'],
     copyAsName: 'office-js',
@@ -32,16 +33,26 @@ const expectedPackages: {
   },
 };
 
-const additionalFilesToCopy = [
+const additionalFilesToCopy: Array<{ from: string; to: string }> = [
   {
     from: '../../node_modules/monaco-editor/monaco.d.ts',
     to: './src/interfaces/monaco.d.ts',
   },
 ];
 
-const oldFilesToRemove = ['./public/vs', './public/external/vs'];
+// cspell:ignore precompile, precompiled
+const oldFilesToRemove = [
+  './precompile-sources',
+  './public/vs',
+  './public/external/vs',
+  './public/precompiled',
+  './public/forge',
+];
 
 ////////////////////////////////////////
+
+import path from 'path';
+console.log('Running postinstall on ' + path.resolve('.'));
 
 import fs from 'fs-extra';
 

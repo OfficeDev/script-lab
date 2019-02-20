@@ -2,16 +2,27 @@
   "name": "common",
   "version": "0.0.1",
   "private": true,
+  "dependencies_comments": {
+    "query-string": "Restricing query-string to version 5.1.1 because later versions (6+) started targeting ES6 rather than ES5, making it not work for the precompile scripts. See more at https://stackoverflow.com/a/49985749/678505"
+  },
   "dependencies": {
     "@microsoft/office-js-helpers": "0.7.4",
+    "clipboard": "^2.0.1",
     "color": "^3.0.0",
     "core-js": "^2.5.7",
+    "is-primitive": "^3.0.1",
     "lodash": "^4.17.11",
-    "office-ui-fabric-react": "^6.69.0",
+    "loglevel": "^1.4.1",
+    "loglevel-plugin-prefix": "^0.8.4",
+    "office-ui-fabric-react": "^6.114.0",
+    "query-string": "5.1.1",
     "react": "^16.5.0",
     "react-dom": "^16.5.0",
+    "react-inspector": "^2.3.1",
+    "react-router": "^4.3.1",
+    "react-router-dom": "^4.3.1",
     "styled-components": "^4.1.1",
-    "typescript": "^3.1.6"
+    "typescript": "^3.2.4"
   },
   "scripts": {
     "postinstall": "yarn build:package",
@@ -20,7 +31,8 @@
     "storybook": "start-storybook -p 6006",
     "build": "build-storybook -c .storybook -o build",
     "lint": "tslint \"src/**/*.ts?(x)\"",
-    "test": "jest --env=jsdom"
+    "test": "jest --env=jsdom",
+    "test:watch": "jest --env=jsdom --watch"
   },
   "devDependencies": {
     "@babel/core": "^7.1.6",
@@ -31,14 +43,16 @@
     "@storybook/addon-options": "^4.0.6",
     "@storybook/addons": "^4.0.6",
     "@storybook/react": "^4.0.6",
+    "@types/clipboard": "^2.0.1",
     "@types/color": "^3.0.0",
     "@types/core-js": "^2.5.0",
     "@types/enzyme": "^3.1.15",
     "@types/enzyme-adapter-react-16": "^1.0.3",
     "@types/jest": "^23.3.2",
     "@types/lodash": "^4.14.118",
+    "@types/loglevel": "^1.5.3",
     "@types/node": "^10.9.4",
-    "@types/office-js": "^0.0.111",
+    "@types/office-js": "^0.0.148",
     "@types/react": "^16.4.14",
     "@types/react-dom": "^16.0.7",
     "@types/storybook__addon-a11y": "^3.3.1",

@@ -1,9 +1,9 @@
 monaco.d.ts
 packages/**/build/*
 packages/**/public/external/*
-packages/**/public/precompiled/*
 packages/**/public/assets/*
 
+tsconfig.json
 package.json
 node_modules
 dist

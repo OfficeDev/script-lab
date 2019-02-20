@@ -1,10 +1,6 @@
 import createGUID from 'uuid';
 import { LIBRARIES_FILE_NAME, SCRIPT_FILE_NAME } from '../constants';
 import { getBoilerplateFiles } from '../newSolutionData';
-import { stringifyPlusPlus } from 'common/lib/utilities/string';
-
-export const getObjectValues = (dict: object): any[] =>
-  Object.keys(dict).map(key => dict[key]);
 
 export function setUpMomentJsDurationDefaults(momentInstance: {
   relativeTimeThreshold(threshold: string, limit: number): boolean;
@@ -48,6 +44,7 @@ const createFile = (name, { content, language }): IFile => ({
   language,
   dateCreated: Date.now(),
   dateLastModified: Date.now(),
+  dateLastOpened: Date.now(),
 });
 
 export const convertSnippetToSolution = (snippet: ISnippet): ISolution => {
@@ -75,6 +72,7 @@ export const convertSnippetToSolution = (snippet: ISnippet): ISolution => {
     files,
     dateCreated: Date.now(),
     dateLastModified: Date.now(),
+    dateLastOpened: Date.now(),
   };
 
   return solution;
@@ -111,3 +109,8 @@ export const convertSolutionToSnippet = (solution: ISolution): ISnippet => {
     ...snippetFiles,
   };
 };
+
+const isCustomFunctionRegex = /@customfunction/i;
+export function isCustomFunctionScript(content: string) {
+  return isCustomFunctionRegex.test(content);
+}

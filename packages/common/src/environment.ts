@@ -24,7 +24,7 @@ const serverUrls: IReactEnvironments = {
 };
 
 const githubAppClientIds: IReactEnvironments = {
-  local: '210a167954d9ef04b501',
+  local: process.env.REACT_APP_GITHUB_CLIENT_ID,
   alpha: 'ad26df7ba62ef691669e',
   beta: 'edb61fe543b382628d68',
   staging: '',

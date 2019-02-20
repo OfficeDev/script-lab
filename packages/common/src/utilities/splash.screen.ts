@@ -1,4 +1,6 @@
 import { stringifyPlusPlus } from './string';
+import { ScriptLabError } from './error';
+import { DEBUG_KEY } from './localStorage';
 
 // Keep the state for whether or not currently showing an error --
 //   that way, even if get a request to dismiss the splash screen,
@@ -6,7 +8,26 @@ import { stringifyPlusPlus } from './string';
 //   (fixes https://github.com/OfficeDev/script-lab/issues/527)
 let isCurrentlyShowingError = false;
 
-export function invokeGlobalErrorHandler(error: any) {
+/** A global error handler. Returns a boolean (always "true") to indicate that
+ * the error has been handled, and to prevent firing the default event handler.
+ */
+export function invokeGlobalErrorHandler(
+  error: any,
+  options?: { showExpanded: boolean },
+): true {
+  if (window.localStorage.getItem(DEBUG_KEY)) {
+    // tslint:disable-next-line:no-debugger
+    debugger;
+  }
+
+  if (isCurrentlyShowingError) {
+    // If already showing an error, don't show the subsequent one, since the first one
+    // in the chain is likely the more important one.
+    console.error('Global error handler -- FOLLOW-UP ERROR (not showing in the UI)');
+    console.error(error);
+    return true;
+  }
+
   console.error('Global error handler:');
   console.error(error);
 
@@ -23,28 +44,35 @@ export function invokeGlobalErrorHandler(error: any) {
     item.parentNode!.removeChild(item);
   }
 
-  subtitleElement.innerHTML = 'An unexpected error has occurred.';
+  subtitleElement.innerHTML =
+    error instanceof ScriptLabError ? error.message : 'An unexpected error has occurred.';
 
-  const clickForMoreInfoElement = document.createElement('a');
-  clickForMoreInfoElement.href = '#';
-  clickForMoreInfoElement.className = 'ms-font-m error';
-  clickForMoreInfoElement.textContent = 'Click for more info';
-  clickForMoreInfoElement.addEventListener('click', () => {
-    const errorMessageElement = document.createElement('pre');
-    errorMessageElement.textContent = stringifyPlusPlus(error);
-    loadingElement.insertBefore(errorMessageElement, clickForMoreInfoElement);
-    clickForMoreInfoElement!.parentNode!.removeChild(clickForMoreInfoElement);
-  });
-  loadingElement.insertBefore(clickForMoreInfoElement, null);
+  const moreDetailsError = error instanceof ScriptLabError ? error.innerError : error;
+  let clickForMoreInfoElement: HTMLAnchorElement;
+  if (moreDetailsError) {
+    clickForMoreInfoElement = document.createElement('a');
+    clickForMoreInfoElement.href = '#';
+    clickForMoreInfoElement.className = 'ms-font-m error';
+    clickForMoreInfoElement.textContent = 'Click for more info';
+    clickForMoreInfoElement.addEventListener('click', event => {
+      const errorMessageElement = document.createElement('pre');
+      errorMessageElement.textContent = stringifyPlusPlus(moreDetailsError);
+      loadingElement.insertBefore(errorMessageElement, clickForMoreInfoElement);
+      clickForMoreInfoElement!.parentNode!.removeChild(clickForMoreInfoElement);
+      event.preventDefault(); // So that doesn't try to navigate to "#"
+    });
+    loadingElement.insertBefore(clickForMoreInfoElement, null);
+  }
 
   const closeElement = document.createElement('a');
   closeElement.href = '#';
   closeElement.className = 'ms-font-m error';
   closeElement.textContent = 'Close';
-  closeElement.addEventListener('click', () => {
+  closeElement.addEventListener('click', event => {
     loadingElement.style.visibility = 'hidden';
     rootElement!.style.display = '';
     isCurrentlyShowingError = false;
+    event.preventDefault(); // So that doesn't try to navigate to "#"
   });
   loadingElement.insertBefore(closeElement, null);
 
@@ -68,6 +96,12 @@ export function invokeGlobalErrorHandler(error: any) {
   loadingElement.style.visibility = '';
   isCurrentlyShowingError = true;
 
+  if (options && options.showExpanded) {
+    if (clickForMoreInfoElement) {
+      clickForMoreInfoElement.click();
+    }
+  }
+
   return true;
 }
 
@@ -88,4 +122,9 @@ export function hideSplashScreen() {
 
   const loadingIndicator = document.getElementById('loading')!;
   loadingIndicator.style.visibility = 'hidden';
+
+  const rootElement = document.getElementById('root') as HTMLElement;
+  if (rootElement) {
+    rootElement.style.display = '';
+  }
 }

@@ -2,12 +2,15 @@
   "name": "server",
   "version": "1.0.0",
   "scripts": {
-    "start": "node src/index.ts",
-    "build": "webpack-cli",
+    "start": "nodemon -e ts -w ./src -x npm run start:serve",
+    "start:serve": "ts-node --files --inspect -- src/index.ts",
+    "build": "webpack-cli --mode production",
     "lint": "tslint \"src/**/*.ts?(x)\"",
     "test": "echo 'no tests'"
   },
   "dependencies": {
+    "@types/cors": "^2.8.4",
+    "@types/request": "^2.48.1",
     "body-parser": "^1.18.3",
     "cors": "^2.8.4",
     "dotenv": "^6.0.0",
@@ -24,7 +27,7 @@
     "shelljs": "^0.8.2",
     "ts-loader": "^5.2.0",
     "tslint": "^5.11.0",
-    "typescript": "^3.1.6",
+    "typescript": "^3.2.4",
     "webpack": "^4.19.1",
     "webpack-cli": "^3.1.1"
   }

@@ -2,15 +2,6 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "type": "node",
-      "request": "launch",
-      "name": "Precompile script",
-      "runtimeArgs": ["-r", "ts-node/register"],
-      "args": ["scripts/precompile.ts"],
-      "cwd": "${workspaceRoot}",
-      "env": { "TS_NODE_PROJECT": "scripts/tsconfig.json" }
-    },
-    {
       "name": "Editor",
       "type": "chrome",
       "request": "launch",

@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 export const Wrapper = styled.div`
+  width: 100%;
   flex: 3;
   position: relative;
   display: flex;
@@ -31,20 +32,16 @@ export const RunnerLastUpdatedWrapper = styled.div.attrs({ className: 'ms-font-m
   overflow-wrap: normal;
 `;
 
-export const FilterWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  padding: 0.8rem;
-  height: 4.8rem;
+export const HeaderWrapper = styled.div`
   background: ${props => props.theme.neutralLight};
-  box-sizing: border-box;
+  height: 3.2rem;
+  display: flex;
+  justify-content: space-between;
 `;
 
 export const CheckboxWrapper = styled.div`
-  height: 3.8rem;
-  background: ${props => props.theme.neutralLight};
-  box-sizing: border-box;
-  padding: 0.9rem;
+  flex-grow: 1;
+  padding: 0.6rem;
 `;
 
 export const LogsArea = styled.div`
@@ -57,7 +54,7 @@ export const LogsArea = styled.div`
 
 export const LogsList = styled.ul``;
 
-export const Log = styled.li`
+export const LogEntry = styled.li`
   position: relative;
   display: flex;
   align-items: center;
@@ -79,25 +76,25 @@ export const LogText = styled.pre`
   width: 100%;
 `;
 
-export const ClearButton = styled.button`
-  width: 2rem;
-  height: 2rem;
-  background: none;
-  border: 0px;
-  position: relative;
-  margin-right: 1.3rem;
-  margin-left: 0.5rem;
+// Note: need to include "word-wrap: break-word" for IE11.  Auto-prefixing doesn't seem to add it...
+export const ObjectInspectorLogEntry = styled.div<{ backgroundColor: string }>`
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  display: flex;
+  width: 100%;
+  min-height: 3.2rem;
+  padding: 0.9rem;
+  padding-left: 1rem;
+  box-sizing: border-box;
+  border-top: 0.5px solid ${props => props.theme.neutralLight};
+  border-bottom: 0.5px solid ${props => props.theme.neutralLight};
 
-  &:hover {
-    color: #b22222;
-    cursor: pointer;
+  & > li {
+    margin-left: 1rem;
+    width: calc(100% - 2rem);
   }
 
-  &:active {
-    color: red;
-  }
-
-  &:focus {
-    outline: none;
+  & * {
+    background: ${props => props.backgroundColor};
   }
 `;
