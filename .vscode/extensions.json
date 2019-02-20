@@ -4,7 +4,7 @@
   "recommendations": [
     // Extension identifier format: ${publisher}.${name}
     "esbenp.prettier-vscode",
-    "eg2.tslint",
+    "ms-vscode.vscode-typescript-tslint-plugin",
     "robertohuertasm.vscode-icons",
     "coenraads.bracket-pair-colorizer",
     "wayou.vscode-todo-highlight",
