@@ -75,7 +75,10 @@ export const LogText = styled.pre`
   width: 100%;
 `;
 
+// Note: need to include "word-wrap: break-word" for IE11.  Auto-prefixing doesn't seem to add it...
 export const ObjectInspectorLogEntry = styled.div<{ backgroundColor: string }>`
+  overflow-wrap: break-word;
+  word-wrap: break-word;
   display: flex;
   width: 100%;
   min-height: 3.2rem;
@@ -87,6 +90,7 @@ export const ObjectInspectorLogEntry = styled.div<{ backgroundColor: string }>`
 
   & > li {
     margin-left: 1rem;
+    width: calc(100% - 2rem);
   }
 
   & * {

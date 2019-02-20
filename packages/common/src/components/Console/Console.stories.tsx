@@ -50,19 +50,25 @@ class ConsoleWrapper extends React.Component<{ interval: number }> {
   clearLogs = () => this.setState({ logs: [] });
 
   render() {
-    return <Console clearLogs={this.clearLogs} logs={this.state.logs} />;
+    return (
+      <Console
+        style={{ width: '100%' }}
+        clearLogs={this.clearLogs}
+        logs={this.state.logs}
+      />
+    );
   }
 }
 
 storiesOf('Console', module)
   .add('basic', () => (
     <SimpleWrapper>
-      <Console {...props} />
+      <Console style={{ width: '100%' }} {...props} />
     </SimpleWrapper>
   ))
   .add('with a LOT of logs', () => (
     <SimpleWrapper>
-      <Console {...props} logs={getLogPages(50)} />
+      <Console style={{ width: '100%' }} {...props} logs={getLogPages(50)} />
     </SimpleWrapper>
   ))
   .add('with logs being added', () => (

@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Utilities, HostType } from '@microsoft/office-js-helpers';
 import queryString from 'query-string';
+import cloneDeep from 'lodash/cloneDeep';
 
 import Theme from 'common/lib/components/Theme';
 import Console, { ConsoleLogSeverities } from 'common/lib/components/Console';
@@ -101,6 +102,8 @@ export class App extends React.Component<{}, IState> {
     severity: ConsoleLogTypes;
     object: string | { [key: string]: any };
   }) => {
+    object = possiblyMassageObject(object);
+
     this.setState({
       logs: [...this.state.logs, { id: logCount.toString(), message: object, severity }],
       isConsoleOpen: true,
@@ -282,6 +285,35 @@ function informSnippetSwitch(message: string) {
   if (!SILENT_SNIPPET_SWITCHING) {
     console.log(message);
   }
+}
+
+function possiblyMassageObject(object: any): any {
+  // For ClientResult objects, create a snapshot, so that the console output doesn't get modified later
+  //     when the object resolves itself (both in UI and in copy-to-clipboard)
+  // Arguably, this should be the case with the other objects as well, but it gets harder to do
+  //    (circular references and etc.)
+  // Whereas fixing it for ClientResult is easy-to-fix, and has more visible results:
+  if (
+    typeof OfficeExtension !== 'undefined' &&
+    object instanceof OfficeExtension.ClientResult
+  ) {
+    return getDataForClientResult(object);
+  }
+
+  return object;
+}
+
+function getDataForClientResult(
+  result: OfficeExtension.ClientResult<any>,
+): { value: any } {
+  let value: any;
+  try {
+    value = cloneDeep(result.value);
+  } catch (e) {
+    value = '<Could not read the value. You must first call `context.sync()`.';
+  }
+
+  return { value: value };
 }
 
 export default App;
