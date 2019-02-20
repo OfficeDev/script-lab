@@ -7,10 +7,8 @@ import { ScriptLabError } from './error';
 const IS_DIALOG_QUERY_PARAMETER = 'isDialog';
 
 export function shouldShowPopoutControl(context: 'editor' | 'runner'): boolean {
-  const params: { [key: string]: any } = queryString.parse(window.location.search);
-
   // If already is popped out in a dialog, don't show the popout control
-  if (params[IS_DIALOG_QUERY_PARAMETER]) {
+  if (isPoppedOut()) {
     return false;
   }
 
@@ -65,6 +63,11 @@ export function openPopoutCodeEditor(
       }
     },
   );
+}
+
+export function isPoppedOut(): boolean {
+  const params: { [key: string]: any } = queryString.parse(window.location.search);
+  return params[IS_DIALOG_QUERY_PARAMETER] ? true : false;
 }
 
 function getPopoutEditorUrl() {
