@@ -57,27 +57,25 @@ Warning: Cannot update during an existing state transition (such as within `rend
 
 You can safely ignore these -- those won't show up to users on the production site.
 
-## Trust the certificates
-
-You will need to trust the certificates for each of <https://localhost:3000> (editor), <https://localhost:3200> (runner), and <http://localhost:5000> (server).
+## Bypassing localhost HTTPS security issues
 
 For testing in the web browser (whether standalone or in Office Online) in Chrome, you can bypass the "insecure localhost" by enabling this setting: <chrome://flags/#allow-insecure-localhost>
 
-For testing on a PC version of Office, you will need to trust the certificates from within Internet Explorer. See the gif below for a step-by-step animation:
+For testing on a PC version of Office, you _could_ trust the certificates from within Internet Explorer. However, new certs get generated every time that you run `yarn start`, so trusting them over and over again is tedious. If you're only interested in making changes to code that runs inside the taskpanes (which is what you will be doing 99% of the time for any Editor/Runner changes, unless you're debugging something to do with "functions.html" and the other ribbon buttons), you can just click through the "This site is not secure" warning and choose "Go on to the website (not recommended)" option.
 
-![](.github/images/trust-ssl-internet-explorer.gif).
+![Proceed through "This site is not secure"](.github/images/site-not-secure.png).
 
-This is a particularly critical step for loading the Add-in inside of Office on a PC. If you fail to trust the certificates, you might see the following error:
+If you _do_ need to trust the certificates, see below for a step-by-step animation. But be aware that you'll keep having to repeat these steps... The sites you'd need to trust are <https://localhost:3000> (editor) and <https://localhost:3200> (runner).
 
-![](.github/images/add-in-loading-error.png).
+![Trust SLL instructions](.github/images/trust-ssl-internet-explorer.gif).
 
 ## Testing inside of an add-in
 
-1. Locate the add-in manifest (which you'll find in the `manifests` folder in the root of the repo). For purposes of running against localhost, use `localhost.xml`.
+The **easiest** option is to install the **Store** version of the add-in (get it from <https://aka.ms/getscriptlab>). Then, using the dropdown on bottom left when in the Settings mode, switch to alpha -- and **from alpha, to localhost**. Note that the localhost option will only show up if you're in alpha (or already on localhost). The steps are akin to what's [described in the README](README.md#2017) for switching to Script Lab 2017, except choosing "Alpha" and then "localhost:3000" instead.
 
-2. Sideload the manifest into your office host application. Use **either** option:
-   - Sideload the localhost manifest located in 'manifests/script-lab-react-localhost.xml', using the instructions on <https://aka.ms/sideload-addins>.
-   - Alternatively, install the **Store** version of the add-in, then switch environments (via dropdown on bottom left when in Settings mode) to alpha -- and **from alpha, to localhost**. Note that the localhost option will only show up if you're in alpha (or already on localhost). Also note that you need to be careful, it will stay stuck on _localhost_ until you undo it -- so if your local server isn't running, Script Lab might appear to be broken for you!
+Note that just like described in the section above, you will need to bypass the HTTPS security warning for localhost.
+
+**Alternatively**, you can also sideload the localhost manifest directly (though for that option, you might be forced to trust and re-trust the certificates!). The manifest is located at 'manifests/script-lab-react-localhost.xml', and instructions for sideloading can be found at <https://aka.ms/sideload-addins>.
 
 ## [Optional] Testing GitHub auth locally (on localhost)
 

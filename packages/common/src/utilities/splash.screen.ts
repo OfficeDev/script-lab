@@ -105,13 +105,34 @@ export function invokeGlobalErrorHandler(
   return true;
 }
 
-export function showSplashScreen(subtitle: string) {
+export function showSplashScreen(subtitle: string, onClick?: () => void) {
   const loadingIndicator = document.getElementById('loading')!;
   loadingIndicator.style.visibility = '';
-  const subtitleElement = document.querySelectorAll('#loading h2')[0] as HTMLElement;
+
+  const subtitleElement = replaceSubtitleElement();
   subtitleElement.textContent = subtitle;
 
+  if (onClick) {
+    subtitleElement.addEventListener('click', _ => {
+      // Replace it, so that the click handler is now gone
+      replaceSubtitleElement();
+      // And now fire the callback:
+      onClick();
+    });
+  }
+
   (document.getElementById('root') as HTMLElement).style.display = 'none';
+
+  /////////////////////////////////////
+  // Helper:
+  function replaceSubtitleElement(): HTMLElement {
+    const previousSubtitleElement = document.querySelectorAll(
+      '#loading h2',
+    )[0] as HTMLElement;
+    const clone = previousSubtitleElement.cloneNode(true);
+    previousSubtitleElement.parentNode.replaceChild(clone, previousSubtitleElement);
+    return clone as HTMLElement;
+  }
 }
 
 export function hideSplashScreen() {
