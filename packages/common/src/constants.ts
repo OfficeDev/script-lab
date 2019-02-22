@@ -35,3 +35,9 @@ export const localStorageKeys = {
     redirectEnvironmentUrl: 'playground_redirect_environment_url',
   },
 };
+
+/** Server "hello" endpoint, used to check that the server is alive */
+export const SERVER_HELLO_ENDPOINT = {
+  path: 'hello',
+  payload: { message: 'Hello from Script Lab' },
+};

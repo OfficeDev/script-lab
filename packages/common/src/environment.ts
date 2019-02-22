@@ -14,15 +14,6 @@ interface I2017Environments {
 
 interface IAllSwitchableEnvironments extends IReactEnvironments, I2017Environments {}
 
-const serverUrls: IReactEnvironments = {
-  local: 'http://localhost:5000',
-  alpha: 'https://script-lab-react-server-alpha.azurewebsites.net',
-  beta: 'https://script-lab-react-server-beta.azurewebsites.net',
-  staging: 'https://script-lab-react-server-staging.azurewebsites.net',
-  production: 'https://script-lab-react-server.azurewebsites.net',
-  cdn: 'https://script-lab-server.azureedge.net',
-};
-
 const githubAppClientIds: IReactEnvironments = {
   local: process.env.REACT_APP_GITHUB_CLIENT_ID,
   alpha: 'ad26df7ba62ef691669e',
@@ -63,6 +54,15 @@ export const runnerUrls: IReactEnvironments = {
   staging: 'https://script-lab-react-runner-staging.azurewebsites.net',
   production: 'https://script-lab-react-runner.azurewebsites.net',
   cdn: 'https://script-lab-runner.azureedge.net',
+};
+
+export const serverUrls: IReactEnvironments = {
+  local: 'http://localhost:5000',
+  alpha: 'https://script-lab-react-server-alpha.azurewebsites.net',
+  beta: 'https://script-lab-react-server-beta.azurewebsites.net',
+  staging: 'https://script-lab-react-server-staging.azurewebsites.net',
+  production: 'https://script-lab-react-server.azurewebsites.net',
+  cdn: 'https://script-lab-server.azureedge.net',
 };
 
 //////////////////////////
