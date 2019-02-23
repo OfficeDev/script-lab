@@ -12,7 +12,8 @@ export function parseMetadata(
   fileContent: string,
 ): ICFVisualFunctionMetadata[] {
   // FIXME transition to:
-  // const functions = parseTree(fileContent, 'someFileName');
+  const functions = parseTree(fileContent, 'someFileName');
+  debugger;
 
   const sourceFile = ts.createSourceFile(
     'someFileName',

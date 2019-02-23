@@ -2,10 +2,10 @@ import flatten from 'lodash/flatten';
 import { SCRIPT_FILE_NAME } from '../../../../../constants';
 import compileScript from 'common/lib/utilities/compile.script';
 import { stripSpaces } from 'common/lib/utilities/string';
-import { parseMetadata } from 'common/lib/utilities/custom.functions.metadata.parser';
 import { consoleMonkeypatch } from './console.monkeypatch';
 import { getCurrentEnv } from 'common/lib/environment';
 import { pause, convertSolutionToSnippet } from '../../../../../utils';
+import { parseMetadata } from '../../../../../utils/custom-functions/custom.functions.metadata.parser';
 
 const isCustomFunctionRegex = /@customfunction/i;
 export function isCustomFunctionScript(content: string) {

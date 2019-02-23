@@ -12,9 +12,9 @@ import {
   writeItem,
   CF_LOGS_ROOT,
 } from 'common/lib/utilities/localStorage';
-import { parseMetadata } from 'common/lib/utilities/custom.functions.metadata.parser';
 import compileScript from 'common/lib/utilities/compile.script';
 import processLibraries from 'common/lib/utilities/process.libraries';
+import { parseMetadata } from '../../utils/custom-functions/custom.functions.metadata.parser';
 
 export default function setup() {
   // ========================= REFRESH =================================//
