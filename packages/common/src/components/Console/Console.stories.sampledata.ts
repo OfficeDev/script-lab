@@ -1,4 +1,4 @@
-import { ConsoleLogSeverities } from './index';
+import { ConsoleLogSeverities } from './LogItem';
 import flatten from 'lodash/flatten';
 import shuffle from 'lodash/shuffle';
 
