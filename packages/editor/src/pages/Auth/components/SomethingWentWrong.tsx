@@ -4,7 +4,8 @@ import Only from 'common/lib/components/Only';
 
 export default ({ additionalInfo }: { additionalInfo?: string }) => (
   <MessageBar messageBarType={MessageBarType.severeWarning}>
-    Something went wrong. Please return to the code editor window and try again.
+    Something went wrong. Please return to the code editor window and try again, or try
+    logging in using a different browser.
     <Only when={!!additionalInfo}>
       <div>
         <div style={{ fontStyle: 'italic', marginTop: '2.5rem', marginBottom: '1.5rem' }}>
