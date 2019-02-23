@@ -1,3 +1,5 @@
+import { localStorageKeys } from './constants';
+
 interface IReactEnvironments {
   local: string;
   alpha: string;
@@ -24,7 +26,13 @@ const githubAppClientIds: IReactEnvironments = {
 };
 
 export const environmentDisplayNames: IAllSwitchableEnvironments = {
-  local: 'localhost:3000',
+  local:
+    'localhost:3000' +
+    (window.localStorage.getItem(
+      localStorageKeys.editor.shouldShowLocalhostRedirectOption,
+    )
+      ? ' (visited before)'
+      : ''),
   alpha: 'Alpha',
   beta: 'Beta',
   staging: 'Staging',
@@ -86,12 +94,23 @@ export function getVisibleEnvironmentKeysToSwitchTo(): Array<
     'beta2017',
   ];
 
-  switch (getCurrentEnv()) {
-    case 'local':
-    case 'alpha':
-      return [...basicEnvironments, 'alpha2017', 'production', 'staging', 'local'];
-    default:
-      return basicEnvironments;
+  return [...basicEnvironments, ...getAdditionalEnvironments().filter(item => item)];
+
+  // Helper:
+  function getAdditionalEnvironments(): Array<keyof IAllSwitchableEnvironments | null> {
+    switch (getCurrentEnv()) {
+      case 'local':
+      case 'alpha':
+        return ['alpha2017', 'production', 'staging', 'local'];
+      default:
+        return [
+          window.localStorage.getItem(
+            localStorageKeys.editor.shouldShowLocalhostRedirectOption,
+          )
+            ? 'local'
+            : null,
+        ];
+    }
   }
 }
 

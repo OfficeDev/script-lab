@@ -33,6 +33,7 @@ export const localStorageKeys = {
     customFunctionsRunPostData: 'custom_functions_run_post_data',
     originEnvironmentUrl: 'playground_origin_environment_url',
     redirectEnvironmentUrl: 'playground_redirect_environment_url',
+    shouldShowLocalhostRedirectOption: 'playground_should_show_localhost_redirect_option',
   },
 };
 

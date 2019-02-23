@@ -1,6 +1,6 @@
-import { parse } from 'query-string';
+import queryString from 'query-string';
 import { localStorageKeys, SERVER_HELLO_ENDPOINT } from '../constants';
-import { editorUrls, serverUrls } from '../environment';
+import { editorUrls, serverUrls, currentEditorUrl } from '../environment';
 import { pause } from './misc';
 import ensureFreshLocalStorage from './ensure.fresh.local.storage';
 import { showSplashScreen, hideSplashScreen } from './splash.screen';
@@ -8,9 +8,9 @@ import { showSplashScreen, hideSplashScreen } from './splash.screen';
 /** Checks (and redirects) if needs to go to a different environment.
  * Returns `true` if will be redirecting away
  */
-async function redirectIfNeeded(): Promise<boolean> {
+export async function redirectIfNeeded(): Promise<boolean> {
   try {
-    const params = parse(window.location.search) as {
+    const params = queryString.parse(window.location.search) as {
       originEnvironment?: string;
       targetEnvironment?: string;
     };
@@ -39,6 +39,16 @@ async function redirectIfNeeded(): Promise<boolean> {
         localStorageKeys.editor.redirectEnvironmentUrl,
         targetUrl,
       );
+
+      // Also make sure that if redirecting to localStorage, remember this
+      // and offer this option from prod again in the future (without forcing
+      // always going through alpha first)
+      if (targetUrl === editorUrls.local) {
+        window.localStorage.setItem(
+          localStorageKeys.editor.shouldShowLocalhostRedirectOption,
+          '1',
+        );
+      }
     }
 
     // Store the root site origin, if provided
@@ -55,26 +65,27 @@ async function redirectIfNeeded(): Promise<boolean> {
     );
 
     if (redirectUrl) {
-      const originParam = [
-        window.location.search ? '&' : '?',
-        'originEnvironment=',
-        encodeURIComponent(window.location.origin),
-      ].join('');
+      const newQueryParams = queryString.parse(window.location.search) as {
+        originEnvironment: string;
+      } & {
+        [key: string]: string;
+      };
+      newQueryParams.originEnvironment = encodeURIComponent(window.location.origin);
 
       const keepGoingWithRedirect = await considerIfReallyWantToRedirect(redirectUrl);
       if (!keepGoingWithRedirect) {
         return false;
       }
 
-      window.location.replace(
-        [
-          redirectUrl,
-          window.location.pathname,
-          window.location.search,
-          originParam,
-          window.location.hash,
-        ].join(''),
-      );
+      const finalUrlComponents: string[] = [
+        redirectUrl,
+        window.location.pathname,
+        Object.keys(newQueryParams).length > 0
+          ? '?' + queryString.stringify(newQueryParams)
+          : '',
+        window.location.hash,
+      ];
+      window.location.replace(finalUrlComponents.join(''));
 
       return true;
     }
@@ -88,7 +99,31 @@ async function redirectIfNeeded(): Promise<boolean> {
   return false;
 }
 
-export default redirectIfNeeded;
+export async function redirectEditorToOtherEnvironment(configName: string) {
+  const targetEnvironment = editorUrls[configName];
+
+  ensureFreshLocalStorage();
+  const originEnvironment = window.localStorage.getItem(
+    localStorageKeys.editor.originEnvironmentUrl,
+  );
+
+  showSplashScreen('Re-loading Script Lab...');
+
+  // Add query string parameters to default editor URL
+  if (originEnvironment) {
+    window.location.href = `${originEnvironment}?targetEnvironment=${encodeURIComponent(
+      targetEnvironment,
+    )}`;
+  } else {
+    window.localStorage.setItem(
+      localStorageKeys.editor.redirectEnvironmentUrl,
+      targetEnvironment,
+    );
+    window.location.href = `${targetEnvironment}?originEnvironment=${encodeURIComponent(
+      currentEditorUrl,
+    )}`;
+  }
+}
 
 ///////////////////////////////////////
 

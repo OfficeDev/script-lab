@@ -2,8 +2,8 @@ import 'common/lib/polyfills';
 import { invokeGlobalErrorHandler } from 'common/lib/utilities/splash.screen';
 window.onerror = error => invokeGlobalErrorHandler(error);
 
-import redirectToProperEnvIfNeeded from 'common/lib/utilities/environment.redirector';
-const isRedirectingAwayPromise = redirectToProperEnvIfNeeded();
+import { redirectIfNeeded } from 'common/lib/utilities/environment.redirector';
+const isRedirectingAwayPromise = redirectIfNeeded();
 
 import './index.css';
 
