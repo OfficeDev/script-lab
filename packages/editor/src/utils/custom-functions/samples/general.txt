@@ -1,0 +1,114 @@
+// should pass basic tests
+
+/**
+* Adds two numbers
+* @param a - First number to add
+* @param b - Second number to add
+* @CustomFunction
+*/
+function sum(a: number, b: number): number {
+    return a + b;
+}
+
+// not included
+function sum2(a: number, b: number[]): number {
+    return a + b[0];
+}
+
+
+/**
+* Adds numbers in array
+* @param arr - array of numbers to add
+* @CustomFunction
+*/
+function sumArr(arr: number[][]): number {
+    return arr[0].reduce((accumulator, current) => accumulator + current);
+
+    /** @customFunction */
+    function sum3(a: number, b: number): number {
+        return a + b;
+    }
+}
+
+/**
+* Checks to see if a number is prime
+* @CustomFunction
+*/
+function isPrime(num: number): boolean {
+    return true;
+}
+
+// metadata
+/*
+[
+   {
+      "description":"Adds two numbers",
+      "funcName": "sum",
+      "nonCapitalizedFullName": "general.txt.sum",
+      "options":{
+         "cancelable":false,
+         "stream":false
+      },
+      "parameters":[
+         {
+            "description":"First number to add",
+            "dimensionality":"scalar",
+            "name":"a",
+            "type":"number"
+         },
+         {
+            "description":"Second number to add",
+            "dimensionality":"scalar",
+            "name":"b",
+            "type":"number"
+         }
+      ],
+      "result":{
+         "dimensionality":"scalar",
+         "type":"number"
+      }
+   },
+   {
+      "description":"Adds numbers in array",
+      "funcName": "sumArr",
+      "nonCapitalizedFullName": "general.txt.sumArr",
+      "options":{
+         "cancelable":false,
+         "stream":false
+      },
+      "parameters":[
+         {
+            "description":"array of numbers to add",
+            "dimensionality":"matrix",
+            "name":"arr",
+            "type":"number"
+         }
+      ],
+      "result":{
+         "dimensionality":"scalar",
+         "type":"number"
+      }
+   },
+   {
+      "description":"Checks to see if a number is prime",
+      "funcName": "isPrime",
+      "nonCapitalizedFullName": "general.txt.isPrime",
+      "options":{
+         "cancelable":false,
+         "stream":false
+      },
+      "parameters":[
+         {
+            "dimensionality":"scalar",
+            "name":"num",
+            "type":"number"
+         }
+      ],
+      "result":{
+         "dimensionality":"scalar",
+         "type":"boolean"
+      }
+   }
+]
+*/
+

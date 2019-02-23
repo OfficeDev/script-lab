@@ -1,0 +1,46 @@
+// should be able to properly handle a function with no Params
+
+/** @customfunction */
+function foobar(): number {
+  return 42;
+}
+
+/** @customfunction */
+function streamingFoobar(caller: IStreamingCustomFunctionHandler<string>) {
+  return 42;
+}
+
+
+// metadata
+/*
+[
+   {
+      "funcName": "foobar",
+      "nonCapitalizedFullName": "no_params.txt.foobar",
+      "options":{
+         "cancelable":false,
+         "stream":false
+      },
+      "parameters":[
+      ],
+      "result":{
+         "dimensionality":"scalar",
+         "type":"number"
+      }
+   },
+   {
+      "funcName": "streamingFoobar",
+      "nonCapitalizedFullName": "no_params.txt.streamingFoobar",
+      "options":{
+         "cancelable":true,
+         "stream":true
+      },
+      "parameters":[
+      ],
+      "result":{
+         "dimensionality":"scalar",
+         "type":"string"
+      }
+   }
+]
+*/

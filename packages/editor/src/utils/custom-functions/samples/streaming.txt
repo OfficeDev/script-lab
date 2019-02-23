@@ -1,0 +1,129 @@
+// should pass streaming functions tests
+
+/**
+* increments a value each iteration
+* @param increment - number to add
+* @CustomFunction
+*/
+function incrementValue(increment: number, handler: IStreamingCustomFunctionHandler<number>) {
+    let result = 0;
+    let interval = setInterval(() => {
+        result += increment;
+        handler.setResult(result);
+    }, 1000);
+
+    handler.onCanceled = () => {
+        clearInterval(interval);
+    };
+}
+
+// declaring as ": void" return type should also be OK:
+
+/**
+* increments a value each iteration
+* @param increment - number to add
+* @CustomFunction
+*/
+function incrementValue(increment: number, handler: IStreamingCustomFunctionHandler<number>): void {
+    let result = 0;
+    let interval = setInterval(() => {
+        result += increment;
+        handler.setResult(result);
+    }, 1000);
+
+    handler.onCanceled = () => {
+        clearInterval(interval);
+    };
+}
+
+/**
+* increments a value each iteration
+* @param concat - string to add
+* @CustomFunction
+*/
+function incrementValue(concat: string, handler: IStreamingCustomFunctionHandler<string>) {
+    let result = "";
+    let interval = setInterval(() => {
+         result += concat;
+         handler.setResult(result);
+    }, 1000);
+
+    handler.onCanceled = () => {
+        clearInterval(interval);
+    };
+}
+
+// not included
+function sum2(a: number, b: number[]): number {
+    return a + b[0];
+}
+
+
+// metadata
+/*
+[
+   {
+      "description":"increments a value each iteration",
+      "funcName": "incrementValue",
+      "nonCapitalizedFullName": "streaming.txt.incrementValue",
+      "options":{
+         "cancelable":true,
+         "stream":true
+      },
+      "parameters":[
+         {
+            "description":"number to add",
+            "dimensionality":"scalar",
+            "name":"increment",
+            "type":"number"
+         }
+      ],
+      "result":{
+         "dimensionality":"scalar",
+         "type":"number"
+      }
+   },
+   {
+      "description":"increments a value each iteration",
+      "funcName": "incrementValue",
+      "nonCapitalizedFullName": "streaming.txt.incrementValue",
+      "options":{
+         "cancelable":true,
+         "stream":true
+      },
+      "parameters":[
+         {
+            "description":"number to add",
+            "dimensionality":"scalar",
+            "name":"increment",
+            "type":"number"
+         }
+      ],
+      "result":{
+         "dimensionality":"scalar",
+         "type":"number"
+      }
+   },
+   {
+      "description":"increments a value each iteration",
+      "funcName": "incrementValue",
+      "nonCapitalizedFullName": "streaming.txt.incrementValue",
+      "options":{
+         "cancelable":true,
+         "stream":true
+      },
+      "parameters":[
+         {
+            "description":"string to add",
+            "dimensionality":"scalar",
+            "name":"concat",
+            "type":"string"
+         }
+      ],
+      "result":{
+         "dimensionality":"scalar",
+         "type":"string"
+      }
+   }
+]
+*/

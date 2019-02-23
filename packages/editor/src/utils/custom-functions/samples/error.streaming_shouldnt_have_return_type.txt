@@ -1,0 +1,4 @@
+/** @CustomFunction */
+function badStream (increment: number, caller: IStreamingCustomFunctionHandler<number>): number {
+  return 123;
+}
