@@ -25,25 +25,6 @@ const githubAppClientIds: IReactEnvironments = {
   cdn: '55031174553ee45f92f4',
 };
 
-export const environmentDisplayNames: IAllSwitchableEnvironments = {
-  local:
-    'localhost:3000' +
-    (window.localStorage.getItem(
-      localStorageKeys.editor.shouldShowLocalhostRedirectOption,
-    )
-      ? ' (visited before)'
-      : ''),
-  alpha: 'Alpha',
-  beta: 'Beta',
-  staging: 'Staging',
-  production: 'Production (direct)',
-  cdn: 'Production',
-  alpha2017: 'Script Lab 2017 - Alpha',
-  beta2017:
-    'Script Lab 2017' /* even though it's a URL pointing at "bornholm-insiders",
-    don't include "beta" in the title to avoid needless confusion */,
-};
-
 export const editorUrls: IAllSwitchableEnvironments = {
   local: 'https://localhost:3000',
   alpha: 'https://script-lab-react-alpha.azurewebsites.net',
@@ -72,6 +53,39 @@ export const serverUrls: IReactEnvironments = {
   production: 'https://script-lab-react-server.azurewebsites.net',
   cdn: 'https://script-lab-server.azureedge.net',
 };
+
+export const environmentDisplayNames: IAllSwitchableEnvironments = (() => {
+  const preliminary = {
+    local:
+      'localhost:3000' +
+      (window.localStorage.getItem(
+        localStorageKeys.editor.shouldShowLocalhostRedirectOption,
+      )
+        ? ' (visited before)'
+        : ''),
+    alpha: 'Alpha',
+    beta: 'Beta',
+    staging: 'Staging',
+    production: 'Production (direct)',
+    cdn: 'Production',
+    alpha2017: 'Script Lab 2017 - Alpha',
+    beta2017:
+      'Script Lab 2017' /* even though it's a URL pointing at "bornholm-insiders",
+    don't include "beta" in the title to avoid needless confusion */,
+  };
+
+  const origin = window.localStorage.getItem(
+    localStorageKeys.editor.originEnvironmentUrl,
+  );
+
+  for (const key in editorUrls) {
+    if ((editorUrls[key] as string).startsWith(origin)) {
+      preliminary[key] += ' (*)';
+    }
+  }
+
+  return preliminary;
+})();
 
 //////////////////////////
 

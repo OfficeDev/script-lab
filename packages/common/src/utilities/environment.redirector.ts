@@ -16,7 +16,7 @@ export async function redirectIfNeeded(): Promise<boolean> {
     };
 
     const originUrl = (params.originEnvironment || '').trim();
-    let targetUrl = (params.targetEnvironment || '').trim();
+    const targetUrl = (params.targetEnvironment || '').trim();
 
     const urlsAreOk = isAllowedUrl(originUrl) && isAllowedUrl(targetUrl);
     if (!urlsAreOk) {
@@ -25,8 +25,6 @@ export async function redirectIfNeeded(): Promise<boolean> {
 
     // If there is a target environment specified, set it in local storage
     if (targetUrl.length > 0) {
-      targetUrl = decodeURIComponent(targetUrl);
-
       // The exception: clear the redirect key if already on the target (i.e.,
       // the user has returned back to the root site)
       if (window.location.href.toLowerCase().indexOf(targetUrl) === 0) {
@@ -70,7 +68,7 @@ export async function redirectIfNeeded(): Promise<boolean> {
       } & {
         [key: string]: string;
       };
-      newQueryParams.originEnvironment = encodeURIComponent(window.location.origin);
+      newQueryParams.originEnvironment = window.location.origin;
 
       const keepGoingWithRedirect = await considerIfReallyWantToRedirect(redirectUrl);
       if (!keepGoingWithRedirect) {
