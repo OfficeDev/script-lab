@@ -1,3 +1,5 @@
+import { SERVER_HELLO_ENDPOINT } from 'common/lib/constants';
+
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').load();
 }
@@ -15,8 +17,14 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // routes
-app.get('/hello', (_req, res) => {
-  res.send({ express: 'Hello From Express' });
+
+// An endpoint to check that the server is alive (and used by
+//    environment.redirector.ts for localhost redirect)
+app.get('/' + SERVER_HELLO_ENDPOINT.path, (_req, res) => {
+  res
+    .contentType('application/json')
+    .status(200)
+    .send(SERVER_HELLO_ENDPOINT.payload);
 });
 
 // An auth endpoint for GitHub that returns a JSON payload of type IServerAuthResponse

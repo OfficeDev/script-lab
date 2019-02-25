@@ -14,10 +14,6 @@ export function setUpMomentJsDurationDefaults(momentInstance: {
   momentInstance.relativeTimeThreshold('M', 10);
 }
 
-export function pause(ms: number) {
-  return new Promise(r => setTimeout(r, ms));
-}
-
 const EXT_TO_LANG_MAP = {
   js: 'JavaScript',
   ts: 'TypeScript',

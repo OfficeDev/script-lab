@@ -5,17 +5,11 @@ import {
   getCurrentEnv,
   editorUrls,
   environmentDisplayNames,
-  currentEditorUrl,
   currentRunnerUrl,
 } from 'common/lib/environment';
-import ensureFreshLocalStorage from 'common/lib/utilities/ensure.fresh.local.storage';
-import { localStorageKeys } from 'common/lib/constants';
-import {
-  showSplashScreen,
-  invokeGlobalErrorHandler,
-} from 'common/lib/utilities/splash.screen';
-import { ScriptLabError } from 'common/lib/utilities/error';
+import { showSplashScreen } from 'common/lib/utilities/splash.screen';
 import { openPopoutCodeEditor } from 'common/lib/utilities/popout.control';
+import { redirectEditorToOtherEnvironment } from 'common/lib/utilities/environment.redirector';
 
 export default function* miscWatcher() {
   yield takeEvery(getType(actions.misc.initialize), onInitializeSaga);
@@ -73,29 +67,8 @@ function* onSwitchEnvironmentSaga(
 function* onConfirmSwitchEnvironmentSaga(
   action: ActionType<typeof actions.misc.confirmSwitchEnvironment>,
 ) {
-  ensureFreshLocalStorage();
-  const originEnvironment = window.localStorage.getItem(
-    localStorageKeys.editor.originEnvironmentUrl,
-  );
-
-  const targetEnvironment = editorUrls[action.payload];
-
-  showSplashScreen('Re-loading Script Lab...');
-
-  // Add query string parameters to default editor URL
-  if (originEnvironment) {
-    window.location.href = `${originEnvironment}?targetEnvironment=${encodeURIComponent(
-      targetEnvironment,
-    )}`;
-  } else {
-    window.localStorage.setItem(
-      localStorageKeys.editor.redirectEnvironmentUrl,
-      targetEnvironment,
-    );
-    window.location.href = `${targetEnvironment}?originEnvironment=${encodeURIComponent(
-      currentEditorUrl,
-    )}`;
-  }
+  const configName = action.payload;
+  redirectEditorToOtherEnvironment(configName);
 }
 
 function* onPopOutEditorSaga() {
