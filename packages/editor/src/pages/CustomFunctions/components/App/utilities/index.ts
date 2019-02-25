@@ -154,10 +154,11 @@ export function getCustomFunctionsInfoForRegistration(
     .forEach(snippet => {
       const namespace = transformSnippetName(snippet.name);
 
-      let snippetFunctions: ICFVisualFunctionMetadata[] = parseMetadata(
+      let snippetFunctions: ICFVisualFunctionMetadata[] = parseMetadata({
+        solutionName: snippet.name,
         namespace,
-        snippet.script!.content,
-      ) as ICFVisualFunctionMetadata[];
+        fileContent: snippet.script!.content,
+      }) as ICFVisualFunctionMetadata[];
 
       snippetFunctions = convertFunctionErrorsToSpace(snippetFunctions);
       if (snippetFunctions.length === 0) {

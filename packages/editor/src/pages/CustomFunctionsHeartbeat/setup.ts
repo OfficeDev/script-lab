@@ -70,10 +70,11 @@ function getMetadata(): ICFMetadata[] {
           (file: IFile) => file.name === 'libraries.txt',
         )!.content;
 
-        const metadata: ICFVisualFunctionMetadata[] = parseMetadata(
+        const metadata: ICFVisualFunctionMetadata[] = parseMetadata({
+          solutionName: solution.name,
           namespace,
-          script,
-        ) as ICFVisualFunctionMetadata[];
+          fileContent: script,
+        }) as ICFVisualFunctionMetadata[];
 
         if (metadata.filter(({ error }) => !!error).length > 0) {
           return null;
@@ -86,10 +87,11 @@ function getMetadata(): ICFMetadata[] {
           code: compileScript(script),
           jsLibs: processLibraries(
             libraries,
-            false /* hardcoding because ignoring officeJS result */,
+            false /* hard-coding to "false" because ignoring office.js-script-reference result */,
           ).scriptReferences,
         };
       } catch (error) {
+        // FIXME
         console.error(error);
         return null;
       }
@@ -107,15 +109,6 @@ function loadAllCFSolutions() {
 
 function addLog({ payload }: ICFLogMessage) {
   writeItem(CF_LOGS_ROOT, payload.id, payload);
-}
-
-function getCustomFunctionsLastUpdated(): number {
-  ensureFreshLocalStorage();
-
-  const lastUpdated = localStorage.getItem(
-    localStorageKeys.editor.customFunctionsLastUpdatedCodeTimestamp,
-  );
-  return lastUpdated ? +lastUpdated : 0;
 }
 
 export function transformSolutionName(solutionName: string) {

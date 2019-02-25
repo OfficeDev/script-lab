@@ -7,12 +7,20 @@ import { parseTree } from 'custom-functions-metadata';
  * It will either either return an array of metadata objects, or throw a JSON.stringified error object if there are errors/unsupported types.
  * @param fileContent - The string content of the typescript file to parse the custom functions metadata out of.
  */
-export function parseMetadata(
-  namespace: string,
-  fileContent: string,
-): ICFVisualFunctionMetadata[] {
+export function parseMetadata({
+  solutionName,
+  namespace,
+  fileContent,
+}: {
+  solutionName: string;
+  namespace: string;
+  fileContent: string;
+}): ICFVisualFunctionMetadata[] {
   // FIXME transition to:
   const functions = parseTree(fileContent, 'someFileName');
+  // functions.map(item => {
+  //   let result: ICFVisualFunctionMetadata = {};
+  // });
   debugger;
 
   const sourceFile = ts.createSourceFile(

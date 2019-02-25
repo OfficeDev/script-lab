@@ -4,7 +4,7 @@ import { parseMetadata } from './custom.functions.metadata.parser';
 
 const SAMPLE_DIR = './src/utils/custom-functions/samples';
 
-// To add testcases for the custom functions metadata parser, follow the format of the following
+// To add test-cases for the custom functions metadata parser, follow the format of the following
 // and place it in the samples directory
 
 // ====================================NORMAL-TEST-CASE========================================
@@ -25,7 +25,7 @@ const SAMPLE_DIR = './src/utils/custom-functions/samples';
 */
 // ============================================================================================
 
-// For the error testcases (when you expect the file to throw), name the file error.testname.ts.
+// For the error test-cases (when you expect the file to throw), name the file error.testname.ts.
 // (filename must start with `error.`)
 
 function parseSampleFile(
@@ -50,7 +50,11 @@ describe('Custom Functions metadata parser ', () => {
       it(`should throw an error for the function in ${file}`, () => {
         const source = fs.readFileSync(`${SAMPLE_DIR}/${file}`).toString();
         expect(() => {
-          parseMetadata(file, source).forEach(meta => {
+          parseMetadata({
+            solutionName: file,
+            namespace: file,
+            fileContent: source,
+          }).forEach(meta => {
             if (meta.error) {
               throw Error();
             }
@@ -61,8 +65,12 @@ describe('Custom Functions metadata parser ', () => {
       // for each file in the samples directory, parse it and test it
       const { description, code, meta } = parseSampleFile(file);
       it(description, () => {
-        expect(parseMetadata(file, code)).toEqual(JSON.parse(meta));
+        expect(
+          parseMetadata({ solutionName: file, namespace: file, fileContent: code }),
+        ).toEqual(JSON.parse(meta));
       });
     }
   });
 });
+
+// cspell:ignore testname
