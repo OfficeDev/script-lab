@@ -2,17 +2,46 @@ import React from 'react';
 import CustomTailoredObjectInspector from './CustomTailoredObjectInspector';
 import { LogEntry, LogText, ObjectInspectorLogEntry } from './styles';
 import { stringifyPlusPlusOrErrorMessage } from '../../utilities/string';
-import IconOrDiv, { IIcon } from './IconOrDiv';
+import IconOrDiv from './IconOrDiv';
 
 interface IProps {
-  backgroundColor: string;
-  color: string;
-  icon?: IIcon;
   message: any;
+  severity: ConsoleLogTypes;
+  theme: ITheme;
 }
 
-const LogItem = ({ backgroundColor, color, icon, message }: IProps) =>
-  typeof message === 'object' ? (
+export enum ConsoleLogSeverities {
+  Info = 'info',
+  Log = 'log',
+  Warn = 'warn',
+  Error = 'error',
+}
+
+const LogItem = ({ severity, message, theme }: IProps) => {
+  const { backgroundColor, color, icon } = {
+    [ConsoleLogSeverities.Log]: {
+      backgroundColor: theme.white,
+      color: theme.black,
+      icon: null,
+    },
+    [ConsoleLogSeverities.Info]: {
+      backgroundColor: '#cce6ff',
+      color: theme.black,
+      icon: { name: 'Info', color: '#002db3' },
+    },
+    [ConsoleLogSeverities.Warn]: {
+      backgroundColor: '#fff4ce',
+      color: theme.black,
+      icon: { name: 'Warning', color: 'gold' },
+    },
+    [ConsoleLogSeverities.Error]: {
+      backgroundColor: '#fde7e9',
+      color: theme.black,
+      icon: { name: 'Error', color: 'red' },
+    },
+  }[severity];
+
+  return typeof message === 'object' ? (
     <ObjectInspectorLogEntry
       backgroundColor={backgroundColor}
       style={{ backgroundColor, color }}
@@ -26,5 +55,6 @@ const LogItem = ({ backgroundColor, color, icon, message }: IProps) =>
       <LogText>{stringifyPlusPlusOrErrorMessage(message)}</LogText>
     </LogEntry>
   );
+};
 
 export default LogItem;

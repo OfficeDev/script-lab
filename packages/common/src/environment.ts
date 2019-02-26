@@ -1,3 +1,5 @@
+import { localStorageKeys } from './constants';
+
 interface IReactEnvironments {
   local: string;
   alpha: string;
@@ -14,15 +16,6 @@ interface I2017Environments {
 
 interface IAllSwitchableEnvironments extends IReactEnvironments, I2017Environments {}
 
-const serverUrls: IReactEnvironments = {
-  local: 'http://localhost:5000',
-  alpha: 'https://script-lab-react-server-alpha.azurewebsites.net',
-  beta: 'https://script-lab-react-server-beta.azurewebsites.net',
-  staging: 'https://script-lab-react-server-staging.azurewebsites.net',
-  production: 'https://script-lab-react-server.azurewebsites.net',
-  cdn: 'https://script-lab-server.azureedge.net',
-};
-
 const githubAppClientIds: IReactEnvironments = {
   local: process.env.REACT_APP_GITHUB_CLIENT_ID,
   alpha: 'ad26df7ba62ef691669e',
@@ -30,19 +23,6 @@ const githubAppClientIds: IReactEnvironments = {
   staging: '',
   production: '',
   cdn: '55031174553ee45f92f4',
-};
-
-export const environmentDisplayNames: IAllSwitchableEnvironments = {
-  local: 'localhost:3000',
-  alpha: 'Alpha',
-  beta: 'Beta',
-  staging: 'Staging',
-  production: 'Production (direct)',
-  cdn: 'Production',
-  alpha2017: 'Script Lab 2017 - Alpha',
-  beta2017:
-    'Script Lab 2017' /* even though it's a URL pointing at "bornholm-insiders",
-    don't include "beta" in the title to avoid needless confusion */,
 };
 
 export const editorUrls: IAllSwitchableEnvironments = {
@@ -65,6 +45,48 @@ export const runnerUrls: IReactEnvironments = {
   cdn: 'https://script-lab-runner.azureedge.net',
 };
 
+export const serverUrls: IReactEnvironments = {
+  local: 'http://localhost:5000',
+  alpha: 'https://script-lab-react-server-alpha.azurewebsites.net',
+  beta: 'https://script-lab-react-server-beta.azurewebsites.net',
+  staging: 'https://script-lab-react-server-staging.azurewebsites.net',
+  production: 'https://script-lab-react-server.azurewebsites.net',
+  cdn: 'https://script-lab-server.azureedge.net',
+};
+
+export const environmentDisplayNames: IAllSwitchableEnvironments = (() => {
+  const preliminary = {
+    local:
+      'localhost:3000' +
+      (window.localStorage.getItem(
+        localStorageKeys.editor.shouldShowLocalhostRedirectOption,
+      )
+        ? ' (visited before)'
+        : ''),
+    alpha: 'Alpha',
+    beta: 'Beta',
+    staging: 'Staging',
+    production: 'Production (direct)',
+    cdn: 'Production',
+    alpha2017: 'Script Lab 2017 - Alpha',
+    beta2017:
+      'Script Lab 2017' /* even though it's a URL pointing at "bornholm-insiders",
+    don't include "beta" in the title to avoid needless confusion */,
+  };
+
+  const origin = window.localStorage.getItem(
+    localStorageKeys.editor.originEnvironmentUrl,
+  );
+
+  for (const key in editorUrls) {
+    if ((editorUrls[key] as string).startsWith(origin)) {
+      preliminary[key] += ' (*)';
+    }
+  }
+
+  return preliminary;
+})();
+
 //////////////////////////
 
 export const currentServerUrl = serverUrls[getCurrentEnv()];
@@ -86,12 +108,23 @@ export function getVisibleEnvironmentKeysToSwitchTo(): Array<
     'beta2017',
   ];
 
-  switch (getCurrentEnv()) {
-    case 'local':
-    case 'alpha':
-      return [...basicEnvironments, 'alpha2017', 'production', 'staging', 'local'];
-    default:
-      return basicEnvironments;
+  return [...basicEnvironments, ...getAdditionalEnvironments().filter(item => item)];
+
+  // Helper:
+  function getAdditionalEnvironments(): Array<keyof IAllSwitchableEnvironments | null> {
+    switch (getCurrentEnv()) {
+      case 'local':
+      case 'alpha':
+        return ['alpha2017', 'production', 'staging', 'local'];
+      default:
+        return [
+          window.localStorage.getItem(
+            localStorageKeys.editor.shouldShowLocalhostRedirectOption,
+          )
+            ? 'local'
+            : null,
+        ];
+    }
   }
 }
 

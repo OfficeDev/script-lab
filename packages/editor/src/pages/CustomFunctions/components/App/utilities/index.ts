@@ -1,12 +1,12 @@
-import flatten from 'lodash/flatten';
-import { SCRIPT_FILE_NAME } from '../../../../../constants';
+import { IFunction, ICustomFunctionsMetadata } from 'custom-functions-metadata';
+
 import compileScript from 'common/lib/utilities/compile.script';
 import { stripSpaces } from 'common/lib/utilities/string';
 import { consoleMonkeypatch } from './console.monkeypatch';
 import { getCurrentEnv } from 'common/lib/environment';
-import { pause, convertSolutionToSnippet } from '../../../../../utils';
+import { SCRIPT_FILE_NAME } from '../../../../../constants';
+import { pause } from 'common/lib/utilities/misc';
 import { parseMetadata } from '../../../../../utils/custom-functions/custom.functions.metadata.parser';
-import { IFunction, ICustomFunctionsMetadata } from 'custom-functions-metadata';
 
 const isCustomFunctionRegex = /@customfunction/i;
 export function isCustomFunctionScript(content: string) {
