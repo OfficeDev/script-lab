@@ -20,3 +20,7 @@ export function generateRandomToken(bits = 128): string {
   crypto.getRandomValues(buffer);
   return bufferToHexString(buffer);
 }
+
+export function pause(ms: number) {
+  return new Promise(r => setTimeout(r, ms));
+}

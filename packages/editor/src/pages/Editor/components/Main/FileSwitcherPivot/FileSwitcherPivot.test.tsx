@@ -1,15 +1,11 @@
 import React from 'react';
-import {
-  render,
-  fireEvent,
-  cleanup,
-  renderWithRedux,
-} from '../../../../../utils/test-utils';
+import { fireEvent, renderWithRedux } from '../../../../../utils/test-utils';
+import { IState } from '../../../store/reducer';
 
 import FileSwitcherPivot from './';
 
 const setup = () => {
-  const initialState = {
+  const initialState: Partial<IState> = {
     solutions: {
       metadata: {
         'a676df2c-3062-4b0c-ac48-c855e4bc4087': {
@@ -20,6 +16,7 @@ const setup = () => {
           description: 'Create a new snippet from a blank template.',
           dateCreated: 1539737668489,
           dateLastModified: 1539737668489,
+          dateLastOpened: 1539737668489,
           files: [
             '121b1c13-ce96-487e-b99d-e984126983d2',
             '750711ee-7a58-48ee-823a-8c93c9191b81',
@@ -33,6 +30,7 @@ const setup = () => {
           options: {},
           dateCreated: 1543143427440,
           dateLastModified: 1543143427440,
+          dateLastOpened: 1543143427440,
           host: 'ALL',
           files: ['user-settings-file', 'default-settings-file', 'about'],
         },
@@ -43,6 +41,7 @@ const setup = () => {
           name: 'Settings',
           dateCreated: 1539739146490,
           dateLastModified: 1539739146490,
+          dateLastOpened: 1539739146490,
           language: 'JSON',
           content:
             '{\n  "editor": {\n    "theme": "dark",\n    "font": {\n      "family": "Menlo",\n      "size": 14,\n      "lineHeight": 19\n    },\n    "minimap": false,\n    "tabSize": 2,\n    "prettier": {\n      "enabled": true,\n      "autoFormat": true\n    },\n    "folding": true,\n    "linter": {\n      "mode": "warning"\n    },\n    "wordWrap": "bounded",\n    "wordWrapColumn": 80\n  },\n  "hostSpecific": {\n    "officeOnline": {\n      "openEditorInNewTab": "prompt"\n    }\n  },\n  "defaultActions": {\n    "applySettings": "prompt",\n    "gistImport": "prompt"\n  },\n  "environment": "local"\n}\n',
@@ -55,6 +54,7 @@ const setup = () => {
           language: 'typescript',
           dateCreated: 1539737668489,
           dateLastModified: 1539737668489,
+          dateLastOpened: 1539737668489,
         },
         '750711ee-7a58-48ee-823a-8c93c9191b81': {
           id: '750711ee-7a58-48ee-823a-8c93c9191b81',
@@ -64,6 +64,7 @@ const setup = () => {
           language: 'html',
           dateCreated: 1539737668489,
           dateLastModified: 1539737668489,
+          dateLastOpened: 1539737668489,
         },
         'b485b258-2695-4b8f-80a2-62777cc93a50': {
           id: 'b485b258-2695-4b8f-80a2-62777cc93a50',
@@ -72,6 +73,7 @@ const setup = () => {
           language: 'css',
           dateCreated: 1539737668489,
           dateLastModified: 1539737668489,
+          dateLastOpened: 1539737668489,
         },
         '0dcdae52-b806-4535-9d0d-339aeb7b83c6': {
           id: '0dcdae52-b806-4535-9d0d-339aeb7b83c6',
@@ -81,12 +83,14 @@ const setup = () => {
           language: 'libraries',
           dateCreated: 1539737668489,
           dateLastModified: 1539737668489,
+          dateLastOpened: 1539737668489,
         },
         'user-settings-file': {
           id: 'user-settings-file',
           name: 'User Settings',
           dateCreated: 1543143427440,
           dateLastModified: 1543143427440,
+          dateLastOpened: 1543143427440,
           language: 'JSON',
           content: '{}\n',
         },
@@ -95,6 +99,7 @@ const setup = () => {
           name: 'Default Settings',
           dateCreated: 1543143427440,
           dateLastModified: 1543143427440,
+          dateLastOpened: 1543143427440,
           language: 'JSON',
           content:
             '{\n  "editor.theme": "dark",\n  "editor.fontFamily": "Menlo",\n  "editor.fontSize": 14,\n  "editor.minimap": false,\n  "editor.tabSize": 2,\n  "editor.prettier": true,\n  "editor.prettier.autoFormat": true,\n  "editor.folding": true,\n  "editor.wordWrap": "bounded"\n}\n',
@@ -104,6 +109,7 @@ const setup = () => {
           name: 'About',
           dateCreated: 1543143427440,
           dateLastModified: 1543143427440,
+          dateLastOpened: 1543143427440,
           language: 'plaintext',
           content:
             'Last Updated: now\nCommit: https://github.com/OfficeDev/script-lab-react/commits/1337\nEnvironment: local',
@@ -111,8 +117,14 @@ const setup = () => {
       },
     },
     settings: { userSettings: {}, lastActive: { solutionId: null, fileId: null } },
-    github: { profilePicUrl: null, username: null, token: null, isLoggingInOrOut: false },
+    github: {
+      loginInfo: { fullName: null, username: null, token: null, profilePicUrl: null },
+      isLoggingInOrOut: false,
+      isAuthDialogVisible: false,
+    },
     editor: {
+      isBackstageVisible: false,
+      intellisenseFiles: {},
       isVisible: true,
       hasLoaded: true,
       active: {

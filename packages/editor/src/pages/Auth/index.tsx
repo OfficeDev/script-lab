@@ -125,6 +125,10 @@ class AuthPage extends React.Component<IProps, IState> {
       if (this.state.hasCodeAndState) {
         const state = sessionStorage.getItem(AUTH_PAGE_SESSION_STORAGE_KEYS.auth_state);
         if (!this.state.publicKeyString || !state || state !== this.params.state) {
+          console.error(
+            'Something went wrong: have code and state on the URL query string, ' +
+              "but don't seem to have it in session storage!",
+          );
           return {
             component: <SomethingWentWrong />,
             showUI: true,
@@ -179,6 +183,7 @@ class AuthPage extends React.Component<IProps, IState> {
         };
       }
 
+      console.error('Something went wrong -- fell through the other cases');
       return {
         component: <SomethingWentWrong />,
         showUI: true,
