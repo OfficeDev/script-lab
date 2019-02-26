@@ -15,6 +15,7 @@ import {
 import compileScript from 'common/lib/utilities/compile.script';
 import processLibraries from 'common/lib/utilities/process.libraries';
 import { parseMetadata } from '../../utils/custom-functions/custom.functions.metadata.parser';
+import { IFunction } from 'custom-functions-metadata';
 
 export default function setup() {
   // ========================= REFRESH =================================//
@@ -38,11 +39,11 @@ export default function setup() {
       return;
     }
 
-    const message: ICFHeartbeatMessage = JSON.parse(event.data);
+    const message: ICustomFunctionsHeartbeatMessage = JSON.parse(event.data);
 
     switch (message.type) {
       case 'log':
-        addLog(message as ICFLogMessage);
+        addLog(message as ICustomFunctionsHeartbeatLogMessage);
         break;
       default:
         throw new Error(`Unknown message type: "${message.type}`);
@@ -54,11 +55,11 @@ export default function setup() {
 }
 
 // ========================= HELPERS  ==================================//
-function sendMessageToRunner(message: ICFHeartbeatMessage) {
+function sendMessageToRunner(message: ICustomFunctionsHeartbeatMessage) {
   window.parent.postMessage(JSON.stringify(message), currentRunnerUrl);
 }
 
-function getMetadata(): ICFMetadata[] {
+function getMetadata(): ICustomFunctionsHeartbeatMetadata[] {
   return loadAllCFSolutions()
     .filter((solution: ISolution) => !solution.options.isUntrusted)
     .map((solution: ISolution) => {
@@ -70,13 +71,13 @@ function getMetadata(): ICFMetadata[] {
           (file: IFile) => file.name === 'libraries.txt',
         )!.content;
 
-        const metadata: ICFVisualFunctionMetadata[] = parseMetadata({
-          solutionName: solution.name,
+        const metadata: Array<ICustomFunctionParseResult<IFunction>> = parseMetadata({
+          solution,
           namespace,
           fileContent: script,
-        }) as ICFVisualFunctionMetadata[];
+        });
 
-        if (metadata.filter(({ error }) => !!error).length > 0) {
+        if (metadata.some(item => item.status !== 'good')) {
           return null;
         }
 
@@ -96,7 +97,7 @@ function getMetadata(): ICFMetadata[] {
         return null;
       }
     })
-    .filter(x => x !== null) as ICFMetadata[];
+    .filter(x => x !== null) as ICustomFunctionsHeartbeatMetadata[];
 }
 
 function loadAllCFSolutions() {
@@ -107,7 +108,7 @@ function loadAllCFSolutions() {
     .filter((solution: ISolution) => solution.options.isCustomFunctionsSolution);
 }
 
-function addLog({ payload }: ICFLogMessage) {
+function addLog({ payload }: ICustomFunctionsHeartbeatLogMessage) {
   writeItem(CF_LOGS_ROOT, payload.id, payload);
 }
 

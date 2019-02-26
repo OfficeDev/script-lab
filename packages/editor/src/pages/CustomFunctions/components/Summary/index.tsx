@@ -13,7 +13,7 @@ import { DefaultButton } from 'office-ui-fabric-react/lib/Button';
 import { invokeGlobalErrorHandler } from 'common/lib/utilities/splash.screen';
 
 export interface IProps {
-  items: ICustomFunctionSummaryItem[] | null;
+  items: Array<ICustomFunctionParseResult<null>> | null;
   error?: Error;
 }
 
@@ -56,7 +56,10 @@ export class Summary extends React.Component<IProps, {}> {
         </CustomFunctionsDescription>
         <SummaryItemsContainer>
           {items.map(item => (
-            <SummaryItem key={`${item.snippetName}${item.funcName}`} {...item} />
+            <SummaryItem
+              key={`${item.nonCapitalizedFullName}${item.funcName}`}
+              {...item}
+            />
           ))}
         </SummaryItemsContainer>
       </div>

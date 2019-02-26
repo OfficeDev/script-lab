@@ -22,7 +22,7 @@ export default () => {
       return;
     }
 
-    const { type, payload }: ICFHeartbeatMessage = JSON.parse(data);
+    const { type, payload }: ICustomFunctionsHeartbeatMessage = JSON.parse(data);
     switch (type) {
       case 'metadata':
         await initializeRunnableSnippets(payload);

@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import queryString from 'query-string';
-import flatten from 'lodash/flatten';
 import {
-  getCustomFunctionsInfoForRegistrationFromSolutions as getCFInfoForRegistration,
-  getSummaryItems,
+  getCustomFunctionsInfoForRegistration,
   registerMetadata,
   getCustomFunctionEngineStatusSafe,
   filterCustomFunctions,
@@ -15,10 +13,11 @@ import {
 import { getLogsFromAsyncStorage } from './utilities/logs';
 import { loadAllSolutionsAndFiles } from '../../../Editor/store/localStorage';
 import { ScriptLabError } from 'common/lib/utilities/error';
+import { IFunction } from 'custom-functions-metadata';
 
 interface IState {
   hasCustomFunctionsInSolutions: boolean;
-  customFunctionsSummaryItems: ICustomFunctionSummaryItem[] | null;
+  customFunctionsSummaryItems: Array<ICustomFunctionParseResult<any>> | null;
   runnerLastUpdated: number;
   customFunctionsSolutionLastModified: number;
 
@@ -64,7 +63,16 @@ const AppHOC = (UI: React.ComponentType<IPropsToUI>) =>
       try {
         if (this.state.hasCustomFunctionsInSolutions) {
           const metadata = await this.fetchAndRegisterMetadata(this.cfSolutions);
-          this.setState({ customFunctionsSummaryItems: getSummaryItems(metadata) });
+          metadata.sort((a, b) => {
+            if (a.status === 'error' && b.status !== 'error') {
+              return -1;
+            } else if (a.status !== 'error' && b.status === 'error') {
+              return 1;
+            } else {
+              return 0;
+            }
+          });
+          this.setState({ customFunctionsSummaryItems: metadata });
         }
       } catch (e) {
         this.setState({
@@ -107,17 +115,13 @@ const AppHOC = (UI: React.ComponentType<IPropsToUI>) =>
 
     private async fetchAndRegisterMetadata(
       solutions: ISolution[],
-    ): Promise<ICFVisualSnippetMetadata[]> {
+    ): Promise<Array<ICustomFunctionParseResult<IFunction>>> {
       try {
-        const { visual, code } = getCFInfoForRegistration(solutions);
+        const { metadata, code } = getCustomFunctionsInfoForRegistration(solutions);
 
-        const allFunctions: ICFVisualFunctionMetadata[] = flatten(
-          visual.snippets.map(snippet => snippet.functions),
-        );
+        await registerMetadata(metadata, code);
 
-        await registerMetadata(allFunctions, code);
-
-        return visual.snippets;
+        return metadata;
       } catch (e) {
         console.error(e);
         throw new ScriptLabError('Could not register Custom Functions', e);

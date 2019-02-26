@@ -47,10 +47,10 @@ const SnippetName = styled.div.attrs({ className: 'ms-font-s' })`
 
 const SummaryItem = ({
   status,
-  snippetName,
+  nonCapitalizedFullName,
   funcName,
   additionalInfo,
-}: ICustomFunctionSummaryItem) => {
+}: ICustomFunctionParseResult<null>) => {
   const { iconName, color } = {
     ['good']: { iconName: 'Completed', color: '#107C10' },
     ['skipped']: { iconName: 'Warning', color: '#F0C784' },
@@ -81,7 +81,7 @@ const SummaryItem = ({
       )}
       <SnippetName>
         =ScriptLab.
-        {snippetName}.{funcName}
+        {nonCapitalizedFullName}
         (...)
       </SnippetName>
     </Wrapper>

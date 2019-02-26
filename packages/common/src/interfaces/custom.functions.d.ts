@@ -1,24 +1,7 @@
-interface ICFVisualMetadata {
-  snippets: ICFVisualSnippetMetadata[];
-}
-
-interface ICFVisualSnippetMetadata {
-  name: string;
-  functions: ICFVisualFunctionMetadata[];
-  error?: boolean;
-  status: CustomFunctionsRegistrationStatus;
-}
-
-interface ICFVisualParameterMetadata extends ICFSchemaParameterMetadata {
-  prettyType?: string;
-  error?: string;
-}
-
-interface ICFVisualFunctionResultMetadata extends ICFSchemaFunctionResultMetadata {
-  error?: string;
-}
-
-interface ICFVisualFunctionMetadata /* doesn't extend ICFSchemaFunctionMetadata so as not to have "name" */ {
+/* The parsed result, as processed by Script Lab.
+ * Be sure to pass "IFunction" from the "custom-functions-metadata" package as the "T" argument.
+ */
+interface ICustomFunctionParseResult<T> {
   /** The actual name of the function (no namespace/sub-namespace.  E.g., "add42") */
   funcName: string;
 
@@ -26,49 +9,20 @@ interface ICFVisualFunctionMetadata /* doesn't extend ICFSchemaFunctionMetadata 
   nonCapitalizedFullName: string;
 
   status: CustomFunctionsRegistrationStatus;
-  paramString?: string;
-  error?: string | boolean;
 
-  description?: string;
-  parameters: ICFVisualParameterMetadata[];
-  result: ICFVisualFunctionResultMetadata;
-  options: ICFSchemaFunctionOptions;
+  // Additional info (e.g., individual error strings)
+  additionalInfo?: string[];
+
+  metadata: T;
 }
-
-interface ICFSchemaFunctionMetadata {
-  id: string;
-  name: string;
-  description?: string;
-  parameters: ICFSchemaParameterMetadata[];
-  result: ICFSchemaFunctionResultMetadata;
-  options: ICFSchemaFunctionOptions;
-}
-
-interface ICFSchemaParameterMetadata {
-  name: string;
-  description?: string;
-  type: CustomFunctionsSchemaSupportedTypes;
-  dimensionality: CustomFunctionsSchemaDimensionality;
-}
-
-interface ICFSchemaFunctionResultMetadata {
-  dimensionality: CustomFunctionsSchemaDimensionality;
-  type: CustomFunctionsSchemaSupportedTypes;
-}
-
-interface ICFSchemaFunctionOptions {
-  stream: boolean;
-  cancelable: boolean;
-}
-
-type CustomFunctionsSchemaSupportedTypes = 'number' | 'string' | 'boolean' | 'invalid';
-type CustomFunctionsSchemaDimensionality = 'invalid' | 'scalar' | 'matrix';
 
 type CustomFunctionsRegistrationStatus = 'good' | 'skipped' | 'error' | 'untrusted';
 
-/** The interface used by Excel to register custom functions (CustomFunctionManager.register(...)) */
-interface ICustomFunctionsRegistrationApiMetadata {
-  functions: ICFSchemaFunctionMetadata[];
+/** The interface used by Excel to register custom functions (CustomFunctionManager.register(...)).
+ * Be sure to pass "IFunction" from the "custom-functions-metadata" package as the "T" argument.
+ */
+interface ICustomFunctionsRegistrationApiMetadata<T> {
+  functions: T[];
 }
 
 interface ICustomFunctionEngineStatus {
@@ -76,21 +30,12 @@ interface ICustomFunctionEngineStatus {
   nativeRuntime?: boolean;
 }
 
-type ConsoleLogTypes = 'log' | 'info' | 'warn' | 'error';
-
-interface ICustomFunctionSummaryItem {
-  status: CustomFunctionsRegistrationStatus;
-  snippetName: string;
-  funcName: string;
-  additionalInfo?: string[];
-}
-
-interface ICFHeartbeatMessage {
+interface ICustomFunctionsHeartbeatMessage {
   type: 'metadata' | 'refresh' | 'log';
   payload?: any;
 }
 
-interface ICFMetadata {
+interface ICustomFunctionsHeartbeatMetadata {
   solutionId: string;
   namespace: string;
   functionNames: string[];
@@ -98,12 +43,13 @@ interface ICFMetadata {
   jsLibs: string[];
 }
 
-interface ICFGetMetadataMessage extends ICFHeartbeatMessage {
+interface ICustomFunctionsHeartbeatGetMetadataMessage
+  extends ICustomFunctionsHeartbeatMessage {
   type: 'metadata';
-  payload: ICFMetadata[];
+  payload: ICustomFunctionsHeartbeatMetadata[];
 }
 
-interface ICFLogMessage extends ICFHeartbeatMessage {
+interface ICustomFunctionsHeartbeatLogMessage extends ICustomFunctionsHeartbeatMessage {
   type: 'log';
   payload: ILogData;
 }
