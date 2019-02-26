@@ -16,7 +16,8 @@ export function parseMetadata({
   fileContent: string;
 }): Array<ICustomFunctionParseResult<IFunction>> {
   const functions = parseTree(fileContent, solution.name).map(metadata => {
-    const nonCapitalizedFullName = namespace + '.' + metadata.name;
+    const funcName = metadata.name;
+    const nonCapitalizedFullName = namespace + '.' + funcName;
     const capitalizedFullName = nonCapitalizedFullName.toUpperCase();
 
     // Massage the metadata a bit:
@@ -24,7 +25,7 @@ export function parseMetadata({
     metadata.id = capitalizedFullName;
 
     return annotate<ICustomFunctionParseResult<IFunction>>({
-      funcName: metadata.name,
+      funcName,
       nonCapitalizedFullName,
       status: solution.options.isUntrusted
         ? 'untrusted'

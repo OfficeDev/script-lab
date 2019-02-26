@@ -2,7 +2,7 @@
  * Be sure to pass "IFunction" from the "custom-functions-metadata" package as the "T" argument.
  */
 interface ICustomFunctionParseResult<T> {
-  /** The actual name of the function (no namespace/sub-namespace.  E.g., "add42") */
+  /** The as-written name of the function (no namespace/sub-namespace, not capitalized. E.g., "add42") */
   funcName: string;
 
   // Sub-namespaced full name, not capitalized (e.g., "BlankSnippet1.add42") */
