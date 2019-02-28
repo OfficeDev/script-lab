@@ -18,7 +18,7 @@ interface IState {
 class CustomFunctionsPage extends React.Component<{}, IState> {
   state: IState = { host: null };
 
-  constructor(props) {
+  constructor(props: {}) {
     super(props);
 
     addScriptTags([SCRIPT_URLS.OFFICE_JS_FOR_CUSTOM_FUNCTIONS_DASHBOARD])

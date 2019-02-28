@@ -7,6 +7,7 @@ import Only from 'common/lib/components/Only';
 
 import { MessageBar, MessageBarType } from 'office-ui-fabric-react/lib/MessageBar';
 import { DefaultButton } from 'office-ui-fabric-react/lib/Button';
+import { currentEditorUrl } from 'common/lib/environment';
 
 interface IProps {
   isStandalone: boolean;
@@ -36,7 +37,12 @@ class Dashboard extends React.Component<IProps, IState> {
       key: 'go-back',
       iconOnly: true,
       iconProps: { iconName: 'Back' },
-      onClick: isStandalone ? null : () => window.history.back(),
+      onClick: isStandalone
+        ? null
+        : () => {
+            window.location.href = currentEditorUrl;
+            return;
+          },
     };
 
     const titleItem = {
