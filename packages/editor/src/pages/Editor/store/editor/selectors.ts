@@ -6,7 +6,7 @@ import {
   getInLastModifiedOrder as getSolutionsInLastModifiedOrder,
 } from '../solutions/selectors';
 import { NULL_SOLUTION, NULL_FILE, SCRIPT_FILE_NAME } from '../../../../constants';
-import { isCustomFunctionScript } from '../../../../utils';
+import { isCustomFunctionScript } from '../../../../utils/custom-functions';
 
 export const getActiveSolution = (
   state: IState,

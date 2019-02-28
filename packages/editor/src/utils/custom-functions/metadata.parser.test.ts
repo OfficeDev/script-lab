@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 
-import { parseMetadata } from './custom.functions.metadata.parser';
+import { parseMetadata } from '.';
 
 const SAMPLE_DIR = './src/utils/custom-functions/samples';
 
@@ -51,13 +51,17 @@ describe('Custom Functions metadata parser ', () => {
         const source = fs.readFileSync(`${SAMPLE_DIR}/${file}`).toString();
         expect(() => {
           parseMetadata({
-            solutionName: file,
+            solution: {
+              name: file,
+              options: {},
+            },
             namespace: file,
             fileContent: source,
           }).forEach(meta => {
-            if (meta.error) {
-              throw Error();
-            }
+            // FIXME
+            // if (meta.error) {
+            //   throw Error();
+            // }
           });
         }).toThrow();
       });
@@ -66,7 +70,14 @@ describe('Custom Functions metadata parser ', () => {
       const { description, code, meta } = parseSampleFile(file);
       it(description, () => {
         expect(
-          parseMetadata({ solutionName: file, namespace: file, fileContent: code }),
+          parseMetadata({
+            solution: {
+              name: file,
+              options: {},
+            },
+            namespace: file,
+            fileContent: code,
+          }),
         ).toEqual(JSON.parse(meta));
       });
     }

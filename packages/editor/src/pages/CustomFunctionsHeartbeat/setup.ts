@@ -14,7 +14,7 @@ import {
 } from 'common/lib/utilities/localStorage';
 import compileScript from 'common/lib/utilities/compile.script';
 import processLibraries from 'common/lib/utilities/process.libraries';
-import { parseMetadata } from '../../utils/custom-functions/custom.functions.metadata.parser';
+import { parseMetadata } from '../../utils/custom-functions';
 import { IFunction } from 'custom-functions-metadata';
 
 export default function setup() {

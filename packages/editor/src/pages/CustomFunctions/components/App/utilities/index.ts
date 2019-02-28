@@ -6,12 +6,10 @@ import { consoleMonkeypatch } from './console.monkeypatch';
 import { getCurrentEnv } from 'common/lib/environment';
 import { SCRIPT_FILE_NAME } from '../../../../../constants';
 import { pause } from 'common/lib/utilities/misc';
-import { parseMetadata } from '../../../../../utils/custom-functions/custom.functions.metadata.parser';
-
-const isCustomFunctionRegex = /@customfunction/i;
-export function isCustomFunctionScript(content: string) {
-  return isCustomFunctionRegex.test(content);
-}
+import {
+  parseMetadata,
+  isCustomFunctionScript,
+} from '../../../../../utils/custom-functions';
 
 export function getJsonMetadataString(
   functions: Array<ICustomFunctionParseResult<IFunction>>,

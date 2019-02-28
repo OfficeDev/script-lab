@@ -1,6 +1,14 @@
 import { parseTree, IFunction } from 'custom-functions-metadata';
 import { annotate } from 'common/lib/utilities/misc';
 
+export function isCustomFunctionScript(content: string) {
+  const isCustomFunctionRegex = /[\s\*]@customfunction[\s\*]/i; // a regex for "@customfunction" that's
+  //  either preceded or followed by a "*" or space -- i.e., a whole-word match, to avoid something like
+  //  "@customfunctions" (with a plural "s" on the end).
+
+  return isCustomFunctionRegex.test(content);
+}
+
 /**
  * This function parses out the metadata for the various @customfunction's defined in the `fileContent`.
  * It will either either return an array of metadata objects, or throw a JSON.stringified error object if there are errors/unsupported types.
@@ -11,7 +19,10 @@ export function parseMetadata({
   namespace,
   fileContent,
 }: {
-  solution: ISolution;
+  solution: {
+    name: string;
+    options: { isUntrusted?: boolean };
+  } /* the relevant parts from ISolution */;
   namespace: string;
   fileContent: string;
 }): Array<ICustomFunctionParseResult<IFunction>> {
