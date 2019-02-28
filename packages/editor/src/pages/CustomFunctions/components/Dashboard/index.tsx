@@ -8,6 +8,7 @@ import Only from 'common/lib/components/Only';
 import { MessageBar, MessageBarType } from 'office-ui-fabric-react/lib/MessageBar';
 import { DefaultButton } from 'office-ui-fabric-react/lib/Button';
 import { currentEditorUrl } from 'common/lib/environment';
+import { Icon } from 'office-ui-fabric-react/lib/Icon';
 
 interface IProps {
   isStandalone: boolean;
@@ -48,6 +49,7 @@ class Dashboard extends React.Component<IProps, IState> {
     const titleItem = {
       key: 'title',
       text: 'Custom Functions (Preview)',
+      onRenderIcon: () => <Icon iconName="Refresh" style={{ padding: '.4rem' }} />,
       onClick: this.reload,
     };
 

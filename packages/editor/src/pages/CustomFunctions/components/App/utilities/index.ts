@@ -13,10 +13,9 @@ export function isCustomFunctionScript(content: string) {
   return isCustomFunctionRegex.test(content);
 }
 
-export async function registerMetadata(
+export function getJsonMetadataString(
   functions: Array<ICustomFunctionParseResult<IFunction>>,
-  code: string,
-): Promise<void> {
+): string {
   const registrationPayload: ICustomFunctionsMetadata = {
     functions: functions
       .filter(func => func.status === 'good')
@@ -26,7 +25,14 @@ export async function registerMetadata(
       }),
   };
 
-  const jsonMetadataString = JSON.stringify(registrationPayload, null, 4);
+  return JSON.stringify(registrationPayload, null, 4);
+}
+
+export async function registerMetadata(
+  functions: Array<ICustomFunctionParseResult<IFunction>>,
+  code: string,
+): Promise<void> {
+  const jsonMetadataString = getJsonMetadataString(functions);
 
   if (Office.context.requirements.isSetSupported('CustomFunctions', 1.6)) {
     await (Excel as any).CustomFunctionManager.register(jsonMetadataString, code);

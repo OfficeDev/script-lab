@@ -3,6 +3,7 @@ import React from 'react';
 import Dashboard from '../Dashboard';
 
 import Summary from '../Summary';
+import Metadata from '../Metadata';
 import Console from '../Console';
 
 import ComingSoon from '../ComingSoon';
@@ -36,6 +37,7 @@ export class CustomFunctionsDashboard extends React.Component<IProps> {
             isStandalone={isStandalone}
             items={{
               Summary: <Summary items={customFunctionsSummaryItems} error={error} />,
+              Metadata: <Metadata items={customFunctionsSummaryItems} />,
               Console: (
                 <Console logs={logs} fetchLogs={fetchLogs} clearLogs={clearLogs} />
               ),
