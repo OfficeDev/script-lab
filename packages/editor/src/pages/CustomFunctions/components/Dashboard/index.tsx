@@ -7,11 +7,12 @@ import Only from 'common/lib/components/Only';
 
 import { MessageBar, MessageBarType } from 'office-ui-fabric-react/lib/MessageBar';
 import { DefaultButton } from 'office-ui-fabric-react/lib/Button';
-import { currentEditorUrl } from 'common/lib/environment';
 import { Icon } from 'office-ui-fabric-react/lib/Icon';
+import Welcome from '../Welcome';
 
 interface IProps {
   isStandalone: boolean;
+  hasAny: boolean;
   shouldPromptRefresh: boolean;
   items: { [itemName: string]: React.ReactElement<any> };
 }
@@ -32,7 +33,7 @@ class Dashboard extends React.Component<IProps, IState> {
 
   render() {
     const { selectedKey } = this.state;
-    const { items, isStandalone, shouldPromptRefresh } = this.props;
+    const { hasAny, items, isStandalone, shouldPromptRefresh } = this.props;
 
     const goBackItem = {
       key: 'go-back',
@@ -65,17 +66,19 @@ class Dashboard extends React.Component<IProps, IState> {
         header={
           <>
             <Header items={headerItems} />
-            <PivotBar
-              items={Object.keys(items).map(key => ({
-                key,
-                text: key,
-              }))}
-              selectedKey={selectedKey}
-              onSelect={this.setSelectedKey}
-            />
+            <Only when={hasAny}>
+              <PivotBar
+                items={Object.keys(items).map(key => ({
+                  key,
+                  text: key,
+                }))}
+                selectedKey={selectedKey}
+                onSelect={this.setSelectedKey}
+              />
+            </Only>
           </>
         }
-        footer={<Footer items={[]} />}
+        footer={null}
       >
         <>
           <Only when={shouldPromptRefresh}>
@@ -95,7 +98,11 @@ class Dashboard extends React.Component<IProps, IState> {
             </MessageBar>
           </Only>
 
-          {items[selectedKey]}
+          {hasAny ? (
+            items[selectedKey]
+          ) : (
+            <Welcome isRefreshEnabled={shouldPromptRefresh} />
+          )}
         </>
       </HeaderFooterLayout>
     );
