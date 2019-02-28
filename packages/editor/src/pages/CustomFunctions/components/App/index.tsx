@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import queryString from 'query-string';
 import {
   getCustomFunctionsInfoForRegistration,
-  registerMetadata,
+  registerCustomFunctions,
   getCustomFunctionEngineStatusSafe,
   filterCustomFunctions,
 } from './utilities';
@@ -16,8 +16,9 @@ import { ScriptLabError } from 'common/lib/utilities/error';
 import { IFunction } from 'custom-functions-metadata';
 
 interface IState {
-  hasCustomFunctionsInSolutions: boolean;
-  customFunctionsSummaryItems: Array<ICustomFunctionParseResult<any>> | null;
+  customFunctionsSummaryItems: Array<ICustomFunctionParseResult<any>>;
+  customFunctionsCode: string;
+
   runnerLastUpdated: number;
   customFunctionsSolutionLastModified: number;
 
@@ -42,15 +43,15 @@ const AppHOC = (UI: React.ComponentType<IPropsToUI>) =>
       super(props);
 
       this.cfSolutions = getCustomFunctionsSolutions();
-      const hasCustomFunctionsInSolutions = this.cfSolutions.length > 0;
+      const registrationResult = getCustomFunctionsInfoForRegistration(this.cfSolutions);
 
       this.state = {
-        hasCustomFunctionsInSolutions,
         runnerLastUpdated: Date.now(),
         customFunctionsSolutionLastModified: getCFCodeLastModified(),
         isStandalone: !queryString.parse(window.location.href.split('?').slice(-1)[0])
           .backButton,
-        customFunctionsSummaryItems: null,
+        customFunctionsSummaryItems: registrationResult.parseResults,
+        customFunctionsCode: registrationResult.code,
         engineStatus: null,
         logs: [],
       };
@@ -61,18 +62,11 @@ const AppHOC = (UI: React.ComponentType<IPropsToUI>) =>
       this.setState({ engineStatus: engineStatus });
 
       try {
-        if (this.state.hasCustomFunctionsInSolutions) {
-          const metadata = await this.fetchAndRegisterMetadata(this.cfSolutions);
-          metadata.sort((a, b) => {
-            if (a.status === 'error' && b.status !== 'error') {
-              return -1;
-            } else if (a.status !== 'error' && b.status === 'error') {
-              return 1;
-            } else {
-              return 0;
-            }
-          });
-          this.setState({ customFunctionsSummaryItems: metadata });
+        if (this.state.customFunctionsSummaryItems.length > 0) {
+          await registerCustomFunctions(
+            this.state.customFunctionsSummaryItems,
+            this.state.customFunctionsCode,
+          );
         }
       } catch (e) {
         this.setState({
@@ -112,21 +106,6 @@ const AppHOC = (UI: React.ComponentType<IPropsToUI>) =>
     };
 
     clearLogs = () => this.setState({ logs: [] });
-
-    private async fetchAndRegisterMetadata(
-      solutions: ISolution[],
-    ): Promise<Array<ICustomFunctionParseResult<IFunction>>> {
-      try {
-        const { metadata, code } = getCustomFunctionsInfoForRegistration(solutions);
-
-        await registerMetadata(metadata, code);
-
-        return metadata;
-      } catch (e) {
-        console.error(e);
-        throw new ScriptLabError('Could not register Custom Functions', e);
-      }
-    }
 
     render() {
       return <UI {...this.state} fetchLogs={this.fetchLogs} clearLogs={this.clearLogs} />;

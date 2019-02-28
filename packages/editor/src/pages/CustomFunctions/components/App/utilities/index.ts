@@ -28,7 +28,7 @@ export function getJsonMetadataString(
   return JSON.stringify(registrationPayload, null, 4);
 }
 
-export async function registerMetadata(
+export async function registerCustomFunctions(
   functions: Array<ICustomFunctionParseResult<IFunction>>,
   code: string,
 ): Promise<void> {
@@ -135,8 +135,8 @@ export function getScriptLabTopLevelNamespace() {
 
 export function getCustomFunctionsInfoForRegistration(
   solutions: ISolution[],
-): { metadata: Array<ICustomFunctionParseResult<IFunction>>; code: string } {
-  const metadata: Array<ICustomFunctionParseResult<IFunction>> = [];
+): { parseResults: Array<ICustomFunctionParseResult<IFunction>>; code: string } {
+  const parseResults: Array<ICustomFunctionParseResult<IFunction>> = [];
   const code: string[] = [decodeURIComponent(consoleMonkeypatch.trim())];
 
   solutions.forEach(solution => {
@@ -183,10 +183,10 @@ export function getCustomFunctionsInfoForRegistration(
       }
     }
 
-    functions.forEach(func => metadata.push(func));
+    functions.forEach(func => parseResults.push(func));
   });
 
-  return { metadata: metadata, code: code.join('\n\n') };
+  return { parseResults: parseResults, code: code.join('\n\n') };
 }
 
 // helpers

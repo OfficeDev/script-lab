@@ -18,7 +18,6 @@ export class CustomFunctionsDashboard extends React.Component<IProps> {
 
   render() {
     const {
-      hasCustomFunctionsInSolutions,
       customFunctionsSummaryItems,
       isStandalone,
       engineStatus,
@@ -31,7 +30,7 @@ export class CustomFunctionsDashboard extends React.Component<IProps> {
     if (!engineStatus) {
       return null;
     } else if (engineStatus!.enabled) {
-      if (hasCustomFunctionsInSolutions) {
+      if (customFunctionsSummaryItems.length > 0) {
         return (
           <Dashboard
             isStandalone={isStandalone}
