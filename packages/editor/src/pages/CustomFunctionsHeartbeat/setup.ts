@@ -15,7 +15,8 @@ import {
 import compileScript from 'common/lib/utilities/compile.script';
 import processLibraries from 'common/lib/utilities/process.libraries';
 import { parseMetadata } from '../../utils/custom-functions';
-import { IFunction } from 'custom-functions-metadata';
+// FIXME import { IFunction } from 'custom-functions-metadata';
+interface IFunction {}
 
 export default function setup() {
   // ========================= REFRESH =================================//

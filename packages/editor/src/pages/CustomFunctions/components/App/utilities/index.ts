@@ -1,4 +1,8 @@
-import { IFunction, ICustomFunctionsMetadata } from 'custom-functions-metadata';
+// FIXME import { IFunction, ICustomFunctionsMetadata } from 'custom-functions-metadata';
+interface IFunction {}
+interface ICustomFunctionsMetadata {
+  functions: IFunction[];
+}
 
 import compileScript from 'common/lib/utilities/compile.script';
 import { stripSpaces } from 'common/lib/utilities/string';
@@ -67,8 +71,8 @@ export async function getCustomFunctionEngineStatusSafe(): Promise<
     const platform = Office.context.platform;
 
     const isOnSupportedPlatform =
-      platform === Office.PlatformType.PC ||
-      platform === Office.PlatformType.OfficeOnline;
+      platform === Office.PlatformType.PC || platform === Office.PlatformType.Mac;
+    platform === Office.PlatformType.OfficeOnline;
     if (isOnSupportedPlatform) {
       return getEngineStatus();
     }
