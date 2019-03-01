@@ -38,13 +38,13 @@
   "scripts": {
     "postinstall": "ts-node --project ../../scripts/tsconfig.json scripts/postinstall.ts",
     "analyze": "source-map-explorer build/static/js/main.*",
-    "start": "set HTTPS=true&&react-scripts start",
+    "start": "react-scripts start",
     "lint": "tslint \"src/**/*.ts?(x)\"",
     "build": "node scripts/build.js",
     "test": "jest --env=jsdom",
     "test-coverage": "yarn test -- --coverage",
     "show-coverage": "yarn test-coverage && coverage\\lcov-report\\index.html",
-    "start-with-no-browser": "set HTTPS=true&&set BROWSER=none&&react-scripts start",
+    "start-with-no-browser": "set BROWSER=none&&react-scripts start",
     "start-cypress": "yarn run cypress open",
     "test:cypress": "npm-run-all --parallel start-with-no-browser start-cypress"
   },
