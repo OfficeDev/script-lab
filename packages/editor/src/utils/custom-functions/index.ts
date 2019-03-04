@@ -3,12 +3,22 @@ interface IFunction {}
 import { annotate } from 'common/lib/utilities/misc';
 
 export function isCustomFunctionScript(content: string) {
+  // Start by doing a quick match for a custom functions regex.
+  // This one is super cheap to do, though it may have false positives (e.g., a snippet
+  //   that has "@customfunction" but not inside a JSDOC tag).
+  // So if it passes, do a follow-up and call into 'custom-functions-metadata' to do
+  //   the slower but more accurate check.
+
   const isCustomFunctionRegex = /[\s\*]@customfunction[\s\*]/i; // a regex for "@customfunction" that's
   //  either preceded or followed by a "*" or space -- i.e., a whole-word match, to avoid something like
   //  "@customfunctions" (with a plural "s" on the end).
   //   cspell:ignore customfunctions
 
-  return isCustomFunctionRegex.test(content);
+  if (!isCustomFunctionRegex.test(content)) {
+    return false;
+  }
+
+  return parseTree(content, '' /* name, unused */).length > 0;
 }
 
 /**
