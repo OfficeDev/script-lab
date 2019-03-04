@@ -85,7 +85,7 @@ const getRunButton = createSelector(
       button: {
         text: 'Trust',
         action: actions.solutions.updateOptions({
-          solution,
+          id: solution.id,
           options: { isUntrusted: false },
         }),
       },
