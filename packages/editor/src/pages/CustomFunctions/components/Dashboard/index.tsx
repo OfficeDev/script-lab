@@ -1,6 +1,5 @@
 import React from 'react';
 import Header from 'common/lib/components/Header';
-import Footer from 'common/lib/components/Footer';
 import HeaderFooterLayout from 'common/lib/components/HeaderFooterLayout';
 import PivotBar from 'common/lib/components/PivotBar';
 import Only from 'common/lib/components/Only';
@@ -9,6 +8,7 @@ import { MessageBar, MessageBarType } from 'office-ui-fabric-react/lib/MessageBa
 import { DefaultButton } from 'office-ui-fabric-react/lib/Button';
 import { Icon } from 'office-ui-fabric-react/lib/Icon';
 import Welcome from '../Welcome';
+import { ColumnFlexContainer } from './styles';
 
 interface IProps {
   isStandalone: boolean;
@@ -80,8 +80,8 @@ class Dashboard extends React.Component<IProps, IState> {
         }
         footer={null}
       >
-        <>
-          <Only when={shouldPromptRefresh}>
+        <ColumnFlexContainer>
+          {shouldPromptRefresh ? (
             <MessageBar
               messageBarType={MessageBarType.info}
               isMultiline={true}
@@ -96,14 +96,14 @@ class Dashboard extends React.Component<IProps, IState> {
               You have made changes to your Custom Functions. Would you like to
               re-register?
             </MessageBar>
-          </Only>
+          ) : null}
 
           {hasAny ? (
-            items[selectedKey]
+            <ColumnFlexContainer>{items[selectedKey]}</ColumnFlexContainer>
           ) : (
             <Welcome isRefreshEnabled={shouldPromptRefresh} />
           )}
-        </>
+        </ColumnFlexContainer>
       </HeaderFooterLayout>
     );
   }
