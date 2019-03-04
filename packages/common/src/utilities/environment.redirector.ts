@@ -172,6 +172,9 @@ async function considerIfReallyWantToRedirect({
           `Redirecting to "${redirectUrl}" in a few seconds. Click now to cancel.`,
           () => {
             clearTimeout(timeout);
+            window.localStorage.removeItem(
+              localStorageKeys.editor.redirectEnvironmentUrl,
+            );
             resolve(false);
           },
         );
