@@ -1,10 +1,12 @@
-import { parseTree, IFunction } from 'custom-functions-metadata';
+import { parseTree /* FIXME IFunction */ } from 'custom-functions-metadata';
+interface IFunction {}
 import { annotate } from 'common/lib/utilities/misc';
 
 export function isCustomFunctionScript(content: string) {
   const isCustomFunctionRegex = /[\s\*]@customfunction[\s\*]/i; // a regex for "@customfunction" that's
   //  either preceded or followed by a "*" or space -- i.e., a whole-word match, to avoid something like
   //  "@customfunctions" (with a plural "s" on the end).
+  //   cspell:ignore customfunctions
 
   return isCustomFunctionRegex.test(content);
 }

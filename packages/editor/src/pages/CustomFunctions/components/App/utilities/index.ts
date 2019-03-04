@@ -1,4 +1,8 @@
-import { IFunction, ICustomFunctionsMetadata } from 'custom-functions-metadata';
+// FIXME import { IFunction, ICustomFunctionsMetadata } from 'custom-functions-metadata';
+interface IFunction {}
+interface ICustomFunctionsMetadata {
+  functions: IFunction[];
+}
 
 import compileScript from 'common/lib/utilities/compile.script';
 import { stripSpaces } from 'common/lib/utilities/string';

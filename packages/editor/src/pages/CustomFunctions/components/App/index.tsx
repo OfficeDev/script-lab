@@ -12,8 +12,8 @@ import {
 } from 'common/lib/utilities/localStorage';
 import { getLogsFromAsyncStorage } from './utilities/logs';
 import { loadAllSolutionsAndFiles } from '../../../Editor/store/localStorage';
-import { ScriptLabError } from 'common/lib/utilities/error';
-import { IFunction } from 'custom-functions-metadata';
+// FIXME import { IFunction } from 'custom-functions-metadata';
+interface IFunction {}
 
 interface IState {
   customFunctionsSummaryItems: Array<ICustomFunctionParseResult<any>>;
