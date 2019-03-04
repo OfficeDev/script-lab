@@ -5,8 +5,8 @@ import {
   getSolutionWithHiddenFiles,
   getInLastModifiedOrder as getSolutionsInLastModifiedOrder,
 } from '../solutions/selectors';
-import { NULL_SOLUTION, NULL_FILE, SCRIPT_FILE_NAME } from '../../../../constants';
-import { isCustomFunctionScript } from '../../../../utils/custom-functions';
+
+import { NULL_SOLUTION, NULL_FILE } from '../../../../constants';
 
 export const getActiveSolution = (
   state: IState,
@@ -14,7 +14,7 @@ export const getActiveSolution = (
 ): ISolution => {
   const activeSolutionId = state.editor.active.solutionId;
   if (activeSolutionId) {
-    const getter = options.withHiddenFiles ? getSolution : getSolutionWithHiddenFiles;
+    const getter = options.withHiddenFiles ? getSolutionWithHiddenFiles : getSolution;
     const solution = getter(state, activeSolutionId);
     if (solution) {
       return solution;
@@ -55,9 +55,7 @@ export const getIntellisenseFiles = (
 
 export const getIsActiveSolutionCF = (state: IState): boolean => {
   const solution = getActiveSolution(state);
-
-  const script = solution.files.find(file => file.name === SCRIPT_FILE_NAME);
-  return script ? isCustomFunctionScript(script.content) : false;
+  return solution.options.isCustomFunctionsSolution;
 };
 
 export const getIsActiveSolutionTrusted = createSelector(
