@@ -43,7 +43,9 @@ export function parseMetadata({
       status: solution.options.isUntrusted
         ? 'untrusted'
         : 'good' /* FIXME. Also account for skipping sibling functions */,
-      additionalInfo: null /*FIXME*/,
+      additionalInfo: solution.options.isUntrusted
+        ? ['You must trust the snippet before its functions can be registered']
+        : null /*FIXME*/,
       metadata,
     });
   });
