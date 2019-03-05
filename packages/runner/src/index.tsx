@@ -3,7 +3,9 @@ import { invokeGlobalErrorHandler } from 'common/lib/utilities/splash.screen';
 window.onerror = error => invokeGlobalErrorHandler(error);
 
 import { redirectIfNeeded } from 'common/lib/utilities/environment.redirector';
-const isRedirectingAwayPromise = redirectIfNeeded();
+const isRedirectingAwayPromise = redirectIfNeeded({
+  isMainDomain: false /* false for the Runner */,
+});
 
 import './index.css';
 
