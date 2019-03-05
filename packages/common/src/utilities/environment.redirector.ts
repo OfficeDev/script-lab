@@ -1,14 +1,27 @@
 import queryString from 'query-string';
-import { localStorageKeys, SERVER_HELLO_ENDPOINT } from '../constants';
-import { editorUrls, serverUrls, currentEditorUrl } from '../environment';
-import { pause } from './misc';
+import { localStorageKeys } from '../constants';
+import { editorUrls, currentEditorUrl } from '../environment';
 import ensureFreshLocalStorage from './ensure.fresh.local.storage';
-import { showSplashScreen, hideSplashScreen } from './splash.screen';
+import { showSplashScreen } from './splash.screen';
+
+/** Time threshold for kicking in a "click to cancel" UI on redirects */
+const AMOUNT_OF_TIME_BETWEEN_SUSPICIOUS_LOCALHOST_REDIRECTS = 20000;
+
+/** Amount of time to wait for the user to click to cancel, before redirecting anyway */
+const AMOUNT_OF_TIME_TO_WAIT_ON_CLICK_TO_CANCEL = 4000;
 
 /** Checks (and redirects) if needs to go to a different environment.
- * Returns `true` if will be redirecting away
+ * @param isMainDomain - should be set to true if this is called for
+ *    the main domain (e.g., editor domain for Script Lab, rather than the runner).
+ *    Put differently, the main domain is the domain that hosts the
+ *    dropdown for switching to other environments.
+ * @returns `true` if will be redirecting away
  */
-export async function redirectIfNeeded(): Promise<boolean> {
+export async function redirectIfNeeded({
+  isMainDomain,
+}: {
+  isMainDomain: boolean;
+}): Promise<boolean> {
   try {
     const params = queryString.parse(window.location.search) as {
       originEnvironment?: string;
@@ -70,9 +83,19 @@ export async function redirectIfNeeded(): Promise<boolean> {
       };
       newQueryParams.originEnvironment = window.location.origin;
 
-      const keepGoingWithRedirect = await considerIfReallyWantToRedirect(redirectUrl);
+      const keepGoingWithRedirect = await considerIfReallyWantToRedirect({
+        redirectUrl,
+        isMainDomain,
+      });
       if (!keepGoingWithRedirect) {
         return false;
+      }
+
+      if (isMainDomain) {
+        window.localStorage.setItem(
+          localStorageKeys.editor.lastEnvironmentRedirectTimestamp,
+          Date.now().toString(),
+        );
       }
 
       const finalUrlComponents: string[] = [
@@ -125,81 +148,45 @@ export async function redirectEditorToOtherEnvironment(configName: string) {
 
 ///////////////////////////////////////
 
-async function considerIfReallyWantToRedirect(redirectUrl: string): Promise<boolean> {
-  // When redirecting to localhost (dev scenario), it's very common that localhost
+async function considerIfReallyWantToRedirect({
+  isMainDomain,
+  redirectUrl,
+}: {
+  isMainDomain: boolean;
+  redirectUrl: string;
+}): Promise<boolean> {
+  // When redirecting to localhost (dev scenario), sometimes localhost
   //   might not be running, and suddenly you're in a broken state and can't even
   //   load the production add-in/site.
-  // As such, if will be redirecting to localhost, first check that localhost is running.
-  // We will use the server to test, because the localhost server is running on "http" rather than "https",
-  //   and thus won't run into certificate issues (by contrast, IE won't render an iframe that
-  //   doesn't have a trusted cert).
-  if (redirectUrl.startsWith('https://localhost')) {
-    let manuallyCancelled: boolean = false;
+  // To work around it, if on main domain and redirecting to localhost,
+  //   check whether recently failed. If failed, give the user a few seconds
+  //   to decide if want to try again, versus to cancel the redirect.
+  if (isMainDomain && redirectUrl.startsWith('https://localhost')) {
+    if (checkIfLastRedirectWasRecent()) {
+      const keepGoing = await new Promise<boolean>(async resolve => {
+        const timeout = setTimeout(() => {
+          resolve(true); // If haven't clicked cancel yet, resolve to true
+        }, AMOUNT_OF_TIME_TO_WAIT_ON_CLICK_TO_CANCEL);
 
-    const resultOfWaiting = await new Promise<boolean>(async resolve => {
-      const AMOUNT_OF_TIME_TO_WAIT_ON_LOCALHOST = 10000; /* Enough to let the developer notice */
-
-      const timeout = setTimeout(() => {
-        resolve(false);
-      }, AMOUNT_OF_TIME_TO_WAIT_ON_LOCALHOST);
-
-      showSplashScreen(
-        `Attempting to redirect to "${redirectUrl}"... Click to cancel.`,
-        () => {
-          manuallyCancelled = true;
-          clearTimeout(timeout);
-          resolve(false);
-        },
-      );
-
-      try {
-        const targetServer = serverUrls[getConfigName(redirectUrl)];
-        if (targetServer === null) {
-          throw new Error(
-            `Could not find server config for redirect URL "${redirectUrl}"`,
-          );
-        }
-
-        const response = await (await fetch(
-          `${targetServer}/${SERVER_HELLO_ENDPOINT.path}`,
-          {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-            },
+        showSplashScreen(
+          `Redirecting to "${redirectUrl}" in a few seconds. Click now to cancel.`,
+          () => {
+            clearTimeout(timeout);
+            window.localStorage.removeItem(
+              localStorageKeys.editor.redirectEnvironmentUrl,
+            );
+            resolve(false);
           },
-        )).json();
-
-        clearTimeout(timeout);
-        resolve(
-          JSON.stringify(response).includes(
-            JSON.stringify(SERVER_HELLO_ENDPOINT.payload),
-          ),
         );
-      } catch (e) {
-        console.error(e);
-        clearTimeout(timeout);
-        resolve(false);
+      });
+
+      if (!keepGoing) {
+        return false;
       }
-    });
-
-    if (resultOfWaiting) {
-      showSplashScreen(`Success! "${redirectUrl}" site is up and running!`);
-      return true;
-    } else {
-      showSplashScreen(
-        `"${redirectUrl}" is not responding. Staying on ${window.location.origin}`,
-      );
-      window.localStorage.removeItem(localStorageKeys.editor.redirectEnvironmentUrl);
-
-      if (!manuallyCancelled) {
-        // Give the developer a few seconds to absorb this bit of info
-        await pause(3000);
-      }
-
-      hideSplashScreen();
-      return false;
     }
+
+    // For localhost, make it obvious that's redirecting:
+    showSplashScreen(`Redirecting to "${redirectUrl}"`);
   }
 
   return true;
@@ -220,13 +207,10 @@ function isAllowedUrl(url: string) {
   return false;
 }
 
-function getConfigName(url: string): string | null {
-  for (const key in editorUrls) {
-    const value = (editorUrls as any)[key];
-    if (value.indexOf(url) === 0) {
-      return key;
-    }
-  }
-
-  return null;
+function checkIfLastRedirectWasRecent(): boolean {
+  const timeSinceLastRedirectAttempt = Number(
+    window.localStorage.getItem(localStorageKeys.editor.lastEnvironmentRedirectTimestamp),
+  );
+  const diff = Date.now() - timeSinceLastRedirectAttempt;
+  return diff < AMOUNT_OF_TIME_BETWEEN_SUSPICIOUS_LOCALHOST_REDIRECTS;
 }
