@@ -246,15 +246,8 @@ export function transformSolutionName(snippetName: string) {
     .join('');
 }
 
-export const filterCustomFunctions = (solutions: ISolution[]): ISolution[] => {
-  return solutions
-    .map(solution => {
-      const script = findScript(solution);
-      return { solution, script };
-    })
-    .filter(({ script }) => script && isCustomFunctionScript(script.content))
-    .map(({ solution }) => solution);
-};
+export const filterCustomFunctions = (solutions: ISolution[]): ISolution[] =>
+  solutions.filter(solution => solution.options.isCustomFunctionsSolution);
 
 function findScript(solution: ISolution): IFile | null {
   return solution.files.find(file => file.name === SCRIPT_FILE_NAME) || null;
