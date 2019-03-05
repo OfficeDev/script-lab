@@ -1,3 +1,4 @@
+import ts from 'typescript';
 import { parseTree /* FIXME IFunction */ } from 'custom-functions-metadata';
 interface IFunction {}
 import { annotate } from 'common/lib/utilities/misc';
@@ -18,7 +19,8 @@ export function isCustomFunctionScript(content: string) {
     return false;
   }
 
-  return parseTree(content, '' /* name, unused */).length > 0;
+  const parseResult = parseTree(content, '' /* name, unused */);
+  return parseResult.length > 0;
 }
 
 /**
@@ -38,6 +40,33 @@ export function parseMetadata({
   namespace: string;
   fileContent: string;
 }): Array<ICustomFunctionParseResult<IFunction>> {
+  // Before invoking "parseTree", check if it's valid typescript (which "parseTree" assumes).
+  // If not, fail early:
+
+  // FIXME come back
+  const result = ts.transpileModule(fileContent, {
+    reportDiagnostics: true,
+    compilerOptions: {
+      target: ts.ScriptTarget.ES5,
+      allowJs: true,
+      lib: ['dom', 'es2015'],
+    },
+  });
+
+  if (result.diagnostics!.length > 0) {
+    return [
+      {
+        funcName: 'CompileError',
+        nonCapitalizedFullName: namespace + 'CompileError',
+        status: 'error',
+        additionalInfo: [
+          'Could not compile the snippet. Please go back to the code editor to fix any syntax errors.',
+        ],
+        metadata: null,
+      },
+    ];
+  }
+
   const functions = parseTree(fileContent, solution.name).map(metadata => {
     const funcName = metadata.name;
     const nonCapitalizedFullName = namespace + '.' + funcName;
