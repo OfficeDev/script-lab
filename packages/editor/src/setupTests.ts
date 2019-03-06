@@ -1,9 +1,12 @@
 import 'common/lib/polyfills';
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
+import { HYPHENATED_PACKAGE_VERSIONS } from 'common/lib/package-versions';
 
 // tslint:disable-next-line:no-var-requires
-(window as any).require = require('../public/external/monaco-editor-0-14-3/vs/loader');
+(window as any).require = require(`../public/external/monaco-editor-${
+  HYPHENATED_PACKAGE_VERSIONS['monaco-editor']
+}/vs/loader`);
 
 // this is basically: afterEach(cleanup)
 import 'react-testing-library/cleanup-after-each';

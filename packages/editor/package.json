@@ -3,8 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies_comments": {
-    "query-string": "Restricing query-string to version 5.1.1 because later versions (6+) started targeting ES6 rather than ES5, making it not work for the precompile scripts. See more at https://stackoverflow.com/a/49985749/678505",
-    "monaco-editor": "On Mac add-ins, versions of Monaco 0.11.0 - 0.15.6 all DON'T WORK (can't click on anything other than last line of text!).  So for now sticking with the last working version, 0.10.1"
+    "query-string": "Restricing query-string to version 5.1.1 because later versions (6+) started targeting ES6 rather than ES5, making it not work for the precompile scripts. See more at https://stackoverflow.com/a/49985749/678505"
   },
   "dependencies": {
     "@microsoft/office-js": "1.1.11-adhoc.28",
@@ -15,8 +14,7 @@
     "js-yaml": "^3.12.0",
     "lodash": "^4.17.10",
     "moment": "^2.22.2",
-    "monaco-editor": "npm:monaco-editor@0.14.3",
-    "monaco-editor-old": "npm:monaco-editor@0.10.1",
+    "monaco-editor": "^0.16.0",
     "normalizr": "^3.2.4",
     "office-ui-fabric-react": "^6.114.0",
     "query-string": "5.1.1",
