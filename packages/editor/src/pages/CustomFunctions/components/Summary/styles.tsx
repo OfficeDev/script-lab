@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const CustomFunctionsDescription = styled.h4.attrs({ className: 'ms-font-m' })`
-  margin: 2.3rem 1.7rem 0rem 1.7rem;
+  margin: 1.3rem 1.7rem 0rem 1.7rem;
 `;
 
 export const SummaryItemsContainer = styled.div`

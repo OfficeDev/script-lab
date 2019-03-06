@@ -13,9 +13,6 @@ import {
 import { getLogsFromAsyncStorage } from './utilities/logs';
 import { loadAllSolutionsAndFiles } from '../../../Editor/store/localStorage';
 
-// FIXME import { IFunction } from 'custom-functions-metadata';
-interface IFunction {}
-
 interface IState {
   customFunctionsSummaryItems: Array<ICustomFunctionParseResult<any>>;
   customFunctionsCode: string;

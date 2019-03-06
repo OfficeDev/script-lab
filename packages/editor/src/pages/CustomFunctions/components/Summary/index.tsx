@@ -55,9 +55,13 @@ export class Summary extends React.Component<IProps, {}> {
             : 'The following functions have been registered successfully.'}
         </CustomFunctionsDescription>
         <SummaryItemsContainer>
-          {items.map(item => (
+          {items.map((item, index) => (
             <SummaryItem
-              key={`${item.nonCapitalizedFullName}${item.funcName}`}
+              key={
+                `${item.nonCapitalizedFullName}${
+                  item.funcName
+                }${index}` /* include array index in key, since functions could conceivably have duplicates */
+              }
               {...item}
             />
           ))}

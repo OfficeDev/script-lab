@@ -1,13 +1,26 @@
-import { parseTree /*FIXME IFunction*/ } from 'custom-functions-metadata';
+import ts from 'typescript';
+import { parseTree /* FIXME IFunction */ } from 'custom-functions-metadata';
 interface IFunction {}
 import { annotate } from 'common/lib/utilities/misc';
 
 export function isCustomFunctionScript(content: string) {
+  // Start by doing a quick match for a custom functions regex.
+  // This one is super cheap to do, though it may have false positives (e.g., a snippet
+  //   that has "@customfunction" but not inside a JSDOC tag).
+  // So if it passes, do a follow-up and call into 'custom-functions-metadata' to do
+  //   the slower but more accurate check.
+
   const isCustomFunctionRegex = /[\s\*]@customfunction[\s\*]/i; // a regex for "@customfunction" that's
   //  either preceded or followed by a "*" or space -- i.e., a whole-word match, to avoid something like
   //  "@customfunctions" (with a plural "s" on the end).
+  //   cspell:ignore customfunctions
 
-  return isCustomFunctionRegex.test(content);
+  if (!isCustomFunctionRegex.test(content)) {
+    return false;
+  }
+
+  const parseResult = parseTree(content, '' /* name, unused */);
+  return parseResult.length > 0;
 }
 
 /**
@@ -27,6 +40,33 @@ export function parseMetadata({
   namespace: string;
   fileContent: string;
 }): Array<ICustomFunctionParseResult<IFunction>> {
+  // Before invoking "parseTree", check if it's valid typescript (which "parseTree" assumes).
+  // If not, fail early:
+
+  // FIXME come back
+  const result = ts.transpileModule(fileContent, {
+    reportDiagnostics: true,
+    compilerOptions: {
+      target: ts.ScriptTarget.ES5,
+      allowJs: true,
+      lib: ['dom', 'es2015'],
+    },
+  });
+
+  if (result.diagnostics!.length > 0) {
+    return [
+      {
+        funcName: 'CompileError',
+        nonCapitalizedFullName: namespace + 'CompileError',
+        status: 'error',
+        additionalInfo: [
+          'Could not compile the snippet. Please go back to the code editor to fix any syntax errors.',
+        ],
+        metadata: null,
+      },
+    ];
+  }
+
   const functions = parseTree(fileContent, solution.name).map(metadata => {
     const funcName = metadata.name;
     const nonCapitalizedFullName = namespace + '.' + funcName;
@@ -42,7 +82,9 @@ export function parseMetadata({
       status: solution.options.isUntrusted
         ? 'untrusted'
         : 'good' /* FIXME. Also account for skipping sibling functions */,
-      additionalInfo: null /*FIXME*/,
+      additionalInfo: solution.options.isUntrusted
+        ? ['You must trust the snippet before its functions can be registered']
+        : null /*FIXME*/,
       metadata,
     });
   });

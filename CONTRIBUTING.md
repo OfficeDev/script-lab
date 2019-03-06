@@ -90,5 +90,6 @@ Please see "[TESTING.md](TESTING.md)".
 
 - `packages/common`:
   - When adding code to the `packages/common`, run `yarn workspace common build:package` in order to get Intellisense and the compiler to pick it up -- or just have `yarn start` already running and watching. In VS Code, you may need to `F12` into the file references before Intellisense is able to see the updated contents.
+  - If typescript is failing to build with errors about missing values in common, you may be in a stale state. Try running `yarn clean` then `yarn install` to force rebuild the common package.
 - `packages/server`:
   - To debug server code, navigate to `chrome://inspect/` and choose your server node process from there. Note that if your code changes and `nodemon` reloads the server, you will need to close the Inspector tool and re-open again from the link above.

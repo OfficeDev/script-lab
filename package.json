@@ -26,7 +26,8 @@
     "server:test": "yarn workspace server test",
     "test": "npm-run-all --parallel common:test editor:test runner:test server:test",
     "tscAll": "ts-node scripts/compile.all.ts",
-    "generate:github": "ts-node --project scripts/tsconfig.json scripts/generate.github.auth.ts"
+    "generate:github": "ts-node --project scripts/tsconfig.json scripts/generate.github.auth.ts",
+    "terminate:windows": "taskkill /f /im node.exe"
   },
   "devDependencies": {
     "@types/fs-extra": "^5.0.4",
