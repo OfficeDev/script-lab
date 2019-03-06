@@ -1,4 +1,4 @@
-import { Regex } from './utilities';
+import { REGEX } from './utilities';
 
 describe('Editor utilities', () => {
   describe('regexes', () => {
@@ -12,10 +12,12 @@ describe('Editor utilities', () => {
         };
 
         Object.keys(validRefs).forEach((ref: string) => {
-          const tsr = new RegExp(Regex.TRIPLE_SLASH_REF);
+          const tsr = new RegExp(REGEX.TRIPLE_SLASH_REF);
           expect(tsr.exec(ref)).toContain(validRefs[ref]);
         });
       });
     });
   });
 });
+
+// cspell:ignore regexes
