@@ -45,55 +45,55 @@ export function registerLibrariesMonacoLanguage() {
       });
 
       if (Regex.STARTS_WITH_COMMENT.test(currentLine)) {
-        return [];
+        return { suggestions: [] };
       }
 
       if (currentLine === '') {
-        return librariesIntellisenseJSON.map(library => {
-          let insertText = '';
+        return {
+          suggestions: librariesIntellisenseJSON.map(library => {
+            let insertText = '';
 
-          if (Array.isArray(library.value)) {
-            insertText += library.value.join('\n');
-          } else {
-            insertText += library.value || '';
-            insertText += '\n';
-          }
+            if (Array.isArray(library.value)) {
+              insertText += library.value.join('\n');
+            } else {
+              insertText += library.value || '';
+              insertText += '\n';
+            }
 
-          if (Array.isArray(library.typings)) {
-            insertText += (library.typings as string[]).join('\n');
-          } else {
-            insertText += library.typings || '';
-            insertText += '\n';
-          }
+            if (Array.isArray(library.typings)) {
+              insertText += (library.typings as string[]).join('\n');
+            } else {
+              insertText += library.typings || '';
+              insertText += '\n';
+            }
 
-          return {
-            label: library.label,
-            documentation: library.description,
-            kind: monaco.languages.CompletionItemKind.Module,
-            insertText,
-          };
-        });
+            const suggestion: monaco.languages.CompletionItem = {
+              label: library.label,
+              documentation: library.description,
+              kind: monaco.languages.CompletionItemKind.Module,
+              insertText,
+              range: null /*FIXME*/,
+            };
+
+            return suggestion;
+          }),
+        };
       }
 
-      return Promise.resolve([]);
+      return { suggestions: [] };
     },
   });
 }
 
 export function registerSettingsMonacoLanguage() {
+  // Note, this doesn't appear to be working:
+  // Issue tracking it:  https://github.com/OfficeDev/script-lab/issues/656
   monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
     validate: true,
     schemas: [
       {
         uri: SettingsSchema.$id,
-        fileMatch: [
-          new monaco.Uri()
-            .with({
-              scheme: 'file',
-              path: USER_SETTINGS_FILE_ID,
-            })
-            .toString(),
-        ],
+        fileMatch: [monaco.Uri.file(USER_SETTINGS_FILE_ID).toString()],
         schema: SettingsSchema,
       },
     ],
