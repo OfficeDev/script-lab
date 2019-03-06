@@ -4,7 +4,7 @@
 
 Experiment with the Office JavaScript API without ever leaving Excel, Word, or PowerPoint! [**Get Script Lab for free, from the Office Store**](https://store.office.com/app.aspx?assetid=WA104380862).
 
-> **Note**: Script Lab has been re-written from the ground up in 2018, on a brand-new technology stack, including React and Fabric React. For the older version of Script Lab 2017, see more [below](README.md#2017).
+> **Note**: Script Lab was re-written from the ground up in 2018, on a brand-new technology stack, including React and Fabric React. For the older version of Script Lab 2017, see more [below](README.md#2017).
 
 ## Topics
 
