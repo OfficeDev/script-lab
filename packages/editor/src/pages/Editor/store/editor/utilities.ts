@@ -72,7 +72,8 @@ export function registerLibrariesMonacoLanguage() {
               documentation: library.description,
               kind: monaco.languages.CompletionItemKind.Module,
               insertText,
-              range: null /*FIXME*/,
+              range: null /* range appears to be a required parameter starting in 0.16.0+,
+                but seems OK with null and to default to reasonable behavior */,
             };
 
             return suggestion;
