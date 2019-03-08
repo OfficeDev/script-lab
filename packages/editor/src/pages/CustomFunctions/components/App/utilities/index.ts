@@ -1,8 +1,4 @@
-// FIXME import { IFunction, ICustomFunctionsMetadata } from 'custom-functions-metadata';
-interface IFunction {}
-interface ICustomFunctionsMetadata {
-  functions: IFunction[];
-}
+import { IFunction, ICustomFunctionsMetadata } from 'custom-functions-metadata';
 
 import compileScript from 'common/lib/utilities/compile.script';
 import { stripSpaces } from 'common/lib/utilities/string';
@@ -10,10 +6,7 @@ import { consoleMonkeypatch } from './console.monkeypatch';
 import { getCurrentEnv } from 'common/lib/environment';
 import { SCRIPT_FILE_NAME } from '../../../../../constants';
 import { pause } from 'common/lib/utilities/misc';
-import {
-  parseMetadata,
-  isCustomFunctionScript,
-} from '../../../../../utils/custom-functions';
+import { parseMetadata } from '../../../../../utils/custom-functions';
 
 export function getJsonMetadataString(
   functions: Array<ICustomFunctionParseResult<IFunction>>,
@@ -71,8 +64,9 @@ export async function getCustomFunctionEngineStatusSafe(): Promise<
     const platform = Office.context.platform;
 
     const isOnSupportedPlatform =
-      platform === Office.PlatformType.PC || platform === Office.PlatformType.Mac;
-    platform === Office.PlatformType.OfficeOnline;
+      platform === Office.PlatformType.PC ||
+      platform === Office.PlatformType.Mac ||
+      platform === Office.PlatformType.OfficeOnline;
     if (isOnSupportedPlatform) {
       return getEngineStatus();
     }
@@ -169,17 +163,18 @@ export function getCustomFunctionsInfoForRegistration(
         code.push(
           wrapCustomFunctionSnippetCode(
             snippetCode,
-            namespace,
-            functions.map(func => func.funcName),
+            functions.map(func => ({
+              fullId: func.metadata.id,
+              fullDisplayName: func.metadata.name,
+              javascriptFunctionName: func.javascriptFunctionName,
+            })),
           ),
         );
       } catch (e) {
-        // FIXME (small) Zlatkovsky: this catch might be unnecessary,
-        // if "parseMetadata" would already have thrown on a compiler error.
         functions.forEach(f => {
           f.status = 'error';
-          f.additionalInfo = f.additionalInfo || [];
-          f.additionalInfo.unshift('Snippet compiler error');
+          f.errors = f.errors || [];
+          f.errors.unshift('Snippet compiler error');
         });
         hasErrors = true;
       }
@@ -195,8 +190,11 @@ export function getCustomFunctionsInfoForRegistration(
 
 function wrapCustomFunctionSnippetCode(
   code: string,
-  namespace: string,
-  functionNames: string[],
+  functions: Array<{
+    fullId: string;
+    fullDisplayName: string;
+    javascriptFunctionName: string;
+  }>,
 ): string {
   const newlineAndIndents = '\n        ';
 
@@ -222,15 +220,16 @@ function wrapCustomFunctionSnippetCode(
 
   // Helper
   function generateFunctionAssignments(success: boolean) {
-    return functionNames
-      .map(name => {
-        const fullUppercaseName = `${namespace.toUpperCase()}.${name.toUpperCase()}`;
-        return `CustomFunctions.associate("${fullUppercaseName}", ${getRightSide()});`;
+    return functions
+      .map(item => {
+        return `CustomFunctions.associate("${item.fullId}", ${getRightSide()});`;
 
         function getRightSide() {
           return success
-            ? `__generateFunctionBinding__("${fullUppercaseName}", ${name})`
-            : `__generateErrorFunction__("${fullUppercaseName}", e)`;
+            ? `__generateFunctionBinding__("${item.fullDisplayName}", ${
+                item.javascriptFunctionName
+              })`
+            : `__generateErrorFunction__("${item.fullDisplayName}", e)`;
         }
       })
       .join(newlineAndIndents);

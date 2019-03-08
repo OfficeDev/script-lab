@@ -1,7 +1,6 @@
 import ts from 'typescript';
-import { parseTree /* FIXME IFunction */ } from 'custom-functions-metadata';
-interface IFunction {}
-import { annotate } from 'common/lib/utilities/misc';
+import { parseTree, IFunction } from 'custom-functions-metadata';
+import { annotate as strictType } from 'common/lib/utilities/misc';
 
 export function isCustomFunctionScript(content: string) {
   // Start by doing a quick match for a custom functions regex.
@@ -20,7 +19,7 @@ export function isCustomFunctionScript(content: string) {
   }
 
   const parseResult = parseTree(content, '' /* name, unused */);
-  return parseResult.length > 0;
+  return parseResult.functions.length > 0;
 }
 
 /**
@@ -42,8 +41,6 @@ export function parseMetadata({
 }): Array<ICustomFunctionParseResult<IFunction>> {
   // Before invoking "parseTree", check if it's valid typescript (which "parseTree" assumes).
   // If not, fail early:
-
-  // FIXME come back
   const result = ts.transpileModule(fileContent, {
     reportDiagnostics: true,
     compilerOptions: {
@@ -56,10 +53,10 @@ export function parseMetadata({
   if (result.diagnostics!.length > 0) {
     return [
       {
-        funcName: 'CompileError',
-        nonCapitalizedFullName: namespace + 'CompileError',
+        javascriptFunctionName: 'compileError',
+        nonCapitalizedFullName: namespace + '.' + 'CompileError',
         status: 'error',
-        additionalInfo: [
+        errors: [
           'Could not compile the snippet. Please go back to the code editor to fix any syntax errors.',
         ],
         metadata: null,
@@ -67,27 +64,77 @@ export function parseMetadata({
     ];
   }
 
-  const functions = parseTree(fileContent, solution.name).map(metadata => {
-    const funcName = metadata.name;
-    const nonCapitalizedFullName = namespace + '.' + funcName;
-    const capitalizedFullName = nonCapitalizedFullName.toUpperCase();
+  const parseTreeResult = parseTree(fileContent, solution.name);
+  // Just in case, ensure that the result is consistent:
+  if (parseTreeResult.functions.length !== parseTreeResult.extras.length) {
+    throw new Error('Internal error while parsing custom function snippets.');
+  }
 
-    // Massage the metadata a bit:
-    metadata.name = capitalizedFullName;
-    metadata.id = capitalizedFullName;
+  const functions = parseTreeResult.functions.map((metadata, index) => {
+    const extras = parseTreeResult.extras[index];
 
-    return annotate<ICustomFunctionParseResult<IFunction>>({
-      funcName,
+    const { javascriptFunctionName } = extras;
+
+    // For the full name, add namespace to the name.
+    // Since we ideally want it non-capitalized, but the custom-function-metadata
+    //   will capitalize names by default, do a comparison.
+    // If the funcName and metadata name are the same (modulo casing) then just use the function name.
+    // Otherwise, if the name was provided using a "@customfunction id name" syntax, use the provided name,
+    //   whatever casing it's in.
+    const nonCapitalizedFullName =
+      namespace +
+      '.' +
+      (javascriptFunctionName.toUpperCase() === metadata.name.toUpperCase()
+        ? javascriptFunctionName
+        : metadata.name);
+
+    // Massage the metadata a bit to reflect the sub-namespace for the snippet
+    metadata.name = namespace.toUpperCase() + '.' + metadata.name;
+    metadata.id = namespace.toUpperCase() + '.' + metadata.id;
+
+    return strictType<ICustomFunctionParseResult<IFunction>>({
+      javascriptFunctionName,
       nonCapitalizedFullName,
-      status: solution.options.isUntrusted
-        ? 'untrusted'
-        : 'good' /* FIXME. Also account for skipping sibling functions */,
-      additionalInfo: solution.options.isUntrusted
-        ? ['You must trust the snippet before its functions can be registered']
-        : null /*FIXME*/,
+      status:
+        extras.errors.length > 0
+          ? 'error'
+          : solution.options.isUntrusted
+          ? 'untrusted'
+          : 'good',
+      errors: [
+        ...(solution.options.isUntrusted
+          ? ['You must trust the snippet before its functions can be registered']
+          : []),
+        ...extras.errors,
+      ],
       metadata,
     });
   });
+
+  // Ensure no duplicate function names
+  functions.forEach((func, index) => {
+    functions.forEach((otherFunc, otherIndex) => {
+      if (
+        index !== otherIndex &&
+        func.javascriptFunctionName === otherFunc.javascriptFunctionName
+      ) {
+        func.status = 'error';
+        func.errors = [
+          `Duplicate implementation for function "${func.javascriptFunctionName}"`,
+        ];
+      }
+    });
+  });
+
+  // If any functions have an error in them, then change out any other "good" ones into "skipped"
+  if (functions.find(func => func.status === 'error')) {
+    functions.forEach(func => {
+      if (func.status === 'good') {
+        func.status = 'skipped';
+        func.errors = ['Skipping due to errors in other functions in the same snippet.'];
+      }
+    });
+  }
 
   return functions;
 }

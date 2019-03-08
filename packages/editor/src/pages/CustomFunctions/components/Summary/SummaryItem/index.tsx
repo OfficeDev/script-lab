@@ -48,8 +48,7 @@ const SnippetName = styled.div.attrs({ className: 'ms-font-s' })`
 const SummaryItem = ({
   status,
   nonCapitalizedFullName,
-  funcName,
-  additionalInfo,
+  errors: additionalInfo,
 }: ICustomFunctionParseResult<null>) => {
   const { iconName, color } = {
     ['good']: { iconName: 'Completed', color: '#107C10' },
@@ -68,7 +67,7 @@ const SummaryItem = ({
           }}
         />
         <FunctionName>
-          {funcName}
+          {nonCapitalizedFullName.substr(nonCapitalizedFullName.indexOf('.') + 1)}
           (...)
         </FunctionName>
       </FunctionNameWrapper>

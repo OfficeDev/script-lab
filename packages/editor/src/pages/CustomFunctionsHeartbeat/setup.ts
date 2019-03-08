@@ -15,8 +15,7 @@ import {
 import compileScript from 'common/lib/utilities/compile.script';
 import processLibraries from 'common/lib/utilities/process.libraries';
 import { parseMetadata } from '../../utils/custom-functions';
-// FIXME import { IFunction } from 'custom-functions-metadata';
-interface IFunction {}
+import { IFunction } from 'custom-functions-metadata';
 
 export default function setup() {
   // ========================= REFRESH =================================//
@@ -85,7 +84,9 @@ function getMetadata(): ICustomFunctionsHeartbeatMetadata[] {
         return {
           solutionId: solution.id,
           namespace,
-          functionNames: metadata.map(({ funcName }) => funcName),
+          functionNames: metadata.map(
+            ({ javascriptFunctionName }) => javascriptFunctionName,
+          ),
           code: compileScript(script),
           jsLibs: processLibraries(
             libraries,
@@ -93,7 +94,6 @@ function getMetadata(): ICustomFunctionsHeartbeatMetadata[] {
           ).scriptReferences,
         };
       } catch (error) {
-        // FIXME
         console.error(error);
         return null;
       }

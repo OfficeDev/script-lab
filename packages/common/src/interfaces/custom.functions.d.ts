@@ -2,16 +2,17 @@
  * Be sure to pass "IFunction" from the "custom-functions-metadata" package as the "T" argument.
  */
 interface ICustomFunctionParseResult<T> {
+  // FIXME check if <T> is needed
   /** The as-written name of the function (no namespace/sub-namespace, not capitalized. E.g., "add42") */
-  funcName: string;
+  javascriptFunctionName: string;
 
   // Sub-namespaced full name, not capitalized (e.g., "BlankSnippet1.add42") */
   nonCapitalizedFullName: string;
 
   status: CustomFunctionsRegistrationStatus;
 
-  // Additional info (e.g., individual error strings)
-  additionalInfo?: string[];
+  // Errors, if any
+  errors?: string[];
 
   metadata: T;
 }

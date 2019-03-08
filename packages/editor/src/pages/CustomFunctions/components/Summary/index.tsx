@@ -59,7 +59,7 @@ export class Summary extends React.Component<IProps, {}> {
             <SummaryItem
               key={
                 `${item.nonCapitalizedFullName}${
-                  item.funcName
+                  item.javascriptFunctionName
                 }${index}` /* include array index in key, since functions could conceivably have duplicates */
               }
               {...item}
