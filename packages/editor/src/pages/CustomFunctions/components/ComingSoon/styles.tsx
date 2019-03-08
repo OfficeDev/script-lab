@@ -26,7 +26,7 @@ export const CustomFunctionsTitle = styled.h1.attrs({
   text-align: center;
 `;
 
-export const Seperator = styled.hr`
+export const Separator = styled.hr`
   width: 11.8rem;
   margin-top: 2.2rem;
   margin-bottom: 2.7rem;

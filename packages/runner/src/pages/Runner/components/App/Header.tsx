@@ -24,7 +24,7 @@ const Header = ({ solution, goBack, refresh, hardRefresh, openCode }: IProps) =>
     {
       key: 'title',
       text: solution ? solution.name : '',
-      onRenderIcon: (props, defaultRender) => {
+      onRenderIcon: () => {
         return solution === undefined ? (
           <Spinner size={SpinnerSize.small} style={{ padding: '.1rem' }} />
         ) : (

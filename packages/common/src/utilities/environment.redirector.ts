@@ -92,10 +92,7 @@ export async function redirectIfNeeded({
       }
 
       if (isMainDomain) {
-        window.localStorage.setItem(
-          localStorageKeys.editor.lastEnvironmentRedirectTimestamp,
-          Date.now().toString(),
-        );
+        setLastEnvironmentRedirectTimestamp();
       }
 
       const finalUrlComponents: string[] = [
@@ -129,6 +126,7 @@ export async function redirectEditorToOtherEnvironment(configName: string) {
   );
 
   showSplashScreen('Re-loading Script Lab...');
+  setLastEnvironmentRedirectTimestamp();
 
   // Add query string parameters to default editor URL
   if (originEnvironment) {
@@ -213,4 +211,11 @@ function checkIfLastRedirectWasRecent(): boolean {
   );
   const diff = Date.now() - timeSinceLastRedirectAttempt;
   return diff < AMOUNT_OF_TIME_BETWEEN_SUSPICIOUS_LOCALHOST_REDIRECTS;
+}
+
+function setLastEnvironmentRedirectTimestamp() {
+  window.localStorage.setItem(
+    localStorageKeys.editor.lastEnvironmentRedirectTimestamp,
+    Date.now().toString(),
+  );
 }

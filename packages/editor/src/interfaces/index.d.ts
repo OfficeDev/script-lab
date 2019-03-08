@@ -8,13 +8,3 @@ interface IMessageBar {
 interface IGithubGistPayload {
   id: string;
 }
-
-interface IDirectScriptExecutionFunctionMetadata {
-  name: string;
-  status: 'Idle' | 'Running' | 'Success' | 'Failure';
-}
-
-interface IDefaultSnippetRunMetadata {
-  name: string;
-  functions: IDirectScriptExecutionFunctionMetadata[];
-}

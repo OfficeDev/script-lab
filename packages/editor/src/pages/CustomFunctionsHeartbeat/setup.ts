@@ -1,7 +1,6 @@
 import 'core-js/fn/array/find';
 
 import { currentRunnerUrl } from 'common/lib/environment';
-import ensureFreshLocalStorage from 'common/lib/utilities/ensure.fresh.local.storage';
 import { CF_HEARTBEAT_POLLING_INTERVAL, localStorageKeys } from 'common/lib/constants';
 
 import {
@@ -12,9 +11,11 @@ import {
   writeItem,
   CF_LOGS_ROOT,
 } from 'common/lib/utilities/localStorage';
-import { parseMetadata } from 'common/lib/utilities/custom.functions.metadata.parser';
 import compileScript from 'common/lib/utilities/compile.script';
 import processLibraries from 'common/lib/utilities/process.libraries';
+import { parseMetadata } from '../../utils/custom-functions';
+import { IFunction } from 'custom-functions-metadata';
+import { strictType } from 'common/lib/utilities/misc';
 
 export default function setup() {
   // ========================= REFRESH =================================//
@@ -38,11 +39,11 @@ export default function setup() {
       return;
     }
 
-    const message: ICFHeartbeatMessage = JSON.parse(event.data);
+    const message: ICustomFunctionsHeartbeatMessage = JSON.parse(event.data);
 
     switch (message.type) {
       case 'log':
-        addLog(message as ICFLogMessage);
+        addLog(message as ICustomFunctionsHeartbeatLogMessage);
         break;
       default:
         throw new Error(`Unknown message type: "${message.type}`);
@@ -54,11 +55,11 @@ export default function setup() {
 }
 
 // ========================= HELPERS  ==================================//
-function sendMessageToRunner(message: ICFHeartbeatMessage) {
+function sendMessageToRunner(message: ICustomFunctionsHeartbeatMessage) {
   window.parent.postMessage(JSON.stringify(message), currentRunnerUrl);
 }
 
-function getMetadata(): ICFMetadata[] {
+function getMetadata(): ICustomFunctionsIframeRunnerMetadata[] {
   return loadAllCFSolutions()
     .filter((solution: ISolution) => !solution.options.isUntrusted)
     .map((solution: ISolution) => {
@@ -70,31 +71,37 @@ function getMetadata(): ICFMetadata[] {
           (file: IFile) => file.name === 'libraries.txt',
         )!.content;
 
-        const metadata: ICFVisualFunctionMetadata[] = parseMetadata(
+        const metadata: Array<ICustomFunctionParseResult<IFunction>> = parseMetadata({
+          solution,
           namespace,
-          script,
-        ) as ICFVisualFunctionMetadata[];
+          fileContent: script,
+        });
 
-        if (metadata.filter(({ error }) => !!error).length > 0) {
+        if (metadata.some(item => item.status !== 'good')) {
           return null;
         }
 
-        return {
+        return strictType<ICustomFunctionsIframeRunnerMetadata>({
           solutionId: solution.id,
-          namespace,
-          functionNames: metadata.map(({ funcName }) => funcName),
+          namespace: namespace,
+          functions: metadata.map(item => ({
+            fullId: item.metadata.id,
+            fullDisplayName: item.metadata.name,
+            javascriptFunctionName: item.javascriptFunctionName,
+          })),
+
           code: compileScript(script),
           jsLibs: processLibraries(
             libraries,
-            false /* hardcoding because ignoring officeJS result */,
+            false /* hard-coding to "false" because ignoring office.js-script-reference result */,
           ).scriptReferences,
-        };
+        });
       } catch (error) {
         console.error(error);
         return null;
       }
     })
-    .filter(x => x !== null) as ICFMetadata[];
+    .filter(x => x !== null);
 }
 
 function loadAllCFSolutions() {
@@ -105,17 +112,8 @@ function loadAllCFSolutions() {
     .filter((solution: ISolution) => solution.options.isCustomFunctionsSolution);
 }
 
-function addLog({ payload }: ICFLogMessage) {
+function addLog({ payload }: ICustomFunctionsHeartbeatLogMessage) {
   writeItem(CF_LOGS_ROOT, payload.id, payload);
-}
-
-function getCustomFunctionsLastUpdated(): number {
-  ensureFreshLocalStorage();
-
-  const lastUpdated = localStorage.getItem(
-    localStorageKeys.editor.customFunctionsLastUpdatedCodeTimestamp,
-  );
-  return lastUpdated ? +lastUpdated : 0;
 }
 
 export function transformSolutionName(solutionName: string) {

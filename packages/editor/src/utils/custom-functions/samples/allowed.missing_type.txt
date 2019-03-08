@@ -1,0 +1,63 @@
+// Missing type info -- on both parameters and return type -- is allowed
+
+/**
+ * Missing type on argument
+ * @CustomFunction
+ */
+function getRgb1(input) {
+
+}
+
+/**
+ * Missing return type
+ * @CustomFunction
+ */
+function getRgb2(input: number) {
+
+}
+
+// result
+/*
+[
+    {
+        "javascriptFunctionName": "getRgb1",
+        "nonCapitalizedFullName": "TestNamespace.getRgb1",
+        "status": "good",
+        "errors": [],
+        "metadata": {
+            "description": "Missing type on argument",
+            "id": "TESTNAMESPACE.GETRGB1",
+            "name": "TESTNAMESPACE.GETRGB1",
+            "parameters": [
+                {
+                    "name": "input",
+                    "type": "any"
+                }
+            ],
+            "result": {
+                "type": "any"
+            }
+        }
+    },
+    {
+        "javascriptFunctionName": "getRgb2",
+        "nonCapitalizedFullName": "TestNamespace.getRgb2",
+        "status": "good",
+        "errors": [],
+        "metadata": {
+            "description": "Missing return type",
+            "id": "TESTNAMESPACE.GETRGB2",
+            "name": "TESTNAMESPACE.GETRGB2",
+            "parameters": [
+                {
+                    "name": "input",
+                    "type": "number"
+                }
+            ],
+            "result": {
+                "type": "any"
+            }
+        }
+    }
+]
+*/
