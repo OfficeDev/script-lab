@@ -12,16 +12,17 @@ const SAMPLE_DIR = './src/utils/custom-functions/samples';
 
 //        [ CODE FOR TESTING ]
 
-// // metadata
+// // result
 /*
-[
-    {
-        'meta': 'data',
-    },
-    {
-        'in': 'comments',
-    }
-]
+{
+  FIXME
+    "functions": [
+      ...
+    ],
+    "extras": [
+
+    ]
+  }
 */
 // ============================================================================================
 
@@ -38,7 +39,7 @@ function parseSampleFile(
   const description = lines[0].slice(3);
   const content = lines.slice(1).join('\n');
   // tslint:disable-next-line
-  let [code, meta] = content.split('// metadata');
+  let [code, meta] = content.split('// result');
   meta = meta.substring(meta.indexOf('/*') + 3, meta.lastIndexOf('*/')).trim();
 
   return { description, code, meta };
@@ -57,11 +58,10 @@ describe('Custom Functions metadata parser ', () => {
             },
             namespace: file,
             fileContent: source,
-          }).forEach(meta => {
-            // FIXME
-            // if (meta.error) {
-            //   throw Error();
-            // }
+          }).forEach(result => {
+            if (result.errors.length > 0) {
+              throw Error();
+            }
           });
         }).toThrow();
       });

@@ -38,77 +38,77 @@ function isPrime(num: number): boolean {
     return true;
 }
 
-// metadata
+// result
 /*
-[
-   {
-      "description":"Adds two numbers",
-      "funcName": "sum",
-      "nonCapitalizedFullName": "general.txt.sum",
-      "options":{
-         "cancelable":false,
-         "stream":false
-      },
-      "parameters":[
-         {
-            "description":"First number to add",
-            "dimensionality":"scalar",
-            "name":"a",
-            "type":"number"
-         },
-         {
-            "description":"Second number to add",
-            "dimensionality":"scalar",
-            "name":"b",
-            "type":"number"
-         }
-      ],
-      "result":{
-         "dimensionality":"scalar",
-         "type":"number"
-      }
-   },
-   {
-      "description":"Adds numbers in array",
-      "funcName": "sumArr",
-      "nonCapitalizedFullName": "general.txt.sumArr",
-      "options":{
-         "cancelable":false,
-         "stream":false
-      },
-      "parameters":[
-         {
-            "description":"array of numbers to add",
-            "dimensionality":"matrix",
-            "name":"arr",
-            "type":"number"
-         }
-      ],
-      "result":{
-         "dimensionality":"scalar",
-         "type":"number"
-      }
-   },
-   {
-      "description":"Checks to see if a number is prime",
-      "funcName": "isPrime",
-      "nonCapitalizedFullName": "general.txt.isPrime",
-      "options":{
-         "cancelable":false,
-         "stream":false
-      },
-      "parameters":[
-         {
-            "dimensionality":"scalar",
-            "name":"num",
-            "type":"number"
-         }
-      ],
-      "result":{
-         "dimensionality":"scalar",
-         "type":"boolean"
-      }
-   }
-]
+{
+    "functions": [
+        {
+            "description": "Adds two numbers",
+            "id": "BLANKSNIPPET.SUM",
+            "name": "BLANKSNIPPET.SUM",
+            "parameters": [
+                {
+                    "description": "First number to add",
+                    "name": "a",
+                    "optional": false,
+                    "type": "number"
+                },
+                {
+                    "description": "Second number to add",
+                    "name": "b",
+                    "optional": false,
+                    "type": "number"
+                }
+            ],
+            "result": {
+                "type": "number"
+            }
+        },
+        {
+            "description": "Adds numbers in array",
+            "id": "BLANKSNIPPET.SUMARR",
+            "name": "BLANKSNIPPET.SUMARR",
+            "parameters": [
+                {
+                    "description": "array of numbers to add",
+                    "dimensionality": "matrix",
+                    "name": "arr",
+                    "optional": false,
+                    "type": "number"
+                }
+            ],
+            "result": {
+                "type": "number"
+            }
+        },
+        {
+            "description": "Checks to see if a number is prime",
+            "id": "BLANKSNIPPET.ISPRIME",
+            "name": "BLANKSNIPPET.ISPRIME",
+            "parameters": [
+                {
+                    "name": "num",
+                    "type": "number"
+                }
+            ],
+            "result": {
+                "type": "boolean"
+            }
+        }
+    ],
+    "extras": [
+        {
+            "javascriptFunctionName": "sum",
+            "errors": []
+        },
+        {
+            "javascriptFunctionName": "sumArr",
+            "errors": []
+        },
+        {
+            "javascriptFunctionName": "isPrime",
+            "errors": []
+        }
+    ]
+}
 */
-
