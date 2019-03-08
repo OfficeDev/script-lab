@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const CenteredContent = styled.div`
   flex: 1;
-  overflow-y: scroll;
+  overflow-y: auto;
   padding: 50px 10px;
   display: flex;
   flex-direction: column;
