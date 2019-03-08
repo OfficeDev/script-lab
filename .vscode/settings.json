@@ -90,10 +90,9 @@
     "**/node_modules",
     "**/node_modules/**",
     "packages/editor/src/interfaces/monaco.d.ts",
+    "**/packages/editor/src/utils/custom-functions/samples/**",
     "package.json",
     "yarn.lock"
   ],
-  "cSpell.flagWords": [
-    "hte"
-  ]
+  "cSpell.flagWords": ["hte"]
 }

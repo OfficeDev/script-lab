@@ -11,32 +11,31 @@ async function randomComment(id: number, fieldName: string): Promise<string> {
     }
 }
 
-// metadata
+// result
 /*
 [
-   {
-      "funcName": "randomComment",
-      "nonCapitalizedFullName": "promise.txt.randomComment",
-      "options":{
-         "cancelable":false,
-         "stream":false
-      },
-      "parameters":[
-         {
-            "dimensionality":"scalar",
-            "name":"id",
-            "type":"number"
-         },
-         {
-            "dimensionality":"scalar",
-            "name":"fieldName",
-            "type":"string"
-         }
-      ],
-      "result":{
-         "dimensionality":"scalar",
-         "type":"string"
-      }
-   }
+	{
+		"javascriptFunctionName": "randomComment",
+		"nonCapitalizedFullName": "TestNamespace.randomComment",
+		"status": "good",
+		"errors": [],
+		"metadata": {
+			"id": "TESTNAMESPACE.RANDOMCOMMENT",
+			"name": "TESTNAMESPACE.RANDOMCOMMENT",
+			"parameters": [
+				{
+					"name": "id",
+					"type": "number"
+				},
+				{
+					"name": "fieldName",
+					"type": "string"
+				}
+			],
+			"result": {
+				"type": "string"
+			}
+		}
+	}
 ]
 */

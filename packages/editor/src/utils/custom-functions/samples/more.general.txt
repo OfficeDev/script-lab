@@ -43,143 +43,140 @@ function functionWith2DArraySyntax(x: Array<Array<number>>) : number {
     return 5;
 }
 
-// * Snippet "xyz"
-//     getRgb (message)
-//     getHex
-// * Snippet abc
-
-// { name: "getRgb", messages: [
-//     `Parameter "input" must specify a valid type (string, number, boolean, or an array of one of these)`
-//     `The function must specify a valid return type`
-// ]}
-
-// metadata
+// result
 /*
 [
-   {
-      "description":"*Insert Description here*",
-      "funcName": "getRgb3",
-      "nonCapitalizedFullName": "more.general.txt.getRgb3",
-      "options":{
-         "cancelable":false,
-         "stream":false
-      },
-      "parameters":[
-         {
-            "dimensionality":"scalar",
-            "name":"input",
-            "type":"number"
-         }
-      ],
-      "result":{
-         "dimensionality":"scalar",
-         "type":"string"
-      }
-   },
-   {
-      "description":"*Insert Description here*",
-      "funcName": "getRgb6",
-      "nonCapitalizedFullName": "more.general.txt.getRgb6",
-      "options":{
-         "cancelable":false,
-         "stream":false
-      },
-      "parameters":[
-         {
-            "dimensionality":"scalar",
-            "name":"input",
-            "type":"number"
-         }
-      ],
-      "result":{
-         "dimensionality":"scalar",
-         "type":"string"
-      }
-   },
-   {
-      "description":"*Insert Description here*",
-      "funcName": "getRgb8",
-      "nonCapitalizedFullName": "more.general.txt.getRgb8",
-      "options":{
-         "cancelable":false,
-         "stream":false
-      },
-      "parameters":[
-         {
-            "dimensionality":"matrix",
-            "name":"input",
-            "type":"number"
-         }
-      ],
-      "result":{
-         "dimensionality":"scalar",
-         "type":"string"
-      }
-   },
-   {
-      "description":"*Insert Description here*",
-      "funcName": "getRgb9",
-      "nonCapitalizedFullName": "more.general.txt.getRgb9",
-      "options":{
-         "cancelable":false,
-         "stream":false
-      },
-      "parameters":[
-         {
-            "dimensionality":"matrix",
-            "name":"input",
-            "type":"number"
-         }
-      ],
-      "result":{
-         "dimensionality":"scalar",
-         "type":"string"
-      }
-   },
-   {
-      "description":"*Insert Description here*",
-      "funcName": "getRgb10",
-      "nonCapitalizedFullName": "more.general.txt.getRgb10",
-      "options":{
-         "cancelable":false,
-         "stream":false
-      },
-      "parameters":[
-         {
-            "dimensionality":"scalar",
-            "name":"format",
-            "type":"string"
-         },
-         {
-            "dimensionality":"matrix",
-            "name":"input",
-            "type":"number"
-         }
-      ],
-      "result":{
-         "dimensionality":"matrix",
-         "type":"string"
-      }
-   },
-   {
-      "description":"*Insert Description here*",
-      "funcName": "functionWith2DArraySyntax",
-      "nonCapitalizedFullName": "more.general.txt.functionWith2DArraySyntax",
-      "options":{
-         "cancelable":false,
-         "stream":false
-      },
-      "parameters":[
-         {
-            "dimensionality":"matrix",
-            "name":"x",
-            "type":"number"
-         }
-      ],
-      "result":{
-         "dimensionality":"scalar",
-         "type":"number"
-      }
-   }
+	{
+		"javascriptFunctionName": "getRgb3",
+		"nonCapitalizedFullName": "TestNamespace.getRgb3",
+		"status": "good",
+		"errors": [],
+		"metadata": {
+			"description": "*Insert Description here*",
+			"id": "TESTNAMESPACE.GETRGB3",
+			"name": "TESTNAMESPACE.GETRGB3",
+			"parameters": [
+				{
+					"name": "input",
+					"type": "number"
+				}
+			],
+			"result": {
+				"type": "string"
+			}
+		}
+	},
+	{
+		"javascriptFunctionName": "getRgb6",
+		"nonCapitalizedFullName": "TestNamespace.getRgb6",
+		"status": "good",
+		"errors": [],
+		"metadata": {
+			"description": "*Insert Description here*",
+			"id": "TESTNAMESPACE.GETRGB6",
+			"name": "TESTNAMESPACE.GETRGB6",
+			"parameters": [
+				{
+					"name": "input",
+					"optional": true,
+					"type": "number"
+				}
+			],
+			"result": {
+				"type": "string"
+			}
+		}
+	},
+	{
+		"javascriptFunctionName": "getRgb8",
+		"nonCapitalizedFullName": "TestNamespace.getRgb8",
+		"status": "good",
+		"errors": [],
+		"metadata": {
+			"description": "*Insert Description here*",
+			"id": "TESTNAMESPACE.GETRGB8",
+			"name": "TESTNAMESPACE.GETRGB8",
+			"parameters": [
+				{
+					"dimensionality": "matrix",
+					"name": "input",
+					"optional": true,
+					"type": "number"
+				}
+			],
+			"result": {
+				"type": "string"
+			}
+		}
+	},
+	{
+		"javascriptFunctionName": "getRgb9",
+		"nonCapitalizedFullName": "TestNamespace.getRgb9",
+		"status": "good",
+		"errors": [],
+		"metadata": {
+			"description": "*Insert Description here*",
+			"id": "TESTNAMESPACE.GETRGB9",
+			"name": "TESTNAMESPACE.GETRGB9",
+			"parameters": [
+				{
+					"dimensionality": "matrix",
+					"name": "input",
+					"optional": true,
+					"type": "number"
+				}
+			],
+			"result": {
+				"type": "string"
+			}
+		}
+	},
+	{
+		"javascriptFunctionName": "getRgb10",
+		"nonCapitalizedFullName": "TestNamespace.getRgb10",
+		"status": "good",
+		"errors": [],
+		"metadata": {
+			"description": "*Insert Description here*",
+			"id": "TESTNAMESPACE.GETRGB10",
+			"name": "TESTNAMESPACE.GETRGB10",
+			"parameters": [
+				{
+					"name": "format",
+					"type": "string"
+				},
+				{
+					"dimensionality": "matrix",
+					"name": "input",
+					"type": "number"
+				}
+			],
+			"result": {
+				"dimensionality": "matrix",
+				"type": "string"
+			}
+		}
+	},
+	{
+		"javascriptFunctionName": "functionWith2DArraySyntax",
+		"nonCapitalizedFullName": "TestNamespace.functionWith2DArraySyntax",
+		"status": "good",
+		"errors": [],
+		"metadata": {
+			"description": "*Insert Description here*",
+			"id": "TESTNAMESPACE.FUNCTIONWITH2DARRAYSYNTAX",
+			"name": "TESTNAMESPACE.FUNCTIONWITH2DARRAYSYNTAX",
+			"parameters": [
+				{
+					"dimensionality": "matrix",
+					"name": "x",
+					"type": "number"
+				}
+			],
+			"result": {
+				"type": "number"
+			}
+		}
+	}
 ]
 */

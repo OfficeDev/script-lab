@@ -14,17 +14,11 @@ const SAMPLE_DIR = './src/utils/custom-functions/samples';
 
 // // result
 /*
-{
-  FIXME
-    "functions": [
-      ...
-    ],
-    "extras": [
-
-    ]
-  }
-*/
+ */
 // ============================================================================================
+
+// By leaving the result empty, the test will fail and output the expected result for you,
+//   so you can manually validate that it matches what you expect, and then paste it in.
 
 // For the error test-cases (when you expect the file to throw), name the file error.testname.ts.
 // (filename must start with `error.`)
@@ -38,9 +32,14 @@ function parseSampleFile(
     .split('\n');
   const description = lines[0].slice(3);
   const content = lines.slice(1).join('\n');
-  // tslint:disable-next-line
-  let [code, meta] = content.split('// result');
-  meta = meta.substring(meta.indexOf('/*') + 3, meta.lastIndexOf('*/')).trim();
+
+  const [code, result] = content.split('// result');
+  if (!result) {
+    throw new Error(`Could not find "// result" on file "${fileName}"`);
+  }
+  const meta = result
+    .substring(result.indexOf('/*') + 3, result.lastIndexOf('*/'))
+    .trim();
 
   return { description, code, meta };
 }
@@ -56,7 +55,7 @@ describe('Custom Functions metadata parser ', () => {
               name: file,
               options: {},
             },
-            namespace: file,
+            namespace: 'TestNamespace',
             fileContent: source,
           }).forEach(result => {
             if (result.errors.length > 0) {
@@ -68,17 +67,25 @@ describe('Custom Functions metadata parser ', () => {
     } else {
       // for each file in the samples directory, parse it and test it
       const { description, code, meta } = parseSampleFile(file);
-      it(description, () => {
-        expect(
-          parseMetadata({
-            solution: {
-              name: file,
-              options: {},
-            },
-            namespace: file,
-            fileContent: code,
-          }),
-        ).toEqual(JSON.parse(meta));
+      it(`"${file}": "${description}"`, () => {
+        const result = parseMetadata({
+          solution: {
+            name: file,
+            options: {},
+          },
+          namespace: 'TestNamespace',
+          fileContent: code,
+        });
+
+        if (meta.length === 0) {
+          console.log(
+            `"${file}" has an empty result.  It should probably be something like:`,
+          );
+          console.log(JSON.stringify(result, null, 4));
+          throw new Error('Missing result. Please paste it in.');
+        }
+
+        expect(result).toEqual(JSON.parse(meta));
       });
     }
   });

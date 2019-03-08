@@ -42,7 +42,7 @@
     "start": "react-scripts start",
     "lint": "tslint \"src/**/*.ts?(x)\"",
     "build": "node scripts/build.js",
-    "test": "jest --env=jsdom",
+    "test": "jest --env=jsdom --verbose",
     "test-coverage": "yarn test -- --coverage",
     "show-coverage": "yarn test-coverage && coverage\\lcov-report\\index.html",
     "start-with-no-browser": "set BROWSER=none&&react-scripts start",
