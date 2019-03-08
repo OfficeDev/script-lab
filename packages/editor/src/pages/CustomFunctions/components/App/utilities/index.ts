@@ -14,10 +14,7 @@ export function getJsonMetadataString(
   const registrationPayload: ICustomFunctionsMetadata = {
     functions: functions
       .filter(func => func.status === 'good')
-      .map(func => {
-        const uppercasedFullName = func.nonCapitalizedFullName.toUpperCase();
-        return { ...func.metadata, id: uppercasedFullName };
-      }),
+      .map(func => func.metadata),
   };
 
   return JSON.stringify(registrationPayload, null, 4);

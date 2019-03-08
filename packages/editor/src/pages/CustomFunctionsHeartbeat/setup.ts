@@ -1,7 +1,6 @@
 import 'core-js/fn/array/find';
 
 import { currentRunnerUrl } from 'common/lib/environment';
-import ensureFreshLocalStorage from 'common/lib/utilities/ensure.fresh.local.storage';
 import { CF_HEARTBEAT_POLLING_INTERVAL, localStorageKeys } from 'common/lib/constants';
 
 import {
@@ -16,6 +15,7 @@ import compileScript from 'common/lib/utilities/compile.script';
 import processLibraries from 'common/lib/utilities/process.libraries';
 import { parseMetadata } from '../../utils/custom-functions';
 import { IFunction } from 'custom-functions-metadata';
+import { strictType } from 'common/lib/utilities/misc';
 
 export default function setup() {
   // ========================= REFRESH =================================//
@@ -59,7 +59,7 @@ function sendMessageToRunner(message: ICustomFunctionsHeartbeatMessage) {
   window.parent.postMessage(JSON.stringify(message), currentRunnerUrl);
 }
 
-function getMetadata(): ICustomFunctionsHeartbeatMetadata[] {
+function getMetadata(): ICustomFunctionsIframeRunnerMetadata[] {
   return loadAllCFSolutions()
     .filter((solution: ISolution) => !solution.options.isUntrusted)
     .map((solution: ISolution) => {
@@ -81,24 +81,27 @@ function getMetadata(): ICustomFunctionsHeartbeatMetadata[] {
           return null;
         }
 
-        return {
+        return strictType<ICustomFunctionsIframeRunnerMetadata>({
           solutionId: solution.id,
-          namespace,
-          functionNames: metadata.map(
-            ({ javascriptFunctionName }) => javascriptFunctionName,
-          ),
+          namespace: namespace,
+          functions: metadata.map(item => ({
+            fullId: item.metadata.id,
+            fullDisplayName: item.metadata.name,
+            javascriptFunctionName: item.javascriptFunctionName,
+          })),
+
           code: compileScript(script),
           jsLibs: processLibraries(
             libraries,
             false /* hard-coding to "false" because ignoring office.js-script-reference result */,
           ).scriptReferences,
-        };
+        });
       } catch (error) {
         console.error(error);
         return null;
       }
     })
-    .filter(x => x !== null) as ICustomFunctionsHeartbeatMetadata[];
+    .filter(x => x !== null);
 }
 
 function loadAllCFSolutions() {

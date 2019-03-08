@@ -2,9 +2,7 @@ import { officeNamespacesForCustomFunctionsIframe } from '../../constants';
 import { currentEditorUrl } from 'common/lib/environment';
 import { generateLogString, stringifyPlusPlus } from 'common/lib/utilities/string';
 
-import generateCustomFunctionIframe, {
-  ICustomFunctionPayload,
-} from './run.customFunctions';
+import generateCustomFunctionIframe from './run.customFunctions';
 
 const HEARTBEAT_URL = `${currentEditorUrl}/custom-functions-heartbeat.html`;
 const VERBOSE_MODE = false;
@@ -57,7 +55,9 @@ function addHeartbeat() {
   document.body.appendChild(heartbeat);
 }
 
-async function initializeRunnableSnippets(payload: ICustomFunctionPayload[]) {
+async function initializeRunnableSnippets(
+  payload: ICustomFunctionsIframeRunnerMetadata[],
+) {
   return new Promise(resolve =>
     tryCatch(() => {
       let successfulRegistrationsCount = 0;

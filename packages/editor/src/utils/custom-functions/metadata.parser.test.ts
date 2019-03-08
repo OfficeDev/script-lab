@@ -82,6 +82,7 @@ describe('Custom Functions metadata parser ', () => {
             `"${file}" has an empty result.  It should probably be something like:`,
           );
           console.log(JSON.stringify(result, null, 4));
+          console.log('==============');
           throw new Error('Missing result. Please paste it in.');
         }
 

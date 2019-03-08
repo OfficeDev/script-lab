@@ -1,6 +1,6 @@
 import ts from 'typescript';
 import { parseTree, IFunction } from 'custom-functions-metadata';
-import { annotate as strictType } from 'common/lib/utilities/misc';
+import { strictType } from 'common/lib/utilities/misc';
 
 export function isCustomFunctionScript(content: string) {
   // Start by doing a quick match for a custom functions regex.
@@ -111,7 +111,7 @@ export function parseMetadata({
     });
   });
 
-  // Ensure no duplicate function names
+  // Ensure no duplicate JS function names
   functions.forEach((func, index) => {
     functions.forEach((otherFunc, otherIndex) => {
       if (
@@ -122,6 +122,21 @@ export function parseMetadata({
         func.errors = [
           `Duplicate implementation for function "${func.javascriptFunctionName}"`,
         ];
+      }
+    });
+  });
+
+  // Also ensure no duplicate metadata names (which could have resulted from having
+  //   two functions where one of them has a custom name (`@customfunction myId funcName`)
+  //   that intersects with a regularly-defined `funcName`...
+  functions.forEach((func, index) => {
+    functions.forEach((otherFunc, otherIndex) => {
+      if (
+        index !== otherIndex &&
+        func.metadata.name.toUpperCase() === otherFunc.metadata.name.toUpperCase()
+      ) {
+        func.status = 'error';
+        func.errors = [`Duplicate function names "${func.metadata.name}"`];
       }
     });
   });

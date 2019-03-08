@@ -37,14 +37,6 @@ interface ICustomFunctionsHeartbeatMessage {
   payload?: any;
 }
 
-interface ICustomFunctionsHeartbeatMetadata {
-  solutionId: string;
-  namespace: string;
-  functionNames: string[];
-  code: string; // compiled js
-  jsLibs: string[];
-}
-
 interface ICustomFunctionsHeartbeatGetMetadataMessage
   extends ICustomFunctionsHeartbeatMessage {
   type: 'metadata';
@@ -54,4 +46,16 @@ interface ICustomFunctionsHeartbeatGetMetadataMessage
 interface ICustomFunctionsHeartbeatLogMessage extends ICustomFunctionsHeartbeatMessage {
   type: 'log';
   payload: ILogData;
+}
+
+interface ICustomFunctionsIframeRunnerMetadata {
+  solutionId: string;
+  namespace: string;
+  functions: Array<{
+    fullId: string;
+    fullDisplayName: string;
+    javascriptFunctionName: string;
+  }>;
+  code: string;
+  jsLibs: string[];
 }
