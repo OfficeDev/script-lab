@@ -161,31 +161,36 @@ function* makeAddIntellisenseRequestSaga() {
     return;
   }
 
-  const { content } = libraries;
-  let pendingUrls: string[] = [];
+  const defaultEverPresentLibs = solution.options.isCustomFunctionsSolution
+    ? ['@types/custom-functions-runtime']
+    : [];
 
-  content.split('\n').forEach((library: string) => {
-    library = library.trim();
+  const entries = [...defaultEverPresentLibs, ...libraries.content.split('\n')];
 
-    if (library.startsWith('//') || library.startsWith('#')) {
-      return;
-    }
+  let pendingUrls: string[] = entries
+    .map((library: string) => {
+      library = library.trim();
 
-    if (/^@types/.test(library)) {
-      const url = `https://unpkg.com/${library}/index.d.ts`;
-      pendingUrls.push(url);
-    } else if (/^dt~/.test(library)) {
-      const libName = library.split('dt~')[1];
-      const url = `https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/master/types/${libName}/index.d.ts`;
-      pendingUrls.push(url);
-    } else if (/\.d\.ts$/i.test(library)) {
-      if (/^https?:/i.test(library)) {
-        pendingUrls.push(library);
-      } else {
-        pendingUrls.push(`https://unpkg.com/${library}`);
+      if (library.startsWith('//') || library.startsWith('#')) {
+        return null;
       }
-    }
-  });
+
+      if (/^@types/.test(library)) {
+        return `https://unpkg.com/${library}/index.d.ts`;
+      } else if (/^dt~/.test(library)) {
+        const libName = library.split('dt~')[1];
+        return `https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/master/types/${libName}/index.d.ts`;
+      } else if (/\.d\.ts$/i.test(library)) {
+        if (/^https?:/i.test(library)) {
+          return library;
+        } else {
+          return `https://unpkg.com/${library}`;
+        }
+      }
+
+      return null;
+    })
+    .filter(url => url);
 
   const validUrls = [];
 

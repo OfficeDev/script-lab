@@ -16,13 +16,6 @@ const expectedPackages: {
     pathToCopyFrom: 'min/vs',
     pathToCopyTo: 'vs',
   },
-  'monaco-old': {
-    name: 'monaco-editor-old',
-    version: PACKAGE_VERSIONS['monaco-editor-old'],
-    copyAsName: 'monaco-editor',
-    pathToCopyFrom: 'min/vs',
-    pathToCopyTo: 'vs',
-  },
   officeJs: {
     // Note: this package is now used only for offline development
     name: '@microsoft/office-js',
