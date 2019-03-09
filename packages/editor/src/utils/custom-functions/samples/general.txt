@@ -81,7 +81,6 @@ function isPrime(num: number): boolean {
                      "description": "array of numbers to add",
                      "dimensionality": "matrix",
                      "name": "arr",
-                     "optional": false,
                      "type": "number"
                   }
             ],
