@@ -54,13 +54,11 @@ function isPrime(num: number): boolean {
                   {
                      "description": "First number to add",
                      "name": "a",
-                     "optional": false,
                      "type": "number"
                   },
                   {
                      "description": "Second number to add",
                      "name": "b",
-                     "optional": false,
                      "type": "number"
                   }
             ],

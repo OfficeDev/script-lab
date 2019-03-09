@@ -78,7 +78,6 @@ function sum2(a: number, b: number[]): number {
                {
                   "description": "number to add",
                   "name": "increment",
-                  "optional": false,
                   "type": "number"
                }
             ],
@@ -103,7 +102,6 @@ function sum2(a: number, b: number[]): number {
                {
                   "description": "number to add",
                   "name": "increment",
-                  "optional": false,
                   "type": "number"
                }
             ],
@@ -128,7 +126,6 @@ function sum2(a: number, b: number[]): number {
                {
                   "description": "number to add",
                   "name": "increment",
-                  "optional": false,
                   "type": "number"
                }
             ],
