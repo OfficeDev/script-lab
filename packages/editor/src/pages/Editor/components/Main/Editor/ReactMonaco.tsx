@@ -8,6 +8,7 @@ export interface IProps {
 
   editorDidMount: (editor: monaco.editor.IStandaloneCodeEditor) => void;
   onValueChange: (solutionId: string, fileId: string, value: string) => void;
+  applyFormatting: () => void;
 }
 
 interface IState {
@@ -44,6 +45,7 @@ export class ReactMonaco extends Component<IProps, IState> {
         const newModel = this.getModel();
         newModel.updateOptions({ tabSize: this.props.tabSize });
         this.editor.setModel(newModel);
+        this.props.applyFormatting();
       }
     }
   }
