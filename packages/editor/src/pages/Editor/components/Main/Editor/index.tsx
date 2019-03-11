@@ -40,6 +40,7 @@ interface IActionsFromRedux {
   editSettings: (newSettings: string) => void;
   openSettings: () => void;
   signalEditorLoaded: (editor: monaco.editor.IStandaloneCodeEditor) => void;
+  applyFormatting: () => void;
 }
 
 const mapDispatchToProps = (dispatch: Dispatch<IRootAction>): IActionsFromRedux => ({
@@ -53,6 +54,7 @@ const mapDispatchToProps = (dispatch: Dispatch<IRootAction>): IActionsFromRedux 
   openSettings: () => dispatch(actions.settings.open()),
   signalEditorLoaded: (editor: monaco.editor.IStandaloneCodeEditor) =>
     dispatch(actions.editor.onMount(editor)),
+  applyFormatting: () => dispatch(actions.editor.applyFormatting()),
 });
 
 export interface IProps extends IPropsFromRedux, IActionsFromRedux {}
@@ -94,6 +96,7 @@ export class Editor extends Component<IProps> {
           tabSize={tabSize}
           onValueChange={this.onValueChange}
           editorDidMount={this.signalEditorLoaded}
+          applyFormatting={this.props.applyFormatting}
         />
       </Layout>
     );

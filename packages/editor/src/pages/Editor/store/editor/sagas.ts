@@ -80,15 +80,6 @@ function* onFileOpenSaga(action: ActionType<typeof editor.newFileOpened>) {
   if (doesMonacoExist()) {
     yield put(editor.applyMonacoOptions());
   }
-  const isPrettierEnabled = yield select(selectors.settings.getIsPrettierEnabled);
-  const isAutoFormatEnabled = yield select(selectors.settings.getIsAutoFormatEnabled);
-  if (
-    isPrettierEnabled &&
-    isAutoFormatEnabled &&
-    action.payload.file.language === 'typescript'
-  ) {
-    yield put(editor.applyFormatting());
-  }
 
   if (action.payload.file.language === 'typescript') {
     yield put(editor.shouldUpdateIntellisense());
@@ -275,7 +266,8 @@ function* resizeEditorSaga() {
 }
 
 function* applyFormattingSaga() {
-  if (monacoEditor) {
+  const isAutoFormatEnabled = yield select(selectors.settings.getIsAutoFormatEnabled);
+  if (monacoEditor && isAutoFormatEnabled) {
     monacoEditor.trigger(
       'editor' /* source, unused */,
       'editor.action.formatDocument',
