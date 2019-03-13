@@ -7,7 +7,7 @@ export function doesMonacoExist() {
   return !!(window as any).monaco;
 }
 
-export const Regex = {
+export const REGEX = {
   STARTS_WITH_TYPINGS: /^.types\/.+|^dt~.+/i,
   STARTS_WITH_COMMENT: /^#.*|^\/\/.*|^\/\*.*|.*\*\/$.*/im,
   ENDS_WITH_CSS: /.*\.css$/i,
@@ -25,11 +25,11 @@ export function registerLibrariesMonacoLanguage() {
   monaco.languages.setMonarchTokensProvider('libraries', {
     tokenizer: {
       root: [
-        { regex: Regex.STARTS_WITH_COMMENT, action: { token: 'comment' } },
-        { regex: Regex.ENDS_WITH_CSS, action: { token: 'number' } },
-        { regex: Regex.STARTS_WITH_TYPINGS, action: { token: 'string' } },
-        { regex: Regex.ENDS_WITH_DTS, action: { token: 'string' } },
-        { regex: Regex.GLOBAL, action: { token: 'keyword' } },
+        { regex: REGEX.STARTS_WITH_COMMENT, action: { token: 'comment' } },
+        { regex: REGEX.ENDS_WITH_CSS, action: { token: 'number' } },
+        { regex: REGEX.STARTS_WITH_TYPINGS, action: { token: 'string' } },
+        { regex: REGEX.ENDS_WITH_DTS, action: { token: 'string' } },
+        { regex: REGEX.GLOBAL, action: { token: 'keyword' } },
       ],
     },
     tokenPostfix: '',
@@ -44,7 +44,7 @@ export function registerLibrariesMonacoLanguage() {
         endColumn: position.column,
       });
 
-      if (Regex.STARTS_WITH_COMMENT.test(currentLine)) {
+      if (REGEX.STARTS_WITH_COMMENT.test(currentLine)) {
         return { suggestions: [] };
       }
 
@@ -108,11 +108,11 @@ export interface IPrettierSettings {
 export function enablePrettierInMonaco(prettierSettings: IPrettierSettings) {
   import('prettier/parser-typescript').then(prettierTypeScript => {
     /* Adds Prettier Formatting to Monaco for TypeScript */
-    const PrettierTypeScriptFormatter: monaco.languages.DocumentFormattingEditProvider = {
+    const prettierTypeScriptFormatter: monaco.languages.DocumentFormattingEditProvider = {
       provideDocumentFormattingEdits: (
         document: monaco.editor.ITextModel,
-        options: monaco.languages.FormattingOptions,
-        token: monaco.CancellationToken,
+        _options: monaco.languages.FormattingOptions,
+        _token: monaco.CancellationToken,
       ): monaco.languages.TextEdit[] => {
         const text = document.getValue();
         const formatted = runTypeScriptPrettier(
@@ -132,7 +132,7 @@ export function enablePrettierInMonaco(prettierSettings: IPrettierSettings) {
 
     monaco.languages.registerDocumentFormattingEditProvider(
       'typescript',
-      PrettierTypeScriptFormatter,
+      prettierTypeScriptFormatter,
     );
   });
 }
@@ -168,8 +168,8 @@ function runTypeScriptPrettier(
 }
 
 export function parseTripleSlashRefs(url: string, content: string) {
-  let match = Regex.TRIPLE_SLASH_REF.exec(content);
-  Regex.TRIPLE_SLASH_REF.lastIndex = 0;
+  let match = REGEX.TRIPLE_SLASH_REF.exec(content);
+  REGEX.TRIPLE_SLASH_REF.lastIndex = 0;
   if (!match) {
     return [];
   }
@@ -187,8 +187,8 @@ export function parseTripleSlashRefs(url: string, content: string) {
     additionalUrls.push(newUrl);
     copyContent = copyContent.replace(ref, '');
 
-    match = Regex.TRIPLE_SLASH_REF.exec(copyContent);
-    Regex.TRIPLE_SLASH_REF.lastIndex = 0;
+    match = REGEX.TRIPLE_SLASH_REF.exec(copyContent);
+    REGEX.TRIPLE_SLASH_REF.lastIndex = 0;
   }
 
   return additionalUrls;
