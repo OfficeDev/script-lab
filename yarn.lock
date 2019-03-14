@@ -8916,10 +8916,10 @@ moment@2.22.2, moment@^2.22.2:
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.22.2.tgz#3c257f9839fc0e93ff53149632239eb90783ff66"
   integrity sha1-PCV/mDn8DpP/UxSWMiOeuQeD/2Y=
 
-monaco-editor@^0.16.0:
-  version "0.16.0"
-  resolved "https://registry.yarnpkg.com/monaco-editor/-/monaco-editor-0.16.0.tgz#83538173c2427f62e0ea3e19a4864742ea457cd9"
-  integrity sha512-a0ZksW1C5gTXOOJR/guKwzYrLJkJtMqzPb/W81YFSFHwbZ/ecVWdNguUkuyUuchzeKJRwqcizgVx++G9wmfofQ==
+monaco-editor@^0.16.1:
+  version "0.16.1"
+  resolved "https://registry.yarnpkg.com/monaco-editor/-/monaco-editor-0.16.1.tgz#d3221c0a86a000fc3b495e76fa1220ba5779eef4"
+  integrity sha512-1X7BbmZQBHHuqRh+zAi2nmiPJX9DmZVALu6LlBCdj0YdO5jyQGq6/DseN5Q/27EagWnY7VPp7HESi1u58x92oA==
 
 moo@^0.4.3:
   version "0.4.3"
