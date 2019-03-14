@@ -163,6 +163,10 @@ async function considerIfReallyWantToRedirect({
   //   to decide if want to try again, versus to cancel the redirect.
   if (isMainDomain && redirectUrl.startsWith('https://localhost')) {
     if (checkIfLastRedirectWasRecent()) {
+      // Need to first call "Office.onReady()" at this stage", or else won't be able to
+      // click anywhere in the UI (and hence won't be able to click "cancel", even if want to)
+      await Office.onReady();
+
       const keepGoing = await new Promise<boolean>(async resolve => {
         const timeout = setTimeout(() => {
           resolve(true); // If haven't clicked cancel yet, resolve to true
