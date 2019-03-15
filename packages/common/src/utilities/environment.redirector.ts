@@ -11,9 +11,8 @@ const AMOUNT_OF_TIME_BETWEEN_SUSPICIOUS_LOCALHOST_REDIRECTS = 20000;
 /** Amount of time to wait for the user to click to cancel, before redirecting anyway */
 const AMOUNT_OF_TIME_TO_WAIT_ON_CLICK_TO_CANCEL = 4000;
 
-/** Checks (and redirects) if needs to go to a different environment.
- * Note that this function should be called AFTER Office.onReady,
- *    or else the ability to *cancel a navigation to localhost* will not work on Office Online
+/**
+ * Calls Office.onReady, and also checks (and redirects) if needs to go to a different environment.
  * @param isMainDomain - should be set to true if this is called for
  *    the main domain (e.g., editor domain for Script Lab, rather than the runner).
  *    Put differently, the main domain is the domain that hosts the
@@ -22,7 +21,16 @@ const AMOUNT_OF_TIME_TO_WAIT_ON_CLICK_TO_CANCEL = 4000;
  *    redirecting, OR a promise that will *NEVER* resolve
  *    (getting terminated by the page loading to a different page)
  */
-export async function redirectIfNeeded({
+export async function ensureOfficeReadyAndRedirectIfNeeded({
+  isMainDomain,
+}: {
+  isMainDomain: boolean;
+}): Promise<void> {
+  await Office.onReady();
+  await redirectIfNeeded({ isMainDomain });
+}
+
+async function redirectIfNeeded({
   isMainDomain,
 }: {
   isMainDomain: boolean;

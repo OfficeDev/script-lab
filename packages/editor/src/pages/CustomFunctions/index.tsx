@@ -8,7 +8,7 @@ import CustomFunctionsDashboard from './components/CustomFunctionsDashboard';
 import Theme from 'common/lib/components/Theme';
 import { Utilities } from '@microsoft/office-js-helpers';
 import { hideSplashScreen } from 'common/lib/utilities/splash.screen';
-import { redirectIfNeeded } from 'common/lib/utilities/environment.redirector';
+import { ensureOfficeReadyAndRedirectIfNeeded } from 'common/lib/utilities/environment.redirector';
 
 const CFD = App(CustomFunctionsDashboard);
 
@@ -23,9 +23,8 @@ class CustomFunctionsPage extends React.Component<{}, IState> {
     super(props);
 
     addScriptTags([SCRIPT_URLS.OFFICE_JS_FOR_CUSTOM_FUNCTIONS_DASHBOARD])
-      .then(() => Office.onReady())
       .then(() =>
-        redirectIfNeeded({
+        ensureOfficeReadyAndRedirectIfNeeded({
           isMainDomain: true /* true for the Editor */,
         }),
       )
