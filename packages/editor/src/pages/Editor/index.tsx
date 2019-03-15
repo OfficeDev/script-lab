@@ -20,6 +20,7 @@ import {
 import throttle from 'lodash/throttle';
 import { ScriptLabError } from 'common/lib/utilities/error';
 import { invokeGlobalErrorHandler } from 'common/lib/utilities/splash.screen';
+import { redirectIfNeeded } from 'common/lib/utilities/environment.redirector';
 
 interface IState {
   hasLoadedScripts: boolean;
@@ -33,6 +34,11 @@ class Editor extends Component<{}, IState> {
     super(props);
     addScriptTags([SCRIPT_URLS.DEFAULT_OFFICE_JS, SCRIPT_URLS.MONACO_LOADER])
       .then(() => Office.onReady())
+      .then(() =>
+        redirectIfNeeded({
+          isMainDomain: true /* true for the Editor */,
+        }),
+      )
       .then(() => ensureProperOfficeBuildIfRelevant())
       .then(() => loadStateFromLocalStorage())
       .then(localStorageState => {

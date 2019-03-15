@@ -8,6 +8,7 @@ import CustomFunctionsDashboard from './components/CustomFunctionsDashboard';
 import Theme from 'common/lib/components/Theme';
 import { Utilities } from '@microsoft/office-js-helpers';
 import { hideSplashScreen } from 'common/lib/utilities/splash.screen';
+import { redirectIfNeeded } from 'common/lib/utilities/environment.redirector';
 
 const CFD = App(CustomFunctionsDashboard);
 
@@ -23,6 +24,11 @@ class CustomFunctionsPage extends React.Component<{}, IState> {
 
     addScriptTags([SCRIPT_URLS.OFFICE_JS_FOR_CUSTOM_FUNCTIONS_DASHBOARD])
       .then(() => Office.onReady())
+      .then(() =>
+        redirectIfNeeded({
+          isMainDomain: true /* true for the Editor */,
+        }),
+      )
       .then(() => {
         // Note: though could get the host information from "Office.onReady",
         // the rest of the application thinks of the host value in terms of the
