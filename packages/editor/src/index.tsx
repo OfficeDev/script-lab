@@ -2,11 +2,6 @@ import 'common/lib/polyfills';
 import { invokeGlobalErrorHandler } from 'common/lib/utilities/splash.screen';
 window.onerror = error => invokeGlobalErrorHandler(error);
 
-import { redirectIfNeeded } from 'common/lib/utilities/environment.redirector';
-const isRedirectingAwayPromise = redirectIfNeeded({
-  isMainDomain: true /* true for the Editor */,
-});
-
 import './index.css';
 
 ///////////////////////////////////////
@@ -20,17 +15,14 @@ import Pages from './pages';
 import AuthPage from './pages/Auth';
 
 (async () => {
-  const isRedirectingAway = await isRedirectingAwayPromise;
-  if (!isRedirectingAway) {
-    try {
-      const rootElement = document.getElementById('root') as HTMLElement;
+  try {
+    const rootElement = document.getElementById('root') as HTMLElement;
 
-      ReactDOM.render(getReactElementBasedOnQueryParams(), rootElement);
+    ReactDOM.render(getReactElementBasedOnQueryParams(), rootElement);
 
-      unregister(); // need more testing to determine if this can be removed. seems to help with the caching of the html file issues
-    } catch (e) {
-      invokeGlobalErrorHandler(e);
-    }
+    unregister(); // need more testing to determine if this can be removed. seems to help with the caching of the html file issues
+  } catch (e) {
+    invokeGlobalErrorHandler(e);
   }
 })();
 

@@ -3,6 +3,7 @@ import { localStorageKeys } from '../constants';
 import { editorUrls, currentEditorUrl } from '../environment';
 import ensureFreshLocalStorage from './ensure.fresh.local.storage';
 import { showSplashScreen } from './splash.screen';
+import { ScriptLabError } from './error';
 
 /** Time threshold for kicking in a "click to cancel" UI on redirects */
 const AMOUNT_OF_TIME_BETWEEN_SUSPICIOUS_LOCALHOST_REDIRECTS = 20000;
@@ -10,18 +11,30 @@ const AMOUNT_OF_TIME_BETWEEN_SUSPICIOUS_LOCALHOST_REDIRECTS = 20000;
 /** Amount of time to wait for the user to click to cancel, before redirecting anyway */
 const AMOUNT_OF_TIME_TO_WAIT_ON_CLICK_TO_CANCEL = 4000;
 
-/** Checks (and redirects) if needs to go to a different environment.
+/**
+ * Calls Office.onReady, and also checks (and redirects) if needs to go to a different environment.
  * @param isMainDomain - should be set to true if this is called for
  *    the main domain (e.g., editor domain for Script Lab, rather than the runner).
  *    Put differently, the main domain is the domain that hosts the
  *    dropdown for switching to other environments.
- * @returns `true` if will be redirecting away
+ * @returns - A promise that will either resolve if it's deemed that the page is NOT
+ *    redirecting, OR a promise that will *NEVER* resolve
+ *    (getting terminated by the page loading to a different page)
  */
-export async function redirectIfNeeded({
+export async function ensureOfficeReadyAndRedirectIfNeeded({
   isMainDomain,
 }: {
   isMainDomain: boolean;
-}): Promise<boolean> {
+}): Promise<void> {
+  await Office.onReady();
+  await redirectIfNeeded({ isMainDomain });
+}
+
+async function redirectIfNeeded({
+  isMainDomain,
+}: {
+  isMainDomain: boolean;
+}): Promise<void> {
   try {
     const params = queryString.parse(window.location.search) as {
       originEnvironment?: string;
@@ -42,7 +55,7 @@ export async function redirectIfNeeded({
       // the user has returned back to the root site)
       if (window.location.href.toLowerCase().indexOf(targetUrl) === 0) {
         window.localStorage.removeItem(localStorageKeys.editor.redirectEnvironmentUrl);
-        return false;
+        return;
       }
 
       // If hasn't quit above, then set the redirect URL into storage
@@ -88,7 +101,7 @@ export async function redirectIfNeeded({
         isMainDomain,
       });
       if (!keepGoingWithRedirect) {
-        return false;
+        return;
       }
 
       if (isMainDomain) {
@@ -108,16 +121,16 @@ export async function redirectIfNeeded({
       ];
       window.location.replace(finalUrlComponents.join(''));
 
-      return true;
+      return new Promise(_resolve => () => {
+        /* don't ever call "resolve", waiting indefinitely until the page navigates away */
+      });
     }
 
     // If reached here, environment is already configured. No need to redirect anywhere.
-    return false;
+    return;
   } catch (e) {
-    console.error('Error redirecting the environments, staying on current page', e);
+    throw new ScriptLabError('Error redirecting to a different environment.', e);
   }
-
-  return false;
 }
 
 export async function redirectEditorToOtherEnvironment(configName: string) {
@@ -163,10 +176,6 @@ async function considerIfReallyWantToRedirect({
   //   to decide if want to try again, versus to cancel the redirect.
   if (isMainDomain && redirectUrl.startsWith('https://localhost')) {
     if (checkIfLastRedirectWasRecent()) {
-      // Need to first call "Office.onReady()" at this stage", or else won't be able to
-      // click anywhere in the UI (and hence won't be able to click "cancel", even if want to)
-      await Office.onReady();
-
       const keepGoing = await new Promise<boolean>(async resolve => {
         const timeout = setTimeout(() => {
           resolve(true); // If haven't clicked cancel yet, resolve to true
