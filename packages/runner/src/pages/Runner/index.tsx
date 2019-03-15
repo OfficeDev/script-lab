@@ -23,7 +23,7 @@ const Runner = () => (
   <AwaitPromiseThenRender
     promise={addScriptTags([getOfficeJsUrlToLoad()]).then(() =>
       ensureOfficeReadyAndRedirectIfNeeded({
-        isMainDomain: true /* true for the Editor */,
+        isMainDomain: false /* false for the Runner */,
       }),
     )}
   >
