@@ -4,7 +4,7 @@ import { parse } from 'query-string';
 import { SCRIPT_URLS } from 'common/lib/constants';
 import { OFFICE_JS_URL_QUERY_PARAMETER_KEY } from 'common/lib/utilities/script-loader/constants';
 import { addScriptTags } from 'common/lib/utilities/script-loader';
-
+import { ensureOfficeReadyAndRedirectIfNeeded } from 'common/lib/utilities/environment.redirector';
 import { AwaitPromiseThenRender } from 'common/lib/components/PageSwitcher/utilities/AwaitPromiseThenRender';
 
 import App from './components/App';
@@ -21,7 +21,11 @@ function getOfficeJsUrlToLoad(): string {
 
 const Runner = () => (
   <AwaitPromiseThenRender
-    promise={addScriptTags([getOfficeJsUrlToLoad()]).then(() => Office.onReady())}
+    promise={addScriptTags([getOfficeJsUrlToLoad()]).then(() =>
+      ensureOfficeReadyAndRedirectIfNeeded({
+        isMainDomain: false /* false for the Runner */,
+      }),
+    )}
   >
     <App />
   </AwaitPromiseThenRender>

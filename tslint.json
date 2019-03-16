@@ -1,7 +1,13 @@
 {
   "rules": {
     "member-access": [true, "no-public"],
-    "variable-name": [true, "ban-keywords", "check-format", "allow-leading-underscore"],
+    "variable-name": [
+      true,
+      "ban-keywords",
+      "check-format",
+      "allow-leading-underscore",
+      "allow-pascal-case"
+    ],
     "member-ordering": false,
     "object-literal-shorthand": false,
     "ordered-imports": false,
