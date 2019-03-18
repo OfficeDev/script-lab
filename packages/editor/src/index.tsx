@@ -13,10 +13,18 @@ import queryString from 'query-string';
 
 import Pages from './pages';
 import AuthPage from './pages/Auth';
+import { addScriptTags } from 'common/lib/utilities/script-loader';
+import { SCRIPT_URLS } from 'common/lib/constants';
+import { ensureOfficeReadyAndRedirectIfNeeded } from 'common/lib/utilities/environment.redirector';
 
 (async () => {
   try {
     const rootElement = document.getElementById('root') as HTMLElement;
+
+    await addScriptTags([SCRIPT_URLS.DEFAULT_OFFICE_JS]);
+    await ensureOfficeReadyAndRedirectIfNeeded({
+      isMainDomain: true /* true for the Editor */,
+    });
 
     ReactDOM.render(getReactElementBasedOnQueryParams(), rootElement);
 

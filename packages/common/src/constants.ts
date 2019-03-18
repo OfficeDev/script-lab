@@ -9,8 +9,6 @@ export const SCRIPT_URLS = {
   CUSTOM_FUNCTIONS_RUNNER:
     'https://appsforoffice.microsoft.com/lib/preview/hosted/custom-functions-runtime.js',
   DEFAULT_OFFICE_JS: 'https://appsforoffice.microsoft.com/lib/1/hosted/office.js',
-  OFFICE_JS_FOR_CUSTOM_FUNCTIONS_DASHBOARD:
-    'https://appsforoffice.microsoft.com/lib/beta/hosted/office.js',
   MONACO_LOADER: `/external/monaco-editor-${
     HYPHENATED_PACKAGE_VERSIONS['monaco-editor']
   }/vs/loader.js`,
