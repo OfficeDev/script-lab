@@ -6,6 +6,7 @@ import {
   LIBRARIES_FILE_NAME,
 } from '../../../../constants';
 import { filterCustomFunctions } from '../../../CustomFunctions/components/App/utilities';
+import { selectors as host } from 'script-lab-core/lib/modules/host';
 
 // solutions
 export const get = (state: IState, id: string): ISolution | null => {
@@ -49,7 +50,7 @@ export const getSolutionWithHiddenFiles = (
 
 export const getAll = (state: IState): ISolution[] =>
   Object.values(state.solutions.metadata)
-    .filter(solution => solution.host === state.host || solution.host === 'ALL')
+    .filter(solution => solution.host === host.get(state) || solution.host === 'ALL')
     .filter(({ id }) => ![NULL_SOLUTION_ID, SETTINGS_SOLUTION_ID].includes(id))
     .map(solution => ({
       ...solution,

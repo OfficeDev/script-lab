@@ -14,7 +14,7 @@ import {
 } from '../editor/selectors';
 import { getIsLoggingInOrOut, getIsLoggedIn } from '../github/selectors';
 import { getIsTaskPaneWidth } from '../screen/selectors';
-import { getIsRunnableOnThisHost } from '../host/selectors';
+import { getIsRunnableOnThisHost } from '../misc/selectors';
 import { shouldShowPopoutControl } from 'common/lib/utilities/popout.control';
 
 // actions

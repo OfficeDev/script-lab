@@ -4,13 +4,14 @@ import * as dialog from './dialog/actions';
 import * as editor from './editor/actions';
 import * as gists from './gists/actions';
 import * as github from './github/actions';
-import * as host from './host/actions';
 import * as messageBar from './messageBar/actions';
 import * as misc from './misc/actions';
 import * as samples from './samples/actions';
 import * as screen from './screen/actions';
 import * as settings from './settings/actions';
 import * as solutions from './solutions/actions';
+
+import { actions as host } from 'script-lab-core/lib/modules/host';
 
 export { dialog };
 export { editor };

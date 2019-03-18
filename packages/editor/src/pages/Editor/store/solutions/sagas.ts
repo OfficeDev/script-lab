@@ -11,8 +11,11 @@ import { SCRIPT_FILE_NAME, NULL_SOLUTION_ID, NULL_FILE_ID } from '../../../../co
 import { deleteSolutionFromStorage } from '../localStorage';
 import { formatTypeScriptFile } from '../editor/utilities';
 import { currentOfficeJsRawSnippetsBaseRepoUrl } from 'common/lib/environment';
+import { actions as host } from 'script-lab-core/lib/modules/host';
 
 export default function* solutionsWatcher() {
+  yield takeEvery(getType(host.change), openLastOpenedOrBackstageSaga);
+
   yield takeEvery(getType(solutions.edit), onSolutionOpenOrFileEditSaga);
   yield takeEvery(getType(editor.newSolutionOpened), onSolutionOpenOrFileEditSaga);
 

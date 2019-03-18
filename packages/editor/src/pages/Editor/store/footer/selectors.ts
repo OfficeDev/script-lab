@@ -9,10 +9,17 @@ import {
 
 // selectors
 import { createSelector } from 'reselect';
-import { getActiveFile } from '../editor/selectors';
-import { getIsWeb, get as getHost } from '../host/selectors';
-import { getMode, IHeaderItem } from '../header/selectors';
-import { getPrettyEditorTheme } from '../settings/selectors';
+import * as editorSelectors from '../editor/selectors';
+import { selectors as hostSelectors } from 'script-lab-core/lib/modules/host';
+import * as headerSelectors from '../header/selectors';
+import * as settingsSelectors from '../settings/selectors';
+
+const selectors = {
+  editor: editorSelectors,
+  host: hostSelectors,
+  header: headerSelectors,
+  settings: settingsSelectors,
+};
 
 // actions
 import {
@@ -48,7 +55,7 @@ const languageMap = {
 };
 
 export const getItems = createSelector(
-  [getMode, getIsWeb, getHost],
+  [selectors.header.getMode, selectors.host.getIsWeb, selectors.host.get],
   (
     mode: 'normal' | 'settings' | 'null-solution',
     isWeb: boolean,
@@ -90,7 +97,11 @@ export const getItems = createSelector(
 );
 
 export const getFarItems = createSelector(
-  [getMode, getActiveFile, getPrettyEditorTheme],
+  [
+    selectors.header.getMode,
+    selectors.editor.getActiveFile,
+    selectors.settings.getPrettyEditorTheme,
+  ],
   (
     mode: 'normal' | 'settings' | 'null-solution',
     activeFile: IFile,

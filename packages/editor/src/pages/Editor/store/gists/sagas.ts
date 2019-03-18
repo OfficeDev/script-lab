@@ -4,7 +4,7 @@ import YAML from 'js-yaml';
 
 import * as github from '../../services/github';
 import { fetchYaml, IResponseOrError } from '../../services/general';
-import { gists, editor, solutions } from '../actions';
+import { gists, editor, host, solutions } from '../actions';
 import selectors from '../selectors';
 
 import { convertSnippetToSolution, convertSolutionToSnippet } from '../../../../utils';
@@ -14,6 +14,7 @@ import { createSolutionSaga } from '../solutions/sagas';
 import { checkForUnsupportedAPIsIfRelevant } from './utilities';
 
 export default function* gistsWatcher() {
+  yield takeEvery(getType(host.change), fetchAllGistMetadataSaga);
   yield takeEvery(getType(gists.fetchMetadata.request), fetchAllGistMetadataSaga);
   yield takeEvery(getType(gists.fetchMetadata.success), onFetchGistMetadataSuccessSaga);
   yield takeEvery(getType(gists.fetchMetadata.failure), onFetchGistMetadataFailureSaga);

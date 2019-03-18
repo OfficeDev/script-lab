@@ -1,6 +1,6 @@
 import { IState } from '../reducer';
 import { getActiveSolution, getActiveFile } from '../editor/selectors';
-import { get as getHost } from '../host/selectors';
+import { selectors as host } from 'script-lab-core/lib/modules/host';
 import {
   SETTINGS_SOLUTION_ID,
   READ_ONLY_FILE_IDS,
@@ -34,11 +34,10 @@ export const getPrettyEditorTheme = (state: IState): string => {
 };
 
 export const getBackgroundColor = (state: IState): string => {
-  const host = getHost(state);
-  const theme = getTheme(host);
+  const currentHost = host.get(state);
+  const theme = getTheme(currentHost);
   return {
     light: theme.white,
-    dark: theme.neutralDarker,
     'high-contrast': theme.black,
   }[get(state)['editor.theme']];
 };

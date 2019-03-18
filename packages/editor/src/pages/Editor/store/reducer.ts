@@ -8,9 +8,10 @@ import messageBar, { IState as IMessageBarState } from './messageBar/reducer';
 import settings, { IState as ISettingsState } from './settings/reducer';
 import solutions, { IState as ISolutionsState } from './solutions/reducer';
 import gists, { IState as IGistsState } from './gists/reducer';
-import host, { IState as IHostState } from './host/reducer';
 import samples, { IState as ISamplesState } from './samples/reducer';
 import screen, { IState as IScreenState } from './screen/reducer';
+
+import { reducer as host, IState as IHostState } from 'script-lab-core/lib/modules/host';
 
 import { IRootAction } from './actions';
 
