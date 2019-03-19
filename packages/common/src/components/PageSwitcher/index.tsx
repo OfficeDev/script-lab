@@ -8,7 +8,17 @@ import { redirectIfNeeded } from '../../utilities/environment.redirector';
 export interface IPageLoadingSpec {
   component: React.ComponentType;
   officeJs: string | null;
+
+  /** Indicates whether the redirect should be possibly cancelable.
+   * Makes sense for the Editor page (since that's also where you choose the environment)
+   * but would only be slowing down the experience for other pages.
+   */
   isRedirectCancelable?: boolean;
+
+  /** For special cases where want to wait to announce that the add-in is ready until
+   * *after* the possible redirect.  Relevant for add-in commands.
+   */
+  skipOfficeOnReady?: boolean;
 }
 
 interface IProps {
@@ -42,7 +52,9 @@ function renderPageAfterPrerequisites(spec: IPageLoadingSpec): React.ComponentTy
   return () => (
     <AwaitPromiseThenRender
       promise={(spec.officeJs
-        ? addScriptTags([spec.officeJs]).then(() => Office.onReady())
+        ? addScriptTags([spec.officeJs]).then(() =>
+            spec.skipOfficeOnReady ? Promise.resolve(null) : Office.onReady(),
+          )
         : Promise.resolve(null)
       ).then(() => redirectIfNeeded({ isCancelable: spec.isRedirectCancelable }))}
     >
