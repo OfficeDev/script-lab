@@ -37,6 +37,9 @@ export default function setup() {
       }
     }
   });
+
+  // Now that the functions are registered, call Office.onReady()
+  return Office.onReady();
 }
 
 /////////////////////////////////

@@ -12,28 +12,20 @@ const AMOUNT_OF_TIME_BETWEEN_SUSPICIOUS_LOCALHOST_REDIRECTS = 20000;
 const AMOUNT_OF_TIME_TO_WAIT_ON_CLICK_TO_CANCEL = 4000;
 
 /**
- * Calls Office.onReady, and also checks (and redirects) if needs to go to a different environment.
- * @param isMainDomain - should be set to true if this is called for
- *    the main domain (e.g., editor domain for Script Lab, rather than the runner).
- *    Put differently, the main domain is the domain that hosts the
- *    dropdown for switching to other environments.
+ * Redirects if needs to go to a different environment.
+ * @param isCancelable - set to true if should allow cancelling the redirect
+ *    if the redirect happens too soon after a previous one (this way,
+ *    if localhost is down, can just re-open page and see cancel option).
+ *    If true, it's the caller's responsibility to make sure that
+ *    the Office script reference has been added, and that onReady has been called.
  * @returns - A promise that will either resolve if it's deemed that the page is NOT
  *    redirecting, OR a promise that will *NEVER* resolve
  *    (getting terminated by the page loading to a different page)
  */
-export async function ensureOfficeReadyAndRedirectIfNeeded({
-  isMainDomain,
+export async function redirectIfNeeded({
+  isCancelable,
 }: {
-  isMainDomain: boolean;
-}): Promise<void> {
-  await Office.onReady();
-  await redirectIfNeeded({ isMainDomain });
-}
-
-async function redirectIfNeeded({
-  isMainDomain,
-}: {
-  isMainDomain: boolean;
+  isCancelable: boolean;
 }): Promise<void> {
   try {
     const params = queryString.parse(window.location.search) as {
@@ -98,13 +90,13 @@ async function redirectIfNeeded({
 
       const keepGoingWithRedirect = await considerIfReallyWantToRedirect({
         redirectUrl,
-        isMainDomain,
+        isCancelable,
       });
       if (!keepGoingWithRedirect) {
         return;
       }
 
-      if (isMainDomain) {
+      if (isCancelable) {
         window.localStorage.setItem(
           localStorageKeys.editor.lastEnvironmentRedirectTimestamp,
           Date.now().toString(),
@@ -162,10 +154,10 @@ export async function redirectEditorToOtherEnvironment(configName: string) {
 ///////////////////////////////////////
 
 async function considerIfReallyWantToRedirect({
-  isMainDomain,
+  isCancelable,
   redirectUrl,
 }: {
-  isMainDomain: boolean;
+  isCancelable: boolean;
   redirectUrl: string;
 }): Promise<boolean> {
   // When redirecting to localhost (dev scenario), sometimes localhost
@@ -174,7 +166,7 @@ async function considerIfReallyWantToRedirect({
   // To work around it, if on main domain and redirecting to localhost,
   //   check whether recently failed. If failed, give the user a few seconds
   //   to decide if want to try again, versus to cancel the redirect.
-  if (isMainDomain && redirectUrl.startsWith('https://localhost')) {
+  if (isCancelable && redirectUrl.startsWith('https://localhost')) {
     if (checkIfLastRedirectWasRecent()) {
       const keepGoing = await new Promise<boolean>(async resolve => {
         const timeout = setTimeout(() => {
