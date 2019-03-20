@@ -19,6 +19,11 @@ export interface IPageLoadingSpec {
    * *after* the possible redirect.  Relevant for add-in commands.
    */
   skipOfficeOnReady?: boolean;
+
+  /** For special cases where want to do a redirect (e.g., add-in commands,
+   * where it doesn't work, and so OK with just using the prod version always).
+   */
+  skipRedirect?: boolean;
 }
 
 interface IProps {
@@ -51,12 +56,19 @@ export default PageSwitcher;
 function renderPageAfterPrerequisites(spec: IPageLoadingSpec): React.ComponentType {
   return () => (
     <AwaitPromiseThenRender
-      promise={(spec.officeJs
-        ? addScriptTags([spec.officeJs]).then(() =>
-            spec.skipOfficeOnReady ? Promise.resolve(null) : Office.onReady(),
-          )
-        : Promise.resolve(null)
-      ).then(() => redirectIfNeeded({ isCancelable: spec.isRedirectCancelable }))}
+      promise={Promise.resolve().then(async () => {
+        if (spec.officeJs) {
+          await addScriptTags([spec.officeJs]);
+
+          if (!spec.skipOfficeOnReady) {
+            await Office.onReady();
+          }
+        }
+
+        if (!spec.skipRedirect) {
+          await redirectIfNeeded({ isCancelable: spec.isRedirectCancelable });
+        }
+      })}
     >
       {React.createElement(spec.component)}
     </AwaitPromiseThenRender>

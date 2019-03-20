@@ -26,6 +26,8 @@ const pages: { [key: string]: IPageLoadingSpec } = {
     officeJs: SCRIPT_URLS.DEFAULT_OFFICE_JS,
     skipOfficeOnReady: true /* skip calling "Office.onReady" until the redirect is determined.
       The component's setup will then call it itself */,
+    skipRedirect: true /* skip redirecting. It won't work for add-in commands anyway,
+      and the logic is so simple we can just always rely on the prod version */,
   },
   [PATHS.CustomFunctions]: {
     component: CustomFunctions,
