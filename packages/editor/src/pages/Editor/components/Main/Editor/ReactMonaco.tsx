@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { HYPHENATED_PACKAGE_VERSIONS } from 'common/lib/package-versions';
-import { Utilities, PlatformType } from '@microsoft/office-js-helpers';
 
 export interface IProps {
   solutionId: string;
@@ -9,6 +8,7 @@ export interface IProps {
 
   editorDidMount: (editor: monaco.editor.IStandaloneCodeEditor) => void;
   onValueChange: (solutionId: string, fileId: string, value: string) => void;
+  applyFormatting: () => void;
 }
 
 interface IState {
@@ -23,25 +23,10 @@ export class ReactMonaco extends Component<IProps, IState> {
     if ((window as any).monaco !== undefined) {
       this.initializeMonaco();
     } else {
-      /* On the Mac Office (but not in regular Safari),
-        never versions of Monaco have a mouse-focus issue
-        (see https://github.com/OfficeDev/script-lab/issues/506 and related) --
-        though on the other hand the older Monaco also has a crashing issue
-        described by https://github.com/OfficeDev/script-lab/issues/514, which
-        isn't great either.
-
-        But in any case, for now, will load an older version of Monaco for Mac,
-        and a newer one for any other platform type
-      */
-      const monacoVersionToLoad =
-        Utilities.platform === PlatformType.MAC
-          ? HYPHENATED_PACKAGE_VERSIONS['monaco-editor-old']
-          : HYPHENATED_PACKAGE_VERSIONS['monaco-editor'];
-
       (window as any).require.config({
         baseUrl: '/',
         paths: {
-          vs: `external/monaco-editor-${monacoVersionToLoad}/vs`,
+          vs: `external/monaco-editor-${HYPHENATED_PACKAGE_VERSIONS['monaco-editor']}/vs`,
         },
       });
       (window as any).require(['vs/editor/editor.main'], () => this.initializeMonaco());
@@ -60,6 +45,7 @@ export class ReactMonaco extends Component<IProps, IState> {
         const newModel = this.getModel();
         newModel.updateOptions({ tabSize: this.props.tabSize });
         this.editor.setModel(newModel);
+        this.props.applyFormatting();
       }
     }
   }
@@ -104,10 +90,7 @@ export class ReactMonaco extends Component<IProps, IState> {
     );
 
   private getUri = () =>
-    new monaco.Uri().with({
-      scheme: 'file',
-      path: `${this.props.solutionId}/${this.props.file.id}`,
-    });
+    monaco.Uri.file(`${this.props.solutionId}/${this.props.file.id}`);
 
   private getModel = () => {
     const uri = this.getUri();

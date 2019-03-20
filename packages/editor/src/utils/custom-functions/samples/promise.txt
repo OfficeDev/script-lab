@@ -1,0 +1,41 @@
+// should be able to return a promise
+
+/** @customfunction */
+async function randomComment(id: number, fieldName: string): Promise<string> {
+    let result = await (await fetch(`https://jsonplaceholder.typicode.com/comments/${id}`)).json();
+    fieldName = (fieldName || "").trim();
+    if (["id", "name", "email", "body"].indexOf(fieldName) >= 0) {
+        return result[fieldName];
+    } else {
+        throw new Error("Invalid field name");
+    }
+}
+
+// result
+/*
+[
+	{
+		"javascriptFunctionName": "randomComment",
+		"nonCapitalizedFullName": "TestNamespace.randomComment",
+		"status": "good",
+		"errors": [],
+		"metadata": {
+			"id": "TESTNAMESPACE.RANDOMCOMMENT",
+			"name": "TESTNAMESPACE.RANDOMCOMMENT",
+			"parameters": [
+				{
+					"name": "id",
+					"type": "number"
+				},
+				{
+					"name": "fieldName",
+					"type": "string"
+				}
+			],
+			"result": {
+				"type": "string"
+			}
+		}
+	}
+]
+*/

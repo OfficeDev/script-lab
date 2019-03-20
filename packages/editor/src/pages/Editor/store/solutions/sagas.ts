@@ -4,7 +4,8 @@ import { getType, ActionType } from 'typesafe-actions';
 import { messageBar, solutions, editor } from '../actions';
 import { fetchYaml } from '../../services/general';
 import selectors from '../selectors';
-import { convertSnippetToSolution, isCustomFunctionScript } from '../../../../utils';
+import { convertSnippetToSolution } from '../../../../utils';
+import { isCustomFunctionScript } from '../../../../utils/custom-functions';
 import { getBoilerplate } from '../../../../newSolutionData';
 import { SCRIPT_FILE_NAME, NULL_SOLUTION_ID, NULL_FILE_ID } from '../../../../constants';
 import { deleteSolutionFromStorage } from '../localStorage';
@@ -126,7 +127,9 @@ function* removeSolutionSaga(action: ActionType<typeof solutions.remove>) {
 }
 
 function* updateOptionsSaga(action: ActionType<typeof solutions.updateOptions>) {
-  const { solution, options } = action.payload;
+  const { options, id } = action.payload;
+  const solution = yield select(selectors.solutions.get, id);
+
   // If the solution options show it as untrusted, but the newly-received options set untrusted to false,
   // go ahead and dismiss the message bar.
   if (solution.options.isUntrusted && options.isUntrusted === false) {
@@ -179,7 +182,10 @@ function* checkIfIsCustomFunctionSaga(
     (solution.options.isCustomFunctionsSolution && !isCustomFunctionsSolution);
   if (optionsChanged) {
     yield put(
-      solutions.updateOptions({ solution, options: { isCustomFunctionsSolution } }),
+      solutions.updateOptions({
+        id: solution.id,
+        options: { isCustomFunctionsSolution },
+      }),
     );
   }
 }

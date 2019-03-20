@@ -1,0 +1,15 @@
+/**
+ * *Insert Description here*
+ * @CustomFunction
+ */
+function add10(input: number) {
+
+}
+
+/**
+ * *Insert Description here*
+ * @CustomFunction
+ */
+function add10(input: number) {
+
+}

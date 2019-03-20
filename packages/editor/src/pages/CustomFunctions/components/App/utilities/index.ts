@@ -1,40 +1,30 @@
-import flatten from 'lodash/flatten';
-import { SCRIPT_FILE_NAME } from '../../../../../constants';
+import { IFunction, ICustomFunctionsMetadata } from 'custom-functions-metadata';
+
 import compileScript from 'common/lib/utilities/compile.script';
 import { stripSpaces } from 'common/lib/utilities/string';
-import { parseMetadata } from 'common/lib/utilities/custom.functions.metadata.parser';
 import { consoleMonkeypatch } from './console.monkeypatch';
 import { getCurrentEnv } from 'common/lib/environment';
+import { SCRIPT_FILE_NAME } from '../../../../../constants';
 import { pause } from 'common/lib/utilities/misc';
-import { convertSolutionToSnippet } from '../../../../../utils';
+import { parseMetadata } from '../../../../../utils/custom-functions';
 
-const isCustomFunctionRegex = /@customfunction/i;
-export function isCustomFunctionScript(content: string) {
-  return isCustomFunctionRegex.test(content);
-}
-
-export async function registerMetadata(
-  functions: ICFVisualFunctionMetadata[],
-  code: string,
-): Promise<void> {
-  const registrationPayload: ICustomFunctionsRegistrationApiMetadata = {
+export function getJsonMetadataString(
+  functions: Array<ICustomFunctionParseResult<IFunction>>,
+): string {
+  const registrationPayload: ICustomFunctionsMetadata = {
     functions: functions
       .filter(func => func.status === 'good')
-      .map(func => {
-        const uppercasedFullName = func.nonCapitalizedFullName.toUpperCase();
-        const schemaFunc: ICFSchemaFunctionMetadata = {
-          id: uppercasedFullName,
-          name: uppercasedFullName,
-          description: func.description,
-          options: func.options,
-          result: func.result,
-          parameters: func.parameters,
-        };
-        return schemaFunc;
-      }),
+      .map(func => func.metadata),
   };
 
-  const jsonMetadataString = JSON.stringify(registrationPayload, null, 4);
+  return JSON.stringify(registrationPayload, null, 4);
+}
+
+export async function registerCustomFunctions(
+  functions: Array<ICustomFunctionParseResult<IFunction>>,
+  code: string,
+): Promise<void> {
+  const jsonMetadataString = getJsonMetadataString(functions);
 
   if (Office.context.requirements.isSetSupported('CustomFunctions', 1.6)) {
     await (Excel as any).CustomFunctionManager.register(jsonMetadataString, code);
@@ -72,6 +62,7 @@ export async function getCustomFunctionEngineStatusSafe(): Promise<
 
     const isOnSupportedPlatform =
       platform === Office.PlatformType.PC ||
+      platform === Office.PlatformType.Mac ||
       platform === Office.PlatformType.OfficeOnline;
     if (isOnSupportedPlatform) {
       return getEngineStatus();
@@ -135,108 +126,72 @@ export function getScriptLabTopLevelNamespace() {
   return 'ScriptLab' + (getCurrentEnv() === 'local' ? 'Dev' : '');
 }
 
-export function getCustomFunctionsInfoForRegistrationFromSolutions(
-  solutions: ISolution[],
-) {
-  return getCustomFunctionsInfoForRegistration(
-    solutions.map(solution => convertSolutionToSnippet(solution)),
-  );
-}
-
-// TODO: merge the code below and above and properly refactor to use ISolution
 export function getCustomFunctionsInfoForRegistration(
-  snippets: ISnippet[],
-): { visual: ICFVisualMetadata; code: string } {
-  const visualMetadata: ICFVisualSnippetMetadata[] = [];
+  solutions: ISolution[],
+): { parseResults: Array<ICustomFunctionParseResult<IFunction>>; code: string } {
+  const parseResults: Array<ICustomFunctionParseResult<IFunction>> = [];
   const code: string[] = [decodeURIComponent(consoleMonkeypatch.trim())];
 
-  snippets
-    .filter(snippet => snippet.script && snippet.name)
-    .forEach(snippet => {
-      const namespace = transformSnippetName(snippet.name);
+  solutions.forEach(solution => {
+    if (solution.name.length === 0) {
+      return;
+    }
 
-      let snippetFunctions: ICFVisualFunctionMetadata[] = parseMetadata(
-        namespace,
-        snippet.script!.content,
-      ) as ICFVisualFunctionMetadata[];
+    const scriptFile = findScript(solution);
+    if (!scriptFile) {
+      return;
+    }
 
-      snippetFunctions = convertFunctionErrorsToSpace(snippetFunctions);
-      if (snippetFunctions.length === 0) {
-        // no custom functions found
-        return;
-      }
+    const namespace = transformSolutionName(solution.name);
+    const fileContent = findScript(solution)!.content;
 
-      let hasErrors = doesSnippetHaveErrors(snippetFunctions);
-
-      let snippetCode: string;
-      if (!hasErrors) {
-        try {
-          snippetCode = compileScript(snippet.script!.content);
-          code.push(
-            wrapCustomFunctionSnippetCode(
-              snippetCode,
-              namespace,
-              snippetFunctions.map(func => func.funcName),
-            ),
-          );
-        } catch (e) {
-          snippetFunctions.forEach(f => (f.error = 'Snippet compiler error'));
-          hasErrors = true;
-        }
-      }
-
-      snippetFunctions = snippetFunctions.map(func => {
-        const status: CustomFunctionsRegistrationStatus = hasErrors
-          ? func.error
-            ? 'error'
-            : 'skipped'
-          : 'good';
-
-        func.parameters = func.parameters.map(p => ({
-          ...p,
-          prettyType: getPrettyType(p),
-          status: getFunctionChildNodeStatus(func, status, p),
-        }));
-
-        return {
-          ...func,
-          paramString: paramStringExtractor(func), // todo, i think this can be removed
-          status,
-          result: {
-            ...func.result,
-            status: getFunctionChildNodeStatus(func, status, func.result),
-          },
-        };
-      });
-
-      // TODO:  why do we have code commented out?
-      // const isTrusted = trustedSnippetManager.isSnippetTrusted(snippet.id, snippet.gist, snippet.gistOwnerId);
-      // let status;
-      // if (isTrusted) {
-      const status: CustomFunctionsRegistrationStatus = hasErrors ? 'error' : 'good';
-      // } else {
-      //     status = CustomFunctionsRegistrationStatus.Untrusted;
-      // }
-
-      visualMetadata.push({
-        name: transformSnippetName(snippet.name),
-        error: hasErrors,
-        status,
-        functions: snippetFunctions,
-      });
+    const functions: Array<ICustomFunctionParseResult<IFunction>> = parseMetadata({
+      solution,
+      namespace,
+      fileContent,
     });
 
-  const visual = { snippets: visualMetadata };
+    let hasErrors = functions.some(func => func.status === 'error');
 
-  return { visual, code: code.join('\n\n') };
+    let snippetCode: string;
+    if (!hasErrors) {
+      try {
+        snippetCode = compileScript(fileContent);
+        code.push(
+          wrapCustomFunctionSnippetCode(
+            snippetCode,
+            functions.map(func => ({
+              fullId: func.metadata.id,
+              fullDisplayName: func.metadata.name,
+              javascriptFunctionName: func.javascriptFunctionName,
+            })),
+          ),
+        );
+      } catch (e) {
+        functions.forEach(f => {
+          f.status = 'error';
+          f.errors = f.errors || [];
+          f.errors.unshift('Snippet compiler error');
+        });
+        hasErrors = true;
+      }
+    }
+
+    functions.forEach(func => parseResults.push(func));
+  });
+
+  return { parseResults: parseResults, code: code.join('\n\n') };
 }
 
 // helpers
 
 function wrapCustomFunctionSnippetCode(
   code: string,
-  namespace: string,
-  functionNames: string[],
+  functions: Array<{
+    fullId: string;
+    fullDisplayName: string;
+    javascriptFunctionName: string;
+  }>,
 ): string {
   const newlineAndIndents = '\n        ';
 
@@ -262,70 +217,24 @@ function wrapCustomFunctionSnippetCode(
 
   // Helper
   function generateFunctionAssignments(success: boolean) {
-    return functionNames
-      .map(name => {
-        const fullUppercaseName = `${namespace.toUpperCase()}.${name.toUpperCase()}`;
-        return `CustomFunctions.associate("${fullUppercaseName}", ${getRightSide()});`;
+    return functions
+      .map(item => {
+        return `CustomFunctions.associate("${item.fullId}", ${getRightSide()});`;
 
         function getRightSide() {
           return success
-            ? `__generateFunctionBinding__("${fullUppercaseName}", ${name})`
-            : `__generateErrorFunction__("${fullUppercaseName}", e)`;
+            ? `__generateFunctionBinding__("${item.fullDisplayName}", ${
+                item.javascriptFunctionName
+              })`
+            : `__generateErrorFunction__("${item.fullDisplayName}", e)`;
         }
       })
       .join(newlineAndIndents);
   }
 }
 
-function getFunctionChildNodeStatus(
-  func: ICFVisualFunctionMetadata,
-  funcStatus: CustomFunctionsRegistrationStatus,
-  childNode: { error?: any },
-): CustomFunctionsRegistrationStatus {
-  return func.error ? (childNode.error ? 'error' : 'skipped') : funcStatus;
-}
-
-function getPrettyType(parameter) {
-  if (parameter.error) {
-    return '';
-  }
-  const dim = parameter.dimensionality === 'scalar' ? '' : '[][]';
-  return `${parameter.type}${dim}`;
-}
-
-function paramStringExtractor(func) {
-  if (func.error) {
-    return undefined;
-  }
-  return func.parameters
-    .map(p => {
-      return `${p.name}: ${getPrettyType(p)}`;
-    })
-    .join(', ');
-}
-
-function doesSnippetHaveErrors(snippetMetadata) {
-  return snippetMetadata.some(func => func.error);
-}
-
-/**
- * This function converts all the `true` errors on the functions to ' '. This is because we still want it
- * to have a truthy value, but not show anything in the UI, and this is the best way I could manage that at this time.
- * @param functions
- */
-function convertFunctionErrorsToSpace(
-  functions: ICFVisualFunctionMetadata[],
-): ICFVisualFunctionMetadata[] {
-  return functions.map(func => {
-    if (func.error) {
-      func.error = ' ';
-    }
-    return func;
-  });
-}
-
 const snippetNameRegex = /[^0-9A-Za-z_ ]/g;
-export function transformSnippetName(snippetName: string) {
+export function transformSolutionName(snippetName: string) {
   return snippetName
     .replace(snippetNameRegex, '')
     .split(' ')
@@ -333,52 +242,9 @@ export function transformSnippetName(snippetName: string) {
     .join('');
 }
 
-export function getSummaryItems(
-  metadata: ICFVisualSnippetMetadata[],
-): ICustomFunctionSummaryItem[] {
-  return flatten(
-    metadata
-      .sort((a, b) => {
-        if (a.status === 'error' && b.status !== 'error') {
-          return -1;
-        } else if (a.status !== 'error' && b.status === 'error') {
-          return 1;
-        } else {
-          return 0;
-        }
-      })
-      .map(snippet => {
-        const { name } = snippet;
-        return snippet.functions.map(({ funcName, status, parameters, result }) => {
-          let additionalInfo;
-          if (status === 'error') {
-            additionalInfo = [];
-            parameters.forEach(({ name, error }) => {
-              if (error) {
-                additionalInfo.push(`${name} - ${error}`);
-              }
-            });
-            if (result.error) {
-              additionalInfo.push(`Result - ${result.error}`);
-            }
-          }
-          return {
-            snippetName: name,
-            funcName,
-            status,
-            additionalInfo,
-          };
-        });
-      }),
-  );
-}
+export const filterCustomFunctions = (solutions: ISolution[]): ISolution[] =>
+  solutions.filter(solution => solution.options.isCustomFunctionsSolution);
 
-export const filterCustomFunctions = (solutions: ISolution[]): ISolution[] => {
-  return solutions
-    .map(solution => {
-      const script = solution.files.find(file => file.name === SCRIPT_FILE_NAME);
-      return { solution, script };
-    })
-    .filter(({ script }) => script && isCustomFunctionScript(script.content))
-    .map(({ solution }) => solution);
-};
+function findScript(solution: ISolution): IFile | null {
+  return solution.files.find(file => file.name === SCRIPT_FILE_NAME) || null;
+}

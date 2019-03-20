@@ -1,8 +1,5 @@
 export const PACKAGE_VERSIONS = {
-  'monaco-editor': '0.14.3',
-  'monaco-editor-old':
-    '0.10.1' /* for Mac mouse-focus issue, see more at
-    https://github.com/OfficeDev/script-lab/issues/506 */,
+  'monaco-editor': '0.16.2',
   '@microsoft/office-js': '1.1.11-adhoc.28',
 };
 

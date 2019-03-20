@@ -1,0 +1,113 @@
+// should pass basic tests
+
+/**
+* Adds two numbers
+* @param a - First number to add
+* @param b - Second number to add
+* @CustomFunction
+*/
+function sum(a: number, b: number): number {
+    return a + b;
+}
+
+// not included
+function sum2(a: number, b: number[]): number {
+    return a + b[0];
+}
+
+
+/**
+* Adds numbers in array
+* @param arr - array of numbers to add
+* @CustomFunction
+*/
+function sumArr(arr: number[][]): number {
+    return arr[0].reduce((accumulator, current) => accumulator + current);
+
+    /** @customFunction */
+    function sum3(a: number, b: number): number {
+        return a + b;
+    }
+}
+
+/**
+* Checks to see if a number is prime
+* @CustomFunction
+*/
+function isPrime(num: number): boolean {
+    return true;
+}
+
+// result
+/*
+[
+      {
+         "javascriptFunctionName": "sum",
+         "nonCapitalizedFullName": "TestNamespace.sum",
+         "status": "good",
+         "errors": [],
+         "metadata": {
+            "description": "Adds two numbers",
+            "id": "TESTNAMESPACE.SUM",
+            "name": "TESTNAMESPACE.SUM",
+            "parameters": [
+                  {
+                     "description": "First number to add",
+                     "name": "a",
+                     "type": "number"
+                  },
+                  {
+                     "description": "Second number to add",
+                     "name": "b",
+                     "type": "number"
+                  }
+            ],
+            "result": {
+                  "type": "number"
+            }
+         }
+      },
+      {
+         "javascriptFunctionName": "sumArr",
+         "nonCapitalizedFullName": "TestNamespace.sumArr",
+         "status": "good",
+         "errors": [],
+         "metadata": {
+            "description": "Adds numbers in array",
+            "id": "TESTNAMESPACE.SUMARR",
+            "name": "TESTNAMESPACE.SUMARR",
+            "parameters": [
+                  {
+                     "description": "array of numbers to add",
+                     "dimensionality": "matrix",
+                     "name": "arr",
+                     "type": "number"
+                  }
+            ],
+            "result": {
+                  "type": "number"
+            }
+         }
+      },
+      {
+         "javascriptFunctionName": "isPrime",
+         "nonCapitalizedFullName": "TestNamespace.isPrime",
+         "status": "good",
+         "errors": [],
+         "metadata": {
+            "description": "Checks to see if a number is prime",
+            "id": "TESTNAMESPACE.ISPRIME",
+            "name": "TESTNAMESPACE.ISPRIME",
+            "parameters": [
+                  {
+                     "name": "num",
+                     "type": "number"
+                  }
+            ],
+            "result": {
+                  "type": "boolean"
+            }
+         }
+      }
+]
+*/

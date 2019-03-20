@@ -1,12 +1,13 @@
 import styled from 'styled-components';
 
 export const CenteredContent = styled.div`
+  flex: 1;
+  overflow-y: auto;
+  padding: 50px 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
-  width: 100vw;
 `;
 
 export const WelcomeTitle = styled.h1.attrs({ className: 'ms-font-su' })`

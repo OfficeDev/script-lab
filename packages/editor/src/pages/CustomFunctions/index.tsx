@@ -1,6 +1,3 @@
-import { SCRIPT_URLS } from 'common/lib/constants';
-import { addScriptTags } from 'common/lib/utilities/script-loader';
-
 import React from 'react';
 
 import App from './components/App';
@@ -18,19 +15,11 @@ interface IState {
 class CustomFunctionsPage extends React.Component<{}, IState> {
   state: IState = { host: null };
 
-  constructor(props) {
+  constructor(props: {}) {
     super(props);
 
-    addScriptTags([SCRIPT_URLS.OFFICE_JS_FOR_CUSTOM_FUNCTIONS_DASHBOARD])
-      .then(() => Office.onReady())
-      .then(() => {
-        // Note: though could get the host information from "Office.onReady",
-        // the rest of the application thinks of the host value in terms of the
-        // OfficeJsHelpers string for host (which is all-caps).
-        // So go ahead and invoke the helper here to be consistent.
-        this.setState({ host: Utilities.host });
-      })
-      .then(() => hideSplashScreen());
+    this.setState({ host: Utilities.host });
+    hideSplashScreen();
   }
 
   render() {

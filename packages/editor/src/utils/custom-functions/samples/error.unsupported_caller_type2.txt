@@ -1,0 +1,13 @@
+
+/**
+* increments a value each iteration
+* @param increment - number to add
+* @CustomFunction
+*/
+function incrementValue(increment: number, caller: IStreamingCustomFunctionHandler<IPromise<number>>): void {
+    var result = 0;
+    setInterval(function(){
+         result += increment;
+         caller.setResult(result);
+    }, 1000);
+}

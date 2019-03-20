@@ -3,6 +3,7 @@ import { localStorageKeys } from '../constants';
 import { editorUrls, currentEditorUrl } from '../environment';
 import ensureFreshLocalStorage from './ensure.fresh.local.storage';
 import { showSplashScreen } from './splash.screen';
+import { ScriptLabError } from './error';
 
 /** Time threshold for kicking in a "click to cancel" UI on redirects */
 const AMOUNT_OF_TIME_BETWEEN_SUSPICIOUS_LOCALHOST_REDIRECTS = 20000;
@@ -10,18 +11,22 @@ const AMOUNT_OF_TIME_BETWEEN_SUSPICIOUS_LOCALHOST_REDIRECTS = 20000;
 /** Amount of time to wait for the user to click to cancel, before redirecting anyway */
 const AMOUNT_OF_TIME_TO_WAIT_ON_CLICK_TO_CANCEL = 4000;
 
-/** Checks (and redirects) if needs to go to a different environment.
- * @param isMainDomain - should be set to true if this is called for
- *    the main domain (e.g., editor domain for Script Lab, rather than the runner).
- *    Put differently, the main domain is the domain that hosts the
- *    dropdown for switching to other environments.
- * @returns `true` if will be redirecting away
+/**
+ * Redirects if needs to go to a different environment.
+ * @param isCancelable - set to true if should allow cancelling the redirect
+ *    if the redirect happens too soon after a previous one (this way,
+ *    if localhost is down, can just re-open page and see cancel option).
+ *    If true, it's the caller's responsibility to make sure that
+ *    the Office script reference has been added, and that onReady has been called.
+ * @returns - A promise that will either resolve if it's deemed that the page is NOT
+ *    redirecting, OR a promise that will *NEVER* resolve
+ *    (getting terminated by the page loading to a different page)
  */
 export async function redirectIfNeeded({
-  isMainDomain,
+  isCancelable,
 }: {
-  isMainDomain: boolean;
-}): Promise<boolean> {
+  isCancelable: boolean;
+}): Promise<void> {
   try {
     const params = queryString.parse(window.location.search) as {
       originEnvironment?: string;
@@ -42,7 +47,7 @@ export async function redirectIfNeeded({
       // the user has returned back to the root site)
       if (window.location.href.toLowerCase().indexOf(targetUrl) === 0) {
         window.localStorage.removeItem(localStorageKeys.editor.redirectEnvironmentUrl);
-        return false;
+        return;
       }
 
       // If hasn't quit above, then set the redirect URL into storage
@@ -85,17 +90,14 @@ export async function redirectIfNeeded({
 
       const keepGoingWithRedirect = await considerIfReallyWantToRedirect({
         redirectUrl,
-        isMainDomain,
+        isCancelable,
       });
       if (!keepGoingWithRedirect) {
-        return false;
+        return;
       }
 
-      if (isMainDomain) {
-        window.localStorage.setItem(
-          localStorageKeys.editor.lastEnvironmentRedirectTimestamp,
-          Date.now().toString(),
-        );
+      if (isCancelable) {
+        setLastEnvironmentRedirectTimestamp();
       }
 
       const finalUrlComponents: string[] = [
@@ -108,16 +110,16 @@ export async function redirectIfNeeded({
       ];
       window.location.replace(finalUrlComponents.join(''));
 
-      return true;
+      return new Promise(_resolve => () => {
+        /* don't ever call "resolve", waiting indefinitely until the page navigates away */
+      });
     }
 
     // If reached here, environment is already configured. No need to redirect anywhere.
-    return false;
+    return;
   } catch (e) {
-    console.error('Error redirecting the environments, staying on current page', e);
+    throw new ScriptLabError('Error redirecting to a different environment.', e);
   }
-
-  return false;
 }
 
 export async function redirectEditorToOtherEnvironment(configName: string) {
@@ -129,6 +131,7 @@ export async function redirectEditorToOtherEnvironment(configName: string) {
   );
 
   showSplashScreen('Re-loading Script Lab...');
+  setLastEnvironmentRedirectTimestamp();
 
   // Add query string parameters to default editor URL
   if (originEnvironment) {
@@ -149,10 +152,10 @@ export async function redirectEditorToOtherEnvironment(configName: string) {
 ///////////////////////////////////////
 
 async function considerIfReallyWantToRedirect({
-  isMainDomain,
+  isCancelable,
   redirectUrl,
 }: {
-  isMainDomain: boolean;
+  isCancelable: boolean;
   redirectUrl: string;
 }): Promise<boolean> {
   // When redirecting to localhost (dev scenario), sometimes localhost
@@ -161,7 +164,7 @@ async function considerIfReallyWantToRedirect({
   // To work around it, if on main domain and redirecting to localhost,
   //   check whether recently failed. If failed, give the user a few seconds
   //   to decide if want to try again, versus to cancel the redirect.
-  if (isMainDomain && redirectUrl.startsWith('https://localhost')) {
+  if (isCancelable && redirectUrl.startsWith('https://localhost')) {
     if (checkIfLastRedirectWasRecent()) {
       const keepGoing = await new Promise<boolean>(async resolve => {
         const timeout = setTimeout(() => {
@@ -213,4 +216,11 @@ function checkIfLastRedirectWasRecent(): boolean {
   );
   const diff = Date.now() - timeSinceLastRedirectAttempt;
   return diff < AMOUNT_OF_TIME_BETWEEN_SUSPICIOUS_LOCALHOST_REDIRECTS;
+}
+
+function setLastEnvironmentRedirectTimestamp() {
+  window.localStorage.setItem(
+    localStorageKeys.editor.lastEnvironmentRedirectTimestamp,
+    Date.now().toString(),
+  );
 }

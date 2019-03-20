@@ -3,7 +3,6 @@ import { getType, ActionType } from 'typesafe-actions';
 import { actions, selectors } from '../../store';
 import {
   getCurrentEnv,
-  editorUrls,
   environmentDisplayNames,
   currentRunnerUrl,
 } from 'common/lib/environment';
@@ -83,5 +82,10 @@ function* onPopOutEditorSaga() {
 }
 
 function* onGoToCustomFunctionsSaga() {
-  window.location.href = './#/custom-functions?backButton=true';
+  // Update the hash and then force a page reload.
+  // Otherwise can end up loading Office.js twice (which throws an error)
+  // Note that once Custom Functions is out of Preview, and we can use the
+  //   same public CDN for all of the editor, this will no longer be necessary
+  window.location.hash = '#/custom-functions?backButton=true';
+  window.location.reload();
 }

@@ -116,7 +116,7 @@ const messageBarReducer = (
           button: {
             text: 'Trust',
             action: solutions.updateOptions({
-              solution: action.payload,
+              id: action.payload.id,
               options: { isUntrusted: false },
             }),
           },

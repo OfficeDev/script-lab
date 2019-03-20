@@ -24,7 +24,7 @@ stories.add('basic', () => (
       funcName="foo3"
       additionalInfo={[
         'Error - I am an error message. Be scared of me .',
-        'Error - so many error messages. And this error message turns out to be a longer error message than the other ones. It is so long. A very very long error message, becauser your code is verry veryy messed up.',
+        'Error - so many error messages. And this error message turns out to be a longer error message than the other ones. It is so long. A very very long error message. Like, super-duper long. And even longer.',
       ]}
     />
     <SummaryItem status={Status.Untrusted} snippetName="SnippetName" funcName="foo4" />

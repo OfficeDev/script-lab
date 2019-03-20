@@ -105,8 +105,3 @@ export const convertSolutionToSnippet = (solution: ISolution): ISnippet => {
     ...snippetFiles,
   };
 };
-
-const isCustomFunctionRegex = /@customfunction/i;
-export function isCustomFunctionScript(content: string) {
-  return isCustomFunctionRegex.test(content);
-}

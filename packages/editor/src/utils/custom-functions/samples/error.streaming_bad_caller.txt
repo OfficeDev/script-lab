@@ -1,0 +1,4 @@
+/** @CustomFunction */
+function badStream(x: number[][], y: string[][], caller: Promise<void>) {
+  return 123;
+}
