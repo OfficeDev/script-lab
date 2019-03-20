@@ -5,7 +5,7 @@
     // Extension identifier format: ${publisher}.${name}
     "esbenp.prettier-vscode",
     "ms-vscode.vscode-typescript-tslint-plugin",
-    "robertohuertasm.vscode-icons",
+    "vscode-icons-team.vscode-icons",
     "coenraads.bracket-pair-colorizer",
     "wayou.vscode-todo-highlight",
     "streetsidesoftware.code-spell-checker",
