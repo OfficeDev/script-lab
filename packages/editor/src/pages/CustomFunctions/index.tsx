@@ -18,7 +18,7 @@ class CustomFunctionsPage extends React.Component<{}, IState> {
   constructor(props) {
     super(props);
 
-    this.setState({ host: Utilities.host });
+    this.state = { host: Utilities.host };
     hideSplashScreen();
   }
 
