@@ -5,6 +5,7 @@ import {
   getCurrentEnv,
   environmentDisplayNames,
   currentRunnerUrl,
+  currentEditorUrl,
 } from 'common/lib/environment';
 import { showSplashScreen } from 'common/lib/utilities/splash.screen';
 import { openPopoutCodeEditor } from 'common/lib/utilities/popout.control';
@@ -82,10 +83,13 @@ function* onPopOutEditorSaga() {
 }
 
 function* onGoToCustomFunctionsSaga() {
-  // Update the hash and then force a page reload.
-  // Otherwise can end up loading Office.js twice (which throws an error)
-  // Note that once Custom Functions is out of Preview, and we can use the
-  //   same public CDN for all of the editor, this will no longer be necessary
-  window.location.hash = '#/custom-functions?backButton=true';
-  window.location.reload();
+  // Redirect to the custom functions dashboard via an indirect route, first loading a different
+  //   html page that will redirect back to the actual CF dashboard route.
+  // The reason can't go directly is that if only do a hash-level navigation,
+  //   will end up loading Office.js twice (which throws an error).
+  // And can't do a href-setting followed by a reload because on the Edge browser,
+  //   it seems to cause the outer Office Online window to get redirected
+  //   to the editor page (bug https://github.com/OfficeDev/script-lab/issues/691).
+  window.location.href =
+    currentEditorUrl + '/' + 'custom-functions-with-back-button.html';
 }
