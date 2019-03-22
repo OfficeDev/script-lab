@@ -1,0 +1,138 @@
+// should pass streaming functions tests
+
+/**
+* increments a value each iteration
+* @param increment - number to add
+* @CustomFunction
+*/
+function incrementValue(increment: number, handler: CustomFunctions.StreamingInvocation<number>) {
+    let result = 0;
+    let interval = setInterval(() => {
+        result += increment;
+        handler.setResult(result);
+    }, 1000);
+
+    handler.onCanceled = () => {
+        clearInterval(interval);
+    };
+}
+
+// declaring as ": void" return type should also be OK:
+
+/**
+* increments a value each iteration
+* @param increment - number to add
+* @CustomFunction
+*/
+function incrementValue2(increment: number, handler: CustomFunctions.StreamingInvocation<number>): void {
+    let result = 0;
+    let interval = setInterval(() => {
+        result += increment;
+        handler.setResult(result);
+    }, 1000);
+
+    handler.onCanceled = () => {
+        clearInterval(interval);
+    };
+}
+
+/**
+* increments a value each iteration
+* @param increment - number to add
+* @CustomFunction
+*/
+function incrementValue3(increment: number, handler: CustomFunctions.StreamingInvocation<number>) {
+    let result = "";
+    let interval = setInterval(() => {
+         result += increment;
+         handler.setResult(result);
+    }, 1000);
+
+    handler.onCanceled = () => {
+        clearInterval(interval);
+    };
+}
+
+// not included
+function sum2(a: number, b: number[]): number {
+    return a + b[0];
+}
+
+
+// result
+/*
+[
+   {
+      "javascriptFunctionName": "incrementValue",
+      "nonCapitalizedFullName": "TestNamespace.incrementValue",
+      "status": "good",
+      "errors": [],
+      "metadata": {
+            "description": "increments a value each iteration",
+            "id": "TESTNAMESPACE.INCREMENTVALUE",
+            "name": "TESTNAMESPACE.INCREMENTVALUE",
+            "options": {
+               "stream": true
+            },
+            "parameters": [
+               {
+                  "description": "number to add",
+                  "name": "increment",
+                  "type": "number"
+               }
+            ],
+            "result": {
+               "type": "number"
+            }
+      }
+   },
+   {
+      "javascriptFunctionName": "incrementValue2",
+      "nonCapitalizedFullName": "TestNamespace.incrementValue2",
+      "status": "good",
+      "errors": [],
+      "metadata": {
+            "description": "increments a value each iteration",
+            "id": "TESTNAMESPACE.INCREMENTVALUE2",
+            "name": "TESTNAMESPACE.INCREMENTVALUE2",
+            "options": {
+               "stream": true
+            },
+            "parameters": [
+               {
+                  "description": "number to add",
+                  "name": "increment",
+                  "type": "number"
+               }
+            ],
+            "result": {
+               "type": "number"
+            }
+      }
+   },
+   {
+      "javascriptFunctionName": "incrementValue3",
+      "nonCapitalizedFullName": "TestNamespace.incrementValue3",
+      "status": "good",
+      "errors": [],
+      "metadata": {
+            "description": "increments a value each iteration",
+            "id": "TESTNAMESPACE.INCREMENTVALUE3",
+            "name": "TESTNAMESPACE.INCREMENTVALUE3",
+            "options": {
+               "stream": true
+            },
+            "parameters": [
+               {
+                  "description": "number to add",
+                  "name": "increment",
+                  "type": "number"
+               }
+            ],
+            "result": {
+               "type": "number"
+            }
+      }
+   }
+]
+*/

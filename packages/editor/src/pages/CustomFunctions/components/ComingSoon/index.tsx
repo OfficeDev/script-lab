@@ -4,7 +4,7 @@ import {
   Logo,
   ScriptLabTitle,
   CustomFunctionsTitle,
-  Seperator,
+  Separator,
   Description,
 } from './styles';
 import { CUSTOM_FUNCTIONS_INFO_URL } from '../../../../constants';
@@ -14,10 +14,10 @@ const ComingSoon = () => (
     <Logo />
     <ScriptLabTitle>Script Lab</ScriptLabTitle>
     <CustomFunctionsTitle>Custom Functions</CustomFunctionsTitle>
-    <Seperator />
+    <Separator />
     <Description>
       Currently, Script Lab only supports Custom Functions (Preview) on Windows Desktop on
-      the latest Insider builds, and on Office Online.
+      the latest Insider builds on PC and Mac, and on Office Online.
       <br />
       <br />
       For more info, see{' '}

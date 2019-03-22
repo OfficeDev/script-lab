@@ -1,103 +1,30 @@
-interface ICFVisualMetadata {
-  snippets: ICFVisualSnippetMetadata[];
-}
-
-interface ICFVisualSnippetMetadata {
-  name: string;
-  functions: ICFVisualFunctionMetadata[];
-  error?: boolean;
-  status: CustomFunctionsRegistrationStatus;
-}
-
-interface ICFVisualParameterMetadata extends ICFSchemaParameterMetadata {
-  prettyType?: string;
-  error?: string;
-}
-
-interface ICFVisualFunctionResultMetadata extends ICFSchemaFunctionResultMetadata {
-  error?: string;
-}
-
-interface ICFVisualFunctionMetadata /* doesn't extend ICFSchemaFunctionMetadata so as not to have "name" */ {
-  /** The actual name of the function (no namespace/sub-namespace.  E.g., "add42") */
-  funcName: string;
+/* The parsed result, as processed by Script Lab.
+ * Be sure to pass "IFunction" from the "custom-functions-metadata" package as the "T" argument.
+ * This is necessary for keeping the ICustomFunctionParseResult declaration ambient
+ *   (or else it would require always importing this file)
+ */
+interface ICustomFunctionParseResult<T> {
+  /** The as-written name of the function (no namespace/sub-namespace, not capitalized. E.g., "add42") */
+  javascriptFunctionName: string;
 
   // Sub-namespaced full name, not capitalized (e.g., "BlankSnippet1.add42") */
   nonCapitalizedFullName: string;
 
   status: CustomFunctionsRegistrationStatus;
-  paramString?: string;
-  error?: string | boolean;
 
-  description?: string;
-  parameters: ICFVisualParameterMetadata[];
-  result: ICFVisualFunctionResultMetadata;
-  options: ICFSchemaFunctionOptions;
+  // Errors, if any
+  errors?: string[];
+
+  metadata: T;
 }
-
-interface ICFSchemaFunctionMetadata {
-  id: string;
-  name: string;
-  description?: string;
-  parameters: ICFSchemaParameterMetadata[];
-  result: ICFSchemaFunctionResultMetadata;
-  options: ICFSchemaFunctionOptions;
-}
-
-interface ICFSchemaParameterMetadata {
-  name: string;
-  description?: string;
-  type: CustomFunctionsSchemaSupportedTypes;
-  dimensionality: CustomFunctionsSchemaDimensionality;
-}
-
-interface ICFSchemaFunctionResultMetadata {
-  dimensionality: CustomFunctionsSchemaDimensionality;
-  type: CustomFunctionsSchemaSupportedTypes;
-}
-
-interface ICFSchemaFunctionOptions {
-  stream: boolean;
-  cancelable: boolean;
-}
-
-type CustomFunctionsSchemaSupportedTypes = 'number' | 'string' | 'boolean' | 'invalid';
-type CustomFunctionsSchemaDimensionality = 'invalid' | 'scalar' | 'matrix';
 
 type CustomFunctionsRegistrationStatus = 'good' | 'skipped' | 'error' | 'untrusted';
 
-/** The interface used by Excel to register custom functions (workbook.registerCustomFunctions(...))  */
-interface ICustomFunctionsRegistrationApiMetadata {
-  functions: ICFSchemaFunctionMetadata[];
-}
-
-interface ICustomFunctionsHeartbeatParams {
-  clientTimestamp: number;
-  loadFromOfficeJsPreviewCachedCopy: boolean;
-}
-
-interface ICustomFunctionsRunnerRelevantData {
-  name: string;
-  id: string;
-  libraries: string;
-  script: IContentLanguagePair;
-  metadata?: ICustomFunctionsSnippetRegistrationData;
-}
-
-interface ICustomFunctionsSnippetRegistrationData {
-  namespace: string;
-  functions: ICFVisualFunctionMetadata[];
-}
-
-interface ICustomFunctionsMetadataRequestPostData {
-  snippets: ISnippet[];
-}
-
-interface IRunnerCustomFunctionsPostData {
-  snippets: ICustomFunctionsRunnerRelevantData[];
-  loadFromOfficeJsPreviewCachedCopy: boolean;
-  displayLanguage: string;
-  heartbeatParams: ICustomFunctionsHeartbeatParams;
+/** The interface used by Excel to register custom functions (CustomFunctionManager.register(...)).
+ * Be sure to pass "IFunction" from the "custom-functions-metadata" package as the "T" argument.
+ */
+interface ICustomFunctionsRegistrationApiMetadata<T> {
+  functions: T[];
 }
 
 interface ICustomFunctionEngineStatus {
@@ -105,39 +32,30 @@ interface ICustomFunctionEngineStatus {
   nativeRuntime?: boolean;
 }
 
-type ConsoleLogTypes = 'log' | 'info' | 'warn' | 'error';
-
-interface ICustomFunctionSummaryItem {
-  status: CustomFunctionsRegistrationStatus;
-  snippetName: string;
-  funcName: string;
-  additionalInfo?: string[];
-}
-
-interface IRunnerState {
-  isAlive: boolean;
-  lastUpdated: number;
-}
-
-interface ICFHeartbeatMessage {
+interface ICustomFunctionsHeartbeatMessage {
   type: 'metadata' | 'refresh' | 'log';
   payload?: any;
 }
 
-interface ICFMetadata {
-  solutionId: string;
-  namespace: string;
-  functionNames: string[];
-  code: string; // compiled js
-  jsLibs: string[];
-}
-
-interface ICFGetMetadataMessage extends ICFHeartbeatMessage {
+interface ICustomFunctionsHeartbeatGetMetadataMessage
+  extends ICustomFunctionsHeartbeatMessage {
   type: 'metadata';
-  payload: ICFMetadata[];
+  payload: ICustomFunctionsHeartbeatMetadata[];
 }
 
-interface ICFLogMessage extends ICFHeartbeatMessage {
+interface ICustomFunctionsHeartbeatLogMessage extends ICustomFunctionsHeartbeatMessage {
   type: 'log';
   payload: ILogData;
+}
+
+interface ICustomFunctionsIframeRunnerMetadata {
+  solutionId: string;
+  namespace: string;
+  functions: Array<{
+    fullId: string;
+    fullDisplayName: string;
+    javascriptFunctionName: string;
+  }>;
+  code: string;
+  jsLibs: string[];
 }

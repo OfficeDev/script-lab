@@ -15,7 +15,7 @@ interface IState {
 class CustomFunctionsPage extends React.Component<{}, IState> {
   state: IState = { host: null };
 
-  constructor(props) {
+  constructor(props: {}) {
     super(props);
 
     this.state = { host: Utilities.host };

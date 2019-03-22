@@ -1,5 +1,13 @@
 import { PACKAGE_VERSIONS, hyphenate } from '../../common/src/package-versions';
 
+const IS_LOCAL_OR_ALPHA_ENV = checkIfLocalOrAlphaEnvironment();
+if (IS_LOCAL_OR_ALPHA_ENV) {
+  console.info(
+    'Running locally or on alpha environment, will use non-minified versions ' +
+      'during postinstall, where appropriate',
+  );
+}
+
 const expectedPackages: {
   [key: string]: {
     name: string;
@@ -13,14 +21,7 @@ const expectedPackages: {
     name: 'monaco-editor',
     version: PACKAGE_VERSIONS['monaco-editor'],
     copyAsName: 'monaco-editor',
-    pathToCopyFrom: 'min/vs',
-    pathToCopyTo: 'vs',
-  },
-  'monaco-old': {
-    name: 'monaco-editor-old',
-    version: PACKAGE_VERSIONS['monaco-editor-old'],
-    copyAsName: 'monaco-editor',
-    pathToCopyFrom: 'min/vs',
+    pathToCopyFrom: `${IS_LOCAL_OR_ALPHA_ENV ? 'dev' : 'min'}/vs`,
     pathToCopyTo: 'vs',
   },
   officeJs: {
@@ -101,3 +102,20 @@ for (const key in expectedPackages) {
   fs.removeSync(pair.to);
   fs.copySync(pair.from, pair.to);
 });
+
+///////////////////////////////////////
+
+function checkIfLocalOrAlphaEnvironment() {
+  const { TRAVIS_BRANCH } = process.env; // from travis
+
+  if (!TRAVIS_BRANCH) {
+    // running locally
+    return true;
+  }
+
+  if (TRAVIS_BRANCH === 'master') {
+    return true;
+  }
+
+  return false;
+}

@@ -1,0 +1,49 @@
+// should be able to properly handle a function with no Params
+
+/** @customfunction */
+function foobar(): number {
+  return 42;
+}
+
+/** @customfunction */
+function streamingFoobar(caller: CustomFunctions.StreamingInvocation<string>) {
+  return 42;
+}
+
+
+// result
+/*
+[
+   {
+      "javascriptFunctionName": "foobar",
+      "nonCapitalizedFullName": "TestNamespace.foobar",
+      "status": "good",
+      "errors": [],
+      "metadata": {
+            "id": "TESTNAMESPACE.FOOBAR",
+            "name": "TESTNAMESPACE.FOOBAR",
+            "parameters": [],
+            "result": {
+               "type": "number"
+            }
+      }
+   },
+   {
+      "javascriptFunctionName": "streamingFoobar",
+      "nonCapitalizedFullName": "TestNamespace.streamingFoobar",
+      "status": "good",
+      "errors": [],
+      "metadata": {
+            "id": "TESTNAMESPACE.STREAMINGFOOBAR",
+            "name": "TESTNAMESPACE.STREAMINGFOOBAR",
+            "options": {
+               "stream": true
+            },
+            "parameters": [],
+            "result": {
+               "type": "string"
+            }
+      }
+   }
+]
+*/

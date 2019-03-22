@@ -14,19 +14,61 @@ enum Status {
 
 const stories = storiesOf('Custom Functions|Summary', module);
 
-const snippetName = 'SnippetName';
+const nonCapitalizedFullName = 'SnippetName';
 const funcName = 'foo';
 
-export const basicSummaryProps = {
+export const basicSummaryProps: {
+  items: Array<ICustomFunctionParseResult<any>>;
+} = {
   items: [
-    { snippetName, funcName: `${funcName}1`, status: Status.Error },
-    { snippetName, funcName: `${funcName}2`, status: Status.Skipped },
-    { snippetName, funcName: `${funcName}3`, status: Status.Error },
-    { snippetName, funcName: `${funcName}4`, status: Status.Skipped },
-    { snippetName, funcName: `${funcName}5`, status: Status.Good },
-    { snippetName, funcName: `${funcName}6`, status: Status.Good },
-    { snippetName, funcName: `${funcName}7`, status: Status.Good },
-    { snippetName, funcName: `${funcName}8`, status: Status.Good },
+    {
+      nonCapitalizedFullName,
+      javascriptFunctionName: `${funcName}1`,
+      status: Status.Error,
+      metadata: null,
+    },
+    {
+      nonCapitalizedFullName,
+      javascriptFunctionName: `${funcName}2`,
+      status: Status.Skipped,
+      metadata: null,
+    },
+    {
+      nonCapitalizedFullName,
+      javascriptFunctionName: `${funcName}3`,
+      status: Status.Error,
+      metadata: null,
+    },
+    {
+      nonCapitalizedFullName,
+      javascriptFunctionName: `${funcName}4`,
+      status: Status.Skipped,
+      metadata: null,
+    },
+    {
+      nonCapitalizedFullName,
+      javascriptFunctionName: `${funcName}5`,
+      status: Status.Good,
+      metadata: null,
+    },
+    {
+      nonCapitalizedFullName,
+      javascriptFunctionName: `${funcName}6`,
+      status: Status.Good,
+      metadata: null,
+    },
+    {
+      nonCapitalizedFullName,
+      javascriptFunctionName: `${funcName}7`,
+      status: Status.Good,
+      metadata: null,
+    },
+    {
+      nonCapitalizedFullName,
+      javascriptFunctionName: `${funcName}8`,
+      status: Status.Good,
+      metadata: null,
+    },
   ],
 };
 

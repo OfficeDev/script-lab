@@ -1,0 +1,46 @@
+// should pass matrix dimensionality tests
+
+/**
+ * *Insert Description here*
+ * @CustomFunction
+ */
+function foo(a: number[][], b: number, c: number[][]): number[][] {
+    return [[]];
+}
+
+// result
+/*
+[
+	{
+		"javascriptFunctionName": "foo",
+		"nonCapitalizedFullName": "TestNamespace.foo",
+		"status": "good",
+		"errors": [],
+		"metadata": {
+			"description": "*Insert Description here*",
+			"id": "TESTNAMESPACE.FOO",
+			"name": "TESTNAMESPACE.FOO",
+			"parameters": [
+				{
+					"dimensionality": "matrix",
+					"name": "a",
+					"type": "number"
+				},
+				{
+					"name": "b",
+					"type": "number"
+				},
+				{
+					"dimensionality": "matrix",
+					"name": "c",
+					"type": "number"
+				}
+			],
+			"result": {
+				"dimensionality": "matrix",
+				"type": "number"
+			}
+		}
+	}
+]
+*/

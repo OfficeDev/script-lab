@@ -3,6 +3,7 @@ import React from 'react';
 import Dashboard from '../Dashboard';
 
 import Summary from '../Summary';
+import Metadata from '../Metadata';
 import Console from '../Console';
 
 import ComingSoon from '../ComingSoon';
@@ -17,7 +18,6 @@ export class CustomFunctionsDashboard extends React.Component<IProps> {
 
   render() {
     const {
-      hasCustomFunctionsInSolutions,
       customFunctionsSummaryItems,
       isStandalone,
       engineStatus,
@@ -30,22 +30,18 @@ export class CustomFunctionsDashboard extends React.Component<IProps> {
     if (!engineStatus) {
       return null;
     } else if (engineStatus!.enabled) {
-      if (hasCustomFunctionsInSolutions) {
-        return (
-          <Dashboard
-            isStandalone={isStandalone}
-            items={{
-              Summary: <Summary items={customFunctionsSummaryItems} error={error} />,
-              Console: (
-                <Console logs={logs} fetchLogs={fetchLogs} clearLogs={clearLogs} />
-              ),
-            }}
-            shouldPromptRefresh={this.getShouldPromptRefresh()}
-          />
-        );
-      } else {
-        return <Welcome isRefreshEnabled={this.getShouldPromptRefresh()} />;
-      }
+      return (
+        <Dashboard
+          isStandalone={isStandalone}
+          hasAny={customFunctionsSummaryItems.length > 0}
+          items={{
+            Summary: <Summary items={customFunctionsSummaryItems} error={error} />,
+            Metadata: <Metadata items={customFunctionsSummaryItems} />,
+            Console: <Console logs={logs} fetchLogs={fetchLogs} clearLogs={clearLogs} />,
+          }}
+          shouldPromptRefresh={this.getShouldPromptRefresh()}
+        />
+      );
     } else {
       return <ComingSoon />;
     }

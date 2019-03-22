@@ -3,9 +3,9 @@ import { getType, ActionType } from 'typesafe-actions';
 import { actions, selectors } from '../../store';
 import {
   getCurrentEnv,
-  editorUrls,
   environmentDisplayNames,
   currentRunnerUrl,
+  currentEditorUrl,
 } from 'common/lib/environment';
 import { showSplashScreen } from 'common/lib/utilities/splash.screen';
 import { openPopoutCodeEditor } from 'common/lib/utilities/popout.control';
@@ -83,5 +83,13 @@ function* onPopOutEditorSaga() {
 }
 
 function* onGoToCustomFunctionsSaga() {
-  window.location.href = './#/custom-functions?backButton=true';
+  // Redirect to the custom functions dashboard via an indirect route, first loading a different
+  //   html page that will redirect back to the actual CF dashboard route.
+  // The reason can't go directly is that if only do a hash-level navigation,
+  //   will end up loading Office.js twice (which throws an error).
+  // And can't do a href-setting followed by a reload because on the Edge browser,
+  //   it seems to cause the outer Office Online window to get redirected
+  //   to the editor page (bug https://github.com/OfficeDev/script-lab/issues/691).
+  window.location.href =
+    currentEditorUrl + '/' + 'custom-functions-with-back-button.html';
 }

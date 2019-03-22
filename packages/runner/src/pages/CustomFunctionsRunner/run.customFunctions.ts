@@ -1,20 +1,9 @@
-// cspell:ignore crossorigin
-
-export interface ICustomFunctionPayload {
-  solutionId: string;
-  namespace: string;
-  functionNames: string[];
-  code: string;
-  jsLibs: string[];
-}
-
 export default ({
   solutionId,
-  namespace,
-  functionNames,
+  functions,
   code,
   jsLibs,
-}: ICustomFunctionPayload) => {
+}: ICustomFunctionsIframeRunnerMetadata) => {
   const resultingHtml = `<!DOCTYPE html>
 <html>
 
@@ -42,10 +31,12 @@ export default ({
   <script>
     ${code}
 
-    ${functionNames
+    ${functions
       .map(
-        funcName =>
-          `ScriptLabCustomFunctionsDictionary["${namespace}.${funcName}"] = ${funcName};`,
+        func =>
+          `ScriptLabCustomFunctionsDictionary["${func.fullId}"] = ${
+            func.javascriptFunctionName
+          };`,
       )
       .join('\n  ')}
 
@@ -57,3 +48,5 @@ export default ({
 
   return resultingHtml;
 };
+
+// cspell:ignore crossorigin

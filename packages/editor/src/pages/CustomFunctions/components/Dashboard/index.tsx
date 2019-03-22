@@ -1,15 +1,19 @@
 import React from 'react';
 import Header from 'common/lib/components/Header';
-import Footer from 'common/lib/components/Footer';
 import HeaderFooterLayout from 'common/lib/components/HeaderFooterLayout';
 import PivotBar from 'common/lib/components/PivotBar';
 import Only from 'common/lib/components/Only';
 
 import { MessageBar, MessageBarType } from 'office-ui-fabric-react/lib/MessageBar';
 import { DefaultButton } from 'office-ui-fabric-react/lib/Button';
+import { Icon } from 'office-ui-fabric-react/lib/Icon';
+import Welcome from '../Welcome';
+import { ColumnFlexContainer } from './styles';
+import { currentEditorUrl } from 'common/lib/environment';
 
 interface IProps {
   isStandalone: boolean;
+  hasAny: boolean;
   shouldPromptRefresh: boolean;
   items: { [itemName: string]: React.ReactElement<any> };
 }
@@ -30,18 +34,30 @@ class Dashboard extends React.Component<IProps, IState> {
 
   render() {
     const { selectedKey } = this.state;
-    const { items, isStandalone, shouldPromptRefresh } = this.props;
+    const { hasAny, items, isStandalone, shouldPromptRefresh } = this.props;
 
     const goBackItem = {
       key: 'go-back',
       iconOnly: true,
       iconProps: { iconName: 'Back' },
-      onClick: isStandalone ? null : () => window.history.back(),
+      onClick: isStandalone
+        ? null
+        : () => {
+            // Force a page reload via an indirect route, first loading a different
+            //   html page that will redirect back to the regular editor URL.
+            // The reason can't go directly is that if only do a hash-level navigation,
+            //   will end up loading Office.js twice (which throws an error).
+            // And can't do a href-setting followed by a reload because on the Edge browser,
+            //   it seems to cause the outer Office Online window to get redirected
+            //   to the editor page (bug https://github.com/OfficeDev/script-lab/issues/691).
+            window.location.href = currentEditorUrl + '/' + 'redirect-to-editor.html';
+          },
     };
 
     const titleItem = {
       key: 'title',
       text: 'Custom Functions (Preview)',
+      onRenderIcon: () => <Icon iconName="Refresh" style={{ padding: '.4rem' }} />,
       onClick: this.reload,
     };
 
@@ -53,20 +69,22 @@ class Dashboard extends React.Component<IProps, IState> {
         header={
           <>
             <Header items={headerItems} />
-            <PivotBar
-              items={Object.keys(items).map(key => ({
-                key,
-                text: key,
-              }))}
-              selectedKey={selectedKey}
-              onSelect={this.setSelectedKey}
-            />
+            <Only when={hasAny}>
+              <PivotBar
+                items={Object.keys(items).map(key => ({
+                  key,
+                  text: key,
+                }))}
+                selectedKey={selectedKey}
+                onSelect={this.setSelectedKey}
+              />
+            </Only>
           </>
         }
-        footer={<Footer items={[]} />}
+        footer={null}
       >
-        <>
-          <Only when={shouldPromptRefresh}>
+        <ColumnFlexContainer>
+          {shouldPromptRefresh ? (
             <MessageBar
               messageBarType={MessageBarType.info}
               isMultiline={true}
@@ -81,10 +99,14 @@ class Dashboard extends React.Component<IProps, IState> {
               You have made changes to your Custom Functions. Would you like to
               re-register?
             </MessageBar>
-          </Only>
+          ) : null}
 
-          {items[selectedKey]}
-        </>
+          {hasAny ? (
+            <ColumnFlexContainer>{items[selectedKey]}</ColumnFlexContainer>
+          ) : (
+            <Welcome isRefreshEnabled={shouldPromptRefresh} />
+          )}
+        </ColumnFlexContainer>
       </HeaderFooterLayout>
     );
   }
