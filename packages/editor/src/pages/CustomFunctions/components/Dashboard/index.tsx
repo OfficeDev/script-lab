@@ -9,6 +9,7 @@ import { DefaultButton } from 'office-ui-fabric-react/lib/Button';
 import { Icon } from 'office-ui-fabric-react/lib/Icon';
 import Welcome from '../Welcome';
 import { ColumnFlexContainer } from './styles';
+import { currentEditorUrl } from 'common/lib/environment';
 
 interface IProps {
   isStandalone: boolean;
@@ -42,12 +43,14 @@ class Dashboard extends React.Component<IProps, IState> {
       onClick: isStandalone
         ? null
         : () => {
-            // Update the hash and then force a page reload.
-            // Otherwise can end up loading Office.js twice (which throws an error)
-            // Note that once Custom Functions is out of Preview, and we can use the
-            //   same public CDN for all of the editor, this will no longer be necessary
-            window.location.hash = '#';
-            window.location.reload();
+            // Force a page reload via an indirect route, first loading a different
+            //   html page that will redirect back to the regular editor URL.
+            // The reason can't go directly is that if only do a hash-level navigation,
+            //   will end up loading Office.js twice (which throws an error).
+            // And can't do a href-setting followed by a reload because on the Edge browser,
+            //   it seems to cause the outer Office Online window to get redirected
+            //   to the editor page (bug https://github.com/OfficeDev/script-lab/issues/691).
+            window.location.href = currentEditorUrl + '/' + 'redirect-to-editor.html';
           },
     };
 
