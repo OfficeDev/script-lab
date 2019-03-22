@@ -152,9 +152,9 @@ function* makeAddIntellisenseRequestSaga() {
     return;
   }
 
-  const defaultEverPresentLibs = solution.options.isCustomFunctionsSolution
-    ? ['@types/custom-functions-runtime']
-    : [];
+  const host = yield select(selectors.host.get);
+  const defaultEverPresentLibs =
+    host === 'EXCEL' ? ['@types/custom-functions-runtime'] : [];
 
   const entries = [...defaultEverPresentLibs, ...libraries.content.split('\n')];
 
