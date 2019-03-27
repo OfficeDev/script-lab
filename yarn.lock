@@ -4578,10 +4578,10 @@ csstype@^2.2.0:
   resolved "https://registry.yarnpkg.com/csstype/-/csstype-2.5.7.tgz#bf9235d5872141eccfb2d16d82993c6b149179ff"
   integrity sha512-Nt5VDyOTIIV4/nRFswoCKps1R5CD1hkiyjBE9/thNaNZILLEviVw9yWQw15+O+CpNjQKB/uvdcxFFOrSflY3Yw==
 
-custom-functions-metadata@^0.0.18:
-  version "0.0.18"
-  resolved "https://registry.yarnpkg.com/custom-functions-metadata/-/custom-functions-metadata-0.0.18.tgz#60ad560e7f4646fe5c1d047afb9609ff5a5e279f"
-  integrity sha512-s/LBYDebsxv47wVG7fkBIJ4EA5EryjV/p+EqJFyRRY8dH0vtGEvjiPnTULZ8GIbUMLwNGmDXAGgKw4X72fZMgw==
+custom-functions-metadata@^0.0.19:
+  version "0.0.19"
+  resolved "https://registry.yarnpkg.com/custom-functions-metadata/-/custom-functions-metadata-0.0.19.tgz#1063e0c50a021e70456a5e6169a602ddfbc31fdf"
+  integrity sha512-uhBIgDzOcSjPdZ9sT+OVJ2x/eSBYvzOylUxoUb3SZ+W7TZTvFhwOo647TuBt2E4bq/4SoF8zPpie6M61YTYwcw==
   dependencies:
     assert "^1.4.1"
     commander "^2.19.0"
