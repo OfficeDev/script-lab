@@ -30,9 +30,10 @@ function* openSampleSaga(action: ActionType<typeof samples.get.request>) {
   const { content, error } = yield call(fetchYaml, url);
   if (content) {
     const solution = convertSnippetToSolution(content);
-    sendTelemetryEvent("Editor.SampleLoaded",
-      [oteljs.makeStringDataField("SampleName", solution.name),
-      oteljs.makeStringDataField("SampleID", solution.id)]);
+    sendTelemetryEvent('Editor.SampleLoaded', [
+      oteljs.makeStringDataField('SampleName', solution.name),
+      oteljs.makeStringDataField('SampleID', solution.id),
+    ]);
     yield put(samples.get.success({ solution }));
   } else {
     yield put(samples.get.failure(error));

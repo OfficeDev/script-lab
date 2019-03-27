@@ -9,6 +9,7 @@ class OfficeJsSink implements oteljs.TelemetrySink {
 }
 
 export function initializeTelemetryLogger() {
+  console.info('[Telemetry] Initializing...');
   telemetryLogger = new oteljs.TelemetryLogger();
   telemetryLogger.addSink(new OfficeJsSink());
 
@@ -21,12 +22,16 @@ export function initializeTelemetryLogger() {
       },
     },
   });
+
+  console.info('[Telemetry] Initialized');
 }
 
 export function sendTelemetryEvent(
-  name: 'Editor.Loaded' | "Editor.SampleLoaded",
+  name: 'Editor.Loaded' | 'Editor.SampleLoaded',
   additionalDataFields: oteljs.DataField[],
 ) {
+  console.info(`[Telemetry] Sending event ${name}...`);
+
   telemetryLogger.sendTelemetryEvent({
     eventName: 'Office.ScriptLab.' + name,
     eventFlags: {
