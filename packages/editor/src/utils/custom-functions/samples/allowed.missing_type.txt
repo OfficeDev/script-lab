@@ -25,7 +25,6 @@ function getRgb2(input: number) {
         "status": "good",
         "errors": [],
         "metadata": {
-            "description": "Missing type on argument",
             "id": "TESTNAMESPACE.GETRGB1",
             "name": "TESTNAMESPACE.GETRGB1",
             "parameters": [
@@ -34,9 +33,7 @@ function getRgb2(input: number) {
                     "type": "any"
                 }
             ],
-            "result": {
-                "type": "any"
-            }
+            "result": {}
         }
     },
     {
@@ -45,7 +42,6 @@ function getRgb2(input: number) {
         "status": "good",
         "errors": [],
         "metadata": {
-            "description": "Missing return type",
             "id": "TESTNAMESPACE.GETRGB2",
             "name": "TESTNAMESPACE.GETRGB2",
             "parameters": [
@@ -54,9 +50,7 @@ function getRgb2(input: number) {
                     "type": "number"
                 }
             ],
-            "result": {
-                "type": "any"
-            }
+            "result": {}
         }
     }
 ]
