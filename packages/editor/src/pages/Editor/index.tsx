@@ -20,7 +20,10 @@ import {
 import throttle from 'lodash/throttle';
 import { ScriptLabError } from 'common/lib/utilities/error';
 import { invokeGlobalErrorHandler } from 'common/lib/utilities/splash.screen';
-import { sendTelemetryEvent } from 'common/lib/utilities/telemetry';
+import {
+  initializeTelemetryLogger,
+  sendTelemetryEvent,
+} from 'common/lib/utilities/telemetry';
 
 interface IState {
   hasLoadedScripts: boolean;
@@ -34,6 +37,7 @@ class Editor extends Component<{}, IState> {
     super(props);
     addScriptTags([SCRIPT_URLS.MONACO_LOADER])
       .then(() => Office.onReady())
+      .then(() => initializeTelemetryLogger())
       .then(() => ensureProperOfficeBuildIfRelevant())
       .then(() => loadStateFromLocalStorage())
       .then(localStorageState => {

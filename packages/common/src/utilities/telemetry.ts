@@ -1,38 +1,41 @@
-import { TelemetryEvent } from 'oteljs/TelemetryEvent';
-//import { DataFieldType } from 'oteljs/DataFieldType';
-import { DataField } from 'oteljs/DataField';
-//import { DataCategories, DiagnosticLevel } from 'oteljs/EventFlagsProperties';
-
 import { getCurrentEnv } from '../environment';
 
-declare namespace Office {
-    function sendTelemetryEvent(event: TelemetryEvent);
+let telemetryLogger: oteljs.TelemetryLogger;
+
+class OfficeJsSink implements oteljs.TelemetrySink {
+  sendTelemetryEvent(event: oteljs.TelemetryEvent) {
+    (Office as any).sendTelemetryEvent(event);
+  }
+}
+
+export function initializeTelemetryLogger() {
+  telemetryLogger = new oteljs.TelemetryLogger();
+  telemetryLogger.addSink(new OfficeJsSink());
+
+  telemetryLogger.setTenantTokens({
+    Office: {
+      ScriptLab: {
+        ariaTenantToken:
+          '2b76429bb1b7429c8a2e87e51aa8af6b-0dc6a93e-bf04-44c5-9cf5-8b0cd229d414-7620',
+        nexusTenantToken: 1783,
+      },
+    },
+  });
 }
 
 export function sendTelemetryEvent(
   name: 'Editor.Loaded',
-  additionalDataFields: DataField[],
+  additionalDataFields: oteljs.DataField[],
 ) {
-  let telemetryEvent: TelemetryEvent = {
+  telemetryLogger.sendTelemetryEvent({
     eventName: 'Office.ScriptLab.' + name,
     eventFlags: {
-      dataCategories: 2,
-      diagnosticLevel: 100
+      dataCategories: oteljs.DataCategories.ProductServiceUsage,
+      diagnosticLevel: oteljs.DiagnosticLevel.FullEvent,
     },
     dataFields: [
       ...additionalDataFields,
-      {
-        name: 'Environment',
-        dataType: 0,
-        value: getCurrentEnv(),
-      },
+      oteljs.makeStringDataField('Environment', getCurrentEnv()),
     ],
-    telemetryProperties: {
-      ariaTenantToken:
-        '2b76429bb1b7429c8a2e87e51aa8af6b-0dc6a93e-bf04-44c5-9cf5-8b0cd229d414-7620',
-      nexusTenantToken: 1783,
-    },
-  };
-
-  Office.sendTelemetryEvent(telemetryEvent);
+  });
 }
