@@ -1,13 +1,12 @@
-/// <reference path='../interfaces/oteljs.d.ts' />
 import { TelemetryEvent } from 'oteljs/TelemetryEvent';
-import { DataFieldType } from 'oteljs/DataFieldType';
+//import { DataFieldType } from 'oteljs/DataFieldType';
 import { DataField } from 'oteljs/DataField';
-import { DataCategories, DiagnosticLevel } from 'oteljs/EventFlagsProperties';
+//import { DataCategories, DiagnosticLevel } from 'oteljs/EventFlagsProperties';
 
 import { getCurrentEnv } from '../environment';
 
 declare namespace Office {
-  function sendTelemetryEvent(event: TelemetryEvent);
+    function sendTelemetryEvent(event: TelemetryEvent);
 }
 
 export function sendTelemetryEvent(
@@ -17,14 +16,14 @@ export function sendTelemetryEvent(
   let telemetryEvent: TelemetryEvent = {
     eventName: 'Office.ScriptLab.' + name,
     eventFlags: {
-      dataCategories: DataCategories.ProductServiceUsage,
-      diagnosticLevel: DiagnosticLevel.FullEvent,
+      dataCategories: 2,
+      diagnosticLevel: 100
     },
     dataFields: [
       ...additionalDataFields,
       {
         name: 'Environment',
-        dataType: DataFieldType.String,
+        dataType: 0,
         value: getCurrentEnv(),
       },
     ],

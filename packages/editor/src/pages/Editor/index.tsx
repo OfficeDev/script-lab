@@ -20,7 +20,7 @@ import {
 import throttle from 'lodash/throttle';
 import { ScriptLabError } from 'common/lib/utilities/error';
 import { invokeGlobalErrorHandler } from 'common/lib/utilities/splash.screen';
-import { sendTelemetryEvent } from 'common/src/utilities/telemetry';
+import { sendTelemetryEvent } from 'common/lib/utilities/telemetry';
 
 interface IState {
   hasLoadedScripts: boolean;
