@@ -24,7 +24,7 @@ export function initializeTelemetryLogger() {
 }
 
 export function sendTelemetryEvent(
-  name: 'Editor.Loaded',
+  name: 'Editor.Loaded' | "Editor.SampleLoaded",
   additionalDataFields: oteljs.DataField[],
 ) {
   telemetryLogger.sendTelemetryEvent({
