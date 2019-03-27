@@ -6,11 +6,11 @@ import { DataField } from 'oteljs/DataField';
 import { getCurrentEnv } from '../environment';
 
 declare namespace Office {
-    function sendTelemetryEvent(event: TelemetryEvent);
+  function sendTelemetryEvent(event: TelemetryEvent);
 }
 
 export function sendTelemetryEvent(
-  name: 'Editor.Loaded',
+  name: 'Editor.Loaded' | "Editor.SampleLoaded",
   additionalDataFields: DataField[],
 ) {
   let telemetryEvent: TelemetryEvent = {
