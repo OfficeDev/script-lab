@@ -4578,15 +4578,16 @@ csstype@^2.2.0:
   resolved "https://registry.yarnpkg.com/csstype/-/csstype-2.5.7.tgz#bf9235d5872141eccfb2d16d82993c6b149179ff"
   integrity sha512-Nt5VDyOTIIV4/nRFswoCKps1R5CD1hkiyjBE9/thNaNZILLEviVw9yWQw15+O+CpNjQKB/uvdcxFFOrSflY3Yw==
 
-custom-functions-metadata@0.0.14:
-  version "0.0.14"
-  resolved "https://registry.yarnpkg.com/custom-functions-metadata/-/custom-functions-metadata-0.0.14.tgz#898c058dbaeab13a24abb4536b0ac849e14d14f0"
-  integrity sha512-tBOKntO+rKphoY7TuAa+e3cIlcWuNidXFz8U7M/uYf/wxvb1mPFz3d8Qc/t7YZ1PfMIzYVdJwbL5H4iF0uvKag==
+custom-functions-metadata@^0.0.19:
+  version "0.0.19"
+  resolved "https://registry.yarnpkg.com/custom-functions-metadata/-/custom-functions-metadata-0.0.19.tgz#1063e0c50a021e70456a5e6169a602ddfbc31fdf"
+  integrity sha512-uhBIgDzOcSjPdZ9sT+OVJ2x/eSBYvzOylUxoUb3SZ+W7TZTvFhwOo647TuBt2E4bq/4SoF8zPpie6M61YTYwcw==
   dependencies:
     assert "^1.4.1"
     commander "^2.19.0"
     fs "0.0.1-security"
     nconf "^0.10.0"
+    office-addin-cli "^0.0.3"
     optimist "^0.6.1"
     xregexp "^4.2.4"
 
@@ -9065,7 +9066,7 @@ node-fetch@^1.0.1:
     encoding "^0.1.11"
     is-stream "^1.0.1"
 
-node-fetch@^2.2.0:
+node-fetch@^2.2.0, node-fetch@^2.3.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.3.0.tgz#1a1d940bbfb916a1d3e0219f037e89e71f8c5fa5"
   integrity sha512-MOd8pV3fxENbryESLgVIeaGKrdl+uaYhCSSVkjeOb/31/njTpcis5aWfdqgNlHIrKOLRbMnfPINPOML2CIFeXA==
@@ -9414,6 +9415,14 @@ obuf@^1.0.0, obuf@^1.1.1:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/obuf/-/obuf-1.1.2.tgz#09bea3343d41859ebd446292d11c9d4db619084e"
   integrity sha512-PX1wu0AmAdPqOL1mWhqmlOd8kOIZQwGZw6rh7uby9fTc5lhaOWFLX3I6R1hrF9k3zUY40e6igsLGkDXK92LJNg==
+
+office-addin-cli@^0.0.3:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/office-addin-cli/-/office-addin-cli-0.0.3.tgz#59415610a2f6fe13259fb8c231fe8da32b7ee567"
+  integrity sha512-4rMh6Zii69ajAXdlqsVBCxklqXKgD8TsnS+kLtW8fHxsmacR1OA5Sl1hyX+t4xB+fmiowCYbFyvPAUFNFPurDA==
+  dependencies:
+    commander "^2.19.0"
+    node-fetch "^2.3.0"
 
 office-ui-fabric-react@^6.114.0:
   version "6.115.0"
