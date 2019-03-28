@@ -44,10 +44,10 @@ const addTelemetryLoggingToDispatch = store => {
       console.log('Previous state', store.getState());
     }
 
-    if ((action.meta) && (action.meta.telemetry)) {
+    if (action.meta && action.meta.telemetry) {
       sendTelemetryEvent(action.meta.telemetry.eventName, []);
     }
-    
+
     const returnValue = rawDispatch(action);
     return returnValue;
   };

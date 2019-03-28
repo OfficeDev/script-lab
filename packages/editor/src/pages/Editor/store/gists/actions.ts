@@ -22,11 +22,7 @@ export const update = createAsyncAction(
   'UPDATE_GIST_REQUEST',
   'UPDATE_GIST_SUCCESS',
   'UPDATE_GIST_FAILURE',
-)<
-  { solutionId: string },
-  { gist: IGithubGistPayload },
-  Error
->();
+)<{ solutionId: string }, { gist: IGithubGistPayload }, Error>();
 
 export const fetchMetadata = createAsyncAction(
   'FETCH_GIST_METADATA_REQUEST',

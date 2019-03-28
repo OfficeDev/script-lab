@@ -168,9 +168,10 @@ function* openGistHelper(rawUrl: string, gistId: string) {
 }
 
 function* handleGetGistSuccessSaga(action: ActionType<typeof gists.get.success>) {
-  sendTelemetryEvent("Gist_Open",
-    [oteljs.makeStringDataField('GistName', action.payload.solution.name),
-    oteljs.makeStringDataField('GistID', action.payload.solution.id)]);
+  sendTelemetryEvent('Gist_Open', [
+    oteljs.makeStringDataField('GistName', action.payload.solution.name),
+    oteljs.makeStringDataField('GistID', action.payload.solution.id),
+  ]);
   yield call(createSolutionSaga, action.payload.solution);
 }
 
@@ -213,10 +214,11 @@ function* createGistSaga(action: ActionType<typeof gists.create.request>) {
 
 function* handleCreateGistSuccessSaga(action: ActionType<typeof gists.create.success>) {
   const { solution } = action.payload;
-  sendTelemetryEvent("Gist_Created",
-    [oteljs.makeStringDataField('SolutionName', solution.name),
+  sendTelemetryEvent('Gist_Created', [
+    oteljs.makeStringDataField('SolutionName', solution.name),
     oteljs.makeStringDataField('SolutionID', solution.id),
-    oteljs.makeStringDataField('GistID', action.payload.gist.id)]);
+    oteljs.makeStringDataField('GistID', action.payload.gist.id),
+  ]);
   yield put(
     solutions.edit({
       id: solution.id,
@@ -254,9 +256,10 @@ function* updateGistSaga(action: ActionType<typeof gists.update.request>) {
     });
 
     if (response) {
-      sendTelemetryEvent("Gist_Updated",
-        [oteljs.makeStringDataField('SolutionName', solution.name),
-        oteljs.makeStringDataField('SolutionID', solution.id)]);
+      sendTelemetryEvent('Gist_Updated', [
+        oteljs.makeStringDataField('SolutionName', solution.name),
+        oteljs.makeStringDataField('SolutionID', solution.id),
+      ]);
       yield put(gists.update.success({ gist: response }));
     } else {
       yield put(gists.update.failure(error));
@@ -308,8 +311,9 @@ function* importSnippetSaga(action: ActionType<typeof gists.importSnippet.reques
 function* handleImportSnippetSuccessSaga(
   action: ActionType<typeof gists.importSnippet.success>,
 ) {
-  sendTelemetryEvent("Snippet_Imported",
-    [oteljs.makeStringDataField('SolutionName', action.payload.solution.name),
-    oteljs.makeStringDataField('SolutionID', action.payload.solution.id)]);
+  sendTelemetryEvent('Snippet_Imported', [
+    oteljs.makeStringDataField('SolutionName', action.payload.solution.name),
+    oteljs.makeStringDataField('SolutionID', action.payload.solution.id),
+  ]);
   yield call(createSolutionSaga, action.payload.solution);
 }
