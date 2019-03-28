@@ -32,13 +32,6 @@ const expectedPackages: {
     pathToCopyFrom: 'dist',
     pathToCopyTo: '',
   },
-  otel: {
-    name: 'otel',
-    version: PACKAGE_VERSIONS['otel'],
-    copyAsName: 'otel',
-    pathToCopyFrom: 'dist',
-    pathToCopyTo: '',
-  }
 };
 
 const additionalFilesToCopy: Array<{ from: string; to: string }> = [
