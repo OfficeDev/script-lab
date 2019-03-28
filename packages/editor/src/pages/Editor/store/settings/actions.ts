@@ -14,7 +14,10 @@ export const open = createAction('SETTINGS_OPEN');
 export const close = createAction('SETTINGS_CLOSE');
 
 export const editFile = createAction('SETTINGS_EDIT', resolve => {
-  return (props: { newSettings: string }) => resolve(props);
+  return (props: { newSettings: string }) =>
+    resolve(props, { telemetry: { eventName: 'SettingsEdited' } });
 });
 
-export const cycleEditorTheme = createAction('SETTINGS_CYCLE_EDITOR_THEME');
+export const cycleEditorTheme = createAction('SETTINGS_CYCLE_EDITOR_THEME', resolve => {
+  return () => resolve(null, { telemetry: { eventName: 'Editor.ThemeChanged' } });
+});
