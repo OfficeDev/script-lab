@@ -1,6 +1,8 @@
 import { createAction, createAsyncAction } from 'typesafe-actions';
 
-export const create = createAction('SOLUTIONS_CREATE_NEW');
+export const create = createAction('SOLUTIONS_CREATE_NEW', resolve => {
+  return () => resolve(null, { telemetry: { eventName: 'Editor.SnippetAdded' } });
+});
 
 export const add = createAction('SOLUTIONS_ADD', resolve => {
   return (solution: ISolution) => resolve(solution);
@@ -15,7 +17,10 @@ interface IEditProps {
 
 export const edit = createAction('SOLUTIONS_EDIT', resolve => {
   return ({ id, solution, fileId, file }: IEditProps) =>
-    resolve({ id, solution, fileId, file, timestamp: Date.now() });
+    resolve(
+      { id, solution, fileId, file, timestamp: Date.now() },
+      { telemetry: { eventName: 'Editor.SnippetEdited' } },
+    );
 });
 
 export const updateLastOpened = createAction('SOLUTIONS_UPDATE_LAST_OPENED', resolve => {
@@ -26,7 +31,8 @@ export const updateLastOpened = createAction('SOLUTIONS_UPDATE_LAST_OPENED', res
 // NOTE: remove is called from UI, it handles multiple things inside sagas
 // delete is what remove will call which will ultimately delete the solution from redux's state
 export const remove = createAction('SOLUTIONS_REMOVE', resolve => {
-  return (solution: ISolution) => resolve(solution);
+  return (solution: ISolution) =>
+    resolve(solution, { telemetry: { eventName: 'Editor.SnippetDeleted' } });
 });
 
 export const deleteFromState = createAction('SOLUTIONS_DELETE', resolve => {

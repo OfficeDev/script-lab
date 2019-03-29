@@ -7,6 +7,7 @@ import { fetchYaml } from '../../services/general';
 import { convertSnippetToSolution } from '../../../../utils';
 import { createSolutionSaga } from '../solutions/sagas';
 import { currentOfficeJsRawSnippetsBaseRepoUrl } from 'common/lib/environment';
+import { sendTelemetryEvent } from 'common/lib/utilities/telemetry';
 
 function* fetchAllSamplesMetadataSaga() {
   const host: string = yield select(selectors.host.get);
@@ -29,6 +30,10 @@ function* openSampleSaga(action: ActionType<typeof samples.get.request>) {
   const { content, error } = yield call(fetchYaml, url);
   if (content) {
     const solution = convertSnippetToSolution(content);
+    sendTelemetryEvent('Editor.SampleLoaded', [
+      oteljs.makeStringDataField('SampleName', solution.name),
+      oteljs.makeStringDataField('SampleID', solution.id),
+    ]);
     yield put(samples.get.success({ solution }));
   } else {
     yield put(samples.get.failure(error));

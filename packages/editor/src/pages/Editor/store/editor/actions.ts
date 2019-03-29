@@ -43,6 +43,8 @@ export const newFileOpened = createAction('NEW_FILE_OPENED', resolve => {
   return (solution: ISolution, file: IFile) => resolve({ solution, file });
 });
 
-export const navigateToRun = createAction('NAVIGATE_TO_RUN');
+export const navigateToRun = createAction('NAVIGATE_TO_RUN', resolve => {
+  return () => resolve(null, { telemetry: { eventName: 'Editor.NavigatedToRun' } });
+});
 
 export const shouldUpdateIntellisense = createAction('EDITOR_SHOULD_UPDATE_INTELLISENSE');

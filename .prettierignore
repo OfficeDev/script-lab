@@ -2,6 +2,7 @@ monaco.d.ts
 packages/**/build/*
 packages/**/public/external/*
 packages/**/public/assets/*
+packages/**/oteljs*
 
 tsconfig.json
 package.json
