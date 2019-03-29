@@ -68,7 +68,7 @@ export function* onEditorOpenFileSaga(action: ActionType<typeof editor.openFile>
   }
 
   if (fileToOpen && currentOpenFile.id !== fileId) {
-    yield put(editor.newFileOpened(solutionToOpen, fileToOpen));
+    yield put(editor.newFileOpened({ solution: solutionToOpen, file: fileToOpen }));
   }
 }
 

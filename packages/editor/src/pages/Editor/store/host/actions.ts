@@ -1,6 +1,3 @@
-import { createAction } from 'typesafe-actions';
+import { createAction } from '../../../../utils/typesafe-telemetry-actions';
 
-export const change = createAction('HOST_CHANGE', resolve => {
-  return (host: string) =>
-    resolve(host, { telemetry: { eventName: 'Editor.HostChanged' } });
-});
+export const change = createAction('HOST_CHANGE')<string>({ shouldSendTelemetry: true });

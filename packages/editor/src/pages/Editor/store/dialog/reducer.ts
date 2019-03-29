@@ -30,10 +30,11 @@ const dialogReducer = (state: IState = defaultState, action: IDialogAction): ISt
     case getType(actions.dialog.show):
       return {
         isVisible: true,
-        style: action.payload.style,
+        style: action.payload.style || DialogType.largeHeader,
         title: action.payload.title,
         subText: action.payload.subText,
-        isBlocking: action.payload.isBlocking,
+        isBlocking:
+          action.payload.isBlocking === undefined ? true : action.payload.isBlocking,
         buttons: action.payload.buttons,
       };
 

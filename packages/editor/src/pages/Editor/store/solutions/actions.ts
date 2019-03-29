@@ -1,43 +1,38 @@
-import { createAction, createAsyncAction } from 'typesafe-actions';
+import {
+  createAction,
+  createAsyncAction,
+} from '../../../../utils/typesafe-telemetry-actions';
 
-export const create = createAction('SOLUTIONS_CREATE_NEW', resolve => {
-  return () => resolve(null, { telemetry: { eventName: 'Editor.SnippetAdded' } });
-});
+export const create = createAction('SOLUTIONS_CREATE_NEW')({ shouldSendTelemetry: true });
 
-export const add = createAction('SOLUTIONS_ADD', resolve => {
-  return (solution: ISolution) => resolve(solution);
-});
+export const add = createAction('SOLUTIONS_ADD')<ISolution>();
 
 interface IEditProps {
   id: string;
   solution?: Partial<IEditableSolutionProperties>;
   fileId?: string;
   file?: Partial<IEditableFileProperties>;
+  timestamp?: number; // will be set by action creator
 }
 
-export const edit = createAction('SOLUTIONS_EDIT', resolve => {
-  return ({ id, solution, fileId, file }: IEditProps) =>
-    resolve(
-      { id, solution, fileId, file, timestamp: Date.now() },
-      { telemetry: { eventName: 'Editor.SnippetEdited' } },
-    );
+export const edit = createAction('SOLUTIONS_EDIT')<IEditProps>({
+  shouldSendTelemetry: true,
+  addTimestamp: true,
 });
 
-export const updateLastOpened = createAction('SOLUTIONS_UPDATE_LAST_OPENED', resolve => {
-  return ({ solutionId, fileId }) =>
-    resolve({ solutionId, fileId, timestamp: Date.now() });
-});
+export const updateLastOpened = createAction('SOLUTIONS_UPDATE_LAST_OPENED')<{
+  solutionId: string;
+  fileId: string;
+  timestamp?: number;
+}>({ addTimestamp: true });
 
 // NOTE: remove is called from UI, it handles multiple things inside sagas
 // delete is what remove will call which will ultimately delete the solution from redux's state
-export const remove = createAction('SOLUTIONS_REMOVE', resolve => {
-  return (solution: ISolution) =>
-    resolve(solution, { telemetry: { eventName: 'Editor.SnippetDeleted' } });
+export const remove = createAction('SOLUTIONS_REMOVE')<ISolution>({
+  shouldSendTelemetry: true,
 });
 
-export const deleteFromState = createAction('SOLUTIONS_DELETE', resolve => {
-  return (solution: ISolution) => resolve(solution);
-});
+export const deleteFromState = createAction('SOLUTIONS_DELETE')<ISolution>();
 
 export const getDefault = createAsyncAction(
   'GET_DEFAULT_SAMPLE_REQUEST',
@@ -45,13 +40,12 @@ export const getDefault = createAsyncAction(
   'GET_DEFAULT_SAMPLE_FAILURE',
 )<void, { solution: ISolution }, Error>();
 
-export const updateOptions = createAction('SOLUTIONS_UPDATE_OPTIONS', resolve => {
-  return (props: { id: string; options: Partial<ISolutionOptions> }) => resolve(props);
-});
+export const updateOptions = createAction('SOLUTIONS_UPDATE_OPTIONS')<{
+  id: string;
+  options: Partial<ISolutionOptions>;
+}>();
 
-export const scriptNeedsParsing = createAction(
-  'SOLUTION_SCRIPT_NEEDS_PARSING',
-  resolve => {
-    return (props: { solution: ISolution; file: IFile }) => resolve(props);
-  },
-);
+export const scriptNeedsParsing = createAction('SOLUTION_SCRIPT_NEEDS_PARSING')<{
+  solution: ISolution;
+  file: IFile;
+}>();

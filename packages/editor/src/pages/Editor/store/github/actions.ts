@@ -1,15 +1,12 @@
-import { createAction } from 'typesafe-actions';
+import { createAction } from '../../../../utils/typesafe-telemetry-actions';
 
-export const showLoginDialog = createAction('GITHUB_LOGIN_SHOW_DIALOG');
-export const loginSuccessful = createAction('GITHUB_LOGIN_SUCCESS', resolve => {
-  return (params: IGithubProcessedLoginInfo) =>
-    resolve(params, { telemetry: { eventName: 'Editor.GithubLogin' } });
-});
-export const cancelLogin = createAction('GITHUB_LOGIN_CANCEL');
+export const showLoginDialog = createAction('GITHUB_LOGIN_SHOW_DIALOG')();
+export const loginSuccessful = createAction('GITHUB_LOGIN_SUCCESS')<
+  IGithubProcessedLoginInfo
+>({ shouldSendTelemetry: true });
+export const cancelLogin = createAction('GITHUB_LOGIN_CANCEL')();
 
-export const logout = createAction('GITHUB_LOGOUT', resolve => {
-  return () => resolve(null, { telemetry: { eventName: 'Editor.GithubLogout' } });
-});
+export const logout = createAction('GITHUB_LOGOUT')({ shouldSendTelemetry: true });
 
 export interface IGithubProcessedLoginInfo {
   token: string;

@@ -1,4 +1,4 @@
-import { createAsyncAction } from 'typesafe-actions';
+import { createAsyncAction } from '../../../../utils/typesafe-telemetry-actions';
 import { ConflictResolutionOptions } from '../../../../interfaces/enums';
 
 // used for import
@@ -6,7 +6,9 @@ export const importSnippet = createAsyncAction(
   'IMPORT_GIST_REQUEST',
   'IMPORT_GIST_SUCCESS',
   'IMPORT_GIST_FAILURE',
-)<{ gistId?: string; gist?: string }, { solution: ISolution }, Error>();
+)<{ gistId?: string; gist?: string }, { solution: ISolution }, Error>({
+  shouldSendTelemetry: true,
+});
 
 export const create = createAsyncAction(
   'CREATE_GIST_REQUEST',
@@ -16,19 +18,23 @@ export const create = createAsyncAction(
   { solutionId: string; isPublic: boolean },
   { gist: IGithubGistPayload; solution: ISolution },
   Error
->();
+>({ shouldSendTelemetry: true });
 
 export const update = createAsyncAction(
   'UPDATE_GIST_REQUEST',
   'UPDATE_GIST_SUCCESS',
   'UPDATE_GIST_FAILURE',
-)<{ solutionId: string }, { gist: IGithubGistPayload }, Error>();
+)<{ solutionId: string }, { gist: IGithubGistPayload }, Error>({
+  shouldSendTelemetry: true,
+});
 
 export const fetchMetadata = createAsyncAction(
   'FETCH_GIST_METADATA_REQUEST',
   'FETCH_GIST_METADATA_SUCCESS',
   'FETCH_GIST_METADATA_FAILURE',
-)<void, ISharedGistMetadata[], { shouldLogUserOut: boolean }>();
+)<void, ISharedGistMetadata[], { shouldLogUserOut: boolean }>({
+  shouldSendTelemetry: true,
+});
 
 export const get = createAsyncAction(
   'GET_GIST_REQUEST',
@@ -45,4 +51,4 @@ export const get = createAsyncAction(
   },
   { solution: ISolution },
   Error
->();
+>({ shouldSendTelemetry: true });
