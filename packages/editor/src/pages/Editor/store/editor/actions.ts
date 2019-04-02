@@ -45,7 +45,7 @@ export const newFileOpened = createAction('NEW_FILE_OPENED')<{
 }>();
 
 export const navigateToRun = createAction('NAVIGATE_TO_RUN')({
-  shouldSendTelemetry: true,
+  getTelemetryData: type => ({ type }),
 });
 
 export const shouldUpdateIntellisense = createAction(

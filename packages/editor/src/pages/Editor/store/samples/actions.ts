@@ -10,4 +10,10 @@ export const get = createAsyncAction(
   'GET_SAMPLE_REQUEST',
   'GET_SAMPLE_SUCCESS',
   'GET_SAMPLE_FAILURE',
-)<{ rawUrl: string }, { solution: ISolution }, Error>({ shouldSendTelemetry: true });
+)<{ rawUrl: string }, { solution: ISolution }, Error>({
+  getTelemetryData: {
+    request: (type, payload) => ({ type, url: payload.rawUrl }),
+    success: (type, payload) => ({ type, sampleId: payload.solution.source.id }),
+    failure: (type, payload) => ({ type, payload }),
+  },
+});

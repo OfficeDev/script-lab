@@ -18,9 +18,9 @@ export const open = createAction('SETTINGS_OPEN')();
 export const close = createAction('SETTINGS_CLOSE')();
 
 export const editFile = createAction('SETTINGS_EDIT')<{ newSettings: string }>({
-  shouldSendTelemetry: true,
+  getTelemetryData: type => ({ type }),
 });
 
 export const cycleEditorTheme = createAction('SETTINGS_CYCLE_EDITOR_THEME')({
-  shouldSendTelemetry: true,
+  getTelemetryData: type => ({ type }),
 });

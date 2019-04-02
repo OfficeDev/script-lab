@@ -9,7 +9,7 @@ import rootSaga from './sagas';
 import { invokeGlobalErrorHandler } from 'common/lib/utilities/splash.screen';
 import { ScriptLabError } from 'common/lib/utilities/error';
 
-import { sendTelemetryEvent } from 'common/lib/utilities/telemetry';
+import { addTelemetryLoggingToDispatch } from './telemetry';
 
 const addDevLoggingToDispatch = store => {
   const rawDispatch = store.dispatch;
@@ -30,25 +30,6 @@ const addDevLoggingToDispatch = store => {
     const returnValue = rawDispatch(action);
     console.log('%c next state', 'color: green', store.getState());
     console.groupEnd();
-    return returnValue;
-  };
-};
-
-const addTelemetryLoggingToDispatch = store => {
-  const rawDispatch = store.dispatch;
-  return action => {
-    if (!action) {
-      invokeGlobalErrorHandler(
-        new ScriptLabError('[Dev only] Unexpected error, action is undefined!'),
-      );
-      console.log('Previous state', store.getState());
-    }
-
-    if (action.meta && action.meta.telemetry) {
-      sendTelemetryEvent(action.meta.telemetry.eventName, []);
-    }
-
-    const returnValue = rawDispatch(action);
     return returnValue;
   };
 };

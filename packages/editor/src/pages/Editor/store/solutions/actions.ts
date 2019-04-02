@@ -3,7 +3,9 @@ import {
   createAsyncAction,
 } from '../../../../utils/typesafe-telemetry-actions';
 
-export const create = createAction('SOLUTIONS_CREATE_NEW')({ shouldSendTelemetry: true });
+export const create = createAction('SOLUTIONS_CREATE_NEW')({
+  getTelemetryData: type => ({ type }),
+});
 
 export const add = createAction('SOLUTIONS_ADD')<ISolution>();
 
@@ -16,7 +18,7 @@ interface IEditProps {
 }
 
 export const edit = createAction('SOLUTIONS_EDIT')<IEditProps>({
-  shouldSendTelemetry: true,
+  getTelemetryData: (type, payload) => ({ type, solutionId: payload.id }),
   addTimestamp: true,
 });
 
@@ -29,7 +31,7 @@ export const updateLastOpened = createAction('SOLUTIONS_UPDATE_LAST_OPENED')<{
 // NOTE: remove is called from UI, it handles multiple things inside sagas
 // delete is what remove will call which will ultimately delete the solution from redux's state
 export const remove = createAction('SOLUTIONS_REMOVE')<ISolution>({
-  shouldSendTelemetry: true,
+  getTelemetryData: (type, payload) => ({ type, solutionId: payload.id }),
 });
 
 export const deleteFromState = createAction('SOLUTIONS_DELETE')<ISolution>();
