@@ -2,6 +2,7 @@ import { invokeGlobalErrorHandler } from 'common/lib/utilities/splash.screen';
 import { ScriptLabError } from 'common/lib/utilities/error';
 import omit from 'lodash/omit';
 import { sendTelemetryEvent } from 'common/lib/utilities/telemetry';
+import { stringifyPlusPlus } from 'common/lib/utilities/string';
 
 export const addTelemetryLoggingToDispatch = store => {
   const rawDispatch = store.dispatch;
@@ -28,8 +29,11 @@ export const addTelemetryLoggingToDispatch = store => {
             case 'boolean':
               return oteljs.makeBooleanDataField(key, value);
 
-            default:
+            case 'string':
               return oteljs.makeStringDataField(key, value);
+
+            default:
+              return oteljs.makeStringDataField(key, stringifyPlusPlus(value));
           }
         }),
       );
