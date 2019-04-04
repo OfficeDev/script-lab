@@ -13,7 +13,7 @@ export const get = createAsyncAction(
 )<{ rawUrl: string }, { solution: ISolution }, Error>({
   getTelemetryData: {
     request: (type, payload) => ({ type, url: payload.rawUrl }),
-    success: (type, payload) => ({ type, sampleId: payload.solution.source.id }),
+    success: (type, payload) => ({ type, sampleId: payload.solution.name }),
     failure: (type, payload) => ({ type, payload }),
   },
 });
