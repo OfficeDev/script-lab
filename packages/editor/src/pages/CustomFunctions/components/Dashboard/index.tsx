@@ -1,7 +1,7 @@
 import React from 'react';
 import Header from 'common/lib/components/Header';
 import HeaderFooterLayout from 'common/lib/components/HeaderFooterLayout';
-import PivotBar from 'common/lib/components/PivotBar';
+import PivotBar, { IPivotBarItem } from 'common/lib/components/PivotBar';
 import Only from 'common/lib/components/Only';
 
 import { MessageBar, MessageBarType } from 'office-ui-fabric-react/lib/MessageBar';
@@ -15,7 +15,12 @@ interface IProps {
   isStandalone: boolean;
   hasAny: boolean;
   shouldPromptRefresh: boolean;
-  items: { [itemName: string]: React.ReactElement<any> };
+  items: {
+    [itemName: string]: {
+      component: React.ReactElement<any>;
+      itemCount?: number;
+    };
+  };
 }
 
 interface IState {
@@ -71,10 +76,13 @@ class Dashboard extends React.Component<IProps, IState> {
             <Header items={headerItems} />
             <Only when={hasAny}>
               <PivotBar
-                items={Object.keys(items).map(key => ({
-                  key,
-                  text: key,
-                }))}
+                items={Object.keys(items).map(
+                  (key): IPivotBarItem => ({
+                    key,
+                    text: key,
+                    itemCount: items[key].itemCount,
+                  }),
+                )}
                 selectedKey={selectedKey}
                 onSelect={this.setSelectedKey}
               />
@@ -102,7 +110,7 @@ class Dashboard extends React.Component<IProps, IState> {
           ) : null}
 
           {hasAny ? (
-            <ColumnFlexContainer>{items[selectedKey]}</ColumnFlexContainer>
+            <ColumnFlexContainer>{items[selectedKey].component}</ColumnFlexContainer>
           ) : (
             <Welcome isRefreshEnabled={shouldPromptRefresh} />
           )}
