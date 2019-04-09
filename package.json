@@ -8,7 +8,7 @@
   "scripts": {
     "clean": "ts-node --project scripts/tsconfig.json scripts/clean.ts",
     "build:common": "yarn workspace common build:package",
-    "postinstall": "yarn postinstall:iterate",
+    "postinstall": "yarn clean && yarn postinstall:iterate",
     "postinstall:iterate": "yarn workspace common postinstall && yarn workspace editor postinstall && yarn workspace runner postinstall",
     "pre-ci": "ts-node --project scripts/tsconfig.json scripts/pre-ci.ts",
     "build": "cd packages/editor && yarn build && cd ../server && yarn build",

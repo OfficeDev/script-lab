@@ -13,6 +13,7 @@ export interface IPivotBarItem {
   text?: string;
   iconName?: string;
   testId?: string;
+  itemCount?: number;
 }
 
 export interface IProps {
@@ -81,6 +82,7 @@ class PivotBar extends React.Component<IProps> {
               linkText={item.text}
               itemIcon={item.iconName}
               data-testid={item.testId}
+              itemCount={item.itemCount || undefined}
             />
           ))}
         </Pivot>

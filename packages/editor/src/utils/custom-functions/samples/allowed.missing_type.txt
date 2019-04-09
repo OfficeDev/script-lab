@@ -34,9 +34,7 @@ function getRgb2(input: number) {
                     "type": "any"
                 }
             ],
-            "result": {
-                "type": "any"
-            }
+            "result": {}
         }
     },
     {
@@ -54,9 +52,7 @@ function getRgb2(input: number) {
                     "type": "number"
                 }
             ],
-            "result": {
-                "type": "any"
-            }
+            "result": {}
         }
     }
 ]

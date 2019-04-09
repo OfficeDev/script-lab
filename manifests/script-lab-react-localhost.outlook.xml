@@ -172,15 +172,13 @@
                 <bt:Url id="PG.Run.Url" DefaultValue="https://localhost:3000/run.html" />
             </bt:Urls>
             <bt:ShortStrings>
-                <bt:String id="PG.TabLabel" DefaultValue="[DEV] Script Lab React" />
-                <bt:String id="PG.GroupLabel" DefaultValue="Script" />
-                <bt:String id="PG.RunCommand.Label" DefaultValue="Run"></bt:String>
-                <bt:String id="PG.RunCommand.Title" DefaultValue="Run"></bt:String>
-                <bt:String id="PG.RunCommand.TipTitle" DefaultValue="Run the code snippet"></bt:String>
+                <bt:String id="PG.GroupLabel" DefaultValue="[DEV] Script Lab" />
+                <bt:String id="PG.RunCommand.Label" DefaultValue="Script Lab"></bt:String>
+                <bt:String id="PG.RunCommand.Title" DefaultValue="Script Lab"></bt:String>
+                <bt:String id="PG.RunCommand.TipTitle" DefaultValue="Open Script Lab for Outlook"></bt:String>
             </bt:ShortStrings>
             <bt:LongStrings>
                 <bt:String id="PG.RunSupertip.Desc" DefaultValue="Opens a task pane that runs the current snippet"></bt:String>
-                <bt:String id="PG.Description" DefaultValue="Code, run, and share your Add-in snippets directly from Office."></bt:String>
             </bt:LongStrings>
         </Resources>
         <!-- Version Overrides 1.1-->
@@ -290,23 +288,21 @@
             </Hosts>
             <Resources>
                 <bt:Images>
-                    <bt:Image id="PG.Icon.Run.16" DefaultValue="https://localhost:3000/assets/images/run-16.png" />
-                    <bt:Image id="PG.Icon.Run.32" DefaultValue="https://localhost:3000/assets/images/run-32.png" />
-                    <bt:Image id="PG.Icon.Run.80" DefaultValue="https://localhost:3000/assets/images/run-80.png" />
+                    <bt:Image id="PG.Icon.Run.16" DefaultValue="https://localhost:3000/assets/images/icon-16.png" />
+                    <bt:Image id="PG.Icon.Run.32" DefaultValue="https://localhost:3000/assets/images/icon-32.png" />
+                    <bt:Image id="PG.Icon.Run.80" DefaultValue="https://localhost:3000/assets/images/icon-80.png" />
                 </bt:Images>
                 <bt:Urls>
                     <bt:Url id="PG.Run.Url" DefaultValue="https://localhost:3000/run.html" />
                 </bt:Urls>
                 <bt:ShortStrings>
-                    <bt:String id="PG.TabLabel" DefaultValue="[DEV] Script Lab React" />
-                    <bt:String id="PG.GroupLabel" DefaultValue="Script" />
-                    <bt:String id="PG.RunCommand.Label" DefaultValue="Run"></bt:String>
-                    <bt:String id="PG.RunCommand.Title" DefaultValue="Run"></bt:String>
-                    <bt:String id="PG.RunCommand.TipTitle" DefaultValue="Run the code snippet"></bt:String>
+                    <bt:String id="PG.GroupLabel" DefaultValue="[DEV] Script Lab" />
+                    <bt:String id="PG.RunCommand.Label" DefaultValue="Script Lab"></bt:String>
+                    <bt:String id="PG.RunCommand.Title" DefaultValue="Script Lab"></bt:String>
+                    <bt:String id="PG.RunCommand.TipTitle" DefaultValue="Open Script Lab for Outlook"></bt:String>
                 </bt:ShortStrings>
                 <bt:LongStrings>
                     <bt:String id="PG.RunSupertip.Desc" DefaultValue="Opens a task pane that runs the current snippet"></bt:String>
-                    <bt:String id="PG.Description" DefaultValue="Code, run, and share your Add-in snippets directly from Office."></bt:String>
                 </bt:LongStrings>
             </Resources>
         </VersionOverrides>
