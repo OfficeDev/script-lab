@@ -7,14 +7,19 @@ import Metadata from '../Metadata';
 import Console from '../Console';
 
 import ComingSoon from '../ComingSoon';
-import Welcome from '../Welcome';
 
 import { IPropsToUI as IProps } from '../App';
 
 export class CustomFunctionsDashboard extends React.Component<IProps> {
-  getShouldPromptRefresh = () => {
-    return this.props.customFunctionsSolutionLastModified > this.props.runnerLastUpdated;
-  };
+  private logFetchInterval: any;
+
+  componentDidMount() {
+    this.logFetchInterval = setInterval(this.props.fetchLogs, 250);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.logFetchInterval);
+  }
 
   render() {
     const {
@@ -22,7 +27,6 @@ export class CustomFunctionsDashboard extends React.Component<IProps> {
       isStandalone,
       engineStatus,
       logs,
-      fetchLogs,
       clearLogs,
       error,
     } = this.props;
@@ -35,9 +39,16 @@ export class CustomFunctionsDashboard extends React.Component<IProps> {
           isStandalone={isStandalone}
           hasAny={customFunctionsSummaryItems.length > 0}
           items={{
-            Summary: <Summary items={customFunctionsSummaryItems} error={error} />,
-            Metadata: <Metadata items={customFunctionsSummaryItems} />,
-            Console: <Console logs={logs} fetchLogs={fetchLogs} clearLogs={clearLogs} />,
+            Summary: {
+              component: <Summary items={customFunctionsSummaryItems} error={error} />,
+            },
+            Metadata: {
+              component: <Metadata items={customFunctionsSummaryItems} />,
+            },
+            Console: {
+              component: <Console logs={logs} clearLogs={clearLogs} />,
+              itemCount: logs.length > 0 ? logs.length : undefined,
+            },
           }}
           shouldPromptRefresh={this.getShouldPromptRefresh()}
         />
@@ -46,6 +57,10 @@ export class CustomFunctionsDashboard extends React.Component<IProps> {
       return <ComingSoon />;
     }
   }
+
+  getShouldPromptRefresh = () => {
+    return this.props.customFunctionsSolutionLastModified > this.props.runnerLastUpdated;
+  };
 }
 
 export default CustomFunctionsDashboard;

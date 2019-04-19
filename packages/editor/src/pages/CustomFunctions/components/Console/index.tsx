@@ -12,21 +12,10 @@ export enum ConsoleLogTypes {
 
 interface IProps {
   logs: ILogData[];
-  fetchLogs();
   clearLogs();
 }
 
 class Console extends React.Component<IProps> {
-  private logFetchInterval: any;
-
-  componentDidMount() {
-    this.logFetchInterval = setInterval(this.props.fetchLogs, 250);
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.logFetchInterval);
-  }
-
   render() {
     const { logs, clearLogs } = this.props;
 

@@ -3,7 +3,7 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
     xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0" 
     xmlns:ov="http://schemas.microsoft.com/office/mailappversionoverrides" xsi:type="MailApp">
-    <Id>27d05373-d759-49b2-86b1-8aab78981686</Id>
+    <Id>49d3b812-abda-45b9-b478-9bc464ce5b9c</Id>
     <Version>2.0.0.0</Version>
     <ProviderName>Microsoft</ProviderName>
     <DefaultLocale>en-US</DefaultLocale>
@@ -172,10 +172,11 @@
                 <bt:Url id="PG.Run.Url" DefaultValue="https://script-lab-react-alpha.azurewebsites.net/run.html" />
             </bt:Urls>
             <bt:ShortStrings>
-                <bt:String id="PG.GroupLabel" DefaultValue="Script" />
-                <bt:String id="PG.RunCommand.Label" DefaultValue="Run"></bt:String>
-                <bt:String id="PG.RunCommand.Title" DefaultValue="Run"></bt:String>
-                <bt:String id="PG.RunCommand.TipTitle" DefaultValue="Run the code snippet"></bt:String>
+
+                <bt:String id="PG.GroupLabel" DefaultValue="Script Lab [ALPHA]" />
+                <bt:String id="PG.RunCommand.Label" DefaultValue="Script Lab"></bt:String>
+                <bt:String id="PG.RunCommand.Title" DefaultValue="Script Lab"></bt:String>
+                <bt:String id="PG.RunCommand.TipTitle" DefaultValue="Open Script Lab for Outlook"></bt:String>
             </bt:ShortStrings>
             <bt:LongStrings>
                 <bt:String id="PG.RunSupertip.Desc" DefaultValue="Opens a task pane that runs the current snippet"></bt:String>
@@ -288,18 +289,18 @@
             </Hosts>
             <Resources>
                 <bt:Images>
-                    <bt:Image id="PG.Icon.Run.16" DefaultValue="https://script-lab-react-alpha.azurewebsites.net/assets/images/run-16.png" />
-                    <bt:Image id="PG.Icon.Run.32" DefaultValue="https://script-lab-react-alpha.azurewebsites.net/assets/images/run-32.png" />
-                    <bt:Image id="PG.Icon.Run.80" DefaultValue="https://script-lab-react-alpha.azurewebsites.net/assets/images/run-80.png" />
+                    <bt:Image id="PG.Icon.Run.16" DefaultValue="https://script-lab-react-alpha.azurewebsites.net/assets/images/icon-16.png" />
+                    <bt:Image id="PG.Icon.Run.32" DefaultValue="https://script-lab-react-alpha.azurewebsites.net/assets/images/icon-32.png" />
+                    <bt:Image id="PG.Icon.Run.80" DefaultValue="https://script-lab-react-alpha.azurewebsites.net/assets/images/icon-80.png" />
                 </bt:Images>
                 <bt:Urls>
                     <bt:Url id="PG.Run.Url" DefaultValue="https://script-lab-react-alpha.azurewebsites.net/run.html" />
                 </bt:Urls>
                 <bt:ShortStrings>
-                    <bt:String id="PG.GroupLabel" DefaultValue="Script" />
-                    <bt:String id="PG.RunCommand.Label" DefaultValue="Run"></bt:String>
-                    <bt:String id="PG.RunCommand.Title" DefaultValue="Run"></bt:String>
-                    <bt:String id="PG.RunCommand.TipTitle" DefaultValue="Run the code snippet"></bt:String>
+                    <bt:String id="PG.GroupLabel" DefaultValue="Script Lab [ALPHA]" />
+                    <bt:String id="PG.RunCommand.Label" DefaultValue="Script Lab"></bt:String>
+                    <bt:String id="PG.RunCommand.Title" DefaultValue="Script Lab"></bt:String>
+                    <bt:String id="PG.RunCommand.TipTitle" DefaultValue="Open Script Lab for Outlook"></bt:String>
                 </bt:ShortStrings>
                 <bt:LongStrings>
                     <bt:String id="PG.RunSupertip.Desc" DefaultValue="Opens a task pane that runs the current snippet"></bt:String>
