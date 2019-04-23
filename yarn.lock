@@ -4578,16 +4578,16 @@ csstype@^2.2.0:
   resolved "https://registry.yarnpkg.com/csstype/-/csstype-2.5.7.tgz#bf9235d5872141eccfb2d16d82993c6b149179ff"
   integrity sha512-Nt5VDyOTIIV4/nRFswoCKps1R5CD1hkiyjBE9/thNaNZILLEviVw9yWQw15+O+CpNjQKB/uvdcxFFOrSflY3Yw==
 
-custom-functions-metadata@^0.0.19:
-  version "0.0.19"
-  resolved "https://registry.yarnpkg.com/custom-functions-metadata/-/custom-functions-metadata-0.0.19.tgz#1063e0c50a021e70456a5e6169a602ddfbc31fdf"
-  integrity sha512-uhBIgDzOcSjPdZ9sT+OVJ2x/eSBYvzOylUxoUb3SZ+W7TZTvFhwOo647TuBt2E4bq/4SoF8zPpie6M61YTYwcw==
+custom-functions-metadata@0.0.22:
+  version "0.0.22"
+  resolved "https://registry.yarnpkg.com/custom-functions-metadata/-/custom-functions-metadata-0.0.22.tgz#3136abd66dd66146580d275dff63d593809e44e3"
+  integrity sha512-e3r3l0H8s6F6ye8JtW4bTKvgtz0eEWbD+LEcBYDK2C9AU9g1Rxul8JMQ7dhFbsAXNJuZcSTFCyQjk+DwaE1Ycw==
   dependencies:
     assert "^1.4.1"
     commander "^2.19.0"
     fs "0.0.1-security"
     nconf "^0.10.0"
-    office-addin-cli "^0.0.3"
+    office-addin-cli "^0.0.5"
     optimist "^0.6.1"
     xregexp "^4.2.4"
 
@@ -9416,10 +9416,10 @@ obuf@^1.0.0, obuf@^1.1.1:
   resolved "https://registry.yarnpkg.com/obuf/-/obuf-1.1.2.tgz#09bea3343d41859ebd446292d11c9d4db619084e"
   integrity sha512-PX1wu0AmAdPqOL1mWhqmlOd8kOIZQwGZw6rh7uby9fTc5lhaOWFLX3I6R1hrF9k3zUY40e6igsLGkDXK92LJNg==
 
-office-addin-cli@^0.0.3:
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/office-addin-cli/-/office-addin-cli-0.0.3.tgz#59415610a2f6fe13259fb8c231fe8da32b7ee567"
-  integrity sha512-4rMh6Zii69ajAXdlqsVBCxklqXKgD8TsnS+kLtW8fHxsmacR1OA5Sl1hyX+t4xB+fmiowCYbFyvPAUFNFPurDA==
+office-addin-cli@^0.0.5:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/office-addin-cli/-/office-addin-cli-0.0.5.tgz#fb08e117e469c771f1696b20217191d0ba68744b"
+  integrity sha512-Hqj7vGyNVgtZlVAmNcfzouZThSh/s54QwDc06H2BQfKm1OzOyWFc30sHZMywKXpjCZ+Yn9hfuAtOZMQf1Bovzg==
   dependencies:
     commander "^2.19.0"
     node-fetch "^2.3.0"
