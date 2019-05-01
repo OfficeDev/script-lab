@@ -64,6 +64,8 @@ export const verifySettings = (parsed): Partial<ISettings> => {
 
 function* editSettingsCheckSaga(action: ActionType<typeof settingsActions.editFile>) {
   try {
+    // First off, check whether the new settings are actually empty.
+    // If they are, do special processing, since you can't safeLoad from an empty string.
     const isEmpty = action.payload.newSettings.trim() === '';
     const newSettings = isEmpty
       ? {}
@@ -75,6 +77,8 @@ function* editSettingsCheckSaga(action: ActionType<typeof settingsActions.editFi
       USER_SETTINGS_FILE_ID,
     );
 
+    // safeDump of an empty object gives you the JSON object `{}`, whereas what we want
+    //    in this case is just an empty string. So make it so:
     currentUserSettingsFile.content = isEmpty
       ? ''
       : YAML.safeDump(newSettings, { indent: tabSize });
