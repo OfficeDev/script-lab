@@ -1,3 +1,5 @@
+import YAML from 'js-yaml';
+
 import {
   SETTINGS_SOLUTION_ID,
   USER_SETTINGS_FILE_ID,
@@ -20,6 +22,8 @@ export const defaultSettings: ISettings = {
   'editor.wordWrap': 'bounded',
 };
 
+export const invisibleDefaultSettings: { [key: string]: any } = {};
+
 const getTabSize = (userSettings: Partial<ISettings>): number =>
   userSettings && userSettings['editor.tabSize']
     ? userSettings['editor.tabSize']!
@@ -27,12 +31,16 @@ const getTabSize = (userSettings: Partial<ISettings>): number =>
 
 const getDefaultSettingsContent = (userSettings: Partial<ISettings>): string => {
   const tabSize = getTabSize(userSettings);
-  return JSON.stringify(defaultSettings, null, tabSize) + '\n';
+  return YAML.safeDump(defaultSettings, { indent: tabSize });
 };
 
 const getUserSettingsContent = (userSettings: Partial<ISettings>): string => {
+  if (Object.keys(userSettings).length === 0) {
+    return '';
+  }
+
   const tabSize = getTabSize(userSettings);
-  return JSON.stringify(userSettings, null, tabSize) + '\n';
+  return YAML.safeDump(userSettings, { indent: tabSize });
 };
 
 const getAboutContent = (): string => {
