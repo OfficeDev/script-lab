@@ -60,29 +60,27 @@ const AppHOC = (UI: React.ComponentType<IPropsToUI>) =>
     }
 
     async componentDidMount() {
-      const engineStatus = await getCustomFunctionEngineStatusSafe();
-
-      const cfSolutions = getCustomFunctionsSolutions();
-      const registrationResult = await getRegistrationResult(cfSolutions);
-      this.setState({
-        engineStatus: engineStatus,
-        customFunctionsSummaryItems: registrationResult.parseResults,
-        customFunctionsCode: registrationResult.code,
-      });
-
       try {
+        const engineStatus = await getCustomFunctionEngineStatusSafe();
+
+        const cfSolutions = getCustomFunctionsSolutions();
+        const registrationResult = await getRegistrationResult(cfSolutions);
+        this.setState({
+          engineStatus: engineStatus,
+          customFunctionsSummaryItems: registrationResult.parseResults,
+          customFunctionsCode: registrationResult.code,
+        });
+
         if (this.state.customFunctionsSummaryItems.length > 0) {
           await registerCustomFunctions(
             this.state.customFunctionsSummaryItems,
             this.state.customFunctionsCode,
           );
         }
-      } catch (e) {
-        this.setState({
-          error: e,
-        });
-      } finally {
+
         hideSplashScreen();
+      } catch (e) {
+        invokeGlobalErrorHandler(e);
       }
 
       this.localStoragePollingInterval = setInterval(
@@ -174,17 +172,18 @@ async function getRegistrationResultPython(
     }))
     .map(pair => {
       if (!pair.value || (pair.value as string).trim().length === 0) {
-        invokeGlobalErrorHandler(
-          new ScriptLabError(
-            `To support Python custom functions, you must follow the setup steps ` +
-              `and enter the required settings in the editor's "Settings" page. ` +
-              `Please do so now and then reload this page.`,
-          ),
-          { showExpanded: true },
+        throw new ScriptLabError(
+          `To support Python custom functions, you must ` +
+            `enter the required settings in the editor's "Settings" page. ` +
+            `Please close this pane, add the necessary settings, and try again.`,
+          null,
+          { hideCloseButton: true },
         );
       }
       return pair.value;
     });
+
+  const clearOnRegister: boolean = userSettings['jupyter.clearOnRegister'] || false;
 
   const notebook = new JupyterNotebook({ baseUrl: url, token: token }, notebookName);
   showSplashScreen(
@@ -192,33 +191,43 @@ async function getRegistrationResultPython(
   );
 
   try {
-    const code =
-      pythonCFs
+    const code = [
+      'import customfunctionmanager',
+      clearOnRegister ? 'customfunctionmanager.clear()' : null,
+      '',
+      '##################################',
+      '',
+      ...pythonCFs
         .filter(solution => !solution.options.isUntrusted)
-        .map(solution => findScript(solution).content)
-        .join('\n\n') +
-      '\n\n' +
-      stripSpaces(`
-      import customfunctionmanager
-      customfunctionmanager.generateMetadata()
-    `);
+        .map(solution => findScript(solution).content),
+      '',
+      '##################################',
+      '',
+      'customfunctionmanager.generateMetadata()',
+    ]
+      .filter(line => line !== null)
+      .join('\n');
 
+    // FIXME: only if verbose:
+    console.log(code);
     const result: ICustomFunctionsRegistrationApiMetadata<IFunction> = JSON.parse(
       PythonCodeHelper.parseFromPythonLiteral(await notebook.executeCode(code)),
     );
 
+    const parseResults = result.functions.map(
+      (metadata): ICustomFunctionParseResult<IFunction> => {
+        return {
+          javascriptFunctionName: null,
+          nonCapitalizedFullName: metadata.name,
+          metadata: metadata,
+          status: 'good', // Note: assuming success only
+        };
+      },
+    );
+
     return {
       code: '',
-      parseResults: result.functions.map(
-        (metadata): ICustomFunctionParseResult<IFunction> => {
-          return {
-            javascriptFunctionName: null,
-            nonCapitalizedFullName: metadata.name,
-            metadata: metadata,
-            status: 'good', // Note: assuming success only
-          };
-        },
-      ),
+      parseResults,
     };
   } catch (e) {
     invokeGlobalErrorHandler(

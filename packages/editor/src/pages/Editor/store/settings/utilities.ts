@@ -26,6 +26,7 @@ export const invisibleDefaultSettings: { [key: string]: any } = {
   'jupyter.url': '',
   'jupyter.token': '',
   'jupyter.notebook': '',
+  'jupyter.clearOnRegister': '',
 };
 
 export const allowedSettings = {

@@ -420,10 +420,12 @@ export class Util {
   }
 
   static log(text: string): void {
+    // FIXME: only if verbose:
     console.log(text);
   }
 
   static logResult(text: string): void {
+    // FIXME: only if verbose:
     console.log(text);
   }
 }
