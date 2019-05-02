@@ -48,7 +48,12 @@ interface ICustomFunctionsHeartbeatLogMessage extends ICustomFunctionsHeartbeatM
   payload: ILogData;
 }
 
-interface ICustomFunctionsIframeRunnerMetadata {
+interface ICustomFunctionsIframeRunnerOnLoadPayload {
+  typescriptMetadata: ICustomFunctionsIframeRunnerTypeScriptMetadata[];
+  pythonConfig?: IPythonConfig;
+}
+
+interface ICustomFunctionsIframeRunnerTypeScriptMetadata {
   solutionId: string;
   namespace: string;
   functions: Array<{
@@ -58,4 +63,10 @@ interface ICustomFunctionsIframeRunnerMetadata {
   }>;
   code: string;
   jsLibs: string[];
+}
+
+interface IPythonConfig {
+  url: string;
+  token: string;
+  notebook: string;
 }

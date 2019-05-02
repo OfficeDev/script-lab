@@ -5,12 +5,15 @@ import { RunOnLoad } from 'common/lib/components/PageSwitcher/utilities/RunOnLoa
 import setup from './setup';
 import { addScriptTag } from 'common/lib/utilities/script-loader';
 import { SCRIPT_URLS } from 'common/lib/constants';
+import { currentEditorUrl } from 'common/lib/environment';
 
 const CustomFunctionsRunner = () => (
   <AwaitPromiseThenRender
-    promise={addScriptTag(SCRIPT_URLS.CUSTOM_FUNCTIONS_RUNNER).then(() => {
-      (CustomFunctions as any).delayInitialization();
-    })}
+    promise={addScriptTag(SCRIPT_URLS.GET_CUSTOM_FUNCTIONS_RUNNER(currentEditorUrl)).then(
+      () => {
+        (CustomFunctions as any).delayInitialization();
+      },
+    )}
   >
     <RunOnLoad funcToRun={setup} />
   </AwaitPromiseThenRender>

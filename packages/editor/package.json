@@ -6,7 +6,7 @@
     "query-string": "Restricing query-string to version 5.1.1 because later versions (6+) started targeting ES6 rather than ES5, making it not work for the precompile scripts. See more at https://stackoverflow.com/a/49985749/678505"
   },
   "dependencies": {
-    "@microsoft/office-js": "1.1.11-adhoc.28",
+    "@microsoft/office-js": "1.1.12-custom.8",
     "@microsoft/office-js-helpers": "0.7.4",
     "clipboard": "^2.0.1",
     "color": "^3.0.0",

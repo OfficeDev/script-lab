@@ -1,8 +1,10 @@
 import { officeNamespacesForCustomFunctionsIframe } from '../../constants';
 import { currentEditorUrl } from 'common/lib/environment';
 import { generateLogString, stringifyPlusPlus } from 'common/lib/utilities/string';
+import { JupyterNotebook } from 'common/lib/utilities/Jupyter';
 
 import generateCustomFunctionIframe from './run.customFunctions';
+import { initializeJupyter } from './jupyterRunner';
 
 const HEARTBEAT_URL = `${currentEditorUrl}/custom-functions-heartbeat.html`;
 const VERBOSE_MODE = false;
@@ -22,12 +24,21 @@ export default () => {
 
     const { type, payload }: ICustomFunctionsHeartbeatMessage = JSON.parse(data);
     switch (type) {
-      case 'metadata':
-        await initializeRunnableSnippets(payload);
-        for (const key in ScriptLabCustomFunctionsDictionary) {
-          CustomFunctions.associate(key, ScriptLabCustomFunctionsDictionary[key]);
+      case 'metadata': {
+        const initialPayload = payload as ICustomFunctionsIframeRunnerOnLoadPayload;
+        if (initialPayload.pythonConfig) {
+          initializeJupyter(initialPayload.pythonConfig);
+          // TODO: (with Shaofeng) temporary hack, will definitely need to be removed once it's not either/or
+          delete (window as any).CustomFunctionMappings.__delay__;
+        } else {
+          // TODO: (with Shaofeng) for now, it's an either/or
+          await initializeRunnableSnippets(initialPayload);
+          for (const key in ScriptLabCustomFunctionsDictionary) {
+            CustomFunctions.associate(key, ScriptLabCustomFunctionsDictionary[key]);
+          }
         }
         break;
+      }
       case 'refresh':
         window.location.reload();
         break;
@@ -56,7 +67,7 @@ function addHeartbeat() {
 }
 
 async function initializeRunnableSnippets(
-  payload: ICustomFunctionsIframeRunnerMetadata[],
+  fullPayload: ICustomFunctionsIframeRunnerOnLoadPayload,
 ) {
   return new Promise(resolve =>
     tryCatch(() => {
@@ -64,7 +75,9 @@ async function initializeRunnableSnippets(
 
       (window as any).scriptRunnerOnLoad = (contentWindow: Window, id: string) =>
         tryCatch(() => {
-          const snippetMetadata = payload.find(item => item.solutionId === id)!;
+          const snippetMetadata = fullPayload.typescriptMetadata.find(
+            item => item.solutionId === id,
+          )!;
           overwriteConsole(snippetMetadata.namespace, contentWindow);
           contentWindow.onerror = (...args) => console.error(args);
 
@@ -78,12 +91,12 @@ async function initializeRunnableSnippets(
         });
 
       (window as any).scriptRunnerOnLoadComplete = () => {
-        if (++successfulRegistrationsCount === payload.length) {
+        if (++successfulRegistrationsCount === fullPayload.typescriptMetadata.length) {
           resolve();
         }
       };
 
-      payload.forEach(customFuncData => {
+      fullPayload.typescriptMetadata.forEach(customFuncData => {
         const iframe = document.createElement('iframe');
         iframe.src = 'about:blank';
         document.head.insertBefore(iframe, null);

@@ -1,4 +1,4 @@
-import { HYPHENATED_PACKAGE_VERSIONS } from './package-versions';
+import { HYPHENATED_PACKAGE_VERSIONS, PACKAGE_VERSIONS } from './package-versions';
 
 // For offline debugging of Office.js:
 // const OFFICE_JS_LOCAL_PACKAGE_URL = `/external/office-js-${
@@ -6,8 +6,24 @@ import { HYPHENATED_PACKAGE_VERSIONS } from './package-versions';
 // }/office.js`;
 
 export const SCRIPT_URLS = {
-  CUSTOM_FUNCTIONS_RUNNER:
-    'https://appsforoffice.microsoft.com/lib/preview/hosted/custom-functions-runtime.js',
+  GET_CUSTOM_FUNCTIONS_RUNNER: (currentEditorUrl: string) => {
+    /* TODO: eventually, put back to preview or even prod URL: 'https://appsforoffice.microsoft.com/lib/preview/hosted/custom-functions-runtime.js'.
+       However, to support the jupyter experiment, need to use a specific version of office-js for now
+     */
+
+    // Note: on localhost, having the runner load scripts off of the Editor domain results in CORS issues.
+    // So: for localhost only, use unpkg instead:
+    if (process.env.NODE_ENV === 'production') {
+      return `${currentEditorUrl}/external/office-js-${
+        HYPHENATED_PACKAGE_VERSIONS['@microsoft/office-js']
+      }/custom-functions-runtime.js`;
+    } else {
+      return `https://unpkg.com/@microsoft/office-js@${
+        PACKAGE_VERSIONS['@microsoft/office-js']
+      }/dist/custom-functions-runtime.js`;
+    }
+  },
+
   DEFAULT_OFFICE_JS: 'https://appsforoffice.microsoft.com/lib/1/hosted/office.js',
   OFFICE_JS_FOR_CUSTOM_FUNCTIONS_DASHBOARD:
     'https://appsforoffice.microsoft.com/lib/beta/hosted/office.js',

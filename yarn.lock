@@ -999,10 +999,10 @@
     lodash "4.17.4"
     rxjs "5.2.0"
 
-"@microsoft/office-js@1.1.11-adhoc.28":
-  version "1.1.11-adhoc.28"
-  resolved "https://registry.yarnpkg.com/@microsoft/office-js/-/office-js-1.1.11-adhoc.28.tgz#c4ddbd2649f49f0ceac5ed6a9e1332ea4742cd2c"
-  integrity sha512-Kj9zJ69riAR18311nRD2D5SSywPuHJj0F593b4YXRRZJJ9yDzN+KKMgQEUsHjz3xzhCvcHy/9WY9JLVgnUwuiw==
+"@microsoft/office-js@1.1.12-custom.8":
+  version "1.1.12-custom.8"
+  resolved "https://registry.yarnpkg.com/@microsoft/office-js/-/office-js-1.1.12-custom.8.tgz#94cddd160f6fde711e93897eea3ace2fe0981edf"
+  integrity sha512-n8XwzNboMCjK27uPKqRk9hp51o6Pu66yfynOOXgo3wz1pgLr8FygLwVLo74SryT9Y0fLzsxYIWHXYVPWJ1WQeA==
 
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
