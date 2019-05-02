@@ -19,9 +19,9 @@ import {
   hideSplashScreen,
   showSplashScreen,
 } from 'common/lib/utilities/splash.screen';
-import { stripSpaces } from 'common/lib/utilities/string';
 import { ScriptLabError } from 'common/lib/utilities/error';
 import { JupyterNotebook, PythonCodeHelper } from 'common/lib/utilities/Jupyter';
+import { JUPYTER_LOG_ENABLED } from 'common/lib/utilities/Jupyter/constants';
 
 interface IState {
   runnerLastUpdated: number;
@@ -208,8 +208,10 @@ async function getRegistrationResultPython(
       .filter(line => line !== null)
       .join('\n');
 
-    // FIXME: only if verbose:
-    console.log(code);
+    if (JUPYTER_LOG_ENABLED) {
+      console.log(code);
+    }
+
     const result: ICustomFunctionsRegistrationApiMetadata<IFunction> = JSON.parse(
       PythonCodeHelper.parseFromPythonLiteral(await notebook.executeCode(code)),
     );

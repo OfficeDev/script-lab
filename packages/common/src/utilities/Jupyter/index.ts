@@ -1,3 +1,5 @@
+import { JUPYTER_LOG_ENABLED } from './constants';
+
 /* TODO: for now, copy-pasted this file from an external source -- so disable tslint temporarily */
 /* tslint:disable */
 
@@ -420,12 +422,14 @@ export class Util {
   }
 
   static log(text: string): void {
-    // FIXME: only if verbose:
-    console.log(text);
+    if (JUPYTER_LOG_ENABLED) {
+      console.log(text);
+    }
   }
 
   static logResult(text: string): void {
-    // FIXME: only if verbose:
-    console.log(text);
+    if (JUPYTER_LOG_ENABLED) {
+      console.log(text);
+    }
   }
 }
