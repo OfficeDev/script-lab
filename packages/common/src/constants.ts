@@ -6,27 +6,15 @@ import { HYPHENATED_PACKAGE_VERSIONS, PACKAGE_VERSIONS } from './package-version
 // }/office.js`;
 
 export const SCRIPT_URLS = {
-  GET_CUSTOM_FUNCTIONS_RUNNER: (currentEditorUrl: string) => {
-    /* TODO: eventually, put back to preview or even prod URL: 'https://appsforoffice.microsoft.com/lib/preview/hosted/custom-functions-runtime.js'.
-       However, to support the jupyter experiment, need to use a specific version of office-js for now
-     */
-
-    // Note: on localhost, having the runner load scripts off of the Editor domain results in CORS issues.
-    // So: for localhost only, use unpkg instead:
-    if (process.env.NODE_ENV === 'production') {
-      return `${currentEditorUrl}/external/office-js-${
-        HYPHENATED_PACKAGE_VERSIONS['@microsoft/office-js']
-      }/custom-functions-runtime.js`;
-    } else {
-      return `https://unpkg.com/@microsoft/office-js@${
-        PACKAGE_VERSIONS['@microsoft/office-js']
-      }/dist/custom-functions-runtime.js`;
-    }
-  },
+  CUSTOM_FUNCTIONS_RUNNER_DEFAULT:
+    'https://appsforoffice.microsoft.com/lib/preview/hosted/custom-functions-runtime.js',
+  CUSTOM_FUNCTIONS_RUNNER_WITH_JUPYTER_SUPPORT:
+    'https://exceljupyter.azurewebsites.net/agave/dist/external/office-js-custom-0/custom-functions-runtime.debug.js',
 
   DEFAULT_OFFICE_JS: 'https://appsforoffice.microsoft.com/lib/1/hosted/office.js',
   OFFICE_JS_FOR_CUSTOM_FUNCTIONS_DASHBOARD:
     'https://appsforoffice.microsoft.com/lib/beta/hosted/office.js',
+
   MONACO_LOADER: `/external/monaco-editor-${
     HYPHENATED_PACKAGE_VERSIONS['monaco-editor']
   }/vs/loader.js`,

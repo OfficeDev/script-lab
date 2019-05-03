@@ -5,6 +5,8 @@ import { JupyterNotebook } from 'common/lib/utilities/Jupyter';
 
 import generateCustomFunctionIframe from './run.customFunctions';
 import { initializeJupyter } from './jupyterRunner';
+import { SCRIPT_URLS } from 'common/lib/constants';
+import { addScriptTag } from 'common/lib/utilities/script-loader';
 
 const HEARTBEAT_URL = `${currentEditorUrl}/custom-functions-heartbeat.html`;
 const VERBOSE_MODE = false;
@@ -26,6 +28,15 @@ export default () => {
     switch (type) {
       case 'metadata': {
         const initialPayload = payload as ICustomFunctionsIframeRunnerOnLoadPayload;
+
+        await addScriptTag(
+          initialPayload.pythonConfig
+            ? SCRIPT_URLS.CUSTOM_FUNCTIONS_RUNNER_WITH_JUPYTER_SUPPORT
+            : SCRIPT_URLS.CUSTOM_FUNCTIONS_RUNNER_DEFAULT,
+        ).then(() => {
+          (CustomFunctions as any).delayInitialization();
+        });
+
         if (initialPayload.pythonConfig) {
           initializeJupyter(initialPayload.pythonConfig);
           // TODO: (with Shaofeng) temporary hack, will definitely need to be removed once it's not either/or
