@@ -1,4 +1,4 @@
-import { HYPHENATED_PACKAGE_VERSIONS, PACKAGE_VERSIONS } from './package-versions';
+import { HYPHENATED_PACKAGE_VERSIONS } from './package-versions';
 
 // For offline debugging of Office.js:
 // const OFFICE_JS_LOCAL_PACKAGE_URL = `/external/office-js-${
