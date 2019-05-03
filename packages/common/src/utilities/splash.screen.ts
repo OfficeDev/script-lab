@@ -64,7 +64,8 @@ export function invokeGlobalErrorHandler(
     loadingElement.insertBefore(clickForMoreInfoElement, null);
   }
 
-  const hideCloseButton = error instanceof ScriptLabError && error.hideCloseButton;
+  const hideCloseButton =
+    error instanceof ScriptLabError && error.options.hideCloseButton;
   if (!hideCloseButton) {
     const closeElement = document.createElement('a');
     closeElement.href = '#';

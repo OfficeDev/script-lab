@@ -4,7 +4,7 @@ import { CustomError } from '@microsoft/office-js-helpers';
  * A class for specifying an Error object with some inner details
  */
 export class ScriptLabError extends CustomError {
-  private options: { hideCloseButton: boolean };
+  options: { hideCloseButton: boolean };
 
   constructor(
     message: string,
@@ -15,9 +15,5 @@ export class ScriptLabError extends CustomError {
     Object.setPrototypeOf(this, ScriptLabError.prototype);
 
     this.options = options;
-  }
-
-  get hideCloseButton() {
-    return this.options.hideCloseButton;
   }
 }
