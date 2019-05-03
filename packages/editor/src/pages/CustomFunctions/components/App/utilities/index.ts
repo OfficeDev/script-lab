@@ -245,6 +245,6 @@ export function transformSolutionName(snippetName: string) {
 export const filterCustomFunctions = (solutions: ISolution[]): ISolution[] =>
   solutions.filter(solution => solution.options.isCustomFunctionsSolution);
 
-function findScript(solution: ISolution): IFile | null {
+export function findScript(solution: ISolution): IFile | null {
   return solution.files.find(file => file.name === SCRIPT_FILE_NAME) || null;
 }

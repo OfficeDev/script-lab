@@ -4,7 +4,6 @@ import App from './components/App';
 import CustomFunctionsDashboard from './components/CustomFunctionsDashboard';
 import Theme from 'common/lib/components/Theme';
 import { Utilities } from '@microsoft/office-js-helpers';
-import { hideSplashScreen } from 'common/lib/utilities/splash.screen';
 
 const CFD = App(CustomFunctionsDashboard);
 
@@ -19,7 +18,6 @@ class CustomFunctionsPage extends React.Component<{}, IState> {
     super(props);
 
     this.state = { host: Utilities.host };
-    hideSplashScreen();
   }
 
   render() {

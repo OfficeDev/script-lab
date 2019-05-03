@@ -45,6 +45,7 @@ const languageMap = {
   css: 'CSS',
   html: 'HTML',
   json: 'JSON',
+  python: 'Python',
 };
 
 export const getItems = createSelector(

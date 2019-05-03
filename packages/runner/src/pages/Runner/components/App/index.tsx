@@ -248,7 +248,7 @@ export class App extends React.Component<{}, IState> {
 
   private respondToOfficeJsMismatchIfAny(solution: ISolution) {
     const librariesFile = solution.files.find(file => file.name === 'libraries.txt');
-    if (!librariesFile) {
+    if (!librariesFile || !librariesFile.content) {
       return;
     }
 

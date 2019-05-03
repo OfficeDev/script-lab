@@ -16,6 +16,7 @@ import processLibraries from 'common/lib/utilities/process.libraries';
 import { parseMetadata } from '../../utils/custom-functions';
 import { IFunction } from 'custom-functions-metadata';
 import { strictType } from 'common/lib/utilities/misc';
+import { findScript } from '../CustomFunctions/components/App/utilities';
 
 export default function setup() {
   // ========================= REFRESH =================================//
@@ -59,56 +60,101 @@ function sendMessageToRunner(message: ICustomFunctionsHeartbeatMessage) {
   window.parent.postMessage(JSON.stringify(message), currentRunnerUrl);
 }
 
-function getMetadata(): ICustomFunctionsIframeRunnerMetadata[] {
-  return loadAllCFSolutions()
-    .filter((solution: ISolution) => !solution.options.isUntrusted)
-    .map((solution: ISolution) => {
-      try {
-        const namespace = transformSolutionName(solution.name);
-        const script = solution.files.find((file: IFile) => file.name === 'index.ts')!
-          .content;
-        const libraries = solution.files.find(
-          (file: IFile) => file.name === 'libraries.txt',
-        )!.content;
+function getMetadata(): ICustomFunctionsIframeRunnerOnLoadPayload {
+  const allTrustedCFSolutions = loadAllCFSolutions().filter(
+    (solution: ISolution) => !solution.options.isUntrusted,
+  );
 
-        const metadata: Array<ICustomFunctionParseResult<IFunction>> = parseMetadata({
-          solution,
-          namespace,
-          fileContent: script,
-        });
+  const cfSolutionsGroupedByLanguage = {
+    typescript: [] as ISolution[],
+    python: [] as ISolution[],
+  };
 
-        if (metadata.some(item => item.status !== 'good')) {
+  allTrustedCFSolutions.forEach(solution => {
+    const scriptFile = findScript(solution);
+    const groupToPushTo: ISolution[] = cfSolutionsGroupedByLanguage[scriptFile.language];
+    if (!groupToPushTo) {
+      throw new Error(`Invalid language specified for solution ` + solution.id);
+    }
+
+    groupToPushTo.push(solution);
+  });
+
+  return {
+    typescriptMetadata: cfSolutionsGroupedByLanguage.typescript
+      .map((solution: ISolution) => {
+        try {
+          const scriptFile = findScript(solution);
+          const namespace = transformSolutionName(solution.name);
+
+          const script = scriptFile.content;
+
+          const libraries = solution.files.find(
+            (file: IFile) => file.name === 'libraries.txt',
+          )!.content;
+
+          const metadata: Array<ICustomFunctionParseResult<IFunction>> = parseMetadata({
+            solution,
+            namespace,
+            fileContent: script,
+          });
+
+          if (metadata.some(item => item.status !== 'good')) {
+            return null;
+          }
+
+          return strictType<ICustomFunctionsIframeRunnerTypeScriptMetadata>({
+            solutionId: solution.id,
+            namespace: namespace,
+            functions: metadata.map(item => ({
+              fullId: item.metadata.id,
+              fullDisplayName: item.metadata.name,
+              javascriptFunctionName: item.javascriptFunctionName,
+            })),
+
+            code: compileScript(script),
+            jsLibs: processLibraries(
+              libraries,
+              false /* hard-coding to "false" because ignoring office.js-script-reference result */,
+            ).scriptReferences,
+          });
+        } catch (error) {
+          console.error(error);
           return null;
         }
+      })
+      .filter(x => x !== null),
 
-        return strictType<ICustomFunctionsIframeRunnerMetadata>({
-          solutionId: solution.id,
-          namespace: namespace,
-          functions: metadata.map(item => ({
-            fullId: item.metadata.id,
-            fullDisplayName: item.metadata.name,
-            javascriptFunctionName: item.javascriptFunctionName,
-          })),
-
-          code: compileScript(script),
-          jsLibs: processLibraries(
-            libraries,
-            false /* hard-coding to "false" because ignoring office.js-script-reference result */,
-          ).scriptReferences,
-        });
-      } catch (error) {
-        console.error(error);
-        return null;
-      }
-    })
-    .filter(x => x !== null);
+    pythonConfig: getPythonConfigIfAny(cfSolutionsGroupedByLanguage.python),
+  };
 }
 
-function loadAllCFSolutions() {
+function getPythonConfigIfAny(pythonCFs: ISolution[]): IPythonConfig | null {
+  if (pythonCFs.length === 0) {
+    return null;
+  }
+
+  const userSettings = JSON.parse(localStorage.getItem('userSettings') || '{}');
+  const allJupyterSettings = ['jupyter.url', 'jupyter.token', 'jupyter.notebook'].map(
+    settingName => userSettings[settingName],
+  );
+
+  const countOfFilledOutSettings = allJupyterSettings.filter(
+    (value: string) => value && value.length > 0,
+  ).length;
+  if (countOfFilledOutSettings < allJupyterSettings.length) {
+    return null;
+  }
+
+  const [url, token, notebook] = allJupyterSettings;
+  return { url, token, notebook };
+}
+
+function loadAllCFSolutions(): ISolution[] {
   return getAllLocalStorageKeys()
     .filter(key => key.indexOf(SOLUTION_ROOT) === 0)
     .map(key => key.replace(SOLUTION_ROOT, ''))
-    .map(id => readItem(SOLUTION_ROOT, id))
+    .map(id => readItem(SOLUTION_ROOT, id) as ISolution)
     .filter((solution: ISolution) => solution.options.isCustomFunctionsSolution);
 }
 
