@@ -1,4 +1,4 @@
-import { JUPYTER_LOG_ENABLED } from './constants';
+import * as log from '../log';
 
 /* TODO: for now, copy-pasted this file from an external source -- so disable tslint temporarily */
 /* tslint:disable */
@@ -422,14 +422,12 @@ export class Util {
   }
 
   static log(text: string): void {
-    if (JUPYTER_LOG_ENABLED) {
-      console.log(text);
-    }
+    const logger = log.getLogger('Jupyter');
+    logger.info(text);
   }
 
   static logResult(text: string): void {
-    if (JUPYTER_LOG_ENABLED) {
-      console.log(text);
-    }
+    const logger = log.getLogger('Jupyter');
+    logger.info(text);
   }
 }
