@@ -37,7 +37,7 @@ export class CustomFunctionsDashboard extends React.Component<IProps> {
       return (
         <Dashboard
           isStandalone={isStandalone}
-          hasAny={customFunctionsSummaryItems.length > 0}
+          hasAny={customFunctionsSummaryItems && customFunctionsSummaryItems.length > 0}
           items={{
             Summary: {
               component: <Summary items={customFunctionsSummaryItems} error={error} />,

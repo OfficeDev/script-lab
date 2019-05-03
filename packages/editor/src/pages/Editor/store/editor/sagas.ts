@@ -7,7 +7,6 @@ import { hideSplashScreen } from 'common/lib/utilities/splash.screen';
 
 import {
   registerLibrariesMonacoLanguage,
-  registerSettingsMonacoLanguage,
   enablePrettierInMonaco,
   parseTripleSlashRefs,
   doesMonacoExist,
@@ -105,7 +104,6 @@ function* initializeMonacoSaga(action: ActionType<typeof editor.onMount>) {
   }
 
   registerLibrariesMonacoLanguage();
-  registerSettingsMonacoLanguage();
 
   monacoEditor.addAction({
     id: 'trigger-suggest',

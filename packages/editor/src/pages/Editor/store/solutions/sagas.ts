@@ -174,7 +174,10 @@ function* checkIfIsCustomFunctionSaga(
 ) {
   const { solution, file } = action.payload;
 
-  const isCustomFunctionsSolution = isCustomFunctionScript(file.content);
+  // For now, assuming that if it's Python, it must be a CF.
+  // Whereas for TypeScript, will need to check the jsdoc attributes
+  const isCustomFunctionsSolution =
+    file.language === 'python' || isCustomFunctionScript(file.content);
 
   // Compare what is currently in the solution with what we want to update it to (via XOR)
   const optionsChanged =

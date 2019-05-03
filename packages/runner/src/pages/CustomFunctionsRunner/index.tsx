@@ -1,19 +1,12 @@
 import React from 'react';
 
-import { AwaitPromiseThenRender } from 'common/lib/components/PageSwitcher/utilities/AwaitPromiseThenRender';
 import { RunOnLoad } from 'common/lib/components/PageSwitcher/utilities/RunOnLoad';
 import setup from './setup';
-import { addScriptTag } from 'common/lib/utilities/script-loader';
-import { SCRIPT_URLS } from 'common/lib/constants';
 
 const CustomFunctionsRunner = () => (
-  <AwaitPromiseThenRender
-    promise={addScriptTag(SCRIPT_URLS.CUSTOM_FUNCTIONS_RUNNER).then(() => {
-      (CustomFunctions as any).delayInitialization();
-    })}
-  >
-    <RunOnLoad funcToRun={setup} />
-  </AwaitPromiseThenRender>
+  /* NOTE: This page will wait to load the script tag for "custom-functions-runtime.js"
+     until it hears back from the heartbeat, to check whether there is python support */
+  <RunOnLoad funcToRun={setup} />
 );
 
 export default CustomFunctionsRunner;

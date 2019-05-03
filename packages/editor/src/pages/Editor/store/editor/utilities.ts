@@ -1,7 +1,5 @@
 import prettier from 'prettier/standalone';
 import librariesIntellisenseJSON from './librariesIntellisense';
-import { schema as SettingsSchema } from '../settings/utilities';
-import { USER_SETTINGS_FILE_ID } from '../../../../constants';
 
 export function doesMonacoExist() {
   return !!(window as any).monaco;
@@ -83,21 +81,6 @@ export function registerLibrariesMonacoLanguage() {
 
       return { suggestions: [] };
     },
-  });
-}
-
-export function registerSettingsMonacoLanguage() {
-  // Note, this doesn't appear to be working:
-  // Issue tracking it:  https://github.com/OfficeDev/script-lab/issues/656
-  monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
-    validate: true,
-    schemas: [
-      {
-        uri: SettingsSchema.$id,
-        fileMatch: [monaco.Uri.file(USER_SETTINGS_FILE_ID).toString()],
-        schema: SettingsSchema,
-      },
-    ],
   });
 }
 

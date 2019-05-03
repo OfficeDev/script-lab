@@ -17,11 +17,27 @@ export const get = (state: IState, id: string): ISolution | null => {
   // TODO: Nico: REMOVE THIS LOGIC FROM HERE AS IT ISN'T THE RIGHT PLACE TO DO IT
   // https://github.com/OfficeDev/script-lab-react/issues/430
   const { isCustomFunctionsSolution, isDirectScriptExecution } = solutionMetadata.options;
+
+  const shouldIncludeLibraries = (() => {
+    const scriptFile = solutionMetadata.files
+      .map(fileId => getFile(state, fileId))
+      .filter(file => file.name === SCRIPT_FILE_NAME)[0];
+    if (!scriptFile) {
+      return false;
+    }
+
+    // For python, we don't support libraries. So don't include it if the script language is python.
+    return scriptFile.language !== 'python';
+  })();
+
   const files = solutionMetadata.files
     .map(fileId => getFile(state, fileId))
     .filter(file => {
       if (isCustomFunctionsSolution) {
-        return [SCRIPT_FILE_NAME, LIBRARIES_FILE_NAME].includes(file.name);
+        return [
+          SCRIPT_FILE_NAME,
+          ...(shouldIncludeLibraries ? [LIBRARIES_FILE_NAME] : []),
+        ].includes(file.name);
       } else if (isDirectScriptExecution) {
         return file.name === SCRIPT_FILE_NAME;
       } else {
