@@ -22,6 +22,7 @@ import {
 import { ScriptLabError } from 'common/lib/utilities/error';
 import { JupyterNotebook, PythonCodeHelper } from 'common/lib/utilities/Jupyter';
 import { JUPYTER_LOG_ENABLED } from 'common/lib/utilities/Jupyter/constants';
+import generatePythonCFCode from './utilities/generatePythonCFCode';
 
 interface IState {
   runnerLastUpdated: number;
@@ -191,24 +192,9 @@ async function getRegistrationResultPython(
   );
 
   try {
-    const code = [
-      'import customfunctionmanager',
-      clearOnRegister ? 'customfunctionmanager.clear()' : null,
-      '',
-      '##################################',
-      '',
-      ...pythonCFs
-        .filter(solution => !solution.options.isUntrusted)
-        .map(solution => findScript(solution).content),
-      '',
-      '##################################',
-      '',
-      'customfunctionmanager.generateMetadata()',
-    ]
-      .filter(line => line !== null)
-      .join('\n');
+    const code = generatePythonCFCode(pythonCFs, { clearOnRegister });
 
-    if (JUPYTER_LOG_ENABLED) {
+    if (true /* FIXME */ || JUPYTER_LOG_ENABLED) {
       console.log(code);
     }
 
