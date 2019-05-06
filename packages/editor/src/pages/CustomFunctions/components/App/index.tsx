@@ -21,8 +21,8 @@ import {
 } from 'common/lib/utilities/splash.screen';
 import { ScriptLabError } from 'common/lib/utilities/error';
 import { JupyterNotebook, PythonCodeHelper } from 'common/lib/utilities/Jupyter';
-import { JUPYTER_LOG_ENABLED } from 'common/lib/utilities/Jupyter/constants';
-import generatePythonCFCode from './utilities/generatePythonCFCode';
+import * as log from 'common/lib/utilities/log';
+import generatePythonCFCode from '../../../../utils/custom-functions/generatePythonCFCode';
 
 interface IState {
   runnerLastUpdated: number;
@@ -194,7 +194,7 @@ async function getRegistrationResultPython(
   try {
     const code = generatePythonCFCode(pythonCFs, { clearOnRegister });
 
-    if (true /* FIXME */ || JUPYTER_LOG_ENABLED) {
+    if (log.isLoggerEnabled('Jupyter', log.levels.INFO)) {
       console.log(code);
     }
 

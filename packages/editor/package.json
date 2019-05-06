@@ -41,6 +41,7 @@
     "lint": "tslint \"src/**/*.ts?(x)\"",
     "build": "node scripts/build.js",
     "test": "jest --env=jsdom --verbose",
+    "test:watch": "jest --env=jsdom --verbose --watch",
     "test-coverage": "yarn test -- --coverage",
     "show-coverage": "yarn test-coverage && coverage\\lcov-report\\index.html",
     "start-with-no-browser": "set BROWSER=none&&react-scripts start",

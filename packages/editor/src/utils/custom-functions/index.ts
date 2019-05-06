@@ -2,7 +2,7 @@ import ts from 'typescript';
 import { parseTree, IFunction } from 'custom-functions-metadata';
 import { strictType } from 'common/lib/utilities/misc';
 
-export function isCustomFunctionScript(content: string) {
+export function isTypeScriptCustomFunctionScript(content: string) {
   // Start by doing a quick match for a custom functions regex.
   // This one is super cheap to do, though it may have false positives (e.g., a snippet
   //   that has "@customfunction" but not inside a JSDOC tag).
@@ -20,6 +20,44 @@ export function isCustomFunctionScript(content: string) {
 
   const parseResult = parseTree(content, '' /* name, unused */);
   return parseResult.functions.length > 0;
+}
+
+export function isPythonCustomFunctionScript(content: string): boolean {
+  return PythonCFSnippetRegex.test(content);
+}
+
+export const PythonCFSnippetRegex = /(^\s*@\w+\.customfunction\s*\(\s*")(.*)(".*$)/gm;
+/** Matches something that:
+ *    1. starts with just optional whitespace
+ *    2. followed by `@`
+ *    3. followed by something that would generally be "cf", but could be any other custom variable name
+ *    4. followed by `.customfunction("`, with optional spaces both before and after the open-parenthesis
+ *    5. followed by any name
+ *    6. followed by `"`.  Note that it's *NOT* watching for the closing-parenthesis, since
+ *          that one might be quite a bit later, if there are parameter markings involved.
+ *
+ * For convenience, the above CF also EXTRACTS out both everything that's before the
+ *    custom name, the custom name within the quotes, and the remainder of the line.
+ *
+ * Example matches:
+ *    @cf.customfunction("ADD")
+ *         ==> matches, with group 1 extracting `@cf.customfunction("`
+ *             group 2 extracting just `ADD`, and group 3 extracting `")`
+ *      @aDifferentNamespace.customfunction    ( "ADD.GAGA"  )
+ *         ==> matches, with group 1 extracting `  @aDifferentNamespace.customfunction    ( "`,
+ *             group 2 extracting `ADD.GAGA`, and group 3 extracting `"  )`
+ *    @cf.customfunction("XYZ",
+ *         ==> matches, with group 1 extracting `@cf.customfunction("`,
+ *             group 2 extracting `XYZ`, and group 3 extracting `",`
+ */
+
+const snippetNameRegex = /[^0-9A-Za-z_ ]/g;
+export function transformSolutionNameToCFNamespace(snippetName: string) {
+  return snippetName
+    .replace(snippetNameRegex, '')
+    .split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join('');
 }
 
 /**
