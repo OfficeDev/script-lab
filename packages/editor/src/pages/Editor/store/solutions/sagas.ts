@@ -1,6 +1,7 @@
 import { put, takeEvery, call, select } from 'redux-saga/effects';
 import { getType, ActionType } from 'typesafe-actions';
 
+import { SCRIPT_FILE_NAME } from 'common/lib/utilities/solution';
 import { messageBar, solutions, editor } from '../actions';
 import { fetchYaml } from '../../services/general';
 import selectors from '../selectors';
@@ -10,7 +11,7 @@ import {
   isPythonCustomFunctionScript,
 } from '../../../../utils/custom-functions';
 import { getBoilerplate } from '../../../../newSolutionData';
-import { SCRIPT_FILE_NAME, NULL_SOLUTION_ID, NULL_FILE_ID } from '../../../../constants';
+import { NULL_SOLUTION_ID, NULL_FILE_ID } from '../../../../constants';
 import { deleteSolutionFromStorage } from '../localStorage';
 import { formatTypeScriptFile } from '../editor/utilities';
 import { currentOfficeJsRawSnippetsBaseRepoUrl } from 'common/lib/environment';

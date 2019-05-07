@@ -5,11 +5,11 @@ import { stripSpaces } from 'common/lib/utilities/string';
 import { consoleMonkeypatch } from './console.monkeypatch';
 import { getCurrentEnv } from 'common/lib/environment';
 import { pause } from 'common/lib/utilities/misc';
+import { findScript } from 'common/lib/utilities/solution';
 import {
   parseMetadata,
   transformSolutionNameToCFNamespace,
 } from '../../../../../utils/custom-functions';
-import { findScript } from '../../../../../utils';
 
 export function getJsonMetadataString(
   functions: Array<ICustomFunctionParseResult<IFunction>>,

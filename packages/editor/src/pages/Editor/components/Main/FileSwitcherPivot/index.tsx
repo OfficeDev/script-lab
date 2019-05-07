@@ -3,7 +3,7 @@ import { connect } from 'react-redux'; // Note, avoid the temptation to include 
 
 import PivotBar from 'common/lib/components/PivotBar';
 
-import { LIBRARIES_FILE_NAME, SCRIPT_FILE_NAME } from '../../../../../constants';
+import { LIBRARIES_FILE_NAME, SCRIPT_FILE_NAME } from 'common/lib/utilities/solution';
 import { actions, selectors } from '../../../store';
 import { IState as IReduxState } from '../../../store/reducer';
 import { IRootAction } from '../../../store/actions';

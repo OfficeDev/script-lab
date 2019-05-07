@@ -1,5 +1,5 @@
 import createGUID from 'uuid';
-import { LIBRARIES_FILE_NAME, SCRIPT_FILE_NAME } from '../constants';
+import { LIBRARIES_FILE_NAME, SCRIPT_FILE_NAME } from 'common/lib/utilities/solution';
 import { getBoilerplateFiles } from '../newSolutionData';
 
 export function setUpMomentJsDurationDefaults(momentInstance: {
@@ -105,7 +105,3 @@ export const convertSolutionToSnippet = (solution: ISolution): ISnippet => {
     ...snippetFiles,
   };
 };
-
-export function findScript(solution: ISolution): IFile | null {
-  return solution.files.find(file => file.name === SCRIPT_FILE_NAME) || null;
-}

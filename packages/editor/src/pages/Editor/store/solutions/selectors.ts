@@ -1,10 +1,6 @@
 import { IState } from '../reducer';
-import {
-  NULL_SOLUTION_ID,
-  SETTINGS_SOLUTION_ID,
-  SCRIPT_FILE_NAME,
-  LIBRARIES_FILE_NAME,
-} from '../../../../constants';
+import { LIBRARIES_FILE_NAME, SCRIPT_FILE_NAME } from 'common/lib/utilities/solution';
+import { NULL_SOLUTION_ID, SETTINGS_SOLUTION_ID } from '../../../../constants';
 import { filterCustomFunctions } from '../../../CustomFunctions/components/App/utilities';
 
 // solutions

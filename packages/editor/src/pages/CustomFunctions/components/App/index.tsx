@@ -21,8 +21,8 @@ import {
 import { ScriptLabError } from 'common/lib/utilities/error';
 import { JupyterNotebook, PythonCodeHelper } from 'common/lib/utilities/Jupyter';
 import * as log from 'common/lib/utilities/log';
+import { findScript } from 'common/lib/utilities/solution';
 import generatePythonCFCode from '../../../../utils/custom-functions/generatePythonCFCode';
-import { findScript } from '../../../../utils';
 
 interface IState {
   runnerLastUpdated: number;

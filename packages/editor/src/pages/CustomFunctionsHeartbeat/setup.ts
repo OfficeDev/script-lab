@@ -19,7 +19,7 @@ import {
 } from '../../utils/custom-functions';
 import { IFunction } from 'custom-functions-metadata';
 import { strictType } from 'common/lib/utilities/misc';
-import { findScript } from '../../utils';
+import { findScript } from 'common/lib/utilities/solution';
 
 export default function setup() {
   // ========================= REFRESH =================================//

@@ -1,5 +1,5 @@
 import flatten from 'lodash/flatten';
-import { findScript } from '..';
+import { findScript } from 'common/lib/utilities/solution';
 import { transformSolutionNameToCFNamespace, PythonCFSnippetRegex } from '.';
 
 const SEPARATOR = '#######################################';
