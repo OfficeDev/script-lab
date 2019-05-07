@@ -44,7 +44,7 @@ function* onSolutionOpenOrFileEditSaga(
           selectors.solutions.getFile,
           action.payload.fileId,
         );
-        if (file.language === 'typescript') {
+        if (file.language === 'typescript' || file.language === 'python') {
           solutionId = action.payload.id;
           break;
         } else {
@@ -58,7 +58,7 @@ function* onSolutionOpenOrFileEditSaga(
       throw new Error(`Unrecognized type.`);
   }
 
-  const solution = yield select(selectors.solutions.get, solutionId);
+  const solution: ISolution = yield select(selectors.solutions.get, solutionId);
   if (!solution) {
     return;
   }

@@ -16,29 +16,23 @@ export const get = (state: IState, id: string): ISolution | null => {
 
   // TODO: Nico: REMOVE THIS LOGIC FROM HERE AS IT ISN'T THE RIGHT PLACE TO DO IT
   // https://github.com/OfficeDev/script-lab-react/issues/430
-  const { isCustomFunctionsSolution, isDirectScriptExecution } = solutionMetadata.options;
+  const { isCustomFunctionsSolution } = solutionMetadata.options;
 
-  const shouldIncludeLibraries = (() => {
-    const scriptFile = solutionMetadata.files
-      .map(fileId => getFile(state, fileId))
-      .filter(file => file.name === SCRIPT_FILE_NAME)[0];
-    if (!scriptFile) {
-      return false;
-    }
-
-    // For python, we don't support libraries. So don't include it if the script language is python.
-    return scriptFile.language !== 'python';
-  })();
-
+  const scriptFile = solutionMetadata.files
+    .map(fileId => getFile(state, fileId))
+    .filter(file => file.name === SCRIPT_FILE_NAME)[0];
+  const isPythonScript = scriptFile && scriptFile.language === 'python';
   const files = solutionMetadata.files
     .map(fileId => getFile(state, fileId))
     .filter(file => {
       if (isCustomFunctionsSolution) {
         return [
           SCRIPT_FILE_NAME,
-          ...(shouldIncludeLibraries ? [LIBRARIES_FILE_NAME] : []),
+          ...(isPythonScript ? [] : [LIBRARIES_FILE_NAME]),
         ].includes(file.name);
-      } else if (isDirectScriptExecution) {
+      } else if (isPythonScript) {
+        // For a python script, only include the main file and nothing else
+        // (i.e., libraries and html and css are all not relevant)
         return file.name === SCRIPT_FILE_NAME;
       } else {
         return true;

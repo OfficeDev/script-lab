@@ -105,3 +105,7 @@ export const convertSolutionToSnippet = (solution: ISolution): ISnippet => {
     ...snippetFiles,
   };
 };
+
+export function findScript(solution: ISolution): IFile | null {
+  return solution.files.find(file => file.name === SCRIPT_FILE_NAME) || null;
+}

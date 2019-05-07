@@ -26,14 +26,13 @@ export function isPythonCustomFunctionScript(content: string): boolean {
   return PythonCFSnippetRegex.test(content);
 }
 
-export const PythonCFSnippetRegex = /(^\s*@\w+\.customfunction\s*\(\s*")(.*)(".*$)/gm;
+export const PythonCFSnippetRegex = /(@\w+\.customfunction\s*\(\s*")(.*)(".*)/;
 /** Matches something that:
- *    1. starts with just optional whitespace
- *    2. followed by `@`
- *    3. followed by something that would generally be "cf", but could be any other custom variable name
- *    4. followed by `.customfunction("`, with optional spaces both before and after the open-parenthesis
- *    5. followed by any name
- *    6. followed by `"`.  Note that it's *NOT* watching for the closing-parenthesis, since
+ *    1. starts with an `@`
+ *    2. followed by something that would generally be "cf", but could be any other custom variable name
+ *    3. followed by `.customfunction("`, with optional spaces both before and after the open-parenthesis
+ *    4. followed by any name
+ *    5. followed by `"`.  Note that it's *NOT* watching for the closing-parenthesis, since
  *          that one might be quite a bit later, if there are parameter markings involved.
  *
  * For convenience, the above CF also EXTRACTS out both everything that's before the

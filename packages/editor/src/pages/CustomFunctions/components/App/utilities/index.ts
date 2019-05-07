@@ -4,12 +4,12 @@ import compileScript from 'common/lib/utilities/compile.script';
 import { stripSpaces } from 'common/lib/utilities/string';
 import { consoleMonkeypatch } from './console.monkeypatch';
 import { getCurrentEnv } from 'common/lib/environment';
-import { SCRIPT_FILE_NAME } from '../../../../../constants';
 import { pause } from 'common/lib/utilities/misc';
 import {
   parseMetadata,
   transformSolutionNameToCFNamespace,
 } from '../../../../../utils/custom-functions';
+import { findScript } from '../../../../../utils';
 
 export function getJsonMetadataString(
   functions: Array<ICustomFunctionParseResult<IFunction>>,
@@ -238,7 +238,3 @@ function wrapCustomFunctionSnippetCode(
 
 export const filterCustomFunctions = (solutions: ISolution[]): ISolution[] =>
   solutions.filter(solution => solution.options.isCustomFunctionsSolution);
-
-export function findScript(solution: ISolution): IFile | null {
-  return solution.files.find(file => file.name === SCRIPT_FILE_NAME) || null;
-}

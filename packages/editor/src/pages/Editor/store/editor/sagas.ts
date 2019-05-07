@@ -17,6 +17,7 @@ import * as log from 'common/lib/utilities/log';
 const logger = log.getLogger('Editor');
 
 import { currentRunnerUrl } from 'common/lib/environment';
+import { findScript } from '../../../../utils';
 
 let monacoEditor: monaco.editor.IStandaloneCodeEditor;
 
@@ -145,6 +146,11 @@ function* makeAddIntellisenseRequestSaga() {
   }
 
   const solution: ISolution = yield select(selectors.editor.getActiveSolution);
+  const script = findScript(solution);
+  if (script.language !== 'typescript') {
+    return;
+  }
+
   const libraries = solution.files.find(file => file.name === LIBRARIES_FILE_NAME);
   if (!libraries) {
     return;

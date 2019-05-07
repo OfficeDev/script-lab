@@ -1,5 +1,5 @@
 import flatten from 'lodash/flatten';
-import { findScript } from '../../pages/CustomFunctions/components/App/utilities';
+import { findScript } from '..';
 import { transformSolutionNameToCFNamespace, PythonCFSnippetRegex } from '.';
 
 const SEPARATOR = '#######################################';
@@ -28,8 +28,12 @@ export default (pythonCFs: ISolution[], options: { clearOnRegister: boolean }) =
 };
 
 function injectNamespace(script: string, namespace: string) {
+  // Note: need to re-create the regex to inject the "global" and "multiline" flags into it
+  //    (and don't want to do it in the general case in the original regex, because
+  //     a regex with a "g" flag becomes a state-ful object that needs to be reset -- see
+  //     https://stackoverflow.com/questions/11477415 for more info)
   return script.replace(
-    PythonCFSnippetRegex,
+    new RegExp(PythonCFSnippetRegex, 'gm'),
     (_fullMatch, before: string, customName: string, after: string) => {
       return before + `${namespace}.${customName}` + after;
     },

@@ -6,7 +6,6 @@ import {
   registerCustomFunctions,
   getCustomFunctionEngineStatusSafe,
   filterCustomFunctions,
-  findScript,
 } from './utilities';
 import {
   getCustomFunctionCodeLastUpdated as getCFCodeLastModified,
@@ -23,6 +22,7 @@ import { ScriptLabError } from 'common/lib/utilities/error';
 import { JupyterNotebook, PythonCodeHelper } from 'common/lib/utilities/Jupyter';
 import * as log from 'common/lib/utilities/log';
 import generatePythonCFCode from '../../../../utils/custom-functions/generatePythonCFCode';
+import { findScript } from '../../../../utils';
 
 interface IState {
   runnerLastUpdated: number;
@@ -207,7 +207,7 @@ async function getRegistrationResultPython(
         return {
           javascriptFunctionName: null,
           nonCapitalizedFullName: metadata.name,
-          metadata: metadata,
+          metadata: { ...metadata, name: metadata.name.toUpperCase() },
           status: 'good', // Note: assuming success only
         };
       },
