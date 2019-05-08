@@ -13,10 +13,13 @@ import {
 } from 'common/lib/utilities/localStorage';
 import compileScript from 'common/lib/utilities/compile.script';
 import processLibraries from 'common/lib/utilities/process.libraries';
-import { parseMetadata } from '../../utils/custom-functions';
+import {
+  parseMetadata,
+  transformSolutionNameToCFNamespace,
+} from '../../utils/custom-functions';
 import { IFunction } from 'custom-functions-metadata';
 import { strictType } from 'common/lib/utilities/misc';
-import { findScript } from '../CustomFunctions/components/App/utilities';
+import { findScript } from 'common/lib/utilities/solution';
 
 export default function setup() {
   // ========================= REFRESH =================================//
@@ -85,7 +88,7 @@ function getMetadata(): ICustomFunctionsIframeRunnerOnLoadPayload {
       .map((solution: ISolution) => {
         try {
           const scriptFile = findScript(solution);
-          const namespace = transformSolutionName(solution.name);
+          const namespace = transformSolutionNameToCFNamespace(solution.name);
 
           const script = scriptFile.content;
 
@@ -160,12 +163,4 @@ function loadAllCFSolutions(): ISolution[] {
 
 function addLog({ payload }: ICustomFunctionsHeartbeatLogMessage) {
   writeItem(CF_LOGS_ROOT, payload.id, payload);
-}
-
-export function transformSolutionName(solutionName: string) {
-  return solutionName
-    .replace(/[^0-9A-Za-z_ ]/g, '')
-    .split(' ')
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join('');
 }

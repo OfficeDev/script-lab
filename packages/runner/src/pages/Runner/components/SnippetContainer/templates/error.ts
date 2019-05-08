@@ -1,9 +1,10 @@
 export interface IProps {
   title: string;
   details: string;
+  usePreBlock: boolean;
 }
 
-export default ({ title, details }: IProps) => `<!DOCTYPE html>
+export default ({ title, details, usePreBlock }: IProps) => `<!DOCTYPE html>
 <html>
 
 <head>
@@ -62,11 +63,13 @@ export default ({ title, details }: IProps) => `<!DOCTYPE html>
         overflow-wrap: normal;
         -webkit-box-sizing: border-box;
                 box-sizing: border-box;
+        overflow-y: auto;
+      }
+      pre#details {
         white-space: pre-wrap;
         word-wrap: break-word;
         word-break: break-all;
         white-space: pre-wrap;
-        overflow-y: auto;
       }
     </style>
 </head>
@@ -74,7 +77,11 @@ export default ({ title, details }: IProps) => `<!DOCTYPE html>
 <body class="ms-Fabric">
   <div class="container">
     <h1 id="title" class="ms-font-xxl">${title}</h1>
-    <pre id="details">${details}</pre>
+    ${
+      usePreBlock
+        ? `<pre id="details">${details}</pre>`
+        : `<h3 id="details" class="ms-font-l">${details}</h3>`
+    }
   </div>
 
   <script>
