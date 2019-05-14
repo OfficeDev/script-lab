@@ -39,15 +39,15 @@ export default () => {
 
         if (initialPayload.pythonConfig) {
           initializeJupyter(initialPayload.pythonConfig);
-          // TODO: (with Shaofeng) temporary hack, will definitely need to be removed once it's not either/or
-          delete (window as any).CustomFunctionMappings.__delay__;
-        } else {
-          // TODO: (with Shaofeng) for now, it's an either/or
-          await initializeRunnableSnippets(initialPayload);
-          for (const key in ScriptLabCustomFunctionsDictionary) {
-            CustomFunctions.associate(key, ScriptLabCustomFunctionsDictionary[key]);
-          }
         }
+
+        await initializeRunnableSnippets(initialPayload);
+        for (const key in ScriptLabCustomFunctionsDictionary) {
+          CustomFunctions.associate(key, ScriptLabCustomFunctionsDictionary[key]);
+        }
+        // TODO: (with Shaofeng) temporary hack, will definitely need to be removed once it's not either/or
+        delete (window as any).CustomFunctionMappings.__delay__;
+
         break;
       }
       case 'refresh':
