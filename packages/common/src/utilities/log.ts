@@ -32,3 +32,8 @@ export function getLogger(name: string): Logger {
 
   return initializedLoggers[name];
 }
+
+export const levels = loglevel.levels;
+export function isLoggerEnabled(name: string, level: number) {
+  return getLogger(name).getLevel() <= level;
+}

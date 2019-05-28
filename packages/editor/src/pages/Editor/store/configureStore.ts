@@ -42,7 +42,9 @@ const configureStore = ({ initialState = {} }: IConfigureStoreProps) => {
   // TODO: (nicobell) find out why supportsHistory() says true for the agave window or use another condition
   // NOTE: editor/reducer will need to be updated as it currently is hardcoded to depend on window.location.hash
   // const history = supportsHistory() ? createBrowserHistory() : createHashHistory()
-  const sagaMiddleware = createSagaMiddleware();
+  const sagaMiddleware = createSagaMiddleware({
+    onError: e => invokeGlobalErrorHandler(e),
+  });
 
   const store = createStore(
     rootReducer,

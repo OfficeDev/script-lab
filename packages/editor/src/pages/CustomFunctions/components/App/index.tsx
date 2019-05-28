@@ -6,7 +6,6 @@ import {
   registerCustomFunctions,
   getCustomFunctionEngineStatusSafe,
   filterCustomFunctions,
-  findScript,
 } from './utilities';
 import {
   getCustomFunctionCodeLastUpdated as getCFCodeLastModified,
@@ -21,7 +20,9 @@ import {
 } from 'common/lib/utilities/splash.screen';
 import { ScriptLabError } from 'common/lib/utilities/error';
 import { JupyterNotebook, PythonCodeHelper } from 'common/lib/utilities/Jupyter';
-import { JUPYTER_LOG_ENABLED } from 'common/lib/utilities/Jupyter/constants';
+import * as log from 'common/lib/utilities/log';
+import { findScript } from 'common/lib/utilities/solution';
+import generatePythonCFCode from '../../../../utils/custom-functions/generatePythonCFCode';
 
 interface IState {
   runnerLastUpdated: number;
@@ -191,24 +192,9 @@ async function getRegistrationResultPython(
   );
 
   try {
-    const code = [
-      'import customfunctionmanager',
-      clearOnRegister ? 'customfunctionmanager.clear()' : null,
-      '',
-      '##################################',
-      '',
-      ...pythonCFs
-        .filter(solution => !solution.options.isUntrusted)
-        .map(solution => findScript(solution).content),
-      '',
-      '##################################',
-      '',
-      'customfunctionmanager.generateMetadata()',
-    ]
-      .filter(line => line !== null)
-      .join('\n');
+    const code = generatePythonCFCode(pythonCFs, { clearOnRegister });
 
-    if (JUPYTER_LOG_ENABLED) {
+    if (log.isLoggerEnabled('Jupyter', log.levels.INFO)) {
       console.log(code);
     }
 
@@ -221,7 +207,7 @@ async function getRegistrationResultPython(
         return {
           javascriptFunctionName: null,
           nonCapitalizedFullName: metadata.name,
-          metadata: metadata,
+          metadata: { ...metadata, name: metadata.name.toUpperCase() },
           status: 'good', // Note: assuming success only
         };
       },
