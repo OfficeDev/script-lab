@@ -1,5 +1,5 @@
 import ts from 'typescript';
-import { parseTree, IFunction } from 'custom-functions-metadata';
+import { parseTree, IFunction, IOptions } from 'custom-functions-metadata';
 import { strictType } from 'common/lib/utilities/misc';
 
 export function isTypeScriptCustomFunctionScript(content: string) {
@@ -18,9 +18,7 @@ export function isTypeScriptCustomFunctionScript(content: string) {
     return false;
   }
 
-  const parseResult = parseTree(content, '' /* name, unused */, {
-    experimental: { allowRepeatingParameters: true },
-  });
+  const parseResult = parseTree(content, '' /* name, unused */, getParseTreeOptions());
   return parseResult.functions.length > 0;
 }
 
@@ -103,7 +101,7 @@ export function parseMetadata({
     ];
   }
 
-  const parseTreeResult = parseTree(fileContent, solution.name);
+  const parseTreeResult = parseTree(fileContent, solution.name, getParseTreeOptions());
   // Just in case, ensure that the result is consistent:
   if (parseTreeResult.functions.length !== parseTreeResult.extras.length) {
     throw new Error('Internal error while parsing custom function snippets.');
@@ -191,4 +189,16 @@ export function parseMetadata({
   }
 
   return functions;
+}
+
+function getParseTreeOptions(): IOptions {
+  const userSettings = JSON.parse(localStorage.getItem('userSettings') || '{}');
+
+  return {
+    experimental: {
+      allowRepeatingParameters: Boolean(
+        userSettings['experimental.customFunctions.allowRepeatingParameters'],
+      ),
+    },
+  };
 }
