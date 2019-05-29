@@ -18,7 +18,9 @@ export function isTypeScriptCustomFunctionScript(content: string) {
     return false;
   }
 
-  const parseResult = parseTree(content, '' /* name, unused */);
+  const parseResult = parseTree(content, '' /* name, unused */, {
+    experimental: { allowRepeatingParameters: true },
+  });
   return parseResult.functions.length > 0;
 }
 
