@@ -27,6 +27,7 @@ export const invisibleDefaultSettings: { [key: string]: any } = {
   'jupyter.token': '',
   'jupyter.notebook': '',
   'jupyter.clearOnRegister': '',
+  'experimental.customFunctions.allowRepeatingParameters': '',
 };
 
 export const allowedSettings = {
