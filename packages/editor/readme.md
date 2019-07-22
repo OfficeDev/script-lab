@@ -19,3 +19,10 @@ main feature of copy to clipboars
 
 export-to-clipboard
 
+
+all files are in the active solution
+
+editor/ store/ headers/ selectors
+
+
+ packages/editor/src/pages/Editor/store/editor/sagas.ts
