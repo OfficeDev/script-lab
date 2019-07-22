@@ -36,6 +36,7 @@ export default function* editorWatcher() {
   yield takeEvery(getType(messageBar.dismiss), resizeEditorSaga);
   yield takeEvery(getType(editor.applyFormatting), applyFormattingSaga);
   yield takeEvery(getType(editor.navigateToRun), navigateToRunSaga);
+  yield takeEvery(getType(editor.exportToZip), exportToZipSaga);
 }
 
 export function* onEditorOpenFileSaga(action: ActionType<typeof editor.openFile>) {
@@ -282,4 +283,10 @@ function* applyFormattingSaga() {
 
 function* navigateToRunSaga() {
   window.location.href = `${currentRunnerUrl}?backButton=true`;
+}
+
+function* exportToZipSaga() {
+  const activeSolution: ISolution = yield select(selectors.editor.getActiveSolution);
+  debugger;
+  console.log(activeSolution);
 }

@@ -285,6 +285,12 @@ export const getItems = createSelector(
                   iconProps: { iconName: 'ClipboardSolid' },
                   className: 'export-snippet-to-clipboard',
                 },
+                {
+                  key: 'export-to-zip',
+                  text: 'Export to zip file',
+                  iconProps: { iconName: 'ZipFolder' },
+                  actionCreator: actions.editor.exportToZip,
+                },
               ]
                 .filter(option => !option.hidden)
                 .map(option => {

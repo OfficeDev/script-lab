@@ -45,4 +45,6 @@ export const newFileOpened = createAction('NEW_FILE_OPENED', resolve => {
 
 export const navigateToRun = createAction('NAVIGATE_TO_RUN');
 
+export const exportToZip = createAction('EXPORT_TO_ZIP');
+
 export const shouldUpdateIntellisense = createAction('EDITOR_SHOULD_UPDATE_INTELLISENSE');
