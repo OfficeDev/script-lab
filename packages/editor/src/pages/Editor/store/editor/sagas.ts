@@ -144,6 +144,9 @@ function* makeAddIntellisenseRequestSaga() {
 
   const solution: ISolution = yield select(selectors.editor.getActiveSolution);
   const script = findScript(solution);
+  if (!script) {
+    return;
+  }
   if (script.language !== 'typescript') {
     return;
   }
