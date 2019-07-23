@@ -14,9 +14,8 @@ import {
     fetchLibraryContent,
 } from './utilities';
 import * as log from 'common/lib/utilities/log';
-import JSZip from 'jszip';
+import { exportToZip } from './exportToZip';
 
-import { saveAs } from 'file-saver';
 
 //import *  as JSZip from 'jszip';
 //const jszip = require('jszip');
@@ -257,7 +256,7 @@ function* setIntellisenseFilesSaga(
                             return null;
                         }
                     }),
-            )
+                )
                 .filter(x => x !== null),
         ),
     );
@@ -294,27 +293,5 @@ function* navigateToRunSaga() {
 
 function* exportToZipSaga() {
     const activeSolution: ISolution = yield select(selectors.editor.getActiveSolution);
-
-
-    //let zipFile: JSZip = new JSZip();
-    var zip: JSZip = new JSZip();
-
-    /*
-    index.ts
-    index.html
-    index.css
-    libraries.txt
-    */
-    activeSolution.files.forEach((file) => {
-        console.log(file.name);
-        zip.file(file.name, file.content);
-    });
-
-    zip.generateAsync({ type: "blob" }).then(function (content) {
-        // see FileSaver.js
-        saveAs(content, "example.zip");
-    });
-
-    console.log(activeSolution);
-
+    yield exportToZip(activeSolution);
 }
