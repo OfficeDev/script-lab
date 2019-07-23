@@ -26,7 +26,6 @@ export async function exportToZip(activeSolution: ISolution) {
     // able to specify a directory
     zip.file("metadata/host.txt", activeSolution.host);
 
-    debugger;
     const files = await getGitHubFiles("wandyezj", "word-rhyme", "");
 
     const promises = files.map(async (file) => {
@@ -94,7 +93,7 @@ async function getGitHubPathContents(owner, repo, path) {
 
 async function getGitHubFileData(download_url) {
     const response = await fetch(download_url);
-    const contents = await response.text();
+    const contents = await response.blob();
     return contents;
 }
 
