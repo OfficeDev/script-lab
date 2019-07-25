@@ -47,3 +47,16 @@ export const SERVER_HELLO_ENDPOINT = {
   path: 'hello',
   payload: { message: 'Hello from Script Lab' },
 };
+
+export const RUNNER_TO_EDITOR_HEARTBEAT_REQUESTS = {
+  GET_ACTIVE_SOLUTION: 'GET_ACTIVE_SOLUTION',
+};
+
+export const EDITOR_HEARTBEAT_TO_RUNNER_RESPONSES = {
+  ACTIVE_SOLUTION: 'ACTIVE_SOLUTION',
+};
+
+export interface IEditorHeartbeatToRunnerResponse {
+  type: string;
+  contents: any;
+}

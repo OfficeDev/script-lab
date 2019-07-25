@@ -3,6 +3,12 @@ import { currentRunnerUrl } from 'common/lib/environment';
 import ensureFreshLocalStorage from 'common/lib/utilities/ensure.fresh.local.storage';
 
 import * as log from 'common/lib/utilities/log';
+import {
+  RUNNER_TO_EDITOR_HEARTBEAT_REQUESTS,
+  EDITOR_HEARTBEAT_TO_RUNNER_RESPONSES,
+  IEditorHeartbeatToRunnerResponse,
+} from 'common/lib/constants';
+import { strictType } from 'common/lib/utilities/misc';
 const logger = log.getLogger('heartbeat');
 
 const Heartbeat = () => {
@@ -15,7 +21,7 @@ const Heartbeat = () => {
 
 export default Heartbeat;
 
-function onMessage(event) {
+function onMessage(event: { data: string; origin: string }) {
   logger.info(event);
   if (event.origin !== currentRunnerUrl) {
     console.error(`Could not read snippet data: invalid origin "${event.origin}"`);
@@ -24,11 +30,21 @@ function onMessage(event) {
 
   ensureFreshLocalStorage();
 
-  if (event.data.indexOf('GET_ACTIVE_SOLUTION') === 0) {
+  if (event.data.indexOf(RUNNER_TO_EDITOR_HEARTBEAT_REQUESTS.GET_ACTIVE_SOLUTION) === 0) {
     const host = event.data.split('/')[1];
     const solution = localStorage.getItem('activeSolution_' + host);
-
-    logger.info('GET_ACTIVE_SOLUTION received, posting back to parent');
-    window.parent.postMessage(solution, event.origin);
+    sendMessageBackToRunner(
+      event.origin,
+      EDITOR_HEARTBEAT_TO_RUNNER_RESPONSES.ACTIVE_SOLUTION,
+      solution,
+    );
   }
+}
+
+function sendMessageBackToRunner(origin: string, type: string, payload: any) {
+  logger.info(`Heartbeat sending ${type} message back`);
+  window.parent.postMessage(
+    strictType<IEditorHeartbeatToRunnerResponse>({ type: type, contents: payload }),
+    origin,
+  );
 }

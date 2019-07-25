@@ -12,10 +12,10 @@ interface IState {
 }
 
 class IFrame extends React.Component<IProps, IState> {
-  node; // ref to iframe node
+  node: HTMLIFrameElement;
   private isIframeMounted: boolean;
 
-  constructor(props) {
+  constructor(props: IProps) {
     super(props);
     this.isIframeMounted = false;
 
