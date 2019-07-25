@@ -13,6 +13,7 @@ const heartbeatEditorUrl = `${currentEditorUrl}/#/heartbeat`;
 export interface IProps {
   host: string;
   onReceiveNewActiveSolution: (solution: ISolution | null) => void;
+  sendMessageToEditorHeartbeat: (message: string) => void;
 }
 
 interface IState {

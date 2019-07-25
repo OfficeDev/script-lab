@@ -38,6 +38,10 @@ function onMessage(event: { data: string; origin: string }) {
       EDITOR_HEARTBEAT_TO_RUNNER_RESPONSES.ACTIVE_SOLUTION,
       solution,
     );
+  } else if (
+    event.data.indexOf(RUNNER_TO_EDITOR_HEARTBEAT_REQUESTS.IS_JUPYTER_ENABLED) === 0
+  ) {
+    // FIXME
   }
 }
 

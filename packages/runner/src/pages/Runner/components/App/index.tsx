@@ -42,6 +42,7 @@ export class App extends React.Component<{}, IState> {
   private officeJsPageUrlLowerCased: string | null;
   private hasRenderedContent = false;
   private isTransitioningAwayFromPage = false;
+  private registeredMessengerFromRunnerToEditor: (message: string) => void;
 
   constructor(props: {}) {
     super(props);
@@ -167,6 +168,12 @@ export class App extends React.Component<{}, IState> {
     }
   };
 
+  sendMessageToEditorHeartbeat = (message: string) => {
+    if (this.registeredMessengerFromRunnerToEditor) {
+      this.registeredMessengerFromRunnerToEditor(message);
+    }
+  };
+
   render() {
     return (
       <Theme host={this.state.solution ? this.state.solution.host : Utilities.host}>
@@ -213,6 +220,7 @@ export class App extends React.Component<{}, IState> {
         <Heartbeat
           host={Utilities.host}
           onReceiveNewActiveSolution={this.onReceiveNewActiveSolution}
+          sendMessageToEditorHeartbeat={this.sendMessageToEditorHeartbeat}
         />
       </Theme>
     );
