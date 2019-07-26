@@ -23,20 +23,26 @@ export async function exportToZip(activeSolution: ISolution) {
         zip.file(file.name, file.content);
     });
 
-    // able to specify a directory
-    zip.file("metadata/host.txt", activeSolution.host);
+    const host = activeSolution.host;
 
-    const files = await getGitHubFiles("wandyezj", "word-rhyme", "");
+    // Only word is supported at the moment with a template for ScriptLab
+    if (host === "WORD") {
+        const files = await getGitHubFiles("wandyezj", "office-add-in-template-taskpane-word", "");
 
-    const promises = files.map(async (file) => {
-        const path = file.path;
-        const download_url = file.download_url;
-        const contents = await getGitHubFileData(download_url);
+        const promises = files.map(async (file) => {
+            const path = file.path;
+            const download_url = file.download_url;
+            const contents = await getGitHubFileData(download_url);
 
-        zip.file(path, contents);
-    });
+            zip.file(path, contents);
+        });
 
-    await Promise.all(promises);
+        await Promise.all(promises);
+    } else {
+        // otherwise simply save all the files
+        // able to specify a directory
+        zip.file("metadata/host.txt", host);
+    }
 
     zip.generateAsync({ type: "blob" }).then((content) => {
         // see FileSaver.js
