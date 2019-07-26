@@ -12,27 +12,58 @@ export async function exportToZip(activeSolution: ISolution) {
 
     const zip: JSZip = new JSZip();
 
+    let typescriptFile: string = "";
+    let htmlConts: string = "";
+    let cssContents: string = "";
+    let librariesContents: string = "";
+
+
+
     /*
     index.ts
     index.html
     index.css
     libraries.txt
     */
-    activeSolution.files.forEach((file) => {
-        console.log(file.name);
-        zip.file(file.name, file.content);
+    const userFiles = activeSolution.files.map((file) => {
+        return [file.language, file.content];
+        // console.log(file.name);
+        // zip.file(file.name, file.content);
     });
+
+    const userContents = new Map(userFiles as [[string, string]]);
 
     const host = activeSolution.host;
 
     // Only word is supported at the moment with a template for ScriptLab
-    if (host === "WORD") {
+    if (host === "WORD" || true) {
         const files = await getGitHubFiles("wandyezj", "office-add-in-template-taskpane-word", "");
 
         const promises = files.map(async (file) => {
             const path = file.path;
             const download_url = file.download_url;
-            const contents = await getGitHubFileData(download_url);
+
+            // map of user contents over the template
+            let contents: any;
+            if (path === "taskpane.html") {
+                const htmlContent: string = userContents.get("html");
+                contents = await getGitHubTextFileData(download_url);
+                contents = contents.replace("<!-- TaskPane body -->", htmlContent);
+
+                // TODO: Special consideration is required for the included packages
+            } else if (path === "taskpane.css") {
+                contents = userContents.get("css");
+            } else if (path === "taskpane.ts") {
+                const typescriptContent: string = userContents.get("typescript");
+                contents = typescriptContent;
+
+                // make sure Office.onReady is present until it is no longer necessary
+                if (contents.indexOf("Office.onReady(") === -1) {
+                    contents = await getGitHubTextFileData(download_url) + contents;
+                }
+            } else {
+                contents = await getGitHubFileData(download_url);
+            }
 
             zip.file(path, contents);
         });
@@ -100,6 +131,12 @@ async function getGitHubPathContents(owner, repo, path) {
 async function getGitHubFileData(download_url) {
     const response = await fetch(download_url);
     const contents = await response.blob();
+    return contents;
+}
+
+async function getGitHubTextFileData(download_url) {
+    const response = await fetch(download_url);
+    const contents = await response.text();
     return contents;
 }
 
