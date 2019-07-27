@@ -58,6 +58,9 @@ export const EDITOR_HEARTBEAT_TO_RUNNER_RESPONSES = {
   PASS_MESSAGE_TO_USER_SNIPPET: 'PASS_MESSAGE_TO_USER_SNIPPET',
 };
 
+/** Used both for messages from heartbeat to runner, and for the payload of the
+ * "PASS_MESSAGE_TO_USER_SNIPPET" contents
+ */
 export interface IEditorHeartbeatToRunnerResponse {
   type: string;
   contents: any;

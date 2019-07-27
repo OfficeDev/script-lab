@@ -13,6 +13,9 @@ const heartbeatEditorUrl = `${currentEditorUrl}/#/heartbeat`;
 export interface IProps {
   host: string;
   onReceiveNewActiveSolution: (solution: ISolution | null) => void;
+  onReceivedMessageToPassToUserSnippet: (
+    message: IEditorHeartbeatToRunnerResponse,
+  ) => void;
 }
 
 interface IState {
@@ -75,10 +78,11 @@ class Heartbeat extends Component<IProps, IState> {
           //   and there was no concept of "type"
           processActiveSolution(parsedData as any);
         },
-        [EDITOR_HEARTBEAT_TO_RUNNER_RESPONSES.ACTIVE_SOLUTION]: () =>
-          processActiveSolution(parsedData.contents),
+        [EDITOR_HEARTBEAT_TO_RUNNER_RESPONSES.ACTIVE_SOLUTION]: () => {
+          processActiveSolution(parsedData.contents);
+        },
         [EDITOR_HEARTBEAT_TO_RUNNER_RESPONSES.PASS_MESSAGE_TO_USER_SNIPPET]: () => {
-          debugger; // FIXME
+          this.props.onReceivedMessageToPassToUserSnippet(parsedData.contents);
         },
       };
 

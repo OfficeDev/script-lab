@@ -77,8 +77,7 @@ export default ({ script }: IProps) => `<!DOCTYPE html>
 
 <body class="ms-Fabric">
   <div class="container">
-    <h1 id="title" class="ms-font-xxl">Python script initializing</h1>
-    <h3 id="details" class="ms-font-l">Please wait...</h3>
+    <h1 id="please-wait" class="ms-font-xxl">Please wait...</h1>
 
     <pre>
 ${script}
@@ -88,10 +87,15 @@ ${script}
   <script>
     window.parent.scriptRunnerOnLoad(window);
 
-    window.onMessage = function(event) {
-      debugger; // FIXME
-      console.log(event.data)
-    }
+    window.${METHODS_TO_EXPOSE_ON_IFRAME.onMessageFromHeartbeat} = function(message) {
+      if (message.type === "${RUNNER_TO_EDITOR_HEARTBEAT_REQUESTS.IS_JUPYTER_ENABLED}") {
+        if (message.contents) {
+          document.getElementById('please-wait').style.visibility = 'hidden';
+        } else {
+          debugger; // FIXME
+        }
+      }
+    };
 
     window.${METHODS_TO_EXPOSE_ON_IFRAME.sendMessageFromRunnerToEditor}("${
   RUNNER_TO_EDITOR_HEARTBEAT_REQUESTS.IS_JUPYTER_ENABLED

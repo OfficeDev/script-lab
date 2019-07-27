@@ -7,7 +7,7 @@ import cloneDeep from 'lodash/cloneDeep';
 import Theme from 'common/lib/components/Theme';
 import Console from 'common/lib/components/Console';
 import HeaderFooterLayout from 'common/lib/components/HeaderFooterLayout';
-import { SCRIPT_URLS } from 'common/lib/constants';
+import { SCRIPT_URLS, IEditorHeartbeatToRunnerResponse } from 'common/lib/constants';
 import { OFFICE_JS_URL_QUERY_PARAMETER_KEY } from 'common/lib/utilities/script-loader/constants';
 
 import Heartbeat from './Heartbeat';
@@ -44,6 +44,7 @@ export class App extends React.Component<{}, IState> {
   private isTransitioningAwayFromPage = false;
 
   private heartbeatRef: React.RefObject<Heartbeat> = React.createRef();
+  private snippetContainerRef: React.RefObject<SnippetContainer> = React.createRef();
 
   constructor(props: {}) {
     super(props);
@@ -133,6 +134,12 @@ export class App extends React.Component<{}, IState> {
     this.setState({ solution, logs: [] });
   };
 
+  onReceivedMessageToPassToUserSnippet = (
+    message: IEditorHeartbeatToRunnerResponse,
+  ): void => {
+    this.snippetContainerRef.current.passMessageThroughToIframe(message);
+  };
+
   softRefresh = () => {
     if (this.state.solution) {
       this.setState({
@@ -203,6 +210,7 @@ export class App extends React.Component<{}, IState> {
             }
           >
             <SnippetContainer
+              ref={this.snippetContainerRef}
               solution={this.state.solution}
               onRender={this.onSnippetRender}
               sendMessageFromRunnerToEditor={this.sendMessageFromRunnerToEditor}
@@ -220,6 +228,7 @@ export class App extends React.Component<{}, IState> {
           ref={this.heartbeatRef}
           host={Utilities.host}
           onReceiveNewActiveSolution={this.onReceiveNewActiveSolution}
+          onReceivedMessageToPassToUserSnippet={this.onReceivedMessageToPassToUserSnippet}
         />
       </Theme>
     );

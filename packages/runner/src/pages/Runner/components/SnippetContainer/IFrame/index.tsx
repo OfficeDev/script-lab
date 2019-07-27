@@ -1,4 +1,5 @@
 import React from 'react';
+import { IEditorHeartbeatToRunnerResponse } from 'common/lib/constants';
 
 interface IProps {
   content: string;
@@ -14,6 +15,7 @@ interface IState {
 
 export const METHODS_TO_EXPOSE_ON_IFRAME = {
   sendMessageFromRunnerToEditor: 'sendMessageFromRunnerToEditor',
+  onMessageFromHeartbeat: 'onMessageFromHeartbeat',
 };
 
 class IFrame extends React.Component<IProps, IState> {
@@ -41,6 +43,12 @@ class IFrame extends React.Component<IProps, IState> {
         this.props.onRenderComplete();
       }
     };
+  }
+
+  passMessageThroughToIframe(message: IEditorHeartbeatToRunnerResponse) {
+    (this.node.contentWindow as any)[METHODS_TO_EXPOSE_ON_IFRAME.onMessageFromHeartbeat](
+      message,
+    );
   }
 
   componentDidMount() {

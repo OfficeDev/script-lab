@@ -16,6 +16,7 @@ import { Utilities, HostType } from '@microsoft/office-js-helpers';
 import processLibraries from 'common/lib/utilities/process.libraries';
 import { sanitizeObject } from './templates/sanitizer';
 import { findScript, findLibraries } from 'common/lib/utilities/solution';
+import { IEditorHeartbeatToRunnerResponse } from 'common/lib/constants';
 
 const SHOW_PROGRESS_BAR_DURATION = 750 /* ms */;
 
@@ -34,7 +35,9 @@ interface IState {
 }
 
 class Snippet extends React.Component<IProps, IState> {
-  constructor(props) {
+  private iframeRef: React.RefObject<IFrame> = React.createRef();
+
+  constructor(props: IProps) {
     super(props);
 
     const lastRendered = Date.now();
@@ -50,6 +53,10 @@ class Snippet extends React.Component<IProps, IState> {
     if (this.props.onRender) {
       this.props.onRender({ lastRendered, hasContent: content.length > 0 });
     }
+  }
+
+  passMessageThroughToIframe(message: IEditorHeartbeatToRunnerResponse) {
+    this.iframeRef.current.passMessageThroughToIframe(message);
   }
 
   componentDidMount() {}
@@ -172,6 +179,7 @@ class Snippet extends React.Component<IProps, IState> {
         <div style={{ display: this.state.isLoading ? 'none' : 'block', height: '100%' }}>
           {this.state.isIFrameMounted && (
             <IFrame
+              ref={this.iframeRef}
               content={this.state.content}
               lastRendered={this.state.lastRendered}
               namespacesToTransferFromWindow={officeNamespacesForIframe}

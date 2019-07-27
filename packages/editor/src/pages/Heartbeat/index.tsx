@@ -44,10 +44,10 @@ function onMessage(event: { data: string; origin: string }) {
     sendMessageBackToRunner(
       event.origin,
       EDITOR_HEARTBEAT_TO_RUNNER_RESPONSES.PASS_MESSAGE_TO_USER_SNIPPET,
-      {
-        respondingTo: RUNNER_TO_EDITOR_HEARTBEAT_REQUESTS.IS_JUPYTER_ENABLED,
-        value: true /*FIXME*/,
-      },
+      strictType<IEditorHeartbeatToRunnerResponse>({
+        type: RUNNER_TO_EDITOR_HEARTBEAT_REQUESTS.IS_JUPYTER_ENABLED,
+        contents: true /*FIXME*/,
+      }),
     );
   }
 }
