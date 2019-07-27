@@ -77,6 +77,9 @@ class Heartbeat extends Component<IProps, IState> {
         },
         [EDITOR_HEARTBEAT_TO_RUNNER_RESPONSES.ACTIVE_SOLUTION]: () =>
           processActiveSolution(parsedData.contents),
+        [EDITOR_HEARTBEAT_TO_RUNNER_RESPONSES.PASS_MESSAGE_TO_USER_SNIPPET]: () => {
+          debugger; // FIXME
+        },
       };
 
       const appropriateResponse = responsesMap[parsedData.type];

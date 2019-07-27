@@ -88,9 +88,14 @@ ${script}
   <script>
     window.parent.scriptRunnerOnLoad(window);
 
+    window.onMessage = function(event) {
+      debugger; // FIXME
+      console.log(event.data)
+    }
+
     window.${METHODS_TO_EXPOSE_ON_IFRAME.sendMessageFromRunnerToEditor}("${
   RUNNER_TO_EDITOR_HEARTBEAT_REQUESTS.IS_JUPYTER_ENABLED
-}");
+}");    
   </script>
 </body>
 

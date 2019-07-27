@@ -41,7 +41,14 @@ function onMessage(event: { data: string; origin: string }) {
   } else if (
     event.data.indexOf(RUNNER_TO_EDITOR_HEARTBEAT_REQUESTS.IS_JUPYTER_ENABLED) === 0
   ) {
-    debugger; // FIXME
+    sendMessageBackToRunner(
+      event.origin,
+      EDITOR_HEARTBEAT_TO_RUNNER_RESPONSES.PASS_MESSAGE_TO_USER_SNIPPET,
+      {
+        respondingTo: RUNNER_TO_EDITOR_HEARTBEAT_REQUESTS.IS_JUPYTER_ENABLED,
+        value: true /*FIXME*/,
+      },
+    );
   }
 }
 
