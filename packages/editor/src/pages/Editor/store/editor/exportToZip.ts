@@ -1,6 +1,9 @@
 import JSZip from 'jszip';
 
 import { saveAs } from 'file-saver';
+import { Utilities, HostType } from '@microsoft/office-js-helpers';
+import processLibraries from 'common/lib/utilities/process.libraries';
+import { types } from 'util';
 
 export async function exportToZip(activeSolution: ISolution) {
 
@@ -11,13 +14,6 @@ export async function exportToZip(activeSolution: ISolution) {
     // need to grab files from GitHub
 
     const zip: JSZip = new JSZip();
-
-    let typescriptFile: string = "";
-    let htmlConts: string = "";
-    let cssContents: string = "";
-    let librariesContents: string = "";
-
-
 
     /*
     index.ts
@@ -33,7 +29,27 @@ export async function exportToZip(activeSolution: ISolution) {
 
     const userContents = new Map(userFiles as [[string, string]]);
 
+    const librariesContents = userContents.get("libraries");
+    const isInsideOffice = Utilities.host !== HostType.WEB;
+    const libraries = processLibraries(librariesContents, isInsideOffice || true);
+
+    const officeJs = libraries.officeJs;
+    const scripts = [...libraries.linkReferences, ...libraries.scriptReferences]
+    const typesNpm = libraries.dtsTypesReferences;
+    const typesFiles = libraries.dtsFileReferences;
+
+
     const host = activeSolution.host;
+
+    // add types files to the zip
+    const typeFilePromises = typesFiles.map(async (download_url) => {
+        const contents = await getGitHubFileData(download_url);
+        const name = download_url.replace(/:/g, '').replace(/\//g, "-");
+        const path = `types/${name}`;
+        zip.file(path, contents);
+    });
+
+    Promise.all(typeFilePromises);
 
     // Only word is supported at the moment with a template for ScriptLab
     if (host === "WORD" || true) {
@@ -50,7 +66,45 @@ export async function exportToZip(activeSolution: ISolution) {
                 contents = await getGitHubTextFileData(download_url);
                 contents = contents.replace("<!-- TaskPane body -->", htmlContent);
 
+                // insert Office.Js tag
+                const defaultOfficeJs = "https://appsforoffice.microsoft.com/lib/1.1/hosted/office.js";
+                contents = contents.replace(defaultOfficeJs, officeJs);
+
+                // generate script tags
+                const librariesTarget = "<!-- TaskPane Libraries -->";
+                const scriptTags = scripts.map((script) => `<script src="${script}"></script>`);
+                scriptTags.unshift(librariesTarget);
+
+                const scriptContent = scriptTags.join("\n");
+                contents = contents.replace(librariesTarget, scriptContent);
+
+
                 // TODO: Special consideration is required for the included packages
+                // how does script lab currently resolve and include these when running?
+                // check in separate features, export as zip, and export as template.
+
+                // things that are @types/ should go into the package.json
+                // processLibraries
+                // Utilities.host !== HostType.WEB
+                // Utilities.platform 
+                // have it return another thing
+                // process.libraries.ts
+            } else if (path === "package.json") {
+                // insert additional packages
+                const packageJsonObject: any = await getGitHubJson(download_url);
+                typesNpm.forEach((piece) => {
+                    const index = piece.lastIndexOf("@");
+                    let name = piece.substring(0, index);
+                    let version = piece.substring(index + 1);
+                    if (index === 0) {
+                        name = piece;
+                        version = "*";
+                    }
+                    packageJsonObject.devDependencies[name] = version;
+                });
+
+                contents = JSON.stringify(packageJsonObject, null, 4);
+
             } else if (path === "taskpane.css") {
                 contents = userContents.get("css");
             } else if (path === "taskpane.ts") {
@@ -137,6 +191,12 @@ async function getGitHubFileData(download_url) {
 async function getGitHubTextFileData(download_url) {
     const response = await fetch(download_url);
     const contents = await response.text();
+    return contents;
+}
+
+async function getGitHubJson(download_url) {
+    const response = await fetch(download_url);
+    const contents = await response.json();
     return contents;
 }
 
