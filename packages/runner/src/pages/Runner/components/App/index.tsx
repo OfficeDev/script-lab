@@ -42,7 +42,8 @@ export class App extends React.Component<{}, IState> {
   private officeJsPageUrlLowerCased: string | null;
   private hasRenderedContent = false;
   private isTransitioningAwayFromPage = false;
-  private registeredMessengerFromRunnerToEditor: (message: string) => void;
+
+  private heartbeatRef: React.RefObject<Heartbeat> = React.createRef();
 
   constructor(props: {}) {
     super(props);
@@ -168,11 +169,8 @@ export class App extends React.Component<{}, IState> {
     }
   };
 
-  sendMessageToEditorHeartbeat = (message: string) => {
-    if (this.registeredMessengerFromRunnerToEditor) {
-      this.registeredMessengerFromRunnerToEditor(message);
-    }
-  };
+  sendMessageFromRunnerToEditor = (message: string) =>
+    this.heartbeatRef.current.sendMessage(message);
 
   render() {
     return (
@@ -207,6 +205,7 @@ export class App extends React.Component<{}, IState> {
             <SnippetContainer
               solution={this.state.solution}
               onRender={this.onSnippetRender}
+              sendMessageFromRunnerToEditor={this.sendMessageFromRunnerToEditor}
             />
           </HeaderFooterLayout>
           <Only when={this.state.isConsoleOpen}>
@@ -218,9 +217,9 @@ export class App extends React.Component<{}, IState> {
           </Only>
         </AppWrapper>
         <Heartbeat
+          ref={this.heartbeatRef}
           host={Utilities.host}
           onReceiveNewActiveSolution={this.onReceiveNewActiveSolution}
-          sendMessageToEditorHeartbeat={this.sendMessageToEditorHeartbeat}
         />
       </Theme>
     );

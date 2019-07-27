@@ -5,7 +5,8 @@ import Only from 'common/lib/components/Only';
 
 import runTemplate from './templates/run';
 import errorTemplate from './templates/error';
-import noSnippet from './templates/noSnippet';
+import noSnippetTemplate from './templates/noSnippet';
+import pythonTemplate from './templates/python';
 
 import { officeNamespacesForIframe } from '../../../../constants';
 import { ProgressIndicator } from 'office-ui-fabric-react/lib/ProgressIndicator';
@@ -21,6 +22,7 @@ const SHOW_PROGRESS_BAR_DURATION = 750 /* ms */;
 export interface IProps {
   solution?: ISolution | null;
   onRender?: (data: { lastRendered: number; hasContent: boolean }) => void;
+  sendMessageFromRunnerToEditor: (message: string) => void;
 }
 
 interface IState {
@@ -92,7 +94,7 @@ class Snippet extends React.Component<IProps, IState> {
     }
 
     if (solution === null) {
-      return noSnippet();
+      return noSnippetTemplate();
     }
 
     if (solution.options.isUntrusted) {
@@ -102,14 +104,7 @@ class Snippet extends React.Component<IProps, IState> {
     try {
       const script = findScript(solution);
       if (script.language === 'python') {
-        return errorTemplate({
-          title: 'Cannot run Python snippet',
-          details:
-            'Regular Python snippets are not currently supported. ' +
-            'Only custom functions can be written in python, ' +
-            'and must follow a specific prescribed syntax/pattern.',
-          usePreBlock: false,
-        });
+        return pythonTemplate({ script: script.content });
       }
 
       // For the HTML, run it through the browser's DOM parser to get it to auto-add
@@ -181,6 +176,7 @@ class Snippet extends React.Component<IProps, IState> {
               lastRendered={this.state.lastRendered}
               namespacesToTransferFromWindow={officeNamespacesForIframe}
               onRenderComplete={this.completeLoad}
+              sendMessageFromRunnerToEditor={this.props.sendMessageFromRunnerToEditor}
             />
           )}
         </div>

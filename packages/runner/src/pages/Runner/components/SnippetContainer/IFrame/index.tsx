@@ -5,11 +5,16 @@ interface IProps {
   lastRendered: number;
   onRenderComplete?: () => void;
   namespacesToTransferFromWindow: string[];
+  sendMessageFromRunnerToEditor: (message: string) => void;
 }
 
 interface IState {
   previousRenderTimestamp: number;
 }
+
+export const METHODS_TO_EXPOSE_ON_IFRAME = {
+  sendMessageFromRunnerToEditor: 'sendMessageFromRunnerToEditor',
+};
 
 class IFrame extends React.Component<IProps, IState> {
   node: HTMLIFrameElement;
@@ -103,6 +108,10 @@ class IFrame extends React.Component<IProps, IState> {
     this.props.namespacesToTransferFromWindow.forEach(
       namespace => (iframe[namespace] = window[namespace]),
     );
+
+    (iframe as any)[
+      METHODS_TO_EXPOSE_ON_IFRAME.sendMessageFromRunnerToEditor
+    ] = this.props.sendMessageFromRunnerToEditor;
   };
 }
 

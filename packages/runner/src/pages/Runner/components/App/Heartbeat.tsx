@@ -13,7 +13,6 @@ const heartbeatEditorUrl = `${currentEditorUrl}/#/heartbeat`;
 export interface IProps {
   host: string;
   onReceiveNewActiveSolution: (solution: ISolution | null) => void;
-  sendMessageToEditorHeartbeat: (message: string) => void;
 }
 
 interface IState {
@@ -38,13 +37,16 @@ class Heartbeat extends Component<IProps, IState> {
     window.onmessage = null;
   }
 
-  private requestActiveSolution = () => {
+  sendMessage = (message: string) => {
     if (this.node.current) {
-      this.node.current.contentWindow!.postMessage(
-        `${RUNNER_TO_EDITOR_HEARTBEAT_REQUESTS.GET_ACTIVE_SOLUTION}/${this.props.host}`,
-        currentEditorUrl,
-      );
+      this.node.current.contentWindow!.postMessage(message, currentEditorUrl);
     }
+  };
+
+  private requestActiveSolution = () => {
+    this.sendMessage(
+      `${RUNNER_TO_EDITOR_HEARTBEAT_REQUESTS.GET_ACTIVE_SOLUTION}/${this.props.host}`,
+    );
   };
 
   private onWindowMessage = ({ origin, data }) => {

@@ -41,7 +41,7 @@ function onMessage(event: { data: string; origin: string }) {
   } else if (
     event.data.indexOf(RUNNER_TO_EDITOR_HEARTBEAT_REQUESTS.IS_JUPYTER_ENABLED) === 0
   ) {
-    // FIXME
+    debugger; // FIXME
   }
 }
 
