@@ -9,6 +9,7 @@ import {
   IEditorHeartbeatToRunnerResponse,
 } from 'common/lib/constants';
 import { strictType } from 'common/lib/utilities/misc';
+import { getPythonConfigIfAny } from '../../utils/python';
 const logger = log.getLogger('heartbeat');
 
 const Heartbeat = () => {
@@ -46,7 +47,7 @@ function onMessage(event: { data: string; origin: string }) {
       EDITOR_HEARTBEAT_TO_RUNNER_RESPONSES.PASS_MESSAGE_TO_USER_SNIPPET,
       strictType<IEditorHeartbeatToRunnerResponse>({
         type: RUNNER_TO_EDITOR_HEARTBEAT_REQUESTS.IS_JUPYTER_ENABLED,
-        contents: true /*FIXME*/,
+        contents: getPythonConfigIfAny() ? true : false,
       }),
     );
   }

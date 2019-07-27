@@ -66,22 +66,13 @@ export default ({ script }: IProps) => `<!DOCTYPE html>
                 box-sizing: border-box;
         overflow-y: auto;
       }
-      pre#details {
-        white-space: pre-wrap;
-        word-wrap: break-word;
-        word-break: break-all;
-        white-space: pre-wrap;
-      }
     </style>
 </head>
 
 <body class="ms-Fabric">
   <div class="container">
-    <h1 id="please-wait" class="ms-font-xxl">Please wait...</h1>
-
-    <pre>
-${script}
-    </pre>
+    <h1 id="title" class="ms-font-xxl">Please wait...</h1>
+    <h3 id="details" style="visibility:none" class="ms-font-l">Please wait...</h1>
   </div>
 
   <script>
@@ -90,16 +81,21 @@ ${script}
     window.${METHODS_TO_EXPOSE_ON_IFRAME.onMessageFromHeartbeat} = function(message) {
       if (message.type === "${RUNNER_TO_EDITOR_HEARTBEAT_REQUESTS.IS_JUPYTER_ENABLED}") {
         if (message.contents) {
-          document.getElementById('please-wait').style.visibility = 'hidden';
+          document.getElementById('title').textContent = 'Python snippet';
         } else {
-          debugger; // FIXME
+          document.getElementById('title').textContent = 'Python not configured';
+          document.getElementById('details').style.visibility = '';
+          document.getElementById('details').textContent =
+            'To support Python scripts, you must ' +
+            'enter the required settings in the editor\\'s "Settings" page. ' +
+            'Please return to the editor, add the necessary settings, and try again.';
         }
       }
     };
 
     window.${METHODS_TO_EXPOSE_ON_IFRAME.sendMessageFromRunnerToEditor}("${
   RUNNER_TO_EDITOR_HEARTBEAT_REQUESTS.IS_JUPYTER_ENABLED
-}");    
+}");
   </script>
 </body>
 
