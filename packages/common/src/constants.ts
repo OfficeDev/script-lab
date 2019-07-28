@@ -9,7 +9,7 @@ export const SCRIPT_URLS = {
   CUSTOM_FUNCTIONS_RUNNER_DEFAULT:
     'https://appsforoffice.microsoft.com/lib/preview/hosted/custom-functions-runtime.js',
   CUSTOM_FUNCTIONS_RUNNER_WITH_JUPYTER_SUPPORT:
-    'https://exceljupyter.azurewebsites.net/agave/dist/external/office-js-custom-0/custom-functions-runtime.debug.js',
+    'https://exceljupyter.azurewebsites.net/agave/dist/external/office-js-custom-1/custom-functions-runtime.debug.js',
 
   DEFAULT_OFFICE_JS: 'https://appsforoffice.microsoft.com/lib/1/hosted/office.js',
   OFFICE_JS_FOR_CUSTOM_FUNCTIONS_DASHBOARD:
