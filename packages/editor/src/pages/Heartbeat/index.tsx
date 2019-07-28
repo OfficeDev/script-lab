@@ -10,6 +10,7 @@ import {
 } from 'common/lib/constants';
 import { strictType } from 'common/lib/utilities/misc';
 import { getPythonConfigIfAny } from '../../utils/python';
+import { JupyterNotebook } from 'common/lib/utilities/Jupyter';
 const logger = log.getLogger('heartbeat');
 
 const Heartbeat = () => {
@@ -22,7 +23,7 @@ const Heartbeat = () => {
 
 export default Heartbeat;
 
-function onMessage(event: { data: string; origin: string }) {
+async function onMessage(event: { data: string; origin: string }) {
   logger.info(event);
   if (event.origin !== currentRunnerUrl) {
     console.error(`Could not read snippet data: invalid origin "${event.origin}"`);
@@ -50,6 +51,28 @@ function onMessage(event: { data: string; origin: string }) {
         contents: getPythonConfigIfAny() ? true : false,
       }),
     );
+  } else if (
+    event.data.indexOf(RUNNER_TO_EDITOR_HEARTBEAT_REQUESTS.EXECUTE_JUPYTER_SCRIPT) === 0
+  ) {
+    // Message will come in as "EXECUTE_JUPYTER_SCRIPT:<base64string>".
+    // So just isolate the base64 portion:
+    const base64 = event.data.substr(
+      RUNNER_TO_EDITOR_HEARTBEAT_REQUESTS.EXECUTE_JUPYTER_SCRIPT.length + 1,
+    );
+    const code = atob(base64);
+    try {
+      const config = getPythonConfigIfAny();
+      debugger;
+      const notebook = new JupyterNotebook(
+        { baseUrl: config.url, token: config.token },
+        config.notebook,
+      );
+      await notebook.executeCode(code);
+      debugger;
+    } catch (e) {
+      debugger; // FIXME
+      console.log('Error!!!');
+    }
   }
 }
 

@@ -25,6 +25,10 @@ export default ({ script }: IProps) => `<!DOCTYPE html>
       rel="stylesheet"
       href="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-core/9.6.0/css/fabric.min.css"
     />
+    <link
+      rel="stylesheet"
+      href="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-js/1.4.0/css/fabric.components.min.css"
+    />
 
     <style>
       *,
@@ -55,7 +59,7 @@ export default ({ script }: IProps) => `<!DOCTYPE html>
         text-align: center;
         margin-bottom: 20px;
       }
-      #details {
+      .details {
         max-width: 95%;
         background: #eee;
         border-radius: 5px;
@@ -66,30 +70,50 @@ export default ({ script }: IProps) => `<!DOCTYPE html>
                 box-sizing: border-box;
         overflow-y: auto;
       }
+      #main {
+        width: 95%;
+      }
+      #main > h1 {
+        text-align: left;
+      }
     </style>
 </head>
 
 <body class="ms-Fabric">
   <div class="container">
-    <h1 id="title" class="ms-font-xxl">Please wait...</h1>
-    <h3 id="details" style="visibility:none" class="ms-font-l">Please wait...</h1>
+    <div id="please-wait">
+      <h1 class="ms-font-xxl">Please wait...</h1>
+    </div>
+
+    <div id="python-not-configured" style="display:none">
+      <h1 class="ms-font-xxl">Python not configured</h1>
+      <h3 class="details ms-font-l">To support Python scripts, you must
+        enter the required settings in the editor's "Settings" page.
+        Please return to the editor, add the necessary settings, and try again.
+      </h3>
+    </div>
+
+    <div id="main" style="display:none">
+      <h1 class="ms-font-xxl">Python script</h1>
+      <button onclick="run()" class="ms-Button">
+        <span class="ms-Button-label">Run code</span>
+      </button>
+    </div>
   </div>
 
   <script>
     window.parent.scriptRunnerOnLoad(window);
 
+    function run() {
+      window.${METHODS_TO_EXPOSE_ON_IFRAME.sendMessageFromRunnerToEditor}("${
+  RUNNER_TO_EDITOR_HEARTBEAT_REQUESTS.EXECUTE_JUPYTER_SCRIPT
+}:${btoa(script)}");
+    }
+
     window.${METHODS_TO_EXPOSE_ON_IFRAME.onMessageFromHeartbeat} = function(message) {
       if (message.type === "${RUNNER_TO_EDITOR_HEARTBEAT_REQUESTS.IS_JUPYTER_ENABLED}") {
-        if (message.contents) {
-          document.getElementById('title').textContent = 'Python snippet';
-        } else {
-          document.getElementById('title').textContent = 'Python not configured';
-          document.getElementById('details').style.visibility = '';
-          document.getElementById('details').textContent =
-            'To support Python scripts, you must ' +
-            'enter the required settings in the editor\\'s "Settings" page. ' +
-            'Please return to the editor, add the necessary settings, and try again.';
-        }
+        document.getElementById('please-wait').style.display = 'none';
+        document.getElementById(message.contents ? 'main' : 'python-not-configured').style.display = '';
       }
     };
 
