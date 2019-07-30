@@ -1,5 +1,6 @@
 import React from 'react';
 import { IEditorHeartbeatToRunnerResponse } from 'common/lib/constants';
+import { JupyterNotebook } from 'common/lib/utilities/Jupyter';
 
 interface IProps {
   content: string;
@@ -16,6 +17,11 @@ interface IState {
 export const METHODS_TO_EXPOSE_ON_IFRAME = {
   sendMessageFromRunnerToEditor: 'sendMessageFromRunnerToEditor',
   onMessageFromHeartbeat: 'onMessageFromHeartbeat',
+};
+
+export const METHODS_EXPOSED_ON_RUNNER_OUTER_FRAME = {
+  scriptRunnerOnLoad: 'scriptRunnerOnLoad',
+  executePythonScript: 'executePythonScript',
 };
 
 class IFrame extends React.Component<IProps, IState> {
@@ -35,7 +41,9 @@ class IFrame extends React.Component<IProps, IState> {
     // (which get lost in IE if we do it preemptively.)
     // Essentially, the only reliable way seems to be to monkeypatch the frame
     // *once the script thinks it's ready, via it calling back into us*.
-    (window as any).scriptRunnerOnLoad = (iframeWindow: Window) => {
+    window[METHODS_EXPOSED_ON_RUNNER_OUTER_FRAME.scriptRunnerOnLoad] = (
+      iframeWindow: Window,
+    ) => {
       this.monkeypatchIframe(iframeWindow);
 
       this.setState({ previousRenderTimestamp: this.props.lastRendered });
@@ -43,6 +51,10 @@ class IFrame extends React.Component<IProps, IState> {
         this.props.onRenderComplete();
       }
     };
+
+    window[
+      METHODS_EXPOSED_ON_RUNNER_OUTER_FRAME.executePythonScript
+    ] = executePythonScript;
   }
 
   passMessageThroughToIframe(message: IEditorHeartbeatToRunnerResponse) {
@@ -124,3 +136,27 @@ class IFrame extends React.Component<IProps, IState> {
 }
 
 export default IFrame;
+
+///////////////////////////////////////
+
+async function executePythonScript(
+  config: IPythonConfig,
+  code: string,
+  onDone: () => void,
+) {
+  try {
+    const notebook = new JupyterNotebook(
+      { baseUrl: config.url, token: config.token },
+      config.notebook,
+    );
+    debugger;
+    await notebook.executeCode(code);
+    debugger;
+  } catch (error) {
+    console.log(error);
+  }
+
+  debugger;
+  // Once done, whether success or failure, inform the caller (e.g., so can re-enable the button)
+  onDone();
+}

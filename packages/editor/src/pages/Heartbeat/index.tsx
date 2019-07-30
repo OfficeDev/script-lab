@@ -41,38 +41,16 @@ async function onMessage(event: { data: string; origin: string }) {
       solution,
     );
   } else if (
-    event.data.indexOf(RUNNER_TO_EDITOR_HEARTBEAT_REQUESTS.IS_JUPYTER_ENABLED) === 0
+    event.data.indexOf(RUNNER_TO_EDITOR_HEARTBEAT_REQUESTS.GET_PYTHON_CONFIG_IF_ANY) === 0
   ) {
     sendMessageBackToRunner(
       event.origin,
       EDITOR_HEARTBEAT_TO_RUNNER_RESPONSES.PASS_MESSAGE_TO_USER_SNIPPET,
       strictType<IEditorHeartbeatToRunnerResponse>({
-        type: RUNNER_TO_EDITOR_HEARTBEAT_REQUESTS.IS_JUPYTER_ENABLED,
-        contents: getPythonConfigIfAny() ? true : false,
+        type: RUNNER_TO_EDITOR_HEARTBEAT_REQUESTS.GET_PYTHON_CONFIG_IF_ANY,
+        contents: getPythonConfigIfAny(),
       }),
     );
-  } else if (
-    event.data.indexOf(RUNNER_TO_EDITOR_HEARTBEAT_REQUESTS.EXECUTE_JUPYTER_SCRIPT) === 0
-  ) {
-    // Message will come in as "EXECUTE_JUPYTER_SCRIPT:<base64string>".
-    // So just isolate the base64 portion:
-    const base64 = event.data.substr(
-      RUNNER_TO_EDITOR_HEARTBEAT_REQUESTS.EXECUTE_JUPYTER_SCRIPT.length + 1,
-    );
-    const code = atob(base64);
-    try {
-      const config = getPythonConfigIfAny();
-      debugger;
-      const notebook = new JupyterNotebook(
-        { baseUrl: config.url, token: config.token },
-        config.notebook,
-      );
-      await notebook.executeCode(code);
-      debugger;
-    } catch (e) {
-      debugger; // FIXME
-      console.log('Error!!!');
-    }
   }
 }
 

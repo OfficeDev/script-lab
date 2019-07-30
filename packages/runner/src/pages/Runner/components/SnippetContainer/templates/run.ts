@@ -1,3 +1,5 @@
+import { METHODS_EXPOSED_ON_RUNNER_OUTER_FRAME } from '../IFrame';
+
 // cspell:ignore crossorigin
 
 export interface IProps {
@@ -41,7 +43,7 @@ export default ({
   ${html}
 
   <script>
-    window.parent.scriptRunnerOnLoad(window);
+    window.parent.${METHODS_EXPOSED_ON_RUNNER_OUTER_FRAME.scriptRunnerOnLoad}(window);
   </script>
 
   ${scriptReferences.map(src => `<script crossorigin="anonymous" src="${src}"></script>`).join('\n  ')}

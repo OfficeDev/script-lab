@@ -1,5 +1,8 @@
 import { RUNNER_TO_EDITOR_HEARTBEAT_REQUESTS } from 'common/lib/constants';
-import { METHODS_TO_EXPOSE_ON_IFRAME } from '../IFrame';
+import {
+  METHODS_TO_EXPOSE_ON_IFRAME,
+  METHODS_EXPOSED_ON_RUNNER_OUTER_FRAME,
+} from '../IFrame';
 
 export interface IProps {
   script: string;
@@ -95,30 +98,40 @@ export default ({ script }: IProps) => `<!DOCTYPE html>
 
     <div id="main" style="display:none">
       <h1 class="ms-font-xxl">Python script</h1>
-      <button onclick="run()" class="ms-Button">
+      <button id="run" onclick="run()" class="ms-Button">
         <span class="ms-Button-label">Run code</span>
       </button>
     </div>
   </div>
 
   <script>
-    window.parent.scriptRunnerOnLoad(window);
+    window.parent.${METHODS_EXPOSED_ON_RUNNER_OUTER_FRAME.scriptRunnerOnLoad}(window);
 
     function run() {
-      window.${METHODS_TO_EXPOSE_ON_IFRAME.sendMessageFromRunnerToEditor}("${
-  RUNNER_TO_EDITOR_HEARTBEAT_REQUESTS.EXECUTE_JUPYTER_SCRIPT
-}:${btoa(script)}");
+      document.getElementById('run').setAttribute("disabled", "disabled");
+      window.parent.${METHODS_EXPOSED_ON_RUNNER_OUTER_FRAME.executePythonScript}(
+        pythonConfig,
+        atob("${btoa(script)}"),
+        function() {
+          debugger;
+          document.getElementById('run').removeAttribute("disabled");
+        }
+      );
     }
 
+    var pythonConfig;
     window.${METHODS_TO_EXPOSE_ON_IFRAME.onMessageFromHeartbeat} = function(message) {
-      if (message.type === "${RUNNER_TO_EDITOR_HEARTBEAT_REQUESTS.IS_JUPYTER_ENABLED}") {
+      if (message.type === "${
+        RUNNER_TO_EDITOR_HEARTBEAT_REQUESTS.GET_PYTHON_CONFIG_IF_ANY
+      }") {
         document.getElementById('please-wait').style.display = 'none';
-        document.getElementById(message.contents ? 'main' : 'python-not-configured').style.display = '';
+        pythonConfig = message.contents;
+        document.getElementById(pythonConfig ? 'main' : 'python-not-configured').style.display = '';
       }
     };
 
     window.${METHODS_TO_EXPOSE_ON_IFRAME.sendMessageFromRunnerToEditor}("${
-  RUNNER_TO_EDITOR_HEARTBEAT_REQUESTS.IS_JUPYTER_ENABLED
+  RUNNER_TO_EDITOR_HEARTBEAT_REQUESTS.GET_PYTHON_CONFIG_IF_ANY
 }");
   </script>
 </body>

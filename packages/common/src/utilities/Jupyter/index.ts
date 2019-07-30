@@ -77,13 +77,13 @@ interface JupyterWebSocketMessageInputReplyContent {
 }
 
 interface JupyterWebSocketMessageStreamResultContent {
-  name: string,
-  text: string
+  name: string;
+  text: string;
 }
 
 enum JupyterWebSocketMessageType {
   execute_result = 'execute_result',
-  stream = "stream",
+  stream = 'stream',
 }
 /*
 var msg =
@@ -164,11 +164,11 @@ export class JupyterNotebook {
         wsUrl = Util.combineUrl(
           wsUrl,
           'api/kernels/' +
-          this.m_kernelId +
-          '/channels?token=' +
-          this.m_conn.token +
-          '&session_id=' +
-          this.m_channelSessionId,
+            this.m_kernelId +
+            '/channels?token=' +
+            this.m_conn.token +
+            '&session_id=' +
+            this.m_channelSessionId,
         );
         Util.log('WebSocket url:' + wsUrl);
         return new Promise<void>((resolve, reject) => {
@@ -271,7 +271,7 @@ export class JupyterNotebook {
     }
   }
 
-  private handleShellReply(msg: JupyterWebSocketMessage) { }
+  private handleShellReply(msg: JupyterWebSocketMessage) {}
 
   private handleIopubMessage(msg: JupyterWebSocketMessage) {
     if (msg.msg_type === JupyterWebSocketMessageType.execute_result) {
@@ -284,8 +284,7 @@ export class JupyterNotebook {
         delete this.m_executePromiseMap[parentMsgId];
         resolve(text);
       }
-    }
-    else if (msg.msg_type == JupyterWebSocketMessageType.stream) {
+    } else if (msg.msg_type == JupyterWebSocketMessageType.stream) {
       const content: JupyterWebSocketMessageStreamResultContent = msg.content;
       if (content.name === 'stdout') {
         let text = content.text;
@@ -449,8 +448,6 @@ export class Util {
   }
 
   static logConsole(text: string): void {
-    const logger = log.getLogger('Jupyter');
-    logger.error(text);
     console.log(text);
   }
 }

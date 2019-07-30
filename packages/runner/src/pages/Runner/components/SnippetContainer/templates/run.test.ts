@@ -1,4 +1,5 @@
 import run, { IProps } from './run';
+import { METHODS_EXPOSED_ON_RUNNER_OUTER_FRAME } from '../IFrame';
 
 describe('template', () => {
   it('should render proper runner html', () => {
@@ -38,7 +39,7 @@ describe('template', () => {
   <div>hello world</div>
 
   <script>
-    window.parent.scriptRunnerOnLoad(window);
+    window.parent.${METHODS_EXPOSED_ON_RUNNER_OUTER_FRAME.scriptRunnerOnLoad}(window);
   </script>
 
   <script crossorigin=\"anonymous\" src=\"url4\"></script>
