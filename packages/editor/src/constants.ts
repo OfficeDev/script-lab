@@ -1,7 +1,7 @@
 export const SETTINGS_SOLUTION_ID = 'user-settings';
 export const USER_SETTINGS_FILE_ID = 'user-settings-file';
 export const DEFAULT_SETTINGS_FILE_ID = 'default-settings-file';
-export const SETTINGS_JSON_LANGUAGE = 'JSON';
+export const SETTINGS_JSON_LANGUAGE = 'YAML';
 export const ABOUT_FILE_ID = 'about';
 
 export const NULL_FILE_ID = 'null-file';
@@ -26,9 +26,6 @@ export const NULL_SOLUTION: ISolution = {
   options: {},
   files: [],
 };
-
-export const LIBRARIES_FILE_NAME = 'libraries.txt';
-export const SCRIPT_FILE_NAME = 'index.ts';
 
 export const READ_ONLY_FILE_IDS = [NULL_FILE_ID, ABOUT_FILE_ID, DEFAULT_SETTINGS_FILE_ID];
 

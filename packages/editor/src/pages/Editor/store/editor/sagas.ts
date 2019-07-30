@@ -2,22 +2,19 @@ import { put, takeEvery, select, call, all } from 'redux-saga/effects';
 import { getType, ActionType } from 'typesafe-actions';
 import selectors from '../selectors';
 import { editor, settings, screen, misc, solutions, messageBar } from '../actions';
-import { LIBRARIES_FILE_NAME, NULL_SOLUTION_ID } from '../../../../constants';
+import { NULL_SOLUTION_ID } from '../../../../constants';
 import { hideSplashScreen } from 'common/lib/utilities/splash.screen';
-
+import { currentRunnerUrl } from 'common/lib/environment';
+import { findScript, findLibraries } from 'common/lib/utilities/solution';
 import {
   registerLibrariesMonacoLanguage,
-  registerSettingsMonacoLanguage,
   enablePrettierInMonaco,
   parseTripleSlashRefs,
   doesMonacoExist,
   fetchLibraryContent,
 } from './utilities';
-
 import * as log from 'common/lib/utilities/log';
 const logger = log.getLogger('Editor');
-
-import { currentRunnerUrl } from 'common/lib/environment';
 
 let monacoEditor: monaco.editor.IStandaloneCodeEditor;
 
@@ -105,7 +102,6 @@ function* initializeMonacoSaga(action: ActionType<typeof editor.onMount>) {
   }
 
   registerLibrariesMonacoLanguage();
-  registerSettingsMonacoLanguage();
 
   monacoEditor.addAction({
     id: 'trigger-suggest',
@@ -147,7 +143,15 @@ function* makeAddIntellisenseRequestSaga() {
   }
 
   const solution: ISolution = yield select(selectors.editor.getActiveSolution);
-  const libraries = solution.files.find(file => file.name === LIBRARIES_FILE_NAME);
+  const script = findScript(solution);
+  if (!script) {
+    return;
+  }
+  if (script.language !== 'typescript') {
+    return;
+  }
+
+  const libraries = findLibraries(solution);
   if (!libraries) {
     return;
   }

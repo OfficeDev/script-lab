@@ -1,10 +1,6 @@
 import { IState } from '../reducer';
-import {
-  NULL_SOLUTION_ID,
-  SETTINGS_SOLUTION_ID,
-  SCRIPT_FILE_NAME,
-  LIBRARIES_FILE_NAME,
-} from '../../../../constants';
+import { LIBRARIES_FILE_NAME, SCRIPT_FILE_NAME } from 'common/lib/utilities/solution';
+import { NULL_SOLUTION_ID, SETTINGS_SOLUTION_ID } from '../../../../constants';
 import { filterCustomFunctions } from '../../../CustomFunctions/components/App/utilities';
 
 // solutions
@@ -16,13 +12,23 @@ export const get = (state: IState, id: string): ISolution | null => {
 
   // TODO: Nico: REMOVE THIS LOGIC FROM HERE AS IT ISN'T THE RIGHT PLACE TO DO IT
   // https://github.com/OfficeDev/script-lab-react/issues/430
-  const { isCustomFunctionsSolution, isDirectScriptExecution } = solutionMetadata.options;
+  const { isCustomFunctionsSolution } = solutionMetadata.options;
+
+  const scriptFile = solutionMetadata.files
+    .map(fileId => getFile(state, fileId))
+    .filter(file => file.name === SCRIPT_FILE_NAME)[0];
+  const isPythonScript = scriptFile && scriptFile.language === 'python';
   const files = solutionMetadata.files
     .map(fileId => getFile(state, fileId))
     .filter(file => {
       if (isCustomFunctionsSolution) {
-        return [SCRIPT_FILE_NAME, LIBRARIES_FILE_NAME].includes(file.name);
-      } else if (isDirectScriptExecution) {
+        return [
+          SCRIPT_FILE_NAME,
+          ...(isPythonScript ? [] : [LIBRARIES_FILE_NAME]),
+        ].includes(file.name);
+      } else if (isPythonScript) {
+        // For a python script, only include the main file and nothing else
+        // (i.e., libraries and html and css are all not relevant)
         return file.name === SCRIPT_FILE_NAME;
       } else {
         return true;

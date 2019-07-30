@@ -64,17 +64,21 @@ export function invokeGlobalErrorHandler(
     loadingElement.insertBefore(clickForMoreInfoElement, null);
   }
 
-  const closeElement = document.createElement('a');
-  closeElement.href = '#';
-  closeElement.className = 'ms-font-m error';
-  closeElement.textContent = 'Close';
-  closeElement.addEventListener('click', event => {
-    loadingElement.style.visibility = 'hidden';
-    rootElement!.style.display = '';
-    isCurrentlyShowingError = false;
-    event.preventDefault(); // So that doesn't try to navigate to "#"
-  });
-  loadingElement.insertBefore(closeElement, null);
+  const hideCloseButton =
+    error instanceof ScriptLabError && error.options.hideCloseButton;
+  if (!hideCloseButton) {
+    const closeElement = document.createElement('a');
+    closeElement.href = '#';
+    closeElement.className = 'ms-font-m error';
+    closeElement.textContent = 'Close';
+    closeElement.addEventListener('click', event => {
+      loadingElement.style.visibility = 'hidden';
+      rootElement!.style.display = '';
+      isCurrentlyShowingError = false;
+      event.preventDefault(); // So that doesn't try to navigate to "#"
+    });
+    loadingElement.insertBefore(closeElement, null);
+  }
 
   // If this is (somehow) the second time that the event handler is ignored, do some cleanup
   const previousErrorMessageElement: HTMLElement = document.querySelectorAll(

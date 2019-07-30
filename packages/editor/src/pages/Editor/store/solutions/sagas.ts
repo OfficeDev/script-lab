@@ -1,13 +1,17 @@
 import { put, takeEvery, call, select } from 'redux-saga/effects';
 import { getType, ActionType } from 'typesafe-actions';
 
+import { SCRIPT_FILE_NAME } from 'common/lib/utilities/solution';
 import { messageBar, solutions, editor } from '../actions';
 import { fetchYaml } from '../../services/general';
 import selectors from '../selectors';
 import { convertSnippetToSolution } from '../../../../utils';
-import { isCustomFunctionScript } from '../../../../utils/custom-functions';
+import {
+  isTypeScriptCustomFunctionScript,
+  isPythonCustomFunctionScript,
+} from '../../../../utils/custom-functions';
 import { getBoilerplate } from '../../../../newSolutionData';
-import { SCRIPT_FILE_NAME, NULL_SOLUTION_ID, NULL_FILE_ID } from '../../../../constants';
+import { NULL_SOLUTION_ID, NULL_FILE_ID } from '../../../../constants';
 import { deleteSolutionFromStorage } from '../localStorage';
 import { formatTypeScriptFile } from '../editor/utilities';
 import { currentOfficeJsRawSnippetsBaseRepoUrl } from 'common/lib/environment';
@@ -41,7 +45,7 @@ function* onSolutionOpenOrFileEditSaga(
           selectors.solutions.getFile,
           action.payload.fileId,
         );
-        if (file.language === 'typescript') {
+        if (file.language === 'typescript' || file.language === 'python') {
           solutionId = action.payload.id;
           break;
         } else {
@@ -55,7 +59,7 @@ function* onSolutionOpenOrFileEditSaga(
       throw new Error(`Unrecognized type.`);
   }
 
-  const solution = yield select(selectors.solutions.get, solutionId);
+  const solution: ISolution = yield select(selectors.solutions.get, solutionId);
   if (!solution) {
     return;
   }
@@ -174,7 +178,12 @@ function* checkIfIsCustomFunctionSaga(
 ) {
   const { solution, file } = action.payload;
 
-  const isCustomFunctionsSolution = isCustomFunctionScript(file.content);
+  // For now, assuming that if it's Python, it must be a CF.
+  // Whereas for TypeScript, will need to check the jsdoc attributes
+  const isCustomFunctionsSolution: boolean = ({
+    typescript: () => isTypeScriptCustomFunctionScript(file.content),
+    python: () => isPythonCustomFunctionScript(file.content),
+  }[file.language] || (() => false))();
 
   // Compare what is currently in the solution with what we want to update it to (via XOR)
   const optionsChanged =

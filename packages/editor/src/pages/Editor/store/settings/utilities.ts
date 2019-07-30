@@ -1,3 +1,5 @@
+import YAML from 'js-yaml';
+
 import {
   SETTINGS_SOLUTION_ID,
   USER_SETTINGS_FILE_ID,
@@ -20,6 +22,21 @@ export const defaultSettings: ISettings = {
   'editor.wordWrap': 'bounded',
 };
 
+export const invisibleDefaultSettings: { [key: string]: any } = {
+  'jupyter.url': '',
+  'jupyter.token': '',
+  'jupyter.notebook': '',
+  'jupyter.clearOnRegister': '',
+  'experimental.customFunctions.allowRepeatingParameters': '',
+};
+
+export const allowedSettings = {
+  'editor.theme': ['dark', 'light', 'high-contrast'],
+  'editor.fontFamily': ['Menlo', 'Consolas', 'Courier New', 'Source Code Pro'],
+  'editor.wordWrap': ['bounded', 'on', 'off'],
+  'editor.tabSize': [2, 4],
+};
+
 const getTabSize = (userSettings: Partial<ISettings>): number =>
   userSettings && userSettings['editor.tabSize']
     ? userSettings['editor.tabSize']!
@@ -27,12 +44,16 @@ const getTabSize = (userSettings: Partial<ISettings>): number =>
 
 const getDefaultSettingsContent = (userSettings: Partial<ISettings>): string => {
   const tabSize = getTabSize(userSettings);
-  return JSON.stringify(defaultSettings, null, tabSize) + '\n';
+  return YAML.safeDump(defaultSettings, { indent: tabSize });
 };
 
 const getUserSettingsContent = (userSettings: Partial<ISettings>): string => {
+  if (Object.keys(userSettings).length === 0) {
+    return '';
+  }
+
   const tabSize = getTabSize(userSettings);
-  return JSON.stringify(userSettings, null, tabSize) + '\n';
+  return YAML.safeDump(userSettings, { indent: tabSize });
 };
 
 const getAboutContent = (): string => {
@@ -102,78 +123,4 @@ export const getSettingsSolutionAndFiles = (
   const files = getSettingsFiles(now, userSettings);
   const solution = getSettingsSolution(files, now);
   return { solution, files };
-};
-
-export const allowedSettings = {
-  'editor.theme': ['dark', 'light', 'high-contrast'],
-  'editor.fontFamily': ['Menlo', 'Consolas', 'Courier New', 'Source Code Pro'],
-  'editor.wordWrap': ['bounded', 'on', 'off'],
-  'editor.tabSize': [2, 4],
-};
-
-// Note: this must be kept in sync with the interfaces in src/interfaces/index.d.ts
-export const schema = {
-  $id: 'settings-schema.json',
-  description: 'Schema for the settings of Script Lab',
-  type: 'object',
-  definitions: {},
-  $schema: 'http://json-schema.org/draft-07/schema#',
-  additionalProperties: false,
-  properties: {
-    'editor.theme': {
-      $id: '#/properties/editor.theme',
-      type: 'string',
-      default: defaultSettings['editor.theme'],
-      enum: allowedSettings['editor.theme'],
-    },
-    'editor.fontFamily': {
-      $id: '#/properties/editor.fontFamily',
-      type: 'string',
-      default: defaultSettings['editor.fontFamily'],
-      enum: allowedSettings['editor.fontFamily'],
-    },
-    'editor.fontSize': {
-      $id: '#/properties/editor.fontSize',
-      type: 'integer',
-      default: defaultSettings['editor.fontSize'],
-      examples: [14, 16, 20],
-    },
-    'editor.minimap': {
-      $id: '#/properties/editor.minimap',
-      type: 'boolean',
-      default: defaultSettings['editor.minimap'],
-      examples: [false, true],
-    },
-    'editor.tabSize': {
-      $id: '#/properties/editor.tabSize',
-      type: 'integer',
-      default: defaultSettings['editor.tabSize'],
-      enum: allowedSettings['editor.tabSize'],
-    },
-    'editor.prettier': {
-      $id: '#/properties/editor.prettier',
-      type: 'boolean',
-      default: defaultSettings['editor.prettier'],
-      examples: [true, false],
-    },
-    'editor.prettier.autoFormat': {
-      $id: '#/properties/editor.prettier.autoFormat',
-      type: 'boolean',
-      title: 'The Editor.prettier.autoformat Schema',
-      default: defaultSettings['editor.prettier.autoFormat'],
-      examples: [true, false],
-    },
-    'editor.folding': {
-      $id: '#/properties/editor.folding',
-      type: 'boolean',
-      default: defaultSettings['editor.folding'],
-      examples: [true, false],
-    },
-    'editor.wordWrap': {
-      $id: '#/properties/editor.wordWrap',
-      type: 'string',
-      default: defaultSettings['editor.wordWrap'],
-      enum: allowedSettings['editor.wordWrap'],
-    },
-  },
 };

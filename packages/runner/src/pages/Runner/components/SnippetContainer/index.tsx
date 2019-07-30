@@ -14,6 +14,7 @@ import untrusted from './templates/untrusted';
 import { Utilities, HostType } from '@microsoft/office-js-helpers';
 import processLibraries from 'common/lib/utilities/process.libraries';
 import { sanitizeObject } from './templates/sanitizer';
+import { findScript, findLibraries } from 'common/lib/utilities/solution';
 
 const SHOW_PROGRESS_BAR_DURATION = 750 /* ms */;
 
@@ -99,6 +100,18 @@ class Snippet extends React.Component<IProps, IState> {
     }
 
     try {
+      const script = findScript(solution);
+      if (script.language === 'python') {
+        return errorTemplate({
+          title: 'Cannot run Python snippet',
+          details:
+            'Regular Python snippets are not currently supported. ' +
+            'Only custom functions can be written in python, ' +
+            'and must follow a specific prescribed syntax/pattern.',
+          usePreBlock: false,
+        });
+      }
+
       // For the HTML, run it through the browser's DOM parser to get it to auto-add
       //    any closing tag, and to "normalize" it in a way that makes it cleanly-injectable
       //    into the "run" template ("templates/run.ts")
@@ -113,12 +126,9 @@ class Snippet extends React.Component<IProps, IState> {
       const inlineStyles = solution.files.find(file => file.name === 'index.css')!
         .content;
 
-      const inlineScript = compileTypeScript(
-        solution.files.find(file => file.name === 'index.ts')!.content,
-      );
+      const inlineScript = compileTypeScript(script!.content);
 
-      const libraries = solution.files.find(file => file.name === 'libraries.txt')!
-        .content;
+      const libraries = findLibraries(solution)!.content;
       const { linkReferences, scriptReferences } = processLibraries(
         libraries,
         Utilities.host !== HostType.WEB /*isInsideOffice*/,
@@ -132,12 +142,13 @@ class Snippet extends React.Component<IProps, IState> {
         html,
       });
     } catch (error) {
-      return errorTemplate(
-        sanitizeObject({
+      return errorTemplate({
+        ...sanitizeObject({
           title: error instanceof SyntaxError ? 'Syntax Error' : 'Unknown Error',
           details: error.message,
         }),
-      );
+        usePreBlock: true,
+      });
     }
   };
 

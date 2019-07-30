@@ -3,7 +3,7 @@ export default ({
   functions,
   code,
   jsLibs,
-}: ICustomFunctionsIframeRunnerMetadata) => {
+}: ICustomFunctionsIframeRunnerTypeScriptMetadata) => {
   const resultingHtml = `<!DOCTYPE html>
 <html>
 

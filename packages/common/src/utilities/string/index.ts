@@ -166,6 +166,9 @@ export function stringifyPlusPlus(
         if (object instanceof Error && options.skipErrorStack && key === 'stack') {
           return undefined;
         }
+        if (object instanceof ScriptLabError && key === 'options') {
+          return undefined;
+        }
         if (value && typeof value === 'object' && !Array.isArray(value)) {
           return getStringifiableSnapshot(value);
         }

@@ -4,9 +4,12 @@ import compileScript from 'common/lib/utilities/compile.script';
 import { stripSpaces } from 'common/lib/utilities/string';
 import { consoleMonkeypatch } from './console.monkeypatch';
 import { getCurrentEnv } from 'common/lib/environment';
-import { SCRIPT_FILE_NAME } from '../../../../../constants';
 import { pause } from 'common/lib/utilities/misc';
-import { parseMetadata } from '../../../../../utils/custom-functions';
+import { findScript } from 'common/lib/utilities/solution';
+import {
+  parseMetadata,
+  transformSolutionNameToCFNamespace,
+} from '../../../../../utils/custom-functions';
 
 export function getJsonMetadataString(
   functions: Array<ICustomFunctionParseResult<IFunction>>,
@@ -142,7 +145,7 @@ export function getCustomFunctionsInfoForRegistration(
       return;
     }
 
-    const namespace = transformSolutionName(solution.name);
+    const namespace = transformSolutionNameToCFNamespace(solution.name);
     const fileContent = findScript(solution)!.content;
 
     const functions: Array<ICustomFunctionParseResult<IFunction>> = parseMetadata({
@@ -233,18 +236,5 @@ function wrapCustomFunctionSnippetCode(
   }
 }
 
-const snippetNameRegex = /[^0-9A-Za-z_ ]/g;
-export function transformSolutionName(snippetName: string) {
-  return snippetName
-    .replace(snippetNameRegex, '')
-    .split(' ')
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join('');
-}
-
 export const filterCustomFunctions = (solutions: ISolution[]): ISolution[] =>
   solutions.filter(solution => solution.options.isCustomFunctionsSolution);
-
-function findScript(solution: ISolution): IFile | null {
-  return solution.files.find(file => file.name === SCRIPT_FILE_NAME) || null;
-}

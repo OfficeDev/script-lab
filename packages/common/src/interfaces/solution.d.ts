@@ -19,7 +19,6 @@ interface IEditableSolutionProperties {
 }
 
 interface ISolutionOptions {
-  isDirectScriptExecution: boolean;
   isCustomFunctionsSolution: boolean;
   isUntrusted: boolean;
 }

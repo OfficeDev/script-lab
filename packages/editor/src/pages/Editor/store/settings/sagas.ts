@@ -1,5 +1,6 @@
 import { put, takeEvery, call, select } from 'redux-saga/effects';
 import { getType, ActionType } from 'typesafe-actions';
+import YAML from 'js-yaml';
 
 import {
   settings as settingsActions,
@@ -11,7 +12,7 @@ import selectors from '../selectors';
 
 import isEqual from 'lodash/isEqual';
 
-import { allowedSettings, defaultSettings } from './utilities';
+import { allowedSettings, defaultSettings, invisibleDefaultSettings } from './utilities';
 
 import {
   SETTINGS_SOLUTION_ID,
@@ -26,8 +27,11 @@ export default function* settingsWatcher() {
   yield takeEvery(getType(settingsActions.cycleEditorTheme), cycleEditorThemeSaga);
 }
 
-export const verifySettings = parsed => {
-  const validKeys = Object.keys(defaultSettings);
+export const verifySettings = (parsed): Partial<ISettings> => {
+  const validKeys = [
+    ...Object.keys(defaultSettings),
+    ...Object.keys(invisibleDefaultSettings),
+  ];
   const parsedKeys = Object.keys(parsed);
   const allowedValueKeys = Object.keys(allowedSettings);
 
@@ -44,7 +48,12 @@ export const verifySettings = parsed => {
       !allowedSettings[setting].includes(parsed[setting])
     ) {
       /* In this case, there was a setting in parsed that wasn't in the list of allowed */
-      throw new Error(`'${parsed[setting]}' is not an allowed value for '${setting}'.`);
+      throw new Error(
+        `'${parsed[setting]}' is not an allowed value for '${setting}'. ` +
+          `Allowed values include: ${allowedSettings[setting]
+            .map((item: string) => `"${item}"`)
+            .join(', ')}.`,
+      );
     } else {
       newSettings[setting] = parsed[setting];
     }
@@ -54,28 +63,25 @@ export const verifySettings = parsed => {
 };
 
 function* editSettingsCheckSaga(action: ActionType<typeof settingsActions.editFile>) {
-  if (action.payload.newSettings.trim() === '') {
-    yield put(
-      editorActions.openFile({
-        solutionId: SETTINGS_SOLUTION_ID,
-        fileId: DEFAULT_SETTINGS_FILE_ID,
-      }),
-    );
-    return;
-  }
-
   try {
-    const parsed = JSON.parse(action.payload.newSettings);
-
-    const newSettings = verifySettings(parsed);
-
+    // First off, check whether the new settings are actually empty.
+    // If they are, do special processing, since you can't safeLoad from an empty string.
+    const isEmpty = action.payload.newSettings.trim() === '';
+    const newSettings = isEmpty
+      ? {}
+      : verifySettings(YAML.safeLoad(action.payload.newSettings));
     const tabSize = { ...defaultSettings, ...newSettings }['editor.tabSize'];
 
-    const currentUserSettingsFile = yield select(
+    const currentUserSettingsFile: IFile = yield select(
       selectors.solutions.getFile,
       USER_SETTINGS_FILE_ID,
     );
-    currentUserSettingsFile.content = JSON.stringify(newSettings, null, tabSize);
+
+    // safeDump of an empty object gives you the JSON object `{}`, whereas what we want
+    //    in this case is just an empty string. So make it so:
+    currentUserSettingsFile.content = isEmpty
+      ? ''
+      : YAML.safeDump(newSettings, { indent: tabSize });
     yield put(settingsActions.edit.success({ userSettings: newSettings }));
     yield put(
       solutionsActions.edit({
