@@ -149,14 +149,11 @@ async function executePythonScript(
       { baseUrl: config.url, token: config.token },
       config.notebook,
     );
-    debugger;
     await notebook.executeCode(code);
-    debugger;
   } catch (error) {
     console.log(error);
   }
 
-  debugger;
   // Once done, whether success or failure, inform the caller (e.g., so can re-enable the button)
   onDone();
 }

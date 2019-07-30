@@ -108,13 +108,14 @@ export default ({ script }: IProps) => `<!DOCTYPE html>
     window.parent.${METHODS_EXPOSED_ON_RUNNER_OUTER_FRAME.scriptRunnerOnLoad}(window);
 
     function run() {
-      document.getElementById('run').setAttribute("disabled", "disabled");
+      // Eventually, could disable the button (but need changes on Python code first):
+      //   document.getElementById('run').setAttribute("disabled", "disabled");
       window.parent.${METHODS_EXPOSED_ON_RUNNER_OUTER_FRAME.executePythonScript}(
         pythonConfig,
         atob("${btoa(script)}"),
         function() {
-          debugger;
-          document.getElementById('run').removeAttribute("disabled");
+          // If eventually disable the button, then re-enable it here:
+          //   document.getElementById('run').removeAttribute("disabled");
         }
       );
     }
