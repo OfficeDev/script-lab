@@ -22,6 +22,10 @@ import {
   deleteItem,
   getAllLocalStorageKeys,
 } from 'common/lib/utilities/localStorage';
+import {
+  USER_SETTINGS_LOCAL_STORAGE_KEY,
+  getUserSettings,
+} from '../../../utils/userSettings';
 
 interface IStoredGitHubState {
   token: string | null;
@@ -37,7 +41,7 @@ export async function loadState(): Promise<Partial<IState>> {
 
     let { solutions, files } = loadAllSolutionsAndFiles();
 
-    const userSettings = JSON.parse(localStorage.getItem('userSettings') || '{}');
+    const userSettings = getUserSettings();
     const verifiedUserSettings = verifySettings(userSettings);
     const settingsSolAndFiles = getSettingsSolutionAndFiles(verifiedUserSettings);
     solutions = { ...solutions, [SETTINGS_SOLUTION_ID]: settingsSolAndFiles.solution };
@@ -95,7 +99,12 @@ export const saveState = (state: IState) => {
   );
 
   // save settings
-  writeIfChanged(selectors.settings.getUser, 'userSettings', state, lastSavedState);
+  writeIfChanged(
+    selectors.settings.getUser,
+    USER_SETTINGS_LOCAL_STORAGE_KEY,
+    state,
+    lastSavedState,
+  );
 
   const host = selectors.host.get(state);
   const activeSolution = selectors.editor.getActiveSolution(state, {

@@ -64,9 +64,3 @@ interface ICustomFunctionsIframeRunnerTypeScriptMetadata {
   code: string;
   jsLibs: string[];
 }
-
-interface IPythonConfig {
-  url: string;
-  token: string;
-  notebook: string;
-}

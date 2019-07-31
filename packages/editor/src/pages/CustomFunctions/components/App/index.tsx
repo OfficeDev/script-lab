@@ -23,6 +23,8 @@ import { JupyterNotebook, PythonCodeHelper } from 'common/lib/utilities/Jupyter'
 import * as log from 'common/lib/utilities/log';
 import { findScript } from 'common/lib/utilities/solution';
 import generatePythonCFCode from '../../../../utils/custom-functions/generatePythonCFCode';
+import { getUserSettings } from '../../../../utils/userSettings';
+import { getPythonConfigIfAny } from '../../../../utils/python';
 
 interface IState {
   runnerLastUpdated: number;
@@ -165,30 +167,26 @@ async function getRegistrationResultPython(
   parseResults: Array<ICustomFunctionParseResult<IFunction>>;
   code: string;
 }> {
-  const userSettings = JSON.parse(localStorage.getItem('userSettings') || '{}');
-  const [url, token, notebookName] = ['jupyter.url', 'jupyter.token', 'jupyter.notebook']
-    .map(settingName => ({
-      name: settingName,
-      value: userSettings[settingName],
-    }))
-    .map(pair => {
-      if (!pair.value || (pair.value as string).trim().length === 0) {
-        throw new ScriptLabError(
-          `To support Python custom functions, you must ` +
-            `enter the required settings in the editor's "Settings" page. ` +
-            `Please close this pane, add the necessary settings, and try again.`,
-          null,
-          { hideCloseButton: true },
-        );
-      }
-      return pair.value;
-    });
+  const config = getPythonConfigIfAny();
+  if (!config) {
+    throw new ScriptLabError(
+      `To support Python custom functions, you must ` +
+        `enter the required settings in the editor's "Settings" page. ` +
+        `Please close this pane, add the necessary settings, and try again.`,
+      null,
+      { hideCloseButton: true },
+    );
+  }
 
-  const clearOnRegister: boolean = userSettings['jupyter.clearOnRegister'] || false;
+  const clearOnRegister: boolean = getUserSettings()['jupyter.clearOnRegister'] || false;
 
-  const notebook = new JupyterNotebook({ baseUrl: url, token: token }, notebookName);
+  const notebook = new JupyterNotebook(
+    { baseUrl: config.url, token: config.token },
+    config.notebook,
+  );
   showSplashScreen(
-    `Attempting to connect to your Jupyter notebook, to allow execution of Python custom functions. Please wait...`,
+    `Attempting to connect to your Jupyter notebook, to allow execution ` +
+      `of Python custom functions. Please wait...`,
   );
 
   try {

@@ -1,3 +1,5 @@
+import { METHODS_EXPOSED_ON_RUNNER_OUTER_FRAME } from '../IFrame';
+
 export interface IProps {
   snippetName: string;
 }
@@ -62,7 +64,7 @@ export default ({snippetName}: IProps) => `<!DOCTYPE html>
   </div>
 
   <script>
-    window.parent.scriptRunnerOnLoad(window);
+    window.parent.${METHODS_EXPOSED_ON_RUNNER_OUTER_FRAME.scriptRunnerOnLoad}(window);
   </script>
 </body>
 

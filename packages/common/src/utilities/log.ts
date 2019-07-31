@@ -12,11 +12,17 @@ export function getLogger(name: string): Logger {
 
   if (!initializedLoggers[name]) {
     const logger = loglevel.getLogger(name);
-    logger.setLevel(
-      process.env.NODE_ENV === 'production'
-        ? loglevel.levels.WARN
-        : loglevel.levels.TRACE,
-    );
+    const storedLevel = window.localStorage.getItem('loglevel:' + name);
+    if (storedLevel) {
+      logger.setLevel(storedLevel as any);
+    } else {
+      logger.setLevel(
+        process.env.NODE_ENV === 'production'
+          ? loglevel.levels.WARN
+          : loglevel.levels.TRACE,
+      );
+    }
+
     prefix.apply(logger, {
       template: '%l (%n):',
       levelFormatter(level) {

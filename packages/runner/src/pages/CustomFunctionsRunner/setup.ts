@@ -11,6 +11,11 @@ import { addScriptTag } from 'common/lib/utilities/script-loader';
 const HEARTBEAT_URL = `${currentEditorUrl}/custom-functions-heartbeat.html`;
 const VERBOSE_MODE = false;
 
+export const METHODS_EXPOSED_ON_CF_RUNNER_OUTER_FRAME = {
+  scriptRunnerOnLoad: 'scriptRunnerOnLoad',
+  scriptRunnerOnLoadComplete: 'scriptRunnerOnLoadComplete',
+};
+
 export default () => {
   window.document.title = 'Script Lab - Custom Functions runner';
 
@@ -39,15 +44,15 @@ export default () => {
 
         if (initialPayload.pythonConfig) {
           initializeJupyter(initialPayload.pythonConfig);
-          // TODO: (with Shaofeng) temporary hack, will definitely need to be removed once it's not either/or
-          delete (window as any).CustomFunctionMappings.__delay__;
-        } else {
-          // TODO: (with Shaofeng) for now, it's an either/or
-          await initializeRunnableSnippets(initialPayload);
-          for (const key in ScriptLabCustomFunctionsDictionary) {
-            CustomFunctions.associate(key, ScriptLabCustomFunctionsDictionary[key]);
-          }
         }
+
+        await initializeRunnableSnippets(initialPayload);
+        for (const key in ScriptLabCustomFunctionsDictionary) {
+          CustomFunctions.associate(key, ScriptLabCustomFunctionsDictionary[key]);
+        }
+        // TODO: (with Shaofeng) temporary hack, will definitely need to be removed once it's not either/or
+        delete (window as any).CustomFunctionMappings.__delay__;
+
         break;
       }
       case 'refresh':
@@ -84,7 +89,10 @@ async function initializeRunnableSnippets(
     tryCatch(() => {
       let successfulRegistrationsCount = 0;
 
-      (window as any).scriptRunnerOnLoad = (contentWindow: Window, id: string) =>
+      window[METHODS_EXPOSED_ON_CF_RUNNER_OUTER_FRAME.scriptRunnerOnLoad] = (
+        contentWindow: Window,
+        id: string,
+      ) =>
         tryCatch(() => {
           const snippetMetadata = fullPayload.typescriptMetadata.find(
             item => item.solutionId === id,
@@ -101,7 +109,9 @@ async function initializeRunnableSnippets(
           });
         });
 
-      (window as any).scriptRunnerOnLoadComplete = () => {
+      window[
+        METHODS_EXPOSED_ON_CF_RUNNER_OUTER_FRAME.scriptRunnerOnLoadComplete
+      ] = () => {
         if (++successfulRegistrationsCount === fullPayload.typescriptMetadata.length) {
           resolve();
         }

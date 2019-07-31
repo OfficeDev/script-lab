@@ -5,7 +5,8 @@ import Only from 'common/lib/components/Only';
 
 import runTemplate from './templates/run';
 import errorTemplate from './templates/error';
-import noSnippet from './templates/noSnippet';
+import noSnippetTemplate from './templates/noSnippet';
+import pythonTemplate from './templates/python';
 
 import { officeNamespacesForIframe } from '../../../../constants';
 import { ProgressIndicator } from 'office-ui-fabric-react/lib/ProgressIndicator';
@@ -15,12 +16,14 @@ import { Utilities, HostType } from '@microsoft/office-js-helpers';
 import processLibraries from 'common/lib/utilities/process.libraries';
 import { sanitizeObject } from './templates/sanitizer';
 import { findScript, findLibraries } from 'common/lib/utilities/solution';
+import { IEditorHeartbeatToRunnerResponse } from 'common/lib/constants';
 
 const SHOW_PROGRESS_BAR_DURATION = 750 /* ms */;
 
 export interface IProps {
   solution?: ISolution | null;
   onRender?: (data: { lastRendered: number; hasContent: boolean }) => void;
+  sendMessageFromRunnerToEditor: (message: string) => void;
 }
 
 interface IState {
@@ -32,7 +35,9 @@ interface IState {
 }
 
 class Snippet extends React.Component<IProps, IState> {
-  constructor(props) {
+  private iframeRef: React.RefObject<IFrame> = React.createRef();
+
+  constructor(props: IProps) {
     super(props);
 
     const lastRendered = Date.now();
@@ -48,6 +53,10 @@ class Snippet extends React.Component<IProps, IState> {
     if (this.props.onRender) {
       this.props.onRender({ lastRendered, hasContent: content.length > 0 });
     }
+  }
+
+  passMessageThroughToIframe(message: IEditorHeartbeatToRunnerResponse) {
+    this.iframeRef.current.passMessageThroughToIframe(message);
   }
 
   componentDidMount() {}
@@ -92,7 +101,7 @@ class Snippet extends React.Component<IProps, IState> {
     }
 
     if (solution === null) {
-      return noSnippet();
+      return noSnippetTemplate();
     }
 
     if (solution.options.isUntrusted) {
@@ -102,14 +111,7 @@ class Snippet extends React.Component<IProps, IState> {
     try {
       const script = findScript(solution);
       if (script.language === 'python') {
-        return errorTemplate({
-          title: 'Cannot run Python snippet',
-          details:
-            'Regular Python snippets are not currently supported. ' +
-            'Only custom functions can be written in python, ' +
-            'and must follow a specific prescribed syntax/pattern.',
-          usePreBlock: false,
-        });
+        return pythonTemplate({ script: script.content });
       }
 
       // For the HTML, run it through the browser's DOM parser to get it to auto-add
@@ -177,10 +179,12 @@ class Snippet extends React.Component<IProps, IState> {
         <div style={{ display: this.state.isLoading ? 'none' : 'block', height: '100%' }}>
           {this.state.isIFrameMounted && (
             <IFrame
+              ref={this.iframeRef}
               content={this.state.content}
               lastRendered={this.state.lastRendered}
               namespacesToTransferFromWindow={officeNamespacesForIframe}
               onRenderComplete={this.completeLoad}
+              sendMessageFromRunnerToEditor={this.props.sendMessageFromRunnerToEditor}
             />
           )}
         </div>

@@ -9,7 +9,7 @@ export const SCRIPT_URLS = {
   CUSTOM_FUNCTIONS_RUNNER_DEFAULT:
     'https://appsforoffice.microsoft.com/lib/preview/hosted/custom-functions-runtime.js',
   CUSTOM_FUNCTIONS_RUNNER_WITH_JUPYTER_SUPPORT:
-    'https://exceljupyter.azurewebsites.net/agave/dist/external/office-js-custom-0/custom-functions-runtime.debug.js',
+    'https://exceljupyter.azurewebsites.net/agave/dist/external/office-js-custom-1/custom-functions-runtime.debug.js',
 
   DEFAULT_OFFICE_JS: 'https://appsforoffice.microsoft.com/lib/1/hosted/office.js',
   OFFICE_JS_FOR_CUSTOM_FUNCTIONS_DASHBOARD:
@@ -47,3 +47,21 @@ export const SERVER_HELLO_ENDPOINT = {
   path: 'hello',
   payload: { message: 'Hello from Script Lab' },
 };
+
+export const RUNNER_TO_EDITOR_HEARTBEAT_REQUESTS = {
+  GET_ACTIVE_SOLUTION: 'GET_ACTIVE_SOLUTION',
+  GET_PYTHON_CONFIG_IF_ANY: 'GET_PYTHON_CONFIG_IF_ANY',
+};
+
+export const EDITOR_HEARTBEAT_TO_RUNNER_RESPONSES = {
+  ACTIVE_SOLUTION: 'ACTIVE_SOLUTION',
+  PASS_MESSAGE_TO_USER_SNIPPET: 'PASS_MESSAGE_TO_USER_SNIPPET',
+};
+
+/** Used both for messages from heartbeat to runner, and for the payload of the
+ * "PASS_MESSAGE_TO_USER_SNIPPET" contents
+ */
+export interface IEditorHeartbeatToRunnerResponse {
+  type: string;
+  contents: any;
+}

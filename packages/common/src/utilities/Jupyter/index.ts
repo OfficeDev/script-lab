@@ -76,8 +76,14 @@ interface JupyterWebSocketMessageInputReplyContent {
   value: string;
 }
 
+interface JupyterWebSocketMessageStreamResultContent {
+  name: string;
+  text: string;
+}
+
 enum JupyterWebSocketMessageType {
   execute_result = 'execute_result',
+  stream = 'stream',
 }
 /*
 var msg =
@@ -278,6 +284,16 @@ export class JupyterNotebook {
         delete this.m_executePromiseMap[parentMsgId];
         resolve(text);
       }
+    } else if (msg.msg_type == JupyterWebSocketMessageType.stream) {
+      const content: JupyterWebSocketMessageStreamResultContent = msg.content;
+      if (content.name === 'stdout') {
+        let text = content.text;
+        if (!Util.isNullOrEmptyString(text)) {
+          text = text.replace('\\n', '');
+        }
+
+        Util.logConsole(text);
+      }
     }
   }
 
@@ -429,5 +445,9 @@ export class Util {
   static logResult(text: string): void {
     const logger = log.getLogger('Jupyter');
     logger.info(text);
+  }
+
+  static logConsole(text: string): void {
+    console.log(text);
   }
 }
