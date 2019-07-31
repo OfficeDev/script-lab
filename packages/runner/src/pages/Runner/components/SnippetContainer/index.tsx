@@ -17,6 +17,7 @@ import processLibraries from 'common/lib/utilities/process.libraries';
 import { sanitizeObject } from './templates/sanitizer';
 import { findScript, findLibraries } from 'common/lib/utilities/solution';
 import { IEditorHeartbeatToRunnerResponse } from 'common/lib/constants';
+import { languageMapLowercased } from 'common/lib/languageMap';
 
 const SHOW_PROGRESS_BAR_DURATION = 750 /* ms */;
 
@@ -110,7 +111,7 @@ class Snippet extends React.Component<IProps, IState> {
 
     try {
       const script = findScript(solution);
-      if (script.language === Langu) {
+      if (script.language === languageMapLowercased.python) {
         return pythonTemplate({ script: script.content });
       }
 

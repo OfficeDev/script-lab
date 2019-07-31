@@ -28,7 +28,7 @@ import {
 } from '../actions';
 import { getPythonConfigIfAny } from '../../../../utils/python';
 import { SCRIPT_FILE_NAME } from 'common/lib/utilities/solution';
-import LANGUAGES from 'common/lib/languages';
+import { languageMapLowercased, languageMapDisplayNames } from 'common/lib/languageMap';
 
 const actions = {
   dialog,
@@ -93,23 +93,25 @@ export const getFarItems = createSelector(
     currentEditorTheme: string,
   ) => [
     {
-      hidden: !LANGUAGES[activeFile.language],
+      hidden: !languageMapLowercased[activeFile.language],
       key: 'editor-language',
-      text: LANGUAGES[activeFile.language],
+      text: languageMapDisplayNames[activeFile.language],
       subMenuProps:
         activeFile.name === SCRIPT_FILE_NAME && getPythonConfigIfAny()
           ? {
               isBeakVisible: true,
-              items: [LANGUAGES.typescript, LANGUAGES.python].map(language => ({
-                key: language,
-                text: language,
-                actionCreator: () =>
-                  actions.solutions.changeLanguage({
-                    solutionId: activeSolution.id,
-                    fileId: activeFile.id,
-                    language: language,
-                  }),
-              })),
+              items: [languageMapLowercased.typescript, languageMapLowercased.python].map(
+                language => ({
+                  key: language,
+                  text: languageMapDisplayNames[language],
+                  actionCreator: () =>
+                    actions.solutions.changeLanguage({
+                      solutionId: activeSolution.id,
+                      fileId: activeFile.id,
+                      language: language,
+                    }),
+                }),
+              ),
             }
           : null,
     },
