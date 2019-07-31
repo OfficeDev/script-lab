@@ -107,7 +107,7 @@ const files = (state: IFilesState = {}, action: ISolutionsAction): IFilesState =
         ...filesById,
       };
 
-    case getType(solutionActions.edit):
+    case getType(solutionActions.edit): {
       const { file, fileId } = action.payload;
       if (!file || !fileId) {
         return state;
@@ -121,6 +121,18 @@ const files = (state: IFilesState = {}, action: ISolutionsAction): IFilesState =
           dateLastModified: action.payload.timestamp,
         },
       };
+    }
+
+    case getType(solutionActions.changeLanguage): {
+      const { fileId, language } = action.payload;
+      return {
+        ...state,
+        [fileId]: {
+          ...state[fileId],
+          language: language,
+        },
+      };
+    }
 
     case getType(solutionActions.updateLastOpened):
       return {

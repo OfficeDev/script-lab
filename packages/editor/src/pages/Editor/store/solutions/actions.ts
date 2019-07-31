@@ -18,6 +18,18 @@ export const edit = createAction('SOLUTIONS_EDIT', resolve => {
     resolve({ id, solution, fileId, file, timestamp: Date.now() });
 });
 
+export const changeLanguage = createAction('SOLUTION_CHANGE_LANGUAGE', resolve => {
+  return ({
+    solutionId,
+    fileId,
+    language,
+  }: {
+    solutionId: string;
+    fileId: string;
+    language: string;
+  }) => resolve({ solutionId, fileId, language });
+});
+
 export const updateLastOpened = createAction('SOLUTIONS_UPDATE_LAST_OPENED', resolve => {
   return ({ solutionId, fileId }) =>
     resolve({ solutionId, fileId, timestamp: Date.now() });

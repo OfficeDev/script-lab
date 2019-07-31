@@ -1,6 +1,11 @@
 import createGUID from 'uuid';
-import { LIBRARIES_FILE_NAME, SCRIPT_FILE_NAME } from 'common/lib/utilities/solution';
+import {
+  LIBRARIES_FILE_NAME,
+  SCRIPT_FILE_NAME,
+  findScript,
+} from 'common/lib/utilities/solution';
 import { getBoilerplateFiles } from '../newSolutionData';
+import languageMap from './languageMap';
 
 export function setUpMomentJsDurationDefaults(momentInstance: {
   relativeTimeThreshold(threshold: string, limit: number): boolean;
@@ -58,25 +63,30 @@ export const convertSnippetToSolution = (snippet: ISnippet): ISolution => {
 export const convertSolutionToSnippet = (solution: ISolution): ISnippet => {
   const { name, description, host, files } = solution;
 
-  const snippetFiles = Object.entries({
-    script: file => file.name === SCRIPT_FILE_NAME,
-    template: file => file.name === 'index.html',
-    style: file => file.name === 'index.css',
-    libraries: file => file.name === LIBRARIES_FILE_NAME,
-  })
-    .map(([fileName, fileSelector]) => [fileName, files.find(fileSelector)])
-    .filter(([fileName, file]) => file !== undefined)
-    .reduce((obj, [fileName, file]) => {
-      const name = fileName as string;
-      const f = file as IFile;
-      return {
-        ...obj,
-        [name]:
-          f.name === LIBRARIES_FILE_NAME
-            ? f.content
-            : { content: f.content, language: f.language },
-      };
-    }, {});
+  const mainScriptFile = findScript(solution);
+
+  const snippetFiles =
+    mainScriptFile.language === languageMap.python
+      ? { script: mainScriptFile.content }
+      : Object.entries({
+          script: file => file.name === SCRIPT_FILE_NAME,
+          template: file => file.name === 'index.html',
+          style: file => file.name === 'index.css',
+          libraries: file => file.name === LIBRARIES_FILE_NAME,
+        })
+          .map(([fileName, fileSelector]) => [fileName, files.find(fileSelector)])
+          .filter(([fileName, file]) => file !== undefined)
+          .reduce((obj, [fileName, file]) => {
+            const name = fileName as string;
+            const f = file as IFile;
+            return {
+              ...obj,
+              [name]:
+                f.name === LIBRARIES_FILE_NAME
+                  ? f.content || ''
+                  : { content: f.content, language: f.language },
+            };
+          }, {});
 
   return {
     name,
