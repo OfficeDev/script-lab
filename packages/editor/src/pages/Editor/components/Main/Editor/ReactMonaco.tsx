@@ -98,11 +98,7 @@ export class ReactMonaco extends Component<IProps, IState> {
 
     return model
       ? model
-      : monaco.editor.createModel(
-          this.props.file.content,
-          this.props.file.language.toLowerCase(),
-          uri,
-        );
+      : monaco.editor.createModel(this.props.file.content, this.props.file.language, uri);
   };
 
   clearAllModels = () => {

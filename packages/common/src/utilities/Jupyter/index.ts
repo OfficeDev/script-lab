@@ -81,9 +81,21 @@ interface JupyterWebSocketMessageStreamResultContent {
   text: string;
 }
 
+interface JupyterWebSocketMessageExecuteReplyContent {
+  status: JupyterWebSocketMessageExecuteReplyContentStatus;
+  ename?: string;
+  evalue?: string;
+}
+
+enum JupyterWebSocketMessageExecuteReplyContentStatus {
+  ok = 'ok',
+  error = 'error',
+}
+
 enum JupyterWebSocketMessageType {
   execute_result = 'execute_result',
   stream = 'stream',
+  execute_reply = 'execute_reply',
 }
 /*
 var msg =
@@ -120,7 +132,9 @@ export class JupyterNotebook {
   private m_kernelId: string;
   private m_channelSessionId: string;
   private m_ws: WebSocket;
-  private m_executePromiseMap: { [key: string]: (value: string) => void };
+  private m_executePromiseMap: {
+    [key: string]: { resolve: (value: string) => void; reject: (error: any) => void };
+  };
   private m_connected: boolean;
 
   constructor(private m_conn: JupyterConnectionInfo, private m_path: string) {
@@ -217,7 +231,7 @@ export class JupyterNotebook {
 
       let p = new Promise<string>((resolve, reject) => {
         let msgId = this.sendShellMessage('execute_request', content, null);
-        this.m_executePromiseMap[msgId] = resolve;
+        this.m_executePromiseMap[msgId] = { resolve: resolve, reject: reject };
       });
 
       return p;
@@ -271,18 +285,36 @@ export class JupyterNotebook {
     }
   }
 
-  private handleShellReply(msg: JupyterWebSocketMessage) {}
+  private handleShellReply(msg: JupyterWebSocketMessage) {
+    if (msg.msg_type == JupyterWebSocketMessageType.execute_reply) {
+      let content: JupyterWebSocketMessageExecuteReplyContent = msg.content;
+      let parentMsgId = msg.parent_header.msg_id;
+      let p = this.m_executePromiseMap[parentMsgId];
+      if (p) {
+        delete this.m_executePromiseMap[parentMsgId];
+        if (content.status == JupyterWebSocketMessageExecuteReplyContentStatus.ok) {
+          p.resolve(null);
+        } else if (
+          content.status == JupyterWebSocketMessageExecuteReplyContentStatus.error
+        ) {
+          p.reject(content.ename + ':' + content.evalue);
+        } else {
+          console.error('unrecognized message status', content.status);
+        }
+      }
+    }
+  }
 
   private handleIopubMessage(msg: JupyterWebSocketMessage) {
     if (msg.msg_type === JupyterWebSocketMessageType.execute_result) {
       let content: JuypterWebSocketMessageExecuteResultContent = msg.content;
       let text = content.data['text/plain'];
       let parentMsgId = msg.parent_header.msg_id;
-      let resolve = this.m_executePromiseMap[parentMsgId];
+      let p = this.m_executePromiseMap[parentMsgId];
       Util.log('ExecuteResult=' + text);
-      if (resolve) {
+      if (p) {
         delete this.m_executePromiseMap[parentMsgId];
-        resolve(text);
+        p.resolve(text);
       }
     } else if (msg.msg_type == JupyterWebSocketMessageType.stream) {
       const content: JupyterWebSocketMessageStreamResultContent = msg.content;

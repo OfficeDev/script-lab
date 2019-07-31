@@ -8,7 +8,7 @@ import {
 
 import { NULL_SOLUTION, NULL_FILE } from '../../../../constants';
 import { findScript } from 'common/lib/utilities/solution';
-import languageMap from '../../../../utils/languageMap';
+import { languageMapLowercased } from 'common/lib/languageMap';
 
 export const getActiveSolution = (
   state: IState,
@@ -57,12 +57,25 @@ export const getIntellisenseFiles = (
 
 export const getIsActiveSolutionCF = (state: IState): boolean => {
   const solution = getActiveSolution(state);
+  if (!solution) {
+    return false;
+  }
+
   return solution.options.isCustomFunctionsSolution;
 };
 
 export const getIsActiveSolutionPython = (state: IState): boolean => {
   const solution = getActiveSolution(state);
-  return findScript(solution).language === languageMap.python;
+  if (!solution) {
+    return false;
+  }
+
+  const script = findScript(solution);
+  if (!script) {
+    return false;
+  }
+
+  return script.language === languageMapLowercased.python;
 };
 
 export const getIsActiveSolutionTrusted = createSelector(
