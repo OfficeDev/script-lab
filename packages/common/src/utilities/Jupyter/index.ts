@@ -82,14 +82,14 @@ interface JupyterWebSocketMessageStreamResultContent {
 }
 
 interface JupyterWebSocketMessageExecuteReplyContent {
-  status: JupyterWebSocketMessageExecuteReplyContentStatus,
-  ename?: string,
-  evalue?: string,
+  status: JupyterWebSocketMessageExecuteReplyContentStatus;
+  ename?: string;
+  evalue?: string;
 }
 
 enum JupyterWebSocketMessageExecuteReplyContentStatus {
   ok = 'ok',
-  error = 'error'
+  error = 'error',
 }
 
 enum JupyterWebSocketMessageType {
@@ -132,7 +132,9 @@ export class JupyterNotebook {
   private m_kernelId: string;
   private m_channelSessionId: string;
   private m_ws: WebSocket;
-  private m_executePromiseMap: { [key: string]: { resolve: (value: string) => void, reject: (error: any) => void } };
+  private m_executePromiseMap: {
+    [key: string]: { resolve: (value: string) => void; reject: (error: any) => void };
+  };
   private m_connected: boolean;
 
   constructor(private m_conn: JupyterConnectionInfo, private m_path: string) {
@@ -176,11 +178,11 @@ export class JupyterNotebook {
         wsUrl = Util.combineUrl(
           wsUrl,
           'api/kernels/' +
-          this.m_kernelId +
-          '/channels?token=' +
-          this.m_conn.token +
-          '&session_id=' +
-          this.m_channelSessionId,
+            this.m_kernelId +
+            '/channels?token=' +
+            this.m_conn.token +
+            '&session_id=' +
+            this.m_channelSessionId,
         );
         Util.log('WebSocket url:' + wsUrl);
         return new Promise<void>((resolve, reject) => {
@@ -292,11 +294,11 @@ export class JupyterNotebook {
         delete this.m_executePromiseMap[parentMsgId];
         if (content.status == JupyterWebSocketMessageExecuteReplyContentStatus.ok) {
           p.resolve(null);
-        }
-        else if (content.status == JupyterWebSocketMessageExecuteReplyContentStatus.error) {
-          p.reject(content.ename + ":" + content.evalue);
-        }
-        else {
+        } else if (
+          content.status == JupyterWebSocketMessageExecuteReplyContentStatus.error
+        ) {
+          p.reject(content.ename + ':' + content.evalue);
+        } else {
           console.error('unrecognized message status', content.status);
         }
       }
