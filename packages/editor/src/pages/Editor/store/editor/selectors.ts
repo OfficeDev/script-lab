@@ -57,12 +57,25 @@ export const getIntellisenseFiles = (
 
 export const getIsActiveSolutionCF = (state: IState): boolean => {
   const solution = getActiveSolution(state);
+  if (!solution) {
+    return false;
+  }
+
   return solution.options.isCustomFunctionsSolution;
 };
 
 export const getIsActiveSolutionPython = (state: IState): boolean => {
   const solution = getActiveSolution(state);
-  return findScript(solution).language === languageMap.python;
+  if (!solution) {
+    return false;
+  }
+
+  const script = findScript(solution);
+  if (!script) {
+    return false;
+  }
+
+  return script.language === languageMap.python;
 };
 
 export const getIsActiveSolutionTrusted = createSelector(
