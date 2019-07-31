@@ -4,8 +4,8 @@ import {
   SCRIPT_FILE_NAME,
   findScript,
 } from 'common/lib/utilities/solution';
+import LANGUAGES from 'common/lib/languages';
 import { getBoilerplateFiles } from '../newSolutionData';
-import languageMap from './languageMap';
 
 export function setUpMomentJsDurationDefaults(momentInstance: {
   relativeTimeThreshold(threshold: string, limit: number): boolean;
@@ -66,7 +66,7 @@ export const convertSolutionToSnippet = (solution: ISolution): ISnippet => {
   const mainScriptFile = findScript(solution);
 
   const snippetFiles =
-    mainScriptFile.language === languageMap.python
+    mainScriptFile.language === LANGUAGES.python
       ? { script: mainScriptFile.content }
       : Object.entries({
           script: file => file.name === SCRIPT_FILE_NAME,

@@ -110,7 +110,7 @@ class Snippet extends React.Component<IProps, IState> {
 
     try {
       const script = findScript(solution);
-      if (script.language === 'python') {
+      if (script.language === Langu) {
         return pythonTemplate({ script: script.content });
       }
 

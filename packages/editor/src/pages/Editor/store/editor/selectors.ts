@@ -8,7 +8,7 @@ import {
 
 import { NULL_SOLUTION, NULL_FILE } from '../../../../constants';
 import { findScript } from 'common/lib/utilities/solution';
-import languageMap from '../../../../utils/languageMap';
+import LANGUAGES from 'common/lib/languages';
 
 export const getActiveSolution = (
   state: IState,
@@ -75,7 +75,7 @@ export const getIsActiveSolutionPython = (state: IState): boolean => {
     return false;
   }
 
-  return script.language === languageMap.python;
+  return script.language === LANGUAGES.python;
 };
 
 export const getIsActiveSolutionTrusted = createSelector(

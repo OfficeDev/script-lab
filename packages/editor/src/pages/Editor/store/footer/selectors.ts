@@ -28,7 +28,7 @@ import {
 } from '../actions';
 import { getPythonConfigIfAny } from '../../../../utils/python';
 import { SCRIPT_FILE_NAME } from 'common/lib/utilities/solution';
-import languageMap from '../../../../utils/languageMap';
+import LANGUAGES from 'common/lib/languages';
 
 const actions = {
   dialog,
@@ -93,14 +93,14 @@ export const getFarItems = createSelector(
     currentEditorTheme: string,
   ) => [
     {
-      hidden: !languageMap[activeFile.language.toLowerCase()],
+      hidden: !LANGUAGES[activeFile.language],
       key: 'editor-language',
-      text: languageMap[activeFile.language.toLowerCase()],
+      text: LANGUAGES[activeFile.language],
       subMenuProps:
         activeFile.name === SCRIPT_FILE_NAME && getPythonConfigIfAny()
           ? {
               isBeakVisible: true,
-              items: [languageMap.typescript, languageMap.python].map(language => ({
+              items: [LANGUAGES.typescript, LANGUAGES.python].map(language => ({
                 key: language,
                 text: language,
                 actionCreator: () =>
