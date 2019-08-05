@@ -98,7 +98,7 @@ export class ReactMonaco extends Component<IProps, IState> {
     const uri = this.getUri();
     let model = monaco.editor.getModel(uri);
 
-    if (options.recreateFromScratch) {
+    if (model && options.recreateFromScratch) {
       model.dispose();
       model = null;
     }
