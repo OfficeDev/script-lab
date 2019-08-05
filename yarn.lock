@@ -4578,16 +4578,15 @@ csstype@^2.2.0:
   resolved "https://registry.yarnpkg.com/csstype/-/csstype-2.5.7.tgz#bf9235d5872141eccfb2d16d82993c6b149179ff"
   integrity sha512-Nt5VDyOTIIV4/nRFswoCKps1R5CD1hkiyjBE9/thNaNZILLEviVw9yWQw15+O+CpNjQKB/uvdcxFFOrSflY3Yw==
 
-custom-functions-metadata@0.5.1:
-  version "0.5.1"
-  resolved "https://registry.yarnpkg.com/custom-functions-metadata/-/custom-functions-metadata-0.5.1.tgz#0480d4c1ffa8cec00eb5af85eab3e2e4d2e1808b"
-  integrity sha512-BybB6jS6aehwDvocKx37DFJvfKJ6Cff+Ou1VDJwd32nxx3gprU7DLmm9qTqkxWLfa7Vl6RW8njv6iAZaBvfjvw==
+custom-functions-metadata@1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/custom-functions-metadata/-/custom-functions-metadata-1.0.5.tgz#b0561c57797768a9eccc7822923dae9db629d210"
+  integrity sha512-rTJpITSd2eZeKyxSZHEPZ1eZIwnhfzoYgl1rxtPjIwb1RWuqF3tMNZQ1yKFNxD+n1ycbfA5Z4bWOcoxFFND0Nw==
   dependencies:
     assert "^1.4.1"
     commander "^2.19.0"
-    fs "0.0.1-security"
     nconf "^0.10.0"
-    office-addin-cli "^0.2.2"
+    office-addin-cli "^0.2.8"
     optimist "^0.6.1"
     xregexp "^4.2.4"
 
@@ -6164,11 +6163,6 @@ fs.realpath@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/fs.realpath/-/fs.realpath-1.0.0.tgz#1504ad2523158caa40db4a2787cb01411994ea4f"
   integrity sha1-FQStJSMVjKpA20onh8sBQRmU6k8=
-
-fs@0.0.1-security:
-  version "0.0.1-security"
-  resolved "https://registry.yarnpkg.com/fs/-/fs-0.0.1-security.tgz#8a7bd37186b6dddf3813f23858b57ecaaf5e41d4"
-  integrity sha1-invTcYa23d84E/I4WLV+yq9eQdQ=
 
 fsevents@1.2.4, fsevents@^1.2.2, fsevents@^1.2.3:
   version "1.2.4"
@@ -9416,10 +9410,10 @@ obuf@^1.0.0, obuf@^1.1.1:
   resolved "https://registry.yarnpkg.com/obuf/-/obuf-1.1.2.tgz#09bea3343d41859ebd446292d11c9d4db619084e"
   integrity sha512-PX1wu0AmAdPqOL1mWhqmlOd8kOIZQwGZw6rh7uby9fTc5lhaOWFLX3I6R1hrF9k3zUY40e6igsLGkDXK92LJNg==
 
-office-addin-cli@^0.2.2:
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/office-addin-cli/-/office-addin-cli-0.2.2.tgz#74acaf3181c73127903c913aeb405783fe9790cb"
-  integrity sha512-eNM7jrCs2BnYoYcsfPnkl3Tr7cPglkRPHV7RM0WtnWpmkS3kKNf6FCORQ/rlDK+l9+xj8jo6d66P/FGT0s9nbw==
+office-addin-cli@^0.2.8:
+  version "0.2.8"
+  resolved "https://registry.yarnpkg.com/office-addin-cli/-/office-addin-cli-0.2.8.tgz#504c0563be355f12e57e62f6e2b1539d0175dd34"
+  integrity sha512-ugd2Sty8EGt94l6O+tF+4rL+pYpVYCp3QAr75hyrUvahIpk9icA5jAVwZgMhuiVD6YXTwDE2thK9SrdysjC1kQ==
   dependencies:
     commander "^2.19.0"
     node-fetch "^2.3.0"
