@@ -50,7 +50,7 @@ export class ReactMonaco extends Component<IProps, IState> {
 
         if (isDifferentLanguage) {
           const oldModel = monaco.editor.getModel(
-            getUriForSolutionAndFileCombo({
+            getUri({
               solutionId: solutionId,
               file: prevProps.file,
             }),
@@ -100,14 +100,14 @@ export class ReactMonaco extends Component<IProps, IState> {
       this.editor.getModel().getValue(),
     );
 
-  private getUri = () =>
-    getUriForSolutionAndFileCombo({
+  private getCurrentUri = () =>
+    getUri({
       solutionId: this.props.solutionId,
       file: this.props.file,
     });
 
   private getModel = () => {
-    const uri = this.getUri();
+    const uri = this.getCurrentUri();
     const model = monaco.editor.getModel(uri);
 
     return model
@@ -126,13 +126,7 @@ export class ReactMonaco extends Component<IProps, IState> {
   }
 }
 
-function getUriForSolutionAndFileCombo({
-  solutionId,
-  file,
-}: {
-  solutionId: string;
-  file: IFile;
-}) {
+function getUri({ solutionId, file }: { solutionId: string; file: IFile }) {
   return monaco.Uri.file(`${solutionId}/${file.language}/${file.id}`);
 }
 
