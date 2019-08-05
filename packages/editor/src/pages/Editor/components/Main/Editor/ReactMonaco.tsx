@@ -41,8 +41,10 @@ export class ReactMonaco extends Component<IProps, IState> {
         this.clearAllModels();
       }
 
-      if (file.id !== prevProps.file.id) {
-        const newModel = this.getModel();
+      const isDifferentFile = file.id !== prevProps.file.id;
+      const isDifferentLanguage = file.language !== prevProps.file.language;
+      if (isDifferentFile || isDifferentLanguage) {
+        const newModel = this.getModel({ recreateFromScratch: isDifferentLanguage });
         newModel.updateOptions({ tabSize: this.props.tabSize });
         this.editor.setModel(newModel);
         this.props.applyFormatting();
@@ -92,9 +94,14 @@ export class ReactMonaco extends Component<IProps, IState> {
   private getUri = () =>
     monaco.Uri.file(`${this.props.solutionId}/${this.props.file.id}`);
 
-  private getModel = () => {
+  private getModel = (options = { recreateFromScratch: false }) => {
     const uri = this.getUri();
-    const model = monaco.editor.getModel(uri);
+    let model = monaco.editor.getModel(uri);
+
+    if (options.recreateFromScratch) {
+      model.dispose();
+      model = null;
+    }
 
     return model
       ? model
