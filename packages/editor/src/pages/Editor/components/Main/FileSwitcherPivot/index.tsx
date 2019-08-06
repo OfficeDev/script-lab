@@ -20,12 +20,14 @@ interface IPropsFromRedux {
   files: IFile[];
   activeFile: IFile;
   isCustomFunctionSolution: boolean;
+  isSolutionPython: boolean;
 }
 
 const mapStateToProps = (state: IReduxState): IPropsFromRedux => ({
   files: selectors.editor.getActiveSolution(state).files,
   activeFile: selectors.editor.getActiveFile(state),
   isCustomFunctionSolution: selectors.editor.getIsActiveSolutionCF(state),
+  isSolutionPython: selectors.editor.getIsActiveSolutionPython(state),
 });
 
 interface IActionsFromRedux {
@@ -42,12 +44,17 @@ const FileSwitcherPivot = ({
   files,
   activeFile,
   isCustomFunctionSolution,
+  isSolutionPython,
   openFile,
 }: IProps) => (
   <PivotBar
     items={files
       .filter(file => {
-        if (isCustomFunctionSolution) {
+        if (isSolutionPython) {
+          // For Python, only show the script file and nothing else (since don't support HTML/CSS/Libraries)
+          return file.name === SCRIPT_FILE_NAME;
+        } else if (isCustomFunctionSolution) {
+          // Likewise, for Custom Functions, only show the script and the libraries (since UI-less)
           return [SCRIPT_FILE_NAME, LIBRARIES_FILE_NAME].includes(file.name);
         } else {
           return true;

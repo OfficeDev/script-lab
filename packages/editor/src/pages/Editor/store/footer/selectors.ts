@@ -9,9 +9,9 @@ import {
 
 // selectors
 import { createSelector } from 'reselect';
-import { getActiveFile } from '../editor/selectors';
+import { getActiveFile, getActiveSolution } from '../editor/selectors';
 import { getIsWeb, get as getHost } from '../host/selectors';
-import { getMode, IHeaderItem } from '../header/selectors';
+import { getMode } from '../header/selectors';
 import { getPrettyEditorTheme } from '../settings/selectors';
 
 // actions
@@ -26,6 +26,9 @@ import {
   solutions,
   settings,
 } from '../actions';
+import { getPythonConfigIfAny } from '../../../../utils/python';
+import { SCRIPT_FILE_NAME } from 'common/lib/utilities/solution';
+import { languageMapLowercased, languageMapDisplayNames } from 'common/lib/languageMap';
 
 const actions = {
   dialog,
@@ -37,15 +40,6 @@ const actions = {
   misc,
   solutions,
   settings,
-};
-
-const languageMap = {
-  typescript: 'TypeScript',
-  javascript: 'JavaScript',
-  css: 'CSS',
-  html: 'HTML',
-  json: 'JSON',
-  python: 'Python',
 };
 
 export const getItems = createSelector(
@@ -91,16 +85,35 @@ export const getItems = createSelector(
 );
 
 export const getFarItems = createSelector(
-  [getMode, getActiveFile, getPrettyEditorTheme],
+  [getMode, getActiveSolution, getActiveFile, getPrettyEditorTheme],
   (
     mode: 'normal' | 'settings' | 'null-solution',
+    activeSolution: ISolution,
     activeFile: IFile,
     currentEditorTheme: string,
   ) => [
     {
-      hidden: !languageMap[activeFile.language.toLowerCase()],
+      hidden: !languageMapLowercased[activeFile.language],
       key: 'editor-language',
-      text: languageMap[activeFile.language.toLowerCase()],
+      text: languageMapDisplayNames[activeFile.language],
+      subMenuProps:
+        activeFile.name === SCRIPT_FILE_NAME && getPythonConfigIfAny()
+          ? {
+              isBeakVisible: true,
+              items: [languageMapLowercased.typescript, languageMapLowercased.python].map(
+                language => ({
+                  key: language,
+                  text: languageMapDisplayNames[language],
+                  actionCreator: () =>
+                    actions.solutions.changeLanguage({
+                      solutionId: activeSolution.id,
+                      fileId: activeFile.id,
+                      language: language,
+                    }),
+                }),
+              ),
+            }
+          : null,
     },
     {
       hidden: mode === 'settings',

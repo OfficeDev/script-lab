@@ -1,13 +1,21 @@
 import React, { Component } from 'react';
 import { currentEditorUrl } from 'common/lib/environment';
+import {
+  RUNNER_TO_EDITOR_HEARTBEAT_REQUESTS,
+  EDITOR_HEARTBEAT_TO_RUNNER_RESPONSES,
+  IEditorHeartbeatToRunnerResponse,
+} from 'common/lib/constants';
+import { ScriptLabError } from 'common/lib/utilities/error';
 
 const LOCAL_STORAGE_POLLING_INTERVAL = 300; // ms
 const heartbeatEditorUrl = `${currentEditorUrl}/#/heartbeat`;
-const GET_ACTIVE_SOLUTION_REQUEST_MESSAGE = 'GET_ACTIVE_SOLUTION';
 
 export interface IProps {
   host: string;
   onReceiveNewActiveSolution: (solution: ISolution | null) => void;
+  onReceivedMessageToPassToUserSnippet: (
+    message: IEditorHeartbeatToRunnerResponse,
+  ) => void;
 }
 
 interface IState {
@@ -32,13 +40,16 @@ class Heartbeat extends Component<IProps, IState> {
     window.onmessage = null;
   }
 
-  private requestActiveSolution = () => {
+  sendMessage = (message: string) => {
     if (this.node.current) {
-      this.node.current.contentWindow!.postMessage(
-        `${GET_ACTIVE_SOLUTION_REQUEST_MESSAGE}/${this.props.host}`,
-        currentEditorUrl,
-      );
+      this.node.current.contentWindow!.postMessage(message, currentEditorUrl);
     }
+  };
+
+  private requestActiveSolution = () => {
+    this.sendMessage(
+      `${RUNNER_TO_EDITOR_HEARTBEAT_REQUESTS.GET_ACTIVE_SOLUTION}/${this.props.host}`,
+    );
   };
 
   private onWindowMessage = ({ origin, data }) => {
@@ -46,9 +57,8 @@ class Heartbeat extends Component<IProps, IState> {
       return;
     }
 
-    try {
-      const solution: ISolution | null = JSON.parse(data);
-
+    const processActiveSolution = (solutionText: string) => {
+      const solution = JSON.parse(solutionText) as ISolution | null;
       if (solution && solution.options.isCustomFunctionsSolution) {
         window.location.href = `${currentEditorUrl}/custom-functions.html`;
       }
@@ -56,6 +66,31 @@ class Heartbeat extends Component<IProps, IState> {
       if (this.checkIfSolutionChanged(solution)) {
         this.setState({ activeSolution: solution });
         this.props.onReceiveNewActiveSolution(solution);
+      }
+    };
+
+    try {
+      const parsedData = data as IEditorHeartbeatToRunnerResponse;
+
+      const responsesMap: { [key: string]: () => void } = {
+        undefined: () => {
+          // Old behavior, when the only message was assumed to be the active solution,
+          //   and there was no concept of "type"
+          processActiveSolution(parsedData as any);
+        },
+        [EDITOR_HEARTBEAT_TO_RUNNER_RESPONSES.ACTIVE_SOLUTION]: () => {
+          processActiveSolution(parsedData.contents);
+        },
+        [EDITOR_HEARTBEAT_TO_RUNNER_RESPONSES.PASS_MESSAGE_TO_USER_SNIPPET]: () => {
+          this.props.onReceivedMessageToPassToUserSnippet(parsedData.contents);
+        },
+      };
+
+      const appropriateResponse = responsesMap[parsedData.type];
+      if (appropriateResponse) {
+        appropriateResponse();
+      } else {
+        throw new ScriptLabError('Invalid heartbeat message received', data);
       }
     } catch (err) {
       console.error(err);

@@ -1,21 +1,34 @@
 import React from 'react';
+import { IEditorHeartbeatToRunnerResponse } from 'common/lib/constants';
+import { JupyterNotebook } from 'common/lib/utilities/Jupyter';
 
 interface IProps {
   content: string;
   lastRendered: number;
   onRenderComplete?: () => void;
   namespacesToTransferFromWindow: string[];
+  sendMessageFromRunnerToEditor: (message: string) => void;
 }
 
 interface IState {
   previousRenderTimestamp: number;
 }
 
+export const METHODS_TO_EXPOSE_ON_IFRAME = {
+  sendMessageFromRunnerToEditor: 'sendMessageFromRunnerToEditor',
+  onMessageFromHeartbeat: 'onMessageFromHeartbeat',
+};
+
+export const METHODS_EXPOSED_ON_RUNNER_OUTER_FRAME = {
+  scriptRunnerOnLoad: 'scriptRunnerOnLoad',
+  executePythonScript: 'executePythonScript',
+};
+
 class IFrame extends React.Component<IProps, IState> {
-  node; // ref to iframe node
+  node: HTMLIFrameElement;
   private isIframeMounted: boolean;
 
-  constructor(props) {
+  constructor(props: IProps) {
     super(props);
     this.isIframeMounted = false;
 
@@ -28,7 +41,9 @@ class IFrame extends React.Component<IProps, IState> {
     // (which get lost in IE if we do it preemptively.)
     // Essentially, the only reliable way seems to be to monkeypatch the frame
     // *once the script thinks it's ready, via it calling back into us*.
-    (window as any).scriptRunnerOnLoad = (iframeWindow: Window) => {
+    window[METHODS_EXPOSED_ON_RUNNER_OUTER_FRAME.scriptRunnerOnLoad] = (
+      iframeWindow: Window,
+    ) => {
       this.monkeypatchIframe(iframeWindow);
 
       this.setState({ previousRenderTimestamp: this.props.lastRendered });
@@ -36,6 +51,16 @@ class IFrame extends React.Component<IProps, IState> {
         this.props.onRenderComplete();
       }
     };
+
+    window[
+      METHODS_EXPOSED_ON_RUNNER_OUTER_FRAME.executePythonScript
+    ] = executePythonScript;
+  }
+
+  passMessageThroughToIframe(message: IEditorHeartbeatToRunnerResponse) {
+    (this.node.contentWindow as any)[METHODS_TO_EXPOSE_ON_IFRAME.onMessageFromHeartbeat](
+      message,
+    );
   }
 
   componentDidMount() {
@@ -103,7 +128,32 @@ class IFrame extends React.Component<IProps, IState> {
     this.props.namespacesToTransferFromWindow.forEach(
       namespace => (iframe[namespace] = window[namespace]),
     );
+
+    (iframe as any)[
+      METHODS_TO_EXPOSE_ON_IFRAME.sendMessageFromRunnerToEditor
+    ] = this.props.sendMessageFromRunnerToEditor;
   };
 }
 
 export default IFrame;
+
+///////////////////////////////////////
+
+async function executePythonScript(
+  config: IPythonConfig,
+  code: string,
+  onDone: () => void,
+) {
+  try {
+    const notebook = new JupyterNotebook(
+      { baseUrl: config.url, token: config.token },
+      config.notebook,
+    );
+    await notebook.executeCode(code);
+  } catch (error) {
+    console.log(error);
+  }
+
+  // Once done, whether success or failure, inform the caller (e.g., so can re-enable the button)
+  onDone();
+}
