@@ -55,7 +55,9 @@ export class ReactMonaco extends Component<IProps, IState> {
               file: prevProps.file,
             }),
           );
-          oldModel.dispose();
+          if (oldModel) {
+            oldModel.dispose();
+          }
         }
       }
     }
