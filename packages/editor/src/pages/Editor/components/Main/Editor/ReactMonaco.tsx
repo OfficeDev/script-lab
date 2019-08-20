@@ -41,11 +41,24 @@ export class ReactMonaco extends Component<IProps, IState> {
         this.clearAllModels();
       }
 
-      if (file.id !== prevProps.file.id) {
+      const isDifferentLanguage = file.language !== prevProps.file.language;
+      if (file.id !== prevProps.file.id || isDifferentLanguage) {
         const newModel = this.getModel();
         newModel.updateOptions({ tabSize: this.props.tabSize });
         this.editor.setModel(newModel);
         this.props.applyFormatting();
+
+        if (isDifferentLanguage) {
+          const oldModel = monaco.editor.getModel(
+            getUri({
+              solutionId: solutionId,
+              file: prevProps.file,
+            }),
+          );
+          if (oldModel) {
+            oldModel.dispose();
+          }
+        }
       }
     }
   }
@@ -89,20 +102,19 @@ export class ReactMonaco extends Component<IProps, IState> {
       this.editor.getModel().getValue(),
     );
 
-  private getUri = () =>
-    monaco.Uri.file(`${this.props.solutionId}/${this.props.file.id}`);
+  private getCurrentUri = () =>
+    getUri({
+      solutionId: this.props.solutionId,
+      file: this.props.file,
+    });
 
   private getModel = () => {
-    const uri = this.getUri();
+    const uri = this.getCurrentUri();
     const model = monaco.editor.getModel(uri);
 
     return model
       ? model
-      : monaco.editor.createModel(
-          this.props.file.content,
-          this.props.file.language.toLowerCase(),
-          uri,
-        );
+      : monaco.editor.createModel(this.props.file.content, this.props.file.language, uri);
   };
 
   clearAllModels = () => {
@@ -114,6 +126,10 @@ export class ReactMonaco extends Component<IProps, IState> {
       <div ref={this.container} style={{ width: '100%', height: '100%' }} role="main" />
     );
   }
+}
+
+function getUri({ solutionId, file }: { solutionId: string; file: IFile }) {
+  return monaco.Uri.file(`${solutionId}/${file.language}/${file.id}`);
 }
 
 export default ReactMonaco;

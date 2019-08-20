@@ -1,6 +1,7 @@
 import ts from 'typescript';
 import { parseTree, IFunction, IOptions } from 'custom-functions-metadata';
 import { strictType } from 'common/lib/utilities/misc';
+import { getUserSettings } from '../userSettings';
 
 export function isTypeScriptCustomFunctionScript(content: string) {
   // Start by doing a quick match for a custom functions regex.
@@ -192,7 +193,7 @@ export function parseMetadata({
 }
 
 function getParseTreeOptions(): IOptions {
-  const userSettings = JSON.parse(localStorage.getItem('userSettings') || '{}');
+  const userSettings = getUserSettings();
 
   return {
     experimental: {

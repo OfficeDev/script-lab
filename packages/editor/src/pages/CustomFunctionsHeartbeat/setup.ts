@@ -20,6 +20,7 @@ import {
 import { IFunction } from 'custom-functions-metadata';
 import { strictType } from 'common/lib/utilities/misc';
 import { findScript } from 'common/lib/utilities/solution';
+import { getPythonConfigIfAny } from '../../utils/python';
 
 export default function setup() {
   // ========================= REFRESH =================================//
@@ -128,29 +129,9 @@ function getMetadata(): ICustomFunctionsIframeRunnerOnLoadPayload {
       })
       .filter(x => x !== null),
 
-    pythonConfig: getPythonConfigIfAny(cfSolutionsGroupedByLanguage.python),
+    pythonConfig:
+      cfSolutionsGroupedByLanguage.python.length === 0 ? null : getPythonConfigIfAny(),
   };
-}
-
-function getPythonConfigIfAny(pythonCFs: ISolution[]): IPythonConfig | null {
-  if (pythonCFs.length === 0) {
-    return null;
-  }
-
-  const userSettings = JSON.parse(localStorage.getItem('userSettings') || '{}');
-  const allJupyterSettings = ['jupyter.url', 'jupyter.token', 'jupyter.notebook'].map(
-    settingName => userSettings[settingName],
-  );
-
-  const countOfFilledOutSettings = allJupyterSettings.filter(
-    (value: string) => value && value.length > 0,
-  ).length;
-  if (countOfFilledOutSettings < allJupyterSettings.length) {
-    return null;
-  }
-
-  const [url, token, notebook] = allJupyterSettings;
-  return { url, token, notebook };
 }
 
 function loadAllCFSolutions(): ISolution[] {

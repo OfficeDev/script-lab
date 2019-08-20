@@ -6,7 +6,9 @@ export default function processLibraries(
   const scriptReferences: string[] = [];
   let officeJs: string | null = null;
 
-  libraries.split('\n').forEach(processLibrary);
+  if (libraries) {
+    libraries.split('\n').forEach(processLibrary);
+  }
 
   if (!isInsideOffice) {
     officeJs = null;

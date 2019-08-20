@@ -1,3 +1,5 @@
+import { METHODS_EXPOSED_ON_CF_RUNNER_OUTER_FRAME } from './setup';
+
 export default ({
   solutionId,
   functions,
@@ -21,7 +23,9 @@ export default ({
 
 <body>
   <script>
-    window.parent.scriptRunnerOnLoad(window, "${solutionId}");
+    window.parent.${
+      METHODS_EXPOSED_ON_CF_RUNNER_OUTER_FRAME.scriptRunnerOnLoad
+    }(window, "${solutionId}");
   </script>
 
   ${jsLibs
@@ -40,7 +44,9 @@ export default ({
       )
       .join('\n  ')}
 
-    window.parent.scriptRunnerOnLoadComplete();
+    window.parent.${
+      METHODS_EXPOSED_ON_CF_RUNNER_OUTER_FRAME.scriptRunnerOnLoadComplete
+    }();
   </script>
 </body>
 

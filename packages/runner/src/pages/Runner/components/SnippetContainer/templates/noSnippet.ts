@@ -1,3 +1,5 @@
+import { METHODS_EXPOSED_ON_RUNNER_OUTER_FRAME } from '../IFrame';
+
 // prettier-ignore
 export default () => `<!DOCTYPE html>
 <html>
@@ -55,7 +57,7 @@ export default () => `<!DOCTYPE html>
   </div>
 
   <script>
-    window.parent.scriptRunnerOnLoad(window);
+    window.parent.${METHODS_EXPOSED_ON_RUNNER_OUTER_FRAME.scriptRunnerOnLoad}(window);
   </script>
 </body>
 
