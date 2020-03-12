@@ -34,7 +34,7 @@ export default () => {
       case 'metadata': {
         const initialPayload = payload as ICustomFunctionsIframeRunnerOnLoadPayload;
 
-        let scriptUrl = "";
+        let scriptUrl = '';
         if (initialPayload.pythonConfig) {
           scriptUrl = SCRIPT_URLS.CUSTOM_FUNCTIONS_RUNNER_WITH_JUPYTER_SUPPORT;
         } else if (initialPayload.customFunctionsRuntimeUrl) {

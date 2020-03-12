@@ -133,8 +133,7 @@ function getMetadata(): ICustomFunctionsIframeRunnerOnLoadPayload {
     pythonConfig:
       cfSolutionsGroupedByLanguage.python.length === 0 ? null : getPythonConfigIfAny(),
 
-    customFunctionsRuntimeUrl:
-      getCustomFunctionsRuntimeUrl(),
+    customFunctionsRuntimeUrl: getCustomFunctionsRuntimeUrl(),
   };
 }
 
