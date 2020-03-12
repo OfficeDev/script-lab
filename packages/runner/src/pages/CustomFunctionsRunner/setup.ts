@@ -34,11 +34,16 @@ export default () => {
       case 'metadata': {
         const initialPayload = payload as ICustomFunctionsIframeRunnerOnLoadPayload;
 
-        await addScriptTag(
-          initialPayload.pythonConfig
-            ? SCRIPT_URLS.CUSTOM_FUNCTIONS_RUNNER_WITH_JUPYTER_SUPPORT
-            : SCRIPT_URLS.CUSTOM_FUNCTIONS_RUNNER_DEFAULT,
-        ).then(() => {
+        let scriptUrl = "";
+        if (initialPayload.pythonConfig) {
+          scriptUrl = SCRIPT_URLS.CUSTOM_FUNCTIONS_RUNNER_WITH_JUPYTER_SUPPORT;
+        } else if (initialPayload.customFunctionsRuntimeUrl) {
+          scriptUrl = initialPayload.customFunctionsRuntimeUrl;
+        } else {
+          scriptUrl = SCRIPT_URLS.CUSTOM_FUNCTIONS_RUNNER_DEFAULT;
+        }
+
+        await addScriptTag(scriptUrl).then(() => {
           (CustomFunctions as any).delayInitialization();
         });
 
