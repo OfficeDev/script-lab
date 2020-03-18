@@ -33,15 +33,7 @@ export default () => {
     switch (type) {
       case 'metadata': {
         const initialPayload = payload as ICustomFunctionsIframeRunnerOnLoadPayload;
-
-        let scriptUrl = '';
-        if (initialPayload.pythonConfig) {
-          scriptUrl = SCRIPT_URLS.CUSTOM_FUNCTIONS_RUNNER_WITH_JUPYTER_SUPPORT;
-        } else if (initialPayload.customFunctionsRuntimeUrl) {
-          scriptUrl = initialPayload.customFunctionsRuntimeUrl;
-        } else {
-          scriptUrl = SCRIPT_URLS.CUSTOM_FUNCTIONS_RUNNER_DEFAULT;
-        }
+        const scriptUrl = getScriptUrl(initialPayload);
 
         await addScriptTag(scriptUrl).then(() => {
           (CustomFunctions as any).delayInitialization();
@@ -212,4 +204,16 @@ function handleError(error: Error | any) {
     severity: 'error',
     source: '[SYSTEM]',
   });
+}
+
+function getScriptUrl(initialPayload: ICustomFunctionsIframeRunnerOnLoadPayload) {
+  if (initialPayload.pythonConfig) {
+    return SCRIPT_URLS.CUSTOM_FUNCTIONS_RUNNER_WITH_JUPYTER_SUPPORT;
+  }
+
+  if (initialPayload.customFunctionsRuntimeUrl) {
+    return initialPayload.customFunctionsRuntimeUrl;
+  }
+
+  return SCRIPT_URLS.CUSTOM_FUNCTIONS_RUNNER_DEFAULT;
 }
