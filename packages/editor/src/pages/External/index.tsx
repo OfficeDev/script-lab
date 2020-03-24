@@ -10,9 +10,8 @@ function setup() {
   //    This is because, as part of launching the dialog, Office.js prepends a bunch
   //    of stuff on the URL as a query string (?_host_Info=) BEFORE the hash,
   //    and doesn't seem to want a URL with an existing query string in there.
-  //    On the routing side, in turn, it appears that having the destination
-  //    embedded directly after the "#/external-page/<encoded url>"
-  //    isn't working either.  So just end up with two "?" on the URL,
+  //    So we can't do a regular `parse(window.location.search)`
+  //    This means that the final URL ends up with two "?" on the URL,
   //    which -- though weird -- seems to work just fine.
   const href = window.location.href;
   const searchFor = '#/external-page?destination=';
