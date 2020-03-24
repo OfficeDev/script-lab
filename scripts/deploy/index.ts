@@ -201,7 +201,7 @@ function getGitUrlWithUsernameAndPassword(deploymentSlotIfAny: string | null) {
     //   "script-lab-react-runner__alpha\$script-lab-react-runner__alpha"
     //   I.e., the site name and possible slot suffix repeated twice, with "\$" in-between
     const part = SITE_NAME + (deploymentSlotIfAny ? '__' + deploymentSlotIfAny : '');
-    return part + '\\$' + part;
+    return part + '\\\\$' + part;
   }
 
   function fetchPassword() {
