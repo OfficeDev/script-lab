@@ -1,14 +1,28 @@
 import React from 'react';
 
-import { parse } from 'query-string';
 import safeExternalUrls from 'common/lib/safe.external.urls';
 
 import { RunOnLoad } from 'common/lib/components/PageSwitcher/utilities/RunOnLoad';
 
 function setup() {
-  const { destination } = parse(window.location.search) as {
-    destination: string;
-  };
+  // Note: using just an indexOf of whatever follows "#/external-page?destination="
+  //    rather than doping an actual search string query.
+  //    This is because, as part of launching the dialog, Office.js prepends a bunch
+  //    of stuff on the URL as a query string (?_host_Info=) BEFORE the hash,
+  //    and doesn't seem to want a URL with an existing query string in there.
+  //    On the routing side, in turn, it appears that having the destination
+  //    embedded directly after the "#/external-page/<encoded url>"
+  //    isn't working either.  So just end up with two "?" on the URL,
+  //    which -- though weird -- seems to work just fine.
+  const href = window.location.href;
+  const searchFor = '#/external-page?destination=';
+  const indexOf = href.indexOf(searchFor);
+  if (indexOf < 0) {
+    // This should never happen.  If it does, just quit and leave a blank progress spinner.
+    return;
+  }
+
+  const destination = decodeURIComponent(href.substr(indexOf + searchFor.length));
 
   for (const key in safeExternalUrls) {
     const value = (safeExternalUrls as { [key: string]: string })[key];

@@ -2,6 +2,11 @@ import { Utilities, HostType } from '@microsoft/office-js-helpers';
 import safeExternalUrls from 'common/lib/safe.external.urls';
 
 export default function setup() {
+  // SUPER IMPORTANT NOTE:  The add-in commands code doesn't do a redirect to localhost
+  //   (or whatever other environment).  So it always run in production.
+  //   This is controlled by `skipRedirect: true` in `packages/editor/src/pages/index.tsx`.
+  //   If you need to change this logic and test locally, sideload the localhost version.
+
   registerCommand('launchCode', event =>
     launchInDialog(codeUrl, event, { width: 75, height: 75, displayInIframe: false }),
   );
