@@ -185,23 +185,19 @@ function deploy(path: string, deploymentSlot: string) {
 }
 
 function getGitUrlWithUsernameAndPassword(deploymentSlotIfAny: string | null) {
-  const siteNameWithPossibleSlotSuffix =
-    SITE_NAME + (deploymentSlotIfAny ? '-' + deploymentSlotIfAny : '');
-
   return [
     `https://`,
     `${fetchUsername()}:${fetchPassword()}`,
     `@`,
-    siteNameWithPossibleSlotSuffix,
+    getSiteNameWithPossibleSlotSuffix('-'),
     `.scm.azurewebsites.net:443/${SITE_NAME}.git`,
   ].join('');
 
   function fetchUsername() {
     // In Azure Websites, the site name is something like:
-    //   "script-lab-react-runner__alpha\$script-lab-react-runner__alpha"
-    //   I.e., the site name and possible slot suffix repeated twice, with "\$" in-between
-    const part = SITE_NAME + (deploymentSlotIfAny ? '__' + deploymentSlotIfAny : '');
-    return part + '\\\\$' + part;
+    //   "$script-lab-react-runner__alpha"
+    //   I.e., just the "$" sign followed by the site name and possible slot suffix (prepended by "__")
+    return getSiteNameWithPossibleSlotSuffix('__');
   }
 
   function fetchPassword() {
@@ -210,9 +206,15 @@ function getGitUrlWithUsernameAndPassword(deploymentSlotIfAny: string | null) {
     function determineKey() {
       return (
         `DEPLOYMENT_PASSWORD_` +
-        siteNameWithPossibleSlotSuffix.toUpperCase().replace(/\-/g, '_')
+        getSiteNameWithPossibleSlotSuffix('_')
+          .toUpperCase()
+          .replace(/\-/g, '_')
       );
     }
+  }
+
+  function getSiteNameWithPossibleSlotSuffix(separator: string) {
+    return SITE_NAME + (deploymentSlotIfAny ? separator + deploymentSlotIfAny : '');
   }
 }
 
