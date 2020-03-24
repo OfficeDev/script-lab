@@ -190,18 +190,26 @@ function getGitUrlWithUsernameAndPassword(deploymentSlotIfAny: string | null) {
 
   return [
     `https://`,
-    `${fetchUsernameOrPassword('USERNAME')}:${fetchUsernameOrPassword('PASSWORD')}`,
+    `${fetchUsername()}:${fetchPassword()}`,
     `@`,
     siteNameWithPossibleSlotSuffix,
     `.scm.azurewebsites.net:443/${SITE_NAME}.git`,
   ].join('');
 
-  function fetchUsernameOrPassword(part: 'USERNAME' | 'PASSWORD') {
+  function fetchUsername() {
+    // In Azure Websites, the site name is something like:
+    //   "script-lab-react-runner__alpha\$script-lab-react-runner__alpha"
+    //   I.e., the site name and possible slot suffix repeated twice, with "\$" in-between
+    const part = SITE_NAME + (deploymentSlotIfAny ? '__' + deploymentSlotIfAny : '');
+    return part + '\\$' + part;
+  }
+
+  function fetchPassword() {
     return process.env[determineKey()];
 
     function determineKey() {
       return (
-        `DEPLOYMENT_${part}_` +
+        `DEPLOYMENT_PASSWORD_` +
         siteNameWithPossibleSlotSuffix.toUpperCase().replace(/\-/g, '_')
       );
     }
