@@ -197,7 +197,7 @@ function getGitUrlWithUsernameAndPassword(deploymentSlotIfAny: string | null) {
     // In Azure Websites, the site name is something like:
     //   "$script-lab-react-runner__alpha"
     //   I.e., just the "$" sign followed by the site name and possible slot suffix (prepended by "__")
-    return getSiteNameWithPossibleSlotSuffix('__');
+    return '$' + getSiteNameWithPossibleSlotSuffix('__');
   }
 
   function fetchPassword() {
