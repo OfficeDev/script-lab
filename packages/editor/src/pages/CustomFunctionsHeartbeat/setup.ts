@@ -16,6 +16,7 @@ import processLibraries from 'common/lib/utilities/process.libraries';
 import {
   parseMetadata,
   transformSolutionNameToCFNamespace,
+  getCustomFunctionsRuntimeUrl,
 } from '../../utils/custom-functions';
 import { IFunction } from 'custom-functions-metadata';
 import { strictType } from 'common/lib/utilities/misc';
@@ -131,6 +132,8 @@ function getMetadata(): ICustomFunctionsIframeRunnerOnLoadPayload {
 
     pythonConfig:
       cfSolutionsGroupedByLanguage.python.length === 0 ? null : getPythonConfigIfAny(),
+
+    customFunctionsRuntimeUrl: getCustomFunctionsRuntimeUrl(),
   };
 }
 

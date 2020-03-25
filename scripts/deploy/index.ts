@@ -18,9 +18,10 @@ const {
   TRAVIS_COMMIT_MESSAGE,
   SITE_NAME,
   PACKAGE_LOCATION,
-  DEPLOYMENT_USERNAME,
-  DEPLOYMENT_PASSWORD,
-} = process.env; // from travis
+} = process.env; // from travis.  Also includes additional environmental variables of the form
+// DEPLOYMENT_USERNAME_<SITE_NAME (all uppercase and with underscores)>_<DEPLOYMENT_SLOT_IF_ANY)
+// and same thing for DEPLOYMENT_PASSWORD_***.
+// E.g.,:  DEPLOYMENT_USERNAME_SCRIPT_LAB_REACT_STORYBOOK_ALPHA, and DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_STORYBOOK_ALPHA
 
 // Make any unhandled rejections terminate Node (rather than having it quit with a mere warning)
 process.on('unhandledRejection', error => {
@@ -184,11 +185,38 @@ function deploy(path: string, deploymentSlot: string) {
 }
 
 function getGitUrlWithUsernameAndPassword(deploymentSlotIfAny: string | null) {
-  return (
-    `https://${DEPLOYMENT_USERNAME}:${DEPLOYMENT_PASSWORD}@` +
-    (SITE_NAME + (deploymentSlotIfAny ? '-' + deploymentSlotIfAny : '')) +
-    `.scm.azurewebsites.net:443/${SITE_NAME}.git`
-  );
+  return [
+    `https://`,
+    `${fetchUsername()}:${fetchPassword()}`,
+    `@`,
+    getSiteNameWithPossibleSlotSuffix('-'),
+    `.scm.azurewebsites.net:443/${SITE_NAME}.git`,
+  ].join('');
+
+  function fetchUsername() {
+    // In Azure Websites, the site name is something like:
+    //   "$script-lab-react-runner__alpha"
+    //   I.e., just the "$" sign followed by the site name and possible slot suffix (prepended by "__").
+    //   However, to avoid escaping due to the "$" sign, also add a slash before it (and double it in code)
+    return '\\$' + getSiteNameWithPossibleSlotSuffix('__');
+  }
+
+  function fetchPassword() {
+    return process.env[determineKey()];
+
+    function determineKey() {
+      return (
+        `DEPLOYMENT_PASSWORD_` +
+        getSiteNameWithPossibleSlotSuffix('_')
+          .toUpperCase()
+          .replace(/\-/g, '_')
+      );
+    }
+  }
+
+  function getSiteNameWithPossibleSlotSuffix(separator: string) {
+    return SITE_NAME + (deploymentSlotIfAny ? separator + deploymentSlotIfAny : '');
+  }
 }
 
 function superSanitize(text: string) {

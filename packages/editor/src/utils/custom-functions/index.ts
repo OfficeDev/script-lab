@@ -203,3 +203,9 @@ function getParseTreeOptions(): IOptions {
     },
   };
 }
+
+export function getCustomFunctionsRuntimeUrl(): string {
+  const userSettings = getUserSettings();
+
+  return userSettings['customFunctionsRuntimeUrl'];
+}
