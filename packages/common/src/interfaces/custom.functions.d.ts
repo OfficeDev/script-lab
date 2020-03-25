@@ -51,6 +51,7 @@ interface ICustomFunctionsHeartbeatLogMessage extends ICustomFunctionsHeartbeatM
 interface ICustomFunctionsIframeRunnerOnLoadPayload {
   typescriptMetadata: ICustomFunctionsIframeRunnerTypeScriptMetadata[];
   pythonConfig?: IPythonConfig;
+  customFunctionsRuntimeUrl: string;
 }
 
 interface ICustomFunctionsIframeRunnerTypeScriptMetadata {

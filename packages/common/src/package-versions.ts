@@ -1,5 +1,5 @@
 export const PACKAGE_VERSIONS = {
-  'monaco-editor': '0.16.2',
+  'monaco-editor': '0.18.1' /* the latest version that supports IE11 */,
   '@microsoft/office-js': '1.1.11-adhoc.28',
 };
 
