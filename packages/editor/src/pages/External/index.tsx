@@ -1,10 +1,12 @@
 import React from 'react';
+import { PrimaryButton } from 'office-ui-fabric-react/lib/Button';
+import styled from 'styled-components';
 
 import safeExternalUrls from 'common/lib/safe.external.urls';
 
-import { RunOnLoad } from 'common/lib/components/PageSwitcher/utilities/RunOnLoad';
+import { hideSplashScreen } from 'common/lib/utilities/splash.screen';
 
-function setup() {
+const External = (): React.ReactElement<any> | null => {
   // Note: using just an indexOf of whatever follows "#/external-page?destination="
   //    rather than doping an actual search string query.
   //    This is because, as part of launching the dialog, Office.js prepends a bunch
@@ -18,22 +20,50 @@ function setup() {
   const indexOf = href.indexOf(searchFor);
   if (indexOf < 0) {
     // This should never happen.  If it does, just quit and leave a blank progress spinner.
-    return;
+    return null;
   }
 
   const destination = decodeURIComponent(href.substr(indexOf + searchFor.length));
 
+  if (isSafeUrl(destination)) {
+    hideSplashScreen();
+
+    return (
+      <Wrapper>
+        <PrimaryButton
+          style={{ margin: 'auto' }}
+          text="Open link in new window"
+          // tslint:disable-next-line: jsx-no-lambda
+          onClick={() => {
+            window.open(destination);
+            Office.context.ui.messageParent('close');
+          }}
+        />
+      </Wrapper>
+    );
+  }
+
+  // Otherwise can just stay on empty page.  This should never happen in normal behavior,
+  // and if someone tweaks the URL, then so be it.
+  return null;
+};
+
+export default External;
+
+//////////////////////
+
+function isSafeUrl(destination: string) {
   for (const key in safeExternalUrls) {
     const value = (safeExternalUrls as { [key: string]: string })[key];
     if (value === destination) {
-      window.location.href = destination;
-      return;
+      return true;
     }
   }
-  // Otherwise can just stay on empty page.  This should never happen in normal behavior,
-  // and if someone tweaks the URL, then so be it.
+  return false;
 }
 
-const External = () => <RunOnLoad funcToRun={setup} />;
-
-export default External;
+export const Wrapper = styled.div`
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+`;

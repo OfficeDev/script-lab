@@ -63,6 +63,7 @@ function launchInDialog(
   url: string,
   event?: any,
   options?: { width?: number; height?: number; displayInIframe?: boolean },
+  onSuccessCallback?: (dialog: Office.Dialog) => void,
 ): void {
   options = options || {};
   options.width = options.width || 60;
@@ -75,12 +76,16 @@ function launchInDialog(
       if (result.status === Office.AsyncResultStatus.Failed) {
         event.completed();
       }
-      const dialog = result.value as Office.Dialog;
+      const dialog = result.value;
       dialog.addEventHandler(Office.EventType.DialogEventReceived, () => {
         if (event) {
           event.completed();
         }
       });
+    }
+
+    if (onSuccessCallback && result.status === Office.AsyncResultStatus.Succeeded) {
+      onSuccessCallback(result.value);
     }
   });
   if (event && Utilities.host !== HostType.OUTLOOK) {
@@ -92,22 +97,34 @@ function launchDialogNavigation(
   url: string,
   event: any,
   options?: { width?: number; height?: number; displayInIframe?: boolean },
+  onSuccessCallback?: (dialog: Office.Dialog) => void,
 ): void {
   launchInDialog(
     `${window.location.origin}/#/external-page?destination=${encodeURIComponent(url)}`,
     event,
     options,
+    onSuccessCallback,
   );
 }
 
 function launchInStandaloneWindow(url: string, event: any): void {
-  // At least on desktop, it looks like you can't do "window.open" out of the invisible runner.
-  //     Thus, on desktop, still use a dialog API
-  // As for Office Online, set displayInIframe as false, so that it prompts a window to
-  //     have you open a dialog.  If we did "window.open" directly,
-  //     popup blockers would prevent the window from showing.
-  //     And conversely, if had "displayInIframe: true" instead, the docs.microsoft.com
-  //     site doesn't allow embedding, and get an error.  So it has to be a standalone window,
-  //     but created via the Dialog API
-  launchDialogNavigation(url, event, { displayInIframe: false });
+  // Launch a page that will direct the user to click a button to launch the actual page.
+  // This method of indirection is required because:
+  // * At least on desktop, it looks like you can't do "window.open" out of the invisible runner
+  // * In the browser, a direct call to "window.open" would trigger a popup blocker
+  launchDialogNavigation(
+    url,
+    event,
+    { displayInIframe: true, width: 30, height: 30 },
+    (dialog: Office.Dialog) => {
+      dialog.addEventHandler(
+        Office.EventType.DialogMessageReceived,
+        (result: { message: string }) => {
+          if (result.message === 'close') {
+            dialog.close();
+          }
+        },
+      );
+    },
+  );
 }

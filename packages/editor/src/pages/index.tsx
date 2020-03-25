@@ -48,7 +48,8 @@ const pages: { [key: string]: IPageLoadingSpec } = {
   },
   [PATHS.External]: {
     component: External,
-    officeJs: null /* does a window.location redirect, doesn't need Office.js */,
+    officeJs: SCRIPT_URLS.DEFAULT_OFFICE_JS, // Need Office.js so that
+    //   can message back to parent taskpane to close the dialog
   },
   [PATHS.Heartbeat]: {
     component: Heartbeat,
