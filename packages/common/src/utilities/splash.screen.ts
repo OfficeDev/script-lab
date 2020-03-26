@@ -15,6 +15,12 @@ export function invokeGlobalErrorHandler(
   error: any,
   options?: { showExpanded: boolean },
 ): true {
+  if (isMonacoError(error)) {
+    // Monaco errors sometimes occur, but don't really mean much, and aren't something we can control.
+    // So just ignore them.
+    return;
+  }
+
   if (window.localStorage.getItem(DEBUG_KEY)) {
     // tslint:disable-next-line:no-debugger
     debugger;
@@ -152,4 +158,16 @@ export function hideSplashScreen() {
   if (rootElement) {
     rootElement.style.display = '';
   }
+}
+
+function isMonacoError(error: any): boolean {
+  // some errors show up as Error objects with a message,
+  // while others are thrown as strings
+  let stringToTest = '';
+  if (error.message) {
+    stringToTest = error.message;
+  } else {
+    stringToTest = error.toString();
+  }
+  return stringToTest.includes('monaco-editor');
 }
