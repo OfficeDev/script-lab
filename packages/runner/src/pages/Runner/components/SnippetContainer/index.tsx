@@ -8,7 +8,7 @@ import errorTemplate from './templates/error';
 import noSnippetTemplate from './templates/noSnippet';
 import pythonTemplate from './templates/python';
 
-import { officeNamespacesForIframe } from '../../../../constants';
+import { itemChangedEventHandler, officeNamespacesForIframe } from '../../../../constants';
 import { ProgressIndicator } from 'office-ui-fabric-react/lib/ProgressIndicator';
 import { compileTypeScript, SyntaxError } from './utilities';
 import untrusted from './templates/untrusted';
@@ -113,6 +113,12 @@ class Snippet extends React.Component<IProps, IState> {
       const script = findScript(solution);
       if (script.language === languageMapLowercased.python) {
         return pythonTemplate({ script: script.content });
+      }
+
+      // If the host is Outlook, add an ItemChanged event handler if one doesn't exist already
+      if (Utilities.host == HostType.OUTLOOK && (script.language === languageMapLowercased.typescript
+        || script.language === languageMapLowercased.javascript) && script.content.indexOf('Office.EventType.ItemChanged') === -1) {
+        script.content = script.content + itemChangedEventHandler.content;
       }
 
       // For the HTML, run it through the browser's DOM parser to get it to auto-add
