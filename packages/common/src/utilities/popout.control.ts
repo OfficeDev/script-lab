@@ -41,7 +41,7 @@ export function shouldShowPopoutControl(context: 'editor' | 'runner'): boolean {
 }
 
 export function openPopoutCodeEditor(
-  { onSuccess }: { onSuccess: () => void } = { onSuccess: () => {} },
+  { onSuccess }: { onSuccess: () => void } = { onSuccess: () => { } },
 ) {
   Office.context.ui.displayDialogAsync(
     getPopoutEditorUrl(),
@@ -58,6 +58,32 @@ export function openPopoutCodeEditor(
         invokeGlobalErrorHandler(
           new ScriptLabError(
             'Could not open a standalone code editor window: ' + result.error.message,
+          ),
+        );
+      }
+    },
+  );
+}
+
+export function openPopoutTutorial(
+  tutorialUrl: string,
+  { onSuccess }: { onSuccess: () => void } = { onSuccess: () => { } },
+) {
+  Office.context.ui.displayDialogAsync(
+    tutorialUrl,
+    {
+      height: 60,
+      width: 60,
+      promptBeforeOpen: false,
+    },
+    (result: Office.AsyncResult<any>) => {
+      if (result.status === Office.AsyncResultStatus.Succeeded) {
+        onSuccess();
+      } else {
+        console.error(result);
+        invokeGlobalErrorHandler(
+          new ScriptLabError(
+            'Could not open a standalone tutorial window: ' + result.error.message,
           ),
         );
       }

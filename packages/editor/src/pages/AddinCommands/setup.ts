@@ -1,5 +1,6 @@
-import { Utilities, HostType } from '@microsoft/office-js-helpers';
+import { Utilities, HostType, PlatformType } from '@microsoft/office-js-helpers';
 import safeExternalUrls from 'common/lib/safe.external.urls';
+import { openPopoutCodeEditor, openPopoutTutorial } from 'common/lib/utilities/popout.control';
 
 export default function setup() {
   // SUPER IMPORTANT NOTE:  The add-in commands code doesn't do a redirect to localhost
@@ -7,13 +8,21 @@ export default function setup() {
   //   This is controlled by `skipRedirect: true` in `packages/editor/src/pages/index.tsx`.
   //   If you need to change this logic and test locally, sideload the localhost version.
 
-  registerCommand('launchCode', event =>
-    launchInDialog(codeUrl, event, { width: 75, height: 75, displayInIframe: false }),
-  );
+  registerCommand('launchCode', event => {
+    if (Utilities.host === HostType.OUTLOOK && Utilities.platform == PlatformType.OFFICE_ONLINE) {
+      return openPopoutCodeEditor();
+    } else {
+      return launchInDialog(codeUrl, event, { width: 75, height: 75, displayInIframe: false });
+    }
+  });
 
-  registerCommand('launchTutorial', event =>
-    launchInDialog(tutorialUrl, event, { width: 35, height: 45 }),
-  );
+  registerCommand('launchTutorial', event => {
+    if (Utilities.host === HostType.OUTLOOK && Utilities.platform == PlatformType.OFFICE_ONLINE) {
+      return openPopoutTutorial(tutorialUrl);
+    } else {
+      return launchInDialog(tutorialUrl, event, { width: 35, height: 45 });
+    }
+  });
 
   registerCommand('launchHelp', event =>
     launchInStandaloneWindow(safeExternalUrls.playground_help, event),
