@@ -9,7 +9,7 @@ export default function setup() {
   //   If you need to change this logic and test locally, sideload the localhost version.
 
   registerCommand('launchCode', event => {
-    if (Utilities.host === HostType.OUTLOOK && Utilities.platform == PlatformType.OFFICE_ONLINE) {
+    if (shouldOpenPopout()) {
       return openPopoutCodeEditor();
     } else {
       return launchInDialog(codeUrl, event, { width: 75, height: 75, displayInIframe: false });
@@ -17,7 +17,7 @@ export default function setup() {
   });
 
   registerCommand('launchTutorial', event => {
-    if (Utilities.host === HostType.OUTLOOK && Utilities.platform == PlatformType.OFFICE_ONLINE) {
+    if (shouldOpenPopout()) {
       return openPopoutTutorial(tutorialUrl);
     } else {
       return launchInDialog(tutorialUrl, event, { width: 35, height: 45 });
@@ -136,4 +136,8 @@ function launchInStandaloneWindow(url: string, event: any): void {
       );
     },
   );
+}
+
+function shouldOpenPopout(): boolean {
+  return Utilities.host === HostType.OUTLOOK && Utilities.platform == PlatformType.OFFICE_ONLINE;
 }

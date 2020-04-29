@@ -41,7 +41,7 @@ export function shouldShowPopoutControl(context: 'editor' | 'runner'): boolean {
 }
 
 export function openPopoutCodeEditor(
-  { onSuccess }: { onSuccess: () => void } = { onSuccess: () => { } },
+  { onSuccess }: { onSuccess: () => void } = { onSuccess: () => {} },
 ) {
   Office.context.ui.displayDialogAsync(
     getPopoutEditorUrl(),
@@ -67,7 +67,7 @@ export function openPopoutCodeEditor(
 
 export function openPopoutTutorial(
   tutorialUrl: string,
-  { onSuccess }: { onSuccess: () => void } = { onSuccess: () => { } },
+  { onSuccess }: { onSuccess: () => void } = { onSuccess: () => {} },
 ) {
   Office.context.ui.displayDialogAsync(
     tutorialUrl,
