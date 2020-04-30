@@ -1,6 +1,6 @@
 import { Utilities, HostType, PlatformType } from '@microsoft/office-js-helpers';
 import safeExternalUrls from 'common/lib/safe.external.urls';
-import { openPopoutCodeEditor, openPopoutTutorial } from 'common/lib/utilities/popout.control';
+import * as popoutControl from 'common/lib/utilities/popout.control';
 
 export default function setup() {
   // SUPER IMPORTANT NOTE:  The add-in commands code doesn't do a redirect to localhost
@@ -10,15 +10,19 @@ export default function setup() {
 
   registerCommand('launchCode', event => {
     if (shouldOpenPopout()) {
-      return openPopoutCodeEditor();
+      return popoutControl.openPopoutCodeEditor();
     } else {
-      return launchInDialog(codeUrl, event, { width: 75, height: 75, displayInIframe: false });
+      return launchInDialog(codeUrl, event, {
+        width: 75,
+        height: 75,
+        displayInIframe: false,
+      });
     }
   });
 
   registerCommand('launchTutorial', event => {
     if (shouldOpenPopout()) {
-      return openPopoutTutorial(tutorialUrl);
+      return popoutControl.openPopoutTutorial(tutorialUrl);
     } else {
       return launchInDialog(tutorialUrl, event, { width: 35, height: 45 });
     }
@@ -139,5 +143,8 @@ function launchInStandaloneWindow(url: string, event: any): void {
 }
 
 function shouldOpenPopout(): boolean {
-  return Utilities.host === HostType.OUTLOOK && Utilities.platform == PlatformType.OFFICE_ONLINE;
+  return (
+    Utilities.host === HostType.OUTLOOK &&
+    Utilities.platform == PlatformType.OFFICE_ONLINE
+  );
 }
