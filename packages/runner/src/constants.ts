@@ -33,5 +33,5 @@ export const itemChangedEventHandler = {
   host: 'Outlook',
   content: `Office.context.mailbox.addHandlerAsync(Office.EventType.ItemChanged, itemChanged);
     function itemChanged(eventArgs) {    
-    }`
-}
+    }`,
+};

@@ -8,7 +8,7 @@ import errorTemplate from './templates/error';
 import noSnippetTemplate from './templates/noSnippet';
 import pythonTemplate from './templates/python';
 
-import { itemChangedEventHandler, officeNamespacesForIframe } from '../../../../constants';
+import * as constants from '../../../../constants';
 import { ProgressIndicator } from 'office-ui-fabric-react/lib/ProgressIndicator';
 import { compileTypeScript, SyntaxError } from './utilities';
 import untrusted from './templates/untrusted';
@@ -116,9 +116,13 @@ class Snippet extends React.Component<IProps, IState> {
       }
 
       // If the host is Outlook, add an ItemChanged event handler if one doesn't exist already
-      if (Utilities.host == HostType.OUTLOOK && (script.language === languageMapLowercased.typescript
-        || script.language === languageMapLowercased.javascript) && script.content.indexOf('Office.EventType.ItemChanged') === -1) {
-        script.content = script.content + itemChangedEventHandler.content;
+      if (
+        Utilities.host == HostType.OUTLOOK &&
+        (script.language === languageMapLowercased.typescript ||
+          script.language === languageMapLowercased.javascript) &&
+        script.content.indexOf('Office.EventType.ItemChanged') === -1
+      ) {
+        script.content = script.content + constants.itemChangedEventHandler.content;
       }
 
       // For the HTML, run it through the browser's DOM parser to get it to auto-add
@@ -189,7 +193,7 @@ class Snippet extends React.Component<IProps, IState> {
               ref={this.iframeRef}
               content={this.state.content}
               lastRendered={this.state.lastRendered}
-              namespacesToTransferFromWindow={officeNamespacesForIframe}
+              namespacesToTransferFromWindow={constants.officeNamespacesForIframe}
               onRenderComplete={this.completeLoad}
               sendMessageFromRunnerToEditor={this.props.sendMessageFromRunnerToEditor}
             />
