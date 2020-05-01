@@ -283,15 +283,7 @@
                                     </Control>
                                 </Group>
                             </OfficeTab>
-                        </ExtensionPoint>
-                        <ExtensionPoint xsi:type="DetectedEntity">
-                            <Label resid="PG.RunCommand.Label" />
-                            <SourceLocation resid="PG.Run.Url" />
-                            <Rule xsi:type="RuleCollection" Mode="Or">
-                                <Rule xsi:type="ItemHasKnownEntity" FilterName="sampleFilterName" RegExFilter="Way" EntityType="Address" Highlight="all" />
-                                <Rule xsi:type="ItemHasRegularExpressionMatch" RegExName="sampleRegexName" RegExValue="ScriptLab" PropertyName="BodyAsPlaintext" IgnoreCase="true" Highlight="All" />
-                            </Rule>
-                        </ExtensionPoint>                            
+                        </ExtensionPoint>                      
                     </DesktopFormFactor>
                 </Host>
             </Hosts>
