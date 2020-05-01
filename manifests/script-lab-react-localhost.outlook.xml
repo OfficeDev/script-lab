@@ -283,7 +283,7 @@
                                     </Control>
                                 </Group>
                             </OfficeTab>
-                        </ExtensionPoint>                      
+                        </ExtensionPoint>   
                     </DesktopFormFactor>
                 </Host>
             </Hosts>
