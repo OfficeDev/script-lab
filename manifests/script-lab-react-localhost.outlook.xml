@@ -191,6 +191,7 @@
             <Hosts>
                 <Host xsi:type="MailHost">
                     <DesktopFormFactor>
+                        <SupportsSharedFolders>true</SupportsSharedFolders>
                         <ExtensionPoint xsi:type="AppointmentAttendeeCommandSurface">
                             <OfficeTab id="TabDefault">
                                 <Group id="PG.PlayGroup.AA">
