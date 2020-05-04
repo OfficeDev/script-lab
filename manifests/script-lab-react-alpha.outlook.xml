@@ -191,7 +191,7 @@
     <Hosts>
       <Host xsi:type="MailHost">
         <DesktopFormFactor>
-	  <SupportsSharedFolders>true</SupportsSharedFolders>
+	        <SupportsSharedFolders>true</SupportsSharedFolders>
           <FunctionFile resid="PG.Functions.Url" />
           <ExtensionPoint xsi:type="MessageComposeCommandSurface">
             <CustomTab id="TabPlaygroundCompose">
