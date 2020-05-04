@@ -403,6 +403,216 @@
               <Label resid="PG.TabLabel" />
             </CustomTab>
           </ExtensionPoint>
+          <ExtensionPoint xsi:type="AppointmentAttendeeCommandSurface">
+            <CustomTab id="TabPlaygroundAppointmentAttendee">
+              <Group id="PG.PlayGroup.AppointmentAttendee">
+                <Label resid="PG.GroupLabel" />
+                <Control xsi:type="Button" id="PG.CodeCommand.AppointmentAttendee">
+                  <Label resid="PG.CodeCommand.Label" />
+                  <Supertip>
+                    <Title resid="PG.CodeCommand.TipTitle" />
+                    <Description resid="PG.CodeSupertip.Desc" />
+                  </Supertip>
+                  <Icon>
+                    <bt:Image size="16" resid="PG.Icon.Code.16" />
+                    <bt:Image size="32" resid="PG.Icon.Code.32" />
+                    <bt:Image size="80" resid="PG.Icon.Code.80" />
+                  </Icon>
+                  <Action xsi:type="ExecuteFunction">
+                    <FunctionName>launchCode</FunctionName>
+                  </Action>
+                </Control>
+                <Control xsi:type="Button" id="PG.RunCommand.AppointmentAttendee">
+                  <Label resid="PG.RunCommand.Label" />
+                  <Supertip>
+                    <Title resid="PG.RunCommand.TipTitle" />
+                    <Description resid="PG.RunSupertip.Desc" />
+                  </Supertip>
+                  <Icon>
+                    <bt:Image size="16" resid="PG.Icon.Run.16" />
+                    <bt:Image size="32" resid="PG.Icon.Run.32" />
+                    <bt:Image size="80" resid="PG.Icon.Run.80" />
+                  </Icon>
+                  <Action xsi:type="ShowTaskpane">
+                    <SourceLocation resid="PG.Run.Url" />
+                    <SupportsPinning>true</SupportsPinning>
+                  </Action>
+                </Control>
+              </Group>
+              <Group id="PG.AboutGroup.AppointmentAttendee">
+                <Label resid="PG.AboutGroupLabel" />
+                <Control xsi:type="Button" id="PG.TutorialCommand.AppointmentAttendee">
+                  <Label resid="PG.TutorialCommand.Label" />
+                  <Supertip>
+                    <Title resid="PG.TutorialCommand.TipTitle" />
+                    <Description resid="PG.TutorialCommand.Desc" />
+                  </Supertip>
+                  <Icon>
+                    <bt:Image size="16" resid="PG.Icon.Tutorial.16" />
+                    <bt:Image size="32" resid="PG.Icon.Tutorial.32" />
+                    <bt:Image size="80" resid="PG.Icon.Tutorial.80" />
+                  </Icon>
+                  <Action xsi:type="ExecuteFunction">
+                    <FunctionName>launchTutorial</FunctionName>
+                  </Action>
+                </Control>
+                <Control xsi:type="Button" id="PG.HelpCommand.AppointmentAttendee">
+                  <Label resid="PG.HelpCommand.Label" />
+                  <Supertip>
+                    <Title resid="PG.HelpCommand.TipTitle" />
+                    <Description resid="PG.HelpCommand.Desc" />
+                  </Supertip>
+                  <Icon>
+                    <bt:Image size="16" resid="PG.Icon.Help.16" />
+                    <bt:Image size="32" resid="PG.Icon.Help.32" />
+                    <bt:Image size="80" resid="PG.Icon.Help.80" />
+                  </Icon>
+                  <Action xsi:type="ExecuteFunction">
+                    <FunctionName>launchHelp</FunctionName>
+                  </Action>
+                </Control>
+              </Group>
+              <Group id="PG.ApiGroup.AppointmentAttendee">
+                <Label resid="PG.ApiGroupLabel" />
+                <Control xsi:type="Button" id="PG.ApiDocsCommand.AppointmentAttendee">
+                  <Label resid="PG.ApiDocsCommand.Label" />
+                  <Supertip>
+                    <Title resid="PG.ApiDocsCommand.TipTitle" />
+                    <Description resid="PG.ApiDocsCommand.Desc" />
+                  </Supertip>
+                  <Icon>
+                    <bt:Image size="16" resid="PG.Icon.ApiDocs.16" />
+                    <bt:Image size="32" resid="PG.Icon.ApiDocs.32" />
+                    <bt:Image size="80" resid="PG.Icon.ApiDocs.80" />
+                  </Icon>
+                  <Action xsi:type="ExecuteFunction">
+                    <FunctionName>launchApiDocs</FunctionName>
+                  </Action>
+                </Control>
+                <Control xsi:type="Button" id="PG.AskCommand.AppointmentAttendee">
+                  <Label resid="PG.AskCommand.Label" />
+                  <Supertip>
+                    <Title resid="PG.AskCommand.TipTitle" />
+                    <Description resid="PG.AskCommand.Desc" />
+                  </Supertip>
+                  <Icon>
+                    <bt:Image size="16" resid="PG.Icon.Ask.16" />
+                    <bt:Image size="32" resid="PG.Icon.Ask.32" />
+                    <bt:Image size="80" resid="PG.Icon.Ask.80" />
+                  </Icon>
+                  <Action xsi:type="ExecuteFunction">
+                    <FunctionName>launchAsk</FunctionName>
+                  </Action>
+                </Control>
+              </Group>
+              <Label resid="PG.TabLabel" />
+            </CustomTab>
+          </ExtensionPoint>
+          <ExtensionPoint xsi:type="AppointmentOrganizerCommandSurface">
+            <CustomTab id="TabPlaygroundAppointmentOrganizer">
+              <Group id="PG.PlayGroup.AppointmentOrganizer">
+                <Label resid="PG.GroupLabel" />
+                <Control xsi:type="Button" id="PG.CodeCommand.AppointmentOrganizer">
+                  <Label resid="PG.CodeCommand.Label" />
+                  <Supertip>
+                    <Title resid="PG.CodeCommand.TipTitle" />
+                    <Description resid="PG.CodeSupertip.Desc" />
+                  </Supertip>
+                  <Icon>
+                    <bt:Image size="16" resid="PG.Icon.Code.16" />
+                    <bt:Image size="32" resid="PG.Icon.Code.32" />
+                    <bt:Image size="80" resid="PG.Icon.Code.80" />
+                  </Icon>
+                  <Action xsi:type="ExecuteFunction">
+                    <FunctionName>launchCode</FunctionName>
+                  </Action>
+                </Control>
+                <Control xsi:type="Button" id="PG.RunCommand.AppointmentOrganizer">
+                  <Label resid="PG.RunCommand.Label" />
+                  <Supertip>
+                    <Title resid="PG.RunCommand.TipTitle" />
+                    <Description resid="PG.RunSupertip.Desc" />
+                  </Supertip>
+                  <Icon>
+                    <bt:Image size="16" resid="PG.Icon.Run.16" />
+                    <bt:Image size="32" resid="PG.Icon.Run.32" />
+                    <bt:Image size="80" resid="PG.Icon.Run.80" />
+                  </Icon>
+                  <Action xsi:type="ShowTaskpane">
+                    <SourceLocation resid="PG.Run.Url" />
+                    <SupportsPinning>true</SupportsPinning>
+                  </Action>
+                </Control>
+              </Group>
+              <Group id="PG.AboutGroup.AppointmentOrganizer">
+                <Label resid="PG.AboutGroupLabel" />
+                <Control xsi:type="Button" id="PG.TutorialCommand.AppointmentOrganizer">
+                  <Label resid="PG.TutorialCommand.Label" />
+                  <Supertip>
+                    <Title resid="PG.TutorialCommand.TipTitle" />
+                    <Description resid="PG.TutorialCommand.Desc" />
+                  </Supertip>
+                  <Icon>
+                    <bt:Image size="16" resid="PG.Icon.Tutorial.16" />
+                    <bt:Image size="32" resid="PG.Icon.Tutorial.32" />
+                    <bt:Image size="80" resid="PG.Icon.Tutorial.80" />
+                  </Icon>
+                  <Action xsi:type="ExecuteFunction">
+                    <FunctionName>launchTutorial</FunctionName>
+                  </Action>
+                </Control>
+                <Control xsi:type="Button" id="PG.HelpCommand.AppointmentOrganizer">
+                  <Label resid="PG.HelpCommand.Label" />
+                  <Supertip>
+                    <Title resid="PG.HelpCommand.TipTitle" />
+                    <Description resid="PG.HelpCommand.Desc" />
+                  </Supertip>
+                  <Icon>
+                    <bt:Image size="16" resid="PG.Icon.Help.16" />
+                    <bt:Image size="32" resid="PG.Icon.Help.32" />
+                    <bt:Image size="80" resid="PG.Icon.Help.80" />
+                  </Icon>
+                  <Action xsi:type="ExecuteFunction">
+                    <FunctionName>launchHelp</FunctionName>
+                  </Action>
+                </Control>
+              </Group>
+              <Group id="PG.ApiGroup.AppointmentOrganizer">
+                <Label resid="PG.ApiGroupLabel" />
+                <Control xsi:type="Button" id="PG.ApiDocsCommand.AppointmentOrganizer">
+                  <Label resid="PG.ApiDocsCommand.Label" />
+                  <Supertip>
+                    <Title resid="PG.ApiDocsCommand.TipTitle" />
+                    <Description resid="PG.ApiDocsCommand.Desc" />
+                  </Supertip>
+                  <Icon>
+                    <bt:Image size="16" resid="PG.Icon.ApiDocs.16" />
+                    <bt:Image size="32" resid="PG.Icon.ApiDocs.32" />
+                    <bt:Image size="80" resid="PG.Icon.ApiDocs.80" />
+                  </Icon>
+                  <Action xsi:type="ExecuteFunction">
+                    <FunctionName>launchApiDocs</FunctionName>
+                  </Action>
+                </Control>
+                <Control xsi:type="Button" id="PG.AskCommand.AppointmentOrganizer">
+                  <Label resid="PG.AskCommand.Label" />
+                  <Supertip>
+                    <Title resid="PG.AskCommand.TipTitle" />
+                    <Description resid="PG.AskCommand.Desc" />
+                  </Supertip>
+                  <Icon>
+                    <bt:Image size="16" resid="PG.Icon.Ask.16" />
+                    <bt:Image size="32" resid="PG.Icon.Ask.32" />
+                    <bt:Image size="80" resid="PG.Icon.Ask.80" />
+                  </Icon>
+                  <Action xsi:type="ExecuteFunction">
+                    <FunctionName>launchAsk</FunctionName>
+                  </Action>
+                </Control>
+              </Group>
+              <Label resid="PG.TabLabel" />
+            </CustomTab>
+          </ExtensionPoint>
         </DesktopFormFactor>
       </Host>
     </Hosts>
