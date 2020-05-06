@@ -7,7 +7,7 @@
     <Version>2.0.0.0</Version>
     <ProviderName>Microsoft</ProviderName>
     <DefaultLocale>en-US</DefaultLocale>
-    <DisplayName DefaultValue="[Dev] Script Lab React - Outlook" />
+    <DisplayName DefaultValue="[Dev] Script Lab for Outlook" />
     <Description DefaultValue="Create, run, and share your Office Add-in code snippets from within Outlook."></Description>
     <IconUrl DefaultValue="https://localhost:3000/assets/images/icon-32.png" />
     <HighResolutionIconUrl DefaultValue="https://localhost:3000/assets/images/icon-64.png" />
