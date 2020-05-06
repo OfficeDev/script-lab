@@ -65,6 +65,32 @@ export function openPopoutCodeEditor(
   );
 }
 
+export function openPopoutTutorial(
+  tutorialUrl: string,
+  { onSuccess }: { onSuccess: () => void } = { onSuccess: () => {} },
+) {
+  Office.context.ui.displayDialogAsync(
+    tutorialUrl,
+    {
+      height: 60,
+      width: 60,
+      promptBeforeOpen: false,
+    },
+    (result: Office.AsyncResult<any>) => {
+      if (result.status === Office.AsyncResultStatus.Succeeded) {
+        onSuccess();
+      } else {
+        console.error(result);
+        invokeGlobalErrorHandler(
+          new ScriptLabError(
+            'Could not open a standalone tutorial window: ' + result.error.message,
+          ),
+        );
+      }
+    },
+  );
+}
+
 export function isPoppedOut(): boolean {
   const params: { [key: string]: any } = queryString.parse(window.location.search);
   return params[IS_DIALOG_QUERY_PARAMETER] ? true : false;
