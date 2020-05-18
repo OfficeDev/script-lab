@@ -9,7 +9,7 @@
     <DefaultLocale>en-US</DefaultLocale>
     <DisplayName DefaultValue="Script Lab for Outlook" />
     <Description DefaultValue="Create, run, and share your Office Add-in code snippets from within Outlook."></Description>
-    <IconUrl DefaultValue="https://script-lab.azureedge.net/assets/images/icon-32.png" />
+    <IconUrl DefaultValue="https://script-lab.azureedge.net/assets/images/icon-64.png" />
     <HighResolutionIconUrl DefaultValue="https://script-lab.azureedge.net/assets/images/icon-64.png" />
     <SupportUrl DefaultValue="https://github.com/OfficeDev/script-lab/issues" />
     <AppDomains>
