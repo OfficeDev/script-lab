@@ -117,11 +117,11 @@ function launchDialogNavigation(
   launchInDialog(
     // Checks to see if the host is Outlook Online and the url is the codeUrl or editorUrl
     // and sets url appropriately
-    isOutlookOnlineUrl(url)
+    isOutlookOnlinePopoutUrl(url)
       ? url
       : `${window.location.origin}/#/external-page?destination=${encodeURIComponent(
-          url,
-        )}`,
+        url,
+      )}`,
     event,
     options,
     onSuccessCallback,
@@ -138,7 +138,7 @@ function launchInStandaloneWindow(url: string, event: any): void {
     event,
     // Checks to see if the host is Outlook Online and the url is the codeUrl or editorUrl
     // and sets options appropriately
-    isOutlookOnlineUrl(url)
+    isOutlookOnlinePopoutUrl(url)
       ? { displayInIframe: false, width: 60, height: 60 }
       : { displayInIframe: true, width: 30, height: 30 },
     (dialog: Office.Dialog) => {
@@ -161,6 +161,6 @@ function isOutlookOnline(): boolean {
   );
 }
 
-function isOutlookOnlineUrl(url: string): boolean {
-  return isOutlookOnline && (url === codeUrl || url === tutorialUrl);
+function isOutlookOnlinePopoutUrl(url: string): boolean {
+  return isOutlookOnline() && (url === codeUrl || url === tutorialUrl);
 }
