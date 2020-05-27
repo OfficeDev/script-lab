@@ -1,6 +1,6 @@
 import { Utilities, HostType, PlatformType } from '@microsoft/office-js-helpers';
 import safeExternalUrls from 'common/lib/safe.external.urls';
-import * as popoutControl from 'common/lib/utilities/popout.control';
+import { hideSplashScreen } from 'common/lib/utilities/splash.screen';
 
 export default function setup() {
   // SUPER IMPORTANT NOTE:  The add-in commands code doesn't do a redirect to localhost
@@ -9,8 +9,9 @@ export default function setup() {
   //   If you need to change this logic and test locally, sideload the localhost version.
 
   registerCommand('launchCode', event => {
-    if (shouldOpenPopout()) {
-      return popoutControl.openPopoutCodeEditor();
+    if (isOutlookOnline()) {
+      hideSplashScreen();
+      return launchInStandaloneWindow(codeUrl, event);
     } else {
       return launchInDialog(codeUrl, event, {
         width: 75,
@@ -21,8 +22,9 @@ export default function setup() {
   });
 
   registerCommand('launchTutorial', event => {
-    if (shouldOpenPopout()) {
-      return popoutControl.openPopoutTutorial(tutorialUrl);
+    if (isOutlookOnline()) {
+      hideSplashScreen();
+      return launchInStandaloneWindow(tutorialUrl, event);
     } else {
       return launchInDialog(tutorialUrl, event, { width: 35, height: 45 });
     }
@@ -113,7 +115,13 @@ function launchDialogNavigation(
   onSuccessCallback?: (dialog: Office.Dialog) => void,
 ): void {
   launchInDialog(
-    `${window.location.origin}/#/external-page?destination=${encodeURIComponent(url)}`,
+    // Checks to see if the host is Outlook Online and the url is the codeUrl or editorUrl
+    // and sets url appropriately
+    isOutlookOnlinePopoutUrl(url)
+      ? url
+      : `${window.location.origin}/#/external-page?destination=${encodeURIComponent(
+          url,
+        )}`,
     event,
     options,
     onSuccessCallback,
@@ -128,7 +136,11 @@ function launchInStandaloneWindow(url: string, event: any): void {
   launchDialogNavigation(
     url,
     event,
-    { displayInIframe: true, width: 30, height: 30 },
+    // Checks to see if the host is Outlook Online and the url is the codeUrl or editorUrl
+    // and sets options appropriately
+    isOutlookOnlinePopoutUrl(url)
+      ? { displayInIframe: false, width: 60, height: 60 }
+      : { displayInIframe: true, width: 30, height: 30 },
     (dialog: Office.Dialog) => {
       dialog.addEventHandler(
         Office.EventType.DialogMessageReceived,
@@ -142,9 +154,13 @@ function launchInStandaloneWindow(url: string, event: any): void {
   );
 }
 
-function shouldOpenPopout(): boolean {
+function isOutlookOnline(): boolean {
   return (
     Utilities.host === HostType.OUTLOOK &&
     Utilities.platform == PlatformType.OFFICE_ONLINE
   );
+}
+
+function isOutlookOnlinePopoutUrl(url: string): boolean {
+  return isOutlookOnline() && (url === codeUrl || url === tutorialUrl);
 }

@@ -9,8 +9,8 @@
     <DefaultLocale>en-US</DefaultLocale>
     <DisplayName DefaultValue="Script Lab for Outlook" />
     <Description DefaultValue="Create, run, and share your Office Add-in code snippets from within Outlook."></Description>
-    <IconUrl DefaultValue="https://script-lab.azureedge.net/assets/images/icon-64.png" />
-    <HighResolutionIconUrl DefaultValue="https://script-lab.azureedge.net/assets/images/icon-64.png" />
+    <IconUrl DefaultValue="https://script-lab-react.azurewebsites.net/assets/images/icon-64.png" />
+    <HighResolutionIconUrl DefaultValue="https://script-lab-react.azurewebsites.net/assets/images/icon-64.png" />
     <SupportUrl DefaultValue="https://github.com/OfficeDev/script-lab/issues" />
     <AppDomains>
         <AppDomain>https://github.com</AppDomain>
@@ -52,7 +52,7 @@
     <FormSettings>
         <Form xsi:type="ItemRead">
             <DesktopSettings>
-                <SourceLocation DefaultValue="https://script-lab.azureedge.net" />
+                <SourceLocation DefaultValue="https://script-lab-react.azurewebsites.net" />
                 <RequestedHeight>450</RequestedHeight>
             </DesktopSettings>
         </Form>
@@ -164,12 +164,12 @@
         </Hosts>
         <Resources>
             <bt:Images>
-              <bt:Image id="PG.Icon.Run.16" DefaultValue="https://script-lab.azureedge.net/assets/images/code-16.png" />
-              <bt:Image id="PG.Icon.Run.32" DefaultValue="https://script-lab.azureedge.net/assets/images/code-32.png" />
-              <bt:Image id="PG.Icon.Run.80" DefaultValue="https://script-lab.azureedge.net/assets/images/code-80.png" />
+                <bt:Image id="PG.Icon.Run.16" DefaultValue="https://script-lab-react.azurewebsites.net/assets/images/run-16.png" />
+                <bt:Image id="PG.Icon.Run.32" DefaultValue="https://script-lab-react.azurewebsites.net/assets/images/run-32.png" />
+                <bt:Image id="PG.Icon.Run.80" DefaultValue="https://script-lab-react.azurewebsites.net/assets/images/run-80.png" />
             </bt:Images>
             <bt:Urls>
-                <bt:Url id="PG.Run.Url" DefaultValue="https://script-lab.azureedge.net/run.html" />
+                <bt:Url id="PG.Run.Url" DefaultValue="https://script-lab-react.azurewebsites.net/run.html" />
             </bt:Urls>
             <bt:ShortStrings>
                 <bt:String id="PG.GroupLabel" DefaultValue="Script Lab" />
@@ -194,7 +194,7 @@
 	        <SupportsSharedFolders>true</SupportsSharedFolders>
           <FunctionFile resid="PG.Functions.Url" />
           <ExtensionPoint xsi:type="MessageComposeCommandSurface">
-            <CustomTab id="TabPlaygroundCompose">
+            <OfficeTab id="TabPlaygroundCompose">
               <Group id="PG.PlayGroup.Compose">
                 <Label resid="PG.GroupLabel" />
                 <Control xsi:type="Button" id="PG.CodeCommand.Compose">
@@ -228,9 +228,6 @@
                     <SupportsPinning>true</SupportsPinning>
                   </Action>
                 </Control>
-              </Group>
-              <Group id="PG.AboutGroup.Compose">
-                <Label resid="PG.AboutGroupLabel" />
                 <Control xsi:type="Button" id="PG.TutorialCommand.Compose">
                   <Label resid="PG.TutorialCommand.Label" />
                   <Supertip>
@@ -261,9 +258,6 @@
                     <FunctionName>launchHelp</FunctionName>
                   </Action>
                 </Control>
-              </Group>
-              <Group id="PG.ApiGroup.Compose">
-                <Label resid="PG.ApiGroupLabel" />
                 <Control xsi:type="Button" id="PG.ApiDocsCommand.Compose">
                   <Label resid="PG.ApiDocsCommand.Label" />
                   <Supertip>
@@ -295,11 +289,10 @@
                   </Action>
                 </Control>
               </Group>
-              <Label resid="PG.TabLabel" />
-            </CustomTab>
+            </OfficeTab>
           </ExtensionPoint>
           <ExtensionPoint xsi:type="MessageReadCommandSurface">
-            <CustomTab id="TabPlaygroundRead">
+            <OfficeTab id="TabPlaygroundRead">
               <Group id="PG.PlayGroup.Read">
                 <Label resid="PG.GroupLabel" />
                 <Control xsi:type="Button" id="PG.CodeCommand.Read">
@@ -333,9 +326,6 @@
                     <SupportsPinning>true</SupportsPinning>
                   </Action>
                 </Control>
-              </Group>
-              <Group id="PG.AboutGroup.Read">
-                <Label resid="PG.AboutGroupLabel" />
                 <Control xsi:type="Button" id="PG.TutorialCommand.Read">
                   <Label resid="PG.TutorialCommand.Label" />
                   <Supertip>
@@ -366,9 +356,6 @@
                     <FunctionName>launchHelp</FunctionName>
                   </Action>
                 </Control>
-              </Group>
-              <Group id="PG.ApiGroup.Read">
-                <Label resid="PG.ApiGroupLabel" />
                 <Control xsi:type="Button" id="PG.ApiDocsCommand.Read">
                   <Label resid="PG.ApiDocsCommand.Label" />
                   <Supertip>
@@ -400,11 +387,10 @@
                   </Action>
                 </Control>
               </Group>
-              <Label resid="PG.TabLabel" />
-            </CustomTab>
+            </OfficeTab>
           </ExtensionPoint>
           <ExtensionPoint xsi:type="AppointmentAttendeeCommandSurface">
-            <CustomTab id="TabPlaygroundAppointmentAttendee">
+            <OfficeTab id="TabPlaygroundAppointmentAttendee">
               <Group id="PG.PlayGroup.AppointmentAttendee">
                 <Label resid="PG.GroupLabel" />
                 <Control xsi:type="Button" id="PG.CodeCommand.AppointmentAttendee">
@@ -438,9 +424,6 @@
                     <SupportsPinning>true</SupportsPinning>
                   </Action>
                 </Control>
-              </Group>
-              <Group id="PG.AboutGroup.AppointmentAttendee">
-                <Label resid="PG.AboutGroupLabel" />
                 <Control xsi:type="Button" id="PG.TutorialCommand.AppointmentAttendee">
                   <Label resid="PG.TutorialCommand.Label" />
                   <Supertip>
@@ -471,9 +454,6 @@
                     <FunctionName>launchHelp</FunctionName>
                   </Action>
                 </Control>
-              </Group>
-              <Group id="PG.ApiGroup.AppointmentAttendee">
-                <Label resid="PG.ApiGroupLabel" />
                 <Control xsi:type="Button" id="PG.ApiDocsCommand.AppointmentAttendee">
                   <Label resid="PG.ApiDocsCommand.Label" />
                   <Supertip>
@@ -505,11 +485,10 @@
                   </Action>
                 </Control>
               </Group>
-              <Label resid="PG.TabLabel" />
-            </CustomTab>
+             </OfficeTab>
           </ExtensionPoint>
           <ExtensionPoint xsi:type="AppointmentOrganizerCommandSurface">
-            <CustomTab id="TabPlaygroundAppointmentOrganizer">
+            <OfficeTab id="TabPlaygroundAppointmentOrganizer">
               <Group id="PG.PlayGroup.AppointmentOrganizer">
                 <Label resid="PG.GroupLabel" />
                 <Control xsi:type="Button" id="PG.CodeCommand.AppointmentOrganizer">
@@ -543,9 +522,6 @@
                     <SupportsPinning>true</SupportsPinning>
                   </Action>
                 </Control>
-              </Group>
-              <Group id="PG.AboutGroup.AppointmentOrganizer">
-                <Label resid="PG.AboutGroupLabel" />
                 <Control xsi:type="Button" id="PG.TutorialCommand.AppointmentOrganizer">
                   <Label resid="PG.TutorialCommand.Label" />
                   <Supertip>
@@ -576,9 +552,6 @@
                     <FunctionName>launchHelp</FunctionName>
                   </Action>
                 </Control>
-              </Group>
-              <Group id="PG.ApiGroup.AppointmentOrganizer">
-                <Label resid="PG.ApiGroupLabel" />
                 <Control xsi:type="Button" id="PG.ApiDocsCommand.AppointmentOrganizer">
                   <Label resid="PG.ApiDocsCommand.Label" />
                   <Supertip>
@@ -610,8 +583,7 @@
                   </Action>
                 </Control>
               </Group>
-              <Label resid="PG.TabLabel" />
-            </CustomTab>
+            </OfficeTab>
           </ExtensionPoint>
         </DesktopFormFactor>
       </Host>
@@ -646,7 +618,7 @@
       </bt:Urls>
       <bt:ShortStrings>
         <bt:String id="PG.TabLabel" DefaultValue="Script Lab" />
-        <bt:String id="PG.GroupLabel" DefaultValue="Script" />
+        <bt:String id="PG.GroupLabel" DefaultValue="Script Lab" />
         <bt:String id="PG.AboutGroupLabel" DefaultValue="About Script Lab">
           <bt:Override Locale="de-de" Value="Über Script Lab"/>
           <bt:Override Locale="de-ch" Value="Über Script Lab"/>
