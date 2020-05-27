@@ -120,8 +120,8 @@ function launchDialogNavigation(
     isOutlookOnlinePopoutUrl(url)
       ? url
       : `${window.location.origin}/#/external-page?destination=${encodeURIComponent(
-        url,
-      )}`,
+          url,
+        )}`,
     event,
     options,
     onSuccessCallback,
