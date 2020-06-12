@@ -5,7 +5,7 @@
   xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0" 
   xmlns:ov="http://schemas.microsoft.com/office/taskpaneappversionoverrides" xsi:type="TaskPaneApp">
   <Id>632ed84c-2c4a-4e4b-bc87-353bcf7a34d5</Id>
-  <Version>2.0.0.0</Version>
+  <Version>2.0.0.1</Version>
   <ProviderName>Microsoft</ProviderName>
   <DefaultLocale>en-US</DefaultLocale>
   <DisplayName DefaultValue="[DEV] Script Lab React" />
