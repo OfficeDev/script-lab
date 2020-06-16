@@ -727,7 +727,7 @@
         </bt:String>
       </bt:LongStrings>
     </Resources>
-         <ExtendedPermissions>
+        <ExtendedPermissions>
             <ExtendedPermission>AppendOnSend</ExtendedPermission>
         </ExtendedPermissions>
         </VersionOverrides>
