@@ -2,7 +2,7 @@
 
 # Script Lab, a Microsoft Garage project
 
-Experiment with the Office JavaScript API without ever leaving Excel, Outlook, Word, or PowerPoint! **Get [Script Lab](https://appsource.microsoft.com/product/office/WA104380862) for Excel, Word, and PowerPoint, or [Script Lab for Outlook](https://appsource.microsoft.com/product/office/WA200001603), free from Microsoft AppSource**.
+Experiment with the Office JavaScript API without ever leaving Excel, Outlook, Word, or PowerPoint! **Get [Script Lab](https://appsource.microsoft.com/product/office/WA104380862) in Excel, Word, and PowerPoint, or [Script Lab for Outlook](https://appsource.microsoft.com/product/office/WA200001603), free from Microsoft AppSource**.
 
 > **Note**: Script Lab was rewritten from the ground up in 2018 on a brand-new technology stack, including React and Fabric React. For the older version of Script Lab 2017, see more [below](#2017).
 
@@ -34,7 +34,9 @@ Script Lab has three main features:
 - **Run** the code in another pane beside the editor. Execution can include logic, API calls to Office, UI in the pane, and even output to a console. Every time you make a code change you can refresh the editor and run the new version in seconds.
 - **Share** your snippets through GitHub. If you create a snippet you'd like to share, you can use Script Lab to save it. Then send the link to someone else to try it and tweak it on their computer. The Import feature lets you load other people's snippets.
 
-You can get [Script Lab](https://appsource.microsoft.com/product/office/WA104380862) right now for free from Microsoft AppSource! It works for Excel, Word, and PowerPoint. You'll need Office 2013 or later on Windows, Office on the web, or Office on Mac.
+Script Lab works in Office 2013 or later on Windows, Office on the web, or Office on Mac.
+
+You can get [Script Lab](https://appsource.microsoft.com/product/office/WA104380862) right now for free from Microsoft AppSource! It works for Excel, Word, and PowerPoint.
 
 If you're interested in developing for Outlook, you can get [Script Lab for Outlook](https://appsource.microsoft.com/product/office/WA200001603), also free from AppSource.
 
@@ -48,9 +50,9 @@ Here's a 1-minute teaser video to give you a taste:
 
 ## Get Started
 
-The easiest way to try Script Lab is with the Tutorial file for Excel that walks you through the tool in a few steps. You can get it here: [script-lab-tutorial.xlsx](https://script-lab.azureedge.net/assets/documents/script-lab-tutorial.xlsx)
+The easiest way to try Script Lab is in Excel with the tutorial workbook that walks you through the tool in a few steps. You can get it here: [script-lab-tutorial.xlsx](https://script-lab.azureedge.net/assets/documents/script-lab-tutorial.xlsx)
 
-Alternatively, you can start from scratch and [install Script Lab from the Store](https://appsource.microsoft.com/product/office/WA104380862).
+Alternatively, you can start from scratch and get [Script Lab](https://appsource.microsoft.com/product/office/WA104380862) in Excel, Word, or PowerPoint.
 
 This 10-minute demo explains how to use the main features:
 
