@@ -2,23 +2,23 @@
 
 # Script Lab, a Microsoft Garage project
 
-Experiment with the Office JavaScript API without ever leaving Excel, Word, or PowerPoint! [**Get Script Lab for free, from the Office Store**](https://store.office.com/app.aspx?assetid=WA104380862).
+Experiment with the Office JavaScript API without ever leaving Excel, Outlook, Word, or PowerPoint! **Get [Script Lab](https://appsource.microsoft.com/product/office/WA104380862) in Excel, Word, and PowerPoint, or [Script Lab for Outlook](https://appsource.microsoft.com/product/office/WA200001603), free from Microsoft AppSource**.
 
-> **Note**: Script Lab was re-written from the ground up in 2018, on a brand-new technology stack, including React and Fabric React. For the older version of Script Lab 2017, see more [below](README.md#2017).
+> **Note**: Script Lab was rewritten from the ground up in 2018 on a brand-new technology stack, including React and Fabric React. For the older version of Script Lab 2017, see more [below](#2017).
 
 ## Topics
 
-- [What is Script Lab?](README.md#what-is)
-- [Get started](README.md/#get-started)
-- [Import someone else's snippet, or export your own](README.md#import)
-- [Report a bug, or suggest a feature](README.md#report-bug)
-- [Script Lab vs "Script Lab 2017"](README.md#2017)
-- [Use Script Lab with older Office versions (Office 2013)](README.md/#office-2013)
-- [Stay up-to-date](README.md/#up-to-date)
-- [Rate and review](README.md#rate-and-review)
-- [Contribute to Script Lab](README.md#contribute)
-- [Articles & FAQs](README.md/#articles)
-- [External blog posts & media coverage](README.md/#external-posts)
+- [What is Script Lab?](#what-is)
+- [Get started](#get-started)
+- [Import someone else's snippet, or export your own](#import)
+- [Report a bug, or suggest a feature](#report-bug)
+- [Script Lab vs "Script Lab 2017"](#2017)
+- [Use Script Lab with older Office versions (Office 2013)](#office-2013)
+- [Stay up-to-date](#up-to-date)
+- [Rate and review](#rate-and-review)
+- [Contribute to Script Lab](#contribute)
+- [Articles & FAQs](#articles)
+- [External blog posts & media coverage](#external-posts)
 
 <a id="what-is"></a>
 
@@ -26,14 +26,19 @@ Experiment with the Office JavaScript API without ever leaving Excel, Word, or P
 
 Wouldn't it be crazy if you could launch Excel, click to open a small code window, and then instantly start writing and executing JavaScript that interacts with your spreadsheet?
 
-Script lab is a tool for anyone who wants to learn about writing Office add-ins for Excel, Word, or PowerPoint. The focus is the Office JavaScript API, which is the technology you need for building Office Add-ins that run across platforms. Maybe you're an experienced Office developer and you want to quickly prototype a feature for your add-in. Or maybe you've never tried writing code for Office and you just want to play with a sample and tweak it to learn more. Either way, Script Lab is for you.
+Script lab is a tool for anyone who wants to learn about writing Office Add-ins for Excel, Outlook, Word, or PowerPoint. The focus is the Office JavaScript API, which is the technology you need for building Office Add-ins that run across platforms. Maybe you're an experienced Office developer and you want to quickly prototype a feature for your add-in. Or maybe you've never tried writing code for Office and you just want to play with a sample and tweak it to learn more. Either way, Script Lab is for you.
+
 Script Lab has three main features:
 
 - **Code** in a pane beside your spreadsheet. IntelliSense is there while you type so you can easily discover and use the Office JavaScript objects and methods. And if you don't want to start from scratch there are plenty of samples pre-installed with Script Lab. Your snippets can use any TypeScript features like arrow functions, template strings, and async/await (i.e., a good chunk of ES6 and ES7 features). But it's not only script: your snippets can also use HTML, CSS, and references to external libraries and data on the web. Script Lab uses the Monaco editor, the same tech that powers VS Code, so it's beautiful and lightweight.
 - **Run** the code in another pane beside the editor. Execution can include logic, API calls to Office, UI in the pane, and even output to a console. Every time you make a code change you can refresh the editor and run the new version in seconds.
 - **Share** your snippets through GitHub. If you create a snippet you'd like to share, you can use Script Lab to save it. Then send the link to someone else to try it and tweak it on their computer. The Import feature lets you load other people's snippets.
 
-You can [install Script Lab right now for free from the Office Store](https://store.office.com/app.aspx?assetid=WA104380862)! It works for Excel, Word, and PowerPoint. You'll need Office 2013 or later, Office Online, or Office for Mac.
+Script Lab works in Office 2013 or later on Windows, Office on the web, or Office on Mac.
+
+You can get [Script Lab](https://appsource.microsoft.com/product/office/WA104380862) right now for free from Microsoft AppSource! It works for Excel, Word, and PowerPoint.
+
+If you're interested in developing for Outlook, you can get [Script Lab for Outlook](https://appsource.microsoft.com/product/office/WA200001603), also free from AppSource.
 
 Script Lab is a Microsoft Garage project that began at a hackathon. You can read the story of the original Script Lab creation on the [Garage website](https://www.microsoft.com/garage/profiles/script-lab/).
 
@@ -45,9 +50,9 @@ Here's a 1-minute teaser video to give you a taste:
 
 ## Get Started
 
-The easiest way to try Script Lab is with the Tutorial file for Excel that walks you through the tool in a few steps. You can get it here: [script-lab-tutorial.xlsx](https://script-lab.azureedge.net/assets/documents/script-lab-tutorial.xlsx)
+The easiest way to try Script Lab is in Excel with the tutorial workbook that walks you through the tool in a few steps. You can get it here: [script-lab-tutorial.xlsx](https://script-lab.azureedge.net/assets/documents/script-lab-tutorial.xlsx)
 
-Alternatively, you can start from scratch and [install Script Lab from the Store](https://store.office.com/app.aspx?assetid=WA104380862).
+Alternatively, you can start from scratch and get [Script Lab](https://appsource.microsoft.com/product/office/WA104380862) in Excel, Word, or PowerPoint.
 
 This 10-minute demo explains how to use the main features:
 
@@ -69,7 +74,7 @@ Conversely, to share _your_ snippet with someone, choose the "Share" menu within
 
 ## Report a bug, or suggest a feature
 
-To report a bug, [create a new issue](https://github.com/OfficeDev/script-lab/issues/new). Please provide as much detail as you can: tell us the operating system, the Office build number, and your browser (if you're using Office Online).
+To report a bug, [create a new issue](https://github.com/OfficeDev/script-lab/issues/new). Please provide as much detail as you can: tell us the operating system, the Office build number, and your browser (if you're using Office on the web).
 
 If you have a suggestion for a feature, please feel free to file it under "issues" as well, and we will tag it appropriately. The more detail, the better! We also gladly accept pull requests... (see more at [CONTRIBUTING.md](CONTRIBUTING.md)).
 
@@ -79,7 +84,7 @@ Finally, if you have a **question**, please ask it on <https://stackoverflow.com
 
 ## Script Lab vs. "Script Lab 2017"
 
-Script Lab was re-written from scratch in 2018. Though its visual design remains similar to the 2017 version, its technology stack was overhauled to use React and Fabric React. Among the improvements are keyboard accessibility, a much faster runner, and user-configurable settings.
+Script Lab was rewritten from scratch in 2018. Though its visual design remains similar to the 2017 version, its technology stack was overhauled to use React and Fabric React. Among the improvements are keyboard accessibility, a much faster runner, and user-configurable settings.
 
 If you encounter issues or need one of the few features that haven't been ported over yet, you can -- for the time being -- switch to the 2017 version of Script Lab. To do so:
 
@@ -99,7 +104,7 @@ Office 2013 has several limitations compared to more recent versions.
 
 First, there are far fewer supported objects and methods in the JavaScript API for Office 2013. As a result, many snippets that work on later versions of Office will not run in Office 2013. In the **Samples** menu we have included certain samples specifically designed to use only capabilities that are available in Office 2013. Those samples are marked **(2013)** in the sample title.
 
-Second, Office 2013 (and Office 2016 RTM, if you don't have an Office 365 subscription) does not support ribbon buttons for Script Lab. As a result, there's a different way to access the **Code** and **Run** functions:
+Second, Office 2013 (and Office 2016 RTM, if you don't have a Microsoft 365 subscription) does not support ribbon buttons for Script Lab. As a result, there's a different way to access the **Code** and **Run** functions:
 
 - To **Code**, select the **INSERT** tab and choose **My Add-ins**, then insert Script Lab.
 - To **Run** a snippet, click the small **Run** triangle icon at the top of the Script Lab code pane.
@@ -110,7 +115,7 @@ Second, Office 2013 (and Office 2016 RTM, if you don't have an Office 365 subscr
 
 - Follow [@OfficeDev](https://twitter.com/OfficeDev) on Twitter
 - Follow [Script Lab](https://medium.com/script-lab) articles on [medium.com](https://medium.com/script-lab)
-- Join our Office Developer program at [dev.office.com](https://dev.office.com/)
+- Join our Office Developer program at [developer.microsoft.com](https://developer.microsoft.com/microsoft-365/dev-program)
 
 <a id="contribute"></a>
 
@@ -118,9 +123,9 @@ Second, Office 2013 (and Office 2016 RTM, if you don't have an Office 365 subscr
 
 There are a bunch of ways you can contribute to Script Lab:
 
-- File bugs & suggestions (see more in "[Report a bug, or suggest a feature](README.md#report-bug)" above).
-- Contribute new samples, or improve existing one. Please submit a pull request to the [office-js-snippets repo](https://github.com/OfficeDev/office-js-snippets); more info in the [README](https://github.com/OfficeDev/office-js-snippets/blob/master/README.md) of that repo.
-- Spread the word! Whether through writing a blog post (README.md#external-posts), recording a video, tweeting about us, or sharing snippets with colleagues or the [StackOverflow](https://stackoverflow.com/questions/tagged/office-js) community -- we want more of the world to use Script Lab!
+- File bugs & suggestions (see more in "[Report a bug, or suggest a feature](#report-bug)" above).
+- Contribute new samples, or improve existing one. Please submit a pull request to the [office-js-snippets repo](https://github.com/OfficeDev/office-js-snippets/pulls); more info in the [README](https://github.com/OfficeDev/office-js-snippets/blob/master/README.md) of that repo.
+- Spread the word! Whether through writing a blog post ([examples](#external-posts)), recording a video, tweeting about us, or sharing snippets with colleagues or the [StackOverflow](https://stackoverflow.com/questions/tagged/office-js) community -- we want more of the world to use Script Lab!
 - Help improve the documentation. If you feel like this README or the [CONTRIBUTING.md doc](CONTRIBUTING.md) could use more details, please send a pull request!
 
 Finally, if you want to contribute code (bug fixes, features, localization, etc.), please see [CONTRIBUTING.md](CONTRIBUTING.md) to get you up and running with a local copy of Script Lab -- and then send us a pull request.
@@ -137,9 +142,9 @@ Of course, we'd prefer that if you have issues you [report them on GitHub](https
 
 ## Articles & FAQs
 
-- Announcing Script Lab React (January 1, 2019): [Official blog post](https://developer.microsoft.com/en-us/office/blogs/announcing-script-lab-react/)
+- Announcing Script Lab React (January 1, 2019): [Official blog post](https://developer.microsoft.com/office/blogs/announcing-script-lab-react/)
 - Script Lab overview: ["You can write JavaScript in Excel!"](https://medium.com/script-lab/you-can-write-javascript-in-excel-4ba588a948bd)
-- Project history & the technology behind it: [Episode 127 on the Office 365 Developer Podcast](https://blogs.office.com/2017/04/20/episode-127-new-script-lab-office-add-michael-zlatkovsky-bhargav-krishna-office-365-developer-podcast/)
+- Project history & the technology behind it: [Episode 127 on the Office 365 Developer Podcast](https://www.microsoft.com/microsoft-365/blog/2017/04/20/episode-127-new-script-lab-office-add-michael-zlatkovsky-bhargav-krishna-office-365-developer-podcast/)
 
 <a id="external-posts"></a>
 
@@ -154,10 +159,10 @@ Of course, we'd prefer that if you have issues you [report them on GitHub](https
 
 ## Build Status
 
-| Branch     | Status                                                                                                                                                     | Editor                                                                      | Runner                                                                                    | Server                                                                                         | Storybook                                                                                       |
-| ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| Branch     | Status                                                                                                                                                     | Runner                                                                      | Server                                                                                    | Storybook                                                                                      |
+| ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
 | master     | [![Build Status](https://travis-ci.com/OfficeDev/script-lab.svg?token=QwPYmFbjQw87cQmG1ogy&branch=master)](https://travis-ci.com/OfficeDev/script-lab)     | [script-lab-react-alpha](https://script-lab-react-alpha.azurewebsites.net/) | [script-lab-react-runner-alpha](https://script-lab-react-runner-alpha.azurewebsites.net/) | [script-lab-react-server-alpha](https://script-lab-react-server-alpha.azurewebsites.net/hello) | [script-lab-react-storybook-alpha](https://script-lab-react-storybook-alpha.azurewebsites.net/) |
-| beta       | [![Build Status](https://travis-ci.com/OfficeDev/script-lab.svg?token=QwPYmFbjQw87cQmG1ogy&branch=beta)](https://travis-ci.com/OfficeDev/script-lab)       | [script-lab-react-beta](https://script-lab-react-beta.azurewebsites.net/)   | [script-lab-react-runner-beta](https://script-lab-react-runner-beta.azurewebsites.net/)   | [script-lab-react-server-beta](https://script-lab-react-server-beta.azurewebsites.net/hello)   | [script-lab-react-storybook-beta](https://script-lab-react-storybook-beta.azurewebsites.net/)   |
-| production | [![Build Status](https://travis-ci.com/OfficeDev/script-lab.svg?token=QwPYmFbjQw87cQmG1ogy&branch=production)](https://travis-ci.com/OfficeDev/script-lab) | [script-lab-react](https://script-lab-react.azurewebsites.net/)             | [script-lab-react-runner](https://script-lab-react-runner.azurewebsites.net/)             | [script-lab-react-server](https://script-lab-react-server.azurewebsites.net/hello)             | [script-lab-react-storybook](https://script-lab-react-storybook.azurewebsites.net/)             |
+| beta       | [![Build Status](https://travis-ci.com/OfficeDev/script-lab.svg?token=QwPYmFbjQw87cQmG1ogy&branch=beta)](https://travis-ci.com/OfficeDev/script-lab)       | [script-lab-react-beta](https://script-lab-react-beta.azurewebsites.net/)   | [script-lab-react-runner-beta](https://script-lab-react-runner-beta.azurewebsites.net/)   | [script-lab-react-server-beta](https://script-lab-react-server-beta.azurewebsites.net/hello)   | [script-lab-react-storybook-beta](https://script-lab-react-storybook-beta.azurewebsites.net/) |
+| production | [![Build Status](https://travis-ci.com/OfficeDev/script-lab.svg?token=QwPYmFbjQw87cQmG1ogy&branch=production)](https://travis-ci.com/OfficeDev/script-lab) | [script-lab-react](https://script-lab-react.azurewebsites.net/)             | [script-lab-react-runner](https://script-lab-react-runner.azurewebsites.net/)             | [script-lab-react-server](https://script-lab-react-server.azurewebsites.net/hello)             | [script-lab-react-storybook](https://script-lab-react-storybook.azurewebsites.net/) |
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information, see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
