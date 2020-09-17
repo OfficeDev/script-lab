@@ -10,7 +10,7 @@
     <DisplayName DefaultValue="Script Lab for Outlook" />
     <Description DefaultValue="Create, run, and share your Office Add-in code snippets from within Outlook."></Description>
     <IconUrl DefaultValue="https://script-lab-react.azurewebsites.net/assets/images/icon-64.png" />
-    <HighResolutionIconUrl DefaultValue="https://script-lab-react.azurewebsites.net/assets/images/icon-64.png" />
+    <HighResolutionIconUrl DefaultValue="https://script-lab-react.azurewebsites.net/assets/images/icon-128.png" />
     <SupportUrl DefaultValue="https://github.com/OfficeDev/script-lab/issues" />
     <AppDomains>
         <AppDomain>https://github.com</AppDomain>
@@ -57,7 +57,7 @@
             </DesktopSettings>
         </Form>
     </FormSettings>
-    <Permissions>ReadWriteMailbox</Permissions>
+    <Permissions>ReadWriteItem</Permissions>
     <Rule xsi:type="RuleCollection" Mode="Or">
         <Rule xsi:type="ItemIs" ItemType="Message" FormType="ReadOrEdit"/>
         <Rule xsi:type="ItemIs" ItemType="Appointment" FormType="ReadOrEdit"/>
