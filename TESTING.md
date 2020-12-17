@@ -7,7 +7,7 @@
 - Login to github
   - Should be able to log in, both from the header and the backstage.
   - Should see your snippets in snippets list
-- Import someone elses' snippet
+- Import someone else's snippet
   - From YAML
   - From Gist
   - Both regular and custom functions
