@@ -10,7 +10,10 @@ import { currentOfficeJsRawSnippetsBaseRepoUrl } from 'common/lib/environment';
 
 function* fetchAllSamplesMetadataSaga() {
   const host: string = yield select(selectors.host.get);
-  const folderName = currentOfficeJsRawSnippetsBaseRepoUrl.indexOf('prod') >= 0 ? "playlists-prod" : "playlists";
+  const folderName =
+    currentOfficeJsRawSnippetsBaseRepoUrl.indexOf('prod') >= 0
+      ? 'playlists-prod'
+      : 'playlists';
   const { content, error } = yield call(
     fetchYaml,
     `${currentOfficeJsRawSnippetsBaseRepoUrl}/${folderName}/${host.toLowerCase()}.yaml`,
