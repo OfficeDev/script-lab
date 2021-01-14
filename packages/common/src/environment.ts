@@ -95,7 +95,7 @@ export const currentEditorUrl = editorUrls[getCurrentEnv()];
 export const githubAppClientId = githubAppClientIds[getCurrentEnv()];
 export const environmentDisplayName = environmentDisplayNames[getCurrentEnv()];
 export const currentOfficeJsRawSnippetsBaseRepoUrl = `https://raw.githubusercontent.com/OfficeDev/office-js-snippets/${
-  getCurrentEnv() === 'cdn' ? 'prod' : 'master'
+  getCurrentEnv() === 'cdn' ? 'prod' : 'main'
 }`;
 
 export function getVisibleEnvironmentKeysToSwitchTo(): Array<
