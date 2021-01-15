@@ -13,7 +13,7 @@
     "common": "0.0.1",
     "custom-functions-metadata": "1.0.5",
     "js-yaml": "^3.12.0",
-    "lodash": "^4.17.10",
+    "lodash": "^4.17.19",
     "moment": "^2.22.2",
     "monaco-editor": "0.18.1",
     "normalizr": "^3.2.4",
