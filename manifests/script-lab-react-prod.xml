@@ -39,7 +39,6 @@
   <AppDomains>
     <AppDomain>https://github.com</AppDomain>
     <AppDomain>https://stackoverflow.com</AppDomain>
-    <AppDomain>https://dev.office.com</AppDomain>
     <AppDomain>https://localhost:3000</AppDomain>
     <AppDomain>https://localhost:3200</AppDomain>
     <AppDomain>https://script-lab.azureedge.net</AppDomain>
