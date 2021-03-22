@@ -6,7 +6,7 @@ import { Icon } from 'office-ui-fabric-react/lib/Icon';
 
 // Suppress icon warnings.
 setIconOptions({
-  disableWarnings: true
+  disableWarnings: true,
 });
 
 const Wrapper = styled.div`

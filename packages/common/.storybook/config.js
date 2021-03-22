@@ -1,7 +1,7 @@
 import { configure, addDecorator } from '@storybook/react';
 
 import { withA11y } from '@storybook/addon-a11y';
-import { withKnobs } from "@storybook/addon-knobs";
+import { withKnobs } from '@storybook/addon-knobs';
 
 import '../src/index.css';
 
@@ -14,9 +14,8 @@ setupFabricTheme('EXCEL');
 initializeIcons();
 
 addDecorator(storyFn => (
-  <ThemeProvider theme={getTheme("EXCEL")}>{storyFn()}</ThemeProvider>
+  <ThemeProvider theme={getTheme('EXCEL')}>{storyFn()}</ThemeProvider>
 ));
-
 
 addDecorator(withKnobs);
 addDecorator(withA11y);
