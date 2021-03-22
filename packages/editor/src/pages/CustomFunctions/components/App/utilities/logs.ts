@@ -1,14 +1,14 @@
 import { CF_LOGS_ROOT } from 'common/lib/utilities/localStorage';
 
 export async function getLogsFromAsyncStorage(): Promise<ILogData[]> {
-  const logKeys = (await OfficeRuntime.AsyncStorage.getAllKeys()).filter(key =>
+  const logKeys = (await OfficeRuntime.storage.getKeys()).filter(key =>
     key.startsWith(CF_LOGS_ROOT),
   );
 
-  const logs = (await OfficeRuntime.AsyncStorage.multiGet(logKeys)).map(([key, value]) =>
-    JSON.parse(value),
-  );
+  const logEntries = await OfficeRuntime.storage.getItems(logKeys);
 
-  await OfficeRuntime.AsyncStorage.multiRemove(logKeys);
+  const logs = Object.keys(logEntries).map(item => JSON.parse(logEntries[item]));
+
+  await OfficeRuntime.storage.removeItems(logKeys);
   return logs;
 }
