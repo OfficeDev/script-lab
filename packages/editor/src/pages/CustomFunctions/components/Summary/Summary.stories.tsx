@@ -2,7 +2,6 @@ import React from 'react';
 
 import { Summary } from './';
 
-import { checkA11y } from '@storybook/addon-a11y';
 import { storiesOf } from '@storybook/react';
 
 enum Status {
@@ -75,7 +74,6 @@ export const basicSummaryProps: {
 export const BasicSummary = () => <Summary {...basicSummaryProps} />;
 
 stories
-  .addDecorator(checkA11y)
   .add('basic', () => <BasicSummary />)
   .add('all good', () => (
     <Summary

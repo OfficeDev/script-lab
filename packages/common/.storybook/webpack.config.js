@@ -1,12 +1,11 @@
-const path = require('path');
-
-module.exports = (baseConfig, env, config) => {
+module.exports = ({ config, mode }) => {
   config.module.rules.push({
     test: /\.(ts|tsx)$/,
-    loader: require.resolve('awesome-typescript-loader'),
-    options: { configFileName: path.resolve(__dirname, './tsconfig.json') },
+    loader: require.resolve("babel-loader"),
+    options: {
+      presets: [["react-app", { flow: false, typescript: true }]]
+    }
   });
-
-  config.resolve.extensions.push('.ts', '.tsx');
+  config.resolve.extensions.push(".ts", ".tsx");
   return config;
 };

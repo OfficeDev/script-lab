@@ -1,7 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import { setIconOptions } from 'office-ui-fabric-react/lib/Styling';
 import { Icon } from 'office-ui-fabric-react/lib/Icon';
+
+// Suppress icon warnings.
+setIconOptions({
+  disableWarnings: true
+});
 
 const Wrapper = styled.div`
   position: relative;

@@ -19,7 +19,7 @@ const basicCF = convertSnippetToSolution(
         return x + y
     language: python
 `),
-  ),
+  ) as ISnippet,
 );
 
 const moreComplicatedCF = convertSnippetToSolution(
@@ -46,7 +46,7 @@ const moreComplicatedCF = convertSnippetToSolution(
           return statistics.stdev(flatList)
     language: python
 `),
-  ),
+  ) as ISnippet,
 );
 
 describe('primitives', () => {

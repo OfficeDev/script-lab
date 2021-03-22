@@ -2,7 +2,6 @@ import React from 'react';
 
 import SummaryItem from './';
 
-import { checkA11y } from '@storybook/addon-a11y';
 import { storiesOf } from '@storybook/react';
 
 enum Status {
