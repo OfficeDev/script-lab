@@ -4,8 +4,9 @@ import generatePythonCFCode from './generatePythonCFCode';
 import { stripSpaces } from 'common/lib/utilities/string';
 import { convertSnippetToSolution } from '..';
 
-const basicCF = convertSnippetToSolution(YAML.safeLoad(
-  stripSpaces(`
+const basicCF = convertSnippetToSolution(
+  YAML.safeLoad(
+    stripSpaces(`
   name: Test Snippet Name
   description: A basic Custom Function, written in Python
   host: EXCEL
@@ -18,10 +19,12 @@ const basicCF = convertSnippetToSolution(YAML.safeLoad(
         return x + y
     language: python
 `),
-) as ISnippet);
+  ) as ISnippet,
+);
 
-const moreComplicatedCF = convertSnippetToSolution(YAML.safeLoad(
-  stripSpaces(`
+const moreComplicatedCF = convertSnippetToSolution(
+  YAML.safeLoad(
+    stripSpaces(`
   name: More Complicated
   description: A more complicated snippet
   host: EXCEL
@@ -43,7 +46,8 @@ const moreComplicatedCF = convertSnippetToSolution(YAML.safeLoad(
           return statistics.stdev(flatList)
     language: python
 `),
-) as ISnippet);
+  ) as ISnippet,
+);
 
 describe('primitives', () => {
   it('basic', () =>

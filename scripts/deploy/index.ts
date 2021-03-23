@@ -125,9 +125,7 @@ async function cloneExistingRepo(source: {
   }
 
   console.log(
-    `Fetching existing assets from "${
-      source.friendlyName
-    }" and copying them into "${fullFolderPath}"`,
+    `Fetching existing assets from "${source.friendlyName}" and copying them into "${fullFolderPath}"`,
   );
   console.log('Start: ' + new Date().toString());
 

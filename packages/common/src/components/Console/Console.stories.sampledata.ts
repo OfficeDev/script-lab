@@ -42,7 +42,11 @@ const logData: ILogDataMinusId[] = [
     severity: ConsoleLogSeverities.Log,
   },
   {
-    message: [['Product', 'Price'], ['Hammer', 17.99], ['Saw', 234.1]],
+    message: [
+      ['Product', 'Price'],
+      ['Hammer', 17.99],
+      ['Saw', 234.1],
+    ],
     severity: ConsoleLogSeverities.Log,
   },
   {
@@ -52,7 +56,11 @@ const logData: ILogDataMinusId[] = [
         a: 5,
         b: [4, 'hello'],
       },
-      somethingElse: [['Product', 'Price'], ['Hammer', 17.99], ['Saw', 234.1]],
+      somethingElse: [
+        ['Product', 'Price'],
+        ['Hammer', 17.99],
+        ['Saw', 234.1],
+      ],
     },
     severity: ConsoleLogSeverities.Info,
   },

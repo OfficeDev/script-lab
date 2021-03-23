@@ -85,9 +85,4 @@ const mapEmptyToProps = dispatch => ({});
 export default connect(
   mapStateToProps,
   mapEmptyToProps,
-)(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
-  )(MessageBar),
-);
+)(connect(mapStateToProps, mapDispatchToProps)(MessageBar));
