@@ -8,17 +8,20 @@ Experiment with the Office JavaScript API without ever leaving Excel, Outlook, W
 
 ## Topics
 
-- [What is Script Lab?](#what-is)
-- [Get started](#get-started)
-- [Import someone else's snippet, or export your own](#import)
-- [Report a bug, or suggest a feature](#report-bug)
-- [Script Lab vs "Script Lab 2017"](#2017)
-- [Use Script Lab with older Office versions (Office 2013)](#office-2013)
-- [Stay up-to-date](#up-to-date)
-- [Rate and review](#rate-and-review)
-- [Contribute to Script Lab](#contribute)
-- [Articles & FAQs](#articles)
-- [External blog posts & media coverage](#external-posts)
+- [Script Lab, a Microsoft Garage project](#script-lab-a-microsoft-garage-project)
+  - [Topics](#topics)
+  - [What is Script Lab?](#what-is-script-lab)
+  - [Get Started](#get-started)
+  - [Import someone else's snippet, or export your own](#import-someone-elses-snippet-or-export-your-own)
+  - [Report a bug, or suggest a feature](#report-a-bug-or-suggest-a-feature)
+  - [Script Lab vs. "Script Lab 2017"](#script-lab-vs-script-lab-2017)
+  - [Use Script Lab with older Office versions (Office 2013)](#use-script-lab-with-older-office-versions-office-2013)
+  - [Stay up-to-date](#stay-up-to-date)
+  - [Contribute to Script Lab](#contribute-to-script-lab)
+  - [Rate and review](#rate-and-review)
+  - [Articles & FAQs](#articles--faqs)
+  - [External blog posts & media coverage](#external-blog-posts--media-coverage)
+  - [Build Status](#build-status)
 
 <a id="what-is"></a>
 
@@ -159,10 +162,10 @@ Of course, we'd prefer that if you have issues you [report them on GitHub](https
 
 ## Build Status
 
-| Branch     | Status                                                                                                                                                     | Runner                                                                      | Server                                                                                    | Storybook                                                                                      |
+| Branch     | Status                                                                                                                                                     | Runner                                                                      | Server                                                                                    | Common                                                                                      |
 | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
-| master     | [![Build Status](https://travis-ci.com/OfficeDev/script-lab.svg?token=QwPYmFbjQw87cQmG1ogy&branch=master)](https://travis-ci.com/OfficeDev/script-lab)     | [script-lab-react-alpha](https://script-lab-react-alpha.azurewebsites.net/) | [script-lab-react-runner-alpha](https://script-lab-react-runner-alpha.azurewebsites.net/) | [script-lab-react-server-alpha](https://script-lab-react-server-alpha.azurewebsites.net/hello) | [script-lab-react-storybook-alpha](https://script-lab-react-storybook-alpha.azurewebsites.net/) |
-| beta       | [![Build Status](https://travis-ci.com/OfficeDev/script-lab.svg?token=QwPYmFbjQw87cQmG1ogy&branch=beta)](https://travis-ci.com/OfficeDev/script-lab)       | [script-lab-react-beta](https://script-lab-react-beta.azurewebsites.net/)   | [script-lab-react-runner-beta](https://script-lab-react-runner-beta.azurewebsites.net/)   | [script-lab-react-server-beta](https://script-lab-react-server-beta.azurewebsites.net/hello)   | [script-lab-react-storybook-beta](https://script-lab-react-storybook-beta.azurewebsites.net/) |
-| production | [![Build Status](https://travis-ci.com/OfficeDev/script-lab.svg?token=QwPYmFbjQw87cQmG1ogy&branch=production)](https://travis-ci.com/OfficeDev/script-lab) | [script-lab-react](https://script-lab-react.azurewebsites.net/)             | [script-lab-react-runner](https://script-lab-react-runner.azurewebsites.net/)             | [script-lab-react-server](https://script-lab-react-server.azurewebsites.net/hello)             | [script-lab-react-storybook](https://script-lab-react-storybook.azurewebsites.net/) |
+| master     | [![Build Status](https://travis-ci.com/OfficeDev/script-lab.svg?token=QwPYmFbjQw87cQmG1ogy&branch=master)](https://travis-ci.com/OfficeDev/script-lab)     | [script-lab-react-alpha](https://script-lab-react-alpha.azurewebsites.net/) | [script-lab-react-runner-alpha](https://script-lab-react-runner-alpha.azurewebsites.net/) | [script-lab-react-server-alpha](https://script-lab-react-server-alpha.azurewebsites.net/hello) | [script-lab-react-common-alpha](https://script-lab-react-common-alpha.azurewebsites.net/) |
+| beta       | [![Build Status](https://travis-ci.com/OfficeDev/script-lab.svg?token=QwPYmFbjQw87cQmG1ogy&branch=beta)](https://travis-ci.com/OfficeDev/script-lab)       | [script-lab-react-beta](https://script-lab-react-beta.azurewebsites.net/)   | [script-lab-react-runner-beta](https://script-lab-react-runner-beta.azurewebsites.net/)   | [script-lab-react-server-beta](https://script-lab-react-server-beta.azurewebsites.net/hello)   | [script-lab-react-common-beta](https://script-lab-react-common-beta.azurewebsites.net/) |
+| production | [![Build Status](https://travis-ci.com/OfficeDev/script-lab.svg?token=QwPYmFbjQw87cQmG1ogy&branch=production)](https://travis-ci.com/OfficeDev/script-lab) | [script-lab-react](https://script-lab-react.azurewebsites.net/)             | [script-lab-react-runner](https://script-lab-react-runner.azurewebsites.net/)             | [script-lab-react-server](https://script-lab-react-server.azurewebsites.net/hello)             | [script-lab-react-common](https://script-lab-react-common.azurewebsites.net/) |
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information, see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
