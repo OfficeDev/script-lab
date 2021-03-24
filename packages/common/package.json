@@ -26,6 +26,7 @@
   },
   "scripts": {
     "postinstall": "yarn build:package",
+    "build": "yarn build:package",
     "build:package": "tsc",
     "start": "tsc --watch",
     "lint": "tslint \"src/**/*.ts?(x)\"",
