@@ -21,7 +21,7 @@ const {
 } = process.env; // from travis.  Also includes additional environmental variables of the form
 // DEPLOYMENT_USERNAME_<SITE_NAME (all uppercase and with underscores)>_<DEPLOYMENT_SLOT_IF_ANY)
 // and same thing for DEPLOYMENT_PASSWORD_***.
-// E.g.,:  DEPLOYMENT_USERNAME_SCRIPT_LAB_REACT_COMMON_ALPHA, and DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_COMMON_ALPHA
+// E.g.,:  DEPLOYMENT_USERNAME_SCRIPT_LAB_REACT_STORYBOOK_ALPHA, and DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_STORYBOOK_ALPHA
 
 // Make any unhandled rejections terminate Node (rather than having it quit with a mere warning)
 process.on('unhandledRejection', error => {
