@@ -1,6 +1,6 @@
 import React from 'react';
 import { SearchBox } from 'office-ui-fabric-react/lib/SearchBox';
-import { DefaultButton, MessageBarButton } from 'office-ui-fabric-react/lib/Button';
+import { DefaultButton } from 'office-ui-fabric-react/lib/Button';
 import { Label } from 'office-ui-fabric-react/lib/Label';
 import { MessageBar, MessageBarType } from 'office-ui-fabric-react/lib/MessageBar';
 

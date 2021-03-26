@@ -3,7 +3,6 @@ import { dialog } from '../../../store/actions';
 import { IState as IDialogState } from '../../../store/dialog/reducer';
 import {
   Dialog as FabricDialog,
-  DialogType,
   DialogFooter,
 } from 'office-ui-fabric-react/lib/Dialog';
 import { DefaultButton } from 'office-ui-fabric-react/lib/Button';

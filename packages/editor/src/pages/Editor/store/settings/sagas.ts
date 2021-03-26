@@ -1,4 +1,4 @@
-import { put, takeEvery, call, select } from 'redux-saga/effects';
+import { put, takeEvery, select } from 'redux-saga/effects';
 import { getType, ActionType } from 'typesafe-actions';
 import YAML from 'js-yaml';
 
