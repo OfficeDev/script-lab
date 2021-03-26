@@ -1,6 +1,5 @@
 import 'common/lib/polyfills';
 import { invokeGlobalErrorHandler } from 'common/lib/utilities/splash.screen';
-window.onerror = error => invokeGlobalErrorHandler(error);
 
 import './index.css';
 
@@ -13,6 +12,8 @@ import queryString from 'query-string';
 
 import Pages from './pages';
 import AuthPage from './pages/Auth';
+
+window.onerror = error => invokeGlobalErrorHandler(error);
 
 (async () => {
   try {
