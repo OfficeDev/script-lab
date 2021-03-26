@@ -157,7 +157,7 @@ function launchInStandaloneWindow(url: string, event: any): void {
 function isOutlookOnline(): boolean {
   return (
     Utilities.host === HostType.OUTLOOK &&
-    Utilities.platform == PlatformType.OFFICE_ONLINE
+    Utilities.platform === PlatformType.OFFICE_ONLINE
   );
 }
 
