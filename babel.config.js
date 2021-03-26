@@ -7,6 +7,7 @@ module.exports = {
         targets: {
           browsers: ['ie >= 11'],
         },
+        exclude: ['proposal-dynamic-import'],
       },
     ],
     '@babel/preset-react',
