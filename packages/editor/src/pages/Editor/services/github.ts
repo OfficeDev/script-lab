@@ -56,11 +56,11 @@ export async function request<T>({
       }
 
       if (!isArrayResponse) {
-        return { response };
+        return { response: response as any };
+      } else {
+        aggregate = [...aggregate, ...response as any];
+        nextUrl = getNextLinkIfAny(headers.get('Link'));
       }
-
-      aggregate = [...aggregate, ...response];
-      nextUrl = getNextLinkIfAny(headers.get('Link'));
     }
 
     return { response: aggregate as any };

@@ -257,10 +257,17 @@ function* importSnippetSaga(action: ActionType<typeof gists.importSnippet.reques
   try {
     let login;
     let snippet;
+
     if (action.payload.gistId) {
+      const token = yield select(selectors.github.getToken);
+      if (!token) {
+        return;
+      }
       const { response, error } = yield call(github.request, {
         method: 'GET',
         path: `gists/${action.payload.gistId}`,
+        token,
+        isArrayResponse: false,
       });
       if (response) {
         const gistFiles = response.files;

@@ -12,7 +12,7 @@ export interface IRequest {
   jsonPayload?: string;
 }
 
-export const fetchYaml = (url: string): Promise<{ content?: object; error?: Error }> =>
+export const fetchYaml = (url: string): Promise<{ content?: string | object; error?: Error }> =>
   fetch(url)
     .then(resp => {
       if (!resp.ok) {
