@@ -1,17 +1,5 @@
 import { JupyterNotebook, PythonCodeHelper } from 'common/lib/utilities/Jupyter';
 
-export function initializeJupyter(pythonConfig: IPythonConfig) {
-  const notebook = new JupyterNotebook(
-    {
-      baseUrl: pythonConfig.url,
-      token: pythonConfig.token,
-    },
-    pythonConfig.notebook,
-  );
-
-  CustomFunctions.setCustomFunctionInvoker(new JupyterCustomFunctionInvoker(notebook));
-}
-
 // tslint:disable:no-namespace
 
 declare namespace CustomFunctions {
@@ -22,11 +10,23 @@ declare namespace CustomFunctions {
   }
 
   interface InvocationContext {
-    onCanceled: () => void;
+    onCanceled: (() => void);
     functionName: string;
     address: string;
     setResult(result: any): void;
   }
+}
+
+export function initializeJupyter(pythonConfig: IPythonConfig) {
+  const notebook = new JupyterNotebook(
+    {
+      baseUrl: pythonConfig.url,
+      token: pythonConfig.token,
+    },
+    pythonConfig.notebook,
+  );
+
+  CustomFunctions.setCustomFunctionInvoker(new JupyterCustomFunctionInvoker(notebook));
 }
 
 class JupyterCustomFunctionInvoker implements CustomFunctions.ICustomFunctionInvoker {
