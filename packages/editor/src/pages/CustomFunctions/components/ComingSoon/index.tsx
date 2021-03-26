@@ -21,7 +21,7 @@ const ComingSoon = () => (
       <br />
       <br />
       For more info, see{' '}
-      <a href={CUSTOM_FUNCTIONS_INFO_URL} target="_blank">
+      <a href={CUSTOM_FUNCTIONS_INFO_URL} target="_blank" rel="noopener noreferrer">
         these instructions
       </a>
       .
