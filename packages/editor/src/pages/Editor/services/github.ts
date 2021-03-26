@@ -96,7 +96,7 @@ export const logout = () => {
 };
 
 function getNextLinkIfAny(linkText: string): string | null {
-  const regex = /\<(https:[^\>]*)\>; rel="next"/;
+  const regex = /<(https:[^>]*)>; rel="next"/;
   // Matches the rel="next" section of a longer entry, like:
   // <https://api.github.com/gists?page=5>; rel="next", <https://api.github.com/gists?page=1>; rel="first"
 

@@ -10,7 +10,7 @@ export function isTypeScriptCustomFunctionScript(content: string) {
   // So if it passes, do a follow-up and call into 'custom-functions-metadata' to do
   //   the slower but more accurate check.
 
-  const isCustomFunctionRegex = /[\s\*]@customfunction[\s\*]/i; // a regex for "@customfunction" that's
+  const isCustomFunctionRegex = /[\s*]@customfunction[\s*]/i; // a regex for "@customfunction" that's
   //  either preceded or followed by a "*" or space -- i.e., a whole-word match, to avoid something like
   //  "@customfunctions" (with a plural "s" on the end).
   //   cspell:ignore customfunctions
