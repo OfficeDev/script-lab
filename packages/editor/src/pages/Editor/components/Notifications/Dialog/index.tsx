@@ -1,10 +1,7 @@
 import React from 'react';
 import { dialog } from '../../../store/actions';
 import { IState as IDialogState } from '../../../store/dialog/reducer';
-import {
-  Dialog as FabricDialog,
-  DialogFooter,
-} from 'office-ui-fabric-react/lib/Dialog';
+import { Dialog as FabricDialog, DialogFooter } from 'office-ui-fabric-react/lib/Dialog';
 import { DefaultButton } from 'office-ui-fabric-react/lib/Button';
 
 import { connect } from 'react-redux'; // Note, avoid the temptation to include '@types/react-redux', it will break compile-time!
@@ -36,7 +33,7 @@ export class Dialog extends React.Component<IProps> {
   };
 
   render() {
-    const { dialogProps, dismiss, dispatch } = this.props;
+    const { dialogProps, dismiss } = this.props;
 
     return (
       <FabricDialog

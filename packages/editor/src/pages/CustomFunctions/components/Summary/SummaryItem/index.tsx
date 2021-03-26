@@ -57,10 +57,10 @@ const SummaryItem = ({
   errors: additionalInfo,
 }: ICustomFunctionParseResult<null>) => {
   const { iconName, color } = {
-    'good': { iconName: 'Completed', color: '#107C10' },
-    'skipped': { iconName: 'Warning', color: '#F0C784' },
-    'error': { iconName: 'ErrorBadge', color: 'red' },
-    'untrusted': { iconName: 'ReportHacked', color: 'gray' },
+    good: { iconName: 'Completed', color: '#107C10' },
+    skipped: { iconName: 'Warning', color: '#F0C784' },
+    error: { iconName: 'ErrorBadge', color: 'red' },
+    untrusted: { iconName: 'ReportHacked', color: 'gray' },
   }[status];
 
   return (

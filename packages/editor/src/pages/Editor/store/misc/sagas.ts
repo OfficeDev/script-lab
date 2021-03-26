@@ -90,6 +90,5 @@ function* onGoToCustomFunctionsSaga() {
   // And can't do a href-setting followed by a reload because on the Edge browser,
   //   it seems to cause the outer Office Online window to get redirected
   //   to the editor page (bug https://github.com/OfficeDev/script-lab/issues/691).
-  window.location.href =
-    currentEditorUrl + '/custom-functions-with-back-button.html';
+  window.location.href = currentEditorUrl + '/custom-functions-with-back-button.html';
 }
