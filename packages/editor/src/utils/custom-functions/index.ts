@@ -92,7 +92,7 @@ export function parseMetadata({
     return [
       {
         javascriptFunctionName: 'compileError',
-        nonCapitalizedFullName: namespace + '.' + 'CompileError',
+        nonCapitalizedFullName: namespace + '.CompileError',
         status: 'error',
         errors: [
           'Could not compile the snippet. Please go back to the code editor to fix any syntax errors.',

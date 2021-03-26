@@ -27,7 +27,7 @@ export function compileTypeScript(content: string) {
             )
             .trim();
 
-          return `Line #${lineNumber}: ${item.messageText}` + '\n ' + lineText;
+          return 'Line #' + lineNumber + ': ' + item.messageText + '\n' + lineText;
         })
 
         .join('\n\n'),
