@@ -49,7 +49,7 @@
     "test:cypress": "npm-run-all --parallel start-with-no-browser start-cypress"
   },
   "devDependencies": {
-    "@babel/core": "^7.1.6",
+    "@babel/core": "^7.9.0",
     "@types/clipboard": "^2.0.1",
     "@types/jest": "^23.3.9",
     "@types/js-yaml": "^3.11.2",
