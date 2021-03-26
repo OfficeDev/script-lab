@@ -1,7 +1,6 @@
 import { officeNamespacesForCustomFunctionsIframe } from '../../constants';
 import { currentEditorUrl } from 'common/lib/environment';
 import { generateLogString, stringifyPlusPlus } from 'common/lib/utilities/string';
-import { JupyterNotebook } from 'common/lib/utilities/Jupyter';
 
 import generateCustomFunctionIframe from './run.customFunctions';
 import { initializeJupyter } from './jupyterRunner';
@@ -87,7 +86,7 @@ async function initializeRunnableSnippets(
       let successfulRegistrationsCount = 0;
 
       window[METHODS_EXPOSED_ON_CF_RUNNER_OUTER_FRAME.scriptRunnerOnLoad] = (
-        contentWindow: Window,
+        contentWindow: Window & typeof globalThis,
         id: string,
       ) =>
         tryCatch(() => {
@@ -147,7 +146,7 @@ function logIfExtraLoggingEnabled(message: string) {
   }
 }
 
-function overwriteConsole(source: '[SYSTEM]' | string, windowObject: Window) {
+function overwriteConsole(source: '[SYSTEM]' | string, windowObject: Window & typeof globalThis) {
   const logTypes: ConsoleLogTypes[] = ['log', 'info', 'warn', 'error'];
   logTypes.forEach(
     methodName =>

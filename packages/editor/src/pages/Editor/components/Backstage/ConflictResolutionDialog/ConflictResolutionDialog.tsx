@@ -3,14 +3,11 @@ import { Dialog, DialogType, DialogFooter } from 'office-ui-fabric-react/lib/Dia
 import { PrimaryButton, DefaultButton } from 'office-ui-fabric-react/lib/Button';
 import {
   ChoiceGroup,
-  IChoiceGroup,
   IChoiceGroupOption,
 } from 'office-ui-fabric-react/lib/ChoiceGroup';
 import {
   Dropdown,
   IDropdown,
-  DropdownMenuItemType,
-  IDropdownOption,
 } from 'office-ui-fabric-react/lib/Dropdown';
 
 import { ConflictResolutionOptions } from '../../../../../interfaces/enums';

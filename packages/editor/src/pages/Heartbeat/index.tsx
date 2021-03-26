@@ -10,7 +10,7 @@ import {
 } from 'common/lib/constants';
 import { strictType } from 'common/lib/utilities/misc';
 import { getPythonConfigIfAny } from '../../utils/python';
-import { JupyterNotebook } from 'common/lib/utilities/Jupyter';
+
 const logger = log.getLogger('heartbeat');
 
 const Heartbeat = () => {
