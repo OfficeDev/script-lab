@@ -99,7 +99,7 @@ class Heartbeat extends Component<IProps, IState> {
 
   render() {
     return (
-      <iframe style={{ display: 'none' }} src={heartbeatEditorUrl} ref={this.node} />
+      <iframe style={{ display: 'none' }} title="heartbeat" src={heartbeatEditorUrl} ref={this.node} />
     );
   }
 
