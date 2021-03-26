@@ -68,7 +68,4 @@ export class Dialog extends React.Component<IProps> {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(connect()(Dialog));
+export default connect(mapStateToProps, mapDispatchToProps)(connect()(Dialog));

@@ -42,14 +42,12 @@ export function* fetchAllGistMetadataSaga() {
   const {
     response,
     error,
-  }: IResponseOrError<
-    Array<{
-      files: Array<{ filename: string }>;
-      id: string;
-      description: string;
-      public: boolean;
-    }>
-  > = yield call(github.request, {
+  }: IResponseOrError<Array<{
+    files: Array<{ filename: string }>;
+    id: string;
+    description: string;
+    public: boolean;
+  }>> = yield call(github.request, {
     method: 'GET',
     path: 'gists?per_page=100',
     token,

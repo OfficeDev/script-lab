@@ -15,9 +15,7 @@ export const SCRIPT_URLS = {
   OFFICE_JS_FOR_CUSTOM_FUNCTIONS_DASHBOARD:
     'https://appsforoffice.microsoft.com/lib/beta/hosted/office.js',
 
-  MONACO_LOADER: `/external/monaco-editor-${
-    HYPHENATED_PACKAGE_VERSIONS['monaco-editor']
-  }/vs/loader.js`,
+  MONACO_LOADER: `/external/monaco-editor-${HYPHENATED_PACKAGE_VERSIONS['monaco-editor']}/vs/loader.js`,
 };
 
 export const DEFAULT_HOST = 'WEB';

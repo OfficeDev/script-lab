@@ -10,7 +10,7 @@ declare namespace CustomFunctions {
   }
 
   interface InvocationContext {
-    onCanceled: (() => void);
+    onCanceled: () => void;
     functionName: string;
     address: string;
     setResult(result: any): void;

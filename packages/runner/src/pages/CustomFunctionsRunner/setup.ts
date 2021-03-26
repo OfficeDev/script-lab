@@ -146,7 +146,10 @@ function logIfExtraLoggingEnabled(message: string) {
   }
 }
 
-function overwriteConsole(source: '[SYSTEM]' | string, windowObject: Window & typeof globalThis) {
+function overwriteConsole(
+  source: '[SYSTEM]' | string,
+  windowObject: Window & typeof globalThis,
+) {
   const logTypes: ConsoleLogTypes[] = ['log', 'info', 'warn', 'error'];
   logTypes.forEach(
     methodName =>

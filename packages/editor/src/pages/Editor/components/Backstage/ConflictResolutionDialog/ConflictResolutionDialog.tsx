@@ -1,14 +1,8 @@
 import React, { Component } from 'react';
 import { Dialog, DialogType, DialogFooter } from 'office-ui-fabric-react/lib/Dialog';
 import { PrimaryButton, DefaultButton } from 'office-ui-fabric-react/lib/Button';
-import {
-  ChoiceGroup,
-  IChoiceGroupOption,
-} from 'office-ui-fabric-react/lib/ChoiceGroup';
-import {
-  Dropdown,
-  IDropdown,
-} from 'office-ui-fabric-react/lib/Dropdown';
+import { ChoiceGroup, IChoiceGroupOption } from 'office-ui-fabric-react/lib/ChoiceGroup';
+import { Dropdown, IDropdown } from 'office-ui-fabric-react/lib/Dropdown';
 
 import { ConflictResolutionOptions } from '../../../../../interfaces/enums';
 

@@ -58,7 +58,7 @@ export async function request<T>({
       if (!isArrayResponse) {
         return { response: response as any };
       } else {
-        aggregate = [...aggregate, ...response as any];
+        aggregate = [...aggregate, ...(response as any)];
         nextUrl = getNextLinkIfAny(headers.get('Link'));
       }
     }
