@@ -79,7 +79,7 @@ class PivotBar extends React.Component<IProps> {
             <PivotItem
               key={item.key}
               itemKey={item.key}
-              linkText={item.text}
+              headerText={item.text}
               itemIcon={item.iconName}
               data-testid={item.testId}
               itemCount={item.itemCount || undefined}
