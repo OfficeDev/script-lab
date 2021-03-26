@@ -1,6 +1,7 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
+    "baseUrl": "src",
     "module": "esnext",
     "typeRoots": [
       "../common/src/interfaces",
