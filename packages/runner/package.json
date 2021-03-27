@@ -26,8 +26,6 @@
     "lint": "tslint \"src/**/*.ts?(x)\""
   },
   "devDependencies": {
-    "@babel/core": "^7.9.0",
-    "@babel/helper-builder-react-jsx": "^7.9.0",
     "@types/custom-functions-runtime": "^1.4.8",
     "@types/jest": "^23.3.2",
     "@types/lodash": "^4.14.118",
