@@ -8,17 +8,20 @@ Experiment with the Office JavaScript API without ever leaving Excel, Outlook, W
 
 ## Topics
 
-- [What is Script Lab?](#what-is)
-- [Get started](#get-started)
-- [Import someone else's snippet, or export your own](#import)
-- [Report a bug, or suggest a feature](#report-bug)
-- [Script Lab vs "Script Lab 2017"](#2017)
-- [Use Script Lab with older Office versions (Office 2013)](#office-2013)
-- [Stay up-to-date](#up-to-date)
-- [Rate and review](#rate-and-review)
-- [Contribute to Script Lab](#contribute)
-- [Articles & FAQs](#articles)
-- [External blog posts & media coverage](#external-posts)
+- [Script Lab, a Microsoft Garage project](#script-lab-a-microsoft-garage-project)
+  - [Topics](#topics)
+  - [What is Script Lab?](#what-is-script-lab)
+  - [Get Started](#get-started)
+  - [Import someone else's snippet, or export your own](#import-someone-elses-snippet-or-export-your-own)
+  - [Report a bug, or suggest a feature](#report-a-bug-or-suggest-a-feature)
+  - [Script Lab vs. "Script Lab 2017"](#script-lab-vs-script-lab-2017)
+  - [Use Script Lab with older Office versions (Office 2013)](#use-script-lab-with-older-office-versions-office-2013)
+  - [Stay up-to-date](#stay-up-to-date)
+  - [Contribute to Script Lab](#contribute-to-script-lab)
+  - [Rate and review](#rate-and-review)
+  - [Articles & FAQs](#articles--faqs)
+  - [External blog posts & media coverage](#external-blog-posts--media-coverage)
+  - [Build Status](#build-status)
 
 <a id="what-is"></a>
 
