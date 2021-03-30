@@ -1,7 +1,7 @@
 import 'core-js/fn/array/find';
 
 import { currentRunnerUrl } from 'common/lib/environment';
-import { CF_HEARTBEAT_POLLING_INTERVAL, localStorageKeys } from 'common/lib/constants';
+import { CF_HEARTBEAT_POLLING_INTERVAL } from 'common/lib/constants';
 
 import {
   getCustomFunctionsLastRegisteredTimestamp,

@@ -38,9 +38,7 @@ export default ({
     ${functions
       .map(
         func =>
-          `ScriptLabCustomFunctionsDictionary["${func.fullId}"] = ${
-            func.javascriptFunctionName
-          };`,
+          `ScriptLabCustomFunctionsDictionary["${func.fullId}"] = ${func.javascriptFunctionName};`,
       )
       .join('\n  ')}
 

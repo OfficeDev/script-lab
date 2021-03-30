@@ -56,11 +56,11 @@ export async function request<T>({
       }
 
       if (!isArrayResponse) {
-        return { response };
+        return { response: response as any };
+      } else {
+        aggregate = [...aggregate, ...(response as any)];
+        nextUrl = getNextLinkIfAny(headers.get('Link'));
       }
-
-      aggregate = [...aggregate, ...response];
-      nextUrl = getNextLinkIfAny(headers.get('Link'));
     }
 
     return { response: aggregate as any };
@@ -96,7 +96,7 @@ export const logout = () => {
 };
 
 function getNextLinkIfAny(linkText: string): string | null {
-  const regex = /\<(https:[^\>]*)\>; rel="next"/;
+  const regex = /<(https:[^>]*)>; rel="next"/;
   // Matches the rel="next" section of a longer entry, like:
   // <https://api.github.com/gists?page=5>; rel="next", <https://api.github.com/gists?page=1>; rel="first"
 

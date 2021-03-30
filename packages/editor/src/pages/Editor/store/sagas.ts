@@ -1,4 +1,4 @@
-import { all, select } from 'redux-saga/effects';
+import { all } from 'redux-saga/effects';
 
 import dialogWatcher from './dialog/sagas';
 import editorWatcher from './editor/sagas';

@@ -1,11 +1,6 @@
 // React
 import React, { Component } from 'react';
 
-// office-ui-fabric-react
-import { MessageBarType } from 'office-ui-fabric-react/lib/components/MessageBar';
-import { Spinner, SpinnerSize } from 'office-ui-fabric-react/lib/Spinner';
-import { PersonaSize, PersonaCoin } from 'office-ui-fabric-react/lib/Persona';
-
 // common
 import CommonFooter from 'common/lib/components/Footer';
 

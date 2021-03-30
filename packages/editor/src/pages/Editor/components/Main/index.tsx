@@ -7,14 +7,12 @@ import Footer from './Footer';
 
 import Notifications from '../Notifications';
 
-import { Layout, ContentWrapper } from './styles';
+import { ContentWrapper } from './styles';
 import { NULL_SOLUTION, NULL_FILE } from '../../../../constants';
 
 import { connect } from 'react-redux'; // Note, avoid the temptation to include '@types/react-redux', it will break compile-time!
 import { IState as IReduxState } from '../../store/reducer';
 import selectors from '../../store/selectors';
-import { editor as editorActions, IRootAction } from '../../store/actions';
-import { Dispatch } from 'redux';
 import HeaderFooterLayout from 'common/lib/components/HeaderFooterLayout';
 
 interface IPropsFromRedux {

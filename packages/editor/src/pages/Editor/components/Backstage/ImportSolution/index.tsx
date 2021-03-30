@@ -55,7 +55,7 @@ class ImportSolution extends Component<IProps, IState> {
       } else {
         gist = input;
         const content = YAML.safeLoad(input);
-        const { name, host } = convertSnippetToSolution(content);
+        const { name, host } = convertSnippetToSolution(content as ISnippet);
         if (!name && !host) {
           throw new Error();
         }
