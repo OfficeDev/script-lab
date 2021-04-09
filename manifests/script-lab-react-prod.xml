@@ -4,7 +4,7 @@
   xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0" 
   xmlns:ov="http://schemas.microsoft.com/office/taskpaneappversionoverrides" xsi:type="TaskPaneApp">
   <Id>8bc018e3-f345-40d4-8f1d-97951765d531</Id>
-  <Version>2.0.0.0</Version>
+  <Version>2.0.0.1</Version>
   <ProviderName>Microsoft</ProviderName>
   <DefaultLocale>en-US</DefaultLocale>
   <DisplayName DefaultValue="Script Lab" />
@@ -39,7 +39,6 @@
   <AppDomains>
     <AppDomain>https://github.com</AppDomain>
     <AppDomain>https://stackoverflow.com</AppDomain>
-    <AppDomain>https://dev.office.com</AppDomain>
     <AppDomain>https://localhost:3000</AppDomain>
     <AppDomain>https://localhost:3200</AppDomain>
     <AppDomain>https://script-lab.azureedge.net</AppDomain>
