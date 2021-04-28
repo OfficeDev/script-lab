@@ -9,7 +9,9 @@ branches:
     - beta
     - production
 
-cache: yarn
+cache:
+  npm: false
+  yarn: false
 
 install:
   - yarn install --frozen-lockfile

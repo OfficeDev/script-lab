@@ -4,7 +4,7 @@
     xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0" 
     xmlns:ov="http://schemas.microsoft.com/office/mailappversionoverrides" xsi:type="MailApp">
     <Id>49d3b812-abda-45b9-b478-9bc464ce5b9c</Id>
-    <Version>2.0.0.1</Version>
+    <Version>2.0.0.2</Version>
     <ProviderName>Microsoft</ProviderName>
     <DefaultLocale>en-US</DefaultLocale>
     <DisplayName DefaultValue="Script Lab for Outlook" />
@@ -15,7 +15,6 @@
     <AppDomains>
         <AppDomain>https://github.com</AppDomain>
         <AppDomain>https://stackoverflow.com</AppDomain>
-        <AppDomain>https://dev.office.com</AppDomain>
         <AppDomain>https://localhost:3000</AppDomain>
         <AppDomain>https://localhost:3200</AppDomain>
         <AppDomain>https://script-lab.azureedge.net</AppDomain>
@@ -57,7 +56,7 @@
             </DesktopSettings>
         </Form>
     </FormSettings>
-    <Permissions>ReadWriteItem</Permissions>
+    <Permissions>ReadWriteMailbox</Permissions>
     <Rule xsi:type="RuleCollection" Mode="Or">
         <Rule xsi:type="ItemIs" ItemType="Message" FormType="ReadOrEdit"/>
         <Rule xsi:type="ItemIs" ItemType="Appointment" FormType="ReadOrEdit"/>

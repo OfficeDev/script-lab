@@ -1,6 +1,6 @@
 import actions, { IDialogAction } from '../actions';
 import { getType } from 'typesafe-actions';
-import { Dialog, DialogType, DialogFooter } from 'office-ui-fabric-react/lib/Dialog';
+import { DialogType } from 'office-ui-fabric-react/lib/Dialog';
 
 export interface IState {
   isVisible: boolean;

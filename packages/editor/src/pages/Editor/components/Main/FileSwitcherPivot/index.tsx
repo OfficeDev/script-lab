@@ -70,7 +70,4 @@ const FileSwitcherPivot = ({
   />
 );
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(FileSwitcherPivot);
+export default connect(mapStateToProps, mapDispatchToProps)(FileSwitcherPivot);

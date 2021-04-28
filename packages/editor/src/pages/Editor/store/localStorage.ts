@@ -3,7 +3,7 @@ import flatten from 'lodash/flatten';
 import { IState as IGitHubState } from './github/reducer';
 import { IState } from './reducer';
 import selectors from './selectors';
-import { convertSolutionToSnippet, convertSnippetToSolution } from '../../../utils';
+import { convertSnippetToSolution } from '../../../utils';
 import { localStorageKeys } from 'common/lib/constants';
 import { SETTINGS_SOLUTION_ID, NULL_SOLUTION_ID } from '../../../constants';
 import { getSettingsSolutionAndFiles } from './settings/utilities';

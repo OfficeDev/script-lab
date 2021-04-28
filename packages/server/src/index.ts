@@ -1,13 +1,13 @@
 import { SERVER_HELLO_ENDPOINT } from 'common/lib/constants';
 
-if (process.env.NODE_ENV !== 'production') {
-  require('dotenv').load();
-}
-
 import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import { getAccessTokenOrErrorResponse } from './auth';
+
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').load();
+}
 
 const app = express();
 const port = process.env.PORT || 5000;

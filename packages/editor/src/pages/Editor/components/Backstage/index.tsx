@@ -263,7 +263,4 @@ export class Backstage extends Component<IProps, IState> {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(Backstage);
+export default connect(mapStateToProps, mapDispatchToProps)(Backstage);

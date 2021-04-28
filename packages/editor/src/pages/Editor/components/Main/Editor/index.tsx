@@ -103,7 +103,4 @@ export class Editor extends Component<IProps> {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(Editor);
+export default connect(mapStateToProps, mapDispatchToProps)(Editor);

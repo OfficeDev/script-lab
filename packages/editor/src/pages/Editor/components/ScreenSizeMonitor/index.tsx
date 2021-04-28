@@ -32,7 +32,4 @@ export class ScreenSizeMonitor extends React.Component<IProps> {
   }
 }
 
-export default connect(
-  null,
-  mapDispatchToProps,
-)(ScreenSizeMonitor);
+export default connect(null, mapDispatchToProps)(ScreenSizeMonitor);

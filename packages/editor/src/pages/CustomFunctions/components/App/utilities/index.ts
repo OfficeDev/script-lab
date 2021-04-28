@@ -226,9 +226,7 @@ function wrapCustomFunctionSnippetCode(
 
         function getRightSide() {
           return success
-            ? `__generateFunctionBinding__("${item.fullDisplayName}", ${
-                item.javascriptFunctionName
-              })`
+            ? `__generateFunctionBinding__("${item.fullDisplayName}", ${item.javascriptFunctionName})`
             : `__generateErrorFunction__("${item.fullDisplayName}", e)`;
         }
       })

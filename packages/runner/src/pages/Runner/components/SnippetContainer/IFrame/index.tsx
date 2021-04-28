@@ -108,6 +108,7 @@ class IFrame extends React.Component<IProps, IState> {
     this.renderContents();
     return (
       <iframe
+        title="user-snippet"
         id="user-snippet"
         ref={node => (this.node = node)}
         style={{
