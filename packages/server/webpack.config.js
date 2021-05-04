@@ -1,5 +1,6 @@
 const webpack = require('webpack');
 const path = require('path');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: './src/index.ts',
@@ -14,4 +15,5 @@ module.exports = {
   module: {
     rules: [{ test: /\.ts$/, loader: 'ts-loader' }],
   },
+  plugins: [new CopyWebpackPlugin(['web.config'])],
 };
