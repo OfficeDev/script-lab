@@ -55,7 +55,7 @@ class Dashboard extends React.Component<IProps, IState> {
             // And can't do a href-setting followed by a reload because on the Edge browser,
             //   it seems to cause the outer Office Online window to get redirected
             //   to the editor page (bug https://github.com/OfficeDev/script-lab/issues/691).
-            window.location.href = currentEditorUrl + '/' + 'redirect-to-editor.html';
+            window.location.href = currentEditorUrl + '/redirect-to-editor.html';
           },
     };
 

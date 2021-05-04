@@ -117,7 +117,7 @@ class Snippet extends React.Component<IProps, IState> {
 
       // If the host is Outlook, add an ItemChanged event handler if one doesn't exist already
       if (
-        Utilities.host == HostType.OUTLOOK &&
+        Utilities.host === HostType.OUTLOOK &&
         (script.language === languageMapLowercased.typescript ||
           script.language === languageMapLowercased.javascript) &&
         script.content.indexOf('Office.EventType.ItemChanged') === -1

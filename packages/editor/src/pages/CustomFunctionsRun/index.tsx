@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { currentRunnerUrl } from 'common/lib/environment';
 
 const CustomFunctionsRun = () => {

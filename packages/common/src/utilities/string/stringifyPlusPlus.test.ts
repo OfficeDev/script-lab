@@ -25,7 +25,11 @@ describe('arrays', () => {
 
   it('2D array', () =>
     expect(
-      stringifyPlusPlus([['Product', 'Price'], ['Hammer', 17.99], ['Saw', 234.1]]),
+      stringifyPlusPlus([
+        ['Product', 'Price'],
+        ['Hammer', 17.99],
+        ['Saw', 234.1],
+      ]),
     ).toEqual(
       stripSpaces(`
         [

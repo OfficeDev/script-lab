@@ -148,9 +148,7 @@ export function getCurrentEnv(): keyof IReactEnvironments {
   }
 
   throw new Error(
-    `Invalid environment. URL "${
-      window.location.origin
-    }" not found in environments list.`,
+    `Invalid environment. URL "${window.location.origin}" not found in environments list.`,
   );
 }
 

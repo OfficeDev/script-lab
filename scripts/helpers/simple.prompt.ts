@@ -42,12 +42,14 @@ export async function promptFromList(options: {
       return { value, name, key: index + 1 };
     });
 
-  let answer = (await inquirer.prompt({
-    type: 'list',
-    name: 'question',
-    message: options.message,
-    choices: realChoices,
-  }))['question'] as string;
+  let answer = (
+    await inquirer.prompt({
+      type: 'list',
+      name: 'question',
+      message: options.message,
+      choices: realChoices,
+    })
+  )['question'] as string;
 
   if (answer === NO_CHOICE_SELECTED) {
     console.log('You needed to choose one of the options. Please try again.');
@@ -62,9 +64,7 @@ export async function promptFromList(options: {
       const remappedAnswer = options.mappings[answer.toLowerCase()];
       if (isUndefined(remappedAnswer)) {
         throw new Error(
-          `No re-mapping specified for answer "${answer}" to question "${
-            options.message
-          }".`,
+          `No re-mapping specified for answer "${answer}" to question "${options.message}".`,
         );
       }
       return remappedAnswer;
@@ -81,10 +81,12 @@ export async function promptCustomText(
   let keepGoing = true;
 
   while (keepGoing) {
-    let answer = ((await inquirer.prompt({
-      name: 'question',
-      message: message,
-    }))['question'] as string).trim();
+    let answer = ((
+      await inquirer.prompt({
+        name: 'question',
+        message: message,
+      })
+    )['question'] as string).trim();
 
     if (answer.toLowerCase() === 'quit') {
       keepGoing = false;

@@ -67,9 +67,7 @@ oldFilesToRemove.forEach(filename => {
 for (const key in expectedPackages) {
   const packageToCheck = expectedPackages[key];
   console.log(
-    `Checking that "${packageToCheck.name}" matches expected version "${
-      packageToCheck.version
-    }"`,
+    `Checking that "${packageToCheck.name}" matches expected version "${packageToCheck.version}"`,
   );
 
   if (
