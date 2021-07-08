@@ -44,6 +44,33 @@
         overflow: hidden;
       }
 
+      #ieErrorWrapper {
+        position: absolute;
+        z-index: 10000001;
+        color: #212121;
+        background: white;
+        height: 100%;
+        width: 100%;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+      }
+
+      #ieErrorText {
+        width: 80%;
+        text-align: center;
+      }
+
       #loading {
         position: absolute;
         z-index: 10000001;
@@ -198,6 +225,39 @@
       </div>
     </div>
 
+    <div id="ieErrorWrapper" style="visibility: hidden;">
+      <div id="ieErrorText">
+        <p>
+          Script Lab no longer supports the Internet Explorer 11 browser or embedded
+          browser control. Please upgrade to a
+          <a
+            href="https://docs.microsoft.com/en-us/office/dev/add-ins/concepts/browsers-used-by-office-web-add-ins"
+            target="_blank"
+            >supported version</a
+          >
+          of Microsoft 365 or open Office on the web in a
+          <a
+            href="https://docs.microsoft.com/en-us/office/dev/add-ins/concepts/browsers-used-by-office-web-add-ins"
+            target="_blank"
+            >supported browser</a
+          >.
+        </p>
+      </div>
+    </div>
+
     <div id="root"></div>
   </body>
+
+  <script>
+    var isIE = window.ActiveXObject !== undefined;
+
+    if (isIE) {
+      url = window.location;
+      document.getElementById('ieErrorWrapper').style.visibility = 'visible';
+      document.getElementById('loading').style.visibility = 'hidden';
+    } else {
+      document.getElementById('ieErrorWrapper').style.visibility = 'hidden';
+      document.getElementById('loading').style.visibility = 'visible';
+    }
+  </script>
 </html>
