@@ -251,6 +251,8 @@
   <script>
     var isIE = window.ActiveXObject !== undefined;
 
+    // If currently in IE, replace the loading indicator with the ieErrorWrapper
+    // which directs users to update their version of Office, or move to another browser
     if (isIE) {
       url = window.location;
       document.getElementById('ieErrorWrapper').style.visibility = 'visible';
