@@ -12,7 +12,7 @@ export function generateRandomToken(bits = 128): string {
 
   const buffer = new Uint8Array(bits / 8);
 
-  // Note: NOT polyfilling all of "window.crypto" with "window.msCrypto"
+  // Note: Not polyfilling all of "window.crypto" with "window.msCrypto"
   // in polyfills.ts, because not all functionality is the same.
   // But this method does exist on both:
   const crypto: Crypto = window.crypto || (window as any).msCrypto;
