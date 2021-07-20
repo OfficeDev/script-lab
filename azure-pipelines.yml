@@ -11,7 +11,7 @@ jobs:
       - task: PowerShell@2
         displayName: 'Install'
         inputs:
-          filePath: 'scripts/azurepipelines/pipeline.install.ps1'
+          filePath: 'scripts/azure.pipelines/pipeline.install.ps1'
 
       - task: Yarn@2
         displayName: 'Prettier'
@@ -46,7 +46,7 @@ jobs:
       - task: PowerShell@2
         displayName: 'Install'
         inputs:
-          filePath: 'scripts/azurepipelines/pipeline.install.ps1'
+          filePath: 'scripts/azure.pipelines/pipeline.install.ps1'
 
       - task: Yarn@2
         displayName: 'Prettier'
@@ -81,7 +81,7 @@ jobs:
       - task: PowerShell@2
         displayName: 'Install'
         inputs:
-          filePath: 'scripts/azurepipelines/pipeline.install.ps1'
+          filePath: 'scripts/azure.pipelines/pipeline.install.ps1'
 
       - task: Yarn@2
         displayName: 'Prettier'
@@ -116,7 +116,7 @@ jobs:
       - task: PowerShell@2
         displayName: 'Install'
         inputs:
-          filePath: 'scripts/azurepipelines/pipeline.install.ps1'
+          filePath: 'scripts/azure.pipelines/pipeline.install.ps1'
 
       - task: Yarn@2
         displayName: 'Prettier'
