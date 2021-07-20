@@ -96,7 +96,7 @@ jobs:
         displayName: 'Test'
         inputs:
           ProjectDirectory: 'packages/runner'
-          Arguments: 'test'
+          Arguments: 'citest'
 
       - task: Yarn@2
         displayName: 'Build'

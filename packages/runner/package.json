@@ -23,6 +23,7 @@
     "start": "react-scripts start",
     "build": "export CI=false&&react-scripts build",
     "test": "react-scripts test --env=jsdom",
+    "citest": "CI=true react-scripts test --env=jsdom",
     "lint": "tslint \"src/**/*.ts?(x)\""
   },
   "devDependencies": {
