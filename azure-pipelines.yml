@@ -1,6 +1,6 @@
 variables:
   tags: 'multi-phased'
-  is-PR: $[ne(variables['System.PullRequest.PullRequestId'], 'null')]
+  isPR: $(System.PullRequest.PullRequestId)
 
 jobs:
   - job: CommonPipeline
@@ -12,9 +12,7 @@ jobs:
       - task: PowerShell@2
         inputs:
           targetType: 'inline'
-          script: 'Write-Host $env:ISPR'
-          env:
-            ISPR: $(System.PullRequest.PullRequestId)
+          script: 'Write-Host "PR ID: ${isPR}"'
 
       - task: PowerShell@2
         displayName: 'Install'
