@@ -1,0 +1,146 @@
+pool:
+  name: Azure Pipelines
+  demands: yarn
+
+variables:
+  tags: "multi-phased"
+
+jobs:
+  - job: CommonPipeline
+    displayName: 'Common Pipeline'
+    steps:
+      - checkout: self
+        persistCredentials: true
+
+      - task: PowerShell@2
+        displayName: 'Install'
+        inputs:
+          filePath: 'scripts/azurepipelines/pipeline.install.ps1'
+
+      - task: Yarn@2
+        displayName: 'Prettier'
+        inputs:
+          Arguments: 'prettier'
+      
+      - task: Yarn@2
+        displayName: 'Lint'
+        inputs:
+          ProjectDirectory: 'packages/common'
+          Arguments: 'lint'
+
+      - task: Yarn@2
+        displayName: 'Test'
+        inputs:
+          ProjectDirectory: 'packages/common'
+          Arguments: 'test'
+
+      - task: Yarn@2
+        displayName: 'Build'
+        inputs:
+          ProjectDirectory: 'packages/common'
+          Arguments: 'build'
+
+
+  - job: EditorPipeline
+    displayName: 'Editor Pipeline'
+    steps:
+      - checkout: self
+        persistCredentials: true
+
+      - task: PowerShell@2
+        displayName: 'Install'
+        inputs:
+          filePath: 'scripts/azurepipelines/pipeline.install.ps1'
+
+      - task: Yarn@2
+        displayName: 'Prettier'
+        inputs:
+          Arguments: 'prettier'
+      
+      - task: Yarn@2
+        displayName: 'Lint'
+        inputs:
+          ProjectDirectory: 'packages/editor'
+          Arguments: 'lint'
+
+      - task: Yarn@2
+        displayName: 'Test'
+        inputs:
+          ProjectDirectory: 'packages/editor'
+          Arguments: 'test'
+
+      - task: Yarn@2
+        displayName: 'Build'
+        inputs:
+          ProjectDirectory: 'packages/editor'
+          Arguments: 'build'
+
+
+  - job: RunnerPipeline
+    displayName: 'Runner Pipeline'
+    steps:
+      - checkout: self
+        persistCredentials: true
+
+      - task: PowerShell@2
+        displayName: 'Install'
+        inputs:
+          filePath: 'scripts/azurepipelines/pipeline.install.ps1'
+
+      - task: Yarn@2
+        displayName: 'Prettier'
+        inputs:
+          Arguments: 'prettier'
+      
+      - task: Yarn@2
+        displayName: 'Lint'
+        inputs:
+          ProjectDirectory: 'runner/editor'
+          Arguments: 'lint'
+
+      - task: Yarn@2
+        displayName: 'Test'
+        inputs:
+          ProjectDirectory: 'runner/editor'
+          Arguments: 'test'
+
+      - task: Yarn@2
+        displayName: 'Build'
+        inputs:
+          ProjectDirectory: 'runner/editor'
+          Arguments: 'build'
+
+
+  - job: ServerPipeline
+    displayName: 'Server Pipeline'
+    steps:
+      - checkout: self
+        persistCredentials: true
+
+      - task: PowerShell@2
+        displayName: 'Install'
+        inputs:
+          filePath: 'scripts/azurepipelines/pipeline.install.ps1'
+
+      - task: Yarn@2
+        displayName: 'Prettier'
+        inputs:
+          Arguments: 'prettier'
+      
+      - task: Yarn@2
+        displayName: 'Lint'
+        inputs:
+          ProjectDirectory: 'server/editor'
+          Arguments: 'lint'
+
+      - task: Yarn@2
+        displayName: 'Test'
+        inputs:
+          ProjectDirectory: 'server/editor'
+          Arguments: 'test'
+
+      - task: Yarn@2
+        displayName: 'Build'
+        inputs:
+          ProjectDirectory: 'server/editor'
+          Arguments: 'build'
