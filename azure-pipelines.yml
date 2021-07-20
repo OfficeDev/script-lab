@@ -1,6 +1,6 @@
 variables:
   tags: 'multi-phased'
-  isPR: $(System.PullRequest.PullRequestId)
+  isPR: $[ne(variables['System.PullRequest.PullRequestId'], '')]
 
 jobs:
   - job: CommonPipeline
@@ -8,11 +8,6 @@ jobs:
     steps:
       - checkout: self
         persistCredentials: true
-
-      - task: PowerShell@2
-        inputs:
-          targetType: 'inline'
-          script: 'Write-Host "PR ID: ${isPR}"'
 
       - task: PowerShell@2
         displayName: 'Install'
@@ -143,3 +138,16 @@ jobs:
         inputs:
           ProjectDirectory: 'packages/server'
           Arguments: 'build'
+
+  - job: Publish
+    displayName: 'Publish'
+    dependsOn: ['CommonPipeline', 'EditorPipeline', 'RunnerPipeline', 'ServerPipeline']
+    condition: and(succeeded(), eq(variables.isPR, false))
+    steps:
+      - task: PowerShell@2
+        inputs:
+          targetType: 'inline'
+          script: |
+            # Write your PowerShell commands here.
+
+            Write-Host "Hello World"
