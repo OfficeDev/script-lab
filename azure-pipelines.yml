@@ -1,5 +1,5 @@
 variables:
-  tags: "multi-phased"
+  tags: 'multi-phased'
 
 jobs:
   - job: CommonPipeline
@@ -17,7 +17,7 @@ jobs:
         displayName: 'Prettier'
         inputs:
           Arguments: 'prettier'
-      
+
       - task: Yarn@2
         displayName: 'Lint'
         inputs:
@@ -35,7 +35,6 @@ jobs:
         inputs:
           ProjectDirectory: 'packages/common'
           Arguments: 'build'
-
 
   - job: EditorPipeline
     displayName: 'Editor Pipeline'
@@ -52,7 +51,7 @@ jobs:
         displayName: 'Prettier'
         inputs:
           Arguments: 'prettier'
-      
+
       - task: Yarn@2
         displayName: 'Lint'
         inputs:
@@ -70,7 +69,6 @@ jobs:
         inputs:
           ProjectDirectory: 'packages/editor'
           Arguments: 'build'
-
 
   - job: RunnerPipeline
     displayName: 'Runner Pipeline'
@@ -87,25 +85,24 @@ jobs:
         displayName: 'Prettier'
         inputs:
           Arguments: 'prettier'
-      
+
       - task: Yarn@2
         displayName: 'Lint'
         inputs:
-          ProjectDirectory: 'runner/editor'
+          ProjectDirectory: 'packages/runner'
           Arguments: 'lint'
 
       - task: Yarn@2
         displayName: 'Test'
         inputs:
-          ProjectDirectory: 'runner/editor'
+          ProjectDirectory: 'packages/runner'
           Arguments: 'test'
 
       - task: Yarn@2
         displayName: 'Build'
         inputs:
-          ProjectDirectory: 'runner/editor'
+          ProjectDirectory: 'packages/runner'
           Arguments: 'build'
-
 
   - job: ServerPipeline
     displayName: 'Server Pipeline'
@@ -122,21 +119,21 @@ jobs:
         displayName: 'Prettier'
         inputs:
           Arguments: 'prettier'
-      
+
       - task: Yarn@2
         displayName: 'Lint'
         inputs:
-          ProjectDirectory: 'server/editor'
+          ProjectDirectory: 'packages/server'
           Arguments: 'lint'
 
       - task: Yarn@2
         displayName: 'Test'
         inputs:
-          ProjectDirectory: 'server/editor'
+          ProjectDirectory: 'packages/server'
           Arguments: 'test'
 
       - task: Yarn@2
         displayName: 'Build'
         inputs:
-          ProjectDirectory: 'server/editor'
+          ProjectDirectory: 'packages/server'
           Arguments: 'build'
