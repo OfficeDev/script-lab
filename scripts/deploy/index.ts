@@ -13,9 +13,9 @@ interface IDeployEnvironments<T> {
 
 const {
   HOME,
-  TRAVIS_BRANCH,
-  TRAVIS_PULL_REQUEST,
-  TRAVIS_COMMIT_MESSAGE,
+  BRANCH,
+  PULL_REQUEST,
+  COMMIT_MESSAGE,
   SITE_NAME,
   PACKAGE_LOCATION,
 } = process.env; // from travis.  Also includes additional environmental variables of the form
@@ -28,7 +28,7 @@ process.on('unhandledRejection', error => {
   throw error;
 });
 
-if (!TRAVIS_BRANCH) {
+if (!BRANCH) {
   exit(
     'Expecting to run the deploy script from within Travis ' +
       '(or at least, with all environmental variables set up). Exiting.',
@@ -40,7 +40,7 @@ if (!TRAVIS_BRANCH) {
    And in any case, pull requests don't get secret variables like username or password
    passed to them by the CI tools, so the deploy would abort at any rate).
  */
-if (TRAVIS_PULL_REQUEST !== 'false') {
+if (PULL_REQUEST !== 'false') {
   exit('Skipping deploy for pull requests');
 }
 
@@ -50,7 +50,7 @@ const DEPLOYMENT_SLOTS_DICTIONARY: IDeployEnvironments<string> = {
   production: 'staging',
 };
 
-if (!DEPLOYMENT_SLOTS_DICTIONARY[TRAVIS_BRANCH]) {
+if (!DEPLOYMENT_SLOTS_DICTIONARY[BRANCH]) {
   exit('Invalid branch name. Skipping deploy.');
 }
 
@@ -75,10 +75,10 @@ if (!shell.test('-d', BUILD_DIRECTORY)) {
     DEPLOYMENT_LOG_FILENAME,
   });
 
-  deploy(FINAL_OUTPUT_DIRECTORY, DEPLOYMENT_SLOTS_DICTIONARY[TRAVIS_BRANCH]);
+  deploy(FINAL_OUTPUT_DIRECTORY, DEPLOYMENT_SLOTS_DICTIONARY[BRANCH]);
 
   exit(
-    `Deployment to ${SITE_NAME}-${DEPLOYMENT_SLOTS_DICTIONARY[TRAVIS_BRANCH]} completed!`,
+    `Deployment to ${SITE_NAME}-${DEPLOYMENT_SLOTS_DICTIONARY[BRANCH]} completed!`,
   );
 })();
 
@@ -98,10 +98,10 @@ async function fetchPreviousBuildsFromLiveSite(): Promise<string[]> {
     {
       friendlyName: 'current_slot',
       urlWithUsernameAndPassword: getGitUrlWithUsernameAndPassword(
-        DEPLOYMENT_SLOTS_DICTIONARY[TRAVIS_BRANCH],
+        DEPLOYMENT_SLOTS_DICTIONARY[BRANCH],
       ),
     },
-    TRAVIS_BRANCH === 'production'
+    BRANCH === 'production'
       ? {
           friendlyName: 'production',
           urlWithUsernameAndPassword: getGitUrlWithUsernameAndPassword(null),
@@ -161,13 +161,13 @@ async function cloneExistingRepo(source: {
 }
 
 function deploy(path: string, deploymentSlot: string) {
-  const commitMessageSanitized = superSanitize(TRAVIS_COMMIT_MESSAGE);
+  const commitMessageSanitized = superSanitize(COMMIT_MESSAGE);
 
   shell.pushd(path);
 
   shell.exec('git init');
 
-  shell.exec('git config --add user.name "Travis CI"');
+  shell.exec('git config --add user.name "Azure Pipelines"');
   shell.exec('git config --add user.email "travis.ci@microsoft.com"');
 
   shell.exec('git add -A');

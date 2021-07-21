@@ -154,8 +154,58 @@ jobs:
     dependsOn: ['CommonPipeline', 'EditorPipeline', 'RunnerPipeline', 'ServerPipeline']
     condition: and(succeeded(), eq(variables.isPR, false))
     steps:
-      - task: PowerShell@2
-        inputs:
-          targetType: 'inline'
-          script: |
-            # Call deployment script
+      - script: yarn deploy
+          displayName: 'Deploy Common Package'
+          env:
+            HOME: '$(Agent.BuildDirectory)'
+            BRANCH: '$(Build.SourceBranchName)'
+            PULL_REQUEST: '$(isPR)'
+            COMMIT_MESSAGE: '$(Build.SourceVersionMessage)'
+            PACKAGE_LOCATION: 'packages/common'
+            PACKAGE_NAME: 'common'
+            SITE_NAME: 'script-lab-react-storybook'
+            DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_STORYBOOK_ALPHA: '$(DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_STORYBOOK_ALPHA)'
+            DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_STORYBOOK_BETA: '$(DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_STORYBOOK_BETA)'
+            DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_STORYBOOK_STAGING: '$(DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_STORYBOOK_STAGING)'
+
+      - script: yarn deploy
+          displayName: 'Deploy Editor Package'
+          env:
+            HOME: '$(Agent.BuildDirectory)'
+            BRANCH: '$(Build.SourceBranchName)'
+            PULL_REQUEST: '$(isPR)'
+            COMMIT_MESSAGE: '$(Build.SourceVersionMessage)'
+            PACKAGE_LOCATION: 'packages/editor'
+            PACKAGE_NAME: 'editor'
+            SITE_NAME: 'script-lab-react'
+            DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_ALPHA: '$(DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_ALPHA)'
+            DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_BETA: '$(DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_BETA)'
+            DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_STAGING: '$(DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_STAGING)'
+
+      - script: yarn deploy
+          displayName: 'Deploy Runner Package'
+          env:
+            HOME: '$(Agent.BuildDirectory)'
+            BRANCH: '$(Build.SourceBranchName)'
+            PULL_REQUEST: '$(isPR)'
+            COMMIT_MESSAGE: '$(Build.SourceVersionMessage)'
+            PACKAGE_LOCATION: 'packages/runner'
+            PACKAGE_NAME: 'runner'
+            SITE_NAME: 'script-lab-react-runner'
+            DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_RUNNER_ALPHA: '$(DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_RUNNER_ALPHA)'
+            DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_RUNNER_BETA: '$(DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_RUNNER_BETA)'
+            DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_RUNNER_STAGING: '$(DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_RUNNER_STAGING)'
+
+      - script: yarn deploy
+          displayName: 'Deploy Server Package'
+          env:
+            HOME: '$(Agent.BuildDirectory)'
+            BRANCH: '$(Build.SourceBranchName)'
+            PULL_REQUEST: '$(isPR)'
+            COMMIT_MESSAGE: '$(Build.SourceVersionMessage)'
+            PACKAGE_LOCATION: 'packages/server'
+            PACKAGE_NAME: 'server'
+            SITE_NAME: 'script-lab-react-server'
+            DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_SERVER_ALPHA: '$(DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_SERVER_ALPHA)'
+            DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_SERVER_BETA: '$(DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_SERVER_BETA)'
+            DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_SERVER_STAGING: '$(DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_SERVER_STAGING)'
