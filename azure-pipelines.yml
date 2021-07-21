@@ -1,0 +1,161 @@
+trigger:
+  - master
+  - beta
+  - production
+
+pr:
+  - master
+  - beta
+  - production
+
+variables:
+  tags: 'multi-phased'
+  isPR: $[ne(variables['System.PullRequest.PullRequestId'], '')]
+
+jobs:
+  - job: CommonPipeline
+    displayName: 'Common Pipeline'
+    steps:
+      - checkout: self
+        persistCredentials: true
+
+      - task: PowerShell@2
+        displayName: 'Install'
+        inputs:
+          filePath: 'scripts/azure.pipelines/pipeline.install.ps1'
+
+      - task: Yarn@2
+        displayName: 'Prettier'
+        inputs:
+          Arguments: 'prettier'
+
+      - task: Yarn@2
+        displayName: 'Lint'
+        inputs:
+          ProjectDirectory: 'packages/common'
+          Arguments: 'lint'
+
+      - task: Yarn@2
+        displayName: 'Test'
+        inputs:
+          ProjectDirectory: 'packages/common'
+          Arguments: 'test'
+
+      - task: Yarn@2
+        displayName: 'Build'
+        inputs:
+          ProjectDirectory: 'packages/common'
+          Arguments: 'build'
+
+  - job: EditorPipeline
+    displayName: 'Editor Pipeline'
+    steps:
+      - checkout: self
+        persistCredentials: true
+
+      - task: PowerShell@2
+        displayName: 'Install'
+        inputs:
+          filePath: 'scripts/azure.pipelines/pipeline.install.ps1'
+
+      - task: Yarn@2
+        displayName: 'Prettier'
+        inputs:
+          Arguments: 'prettier'
+
+      - task: Yarn@2
+        displayName: 'Lint'
+        inputs:
+          ProjectDirectory: 'packages/editor'
+          Arguments: 'lint'
+
+      - task: Yarn@2
+        displayName: 'Test'
+        inputs:
+          ProjectDirectory: 'packages/editor'
+          Arguments: 'test'
+
+      - task: Yarn@2
+        displayName: 'Build'
+        inputs:
+          ProjectDirectory: 'packages/editor'
+          Arguments: 'build'
+
+  - job: RunnerPipeline
+    displayName: 'Runner Pipeline'
+    steps:
+      - checkout: self
+        persistCredentials: true
+
+      - task: PowerShell@2
+        displayName: 'Install'
+        inputs:
+          filePath: 'scripts/azure.pipelines/pipeline.install.ps1'
+
+      - task: Yarn@2
+        displayName: 'Prettier'
+        inputs:
+          Arguments: 'prettier'
+
+      - task: Yarn@2
+        displayName: 'Lint'
+        inputs:
+          ProjectDirectory: 'packages/runner'
+          Arguments: 'lint'
+
+      - task: Yarn@2
+        displayName: 'Test'
+        inputs:
+          ProjectDirectory: 'packages/runner'
+          Arguments: 'citest'
+
+      - task: Yarn@2
+        displayName: 'Build'
+        inputs:
+          ProjectDirectory: 'packages/runner'
+          Arguments: 'build'
+
+  - job: ServerPipeline
+    displayName: 'Server Pipeline'
+    steps:
+      - checkout: self
+        persistCredentials: true
+
+      - task: PowerShell@2
+        displayName: 'Install'
+        inputs:
+          filePath: 'scripts/azure.pipelines/pipeline.install.ps1'
+
+      - task: Yarn@2
+        displayName: 'Prettier'
+        inputs:
+          Arguments: 'prettier'
+
+      - task: Yarn@2
+        displayName: 'Lint'
+        inputs:
+          ProjectDirectory: 'packages/server'
+          Arguments: 'lint'
+
+      - task: Yarn@2
+        displayName: 'Test'
+        inputs:
+          ProjectDirectory: 'packages/server'
+          Arguments: 'test'
+
+      - task: Yarn@2
+        displayName: 'Build'
+        inputs:
+          ProjectDirectory: 'packages/server'
+          Arguments: 'build'
+
+  - job: Publish
+    displayName: 'Publish'
+    dependsOn: ['CommonPipeline', 'EditorPipeline', 'RunnerPipeline', 'ServerPipeline']
+    condition: and(succeeded(), eq(variables.isPR, false))
+    steps:
+      - task: PowerShell@2
+        inputs:
+          targetType: 'inline'
+          script: |
+            # Call deployment script
