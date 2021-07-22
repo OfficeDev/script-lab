@@ -29,20 +29,20 @@ steps:
       Arguments: 'postinstall'
 
   - task: PowerShell@2
-    displayName: 'Check diff on yarn install'
+    displayName: 'Check diff on post install'
     inputs:
       targetType: 'inline'
       script: |
         # This makes sure that someone ran "yarn install" after merging their PR, and that the postinstall doesn't produce any diffs, which are annoying/confusing
         $diffs=$(git --no-pager diff HEAD --exit-code)
 
-        if($diff -ne 0){
+        if([string]::IsNullOrEmpty($diffs)){
+            Write-Host "No diffs found"
+            exit 0
+        }
+        else {
             Write-Host "Diffs were found"
             exit 1
-        }
-        else{
-            Write-Host "No Diffs Found"
-            exit 0
         }
 
   - task: Yarn@2
