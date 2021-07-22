@@ -77,9 +77,7 @@ if (!shell.test('-d', BUILD_DIRECTORY)) {
 
   deploy(FINAL_OUTPUT_DIRECTORY, DEPLOYMENT_SLOTS_DICTIONARY[BRANCH]);
 
-  exit(
-    `Deployment to ${SITE_NAME}-${DEPLOYMENT_SLOTS_DICTIONARY[BRANCH]} completed!`,
-  );
+  exit(`Deployment to ${SITE_NAME}-${DEPLOYMENT_SLOTS_DICTIONARY[BRANCH]} completed!`);
 })();
 
 ///////////////////////////////////////
