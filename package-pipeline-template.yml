@@ -26,19 +26,19 @@ steps:
   - task: Yarn@2
     displayName: 'Lint'
     inputs:
-      ProjectDirectory: $(PackageDirectory)
+      ProjectDirectory: '${{ parameters.PackageDirectory }}'
       Arguments: 'lint'
 
   - task: Yarn@2
     displayName: 'Test'
     inputs:
-      ProjectDirectory: $(PackageDirectory)
+      ProjectDirectory: '${{ parameters.PackageDirectory }}'
       Arguments: 'citest'
 
   - task: Yarn@2
     displayName: 'Build'
     inputs:
-      ProjectDirectory: $(PackageDirectory)
+      ProjectDirectory: '${{ parameters.PackageDirectory }}'
       Arguments: 'build'
 
   - script: yarn deploy
@@ -49,9 +49,9 @@ steps:
       BRANCH: '$(Build.SourceBranchName)'
       PULL_REQUEST: '$(isPR)'
       COMMIT_MESSAGE: '$(Build.SourceVersionMessage)'
-      PACKAGE_LOCATION: $(PackageDirectory)
-      PACKAGE_NAME: $(PackageName)
-      SITE_NAME: $(SiteName)
+      PACKAGE_LOCATION: '${{ parameters.PackageDirectory }}'
+      PACKAGE_NAME: '${{ parameters.PackageName }}'
+      SITE_NAME: '${{ parameters.SiteName}}'
       DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_ALPHA: '$(DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_ALPHA)'
       DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_BETA: '$(DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_BETA)'
       DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_STAGING: '$(DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_STAGING)'
