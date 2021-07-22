@@ -18,7 +18,7 @@ const {
   COMMIT_MESSAGE,
   SITE_NAME,
   PACKAGE_LOCATION,
-} = process.env; // from travis.  Also includes additional environmental variables of the form
+} = process.env; // from azure-pipelines.  Also includes additional environmental variables of the form
 // DEPLOYMENT_USERNAME_<SITE_NAME (all uppercase and with underscores)>_<DEPLOYMENT_SLOT_IF_ANY)
 // and same thing for DEPLOYMENT_PASSWORD_***.
 // E.g.,:  DEPLOYMENT_USERNAME_SCRIPT_LAB_REACT_STORYBOOK_ALPHA, and DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_STORYBOOK_ALPHA
@@ -30,13 +30,13 @@ process.on('unhandledRejection', error => {
 
 if (!BRANCH) {
   exit(
-    'Expecting to run the deploy script from within Travis ' +
+    'Expecting to run the deploy script from within Azure-Pipelines ' +
       '(or at least, with all environmental variables set up). Exiting.',
   );
 }
 
 /* If running inside of a pull request then skip deploy.
-   (Note, this is actually a triple safe-guard, as travis.yml already will not call deploy for pull requests.
+   (Note, this is actually a triple safe-guard, as azure-pipelines.yaml already will not call deploy for pull requests.
    And in any case, pull requests don't get secret variables like username or password
    passed to them by the CI tools, so the deploy would abort at any rate).
  */
@@ -168,7 +168,7 @@ function deploy(path: string, deploymentSlot: string) {
   shell.exec('git init');
 
   shell.exec('git config --add user.name "Azure Pipelines"');
-  shell.exec('git config --add user.email "travis.ci@microsoft.com"');
+  shell.exec('git config --add user.email "offMakerTeam@microsoft.com"');
 
   shell.exec('git add -A');
   shell.exec(`git commit -m "${commitMessageSanitized}"`);
