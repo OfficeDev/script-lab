@@ -6,7 +6,8 @@
     "start:serve": "ts-node --files --inspect -- src/index.ts",
     "build": "webpack-cli --mode production",
     "lint": "tslint \"src/**/*.ts?(x)\"",
-    "test": "echo 'no tests'"
+    "test": "echo 'no tests'",
+    "citest": "yarn test"
   },
   "dependencies": {
     "@types/cors": "^2.8.4",

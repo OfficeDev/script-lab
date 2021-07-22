@@ -20,195 +20,35 @@ jobs:
   - job: CommonPipeline
     displayName: 'Common Pipeline'
     steps:
-      - checkout: self
-        persistCredentials: true
-
-      - task: PowerShell@2
-        displayName: 'Install'
-        inputs:
-          filePath: 'scripts/azure.pipelines/pipeline.install.ps1'
-
-      - task: Yarn@2
-        displayName: 'Prettier'
-        inputs:
-          Arguments: 'prettier'
-
-      - task: Yarn@2
-        displayName: 'Lint'
-        inputs:
-          ProjectDirectory: 'packages/common'
-          Arguments: 'lint'
-
-      - task: Yarn@2
-        displayName: 'Test'
-        inputs:
-          ProjectDirectory: 'packages/common'
-          Arguments: 'test'
-
-      - task: Yarn@2
-        displayName: 'Build'
-        inputs:
-          ProjectDirectory: 'packages/common'
-          Arguments: 'build'
-
-      - script: yarn deploy
-        displayName: 'Deploy Common Package'
-        condition: and(succeeded(), eq(variables.isPR, false))
-        env:
-          HOME: '$(Agent.BuildDirectory)'
-          BRANCH: '$(Build.SourceBranchName)'
-          PULL_REQUEST: '$(isPR)'
-          COMMIT_MESSAGE: '$(Build.SourceVersionMessage)'
-          PACKAGE_LOCATION: 'packages/common'
-          PACKAGE_NAME: 'common'
-          SITE_NAME: 'script-lab-react-storybook'
-          DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_STORYBOOK_ALPHA: '$(DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_STORYBOOK_ALPHA)'
-          DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_STORYBOOK_BETA: '$(DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_STORYBOOK_BETA)'
-          DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_STORYBOOK_STAGING: '$(DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_STORYBOOK_STAGING)'
+      - template: package-pipeline-template.yml
+        parameters:
+          PackageDirectory: 'packages/common'
+          PackageName: 'common'
+          SiteName: 'script-lab-react-storybook'
 
   - job: EditorPipeline
     displayName: 'Editor Pipeline'
     steps:
-      - checkout: self
-        persistCredentials: true
-
-      - task: PowerShell@2
-        displayName: 'Install'
-        inputs:
-          filePath: 'scripts/azure.pipelines/pipeline.install.ps1'
-
-      - task: Yarn@2
-        displayName: 'Prettier'
-        inputs:
-          Arguments: 'prettier'
-
-      - task: Yarn@2
-        displayName: 'Lint'
-        inputs:
-          ProjectDirectory: 'packages/editor'
-          Arguments: 'lint'
-
-      - task: Yarn@2
-        displayName: 'Test'
-        inputs:
-          ProjectDirectory: 'packages/editor'
-          Arguments: 'test'
-
-      - task: Yarn@2
-        displayName: 'Build'
-        inputs:
-          ProjectDirectory: 'packages/editor'
-          Arguments: 'build'
-
-      - script: yarn deploy
-        displayName: 'Deploy Editor Package'
-        condition: and(succeeded(), eq(variables.isPR, false))
-        env:
-          HOME: '$(Agent.BuildDirectory)'
-          BRANCH: '$(Build.SourceBranchName)'
-          PULL_REQUEST: '$(isPR)'
-          COMMIT_MESSAGE: '$(Build.SourceVersionMessage)'
-          PACKAGE_LOCATION: 'packages/editor'
-          PACKAGE_NAME: 'editor'
-          SITE_NAME: 'script-lab-react'
-          DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_ALPHA: '$(DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_ALPHA)'
-          DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_BETA: '$(DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_BETA)'
-          DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_STAGING: '$(DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_STAGING)'
+      - template: package-pipeline-template.yml
+        parameters:
+          PackageDirectory: 'packages/editor'
+          PackageName: 'editor'
+          SiteName: 'script-lab-react'
 
   - job: RunnerPipeline
     displayName: 'Runner Pipeline'
     steps:
-      - checkout: self
-        persistCredentials: true
-
-      - task: PowerShell@2
-        displayName: 'Install'
-        inputs:
-          filePath: 'scripts/azure.pipelines/pipeline.install.ps1'
-
-      - task: Yarn@2
-        displayName: 'Prettier'
-        inputs:
-          Arguments: 'prettier'
-
-      - task: Yarn@2
-        displayName: 'Lint'
-        inputs:
-          ProjectDirectory: 'packages/runner'
-          Arguments: 'lint'
-
-      - task: Yarn@2
-        displayName: 'Test'
-        inputs:
-          ProjectDirectory: 'packages/runner'
-          Arguments: 'citest'
-
-      - task: Yarn@2
-        displayName: 'Build'
-        inputs:
-          ProjectDirectory: 'packages/runner'
-          Arguments: 'build'
-
-      - script: yarn deploy
-        displayName: 'Deploy Runner Package'
-        condition: and(succeeded(), eq(variables.isPR, false))
-        env:
-          HOME: '$(Agent.BuildDirectory)'
-          BRANCH: '$(Build.SourceBranchName)'
-          PULL_REQUEST: '$(isPR)'
-          COMMIT_MESSAGE: '$(Build.SourceVersionMessage)'
-          PACKAGE_LOCATION: 'packages/runner'
-          PACKAGE_NAME: 'runner'
-          SITE_NAME: 'script-lab-react-runner'
-          DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_RUNNER_ALPHA: '$(DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_RUNNER_ALPHA)'
-          DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_RUNNER_BETA: '$(DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_RUNNER_BETA)'
-          DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_RUNNER_STAGING: '$(DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_RUNNER_STAGING)'
+      - template: package-pipeline-template.yml
+        parameters:
+          PackageDirectory: 'packages/runner'
+          PackageName: 'runner'
+          SiteName: 'script-lab-react-runner'
 
   - job: ServerPipeline
     displayName: 'Server Pipeline'
     steps:
-      - checkout: self
-        persistCredentials: true
-
-      - task: PowerShell@2
-        displayName: 'Install'
-        inputs:
-          filePath: 'scripts/azure.pipelines/pipeline.install.ps1'
-
-      - task: Yarn@2
-        displayName: 'Prettier'
-        inputs:
-          Arguments: 'prettier'
-
-      - task: Yarn@2
-        displayName: 'Lint'
-        inputs:
-          ProjectDirectory: 'packages/server'
-          Arguments: 'lint'
-
-      - task: Yarn@2
-        displayName: 'Test'
-        inputs:
-          ProjectDirectory: 'packages/server'
-          Arguments: 'test'
-
-      - task: Yarn@2
-        displayName: 'Build'
-        inputs:
-          ProjectDirectory: 'packages/server'
-          Arguments: 'build'
-
-      - script: yarn deploy
-        displayName: 'Deploy Server Package'
-        condition: and(succeeded(), eq(variables.isPR, false))
-        env:
-          HOME: '$(Agent.BuildDirectory)'
-          BRANCH: '$(Build.SourceBranchName)'
-          PULL_REQUEST: '$(isPR)'
-          COMMIT_MESSAGE: '$(Build.SourceVersionMessage)'
-          PACKAGE_LOCATION: 'packages/server'
-          PACKAGE_NAME: 'server'
-          SITE_NAME: 'script-lab-react-server'
-          DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_SERVER_ALPHA: '$(DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_SERVER_ALPHA)'
-          DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_SERVER_BETA: '$(DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_SERVER_BETA)'
-          DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_SERVER_STAGING: '$(DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_SERVER_STAGING)'
+      - template: package-pipeline-template.yml
+        parameters:
+          PackageDirectory: 'packages/server'
+          PackageName: 'server'
+          SiteName: 'script-lab-react-server'
