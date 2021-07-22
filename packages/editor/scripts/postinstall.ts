@@ -104,14 +104,14 @@ for (const key in expectedPackages) {
 ///////////////////////////////////////
 
 function checkIfLocalOrAlphaEnvironment() {
-  const { TRAVIS_BRANCH } = process.env; // from travis
+  const { BRANCH } = process.env; // from azure-pipelines
 
-  if (!TRAVIS_BRANCH) {
+  if (!BRANCH) {
     // running locally
     return true;
   }
 
-  if (TRAVIS_BRANCH === 'master') {
+  if (BRANCH === 'master') {
     return true;
   }
 

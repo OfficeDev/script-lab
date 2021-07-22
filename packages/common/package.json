@@ -31,6 +31,7 @@
     "start": "tsc --watch",
     "lint": "tslint \"src/**/*.ts?(x)\"",
     "test": "jest --env=jsdom",
+    "citest": "yarn test",
     "test:watch": "jest --env=jsdom --watch"
   },
   "devDependencies": {
