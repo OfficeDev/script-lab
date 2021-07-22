@@ -23,10 +23,10 @@ steps:
     inputs:
       Arguments: 'pre-ci'
 
-  - task: Yarn@2
+  - script: yarn postinstall
     displayName: 'Post Install Script'
-    inputs:
-      Arguments: 'postinstall'
+    env:
+      BRANCH: '$(Build.SourceBranchName)'
 
   - task: PowerShell@2
     displayName: 'Check diff on post install'
@@ -62,11 +62,10 @@ steps:
       ProjectDirectory: '${{ parameters.PackageDirectory }}'
       Arguments: 'citest'
 
-  - task: Yarn@2
+  - script: cd ${{ parameters.PackageDirectory }} && yarn build
     displayName: 'Build'
-    inputs:
-      ProjectDirectory: '${{ parameters.PackageDirectory }}'
-      Arguments: 'build'
+    env:
+      COMMIT_MESSAGE: '$(Build.SourceVersionMessage)'
 
   - script: yarn deploy
     displayName: 'Deploy Package'
