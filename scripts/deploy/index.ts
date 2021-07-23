@@ -40,7 +40,7 @@ if (!BRANCH) {
    And in any case, pull requests don't get secret variables like username or password
    passed to them by the CI tools, so the deploy would abort at any rate).
  */
-if (PULL_REQUEST !== 'false') {
+if (PULL_REQUEST !== 'False') {
   exit('Skipping deploy for pull requests');
 }
 
