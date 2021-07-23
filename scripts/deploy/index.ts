@@ -32,6 +32,7 @@ if (!BRANCH) {
   exit(
     'Expecting to run the deploy script from within Azure-Pipelines ' +
       '(or at least, with all environmental variables set up). Exiting.',
+    true,
   );
 }
 
@@ -56,7 +57,7 @@ if (!DEPLOYMENT_SLOTS_DICTIONARY[BRANCH]) {
 
 const BUILD_DIRECTORY = path.join(PACKAGE_LOCATION, 'build');
 if (!shell.test('-d', BUILD_DIRECTORY)) {
-  exit('ERROR: No build directory found!');
+  exit('ERROR: No build directory found!', true);
 }
 
 (async () => {
