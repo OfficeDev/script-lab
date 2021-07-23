@@ -62,7 +62,7 @@ steps:
       ProjectDirectory: '${{ parameters.PackageDirectory }}'
       Arguments: 'citest'
 
-  - script: cd ${{ parameters.PackageDirectory }} && yarn build
+  - script: cd ${{ parameters.PackageDirectory }} && yarn cibuild
     displayName: 'Build'
     env:
       COMMIT_MESSAGE: '$(Build.SourceVersionMessage)'

@@ -22,6 +22,7 @@
     "postinstall": "ts-node --project ../../scripts/tsconfig.json scripts/postinstall.ts",
     "start": "react-scripts start",
     "build": "export CI=false&&react-scripts build",
+    "cibuild": "yarn build",
     "test": "react-scripts test --env=jsdom",
     "citest": "CI=true react-scripts test --env=jsdom",
     "lint": "tslint \"src/**/*.ts?(x)\""
