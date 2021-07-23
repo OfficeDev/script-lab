@@ -27,7 +27,8 @@
   "scripts": {
     "postinstall": "yarn build:package",
     "build": "yarn build:package",
-    "build:package": "tsc --outDir build",
+    "build:package": "tsc",
+    "cibuild": "yarn build --outDir build",
     "start": "tsc --watch",
     "lint": "tslint \"src/**/*.ts?(x)\"",
     "test": "jest --env=jsdom",

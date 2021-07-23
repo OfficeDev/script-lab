@@ -40,6 +40,7 @@
     "start": "react-scripts start",
     "lint": "tslint \"src/**/*.ts?(x)\"",
     "build": "node scripts/build.js",
+    "cibuild": "yarn build",
     "test": "jest --env=jsdom --verbose",
     "citest": "yarn test",
     "test:watch": "jest --env=jsdom --verbose --watch",
