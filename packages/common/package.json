@@ -25,8 +25,8 @@
     "typescript": "^3.2.4"
   },
   "scripts": {
-    "postinstall": "yarn build:package",
-    "build": "yarn build:package",
+    "postinstall": "yarn build",
+    "build": "yarn build:package --outDir build",
     "build:package": "tsc",
     "start": "tsc --watch",
     "lint": "tslint \"src/**/*.ts?(x)\"",
