@@ -25,9 +25,9 @@
     "typescript": "^3.2.4"
   },
   "scripts": {
-    "postinstall": "yarn build",
-    "build": "yarn build:package --outDir build",
-    "build:package": "tsc",
+    "postinstall": "yarn build:package",
+    "build": "yarn build:package",
+    "build:package": "tsc --outDir build",
     "start": "tsc --watch",
     "lint": "tslint \"src/**/*.ts?(x)\"",
     "test": "jest --env=jsdom",
