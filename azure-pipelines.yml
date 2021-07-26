@@ -1,0 +1,54 @@
+trigger:
+  branches:
+    include:
+      - master
+      - beta
+      - production
+
+pr:
+  branches:
+    include:
+      - master
+      - beta
+      - production
+
+variables:
+  tags: 'multi-phased'
+  isPR: $[ne(variables['System.PullRequest.PullRequestId'], '')]
+
+jobs:
+  - job: CommonPipeline
+    displayName: 'Common Pipeline'
+    steps:
+      - template: package-pipeline-template.yml
+        parameters:
+          PackageDirectory: 'packages/common'
+          PackageName: 'common'
+          SiteName: 'script-lab-react-storybook'
+
+  - job: EditorPipeline
+    displayName: 'Editor Pipeline'
+    steps:
+      - template: package-pipeline-template.yml
+        parameters:
+          PackageDirectory: 'packages/editor'
+          PackageName: 'editor'
+          SiteName: 'script-lab-react'
+
+  - job: RunnerPipeline
+    displayName: 'Runner Pipeline'
+    steps:
+      - template: package-pipeline-template.yml
+        parameters:
+          PackageDirectory: 'packages/runner'
+          PackageName: 'runner'
+          SiteName: 'script-lab-react-runner'
+
+  - job: ServerPipeline
+    displayName: 'Server Pipeline'
+    steps:
+      - template: package-pipeline-template.yml
+        parameters:
+          PackageDirectory: 'packages/server'
+          PackageName: 'server'
+          SiteName: 'script-lab-react-server'

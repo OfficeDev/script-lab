@@ -5,8 +5,10 @@
     "start": "nodemon -e ts -w ./src -x npm run start:serve",
     "start:serve": "ts-node --files --inspect -- src/index.ts",
     "build": "webpack-cli --mode production",
+    "cibuild": "yarn build",
     "lint": "tslint \"src/**/*.ts?(x)\"",
-    "test": "echo 'no tests'"
+    "test": "echo 'no tests'",
+    "citest": "yarn test"
   },
   "dependencies": {
     "@types/cors": "^2.8.4",
