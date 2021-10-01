@@ -177,6 +177,7 @@ export class Backstage extends Component<IProps, IState> {
       {
         'data-testid': 'new',
         key: 'new',
+        ariaLabel: "New snippet",
         label: 'New Snippet',
         icon: 'Add',
         onClick: () => {
@@ -186,6 +187,7 @@ export class Backstage extends Component<IProps, IState> {
       {
         'data-testid': 'my-solutions',
         key: 'my-solutions',
+        ariaLabel: 'My Snippets',
         label: 'My Snippets',
         icon: 'DocumentSet',
         content: (
@@ -203,6 +205,7 @@ export class Backstage extends Component<IProps, IState> {
       {
         'data-testid': 'samples',
         key: 'samples',
+        ariaLabel: 'Samples',
         label: 'Samples',
         icon: 'Dictionary',
         content: (
@@ -215,6 +218,7 @@ export class Backstage extends Component<IProps, IState> {
       {
         'data-testid': 'import',
         key: 'import',
+        ariaLabel: 'Import',
         label: 'Import',
         icon: 'Download',
         content: <ImportSolution importGist={this.props.importGist} />,
