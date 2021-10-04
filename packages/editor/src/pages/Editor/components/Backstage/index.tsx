@@ -177,7 +177,7 @@ export class Backstage extends Component<IProps, IState> {
       {
         'data-testid': 'new',
         key: 'new',
-        ariaLabel: "New snippet",
+        ariaLabel: 'New snippet',
         label: 'New Snippet',
         icon: 'Add',
         onClick: () => {
