@@ -18,11 +18,13 @@ const Header = ({ solution, goBack, refresh, hardRefresh, openCode }: IProps) =>
     {
       hidden: !goBack,
       key: 'go-back',
+      'aria-label': 'Back',
       iconProps: { iconName: 'Back' },
       onClick: goBack,
     },
     {
       key: 'title',
+      'aria-label': solution ? `Refresh ${solution.name}` : '',
       text: solution ? solution.name : '',
       onRenderIcon: () => {
         return solution === undefined ? (
@@ -39,11 +41,13 @@ const Header = ({ solution, goBack, refresh, hardRefresh, openCode }: IProps) =>
   const farItems = [
     {
       key: 'overflow',
+      'aria-label': 'More options',
       iconProps: { iconName: 'More' },
       subMenuProps: {
         items: [
           {
             key: 'hard-refresh',
+            'aria-label': 'Hard Refresh',
             iconProps: { iconName: 'Refresh' },
             text: 'Hard Refresh',
             onClick: hardRefresh,
@@ -51,6 +55,7 @@ const Header = ({ solution, goBack, refresh, hardRefresh, openCode }: IProps) =>
           shouldShowPopoutControl('runner')
             ? {
                 key: 'pop-out',
+                'aria-label': 'Open Code Editor',
                 iconProps: { iconName: 'OpenInNewWindow' },
                 text: 'Open Code Editor',
                 onClick: openCode,

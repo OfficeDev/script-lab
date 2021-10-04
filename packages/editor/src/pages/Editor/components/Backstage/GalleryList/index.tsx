@@ -31,7 +31,12 @@ class GalleryList extends Component<IProps, IState> {
         <FocusZone>
           <TitleBar>
             <Title>{title}</Title>
-            <ArrowWrapper onClick={this.toggleExpansion} data-is-focusable={true}>
+            <ArrowWrapper
+              role={'button'}
+              aria-label={isExpanded ? 'Collapse' : 'Expand'}
+              onClick={this.toggleExpansion}
+              data-is-focusable={true}
+            >
               <Icon iconName={isExpanded ? 'ChevronUp' : 'ChevronDown'} />
             </ArrowWrapper>
           </TitleBar>
