@@ -137,8 +137,8 @@ export function parseMetadata({
         extras.errors.length > 0
           ? 'error'
           : solution.options.isUntrusted
-          ? 'untrusted'
-          : 'good',
+            ? 'untrusted'
+            : 'good',
       errors: [
         ...(solution.options.isUntrusted
           ? ['You must trust the snippet before its functions can be registered']
@@ -208,4 +208,10 @@ export function getCustomFunctionsRuntimeUrl(): string {
   const userSettings = getUserSettings();
 
   return userSettings['customFunctionsRuntimeUrl'];
+}
+
+export function getAllowCustomDataForDataTypeAny(): boolean {
+  const userSettings = getUserSettings();
+
+  return userSettings['allowCustomDataForDataTypeAny'];
 }

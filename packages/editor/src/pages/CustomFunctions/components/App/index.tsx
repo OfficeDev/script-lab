@@ -78,6 +78,7 @@ const AppHOC = (UI: React.ComponentType<IPropsToUI>) =>
           await registerCustomFunctions(
             this.state.customFunctionsSummaryItems,
             this.state.customFunctionsCode,
+            registrationResult.options
           );
         }
 
@@ -148,7 +149,7 @@ function getCustomFunctionsSolutions(): ISolution[] {
 
 async function getRegistrationResult(
   cfSolutions: ISolution[],
-): Promise<{ parseResults: Array<ICustomFunctionParseResult<IFunction>>; code: string }> {
+): Promise<{ parseResults: Array<ICustomFunctionParseResult<IFunction>>; code: string; options?: object }> {
   const pythonCFs = cfSolutions
     .map(solution => ({ solution, script: findScript(solution) }))
     .filter(({ script }) => script.language === 'python')
@@ -171,8 +172,8 @@ async function getRegistrationResultPython(
   if (!config) {
     throw new ScriptLabError(
       `To support Python custom functions, you must ` +
-        `enter the required settings in the editor's "Settings" page. ` +
-        `Please close this pane, add the necessary settings, and try again.`,
+      `enter the required settings in the editor's "Settings" page. ` +
+      `Please close this pane, add the necessary settings, and try again.`,
       null,
       { hideCloseButton: true },
     );
@@ -186,7 +187,7 @@ async function getRegistrationResultPython(
   );
   showSplashScreen(
     `Attempting to connect to your Jupyter notebook, to allow execution ` +
-      `of Python custom functions. Please wait...`,
+    `of Python custom functions. Please wait...`,
   );
 
   try {
@@ -219,7 +220,7 @@ async function getRegistrationResultPython(
     invokeGlobalErrorHandler(
       new ScriptLabError(
         'Could not connect to Jupyter notebook. ' +
-          `Please ensure that you've entered the correct Jupyter settings and that Jupyter is running`,
+        `Please ensure that you've entered the correct Jupyter settings and that Jupyter is running`,
         e,
       ),
     );
