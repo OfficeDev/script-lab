@@ -16,7 +16,6 @@ export function getJsonMetadataString(
   functions: Array<ICustomFunctionParseResult<IFunction>>, options?: object
 ): string {
   const registrationPayload: ICustomFunctionsMetadata = {
-    allowCustomDataForDataTypeAny: false,
     functions: functions
       .filter(func => func.status === 'good')
       .map(func => func.metadata),
