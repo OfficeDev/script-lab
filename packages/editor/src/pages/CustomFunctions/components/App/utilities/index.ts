@@ -13,7 +13,8 @@ import {
 } from '../../../../../utils/custom-functions';
 
 export function getJsonMetadataString(
-  functions: Array<ICustomFunctionParseResult<IFunction>>, options?: object
+  functions: Array<ICustomFunctionParseResult<IFunction>>,
+  options?: object,
 ): string {
   const registrationPayload: ICustomFunctionsMetadata = {
     functions: functions
@@ -21,8 +22,12 @@ export function getJsonMetadataString(
       .map(func => func.metadata),
   };
 
-  if (options instanceof Object && options["allowCustomDataForDataTypeAny"] !== undefined) {
-    registrationPayload["allowCustomDataForDataTypeAny"] = options["allowCustomDataForDataTypeAny"];
+  if (
+    options instanceof Object &&
+    options['allowCustomDataForDataTypeAny'] !== undefined
+  ) {
+    registrationPayload['allowCustomDataForDataTypeAny'] =
+      options['allowCustomDataForDataTypeAny'];
   }
 
   return JSON.stringify(registrationPayload, null, 4);
@@ -31,7 +36,7 @@ export function getJsonMetadataString(
 export async function registerCustomFunctions(
   functions: Array<ICustomFunctionParseResult<IFunction>>,
   code: string,
-  options: object
+  options: object,
 ): Promise<void> {
   const jsonMetadataString = getJsonMetadataString(functions, options);
 
@@ -137,7 +142,11 @@ export function getScriptLabTopLevelNamespace() {
 
 export function getCustomFunctionsInfoForRegistration(
   solutions: ISolution[],
-): { parseResults: Array<ICustomFunctionParseResult<IFunction>>; code: string; options: object } {
+): {
+  parseResults: Array<ICustomFunctionParseResult<IFunction>>;
+  code: string;
+  options: object;
+} {
   const parseResults: Array<ICustomFunctionParseResult<IFunction>> = [];
   const code: string[] = [decodeURIComponent(consoleMonkeypatch.trim())];
 
@@ -190,8 +199,8 @@ export function getCustomFunctionsInfoForRegistration(
   });
 
   const options = {
-    allowCustomDataForDataTypeAny: getAllowCustomDataForDataTypeAny()
-  }
+    allowCustomDataForDataTypeAny: getAllowCustomDataForDataTypeAny(),
+  };
 
   return { parseResults: parseResults, code: code.join('\n\n'), options: options };
 }
@@ -213,9 +222,9 @@ function wrapCustomFunctionSnippetCode(
       try {
         // TODO external code
         ${code
-      .split('\n')
-      .map(line => newlineAndIndents + line)
-      .join('')}
+          .split('\n')
+          .map(line => newlineAndIndents + line)
+          .join('')}
         ${generateFunctionAssignments(true /*success*/)}
       } catch (e) {
         ${generateFunctionAssignments(false /*success*/)}
