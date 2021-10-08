@@ -78,6 +78,7 @@ const AppHOC = (UI: React.ComponentType<IPropsToUI>) =>
           await registerCustomFunctions(
             this.state.customFunctionsSummaryItems,
             this.state.customFunctionsCode,
+            registrationResult.options,
           );
         }
 
@@ -148,7 +149,11 @@ function getCustomFunctionsSolutions(): ISolution[] {
 
 async function getRegistrationResult(
   cfSolutions: ISolution[],
-): Promise<{ parseResults: Array<ICustomFunctionParseResult<IFunction>>; code: string }> {
+): Promise<{
+  parseResults: Array<ICustomFunctionParseResult<IFunction>>;
+  code: string;
+  options?: object;
+}> {
   const pythonCFs = cfSolutions
     .map(solution => ({ solution, script: findScript(solution) }))
     .filter(({ script }) => script.language === 'python')
