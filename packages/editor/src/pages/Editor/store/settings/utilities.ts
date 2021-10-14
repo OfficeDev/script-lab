@@ -29,6 +29,7 @@ export const invisibleDefaultSettings: { [key: string]: any } = {
   'jupyter.clearOnRegister': '',
   'experimental.customFunctions.allowRepeatingParameters': '',
   customFunctionsRuntimeUrl: '',
+  allowCustomDataForDataTypeAny: false,
 };
 
 export const allowedSettings = {

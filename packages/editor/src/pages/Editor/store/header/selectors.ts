@@ -107,6 +107,7 @@ const getRunButton = createSelector(
       return [
         {
           key: 'run',
+          ariaLabel: 'Run',
           text: 'Run',
           iconProps: { iconName: 'Play' },
           ...(getShouldSplitRunButton()
@@ -117,6 +118,7 @@ const getRunButton = createSelector(
                     {
                       key: 'run-in-this-pane',
                       text: 'Run in this pane',
+                      ariaLabel: 'Run in this pane',
                       iconProps: { iconName: 'Play' },
                       actionCreator: isTrusted
                         ? actions.editor.navigateToRun
@@ -125,6 +127,7 @@ const getRunButton = createSelector(
                     {
                       key: 'run-side-by-side',
                       text: 'Run side-by-side',
+                      ariaLabel: 'Run side-by-side',
                       iconProps: { iconName: 'OpenPaneMirrored' },
                       actionCreator: isTrusted
                         ? () =>
@@ -223,6 +226,7 @@ export const getItems = createSelector(
           {
             key: 'delete',
             text: 'Delete',
+            ariaLabel: 'Delete',
             iconProps: { iconName: 'Delete' },
             iconOnly,
             actionCreator: () =>
@@ -248,6 +252,7 @@ export const getItems = createSelector(
           {
             key: 'share',
             text: 'Share',
+            ariaLabel: 'Share',
             iconProps: { iconName: 'Share' },
             iconOnly,
             subMenuProps: {
@@ -259,6 +264,7 @@ export const getItems = createSelector(
                     isLoggedIn
                   ),
                   key: 'update-gist',
+                  ariaLabel: 'Update existing gist',
                   text: 'Update existing gist',
                   iconProps: { iconName: 'Save' },
                   actionCreator: () => actions.gists.update.request({ solutionId }),
@@ -266,6 +272,7 @@ export const getItems = createSelector(
                 {
                   key: 'new-public-gist',
                   text: 'New public gist',
+                  ariaLabel: 'New public gist',
                   iconProps: { iconName: 'PageCheckedIn' },
                   actionCreator: isLoggedIn
                     ? () => actions.gists.create.request({ solutionId, isPublic: true })
@@ -274,6 +281,7 @@ export const getItems = createSelector(
                 {
                   key: 'new-secret-gist',
                   text: 'New secret gist',
+                  ariaLabel: 'New secret gist',
                   iconProps: { iconName: 'ProtectedDocument' },
                   actionCreator: isLoggedIn
                     ? () => actions.gists.create.request({ solutionId, isPublic: false })
@@ -282,6 +290,7 @@ export const getItems = createSelector(
                 {
                   key: 'export-to-clipboard',
                   text: 'Copy to clipboard',
+                  ariaLabel: 'Copy to clipboard',
                   iconProps: { iconName: 'ClipboardSolid' },
                   className: 'export-snippet-to-clipboard',
                 },
