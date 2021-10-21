@@ -54,6 +54,7 @@ export class Dialog extends React.Component<IProps> {
               key={button.key}
               data-testid={button.key}
               text={button.text}
+              aria-label={button.text}
               onClick={this.getDispatchFunctionForOnClick(button.action)}
               primary={button.isPrimary}
             />

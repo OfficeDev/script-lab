@@ -9,10 +9,12 @@ import { findScript } from 'common/lib/utilities/solution';
 import {
   parseMetadata,
   transformSolutionNameToCFNamespace,
+  getAllowCustomDataForDataTypeAny,
 } from '../../../../../utils/custom-functions';
 
 export function getJsonMetadataString(
   functions: Array<ICustomFunctionParseResult<IFunction>>,
+  options?: object,
 ): string {
   const registrationPayload: ICustomFunctionsMetadata = {
     functions: functions
@@ -20,14 +22,23 @@ export function getJsonMetadataString(
       .map(func => func.metadata),
   };
 
+  if (
+    options instanceof Object &&
+    options['allowCustomDataForDataTypeAny'] !== undefined
+  ) {
+    registrationPayload['allowCustomDataForDataTypeAny'] =
+      options['allowCustomDataForDataTypeAny'];
+  }
+
   return JSON.stringify(registrationPayload, null, 4);
 }
 
 export async function registerCustomFunctions(
   functions: Array<ICustomFunctionParseResult<IFunction>>,
   code: string,
+  options: object,
 ): Promise<void> {
-  const jsonMetadataString = getJsonMetadataString(functions);
+  const jsonMetadataString = getJsonMetadataString(functions, options);
 
   if (Office.context.requirements.isSetSupported('CustomFunctions', 1.6)) {
     await (Excel as any).CustomFunctionManager.register(jsonMetadataString, code);
@@ -131,7 +142,11 @@ export function getScriptLabTopLevelNamespace() {
 
 export function getCustomFunctionsInfoForRegistration(
   solutions: ISolution[],
-): { parseResults: Array<ICustomFunctionParseResult<IFunction>>; code: string } {
+): {
+  parseResults: Array<ICustomFunctionParseResult<IFunction>>;
+  code: string;
+  options: object;
+} {
   const parseResults: Array<ICustomFunctionParseResult<IFunction>> = [];
   const code: string[] = [decodeURIComponent(consoleMonkeypatch.trim())];
 
@@ -183,7 +198,11 @@ export function getCustomFunctionsInfoForRegistration(
     functions.forEach(func => parseResults.push(func));
   });
 
-  return { parseResults: parseResults, code: code.join('\n\n') };
+  const options = {
+    allowCustomDataForDataTypeAny: getAllowCustomDataForDataTypeAny(),
+  };
+
+  return { parseResults: parseResults, code: code.join('\n\n'), options: options };
 }
 
 // helpers

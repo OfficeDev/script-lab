@@ -209,3 +209,9 @@ export function getCustomFunctionsRuntimeUrl(): string {
 
   return userSettings['customFunctionsRuntimeUrl'];
 }
+
+export function getAllowCustomDataForDataTypeAny(): boolean {
+  const userSettings = getUserSettings();
+
+  return userSettings['allowCustomDataForDataTypeAny'];
+}
