@@ -10,6 +10,7 @@ import { PivotBarWrapper } from './styles';
 
 export interface IPivotBarItem {
   key: string;
+  ariaLabel?: string;
   text?: string;
   iconName?: string;
   testId?: string;
@@ -83,6 +84,7 @@ class PivotBar extends React.Component<IProps> {
               itemIcon={item.iconName}
               data-testid={item.testId}
               itemCount={item.itemCount || undefined}
+              ariaLabel={item.ariaLabel}
             />
           ))}
         </Pivot>
