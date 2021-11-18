@@ -120,7 +120,7 @@ export const getFarItems = createSelector(
       key: 'cycle-theme',
       iconProps: { iconName: 'Color', styles: { root: { fontSize: '1.2rem' } } },
       text: currentEditorTheme,
-      ariaLabel: 'Cycle editor theme',
+      ariaLabel: `Cycle editor theme, ${currentEditorTheme} theme selected`,
       actionCreator: actions.settings.cycleEditorTheme,
     },
     {
