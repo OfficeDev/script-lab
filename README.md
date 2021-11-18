@@ -1,6 +1,6 @@
 [![Build Status](https://office.visualstudio.com/OC/_apis/build/status/OfficeDev.script-lab?branchName=master)](https://github.com/OfficeDev/script-lab) [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier) [![tested with jest](https://img.shields.io/badge/tested_with-jest-99424f.svg)](https://github.com/facebook/jest) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](CONTRIBUTING.md)
 
-# Script Lab, a Microsoft Garage project
+# Script Lab, a Microsoft Garage project.
 
 Experiment with the Office JavaScript API without ever leaving Excel, Outlook, Word, or PowerPoint! **Get [Script Lab](https://appsource.microsoft.com/product/office/WA104380862) in Excel, Word, and PowerPoint, or [Script Lab for Outlook](https://appsource.microsoft.com/product/office/WA200001603), free from Microsoft AppSource**.
 
