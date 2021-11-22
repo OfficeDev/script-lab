@@ -37,6 +37,7 @@ class PivotMenu extends React.Component<IProps> {
                 return {
                   text: label,
                   key,
+                  ariaLabel,
                 };
               }
             })}
