@@ -39,7 +39,7 @@
     "@types/shelljs": "^0.8.0",
     "react-scripts": "^3.1.2",
     "react-testing-library": "^5.3.0",
-    "shelljs": "^0.8.3",
+    "shelljs": "^0.8.5",
     "ts-node": "^7.0.1",
     "tslint": "^5.11.0",
     "tslint-config-prettier": "^1.16.0",
