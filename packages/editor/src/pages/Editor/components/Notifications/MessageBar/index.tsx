@@ -44,31 +44,33 @@ export const MessageBar = ({
   dismiss,
 }: IProps) => (
   <div className={`message-bar ${messageBarProps.isVisible ? 'active' : ''}`}>
-    <FabricMessageBar
-      dismissButtonAriaLabel="Close"
-      messageBarType={messageBarProps.style}
-      onDismiss={dismiss}
-      styles={getMessageBarStyle(messageBarProps.style)}
-      isMultiline={screenWidth < 400}
-      actions={
-        messageBarProps.button ? (
-          <div>
-            <DefaultButton primary onClick={buttonOnClick}>
-              {messageBarProps.button.text}
-            </DefaultButton>
-          </div>
-        ) : (
-          undefined
-        )
-      }
-    >
-      {messageBarProps.text}
-      {messageBarProps.link && (
-        <Link href={messageBarProps.link.url} target="_blank">
-          {messageBarProps.link.text}
-        </Link>
-      )}
-    </FabricMessageBar>
+    {messageBarProps.isVisible ? (
+      <FabricMessageBar
+        dismissButtonAriaLabel="Close"
+        messageBarType={messageBarProps.style}
+        onDismiss={dismiss}
+        styles={getMessageBarStyle(messageBarProps.style)}
+        isMultiline={screenWidth < 400}
+        actions={
+          messageBarProps.button ? (
+            <div>
+              <DefaultButton primary onClick={buttonOnClick}>
+                {messageBarProps.button.text}
+              </DefaultButton>
+            </div>
+          ) : (
+            undefined
+          )
+        }
+      >
+        {messageBarProps.text}
+        {messageBarProps.link && (
+          <Link href={messageBarProps.link.url} target="_blank">
+            {messageBarProps.link.text}
+          </Link>
+        )}
+      </FabricMessageBar>
+    ) : null}
   </div>
 );
 /* This is a bit weird, i'll admit... but it is needed.
