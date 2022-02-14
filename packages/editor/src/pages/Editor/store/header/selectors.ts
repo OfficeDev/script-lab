@@ -212,13 +212,14 @@ export const getItems = createSelector(
         return [
           {
             key: 'nav',
-            ariaLabel: 'Backstage',
+            ariaLabel: 'Main Menu',
             iconOnly: true,
             iconProps: { iconName: 'GlobalNavButton' },
             actionCreator: actions.editor.openBackstage,
           },
           {
             key: 'solution-name',
+            ariaLabel: 'Rename',
             text: activeSolution.name,
             ...titleStyles,
           },
