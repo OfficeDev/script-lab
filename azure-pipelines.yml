@@ -19,11 +19,6 @@ variables:
 jobs:
   - job: CommonPipeline
     displayName: 'Common Pipeline'
-    pool:
-      vmImage: 'ubuntu-latest'
-      name: Azure Pipelines
-      demands:
-        - npm
     steps:
       - template: package-pipeline-template.yml
         parameters:
@@ -33,11 +28,6 @@ jobs:
 
   - job: EditorPipeline
     displayName: 'Editor Pipeline'
-    pool:
-      vmImage: 'ubuntu-latest'
-      name: Azure Pipelines
-      demands:
-        - npm
     steps:
       - template: package-pipeline-template.yml
         parameters:
@@ -47,11 +37,6 @@ jobs:
 
   - job: RunnerPipeline
     displayName: 'Runner Pipeline'
-    pool:
-      vmImage: 'ubuntu-latest'
-      name: Azure Pipelines
-      demands:
-        - npm
     steps:
       - template: package-pipeline-template.yml
         parameters:
@@ -61,11 +46,6 @@ jobs:
 
   - job: ServerPipeline
     displayName: 'Server Pipeline'
-    pool:
-      vmImage: 'ubuntu-latest'
-      name: Azure Pipelines
-      demands:
-        - npm
     steps:
       - template: package-pipeline-template.yml
         parameters:
