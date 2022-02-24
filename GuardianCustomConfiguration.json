@@ -1,0 +1,19 @@
+{
+    "Enabled": true,
+    "Tools": {
+      "CredScan": {
+        "Enabled": true
+      },
+      "ESLint": {
+        "Enabled": true,
+        "Inputs": {
+          "Configuration": "required",
+          "Parser": "@typescript-eslint/parser",
+          "ParserOptions": "sourceType:module\necmaVersion:2018\ncreateDefaultProgram:true",
+          "EnableExclusions": false,
+          "CustomEnvironments": false
+        }
+      }
+    }
+  }
+  
