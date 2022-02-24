@@ -17,7 +17,15 @@ variables:
   isPR: $[ne(variables['System.PullRequest.PullRequestId'], '')]
 
 jobs:
+  - job: Guardian
+    pool:
+      vmImage: 'Azure-Pipelines-EO-Windows2022-Office'
+      name: Azure Pipelines
+      demands:
+        - npm
+    displayName: 'Run Guardian'
   - job: CommonPipeline
+    dependsOn: Guardian
     displayName: 'Common Pipeline'
     steps:
       - template: package-pipeline-template.yml
@@ -27,6 +35,7 @@ jobs:
           SiteName: 'script-lab-react-storybook'
 
   - job: EditorPipeline
+    dependsOn: Guardian
     displayName: 'Editor Pipeline'
     steps:
       - template: package-pipeline-template.yml
@@ -36,6 +45,7 @@ jobs:
           SiteName: 'script-lab-react'
 
   - job: RunnerPipeline
+    dependsOn: Guardian
     displayName: 'Runner Pipeline'
     steps:
       - template: package-pipeline-template.yml
@@ -45,6 +55,7 @@ jobs:
           SiteName: 'script-lab-react-runner'
 
   - job: ServerPipeline
+    dependsOn: Guardian
     displayName: 'Server Pipeline'
     steps:
       - template: package-pipeline-template.yml
