@@ -18,12 +18,14 @@ variables:
 
 jobs:
   - job: PreBuild
+    pool: Azure-Pipelines-EO-Windows2022-Office
     displayName: 'Pre Build'
     steps:
       - task: securedevelopmentteam.vss-secure-development-tools.build-task-credscan.CredScan@3
         displayName: 'Run Credential Scanner'
         inputs:
           debugMode: false
+
       - task: securedevelopmentteam.vss-secure-development-tools.build-task-eslint.ESLint@1
         displayName: 'Run ESLint'
 
