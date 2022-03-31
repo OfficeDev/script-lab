@@ -112,49 +112,49 @@ const getRunButton = createSelector(
           iconProps: { iconName: 'Play' },
           ...(getShouldSplitRunButton()
             ? {
-              // is in add-in
-              subMenuProps: {
-                items: [
-                  {
-                    key: 'run-in-this-pane',
-                    text: 'Run in this pane',
-                    ariaLabel: 'Run in this pane',
-                    iconProps: { iconName: 'Play' },
-                    actionCreator: isTrusted
-                      ? actions.editor.navigateToRun
-                      : () => youMustTrustBeforeRunMessageBarAction,
-                  },
-                  {
-                    key: 'run-side-by-side',
-                    text: 'Run side-by-side',
-                    ariaLabel: 'Run side-by-side',
-                    iconProps: { iconName: 'OpenPaneMirrored' },
-                    actionCreator: isTrusted
-                      ? () =>
-                        actions.dialog.show({
-                          title: 'Run side-by-side with editor',
-                          subText: `To run the snippet side-by-side with the editor, choose "Run" in the Ribbon.
+                // is in add-in
+                subMenuProps: {
+                  items: [
+                    {
+                      key: 'run-in-this-pane',
+                      text: 'Run in this pane',
+                      ariaLabel: 'Run in this pane',
+                      iconProps: { iconName: 'Play' },
+                      actionCreator: isTrusted
+                        ? actions.editor.navigateToRun
+                        : () => youMustTrustBeforeRunMessageBarAction,
+                    },
+                    {
+                      key: 'run-side-by-side',
+                      text: 'Run side-by-side',
+                      ariaLabel: 'Run side-by-side',
+                      iconProps: { iconName: 'OpenPaneMirrored' },
+                      actionCreator: isTrusted
+                        ? () =>
+                            actions.dialog.show({
+                              title: 'Run side-by-side with editor',
+                              subText: `To run the snippet side-by-side with the editor, choose "Run" in the Ribbon.
   Running side-by-side offers both a quicker refresh, and the added advantage of keeping your position and undo-history in the editor.`,
-                          buttons: [
-                            {
-                              key: 'got-it-button',
-                              text: 'Got it',
-                              isPrimary: true,
-                              action: actions.dialog.dismiss(),
-                            },
-                          ],
-                        })
-                      : () => youMustTrustBeforeRunMessageBarAction,
-                  },
-                ],
-              },
-            }
+                              buttons: [
+                                {
+                                  key: 'got-it-button',
+                                  text: 'Got it',
+                                  isPrimary: true,
+                                  action: actions.dialog.dismiss(),
+                                },
+                              ],
+                            })
+                        : () => youMustTrustBeforeRunMessageBarAction,
+                    },
+                  ],
+                },
+              }
             : {
-              // not in add-in
-              actionCreator: isTrusted
-                ? actions.editor.navigateToRun
-                : () => youMustTrustBeforeRunMessageBarAction,
-            }),
+                // not in add-in
+                actionCreator: isTrusted
+                  ? actions.editor.navigateToRun
+                  : () => youMustTrustBeforeRunMessageBarAction,
+              }),
         },
       ];
     }
@@ -212,7 +212,7 @@ export const getItems = createSelector(
         return [
           {
             key: 'nav',
-            text: "Backstage",
+            text: 'Backstage',
             ariaLabel: 'Main Menu',
             iconOnly: true,
             iconProps: { iconName: 'GlobalNavButton' },
@@ -326,14 +326,14 @@ export const getFarItems = createSelector(
             ariaLabel: isLoggedIn ? 'Logout' : 'Login',
             subMenuProps: isLoggedIn
               ? {
-                items: [
-                  {
-                    key: 'logout',
-                    text: 'Logout',
-                    actionCreator: actions.github.logout,
-                  },
-                ],
-              }
+                  items: [
+                    {
+                      key: 'logout',
+                      text: 'Logout',
+                      actionCreator: actions.github.logout,
+                    },
+                  ],
+                }
               : undefined,
             iconOnly: true,
             actionCreator: isLoggingInOrOut
@@ -342,13 +342,13 @@ export const getFarItems = createSelector(
           },
           shouldShowPopoutControl('editor')
             ? {
-              key: 'pop-out',
-              text: 'Pop out editor',
-              ariaLabel: 'Pop out editor',
-              iconOnly: true,
-              iconProps: { iconName: 'OpenInNewWindow' },
-              actionCreator: actions.misc.popOutEditor,
-            }
+                key: 'pop-out',
+                text: 'Pop out editor',
+                ariaLabel: 'Pop out editor',
+                iconOnly: true,
+                iconProps: { iconName: 'OpenInNewWindow' },
+                actionCreator: actions.misc.popOutEditor,
+              }
             : null,
         ].filter(item => item != null);
       default:

@@ -8,7 +8,6 @@ interface ISampleMetadata {
   rawUrl: string;
   group: string;
   api_set: any;
-  sampleRef: any;
 }
 
 interface ISampleMetadataByGroup {
@@ -48,4 +47,4 @@ interface IThemeNeutralColors {
   white: string;
 }
 
-interface ITheme extends IThemePrimaryColors, IThemeNeutralColors { }
+interface ITheme extends IThemePrimaryColors, IThemeNeutralColors {}
