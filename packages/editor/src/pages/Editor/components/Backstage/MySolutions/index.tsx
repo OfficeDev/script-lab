@@ -5,7 +5,7 @@ import { Label } from 'office-ui-fabric-react/lib/Label';
 import { MessageBar, MessageBarType } from 'office-ui-fabric-react/lib/MessageBar';
 
 import Only from 'common/lib/components/Only';
-import { matchesSearch } from 'common/lib/utilities/string';
+import { matchesSearch, composeSolutionId } from 'common/lib/utilities/string';
 
 import Content from '../Content';
 import GalleryList from '../GalleryList';
@@ -44,6 +44,31 @@ class MySolutions extends React.Component<IProps> {
     );
   };
 
+  focusOnFirstResult = (filterQuery: string) => {
+    let firstSolution: ISolution | undefined = undefined;
+    for (const solution of this.props.solutions) {
+      if (
+        matchesSearch(filterQuery, [
+          process.env.NODE_ENV === 'production'
+            ? null
+            : solution.id /* For Cypress test framework, need to include the solution ID so can search based on it */,
+          solution.name,
+          solution.description,
+        ])
+      ) {
+        firstSolution = solution;
+        break;
+      }
+    }
+
+    if (!!firstSolution) {
+      const galleryItem = document.getElementById(composeSolutionId(firstSolution.name));
+      if (galleryItem) {
+        galleryItem.focus();
+      }
+    }
+  };
+
   render() {
     const {
       solutions,
@@ -60,6 +85,7 @@ class MySolutions extends React.Component<IProps> {
           data-testid="solution-search"
           placeholder="Search your snippets"
           onChange={this.setFilterQuery}
+          onSearch={this.focusOnFirstResult}
         />
         <GalleryList
           testId="my-solution-list"
