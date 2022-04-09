@@ -14,7 +14,7 @@
     "custom-functions-metadata": "1.0.5",
     "js-yaml": "^3.13.1",
     "lodash": "^4.17.19",
-    "moment": "^2.22.2",
+    "moment": "^2.29.2",
     "monaco-editor": "0.18.1",
     "normalizr": "^3.2.4",
     "office-ui-fabric-react": "^6.211.6",
