@@ -29,7 +29,7 @@ export const invisibleDefaultSettings: { [key: string]: any } = {
   'jupyter.clearOnRegister': '',
   'experimental.customFunctions.allowRepeatingParameters': '',
   customFunctionsRuntimeUrl: '',
-  allowCustomDataForDataTypeAny: false,
+  allowCustomDataForDataTypeAny: true,
 };
 
 export const allowedSettings = {
@@ -72,34 +72,34 @@ const getSettingsFiles = (
   timestamp: number,
   userSettings: Partial<ISettings>,
 ): IFile[] => [
-  {
-    id: USER_SETTINGS_FILE_ID,
-    name: 'User Settings',
-    dateCreated: timestamp,
-    dateLastModified: timestamp,
-    dateLastOpened: timestamp,
-    language: SETTINGS_JSON_LANGUAGE,
-    content: getUserSettingsContent(userSettings),
-  },
-  {
-    id: DEFAULT_SETTINGS_FILE_ID,
-    name: 'Default Settings',
-    dateCreated: timestamp,
-    dateLastModified: timestamp,
-    dateLastOpened: timestamp,
-    language: SETTINGS_JSON_LANGUAGE,
-    content: getDefaultSettingsContent(userSettings),
-  },
-  {
-    id: ABOUT_FILE_ID,
-    name: 'About',
-    dateCreated: timestamp,
-    dateLastModified: timestamp,
-    dateLastOpened: timestamp,
-    language: 'plaintext',
-    content: getAboutContent(),
-  },
-];
+    {
+      id: USER_SETTINGS_FILE_ID,
+      name: 'User Settings',
+      dateCreated: timestamp,
+      dateLastModified: timestamp,
+      dateLastOpened: timestamp,
+      language: SETTINGS_JSON_LANGUAGE,
+      content: getUserSettingsContent(userSettings),
+    },
+    {
+      id: DEFAULT_SETTINGS_FILE_ID,
+      name: 'Default Settings',
+      dateCreated: timestamp,
+      dateLastModified: timestamp,
+      dateLastOpened: timestamp,
+      language: SETTINGS_JSON_LANGUAGE,
+      content: getDefaultSettingsContent(userSettings),
+    },
+    {
+      id: ABOUT_FILE_ID,
+      name: 'About',
+      dateCreated: timestamp,
+      dateLastModified: timestamp,
+      dateLastOpened: timestamp,
+      language: 'plaintext',
+      content: getAboutContent(),
+    },
+  ];
 
 const getSettingsSolution = (
   files: IFile[],
