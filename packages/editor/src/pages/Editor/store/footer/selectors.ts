@@ -91,13 +91,16 @@ export const getFarItems = createSelector(
     activeSolution: ISolution,
     activeFile: IFile,
     currentEditorTheme: string,
-  ) => [
-    {
-      hidden: !languageMapLowercased[activeFile.language],
-      key: 'editor-language',
-      text: languageMapDisplayNames[activeFile.language],
-      subMenuProps:
-        activeFile.name === SCRIPT_FILE_NAME && getPythonConfigIfAny()
+  ) => {
+    const languageSelectEnabled =
+      activeFile.name === SCRIPT_FILE_NAME && getPythonConfigIfAny();
+    return [
+      {
+        hidden: !languageMapLowercased[activeFile.language],
+        key: 'editor-language',
+        text: languageMapDisplayNames[activeFile.language],
+        disabled: !languageSelectEnabled,
+        subMenuProps: languageSelectEnabled
           ? {
               isBeakVisible: true,
               items: [languageMapLowercased.typescript, languageMapLowercased.python].map(
@@ -114,32 +117,33 @@ export const getFarItems = createSelector(
               ),
             }
           : null,
-    },
-    {
-      hidden: mode === 'settings',
-      key: 'cycle-theme',
-      iconProps: { iconName: 'Color', styles: { root: { fontSize: '1.2rem' } } },
-      text: currentEditorTheme,
-      ariaLabel: `Cycle editor theme, ${currentEditorTheme} theme selected`,
-      actionCreator: actions.settings.cycleEditorTheme,
-    },
-    {
-      hidden: getCurrentEnv() === 'cdn',
-      key: 'report-an-issue',
-      iconOnly: true,
-      iconProps: { iconName: 'Emoji2' },
-      href: PATHS.GITHUB_ISSUE,
-      target: '_blank',
-      text: 'Report an Issue',
-      ariaLabel: 'Report an issue',
-    },
-    {
-      key: 'settings',
-      iconOnly: true,
-      iconProps: { iconName: 'Settings' },
-      text: 'Settings',
-      ariaLabel: 'Settings',
-      actionCreator: actions.settings.open,
-    },
-  ],
+      },
+      {
+        hidden: mode === 'settings',
+        key: 'cycle-theme',
+        iconProps: { iconName: 'Color', styles: { root: { fontSize: '1.2rem' } } },
+        text: currentEditorTheme,
+        ariaLabel: `Cycle editor theme, ${currentEditorTheme} theme selected`,
+        actionCreator: actions.settings.cycleEditorTheme,
+      },
+      {
+        hidden: getCurrentEnv() === 'cdn',
+        key: 'report-an-issue',
+        iconOnly: true,
+        iconProps: { iconName: 'Emoji2' },
+        href: PATHS.GITHUB_ISSUE,
+        target: '_blank',
+        text: 'Report an Issue',
+        ariaLabel: 'Report an issue',
+      },
+      {
+        key: 'settings',
+        iconOnly: true,
+        iconProps: { iconName: 'Settings' },
+        text: 'Settings',
+        ariaLabel: 'Settings',
+        actionCreator: actions.settings.open,
+      },
+    ];
+  },
 );
