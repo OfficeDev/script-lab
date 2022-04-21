@@ -137,8 +137,8 @@ export function parseMetadata({
         extras.errors.length > 0
           ? 'error'
           : solution.options.isUntrusted
-            ? 'untrusted'
-            : 'good',
+          ? 'untrusted'
+          : 'good',
       errors: [
         ...(solution.options.isUntrusted
           ? ['You must trust the snippet before its functions can be registered']
@@ -215,8 +215,7 @@ export function getAllowCustomDataForDataTypeAny(): boolean {
 
   if (userSettings['allowCustomDataForDataTypeAny'] != undefined) {
     return userSettings['allowCustomDataForDataTypeAny'];
-  }
-  else {
+  } else {
     return true;
   }
 }
