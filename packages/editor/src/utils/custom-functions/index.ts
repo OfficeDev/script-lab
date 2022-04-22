@@ -213,9 +213,5 @@ export function getCustomFunctionsRuntimeUrl(): string {
 export function getAllowCustomDataForDataTypeAny(): boolean {
   const userSettings = getUserSettings();
 
-  if (userSettings['allowCustomDataForDataTypeAny'] !== undefined) {
-    return userSettings['allowCustomDataForDataTypeAny'];
-  } else {
-    return true;
-  }
+  return userSettings['allowCustomDataForDatTypeAny'] ?? true;
 }
