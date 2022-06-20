@@ -169,7 +169,8 @@ export class Backstage extends Component<IProps, IState> {
       {
         'data-testid': 'back',
         key: 'back',
-        ariaLabel: 'Back',
+        ariaLabel: 'Code',
+        label: 'Code',
         icon: showBack ? 'GlobalNavButton' : '',
         isHidden: !showBack,
         onClick: showBack ? this.props.goBack : () => {},

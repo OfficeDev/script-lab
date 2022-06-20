@@ -278,3 +278,7 @@ export function generateLogString(
     severity: isSuccessfulMsg ? severityType : 'error',
   };
 }
+
+export function composeSolutionId(solutionName: string) {
+  return 'solution-id-' + solutionName;
+}
