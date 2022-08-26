@@ -33,7 +33,7 @@ class GalleryList extends Component<IProps, IState> {
             <Title>{title}</Title>
             <ArrowWrapper
               role={'button'}
-              aria-label={title + " section " + (isExpanded ? 'Hide' : 'Show')}
+              aria-label={title + ' section ' + (isExpanded ? 'Hide' : 'Show')}
               onClick={this.toggleExpansion}
               data-is-focusable={true}
             >
