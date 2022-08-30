@@ -17,13 +17,21 @@ variables:
   isPR: $[ne(variables['System.PullRequest.PullRequestId'], '')]
 
 jobs:
+  - job: PreBuild
+    pool: Azure-Pipelines-EO-Windows2022-Office
+    displayName: 'Pre Build'
+    steps:
+      - task: securedevelopmentteam.vss-secure-development-tools.build-task-credscan.CredScan@3
+        displayName: 'Run Credential Scanner'
+        inputs:
+          debugMode: false
+
+      - task: securedevelopmentteam.vss-secure-development-tools.build-task-eslint.ESLint@1
+        displayName: 'Run ESLint'
+
   - job: CommonPipeline
+    dependsOn: PreBuild
     displayName: 'Common Pipeline'
-    pool:
-      vmImage: 'ubuntu-latest'
-      name: Azure Pipelines
-      demands:
-        - npm
     steps:
       - template: package-pipeline-template.yml
         parameters:
@@ -32,12 +40,8 @@ jobs:
           SiteName: 'script-lab-react-storybook'
 
   - job: EditorPipeline
+    dependsOn: PreBuild
     displayName: 'Editor Pipeline'
-    pool:
-      vmImage: 'ubuntu-latest'
-      name: Azure Pipelines
-      demands:
-        - npm
     steps:
       - template: package-pipeline-template.yml
         parameters:
@@ -46,12 +50,8 @@ jobs:
           SiteName: 'script-lab-react'
 
   - job: RunnerPipeline
+    dependsOn: PreBuild
     displayName: 'Runner Pipeline'
-    pool:
-      vmImage: 'ubuntu-latest'
-      name: Azure Pipelines
-      demands:
-        - npm
     steps:
       - template: package-pipeline-template.yml
         parameters:
@@ -60,12 +60,8 @@ jobs:
           SiteName: 'script-lab-react-runner'
 
   - job: ServerPipeline
+    dependsOn: PreBuild
     displayName: 'Server Pipeline'
-    pool:
-      vmImage: 'ubuntu-latest'
-      name: Azure Pipelines
-      demands:
-        - npm
     steps:
       - template: package-pipeline-template.yml
         parameters:

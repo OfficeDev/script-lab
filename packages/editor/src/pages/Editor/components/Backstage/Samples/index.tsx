@@ -5,7 +5,7 @@ import Only from 'common/lib/components/Only';
 import Content from '../Content';
 import GalleryList from '../GalleryList';
 import { SearchBox } from 'office-ui-fabric-react/lib/components/SearchBox';
-import { matchesSearch } from 'common/lib/utilities/string';
+import { matchesSearch, composeSolutionId } from 'common/lib/utilities/string';
 
 interface IProps {
   samplesByGroup: ISampleMetadataByGroup;
@@ -21,6 +21,28 @@ class Samples extends Component<IProps, IState> {
 
   setFilterQuery = (filterQuery: string) =>
     this.setState({ filterQueryLowercase: filterQuery.toLowerCase() });
+
+  focusOnFirstResult = (filterQuery: string) => {
+    let firstSample: ISampleMetadata | undefined = undefined;
+    for (const key of Object.keys(this.props.samplesByGroup)) {
+      for (const sample of this.props.samplesByGroup[key]) {
+        if (matchesSearch(filterQuery, [key, sample.name, sample.description])) {
+          firstSample = sample;
+          break;
+        }
+      }
+      if (!!firstSample) {
+        break;
+      }
+    }
+
+    if (!!firstSample) {
+      const galleryItem = document.getElementById(composeSolutionId(firstSample.name));
+      if (galleryItem) {
+        galleryItem.focus();
+      }
+    }
+  };
 
   render() {
     const { samplesByGroup, openSample } = this.props;
@@ -53,6 +75,7 @@ class Samples extends Component<IProps, IState> {
               data-testid="samples-search"
               placeholder="Search our samples"
               onChange={this.setFilterQuery}
+              onSearch={this.focusOnFirstResult}
             />
             {Object.keys(filteredSamplesByGroup)
               .map(group =>

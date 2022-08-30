@@ -212,13 +212,15 @@ export const getItems = createSelector(
         return [
           {
             key: 'nav',
-            ariaLabel: 'Backstage',
+            text: 'Backstage',
+            ariaLabel: 'Main Menu',
             iconOnly: true,
             iconProps: { iconName: 'GlobalNavButton' },
             actionCreator: actions.editor.openBackstage,
           },
           {
             key: 'solution-name',
+            ariaLabel: 'Rename',
             text: activeSolution.name,
             ...titleStyles,
           },
@@ -320,6 +322,7 @@ export const getFarItems = createSelector(
         return [
           {
             key: 'account',
+            text: isLoggedIn ? 'Log out' : 'Log in',
             ariaLabel: isLoggedIn ? 'Logout' : 'Login',
             subMenuProps: isLoggedIn
               ? {
@@ -340,6 +343,7 @@ export const getFarItems = createSelector(
           shouldShowPopoutControl('editor')
             ? {
                 key: 'pop-out',
+                text: 'Pop out editor',
                 ariaLabel: 'Pop out editor',
                 iconOnly: true,
                 iconProps: { iconName: 'OpenInNewWindow' },

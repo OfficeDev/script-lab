@@ -29,6 +29,7 @@ class PivotMenu extends React.Component<IProps> {
             .map(({ label, icon, key, ariaLabel }) => {
               if (['back', 'new'].includes(key)) {
                 return {
+                  text: key === 'back' ? 'Code' : 'New',
                   iconName: icon,
                   key,
                   ariaLabel,
