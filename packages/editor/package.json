@@ -36,7 +36,6 @@
   },
   "scripts": {
     "postinstall": "ts-node --project ../../scripts/tsconfig.json scripts/postinstall.ts",
-    "analyze": "source-map-explorer build/static/js/main.*",
     "start": "react-scripts start",
     "lint": "tslint \"src/**/*.ts?(x)\"",
     "build": "node scripts/build.js",
@@ -79,7 +78,6 @@
     "react-testing-library": "^5.3.0",
     "redux-devtools": "^3.4.1",
     "shelljs": "^0.8.5",
-    "source-map-explorer": "^1.6.0",
     "ts-jest": "^24.3.0",
     "ts-loader": "^5.2.0",
     "ts-node": "^7.0.1",
