@@ -4,6 +4,8 @@
     "**/.DS_Store": true // this is a default value
   },
   "editor.formatOnSave": true,
+  "editor.bracketPairColorization.enabled": true,
+  "editor.guides.bracketPairs":"active",
   "typescript.tsdk": "node_modules\\typescript\\lib",
   "cSpell.words": [
     "Addin",

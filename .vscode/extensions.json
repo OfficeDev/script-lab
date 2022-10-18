@@ -6,9 +6,8 @@
     "esbenp.prettier-vscode",
     "ms-vscode.vscode-typescript-tslint-plugin",
     "vscode-icons-team.vscode-icons",
-    "coenraads.bracket-pair-colorizer",
     "wayou.vscode-todo-highlight",
     "streetsidesoftware.code-spell-checker",
-    "jpoissonnier.vscode-styled-components"
+    "styled-components.vscode-styled-components"
   ]
 }
