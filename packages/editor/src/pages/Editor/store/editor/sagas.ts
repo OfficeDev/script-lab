@@ -91,7 +91,7 @@ function* onFileOpenSaga(action: ActionType<typeof editor.newFileOpened>) {
 }
 
 export function* hideLoadingSplashScreenSaga() {
-  hideSplashScreen();
+  yield hideSplashScreen();
 }
 
 function* initializeMonacoSaga(action: ActionType<typeof editor.onMount>) {
@@ -265,7 +265,7 @@ function* setIntellisenseFilesSaga(
 
 function* resizeEditorSaga() {
   if (monacoEditor) {
-    monacoEditor.layout();
+    yield monacoEditor.layout();
   }
 }
 
@@ -281,5 +281,5 @@ function* applyFormattingSaga() {
 }
 
 function* navigateToRunSaga() {
-  window.location.href = `${currentRunnerUrl}?backButton=true`;
+  yield window.location.href = `${currentRunnerUrl}?backButton=true`;
 }

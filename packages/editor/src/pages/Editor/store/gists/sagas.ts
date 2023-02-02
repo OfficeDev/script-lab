@@ -118,7 +118,7 @@ function* onFetchGistMetadataFailureSaga(
   action: ActionType<typeof gists.fetchMetadata.failure>,
 ) {
   if (action.payload.shouldLogUserOut) {
-    github.logout();
+    yield github.logout();
   }
 }
 

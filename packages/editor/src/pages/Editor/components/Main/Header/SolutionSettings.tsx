@@ -35,21 +35,15 @@ interface IState {
 }
 
 class SolutionSettings extends React.Component<ISolutionSettings, IState> {
-  state = { name: '', description: '' };
-
-  setupForm = () => {
-    const { solution } = this.props;
-    const { name } = solution;
-    const description = solution.description || '';
-    this.setState({ name, description });
+  state = { 
+    name: this.props.solution.name, 
+    description: this.props.solution.description || '' 
   };
 
-  componentWillMount() {
-    this.setupForm();
-  }
-
-  componentWillReceiveProps() {
-    this.setupForm();
+  componentDidUpdate(prevProps: ISolutionSettings) {
+    if (this.props.isOpen === true && prevProps.isOpen === false) {
+      this.setState({ name: this.props.solution.name, description: this.props.solution.description || '' });
+    }
   }
 
   render() {
