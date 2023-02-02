@@ -36,7 +36,6 @@
     "test:watch": "jest --env=jsdom --watch"
   },
   "devDependencies": {
-    "@babel/core": "^7.9.0",
     "@types/clipboard": "^2.0.1",
     "@types/color": "^3.0.0",
     "@types/enzyme": "^3.1.15",
@@ -44,7 +43,6 @@
     "@types/jest": "^23.3.2",
     "@types/lodash": "^4.14.118",
     "@types/loglevel": "^1.5.3",
-    "@types/node": "^10.9.4",
     "@types/office-js": "^0.0.148",
     "@types/react": "^16.4.14",
     "@types/react-dom": "^16.0.7",
