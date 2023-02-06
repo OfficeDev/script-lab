@@ -41,9 +41,7 @@
     "test:watch": "jest --env=jsdom --verbose --watch",
     "test-coverage": "yarn test -- --coverage",
     "show-coverage": "yarn test-coverage && coverage\\lcov-report\\index.html",
-    "start-with-no-browser": "set BROWSER=none&&react-scripts start",
-    "start-cypress": "yarn run cypress open",
-    "test:cypress": "npm-run-all --parallel start-with-no-browser start-cypress"
+    "start-with-no-browser": "set BROWSER=none&&react-scripts start"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
@@ -60,7 +58,6 @@
     "@types/react-dom": "^16.0.11",
     "@types/styled-components": "^4.1.0",
     "@types/uuid": "^3.4.4",
-    "cypress": "^3.1.4",
     "enzyme": "^3.4.1",
     "enzyme-adapter-react-16": "^1.2.0",
     "enzyme-to-json": "^3.3.4",
