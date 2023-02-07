@@ -2,7 +2,6 @@ import { SERVER_HELLO_ENDPOINT } from 'common/lib/constants';
 
 import express from 'express';
 import cors from 'cors';
-import bodyParser from 'body-parser';
 import { getAccessTokenOrErrorResponse } from './auth';
 
 if (process.env.NODE_ENV !== 'production') {
@@ -14,7 +13,7 @@ const port = process.env.PORT || 5000;
 
 // config
 app.use(cors());
-app.use(bodyParser.json());
+app.use(express.json());
 
 // routes
 
