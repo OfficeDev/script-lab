@@ -15,8 +15,7 @@
     "@types/request": "^2.48.1",
     "cors": "^2.8.4",
     "dotenv": "^6.0.0",
-    "express": "^4.17.3",
-    "request": "^2.87.0"
+    "express": "^4.17.3"
   },
   "devDependencies": {
     "@types/express": "^4.16.0",
