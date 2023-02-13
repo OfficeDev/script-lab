@@ -14,13 +14,13 @@ async function github_auth_post(code: string, state: string) {
 
   const options = {
     host: 'github.com',
-    method: "POST",
-    path: "/login/oauth/access_token",
+    method: 'POST',
+    path: '/login/oauth/access_token',
     headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    }
-  }
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+  };
 
   const post_data = {
     client_id: GITHUB_CLIENT_ID,
@@ -31,20 +31,17 @@ async function github_auth_post(code: string, state: string) {
   };
   const data = JSON.stringify(post_data);
 
-
   // Good to know what is actually being sent
   // console.log(options)
   // console.log(data)
 
   return new Promise<{ status: number; buffer: () => Promise<string> }>(
     (resolve, reject) => {
-
-
       const request = https.request(options, (response: any) => {
         const statusCode = response.statusCode;
         response.setEncoding('utf8');
 
-        response.on("error", (err: any) => {
+        response.on('error', (err: any) => {
           reject(err);
         });
 
@@ -55,8 +52,8 @@ async function github_auth_post(code: string, state: string) {
           data += chunk;
         });
 
-        const dataBuffer = new Promise<string>((resolveBuffer) => {
-          response.on("end", () => {
+        const dataBuffer = new Promise<string>(resolveBuffer => {
+          response.on('end', () => {
             resolveBuffer(data);
           });
         });
@@ -69,12 +66,12 @@ async function github_auth_post(code: string, state: string) {
 
       request.on('error', (e: any) => {
         //console.log("Error : " + e.message);
-        reject(e)
+        reject(e);
       });
 
       request.write(data);
       request.end();
-    }
+    },
   );
 }
 
@@ -93,7 +90,7 @@ function getResultObjectBasedOnAuthResponse(
 export async function getAccessTokenOrErrorResponse(
   input: IServerAuthRequest,
 ): Promise<IServerAuthResponse> {
-  console.log("post");
+  console.log('post');
 
   const { status, buffer } = await github_auth_post(input.code, input.state);
   // console.log(status)
