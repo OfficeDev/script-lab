@@ -29,7 +29,7 @@
   },
   "devDependencies": {
     "@types/custom-functions-runtime": "^1.4.8",
-    "@types/jest": "^23.3.2",
+    "@types/jest": "^26.0.14",
     "@types/lodash": "^4.14.118",
     "@types/node": "^10.9.4",
     "@types/office-js": "^0.0.148",
