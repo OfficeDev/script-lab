@@ -1,5 +1,5 @@
 import ts from 'typescript';
-import { parseTree, IFunction, IOptions } from 'custom-functions-metadata';
+import { parseTree, IFunction } from 'custom-functions-metadata';
 import { strictType } from 'common/lib/utilities/misc';
 import { getUserSettings } from '../userSettings';
 
@@ -19,7 +19,7 @@ export function isTypeScriptCustomFunctionScript(content: string) {
     return false;
   }
 
-  const parseResult = parseTree(content, '' /* name, unused */, getParseTreeOptions());
+  const parseResult = parseTree(content, '' /* name, unused */);
   return parseResult.functions.length > 0;
 }
 
@@ -102,7 +102,7 @@ export function parseMetadata({
     ];
   }
 
-  const parseTreeResult = parseTree(fileContent, solution.name, getParseTreeOptions());
+  const parseTreeResult = parseTree(fileContent, solution.name);
   // Just in case, ensure that the result is consistent:
   if (parseTreeResult.functions.length !== parseTreeResult.extras.length) {
     throw new Error('Internal error while parsing custom function snippets.');
@@ -190,18 +190,6 @@ export function parseMetadata({
   }
 
   return functions;
-}
-
-function getParseTreeOptions(): IOptions {
-  const userSettings = getUserSettings();
-
-  return {
-    experimental: {
-      allowRepeatingParameters: Boolean(
-        userSettings['experimental.customFunctions.allowRepeatingParameters'],
-      ),
-    },
-  };
 }
 
 export function getCustomFunctionsRuntimeUrl(): string {
