@@ -90,7 +90,7 @@ function getResultObjectBasedOnAuthResponse(
 export async function getAccessTokenOrErrorResponse(
   input: IServerAuthRequest,
 ): Promise<IServerAuthResponse> {
-  console.log('post');
+  //console.log('post');
 
   const { status, buffer } = await github_auth_post(input.code, input.state);
   // console.log(status)
