@@ -22,14 +22,14 @@ async function github_auth_post(code: string, state: string) {
     },
   };
 
-  const post_data = {
+  const postData = {
     client_id: GITHUB_CLIENT_ID,
     client_secret: GITHUB_CLIENT_SECRET,
     redirect_uri: GITHUB_REDIRECT_URL,
     code,
     state,
   };
-  const data = JSON.stringify(post_data);
+  const data = JSON.stringify(postData);
 
   // Good to know what is actually being sent
   // console.log(options)
@@ -90,7 +90,7 @@ function getResultObjectBasedOnAuthResponse(
 export async function getAccessTokenOrErrorResponse(
   input: IServerAuthRequest,
 ): Promise<IServerAuthResponse> {
-  //console.log('post');
+
 
   const { status, buffer } = await github_auth_post(input.code, input.state);
   // console.log(status)
