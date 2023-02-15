@@ -68,7 +68,7 @@ export default () => {
     'Custom functions runner is ready to evaluate your functions!',
   );
 };
-///////////////////////////////////////
+/// ////////////////////////////////////
 
 let heartbeat: HTMLIFrameElement;
 function addHeartbeat() {
@@ -118,7 +118,7 @@ async function initializeRunnableSnippets(
         iframe.src = 'about:blank';
         document.head.insertBefore(iframe, null);
 
-        const contentWindow = iframe.contentWindow!;
+        const contentWindow = iframe.contentWindow;
 
         // Write to the iframe (and note that must do the ".write" call first,
         // before setting any window properties). Setting console and onerror here

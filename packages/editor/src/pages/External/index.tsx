@@ -33,7 +33,6 @@ const External = (): React.ReactElement<any> | null => {
         <PrimaryButton
           style={{ margin: 'auto' }}
           text="Open link in new window"
-          // tslint:disable-next-line: jsx-no-lambda
           onClick={() => {
             window.open(destination);
             Office.context.ui.messageParent('close');

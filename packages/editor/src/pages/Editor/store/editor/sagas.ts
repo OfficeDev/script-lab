@@ -42,7 +42,7 @@ export function* onEditorOpenFileSaga(action: ActionType<typeof editor.openFile>
   const currentOpenSolution: ISolution = yield select(selectors.editor.getActiveSolution);
   const currentOpenFile = yield select(selectors.editor.getActiveFile);
 
-  // tslint:disable-next-line:prefer-const
+  // eslint-disable-next-line prefer-const
   let { solutionId, fileId } = action.payload;
   if (!solutionId) {
     if (!currentOpenSolution.files.find(file => file.id === fileId)) {

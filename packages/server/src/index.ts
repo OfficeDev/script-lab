@@ -30,7 +30,7 @@ app.get('/' + SERVER_HELLO_ENDPOINT.path, (_req, res) => {
 app.post('/auth', async (req, res) => {
   const { code, state } = req.body;
 
-  let responsePayload: IServerAuthResponse = await getAccessTokenOrErrorResponse({
+  const responsePayload: IServerAuthResponse = await getAccessTokenOrErrorResponse({
     code,
     state,
   });
