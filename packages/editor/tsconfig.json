@@ -12,12 +12,13 @@
     "strict": false,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "preserve",
+    "jsx": "react",
     "alwaysStrict": false,
     "strictFunctionTypes": false,
     "strictPropertyInitialization": false,
     "resolveJsonModule": true,
-    "allowJs": true
+    "allowJs": true,
+    "noFallthroughCasesInSwitch": true
   },
   "include": [
     "./src/**/*",
