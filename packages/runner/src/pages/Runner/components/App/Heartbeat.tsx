@@ -42,7 +42,7 @@ class Heartbeat extends Component<IProps, IState> {
 
   sendMessage = (message: string) => {
     if (this.node.current) {
-      this.node.current.contentWindow!.postMessage(message, currentEditorUrl);
+      this.node.current.contentWindow.postMessage(message, currentEditorUrl);
     }
   };
 

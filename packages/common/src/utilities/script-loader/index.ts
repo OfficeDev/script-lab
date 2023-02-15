@@ -9,7 +9,7 @@ export async function addScriptTag(url: string): Promise<void> {
     const scriptElement = document.createElement('script');
     scriptElement.setAttribute('src', url);
     scriptElement.onload = () => resolve();
-    thisScriptElement.parentNode!.insertBefore(
+    thisScriptElement.parentNode.insertBefore(
       scriptElement,
       thisScriptElement.nextSibling /* if null, will just insert at end, which is OK too */,
     );

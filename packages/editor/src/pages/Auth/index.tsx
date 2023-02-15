@@ -167,7 +167,7 @@ class AuthPage extends React.Component<IProps, IState> {
         return {
           component: (
             <MessageBar messageBarType={MessageBarType.severeWarning}>
-              This page must be opened from a link that contains a "key" parameter in the
+              This page must be opened from a link that contains a key parameter in the
               URL. Please go back to the sign-in dialog in the code editor, and be sure to
               copy the full URL.
             </MessageBar>

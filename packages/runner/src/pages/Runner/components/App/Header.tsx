@@ -26,13 +26,12 @@ const Header = ({ solution, goBack, refresh, hardRefresh, openCode }: IProps) =>
       key: 'title',
       'aria-label': solution ? `Refresh ${solution.name}` : '',
       text: solution ? solution.name : '',
-      onRenderIcon: () => {
-        return solution === undefined ? (
+      onRenderIcon: () =>
+        solution === undefined ? (
           <Spinner size={SpinnerSize.small} style={{ padding: '.1rem' }} />
         ) : (
           <Icon iconName="Refresh" style={{ padding: '.4rem' }} />
-        );
-      },
+        ),
       style: { padding: '0 1rem' },
       onClick: refresh,
     },
