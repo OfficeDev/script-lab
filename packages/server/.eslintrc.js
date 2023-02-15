@@ -7,7 +7,7 @@ module.exports = {
   parserOptions: {
     sourceType: 'module',
   },
-  plugins: ['react', '@typescript-eslint'],
+  plugins: ['@typescript-eslint'],
   rules: {
     '@typescript-eslint/ban-types': 'off',
 
@@ -41,10 +41,5 @@ module.exports = {
     '@typescript-eslint/no-empty-function': 'off',
 
     '@typescript-eslint/no-var-requires': 'off',
-  },
-  settings: {
-    react: {
-      version: 'detect',
-    },
   },
 };
