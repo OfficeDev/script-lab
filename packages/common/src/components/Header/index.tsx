@@ -10,7 +10,7 @@ import { CommandBar, ICommandBarProps } from 'office-ui-fabric-react/lib/Command
 import { getCommandBarFabricTheme } from '../../theme';
 import { getPlatform, PlatformType } from '../../platform';
 
-export interface IProps extends ICommandBarProps {}
+export type IProps = ICommandBarProps
 
 interface IPrivateProps extends IProps {
   theme: ITheme | any; // from withTheme

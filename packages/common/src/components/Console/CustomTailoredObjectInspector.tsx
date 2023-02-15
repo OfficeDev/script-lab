@@ -10,8 +10,8 @@ export interface IProps {
 class CustomTailoredObjectInspector extends PureComponent<IProps> {
   render() {
     const { obj } = this.props;
-    if (obj && (obj as any).toJSON) {
-      return <ObjectInspector data={(obj as any).toJSON()} />;
+    if (obj && (obj ).toJSON) {
+      return <ObjectInspector data={(obj ).toJSON()} />;
     } else if (
       typeof OfficeExtension !== 'undefined' &&
       obj instanceof OfficeExtension.Error
@@ -41,7 +41,7 @@ class CustomTailoredObjectInspector extends PureComponent<IProps> {
 
 export default CustomTailoredObjectInspector;
 
-///////////////////////////////////////
+/// ////////////////////////////////////
 
 function sortStackToTheBottom(x: string, y: string): number {
   if (x === 'stack') {

@@ -99,7 +99,7 @@ class Samples extends Component<IProps, IState> {
         </Only>
 
         <Only when={samplesByGroup !== null && Object.keys(samplesByGroup).length === 0}>
-          <span className="ms-font-m">There aren't any samples for this host yet.</span>
+          <span className="ms-font-m">There are no samples for this host yet.</span>
         </Only>
       </Content>
     );

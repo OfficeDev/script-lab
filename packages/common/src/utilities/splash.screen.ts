@@ -22,7 +22,6 @@ export function invokeGlobalErrorHandler(
   }
 
   if (window.localStorage.getItem(DEBUG_KEY)) {
-    // tslint:disable-next-line:no-debugger
     debugger;
   }
 
@@ -44,10 +43,9 @@ export function invokeGlobalErrorHandler(
 
   const fromOldErrorIfAny = document.querySelectorAll('#loading .error');
   // Don't use "forEach", it doesn't work in IE!  Instead, just iterate over the elements:
-  // tslint:disable-next-line:prefer-for-of
   for (let i = 0; i < fromOldErrorIfAny.length; i++) {
     const item = fromOldErrorIfAny[i];
-    item.parentNode!.removeChild(item);
+    item.parentNode.removeChild(item);
   }
 
   subtitleElement.innerHTML =
@@ -64,7 +62,7 @@ export function invokeGlobalErrorHandler(
       const errorMessageElement = document.createElement('pre');
       errorMessageElement.textContent = stringifyPlusPlus(moreDetailsError);
       loadingElement.insertBefore(errorMessageElement, clickForMoreInfoElement);
-      clickForMoreInfoElement!.parentNode!.removeChild(clickForMoreInfoElement);
+      clickForMoreInfoElement.parentNode.removeChild(clickForMoreInfoElement);
       event.preventDefault(); // So that doesn't try to navigate to "#"
     });
     loadingElement.insertBefore(clickForMoreInfoElement, null);
@@ -79,7 +77,7 @@ export function invokeGlobalErrorHandler(
     closeElement.textContent = 'Close';
     closeElement.addEventListener('click', event => {
       loadingElement.style.visibility = 'hidden';
-      rootElement!.style.display = '';
+      rootElement.style.display = '';
       isCurrentlyShowingError = false;
       event.preventDefault(); // So that doesn't try to navigate to "#"
     });
@@ -99,10 +97,10 @@ export function invokeGlobalErrorHandler(
     '#loading .loading-indicator',
   )[0] as HTMLElement;
   if (loadingDotsElement) {
-    loadingDotsElement.parentNode!.removeChild(loadingDotsElement);
+    loadingDotsElement.parentNode.removeChild(loadingDotsElement);
   }
 
-  rootElement!.style.display = 'none';
+  rootElement.style.display = 'none';
   loadingElement.style.visibility = '';
   isCurrentlyShowingError = true;
 
@@ -131,9 +129,9 @@ export function showSplashScreen(subtitle: string, onClick?: () => void) {
     });
   }
 
-  (document.getElementById('root') as HTMLElement).style.display = 'none';
+  (document.getElementById('root') ).style.display = 'none';
 
-  /////////////////////////////////////
+  /// //////////////////////////////////
   // Helper:
   function replaceSubtitleElement(): HTMLElement {
     const previousSubtitleElement = document.querySelectorAll(
@@ -154,7 +152,7 @@ export function hideSplashScreen() {
   const loadingIndicator = document.getElementById('loading')!;
   loadingIndicator.style.visibility = 'hidden';
 
-  const rootElement = document.getElementById('root') as HTMLElement;
+  const rootElement = document.getElementById('root') ;
   if (rootElement) {
     rootElement.style.display = '';
   }

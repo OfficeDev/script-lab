@@ -13,7 +13,7 @@ export function getFakeStringLong(text: string) {
   });
 }
 
-///////////////////////////////////////
+/// ////////////////////////////////////
 
 function getFakeStringHelper(
   text: string,

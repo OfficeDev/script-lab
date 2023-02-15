@@ -1,7 +1,5 @@
 import * as log from '../log';
 
-/* TODO: for now, copy-pasted this file from an external source -- so disable tslint temporarily */
-/* tslint:disable */
 
 declare namespace OfficeExtension {
   interface HttpRequestInfo {
@@ -57,10 +55,6 @@ interface JupyterWebSocketMessage {
   channel: string;
 }
 
-interface JuypterWebSocketMessageExecuteReplyContent {
-  status: 'ok' | string;
-}
-
 interface JuypterWebSocketMessageExecuteResultContent {
   data: { [key: string]: any };
   metadata?: { [key: string]: any };
@@ -70,10 +64,6 @@ interface JuypterWebSocketMessageExecuteResultContent {
 interface JupyterWebSocketMessageInputRequestContent {
   prompt: string;
   password: boolean;
-}
-
-interface JupyterWebSocketMessageInputReplyContent {
-  value: string;
 }
 
 interface JupyterWebSocketMessageStreamResultContent {
@@ -142,8 +132,8 @@ export class JupyterNotebook {
   }
 
   private connect(): Promise<void> {
-    let url = Util.combineUrl(this.m_conn.baseUrl, 'api/sessions');
-    let sessionCreationInfo = {
+    const url = Util.combineUrl(this.m_conn.baseUrl, 'api/sessions');
+    const sessionCreationInfo = {
       path: this.m_path,
       type: 'notebook',
       name: '',
@@ -185,7 +175,7 @@ export class JupyterNotebook {
             this.m_channelSessionId,
         );
         Util.log('WebSocket url:' + wsUrl);
-        return new Promise<void>((resolve, reject) => {
+        return new Promise<void>((resolve) => {
           this.m_ws = new WebSocket(wsUrl);
           this.m_ws.onopen = () => {
             Util.log('onopen');
@@ -195,7 +185,7 @@ export class JupyterNotebook {
             Util.log('onmessage');
             if (typeof e.data === 'string') {
               Util.log(e.data);
-              let msg: JupyterWebSocketMessage = JSON.parse(e.data);
+              const msg: JupyterWebSocketMessage = JSON.parse(e.data);
               this.handleWebSocketMessage(msg);
             } else {
               Util.log('unknown message');
@@ -220,7 +210,7 @@ export class JupyterNotebook {
 
   executeCode(code: string): Promise<any> {
     return this.ensureConnected().then(() => {
-      var content = {
+      const content = {
         code: code,
         silent: false,
         store_history: true,
@@ -229,8 +219,8 @@ export class JupyterNotebook {
         stop_on_error: true,
       };
 
-      let p = new Promise<string>((resolve, reject) => {
-        let msgId = this.sendShellMessage('execute_request', content, null);
+      const p = new Promise<string>((resolve, reject) => {
+        const msgId = this.sendShellMessage('execute_request', content, null);
         this.m_executePromiseMap[msgId] = { resolve: resolve, reject: reject };
       });
 
@@ -239,8 +229,8 @@ export class JupyterNotebook {
   }
 
   private sendShellMessage(msgType: string, content: any, metadata: any): string {
-    let msg = this.buildMessage('shell', msgType, content, metadata);
-    let stringMessage = JSON.stringify(msg);
+    const msg = this.buildMessage('shell', msgType, content, metadata);
+    const stringMessage = JSON.stringify(msg);
     Util.log('sending:' + stringMessage);
     this.m_ws.send(stringMessage);
     return msg.msg_id;
@@ -252,8 +242,8 @@ export class JupyterNotebook {
     content: any,
     metadata: any,
   ): JupyterWebSocketMessage {
-    let msgId = Util.uuid();
-    var msg = {
+    const msgId = Util.uuid();
+    const msg = {
       header: {
         msg_id: msgId,
         username: 'username',
@@ -287,9 +277,9 @@ export class JupyterNotebook {
 
   private handleShellReply(msg: JupyterWebSocketMessage) {
     if (msg.msg_type == JupyterWebSocketMessageType.execute_reply) {
-      let content: JupyterWebSocketMessageExecuteReplyContent = msg.content;
-      let parentMsgId = msg.parent_header.msg_id;
-      let p = this.m_executePromiseMap[parentMsgId];
+      const content: JupyterWebSocketMessageExecuteReplyContent = msg.content;
+      const parentMsgId = msg.parent_header.msg_id;
+      const p = this.m_executePromiseMap[parentMsgId];
       if (p) {
         delete this.m_executePromiseMap[parentMsgId];
         if (content.status == JupyterWebSocketMessageExecuteReplyContentStatus.ok) {
@@ -307,10 +297,10 @@ export class JupyterNotebook {
 
   private handleIopubMessage(msg: JupyterWebSocketMessage) {
     if (msg.msg_type === JupyterWebSocketMessageType.execute_result) {
-      let content: JuypterWebSocketMessageExecuteResultContent = msg.content;
-      let text = content.data['text/plain'];
-      let parentMsgId = msg.parent_header.msg_id;
-      let p = this.m_executePromiseMap[parentMsgId];
+      const content: JuypterWebSocketMessageExecuteResultContent = msg.content;
+      const text = content.data['text/plain'];
+      const parentMsgId = msg.parent_header.msg_id;
+      const p = this.m_executePromiseMap[parentMsgId];
       Util.log('ExecuteResult=' + text);
       if (p) {
         delete this.m_executePromiseMap[parentMsgId];
@@ -330,25 +320,25 @@ export class JupyterNotebook {
   }
 
   private handleInputRequest(msg: JupyterWebSocketMessage) {
-    let content: JupyterWebSocketMessageInputRequestContent = msg.content;
+    const content: JupyterWebSocketMessageInputRequestContent = msg.content;
     const officeApiPrefix = '[Office-Api]';
     if (
       typeof content.prompt === 'string' &&
       content.prompt.substr(0, officeApiPrefix.length) === officeApiPrefix
     ) {
-      let requestInfoStr = content.prompt.substr(officeApiPrefix.length);
-      let requestInfo: OfficeExtension.HttpRequestInfo = JSON.parse(requestInfoStr);
+      const requestInfoStr = content.prompt.substr(officeApiPrefix.length);
+      const requestInfo: OfficeExtension.HttpRequestInfo = JSON.parse(requestInfoStr);
       OfficeExtension.HttpUtility.sendLocalDocumentRequest(requestInfo).then(
         (responseInfo: OfficeExtension.HttpResponseInfo) => {
-          let responseInfoStr = JSON.stringify(responseInfo);
-          let respMsg = this.buildMessage(
+          const responseInfoStr = JSON.stringify(responseInfo);
+          const respMsg = this.buildMessage(
             'stdin',
             'input_reply',
             { value: responseInfoStr },
             null,
           );
           respMsg.parent_header = msg.header;
-          let strRespMsg = JSON.stringify(respMsg);
+          const strRespMsg = JSON.stringify(respMsg);
           Util.log('sending:' + strRespMsg);
           this.m_ws.send(strRespMsg);
         },
@@ -457,15 +447,15 @@ export class Util {
     /**
      * http://www.ietf.org/rfc/rfc4122.txt
      */
-    var s = [];
-    var hexDigits = '0123456789abcdef';
-    for (var i = 0; i < 32; i++) {
+    const s = [];
+    const hexDigits = '0123456789abcdef';
+    for (let i = 0; i < 32; i++) {
       s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
     }
     s[12] = '4'; // bits 12-15 of the time_hi_and_version field to 0010
     s[16] = hexDigits.substr((s[16] & 0x3) | 0x8, 1); // bits 6-7 of the clock_seq_hi_and_reserved to 01
 
-    var uuid = s.join('');
+    const uuid = s.join('');
     return uuid;
   }
 
