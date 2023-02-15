@@ -129,7 +129,7 @@ export function showSplashScreen(subtitle: string, onClick?: () => void) {
     });
   }
 
-  (document.getElementById('root') ).style.display = 'none';
+  document.getElementById('root').style.display = 'none';
 
   /// //////////////////////////////////
   // Helper:
@@ -152,7 +152,7 @@ export function hideSplashScreen() {
   const loadingIndicator = document.getElementById('loading')!;
   loadingIndicator.style.visibility = 'hidden';
 
-  const rootElement = document.getElementById('root') ;
+  const rootElement = document.getElementById('root');
   if (rootElement) {
     rootElement.style.display = '';
   }

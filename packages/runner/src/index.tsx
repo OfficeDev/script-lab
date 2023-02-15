@@ -14,7 +14,7 @@ window.onerror = error => invokeGlobalErrorHandler(error);
 
 (async () => {
   try {
-    ReactDOM.render(<Pages />, document.getElementById('root') );
+    ReactDOM.render(<Pages />, document.getElementById('root'));
   } catch (e) {
     invokeGlobalErrorHandler(e);
   }

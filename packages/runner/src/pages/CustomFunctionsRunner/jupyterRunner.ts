@@ -1,6 +1,5 @@
 import { JupyterNotebook, PythonCodeHelper } from 'common/lib/utilities/Jupyter';
 
-
 declare namespace CustomFunctions {
   function setCustomFunctionInvoker(invoker: ICustomFunctionInvoker): void;
 

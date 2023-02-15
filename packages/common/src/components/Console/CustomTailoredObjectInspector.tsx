@@ -10,8 +10,8 @@ export interface IProps {
 class CustomTailoredObjectInspector extends PureComponent<IProps> {
   render() {
     const { obj } = this.props;
-    if (obj && (obj ).toJSON) {
-      return <ObjectInspector data={(obj ).toJSON()} />;
+    if (obj && obj.toJSON) {
+      return <ObjectInspector data={obj.toJSON()} />;
     } else if (
       typeof OfficeExtension !== 'undefined' &&
       obj instanceof OfficeExtension.Error

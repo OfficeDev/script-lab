@@ -1,6 +1,5 @@
 import * as log from '../log';
 
-
 declare namespace OfficeExtension {
   interface HttpRequestInfo {
     /** HTTP request method */
@@ -175,7 +174,7 @@ export class JupyterNotebook {
             this.m_channelSessionId,
         );
         Util.log('WebSocket url:' + wsUrl);
-        return new Promise<void>((resolve) => {
+        return new Promise<void>(resolve => {
           this.m_ws = new WebSocket(wsUrl);
           this.m_ws.onopen = () => {
             Util.log('onopen');

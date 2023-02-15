@@ -6,7 +6,7 @@ export const PACKAGE_VERSIONS = {
 export const HYPHENATED_PACKAGE_VERSIONS: typeof PACKAGE_VERSIONS = (() => {
   const result = {} as any;
   for (const key in PACKAGE_VERSIONS) {
-    result[key] = hyphenate((PACKAGE_VERSIONS as any)[key] );
+    result[key] = hyphenate((PACKAGE_VERSIONS as any)[key]);
   }
   return result;
 })();
