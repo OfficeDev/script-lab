@@ -45,7 +45,7 @@
   },
   "devDependencies": {
     "@types/clipboard": "^2.0.1",
-    "@types/jest": "^23.3.9",
+    "@types/jest": "^26.0.14",
     "@types/js-yaml": "^3.11.2",
     "@types/lodash": "^4.14.118",
     "@types/node": "^10.0.9",
@@ -64,13 +64,13 @@
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-react": "^7.32.2",
     "fs-extra": "^7.0.1",
-    "jest": "^24.9.0",
+    "jest": "^26.6.3",
     "prettier": "^1.15.2",
     "react-scripts": "^3.1.2",
     "react-testing-library": "^5.3.0",
     "redux-devtools": "^3.4.1",
     "shelljs": "^0.8.5",
-    "ts-jest": "^24.3.0",
+    "ts-jest": "^26.5.6",
     "ts-node": "^7.0.1"
   },
   "browserslist": [
