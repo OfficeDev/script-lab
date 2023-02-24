@@ -48,7 +48,7 @@
     "@types/jest": "^26.0.14",
     "@types/js-yaml": "^3.11.2",
     "@types/lodash": "^4.14.118",
-    "@types/node": "^10.0.9",
+    "@types/node": "^10.9.4",
     "@types/office-runtime": "^1.0.17",
     "@types/prettier": "^1.13.2",
     "@types/query-string": "^5.1.0",
