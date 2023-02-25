@@ -42,6 +42,7 @@
     "@types/jest": "^26.0.14",
     "@types/lodash": "^4.14.118",
     "@types/loglevel": "^1.5.3",
+    "@types/node": "^10.9.4",
     "@types/react": "^16.4.14",
     "@types/react-dom": "^16.0.7",
     "@types/styled-components": "^4.1.0",

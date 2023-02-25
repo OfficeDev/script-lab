@@ -39,5 +39,8 @@
     "prettier": "^1.15.2",
     "shelljs": "^0.8.5",
     "ts-node": "^7.0.1"
+  },
+  "resolutions": {
+    "htmlparser2": "~7.0.0"
   }
 }
