@@ -23,7 +23,7 @@
     "postinstall": "ts-node --project ../../scripts/tsconfig.json scripts/postinstall.ts",
     "start": "react-scripts start",
     "build": "export NODE_OPTIONS=--openssl-legacy-provider && export CI=false && react-scripts build",
-    "cibuild": "yarn build",
+    "cibuild": "npm run build",
     "test": "react-scripts test --env=jsdom",
     "citest": "echo 'skipping tests'",
     "lint": "eslint -c .eslintrc.js --ext .ts,.tsx ./src"

@@ -13,16 +13,15 @@ There are several ways in which you can contribute to the project:
 - Download & Install Visual Studio Code. <https://code.visualstudio.com/>.
 - Install the recommended VS extensions (which you should be prompted for when you open the repo).
 - Download & install Node (version v10+). <https://nodejs.org/en>.
-- Download & install Yarn, for use as an alternative for `npm install`. Download from <https://yarnpkg.com/en/docs/install> (or bootstrap Yarn installation by running once `npm install -g yarn`). The documentation also describes why Yarn is preferable to `npm install`.
 
-Note: the installation of Node JS and Yarn add paths to your operating system's PATH variable. Therefore, in some cases you may log off and log in from your System to get Node JS and Yarn work withing Visual Studio Code.
+Note: the installation of Node JS add paths to your operating system's PATH variable. Therefore, in some cases you may log off and log in from your System to get Node JS and npm run to work within Visual Studio Code.
 
 ## Build steps:
 
 From the root of the repo:
 
-1. `yarn install` (or just `yarn`). **Be sure to run this after every pull/merge!**
-2. `yarn start`
+1. `npm install` **Be sure to run this after every pull/merge!**
+2. `npm run start`
 
 Your default browser will launch almost immediately. However, note that **it will take some 30-60 seconds before the website is actually up and running.**
 
@@ -61,7 +60,7 @@ You can safely ignore these -- those won't show up to users on the production si
 
 For testing in the web browser (whether standalone or in Office Online) in Chrome, you can bypass the "insecure localhost" by enabling this setting: <chrome://flags/#allow-insecure-localhost>
 
-For testing on a PC version of Office, you _could_ trust the certificates from within Internet Explorer. However, new certs get generated every time that you run `yarn start`, so trusting them over and over again is tedious. If you're only interested in making changes to code that runs inside the taskpanes (which is what you will be doing 99% of the time for any Editor/Runner changes, unless you're debugging something to do with "functions.html" and the other ribbon buttons), you can just click through the "This site is not secure" warning and choose "Go on to the website (not recommended)" option.
+For testing on a PC version of Office, you _could_ trust the certificates from within Internet Explorer. However, new certs get generated every time that you run `npm run start`, so trusting them over and over again is tedious. If you're only interested in making changes to code that runs inside the taskpanes (which is what you will be doing 99% of the time for any Editor/Runner changes, unless you're debugging something to do with "functions.html" and the other ribbon buttons), you can just click through the "This site is not secure" warning and choose "Go on to the website (not recommended)" option.
 
 ![Proceed through "This site is not secure"](.github/images/site-not-secure.png).
 
@@ -79,8 +78,8 @@ Note that just like described in the section above, you will need to bypass the 
 
 ## [Optional] Testing GitHub auth locally (on localhost)
 
-1. Run `yarn generate:github` and follow the instructions there.
-2. If your local website is already running, you will need to re-start it (re-`yarn start`)
+1. Run `npm run generate:github` and follow the instructions there.
+2. If your local website is already running, you will need to re-start it (re-`npm run start`)
 
 # Manual-testing scenarios
 
@@ -89,7 +88,7 @@ Please see "[TESTING.md](TESTING.md)".
 # Dev tips & tricks:
 
 - `packages/common`:
-  - When adding code to the `packages/common`, run `yarn workspace common build:package` in order to get Intellisense and the compiler to pick it up -- or just have `yarn start` already running and watching. In VS Code, you may need to `F12` into the file references before Intellisense is able to see the updated contents.
-  - If typescript is failing to build with errors about missing values in common, you may be in a stale state. Try running `yarn clean` then `yarn install` to force rebuild the common package.
+  - When adding code to the `packages/common`, run `npm run build:package --workspace=common` in order to get Intellisense and the compiler to pick it up -- or just have `npm run start` already running and watching. In VS Code, you may need to `F12` into the file references before Intellisense is able to see the updated contents.
+  - If typescript is failing to build with errors about missing values in common, you may be in a stale state. Try running `npm run clean` then `npm install` to force rebuild the common package.
 - `packages/server`:
   - To debug server code, navigate to `chrome://inspect/` and choose your server node process from there. Note that if your code changes and `nodemon` reloads the server, you will need to close the Inspector tool and re-open again from the link above.

@@ -5,7 +5,7 @@
   },
   "editor.formatOnSave": true,
   "editor.bracketPairColorization.enabled": true,
-  "editor.guides.bracketPairs":"active",
+  "editor.guides.bracketPairs": "active",
   "typescript.tsdk": "node_modules\\typescript\\lib",
   "cSpell.words": [
     "Addin",
@@ -97,8 +97,7 @@
     "**/node_modules/**",
     "packages/editor/src/interfaces/monaco.d.ts",
     "**/packages/editor/src/utils/custom-functions/samples/**",
-    "package.json",
-    "yarn.lock"
+    "package.json"
   ],
   "cSpell.flagWords": ["hte"]
 }

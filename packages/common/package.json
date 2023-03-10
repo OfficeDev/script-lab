@@ -24,14 +24,14 @@
     "typescript": "^3.2.4"
   },
   "scripts": {
-    "postinstall": "yarn build:package",
-    "build": "yarn build:package",
+    "postinstall": "npm run build:package",
+    "build": "npm run build:package",
     "build:package": "tsc",
-    "cibuild": "yarn build --outDir build",
+    "cibuild": "npm run build --outDir build",
     "start": "tsc --watch",
     "lint": "eslint -c .eslintrc.js --ext .ts,.tsx ./src",
     "test": "jest --env=jsdom",
-    "citest": "yarn test",
+    "citest": "npm run test",
     "test:watch": "jest --env=jsdom --watch"
   },
   "devDependencies": {

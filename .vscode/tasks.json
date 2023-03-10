@@ -1,6 +1,6 @@
 {
   "label": "TypeScript compile",
   "type": "shell",
-  "command": "yarn tsc ${file}",
+  "command": "npm run tsc ${file}",
   "problemMatcher": ["$tsc"]
 }
