@@ -4,7 +4,8 @@
   "scripts": {
     "start": "nodemon -e ts -w ./src -x npm run start:serve",
     "start:serve": "ts-node --files --inspect -- src/index.ts",
-    "build": "export NODE_OPTIONS=--openssl-legacy-provider && webpack-cli --mode production",
+    "build_legacy": "export NODE_OPTIONS=--openssl-legacy-provider && webpack-cli --mode production",
+    "build": "webpack-cli --mode production",
     "cibuild": "npm run build",
     "lint": "eslint -c .eslintrc.js --ext .ts,.tsx ./src",
     "test": "echo 'no tests'",

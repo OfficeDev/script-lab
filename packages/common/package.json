@@ -27,7 +27,7 @@
     "postinstall": "npm run build:package",
     "build": "npm run build:package",
     "build:package": "tsc",
-    "cibuild": "npm run build --outDir build",
+    "cibuild": "tsc --outDir build",
     "start": "tsc --watch",
     "lint": "eslint -c .eslintrc.js --ext .ts,.tsx ./src",
     "test": "jest --env=jsdom",

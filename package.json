@@ -43,12 +43,13 @@
     "ts-node": "^7.0.1"
   },
   "resolutions": {
-    "htmlparser2": "~7.0.0"
+    "htmlparser2": "7.0.0"
   },
   "overrides": {
     "@types/express" : {
         "@types/express-serve-static-core": "4.17.18"
     },
-    "@types/babel__traverse":"7.0.3"
+    "@types/babel__traverse":"7.0.3",
+    "htmlparser2": "7.0.0"
   }
 }
