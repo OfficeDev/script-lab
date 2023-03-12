@@ -58,8 +58,6 @@
     "@types/uuid": "^3.4.4",
     "@typescript-eslint/eslint-plugin": "^5.52.0",
     "@typescript-eslint/parser": "^5.52.0",
-    "enzyme": "^3.4.1",
-    "enzyme-adapter-react-16": "^1.2.0",
     "eslint": "^8.34.0",
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-react": "^7.32.2",

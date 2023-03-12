@@ -38,8 +38,6 @@
     "@types/office-js": "^0.0.148",
     "@types/clipboard": "^2.0.1",
     "@types/color": "^3.0.0",
-    "@types/enzyme": "^3.1.15",
-    "@types/enzyme-adapter-react-16": "^1.0.3",
     "@types/jest": "^26.0.14",
     "@types/lodash": "^4.14.118",
     "@types/loglevel": "^1.5.3",
@@ -49,8 +47,6 @@
     "@types/styled-components": "^4.1.0",
     "@typescript-eslint/eslint-plugin": "^5.52.0",
     "@typescript-eslint/parser": "^5.52.0",
-    "enzyme": "^3.7.0",
-    "enzyme-adapter-react-16": "^1.7.0",
     "eslint": "^8.34.0",
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-react": "^7.32.2",
@@ -65,6 +61,7 @@
     "not op_mini all"
   ],
   "overrides": {
-    "@types/babel__traverse":"7.0.3"
+    "@types/babel__traverse":"7.0.3",
+    "htmlparser2":"7.0.0"
   }
 }
