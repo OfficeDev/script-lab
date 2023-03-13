@@ -7,23 +7,25 @@
   ],
   "scripts": {
     "clean": "ts-node --project scripts/tsconfig.json scripts/clean.ts",
-    "build:common": "yarn workspace common build:package",
-    "postinstall": "yarn clean && yarn postinstall:iterate",
-    "postinstall:iterate": "yarn workspace common postinstall && yarn workspace editor postinstall && yarn workspace runner postinstall",
+    "build:common": "npm run build:package --workspace=common",
+    "postinstall": "npm run clean && npm run postinstall:iterate",
+    "postinstall:iterate": "npm run postinstall --workspace=common && npm run postinstall --workspace=editor && npm run postinstall --workspace=runner",
     "pre-ci": "ts-node --project scripts/tsconfig.json scripts/pre-ci.ts",
-    "build": "cd packages/editor && yarn build && cd ../server && yarn build",
+    "build": "cd packages/editor && npm run build && cd ../server && npm run build",
+    "style-check": "npm run prettier",
+    "style": "npm run prettier:write",
     "prettier": "prettier --list-different \"./**/*.@(ts|tsx|js|jsx|html)\"",
     "prettier:write": "prettier --write \"./**/*.@(ts|tsx|js|jsx|html)\"",
     "deploy": "jest --config scripts/deploy/jest.config.js && ts-node --project scripts/tsconfig.json scripts/deploy/index.ts",
-    "common": "yarn workspace common start",
-    "editor": "yarn workspace editor start",
-    "runner": "yarn workspace runner start",
-    "server": "yarn workspace server start",
+    "common": "npm run start --workspace=common",
+    "editor": "npm run start --workspace=editor",
+    "runner": "npm run start --workspace=runner",
+    "server": "npm run start --workspace=server",
     "start": "npm-run-all --parallel common editor runner server",
-    "common:test": "yarn workspace common test",
-    "editor:test": "yarn workspace editor test",
-    "runner:test": "yarn workspace runner test",
-    "server:test": "yarn workspace server test",
+    "common:test": "npm run test --workspace=common",
+    "editor:test": "npm run test --workspace=editor",
+    "runner:test": "npm run test --workspace=runner",
+    "server:test": "npm run test --workspace=server",
     "test": "npm-run-all --parallel common:test editor:test runner:test server:test",
     "tscAll": "ts-node scripts/compile.all.ts",
     "generate:github": "ts-node --project scripts/tsconfig.json scripts/generate.github.auth.ts",
@@ -41,6 +43,13 @@
     "ts-node": "^7.0.1"
   },
   "resolutions": {
-    "htmlparser2": "~7.0.0"
+    "htmlparser2": "7.0.0"
+  },
+  "overrides": {
+    "@types/express" : {
+        "@types/express-serve-static-core": "4.17.18"
+    },
+    "@types/babel__traverse":"7.0.3",
+    "htmlparser2": "7.0.0"
   }
 }

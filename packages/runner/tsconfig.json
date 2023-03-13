@@ -18,7 +18,8 @@
     "alwaysStrict": true,
     "strictFunctionTypes": true,
     "allowJs": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "importHelpers": true
   },
   "include": [
     "./src/**/*",

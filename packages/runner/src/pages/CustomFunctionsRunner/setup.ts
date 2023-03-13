@@ -81,7 +81,7 @@ function addHeartbeat() {
 async function initializeRunnableSnippets(
   fullPayload: ICustomFunctionsIframeRunnerOnLoadPayload,
 ) {
-  return new Promise(resolve =>
+  return new Promise<void>(resolve =>
     tryCatch(() => {
       let successfulRegistrationsCount = 0;
 

@@ -24,32 +24,29 @@
     "typescript": "^3.2.4"
   },
   "scripts": {
-    "postinstall": "yarn build:package",
-    "build": "yarn build:package",
+    "postinstall": "npm run build:package",
+    "build": "npm run build:package",
     "build:package": "tsc",
-    "cibuild": "yarn build --outDir build",
+    "cibuild": "tsc --outDir build",
     "start": "tsc --watch",
     "lint": "eslint -c .eslintrc.js --ext .ts,.tsx ./src",
     "test": "jest --env=jsdom",
-    "citest": "yarn test",
+    "citest": "npm run test",
     "test:watch": "jest --env=jsdom --watch"
   },
   "devDependencies": {
+    "@types/office-js": "^0.0.148",
     "@types/clipboard": "^2.0.1",
     "@types/color": "^3.0.0",
-    "@types/enzyme": "^3.1.15",
-    "@types/enzyme-adapter-react-16": "^1.0.3",
     "@types/jest": "^26.0.14",
     "@types/lodash": "^4.14.118",
     "@types/loglevel": "^1.5.3",
-    "@types/node": "^10.9.4",
+    "@types/node": "^16.11.7",
     "@types/react": "^16.4.14",
     "@types/react-dom": "^16.0.7",
     "@types/styled-components": "^4.1.0",
     "@typescript-eslint/eslint-plugin": "^5.52.0",
     "@typescript-eslint/parser": "^5.52.0",
-    "enzyme": "^3.7.0",
-    "enzyme-adapter-react-16": "^1.7.0",
     "eslint": "^8.34.0",
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-react": "^7.32.2",
@@ -62,5 +59,9 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "overrides": {
+    "@types/babel__traverse": "7.0.3",
+    "htmlparser2": "7.0.0"
+  }
 }

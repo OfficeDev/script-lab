@@ -1,5 +1,4 @@
 import path from 'path';
-import shell from 'shelljs';
 import fs from 'fs-extra';
 
 import { stripSpaces } from 'common/lib/utilities/string';
