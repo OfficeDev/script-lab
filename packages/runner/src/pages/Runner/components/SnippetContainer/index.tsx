@@ -158,7 +158,7 @@ class Snippet extends React.Component<IProps, IState> {
       return errorTemplate({
         ...sanitizeObject({
           title: error instanceof SyntaxError ? 'Syntax Error' : 'Unknown Error',
-          details: error.message,
+          details: (error as { message: string }).message,
         }),
         usePreBlock: true,
       });
