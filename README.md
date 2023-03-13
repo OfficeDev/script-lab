@@ -1,10 +1,10 @@
-[![Build Status](https://office.visualstudio.com/OC/_apis/build/status/OfficeDev.script-lab?branchName=master)](https://github.com/OfficeDev/script-lab) [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier) [![tested with jest](https://img.shields.io/badge/tested_with-jest-99424f.svg)](https://github.com/facebook/jest) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](CONTRIBUTING.md)
+[![Build Status](https://office.visualstudio.com/OC/_apis/build/status/OfficeDev.script-lab?branchName=master)](https://github.com/OfficeDev/script-lab) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](CONTRIBUTING.md)
 
 # Script Lab, a Microsoft Garage project
 
 Experiment with the Office JavaScript API without ever leaving Excel, Outlook, Word, or PowerPoint! **Get [Script Lab](https://appsource.microsoft.com/product/office/WA104380862) in Excel, Word, and PowerPoint, or [Script Lab for Outlook](https://appsource.microsoft.com/product/office/WA200001603), free from Microsoft AppSource**.
 
-> **Note**: Script Lab was rewritten from the ground up in 2018 on a brand-new technology stack, including React and Fabric React. For the older version of Script Lab 2017, see more [below](#2017).
+> **Note**: Script Lab was rewritten from the ground up in 2018 on a brand-new technology stack, including React and Fabric React. Learn more about the [older version of Script Lab 2017](#2017).
 
 ## Topics
 
@@ -22,8 +22,6 @@ Experiment with the Office JavaScript API without ever leaving Excel, Outlook, W
   - [Articles & FAQs](#articles--faqs)
   - [External blog posts & media coverage](#external-blog-posts--media-coverage)
   - [Build Status](#build-status)
-
-<a id="what-is"></a>
 
 ## What is Script Lab?
 
@@ -49,8 +47,6 @@ Here's a 1-minute teaser video to give you a taste:
 
 [![Script Lab teaser video showing Script Lab being used in Excel to make charts, Word, and Powerpoint Online.](.github/images/screenshot-wide-youtube.png 'Script Lab teaser video')](https://aka.ms/scriptlabvideo)
 
-<a id="get-started"></a>
-
 ## Get Started
 
 The easiest way to try Script Lab is in Excel with the tutorial workbook that walks you through the tool in a few steps. You can get it here: [script-lab-tutorial.xlsx](https://script-lab.azureedge.net/assets/documents/script-lab-tutorial.xlsx)
@@ -61,8 +57,6 @@ This 10-minute demo explains how to use the main features:
 
 [![Michael Saunders demos Script Lab](.github/images/demoscreenshot-youtube.png 'Michael Saunders demos Script Lab')](https://youtu.be/V85_97G7VA4)
 
-<a id="import"></a>
-
 ## Import someone else's snippet, or export your own
 
 Script Lab is built around sharing. If someone gives you a URL to a GitHub GIST, simply open Script Lab, use the hamburger menu at the top left to see the menu, and choose "Import" category (either on the left or top, depending on the available screen space). Then, enter the URL of the GIST, and click the "Import" button at the bottom of the screen. In just these few clicks, you will be able to view and run someone else's snippet!
@@ -72,8 +66,6 @@ Script Lab is built around sharing. If someone gives you a URL to a GitHub GIST,
 Conversely, to share _your_ snippet with someone, choose the "Share" menu within a particular snippet. You can share as a public or private [GitHub Gist](https://help.github.com/articles/about-gists/), or you can copy the entire snippet metadata to the clipboard, and share it from there.
 
 ![Share menu with dropdown options: public gist, secret gist, or copy to clipboard](.github/images/share.jpg)
-
-<a id="report-bug"></a>
 
 ## Report a bug, or suggest a feature
 
@@ -99,8 +91,6 @@ If you encounter issues or need one of the few features that haven't been ported
 
 The original repo of the 2017 version, now in a mostly-archival state, can be found at <https://github.com/OfficeDev/script-lab-2017>.
 
-<a id="office-2013"></a>
-
 ## Use Script Lab with older Office versions (Office 2013)
 
 Office 2013 has several limitations compared to more recent versions.
@@ -112,28 +102,22 @@ Second, Office 2013 (and Office 2016 RTM, if you don't have a Microsoft 365 subs
 - To **Code**, select the **INSERT** tab and choose **My Add-ins**, then insert Script Lab.
 - To **Run** a snippet, click the small **Run** triangle icon at the top of the Script Lab code pane.
 
-<a id="up-to-date"></a>
-
 ## Stay up-to-date
 
 - Follow [@OfficeDev](https://twitter.com/OfficeDev) on Twitter
 - Follow [Script Lab](https://medium.com/script-lab) articles on [medium.com](https://medium.com/script-lab)
 - Join our Office Developer program at [developer.microsoft.com](https://developer.microsoft.com/microsoft-365/dev-program)
 
-<a id="contribute"></a>
-
 ## Contribute to Script Lab
 
 There are a bunch of ways you can contribute to Script Lab:
 
-- File bugs & suggestions (see more in "[Report a bug, or suggest a feature](#report-bug)" above).
+- File bugs & suggestions (see more in "[Report a bug, or suggest a feature](#Report-a-bug-or-suggest-a-feature)" above).
 - Contribute new samples, or improve existing one. Please submit a pull request to the [office-js-snippets repo](https://github.com/OfficeDev/office-js-snippets/pulls); more info in the [README](https://github.com/OfficeDev/office-js-snippets/blob/master/README.md) of that repo.
-- Spread the word! Whether through writing a blog post ([examples](#external-posts)), recording a video, tweeting about us, or sharing snippets with colleagues or the [StackOverflow](https://stackoverflow.com/questions/tagged/office-js) community -- we want more of the world to use Script Lab!
+- Spread the word! Whether through writing a blog post ([examples](#external-media-coverage)), recording a video, tweeting about us, or sharing snippets with colleagues or the [StackOverflow](https://stackoverflow.com/questions/tagged/office-js) community -- we want more of the world to use Script Lab!
 - Help improve the documentation. If you feel like this README or the [CONTRIBUTING.md doc](CONTRIBUTING.md) could use more details, please send a pull request!
 
 Finally, if you want to contribute code (bug fixes, features, localization, etc.), please see [CONTRIBUTING.md](CONTRIBUTING.md) to get you up and running with a local copy of Script Lab -- and then send us a pull request.
-
-<a id="rate-and-review"></a>
 
 ## Rate and review
 
@@ -141,17 +125,13 @@ Leave a star-rating and (optionally) a review blurb for Script Lab on the [Offic
 
 Of course, we'd prefer that if you have issues you [report them on GitHub](https://github.com/OfficeDev/script-lab/issues/new) instead, but you're free to leave any review comments you wish.
 
-<a id="articles"></a>
-
 ## Articles & FAQs
 
 - Announcing Script Lab React (January 1, 2019): [Official blog post](https://developer.microsoft.com/office/blogs/announcing-script-lab-react/)
 - Script Lab overview: ["You can write JavaScript in Excel!"](https://medium.com/script-lab/you-can-write-javascript-in-excel-4ba588a948bd)
 - Project history & the technology behind it: [Episode 127 on the Office 365 Developer Podcast](https://www.microsoft.com/microsoft-365/blog/2017/04/20/episode-127-new-script-lab-office-add-michael-zlatkovsky-bhargav-krishna-office-365-developer-podcast/)
 
-<a id="external-posts"></a>
-
-## External blog posts & media coverage
+## External media coverage
 
 - August 29, 2017: ["Start Developing in OfficeJS Today with Script Lab"](http://theofficecontext.com/2017/08/29/start-developing-in-officejs-today-with-script-lab/) _by David Craig at theofficecontext.com_
 - July 30, 2017: _[German]_ ["Eigene Script Lab Scripte in Office Online testen"](http://www.excel-ticker.de/eigene-script-lab-scripte-in-office-online-testen/). (Auto-translation: ["Test your own Script Lab scripts in Office Online"](http://www.microsofttranslator.com/bv.aspx?from=&to=en&a=http%3A%2F%2Fwww.excel-ticker.de%2Feigene-script-lab-scripte-in-office-online-testen%2F)) _by [Mourad Louha](https://twitter.com/maninweb)_
@@ -162,8 +142,8 @@ Of course, we'd prefer that if you have issues you [report them on GitHub](https
 
 ## Build Status
 
-| Branch     | Status                                                                                                                                                     | Runner                                                                      | Server                                                                                    | Storybook                                                                                      |
-| ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| Branch     | Status                                                                                                                                                       | Runner                                                                      | Server                                                                                    | Storybook                                                                                      |
+| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
 | master     | [![Build Status](https://office.visualstudio.com/OC/_apis/build/status/OfficeDev.script-lab?branchName=master)](https://github.com/OfficeDev/script-lab)     | [script-lab-react-alpha](https://script-lab-react-alpha.azurewebsites.net/) | [script-lab-react-runner-alpha](https://script-lab-react-runner-alpha.azurewebsites.net/) | [script-lab-react-server-alpha](https://script-lab-react-server-alpha.azurewebsites.net/hello) | [script-lab-react-storybook-alpha](https://script-lab-react-storybook-alpha.azurewebsites.net/) |
 | beta       | [![Build Status](https://office.visualstudio.com/OC/_apis/build/status/OfficeDev.script-lab?branchName=beta)](https://github.com/OfficeDev/script-lab)       | [script-lab-react-beta](https://script-lab-react-beta.azurewebsites.net/)   | [script-lab-react-runner-beta](https://script-lab-react-runner-beta.azurewebsites.net/)   | [script-lab-react-server-beta](https://script-lab-react-server-beta.azurewebsites.net/hello)   | [script-lab-react-storybook-beta](https://script-lab-react-storybook-beta.azurewebsites.net/) |
 | production | [![Build Status](https://office.visualstudio.com/OC/_apis/build/status/OfficeDev.script-lab?branchName=production)](https://github.com/OfficeDev/script-lab) | [script-lab-react](https://script-lab-react.azurewebsites.net/)             | [script-lab-react-runner](https://script-lab-react-runner.azurewebsites.net/)             | [script-lab-react-server](https://script-lab-react-server.azurewebsites.net/hello)             | [script-lab-react-storybook](https://script-lab-react-storybook.azurewebsites.net/) |
