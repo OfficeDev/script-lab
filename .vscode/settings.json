@@ -99,5 +99,7 @@
     "**/packages/editor/src/utils/custom-functions/samples/**",
     "package.json"
   ],
-  "cSpell.flagWords": ["hte"]
+  "cSpell.flagWords": [
+    "hte"
+  ]
 }
