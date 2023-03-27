@@ -72,7 +72,7 @@ class Snippet extends React.Component<IProps, IState> {
           const content = this.getContent(this.props);
 
           if (this.props.onRender) {
-            this.props.onRender!({ lastRendered, hasContent: content.length > 0 });
+            this.props.onRender({ lastRendered, hasContent: content.length > 0 });
           }
 
           return this.setState({
@@ -139,12 +139,12 @@ class Snippet extends React.Component<IProps, IState> {
       const inlineStyles = solution.files.find(file => file.name === 'index.css')!
         .content;
 
-      const inlineScript = compileTypeScript(script!.content);
+      const inlineScript = compileTypeScript(script.content);
 
       const libraries = findLibraries(solution)!.content;
       const { linkReferences, scriptReferences } = processLibraries(
         libraries,
-        Utilities.host !== HostType.WEB /*isInsideOffice*/,
+        Utilities.host !== HostType.WEB /* isInsideOffice*/,
       );
 
       return runTemplate({
@@ -158,7 +158,7 @@ class Snippet extends React.Component<IProps, IState> {
       return errorTemplate({
         ...sanitizeObject({
           title: error instanceof SyntaxError ? 'Syntax Error' : 'Unknown Error',
-          details: error.message,
+          details: (error as { message: string }).message,
         }),
         usePreBlock: true,
       });

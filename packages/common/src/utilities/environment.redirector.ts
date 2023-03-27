@@ -13,6 +13,7 @@ const AMOUNT_OF_TIME_TO_WAIT_ON_CLICK_TO_CANCEL = 4000;
 
 /**
  * Redirects if needs to go to a different environment.
+ *
  * @param isCancelable - set to true if should allow cancelling the redirect
  *    if the redirect happens too soon after a previous one (this way,
  *    if localhost is down, can just re-open page and see cancel option).
@@ -149,7 +150,7 @@ export async function redirectEditorToOtherEnvironment(configName: string) {
   }
 }
 
-///////////////////////////////////////
+/// ////////////////////////////////////
 
 async function considerIfReallyWantToRedirect({
   isCancelable,

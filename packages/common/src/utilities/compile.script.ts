@@ -12,18 +12,18 @@ export default function compileScript(content: string) {
     },
   });
 
-  if (result.diagnostics!.length) {
+  if (result.diagnostics.length) {
     throw new SyntaxError(
-      result
-        .diagnostics!.map(item => {
+      result.diagnostics
+        .map(item => {
           const upThroughError = content.substr(0, item.start);
-          const afterError = content.substr(item.start! + 1);
+          const afterError = content.substr(item.start + 1);
           const lineNumber = upThroughError.split('\n').length;
           const startIndexOfThisLine = upThroughError.lastIndexOf('\n');
           const lineText = content
             .substring(
               startIndexOfThisLine,
-              item.start! + Math.max(afterError.indexOf('\n'), 0),
+              item.start + Math.max(afterError.indexOf('\n'), 0),
             )
             .trim();
 

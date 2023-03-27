@@ -191,7 +191,7 @@ export class App extends React.Component<{}, IState> {
                 refresh={this.softRefresh}
                 hardRefresh={this.reloadPage}
                 goBack={
-                  !!queryString.parse(window.location.search).backButton
+                  queryString.parse(window.location.search).backButton
                     ? () => (window.location.href = currentEditorUrl)
                     : undefined
                 }
@@ -234,7 +234,7 @@ export class App extends React.Component<{}, IState> {
     );
   }
 
-  /////////////////////////
+  /// //////////////////////
 
   // Note: need a separate helper function rather than re-using
   // the "reloadPage", because that one is used by a click handler --
@@ -270,7 +270,7 @@ export class App extends React.Component<{}, IState> {
 
     const newOfficeJsUrl = processLibraries(
       librariesFile.content,
-      Utilities.host !== HostType.WEB /*isInsideOffice*/,
+      Utilities.host !== HostType.WEB /* isInsideOffice*/,
     ).officeJs;
 
     const isMismatched = (() => {
@@ -292,7 +292,7 @@ export class App extends React.Component<{}, IState> {
       }
 
       this.isTransitioningAwayFromPage = true;
-      this.reloadPageWithDifferentOfficeJsUrl(newOfficeJsUrl!);
+      this.reloadPageWithDifferentOfficeJsUrl(newOfficeJsUrl);
     }
   }
 }
