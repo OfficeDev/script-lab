@@ -37,3 +37,14 @@ Completely deploy a change to production **before** starting a new deployment.
 1. merge beta into production
    - this stages for production deployment
    - test that everything still works
+
+### Merge
+
+1. Select the branch to merge into (`beta` or `production`).
+1. Click `Contribute` and select `Open Pull Request`
+1. Select the branch to merge into on the left side (`beta` or `production`).
+1. Select the branch to merge from on the right side (`master` or `beta`).
+1. Set the title to
+   `alpha -> beta` or `beta -> production`
+1. Click `Create Pull Request`
+1. Get sign off on the PR
