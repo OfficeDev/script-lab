@@ -6,13 +6,13 @@ Steps to roll out a new version of Script Lab.
 
 Script Lab has multiple rings, to control the rollout of new versions. The rings are:
 
-| Ring       | Branch     | Notes |
-| ---------- | ---------- | ----- |
-| alpha      | master     |       |
-| beta       | beta       |       |
-| production | production |       |
+| Ring       | Branch     | Notes           |
+| ---------- | ---------- | --------------- |
+| alpha      | master     | loads from site |
+| beta       | beta       | loads from site |
+| production | production | uses a CDN      |
 
-## Switching Rings
+## Switching Rings in Script Lab
 
 1. Click the `Settings` icon. The setting icon is at the bottom of Script Lab _code editor_ on the right side.
 1. Click `About` on the top left side to see the specific commit the current ring is on.
@@ -38,13 +38,13 @@ Completely deploy a change to production **before** starting a new deployment.
    - this stages for production deployment
    - test that everything still works
 
-### Merge
+### Merge Steps
 
 1. Select the branch to merge into (`beta` or `production`).
 1. Click `Contribute` and select `Open Pull Request`
 1. Select the branch to merge into on the left side (`beta` or `production`).
 1. Select the branch to merge from on the right side (`master` or `beta`).
-1. Set the title to
+1. Set the title to:
    `alpha -> beta` or `beta -> production`
 1. Click `Create Pull Request`
 1. Get sign off on the PR
