@@ -37,6 +37,7 @@ Completely deploy a change to production **before** starting a new deployment.
 1. merge beta into production
    - this stages for production deployment
    - test that everything still works
+   - [Follow Steps](https://aka.ms/script-lab-deployment)
 
 ### Merge Steps
 
