@@ -48,7 +48,21 @@
     "fs-extra": "^7.0.1",
     "react-scripts": "^3.4.4",
     "react-testing-library": "^5.3.0",
+<<<<<<< HEAD
     "ts-node": "^7.0.1"
+||||||| 0fe39bb8
+    "shelljs": "^0.8.3",
+    "ts-node": "^7.0.1",
+    "tslint": "^5.11.0",
+    "tslint-config-prettier": "^1.16.0",
+    "tslint-react": "^3.6.0"
+=======
+    "shelljs": "^0.8.5",
+    "ts-node": "^7.0.1",
+    "tslint": "^5.11.0",
+    "tslint-config-prettier": "^1.16.0",
+    "tslint-react": "^3.6.0"
+>>>>>>> fda999e2ba48062ebe942a7ab700a076b62b4a9b
   },
   "browserslist": [
     ">0.2%",
