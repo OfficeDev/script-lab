@@ -64,12 +64,23 @@ steps:
     env:
       COMMIT_MESSAGE: '$(Build.SourceVersionMessage)'
 
+<<<<<<< HEAD
   - task: AzureArtifacts.manifest-generator-task.manifest-generator-task.ManifestGeneratorTask@0
     displayName: 'Generation Task'
     inputs:
       BuildDropPath: '${{ parameters.PackageDirectory }}/build'
 
   - script: npm run deploy
+||||||| 0fe39bb8
+  - script: yarn deploy
+=======
+  - task: AzureArtifacts.manifest-generator-task.manifest-generator-task.ManifestGeneratorTask@0
+    displayName: 'Generation Task'
+    inputs:
+      BuildDropPath: '${{ parameters.PackageDirectory }}/build'
+
+  - script: yarn deploy
+>>>>>>> origin/production
     displayName: 'Deploy Package'
     condition: and(succeeded(), eq(variables.isPR, false))
     env:
