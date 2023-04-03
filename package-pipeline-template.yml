@@ -2,9 +2,11 @@ parameters:
   - name: PackageDirectory
     displayName: Directory of the package where the package.json is
     type: string
+
   - name: PackageName
     displayName: Name of the package to be built
     type: string
+
   - name: SiteName
     displayName: Name of Azure Site
     type: string
@@ -13,18 +15,19 @@ steps:
   - checkout: self
     persistCredentials: true
 
-  - task: Yarn@2
-    displayName: 'Install'
+  - task: NodeTool@0
+    displayName: Node install
     inputs:
-      Arguments: 'install --frozen-lockfile'
+      versionSpec: '^16.0.0'
 
-  - task: Yarn@2
-    displayName: 'Pre-CI Script'
-    inputs:
-      Arguments: 'pre-ci'
+  - script: npm ci
+    displayName: npm install
 
-  - script: yarn postinstall
-    displayName: 'Post Install Script'
+  - script: npm run pre-ci
+    displayName: Pre-CI Script
+
+  - script: npm run postinstall
+    displayName: Post Install Script
     env:
       BRANCH: '$(Build.SourceBranchName)'
 
@@ -33,7 +36,7 @@ steps:
     inputs:
       targetType: 'inline'
       script: |
-        # This makes sure that someone ran "yarn install" after merging their PR, and that the postinstall doesn't produce any diffs, which are annoying/confusing
+        # This makes sure that someone ran "npm install" after merging their PR, and that the postinstall doesn't produce any diffs, which are annoying/confusing
         $diffs=$(git --no-pager diff HEAD --exit-code)
 
         if([string]::IsNullOrEmpty($diffs)){
@@ -45,34 +48,39 @@ steps:
             exit 1
         }
 
-  - task: Yarn@2
-    displayName: 'Prettier'
-    inputs:
-      Arguments: 'prettier'
+  - script: npm run style-check
+    displayName: Style
 
-  - task: Yarn@2
-    displayName: 'Lint'
-    inputs:
-      ProjectDirectory: '${{ parameters.PackageDirectory }}'
-      Arguments: 'lint'
+  - script: npm run lint
+    displayName: Lint
+    workingDirectory: ${{ parameters.PackageDirectory }}
 
-  - task: Yarn@2
-    displayName: 'Test'
-    inputs:
-      ProjectDirectory: '${{ parameters.PackageDirectory }}'
-      Arguments: 'citest'
+  - script: npm run citest
+    displayName: Test
+    workingDirectory: ${{ parameters.PackageDirectory }}
 
-  - script: cd ${{ parameters.PackageDirectory }} && yarn cibuild
+  - script: cd ${{ parameters.PackageDirectory }} && npm run cibuild
     displayName: 'Build'
     env:
       COMMIT_MESSAGE: '$(Build.SourceVersionMessage)'
 
+<<<<<<< HEAD
+  - task: AzureArtifacts.manifest-generator-task.manifest-generator-task.ManifestGeneratorTask@0
+    displayName: 'Generation Task'
+    inputs:
+      BuildDropPath: '${{ parameters.PackageDirectory }}/build'
+
+  - script: npm run deploy
+||||||| 0fe39bb8
+  - script: yarn deploy
+=======
   - task: AzureArtifacts.manifest-generator-task.manifest-generator-task.ManifestGeneratorTask@0
     displayName: 'Generation Task'
     inputs:
       BuildDropPath: '${{ parameters.PackageDirectory }}/build'
 
   - script: yarn deploy
+>>>>>>> origin/production
     displayName: 'Deploy Package'
     condition: and(succeeded(), eq(variables.isPR, false))
     env:

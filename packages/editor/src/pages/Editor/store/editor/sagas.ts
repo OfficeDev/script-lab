@@ -42,7 +42,7 @@ export function* onEditorOpenFileSaga(action: ActionType<typeof editor.openFile>
   const currentOpenSolution: ISolution = yield select(selectors.editor.getActiveSolution);
   const currentOpenFile = yield select(selectors.editor.getActiveFile);
 
-  // tslint:disable-next-line:prefer-const
+  // eslint-disable-next-line prefer-const
   let { solutionId, fileId } = action.payload;
   if (!solutionId) {
     if (!currentOpenSolution.files.find(file => file.id === fileId)) {
@@ -91,7 +91,7 @@ function* onFileOpenSaga(action: ActionType<typeof editor.newFileOpened>) {
 }
 
 export function* hideLoadingSplashScreenSaga() {
-  hideSplashScreen();
+  yield hideSplashScreen();
 }
 
 function* initializeMonacoSaga(action: ActionType<typeof editor.onMount>) {
@@ -265,7 +265,7 @@ function* setIntellisenseFilesSaga(
 
 function* resizeEditorSaga() {
   if (monacoEditor) {
-    monacoEditor.layout();
+    yield monacoEditor.layout();
   }
 }
 
@@ -281,5 +281,5 @@ function* applyFormattingSaga() {
 }
 
 function* navigateToRunSaga() {
-  window.location.href = `${currentRunnerUrl}?backButton=true`;
+  yield (window.location.href = `${currentRunnerUrl}?backButton=true`);
 }

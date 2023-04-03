@@ -24,7 +24,7 @@ const pages: { [key: string]: IPageLoadingSpec } = {
 
 export default () => <PageSwitcher pages={pages} defaultPath={PATHS.Runner} />;
 
-///////////////////////////////////////
+/// ////////////////////////////////////
 
 function getOfficeJsUrlToLoad(): string {
   const params = parse(window.location.search) as {

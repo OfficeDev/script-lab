@@ -22,21 +22,20 @@ export function matchesSearch(
   return false;
 }
 
-// tslint:disable
 export function stripSpaces(text: string) {
-  let lines: string[] = text.split('\n');
+  const lines: string[] = text.split('\n');
 
   // Replace each tab with 4 spaces.
-  for (let i: number = 0; i < lines.length; i++) {
+  for (let i = 0; i < lines.length; i++) {
     lines[i].replace('\t', '    ');
   }
 
-  let isZeroLengthLine: boolean = true;
-  let arrayPosition: number = 0;
+  let isZeroLengthLine = true;
+  let arrayPosition = 0;
 
   // Remove zero length lines from the beginning of the snippet.
   do {
-    let currentLine: string = lines[arrayPosition];
+    const currentLine: string = lines[arrayPosition];
     if (currentLine.trim() === '') {
       lines.splice(arrayPosition, 1);
     } else {
@@ -49,7 +48,7 @@ export function stripSpaces(text: string) {
 
   // Remove zero length lines from the end of the snippet.
   do {
-    let currentLine: string = lines[arrayPosition];
+    const currentLine: string = lines[arrayPosition];
     if (currentLine.trim() === '') {
       lines.splice(arrayPosition, 1);
       arrayPosition--;
@@ -59,11 +58,11 @@ export function stripSpaces(text: string) {
   } while (isZeroLengthLine);
 
   // Get smallest indent for align left.
-  let shortestIndentSize: number = 1024;
-  for (let line of lines) {
-    let currentLine: string = line;
+  let shortestIndentSize = 1024;
+  for (const line of lines) {
+    const currentLine: string = line;
     if (currentLine.trim() !== '') {
-      let spaces: number = line.search(/\S/);
+      const spaces: number = line.search(/\S/);
       if (spaces < shortestIndentSize) {
         shortestIndentSize = spaces;
       }
@@ -71,15 +70,15 @@ export function stripSpaces(text: string) {
   }
 
   // Align left
-  for (let i: number = 0; i < lines.length; i++) {
+  for (let i = 0; i < lines.length; i++) {
     if (lines[i].length >= shortestIndentSize) {
       lines[i] = lines[i].substring(shortestIndentSize);
     }
   }
 
   // Convert the array back into a string and return it.
-  let finalSetOfLines: string = '';
-  for (let i: number = 0; i < lines.length; i++) {
+  let finalSetOfLines = '';
+  for (let i = 0; i < lines.length; i++) {
     if (i < lines.length - 1) {
       finalSetOfLines += lines[i] + '\n';
     } else {
@@ -156,11 +155,11 @@ export function stringifyPlusPlus(
   // Otherwise, stringify the object
   return jsonStringify(object);
 
-  ////////////////////////////////////
+  /// /////////////////////////////////
 
   // Helpers:
   function jsonStringify(object: any): string {
-    let candidateString = JSON.stringify(
+    const candidateString = JSON.stringify(
       object,
       (key, value) => {
         if (object instanceof Error && options.skipErrorStack && key === 'stack') {
@@ -179,7 +178,7 @@ export function stringifyPlusPlus(
 
     return candidateString;
 
-    ///////////////////////////////////
+    /// ////////////////////////////////
 
     function getStringifiableSnapshot(object: any) {
       const snapshot: any = {};
@@ -257,8 +256,8 @@ export function generateLogString(
   args: any[],
   severityType: ConsoleLogTypes,
 ): { severity: ConsoleLogTypes; message: string } {
-  let message: string = '';
-  let isSuccessfulMsg: boolean = true;
+  let message = '';
+  let isSuccessfulMsg = true;
   args.forEach(element => {
     try {
       message += stringifyPlusPlus(element);

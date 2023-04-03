@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 
 export class RunOnLoad extends Component<{ funcToRun() }> {
   constructor(props: { funcToRun() }) {

@@ -13,7 +13,7 @@ import {
 import { getCommandBarFabricTheme } from '../../theme';
 import { Wrapper } from './styles';
 
-export interface IProps extends ICommandBarProps {}
+export type IProps = ICommandBarProps;
 
 interface IPrivateProps extends IProps {
   theme: ITheme | any; // withTheme
@@ -52,8 +52,8 @@ function normalizeItems(
 ): ICommandBarItemProps[] {
   return items
     .filter(({ hidden }) => !hidden)
-    .map(item => {
-      return merge(item, {
+    .map(item =>
+      merge(item, {
         ...(item.subMenuProps
           ? {
               subMenuProps: {
@@ -104,8 +104,8 @@ function normalizeItems(
               ...item.iconProps,
             }
           : undefined,
-      });
-    });
+      }),
+    );
 }
 
 export default withTheme(Footer);

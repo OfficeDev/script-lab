@@ -57,7 +57,7 @@ export function writeIfChanged<T>(
   getKey: ((selectionResult: any) => string) | string,
   currentState: T,
   lastState: T | undefined,
-  root: string = '',
+  root = '',
 ) {
   const current = selector(currentState);
   const last = lastState ? selector(lastState) : null;

@@ -51,9 +51,10 @@ const PageSwitcher = ({ pages, defaultPath }: IProps) => (
 
 export default PageSwitcher;
 
-///////////////////////////////////////
+/// ////////////////////////////////////
 
 function renderPageAfterPrerequisites(spec: IPageLoadingSpec): React.ComponentType {
+  /* eslint-disable react/display-name */
   return () => (
     <AwaitPromiseThenRender
       promise={Promise.resolve().then(async () => {

@@ -14,10 +14,12 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "preserve",
+    "jsx": "react",
     "alwaysStrict": true,
     "strictFunctionTypes": true,
-    "allowJs": true
+    "allowJs": true,
+    "noFallthroughCasesInSwitch": true,
+    "importHelpers": true
   },
   "include": [
     "./src/**/*",
