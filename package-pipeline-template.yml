@@ -69,6 +69,45 @@ steps:
     inputs:
       BuildDropPath: '${{ parameters.PackageDirectory }}/build'
 
+  - task: InlinePowershell@1
+    displayName: 'Get slot name'
+    inputs:
+      Script: |
+        $branch = Get-ChildItem env:BRANCH | select -expa Value
+        switch ($branch) {
+            'master' { $slot = 'alpha'; break }
+            'beta' { $slot = 'beta'; break }
+            'production' { $slot = 'staging'; break }
+            default { $slot = 'NULL'; break }
+        }
+        
+        Write-Output $slot
+        Write-Host "##vso[task.setvariable variable=SLOT]$slot"
+
+  - task: ArchiveFiles@2
+    displayName: 'Archive build'
+    condition: and(succeeded(), ne(variables.SLOT, 'NULL'))
+    inputs:
+      rootFolderOrFile: '${{ parameters.PackageDirectory }}/build'
+      includeRootFolder: false
+      archiveType: 'zip'
+      archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+      replaceExistingArchive: true
+      verbose: true
+
+  - task: AzureWebApp@1
+    displayName: 'Deploy'
+    condition: and(succeeded(), ne(variables.SLOT, 'NULL'))
+    inputs:
+      azureSubscription: 'CALC - OFFICE DevEd - 1(3decf8b3-4173-4999-98ee-c636e852d4ac)'
+      appType: 'webApp'
+      appName: '${{ parameters.SiteName}}'
+      deployToSlotOrASE: true
+      resourceGroupName: 'ScriptLabReact'
+      slotName: $(SLOT)
+      package: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+      deploymentMethod: 'auto'
+
   - script: npm run deploy
     displayName: 'Deploy Package'
     condition: and(succeeded(), eq(variables.isPR, false))
