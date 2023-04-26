@@ -86,7 +86,7 @@ steps:
 
   - task: ArchiveFiles@2
     displayName: 'Archive build'
-    condition: and(succeeded(), ne(variables.SLOT, 'NULL'))
+    condition: and(and(succeeded(), ne(variables.SLOT, 'NULL')), eq(variables.isPR, false))
     inputs:
       rootFolderOrFile: '${{ parameters.PackageDirectory }}/build'
       includeRootFolder: false
@@ -97,7 +97,7 @@ steps:
 
   - task: AzureWebApp@1
     displayName: 'Deploy'
-    condition: and(succeeded(), ne(variables.SLOT, 'NULL'))
+    condition: and(and(succeeded(), ne(variables.SLOT, 'NULL')), eq(variables.isPR, false))
     inputs:
       azureSubscription: 'CALC - OFFICE DevEd - 1(3decf8b3-4173-4999-98ee-c636e852d4ac)'
       appType: 'webApp'
