@@ -69,20 +69,33 @@ steps:
     inputs:
       BuildDropPath: '${{ parameters.PackageDirectory }}/build'
 
-  - task: InlinePowershell@1
+
+  - task: Bash@3
     displayName: 'Get slot name'
     inputs:
-      Script: |
-        $branch = Get-ChildItem env:BRANCH | select -expa Value
-        switch ($branch) {
-            'master' { $slot = 'alpha'; break }
-            'beta' { $slot = 'beta'; break }
-            'production' { $slot = 'staging'; break }
-            default { $slot = 'NULL'; break }
-        }
+      targetType: 'inline'
+      script: |
+        #!/bin/bash
         
-        Write-Output $slot
-        Write-Host "##vso[task.setvariable variable=SLOT]$slot"
+        branch=$(echo $BRANCH)
+        
+        case "$branch" in
+            master)
+                slot="alpha"
+                ;;
+            beta)
+                slot="beta"
+                ;;
+            production)
+                slot="staging"
+                ;;
+            *)
+                slot="NULL"
+                ;;
+        esac
+        
+        echo $slot
+        echo "##vso[task.setvariable variable=SLOT;]slot"
 
   - task: ArchiveFiles@2
     displayName: 'Archive build'
