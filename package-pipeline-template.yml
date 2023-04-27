@@ -69,16 +69,15 @@ steps:
     inputs:
       BuildDropPath: '${{ parameters.PackageDirectory }}/build'
 
-
   - task: Bash@3
     displayName: 'Get slot name'
     inputs:
       targetType: 'inline'
       script: |
         #!/bin/bash
-        
+
         branch=$(echo $BRANCH)
-        
+
         case "$branch" in
             master)
                 slot="alpha"
@@ -90,10 +89,10 @@ steps:
                 slot="staging"
                 ;;
             *)
-                slot="NULL"
+                slot="alpha"
                 ;;
         esac
-        
+
         echo $slot
         echo "##vso[task.setvariable variable=SLOT]$slot"
 
@@ -120,7 +119,6 @@ steps:
       slotName: $(SLOT)
       package: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
       deploymentMethod: 'auto'
-
 #   - script: npm run deploy
 #     displayName: 'Deploy Package'
 #     condition: and(succeeded(), eq(variables.isPR, false))
