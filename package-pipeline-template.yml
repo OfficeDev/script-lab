@@ -76,6 +76,7 @@ steps:
       script: |
         #!/bin/bash
 
+        echo $BRANCH
         branch=$(echo $BRANCH)
 
         case "$branch" in
