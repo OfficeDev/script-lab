@@ -75,26 +75,26 @@ steps:
       targetType: 'inline'
       script: |
         #!/bin/bash
-
         branch=$(echo $BRANCH)
-
+        echo $branch
         case "$branch" in
-            master)
+            "master")
                 slot="alpha"
                 ;;
-            beta)
+            "beta")
                 slot="beta"
                 ;;
-            production)
+            "production")
                 slot="staging"
                 ;;
             *)
                 slot="NULL"
                 ;;
         esac
-
         echo $slot
         echo "##vso[task.setvariable variable=SLOT]$slot"
+    env:
+      BRANCH: '$(Build.SourceBranchName)'
 
   - task: ArchiveFiles@2
     displayName: 'Archive build'
