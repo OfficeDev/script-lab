@@ -110,7 +110,7 @@ class IFrame extends React.Component<IProps, IState> {
       <iframe
         title="user-snippet"
         id="user-snippet"
-        tabindex="0"
+        tabIndex={0}
         ref={node => (this.node = node)}
         style={{
           width: '100%',
