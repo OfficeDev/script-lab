@@ -69,30 +69,53 @@ steps:
     inputs:
       BuildDropPath: '${{ parameters.PackageDirectory }}/build'
 
-  - script: npm run deploy
-    displayName: 'Deploy Package'
-    condition: and(succeeded(), eq(variables.isPR, false))
+  - task: Bash@3
+    displayName: 'Get slot name'
+    inputs:
+      targetType: 'inline'
+      script: |
+        #!/bin/bash
+        branch=$(echo $BRANCH)
+        echo $branch
+        case "$branch" in
+            "master")
+                slot="alpha"
+                ;;
+            "beta")
+                slot="beta"
+                ;;
+            "production")
+                slot="staging"
+                ;;
+            *)
+                slot="NULL"
+                ;;
+        esac
+        echo $slot
+        echo "##vso[task.setvariable variable=SLOT]$slot"
     env:
-      HOME: '$(Agent.BuildDirectory)'
       BRANCH: '$(Build.SourceBranchName)'
-      PULL_REQUEST: '$(isPR)'
-      COMMIT_MESSAGE: '$(Build.SourceVersionMessage)'
-      PACKAGE_LOCATION: '${{ parameters.PackageDirectory }}'
-      PACKAGE_NAME: '${{ parameters.PackageName }}'
-      SITE_NAME: '${{ parameters.SiteName}}'
-      DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT: '$(DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT)'
-      DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_ALPHA: '$(DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_ALPHA)'
-      DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_BETA: '$(DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_BETA)'
-      DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_STAGING: '$(DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_STAGING)'
-      DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_STORYBOOK: '$(DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_STORYBOOK)'
-      DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_STORYBOOK_ALPHA: '$(DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_STORYBOOK_ALPHA)'
-      DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_STORYBOOK_BETA: '$(DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_STORYBOOK_BETA)'
-      DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_STORYBOOK_STAGING: '$(DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_STORYBOOK_STAGING)'
-      DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_RUNNER: '$(DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_RUNNER)'
-      DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_RUNNER_ALPHA: '$(DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_RUNNER_ALPHA)'
-      DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_RUNNER_BETA: '$(DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_RUNNER_BETA)'
-      DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_RUNNER_STAGING: '$(DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_RUNNER_STAGING)'
-      DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_SERVER: '$(DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_SERVER)'
-      DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_SERVER_ALPHA: '$(DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_SERVER_ALPHA)'
-      DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_SERVER_BETA: '$(DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_SERVER_BETA)'
-      DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_SERVER_STAGING: '$(DEPLOYMENT_PASSWORD_SCRIPT_LAB_REACT_SERVER_STAGING)'
+
+  - task: ArchiveFiles@2
+    displayName: 'Archive build'
+    condition: and(succeeded(), ne(variables.SLOT, 'NULL'), eq(variables.isPR, false))
+    inputs:
+      rootFolderOrFile: '${{ parameters.PackageDirectory }}/build'
+      includeRootFolder: false
+      archiveType: 'zip'
+      archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+      replaceExistingArchive: true
+      verbose: true
+
+  - task: AzureWebApp@1
+    displayName: 'Deploy'
+    condition: and(succeeded(), ne(variables.SLOT, 'NULL'), eq(variables.isPR, false))
+    inputs:
+      azureSubscription: 'CALC - OFFICE DevEd - 1(3decf8b3-4173-4999-98ee-c636e852d4ac)'
+      appType: 'webApp'
+      appName: '${{ parameters.SiteName}}'
+      deployToSlotOrASE: true
+      resourceGroupName: 'ScriptLabReact'
+      slotName: $(SLOT)
+      package: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+      deploymentMethod: 'auto'
