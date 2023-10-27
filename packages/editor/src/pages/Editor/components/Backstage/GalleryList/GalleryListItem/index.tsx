@@ -11,13 +11,19 @@ export interface IGalleryListItem {
   index: number;
 }
 
-const GalleryListItem = ({ title, description, isActive, onClick, index }: IGalleryListItem) => {
+const GalleryListItem = ({
+  title,
+  description,
+  isActive,
+  onClick,
+  index,
+}: IGalleryListItem) => {
   const ItemWrapper = isActive ? ActiveWrapper : Wrapper;
   return (
     <ItemWrapper
       data-is-focusable="true"
       onClick={onClick}
-      aria-label={index + ". " + title}
+      aria-label={index + '. ' + title}
       id={composeSolutionId(title)}
     >
       <Title>{title}</Title>
