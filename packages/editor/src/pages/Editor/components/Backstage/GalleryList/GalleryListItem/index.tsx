@@ -8,15 +8,22 @@ export interface IGalleryListItem {
   description?: string;
   isActive?: boolean;
   onClick?: () => void;
+  index: number;
 }
 
-const GalleryListItem = ({ title, description, isActive, onClick }: IGalleryListItem) => {
+const GalleryListItem = ({
+  title,
+  description,
+  isActive,
+  onClick,
+  index,
+}: IGalleryListItem) => {
   const ItemWrapper = isActive ? ActiveWrapper : Wrapper;
   return (
     <ItemWrapper
       data-is-focusable="true"
       onClick={onClick}
-      aria-label={title}
+      aria-label={index + '. ' + title}
       id={composeSolutionId(title)}
     >
       <Title>{title}</Title>

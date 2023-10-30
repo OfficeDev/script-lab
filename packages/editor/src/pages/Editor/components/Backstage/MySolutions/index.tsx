@@ -113,9 +113,10 @@ class MySolutions extends React.Component<IProps> {
                 solution.description,
               ]),
             )
-            .map(sol => ({
+            .map((sol, index) => ({
               key: sol.id,
               title: sol.name,
+              index: index,
               description: sol.description,
               onClick: () => openSolution(sol.id),
               isActive: activeSolution && activeSolution.id === sol.id,
@@ -137,11 +138,12 @@ class MySolutions extends React.Component<IProps> {
                   meta.description,
                 ]),
               )
-              .map(gist => ({
+              .map((gist, index) => ({
                 key: gist.id,
                 title: gist.title,
                 description: gist.description,
                 onClick: () => openGist(gist),
+                index: index,
               }))}
           />
         )}

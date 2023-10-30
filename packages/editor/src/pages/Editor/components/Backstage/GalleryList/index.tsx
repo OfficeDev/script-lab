@@ -43,8 +43,8 @@ class GalleryList extends Component<IProps, IState> {
           <Only when={messageBar !== undefined}>{messageBar}</Only>
           <Only when={isExpanded}>
             <div data-testid={testId}>
-              {items.map(item => (
-                <GalleryListItem key={item.key} {...item} />
+              {items.map((item, index) => (
+                <GalleryListItem key={item.key} index={index} {...item} />
               ))}
             </div>
           </Only>
