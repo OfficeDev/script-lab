@@ -23,6 +23,9 @@ From the root of the repo:
 1. `npm install` **Be sure to run this after every pull/merge!**
 2. `npm run start`
 
+An SSL certificate for localhost along with the CA certificate and key will be written to ~/.office-addin-dev-certs (%USERPROFILE%\.office-addin-dev-certs on Windows).
+Please accept the prompt or dialog that appears if the CA certificate needs to be installed.
+
 Your default browser will launch almost immediately. However, note that **it will take some 30-60 seconds before the website is actually up and running.**
 
 Also, on first launch, the browsers will be stuck on the "Loading" page -- you will need to press ctrl+R to reload and show the actual editor/runner.
@@ -55,18 +58,6 @@ Warning: Cannot update during an existing state transition (such as within `rend
 ```
 
 You can safely ignore these -- those won't show up to users on the production site.
-
-## Bypassing localhost HTTPS security issues
-
-For testing in the web browser (whether standalone or in Office Online) in Chrome, you can bypass the "insecure localhost" by enabling this setting: <chrome://flags/#allow-insecure-localhost>
-
-For testing on a PC version of Office, you _could_ trust the certificates from within Internet Explorer. However, new certs get generated every time that you run `npm run start`, so trusting them over and over again is tedious. If you're only interested in making changes to code that runs inside the taskpanes (which is what you will be doing 99% of the time for any Editor/Runner changes, unless you're debugging something to do with "functions.html" and the other ribbon buttons), you can just click through the "This site is not secure" warning and choose "Go on to the website (not recommended)" option.
-
-![Proceed through "This site is not secure"](.github/images/site-not-secure.png).
-
-If you _do_ need to trust the certificates, see below for a step-by-step animation. But be aware that you'll keep having to repeat these steps... The sites you'd need to trust are <https://localhost:3000> (editor) and <https://localhost:3200> (runner).
-
-![Trust SLL instructions](.github/images/trust-ssl-internet-explorer.gif).
 
 ## Testing inside of an add-in
 
