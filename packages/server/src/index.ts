@@ -27,14 +27,22 @@ app.get('/' + SERVER_HELLO_ENDPOINT.path, (_req, res) => {
     .send(SERVER_HELLO_ENDPOINT.payload);
 });
 
+app.options('/auth', cors());
+
 // An auth endpoint for GitHub that returns a JSON payload of type IServerAuthResponse
 app.post('/auth', async (req, res) => {
   const { code, state } = req.body;
 
-  const responsePayload: IServerAuthResponse = await getAccessTokenOrErrorResponse({
-    code,
-    state,
-  });
+  let responsePayload: IServerAuthResponse;
+
+  try {
+    responsePayload = await getAccessTokenOrErrorResponse({
+      code,
+      state,
+    });
+  } catch (e) {
+    responsePayload = { error: JSON.stringify(e) };
+  }
 
   res
     .contentType('application/json')
@@ -44,3 +52,10 @@ app.post('/auth', async (req, res) => {
 });
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
+
+app.get('/test', (_req, res) => {
+  res
+    .contentType('text/plain')
+    .status(200)
+    .send('test response 1');
+});
