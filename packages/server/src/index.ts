@@ -27,9 +27,6 @@ app.get('/' + SERVER_HELLO_ENDPOINT.path, (_req, res) => {
     .send(SERVER_HELLO_ENDPOINT.payload);
 });
 
-// enable options at the auth endpoint.
-app.options('/auth', cors());
-
 // An auth endpoint for GitHub that returns a JSON payload of type IServerAuthResponse
 app.post('/auth', async (req, res) => {
   const { code, state } = req.body;
@@ -42,6 +39,7 @@ app.post('/auth', async (req, res) => {
   res
     .contentType('application/json')
     .status(200)
+    .header('Access-Control-Allow-Origin', '*')
     .send(responsePayload);
 });
 
