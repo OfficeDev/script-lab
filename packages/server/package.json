@@ -12,8 +12,6 @@
     "citest": "npm run test"
   },
   "dependencies": {
-    "common": "0.0.1",
-    "cors": "^2.8.5",
     "dotenv": "^6.0.0",
     "express": "^4.17.3"
   },

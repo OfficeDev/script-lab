@@ -40,12 +40,6 @@ export const localStorageKeys = {
   },
 };
 
-/** Server "hello" endpoint, used to check that the server is alive */
-export const SERVER_HELLO_ENDPOINT = {
-  path: 'hello',
-  payload: { message: 'Hello from Script Lab' },
-};
-
 export const RUNNER_TO_EDITOR_HEARTBEAT_REQUESTS = {
   GET_ACTIVE_SOLUTION: 'GET_ACTIVE_SOLUTION',
   GET_PYTHON_CONFIG_IF_ANY: 'GET_PYTHON_CONFIG_IF_ANY',

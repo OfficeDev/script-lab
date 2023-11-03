@@ -1,7 +1,4 @@
-import { SERVER_HELLO_ENDPOINT } from 'common/lib/constants';
-
 import express from 'express';
-import cors from 'cors';
 import { getAccessTokenOrErrorResponse } from './auth';
 
 if (process.env.NODE_ENV !== 'production') {
@@ -12,22 +9,27 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 // config
-// https://www.npmjs.com/package/cors/v/2.8.5
-app.use(cors());
 app.use(express.json() as any);
 
 // routes
 
-// An endpoint to check that the server is alive (and used by
-//    environment.redirector.ts for localhost redirect)
-app.get('/' + SERVER_HELLO_ENDPOINT.path, (_req, res) => {
+// Server "hello" endpoint, used to check that the server is alive
+//  (and used by environment.redirector.ts for localhost redirect)
+app.get('/hello', (_req, res) => {
   res
     .contentType('application/json')
     .status(200)
-    .send(SERVER_HELLO_ENDPOINT.payload);
+    .send({ message: 'Hello from Script Lab' });
 });
 
-app.options('/auth', cors());
+app.options('/auth', async (_req, res) => {
+  res
+    .header('Access-Control-Allow-Headers', 'content-type')
+    .header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE')
+    .header('Access-Control-Allow-Origin', '*')
+    .header('Content-Length', '0')
+    .status(204);
+});
 
 // An auth endpoint for GitHub that returns a JSON payload of type IServerAuthResponse
 app.post('/auth', async (req, res) => {
@@ -46,8 +48,8 @@ app.post('/auth', async (req, res) => {
 
   res
     .contentType('application/json')
-    .status(200)
     .header('Access-Control-Allow-Origin', '*')
+    .status(200)
     .send(responsePayload);
 });
 

@@ -20,8 +20,9 @@ Note: the installation of Node JS add paths to your operating system's PATH vari
 
 From the root of the repo:
 
+0. On Node 20: `set NODE_OPTIONS=--openssl-legacy-provider`
 1. `npm install` **Be sure to run this after every pull/merge!**
-2. `npm run start`
+1. `npm run start`
 
 An SSL certificate for localhost along with the CA certificate and key will be written to ~/.office-addin-dev-certs (%USERPROFILE%\.office-addin-dev-certs on Windows).
 Please accept the prompt or dialog that appears if the CA certificate needs to be installed.
