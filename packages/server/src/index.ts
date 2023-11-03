@@ -9,8 +9,6 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 // config
-// https://www.npmjs.com/package/cors/v/2.8.5
-// https://github.com/expressjs/cors/blob/master/lib/index.js
 app.use(express.json() as any);
 
 // routes
@@ -26,8 +24,9 @@ app.get('/hello', (_req, res) => {
 
 app.options('/auth', async (_req, res) => {
   res
-    .header('Access-Control-Allow-Origin', '*')
+    .header('Access-Control-Allow-Headers', 'content-type')
     .header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE')
+    .header('Access-Control-Allow-Origin', '*')
     .header('Content-Length', '0')
     .status(204);
 });
@@ -49,8 +48,8 @@ app.post('/auth', async (req, res) => {
 
   res
     .contentType('application/json')
-    .status(200)
     .header('Access-Control-Allow-Origin', '*')
+    .status(200)
     .send(responsePayload);
 });
 
