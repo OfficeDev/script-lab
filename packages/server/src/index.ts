@@ -31,7 +31,7 @@ app.options('/auth', async (_req, res) => {
     .status(204);
 });
 
-// An auth endpoint for GitHub that returns a JSON payload of tyAccess-Control-Allow-Methodspe IServerAuthResponse
+// An auth endpoint for GitHub that returns a JSON payload of type IServerAuthResponse
 app.post('/auth', async (req, res) => {
   const { code, state } = req.body;
 
