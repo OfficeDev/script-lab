@@ -1,7 +1,4 @@
-import { SERVER_HELLO_ENDPOINT } from 'common/lib/constants';
-
 import express from 'express';
-import cors from 'cors';
 import { getAccessTokenOrErrorResponse } from './auth';
 
 if (process.env.NODE_ENV !== 'production') {
@@ -12,33 +9,59 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 // config
-app.use(cors());
+
+// express.json middleware allows handling request JSON payloads
 app.use(express.json() as any);
 
 // routes
 
-// An endpoint to check that the server is alive (and used by
-//    environment.redirector.ts for localhost redirect)
-app.get('/' + SERVER_HELLO_ENDPOINT.path, (_req, res) => {
+// Server "hello" endpoint, used to check that the server is alive
+//  (and used by environment.redirector.ts for localhost redirect)
+app.get('/hello', (_req, res) => {
   res
     .contentType('application/json')
     .status(200)
-    .send(SERVER_HELLO_ENDPOINT.payload);
+    .send({ message: 'Hello from Script Lab' });
+});
+
+app.options('/auth', async (_req, res) => {
+  res
+    .set({
+      'Access-Control-Allow-Headers': 'content-type',
+      'Access-Control-Allow-Methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
+      'Access-Control-Allow-Origin': '*',
+    })
+    .status(204);
 });
 
 // An auth endpoint for GitHub that returns a JSON payload of type IServerAuthResponse
 app.post('/auth', async (req, res) => {
   const { code, state } = req.body;
 
-  const responsePayload: IServerAuthResponse = await getAccessTokenOrErrorResponse({
-    code,
-    state,
-  });
+  let responsePayload: IServerAuthResponse;
+
+  try {
+    responsePayload = await getAccessTokenOrErrorResponse({
+      code,
+      state,
+    });
+  } catch (e) {
+    responsePayload = { error: JSON.stringify(e) };
+  }
 
   res
     .contentType('application/json')
+    .set({ 'Access-Control-Allow-Origin': '*' })
     .status(200)
     .send(responsePayload);
+});
+
+app.get('/test', (_req, res) => {
+  res
+    .contentType('text/plain')
+    .header({ 'Access-Control-Allow-Origin': '*' })
+    .status(200)
+    .send('test response 1');
 });
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
