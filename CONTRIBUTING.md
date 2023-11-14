@@ -68,6 +68,16 @@ If you _do_ need to trust the certificates, see below for a step-by-step animati
 
 ![Trust SLL instructions](.github/images/trust-ssl-internet-explorer.gif).
 
+## Bypassing localhost HTTPS security issues 2
+
+The method above might not work on current Edge browsers, you can have a try on the following way:
+
+![Not secure for Edge browser](.github/images/NotSecureForEdge.png).
+1. click the "Not secure" assert and export the insecure certificate from localhost
+2. install the certificate downloaded on your station
+3. restart your local station and refresh the localhost web
+4. If still doesn't work, please have a try again. Not that the duration for this installed certificate is one month.
+
 ## Testing inside of an add-in
 
 The **easiest** option is to install the **Store** version of the add-in (get it from <https://aka.ms/getscriptlab>). Then, using the dropdown on bottom left when in the Settings mode, switch to alpha -- and **from alpha, to localhost**. Note that the localhost option will only show up if you're in alpha (or already on localhost). The steps are akin to what's [described in the README](README.md#2017) for switching to Script Lab 2017, except choosing "Alpha" and then "localhost:3000" instead.
