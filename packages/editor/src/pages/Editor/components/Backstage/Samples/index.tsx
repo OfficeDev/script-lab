@@ -84,11 +84,12 @@ class Samples extends Component<IProps, IState> {
                     key={group}
                     title={group}
                     items={filteredSamplesByGroup[group].map(
-                      ({ id, name, description, rawUrl }) => ({
+                      ({ id, name, description, rawUrl }, index) => ({
                         key: id,
                         title: name,
                         description,
                         onClick: () => openSample(rawUrl),
+                        index: index,
                       }),
                     )}
                   />
