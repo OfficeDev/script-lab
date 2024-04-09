@@ -3,8 +3,12 @@ name: Feature request
 about: Use this to request a feature.
 ---
 
-### Description:
+# Feature Request
 
-### Screenshot(s):
+## Description
+
+<!-- Describe the functionality you would like. -->
+
+## Screenshot(s)
 
 <!-- attach screenshot if applicable -->
