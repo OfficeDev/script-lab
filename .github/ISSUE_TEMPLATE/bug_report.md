@@ -5,31 +5,38 @@ about: Found a bug in Script Lab React? Please let us know.
 
 <!-- Use this template for bug/error reporting only -->
 
-### Bug Report
+# Bug Report
+
+<!-- fill out - a short description -->
+
+## Environment
 
 - **Host**: (fill out if relevant. eg: EXCEL, WORD)
 - **OS**: (fill out if relevant/applicable)
 - **Browser**: (fill out if relevant/applicable)
-- **Environment**: (fill out. eg: alpha, beta, prod)
 
-#### Expected behavior:
+## Expected behavior
 
-<!-- fill this out -->
+<!-- fill out - What do you expect Script Lab to do? -->
 
-#### Actual behavior:
+## Actual behavior
 
-<!-- fill this out -->
+<!-- fill out - What is Script Lab doing? -->
 
-#### Steps to Reproduce:
+## Steps to Reproduce
 
+<!-- fill out - What should we do, in what order to reproduce? -->
+
+<!--
 1. step 1
 2. step 2
 3. etc...
+-->
 
-#### Failure Logs:
+## Failure Logs
 
-<!-- fill this out if applicable -->
+<!-- fill out if applicable -->
 
-#### Screenshot:
+## Screenshot
 
-<!-- attach screenshot if applicable -->
+<!-- add screenshot if applicable -->
