@@ -60,32 +60,8 @@
   <HighResolutionIconUrl DefaultValue="https://script-lab.azureedge.net/assets/images/icon-64.png" />
   <SupportUrl DefaultValue="https://github.com/OfficeDev/script-lab/issues" />
   <AppDomains>
-    <AppDomain>https://github.com</AppDomain>
-    <AppDomain>https://stackoverflow.com</AppDomain>
-    <AppDomain>https://localhost:3000</AppDomain>
-    <AppDomain>https://localhost:3200</AppDomain>
     <AppDomain>https://script-lab.azureedge.net</AppDomain>
     <AppDomain>https://script-lab-runner.azureedge.net</AppDomain>
-    <AppDomain>https://bornholm-edge.azurewebsites.net</AppDomain>
-    <AppDomain>https://bornholm-runner-edge.azurewebsites.net</AppDomain>
-    <AppDomain>https://bornholm-insiders.azurewebsites.net</AppDomain>
-    <AppDomain>https://bornholm-runner-insiders.azurewebsites.net</AppDomain>
-    <AppDomain>https://bornholm-staging.azurewebsites.net</AppDomain>
-    <AppDomain>https://bornholm-runner-staging.azurewebsites.net</AppDomain>
-    <AppDomain>https://bornholm.azurewebsites.net</AppDomain>
-    <AppDomain>https://bornholm-runner.azurewebsites.net</AppDomain>
-    <AppDomain>https://script-lab-react.azurewebsites.net</AppDomain>
-    <AppDomain>https://script-lab-react-runner.azurewebsites.net</AppDomain>
-    <AppDomain>https://script-lab-react-server.azurewebsites.net</AppDomain>
-    <AppDomain>https://script-lab-react-alpha.azurewebsites.net</AppDomain>
-    <AppDomain>https://script-lab-react-runner-alpha.azurewebsites.net</AppDomain>
-    <AppDomain>https://script-lab-react-server-alpha.azurewebsites.net</AppDomain>
-    <AppDomain>https://script-lab-react-beta.azurewebsites.net</AppDomain>
-    <AppDomain>https://script-lab-react-runner-beta.azurewebsites.net</AppDomain>
-    <AppDomain>https://script-lab-react-server-beta.azurewebsites.net</AppDomain>
-    <AppDomain>https://script-lab-react-staging.azurewebsites.net</AppDomain>
-    <AppDomain>https://script-lab-react-runner-staging.azurewebsites.net</AppDomain>
-    <AppDomain>https://script-lab-react-server-staging.azurewebsites.net</AppDomain>
   </AppDomains>
   <Hosts>
     <Host Name="Workbook" />
