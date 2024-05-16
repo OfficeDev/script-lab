@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<!--
+    Iframe to allow importing of Script Lab scripts from another domain
+-->
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'unsafe-inline';"
+    />
+  </head>
+
+  <body>
+    <script>
+      /**
+       * Origins the iframe is allowed to be loaded from
+       */
+      const allowedOrigins = [
+        // All origins that are allowed to import scripts
+
+        // Pre Production
+        "https://script-lab.sdf.cdn.office.net",
+        // Production
+        "https://script-lab.public.cdn.office.net",
+        // Legacy - alpha
+        "https://script-lab-react-alpha.azurewebsites.net",
+        // Legacy - beta
+        "https://script-lab-react-beta.azurewebsites.net",
+        // Legacy - Staging
+        "https://script-lab-react-staging.azurewebsites.net",
+        // Legacy - production
+        "https://script-lab-react.azurewebsites.net",
+        // Legacy - CDN
+        "https://script-lab.azureedge.net",
+      ];
+
+      function addTestOrigins() {
+        // localhost
+        if (window.location.hostname === "localhost") {
+          allowedOrigins.push(...["https://localhost:4000", "https://localhost:3000"]);
+        }
+      }
+
+      /**
+       * Is the page loaded in an iframe?
+       */
+      function inIframe() {
+        try {
+          return window.self !== window.top;
+        } catch (e) {
+          return true;
+        }
+      }
+
+      /**
+       * @returns {string[]} The keys of all the items in the local storage
+       */
+      function getAllLocalStorageKeys() {
+        const count = localStorage.length;
+        const keys = [];
+        for (let i = 0; i < count; i++) {
+          const key = localStorage.key(i);
+          if (key) {
+            keys.push(key);
+          }
+        }
+        return keys;
+      }
+
+      /**
+       * @returns {string[]} The keys of all the items in the local storage
+       */
+      function getAllSolutionKeys() {
+        const keys = getAllLocalStorageKeys();
+        const scriptKeys = keys.filter((key) => key.startsWith("solution#"));
+        return scriptKeys;
+      }
+
+      /**
+       * @param {(value:{{id:" solution-start"} | {id:"solution"; key: string; value: string} | {id:"solution-end"}}) => void} send - origin The origin to check
+       */
+      function sendAllSolutions(send) {
+        const keys = getAllSolutionKeys();
+        send({ id: "solution-start" });
+        keys.forEach((key) => {
+          const value = localStorage.getItem(key);
+          // Send the key and value to the parent window
+          send({ id: "solution", key, value });
+        });
+        send({ id: "solution-end" });
+      }
+
+      function getAllowedOrigin(origin) {
+        // determine if origin matches an allowed origin
+        const matchingOrigins = allowedOrigins.filter((x) => x === origin);
+        const value = matchingOrigins.length === 1 ? matchingOrigins[0] : undefined;
+
+        // return matching origin
+        return value;
+      }
+
+      function onMessage(event) {
+        console.log(`onMessage`, event);
+        if (event) {
+          const { data, origin, source } = event;
+          const allowedOrigin = getAllowedOrigin(origin);
+          if (allowedOrigin === undefined) {
+            console.error(`ERROR: Origin [${origin}] is not allowed`);
+            return;
+          }
+
+          console.log(`trusted host [${origin}]`);
+
+          if (data.id === "get-solutions") {
+            console.log(`send all solutions`);
+            function send(data) {
+              console.log(`send`, data);
+              source.postMessage(data, allowedOrigin);
+            }
+
+            sendAllSolutions(send);
+          }
+        }
+      }
+
+      function initialize() {
+        console.log(`initialize`);
+        if (!inIframe()) {
+          console.error("ERROR: import.html must be loaded in an iframe");
+          return;
+        }
+        addTestOrigins();
+
+        window.addEventListener("message", onMessage);
+      }
+
+      initialize();
+    </script>
+  </body>
+</html>
