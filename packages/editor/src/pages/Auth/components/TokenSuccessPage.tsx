@@ -1,7 +1,7 @@
-import React from 'react';
-import { MessageBar, MessageBarType } from 'office-ui-fabric-react/lib/MessageBar';
-import TextboxClipboardWrapper from 'common/lib/components/Clipboard/TextboxClipboardWrapper';
-import { PersonaSize, Persona } from 'office-ui-fabric-react/lib/Persona';
+import React from "react";
+import { MessageBar, MessageBarType } from "office-ui-fabric-react/lib/MessageBar";
+import TextboxClipboardWrapper from "common/build/components/Clipboard/TextboxClipboardWrapper";
+import { PersonaSize, Persona } from "office-ui-fabric-react/lib/Persona";
 
 interface IProps {
   encodedToken: string;
@@ -12,14 +12,14 @@ interface IProps {
 export default ({ encodedToken, username, fullName, profilePicUrl }: IProps) => (
   <div>
     <MessageBar messageBarType={MessageBarType.success}>
-      Your encoded GitHub auth token is ready. Please copy it from here, and paste it back
-      into the code editor window.
+      Your encoded GitHub auth token is ready. Please copy it from here, and paste it back into the
+      code editor window.
     </MessageBar>
 
     <Persona
       styles={{
         root: {
-          marginTop: '2rem',
+          marginTop: "2rem",
         },
       }}
       imageUrl={profilePicUrl}
@@ -29,6 +29,6 @@ export default ({ encodedToken, username, fullName, profilePicUrl }: IProps) => 
       showSecondaryText={true}
     />
 
-    <TextboxClipboardWrapper style={{ marginTop: '2rem' }} text={encodedToken} />
+    <TextboxClipboardWrapper style={{ marginTop: "2rem" }} text={encodedToken} />
   </div>
 );

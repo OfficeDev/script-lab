@@ -1,13 +1,13 @@
-import React from 'react';
-import { parse } from 'query-string';
+import React from "react";
+import { parse } from "query-string";
 
-import PageSwitcher, { IPageLoadingSpec } from 'common/lib/components/PageSwitcher';
-import { SCRIPT_URLS } from 'common/lib/constants';
-import { OFFICE_JS_URL_QUERY_PARAMETER_KEY } from 'common/lib/utilities/script-loader/constants';
+import PageSwitcher, { IPageLoadingSpec } from "common/build/components/PageSwitcher";
+import { SCRIPT_URLS } from "common/build/constants";
+import { OFFICE_JS_URL_QUERY_PARAMETER_KEY } from "common/build/utilities/script-loader/constants";
 
-import { PATHS } from '../constants';
-import CustomFunctionsRunner from './CustomFunctionsRunner';
-import Runner from './Runner';
+import { PATHS } from "../constants";
+import { CustomFunctionsRunner } from "./CustomFunctionsRunner";
+import { Runner } from "./Runner";
 
 // Note: To add a page you must add the path for the page in
 // src/constants.ts add it into the structure below:
@@ -31,7 +31,7 @@ function getOfficeJsUrlToLoad(): string {
     [OFFICE_JS_URL_QUERY_PARAMETER_KEY]: string;
   };
 
-  return (params[OFFICE_JS_URL_QUERY_PARAMETER_KEY] || '').trim().length > 0
+  return (params[OFFICE_JS_URL_QUERY_PARAMETER_KEY] || "").trim().length > 0
     ? params[OFFICE_JS_URL_QUERY_PARAMETER_KEY]
     : SCRIPT_URLS.DEFAULT_OFFICE_JS;
 }

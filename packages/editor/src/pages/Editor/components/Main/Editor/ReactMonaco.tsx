@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { HYPHENATED_PACKAGE_VERSIONS } from 'common/lib/package-versions';
+import React, { Component } from "react";
+import { HYPHENATED_PACKAGE_VERSIONS } from "common/build/package-versions";
 
 export interface IProps {
   solutionId: string;
@@ -24,12 +24,12 @@ export class ReactMonaco extends Component<IProps, IState> {
       this.initializeMonaco();
     } else {
       (window as any).require.config({
-        baseUrl: '/',
+        baseUrl: ".",
         paths: {
-          vs: `external/monaco-editor-${HYPHENATED_PACKAGE_VERSIONS['monaco-editor']}/vs`,
+          vs: `external/monaco-editor-${HYPHENATED_PACKAGE_VERSIONS["monaco-editor"]}/vs`,
         },
       });
-      (window as any).require(['vs/editor/editor.main'], () => this.initializeMonaco());
+      (window as any).require(["vs/editor/editor.main"], () => this.initializeMonaco());
     }
   }
 
@@ -113,13 +113,11 @@ export class ReactMonaco extends Component<IProps, IState> {
   };
 
   clearAllModels = () => {
-    monaco.editor.getModels().forEach(model => model.dispose());
+    monaco.editor.getModels().forEach((model) => model.dispose());
   };
 
   render() {
-    return (
-      <div ref={this.container} style={{ width: '100%', height: '100%' }} role="main" />
-    );
+    return <div ref={this.container} style={{ width: "100%", height: "100%" }} role="main" />;
   }
 }
 

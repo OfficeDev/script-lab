@@ -1,7 +1,7 @@
-import { IState } from '../reducer';
-import { LIBRARIES_FILE_NAME, SCRIPT_FILE_NAME } from 'common/lib/utilities/solution';
-import { NULL_SOLUTION_ID, SETTINGS_SOLUTION_ID } from '../../../../constants';
-import { filterCustomFunctions } from '../../../CustomFunctions/components/App/utilities';
+import { IState } from "../reducer";
+import { LIBRARIES_FILE_NAME, SCRIPT_FILE_NAME } from "common/build/utilities/solution";
+import { NULL_SOLUTION_ID, SETTINGS_SOLUTION_ID } from "../../../../constants";
+import { filterCustomFunctions } from "../../../CustomFunctions/components/App/utilities";
 
 // solutions
 export const get = (state: IState, id: string): ISolution | null => {
@@ -15,17 +15,16 @@ export const get = (state: IState, id: string): ISolution | null => {
   const { isCustomFunctionsSolution } = solutionMetadata.options;
 
   const scriptFile = solutionMetadata.files
-    .map(fileId => getFile(state, fileId))
-    .filter(file => file.name === SCRIPT_FILE_NAME)[0];
-  const isPythonScript = scriptFile && scriptFile.language === 'python';
+    .map((fileId) => getFile(state, fileId))
+    .filter((file) => file.name === SCRIPT_FILE_NAME)[0];
+  const isPythonScript = scriptFile && scriptFile.language === "python";
   const files = solutionMetadata.files
-    .map(fileId => getFile(state, fileId))
-    .filter(file => {
+    .map((fileId) => getFile(state, fileId))
+    .filter((file) => {
       if (isCustomFunctionsSolution) {
-        return [
-          SCRIPT_FILE_NAME,
-          ...(isPythonScript ? [] : [LIBRARIES_FILE_NAME]),
-        ].includes(file.name);
+        return [SCRIPT_FILE_NAME, ...(isPythonScript ? [] : [LIBRARIES_FILE_NAME])].includes(
+          file.name,
+        );
       } else if (isPythonScript) {
         // For a python script, only include the main file and nothing else
         // (i.e., libraries and html and css are all not relevant)
@@ -40,26 +39,23 @@ export const get = (state: IState, id: string): ISolution | null => {
 
 // TODO: Nico: REMOVE THIS LOGIC FROM HERE AS IT ISN'T THE RIGHT PLACE TO DO IT
 // https://github.com/OfficeDev/script-lab-react/issues/430
-export const getSolutionWithHiddenFiles = (
-  state: IState,
-  id: string,
-): ISolution | null => {
+export const getSolutionWithHiddenFiles = (state: IState, id: string): ISolution | null => {
   const solutionMetadata = state.solutions.metadata[id];
   if (!solutionMetadata) {
     return null;
   }
-  const files = solutionMetadata.files.map(fileId => getFile(state, fileId));
+  const files = solutionMetadata.files.map((fileId) => getFile(state, fileId));
 
   return { ...solutionMetadata, files };
 };
 
 export const getAll = (state: IState): ISolution[] =>
   Object.values(state.solutions.metadata)
-    .filter(solution => solution.host === state.host || solution.host === 'ALL')
+    .filter((solution) => solution.host === state.host || solution.host === "ALL")
     .filter(({ id }) => ![NULL_SOLUTION_ID, SETTINGS_SOLUTION_ID].includes(id))
-    .map(solution => ({
+    .map((solution) => ({
       ...solution,
-      files: solution.files.map(id => getFile(state, id)),
+      files: solution.files.map((id) => getFile(state, id)),
     }));
 
 export const getInLastModifiedOrder = (state: IState): ISolution[] =>
@@ -72,20 +68,16 @@ export const getInLastOpenedOrder = (state: IState): ISolution[] =>
 //       that filters for only custom functions to prevent false positive refreshes
 export const getEditorLastModifiedDate = (state: IState): number => {
   const lastModifiedOrderSolutions = getInLastModifiedOrder(state);
-  return lastModifiedOrderSolutions.length > 0
-    ? lastModifiedOrderSolutions[0].dateLastModified
-    : 0;
+  return lastModifiedOrderSolutions.length > 0 ? lastModifiedOrderSolutions[0].dateLastModified : 0;
 };
 
 export const getCustomFunctionsLastModifiedDate = (state: IState): number => {
   const lastModifiedCFSolutions = filterCustomFunctions(getInLastModifiedOrder(state));
 
-  return lastModifiedCFSolutions.length > 0
-    ? lastModifiedCFSolutions[0].dateLastModified
-    : 0;
+  return lastModifiedCFSolutions.length > 0 ? lastModifiedCFSolutions[0].dateLastModified : 0;
 };
 
 // files
 export const getFile = (state: IState, id: string): IFile => state.solutions.files[id];
 export const getFiles = (state: IState, ids: string[]): IFile[] =>
-  ids.map(id => getFile(state, id));
+  ids.map((id) => getFile(state, id));

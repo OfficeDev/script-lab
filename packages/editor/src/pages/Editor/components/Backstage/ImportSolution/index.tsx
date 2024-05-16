@@ -1,74 +1,112 @@
-import React, { Component } from 'react';
-import Content from '../Content';
+import React from "react";
+import { useState } from "react";
+import Content from "../Content";
 
-import { TextField } from 'office-ui-fabric-react/lib/TextField';
-import { PrimaryButton } from 'office-ui-fabric-react/lib/Button';
+import { TextField } from "office-ui-fabric-react/lib/TextField";
+import { PrimaryButton } from "office-ui-fabric-react/lib/Button";
 
-import YAML from 'js-yaml';
-import { convertSnippetToSolution } from '../../../../../utils';
+import YAML from "js-yaml";
+import { convertSnippetToSolution } from "../../../../../utils";
+import { get } from "lodash";
 
 interface IProps {
   importGist: (gistId?: string, gist?: string) => void;
 }
 
-interface IState {
-  importFieldText: string;
-  errorMessage: string | undefined;
-}
+export function ImportSolution({ importGist }: IProps) {
+  const [importFieldText, setImportFieldText] = useState("");
+  const [errorMessage, setErrorMessage] = useState(undefined);
 
-class ImportSolution extends Component<IProps, IState> {
-  state = { importFieldText: '', errorMessage: undefined };
-
-  render() {
-    return (
-      <Content
-        title="Import snippet"
-        description="Enter the snippet's URL or paste the YAML below, then choose Import."
-      >
-        <span className="ms-font-m">Snippet URL or YAML</span>
-        <TextField
-          multiline={true}
-          rows={8}
-          onChange={this.updateImportFieldText}
-          placeholder="e.g.: https://gist.github.com/sampleGistId"
-          errorMessage={this.state.errorMessage}
-        />
-        <PrimaryButton
-          style={{ marginTop: '1.5rem', float: 'right' }}
-          text="Import"
-          onClick={this.onImportClick}
-        />
-      </Content>
-    );
+  function updateImportFieldText(event: any, newValue?: string | undefined) {
+    setImportFieldText(newValue || "");
   }
 
-  private updateImportFieldText = (event: any, newValue?: string | undefined) =>
-    this.setState({ importFieldText: newValue || '' });
+  // IMPORT CODE
+  async function onImportClick() {
+    debugger;
+    const input = importFieldText.trim();
+    let content = undefined;
 
-  private onImportClick = () => {
-    const input = this.state.importFieldText.trim();
-    let gistId;
-    let gist;
+    function testContent(text: string) {
+      const content = YAML.load(text) as ISnippet;
+      const { name, host } = convertSnippetToSolution(content);
+      if (!name && !host) {
+        throw new Error();
+      }
+    }
+
+    async function getUrlContent(url: string) {
+      const request = await fetch(url);
+      const text = await request.text();
+      return text;
+    }
+
+    /**
+     * @param gistId
+     * @returns content of the fist file in the gist
+     */
+    async function getGistContent(gistId: string) {
+      // Get information about the gist
+      const request = await fetch(`https://api.github.com/gists/${gistId}`);
+      const gist = await request.json();
+
+      // Get gists first files raw_url
+      const gistFiles = gist.files;
+      const file = Object.values(gistFiles)[0];
+      const raw_url = file["raw_url"];
+
+      // load the first files content
+      const text = await getUrlContent(raw_url);
+      return text;
+    }
+
     try {
-      if (input.startsWith('https://gist.github.com/')) {
-        gistId = input.split('/').pop();
+      if (input.startsWith("https://gist.github.com/")) {
+        // Load GIST
+        const gistId = input.split("/").pop();
+        const text = await getGistContent(gistId);
+        content = text;
+      } else if (input.startsWith("https://") || input.startsWith("http://")) {
+        // Load URL
+        const text = await getUrlContent(input);
+        content = text;
       } else {
-        gist = input;
-        const content = YAML.safeLoad(input);
-        const { name, host } = convertSnippetToSolution(content as ISnippet);
-        if (!name && !host) {
-          throw new Error();
-        }
+        // Load TEXT
+        content = input;
       }
 
-      this.props.importGist(gistId, gist);
-      this.setState({ importFieldText: '', errorMessage: undefined });
-    } catch (err) {
-      this.setState({
-        errorMessage: 'You must provide valid gist YAML or a valid gist url.',
-      });
-    }
-  };
-}
+      // Verify that the content is a valid snippet
+      testContent(content);
 
-export default ImportSolution;
+      // Import the snippet
+      importGist(undefined, content);
+
+      // Reset the form
+      setImportFieldText("");
+      setErrorMessage(undefined);
+    } catch (err) {
+      setErrorMessage("You must provide valid YAML, gist URL, or URL.");
+    }
+  }
+
+  return (
+    <Content
+      title="Import snippet"
+      description="Enter the snippet's URL or paste the YAML below, then choose Import."
+    >
+      <span className="ms-font-m">Snippet URL or YAML</span>
+      <TextField
+        multiline={true}
+        rows={8}
+        onChange={updateImportFieldText}
+        placeholder="e.g.: https://gist.github.com/sampleGistId"
+        errorMessage={errorMessage}
+      />
+      <PrimaryButton
+        style={{ marginTop: "1.5rem", float: "right" }}
+        text="Import"
+        onClick={onImportClick}
+      />
+    </Content>
+  );
+}

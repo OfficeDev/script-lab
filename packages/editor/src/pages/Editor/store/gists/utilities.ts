@@ -1,4 +1,4 @@
-import processLibraries from 'common/lib/utilities/process.libraries';
+import processLibraries from "common/build/utilities/process.libraries";
 
 export async function checkForUnsupportedAPIsIfRelevant(snippet: ISnippet) {
   const { host } = await Office.onReady();
@@ -9,10 +9,10 @@ export async function checkForUnsupportedAPIsIfRelevant(snippet: ISnippet) {
   }
 
   const desiredOfficeJS =
-    processLibraries(snippet.libraries || '', isInsideOfficeApp).officeJs || '';
+    processLibraries(snippet.libraries || "", isInsideOfficeApp).officeJs || "";
   const isProductionOfficeJs = desiredOfficeJS
     .toLowerCase()
-    .includes('https://appsforoffice.microsoft.com/lib/1/hosted/');
+    .includes("https://appsforoffice.microsoft.com/lib/1/hosted/");
 
   if (!isProductionOfficeJs) {
     // Snippets using production Office.js should be checked for API set support.
@@ -23,9 +23,7 @@ export async function checkForUnsupportedAPIsIfRelevant(snippet: ISnippet) {
   const apiSet = snippet.api_set || {};
   Object.entries(apiSet).forEach(([api, version]) => {
     if (!Office.context.requirements.isSetSupported(api as string, version as number)) {
-      throw new Error(
-        `${host} does not support the required API Set ${api} @ ${version}`,
-      );
+      throw new Error(`${host} does not support the required API Set ${api} @ ${version}`);
     }
   });
 }

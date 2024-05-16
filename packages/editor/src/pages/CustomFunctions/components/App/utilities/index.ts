@@ -1,33 +1,26 @@
-import { IFunction, ICustomFunctionsMetadata } from 'custom-functions-metadata';
+import type { IFunction, ICustomFunctionsMetadata } from "common/build/custom-functions/parseTree";
 
-import compileScript from 'common/lib/utilities/compile.script';
-import { stripSpaces } from 'common/lib/utilities/string';
-import { consoleMonkeypatch } from './console.monkeypatch';
-import { getCurrentEnv } from 'common/lib/environment';
-import { pause } from 'common/lib/utilities/misc';
-import { findScript } from 'common/lib/utilities/solution';
+import compileScript from "common/build/utilities/compile.script";
+import { stripSpaces } from "common/build/utilities/string";
+import { consoleMonkeypatch } from "./console.monkeypatch";
+import { pause } from "common/build/utilities/misc";
+import { findScript } from "common/build/utilities/solution";
 import {
   parseMetadata,
   transformSolutionNameToCFNamespace,
   getAllowCustomDataForDataTypeAny,
-} from '../../../../../utils/custom-functions';
+} from "../../../../../utils/custom-functions";
 
 export function getJsonMetadataString(
   functions: Array<ICustomFunctionParseResult<IFunction>>,
   options?: object,
 ): string {
   const registrationPayload: ICustomFunctionsMetadata = {
-    functions: functions
-      .filter(func => func.status === 'good')
-      .map(func => func.metadata),
+    functions: functions.filter((func) => func.status === "good").map((func) => func.metadata),
   };
 
-  if (
-    options instanceof Object &&
-    options['allowCustomDataForDataTypeAny'] !== undefined
-  ) {
-    registrationPayload['allowCustomDataForDataTypeAny'] =
-      options['allowCustomDataForDataTypeAny'];
+  if (options instanceof Object && options["allowCustomDataForDataTypeAny"] !== undefined) {
+    registrationPayload["allowCustomDataForDataTypeAny"] = options["allowCustomDataForDataTypeAny"];
   }
 
   return JSON.stringify(registrationPayload, null, 4);
@@ -40,35 +33,30 @@ export async function registerCustomFunctions(
 ): Promise<void> {
   const jsonMetadataString = getJsonMetadataString(functions, options);
 
-  if (Office.context.requirements.isSetSupported('CustomFunctions', 1.6)) {
+  if (Office.context.requirements.isSetSupported("CustomFunctions", 1.6)) {
     await (Excel as any).CustomFunctionManager.register(jsonMetadataString, code);
   } else {
-    await Excel.run(async context => {
+    await Excel.run(async (context) => {
       if (Office.context.platform === Office.PlatformType.OfficeOnline) {
         const namespace = getScriptLabTopLevelNamespace().toUpperCase();
         (context.workbook as any).registerCustomFunctions(
           namespace,
           jsonMetadataString,
-          '' /*addinId*/,
-          'en-us',
+          "" /*addinId*/,
+          "en-us",
           namespace,
         );
       } else {
-        (Excel as any).CustomFunctionManager.newObject(context).register(
-          jsonMetadataString,
-          code,
-        );
+        (Excel as any).CustomFunctionManager.newObject(context).register(jsonMetadataString, code);
       }
       await context.sync();
     });
   }
 }
 
-export async function getCustomFunctionEngineStatusSafe(): Promise<
-  ICustomFunctionEngineStatus
-> {
+export async function getCustomFunctionEngineStatusSafe(): Promise<ICustomFunctionEngineStatus> {
   try {
-    if (!Office.context.requirements.isSetSupported('CustomFunctions', 1.4)) {
+    if (!Office.context.requirements.isSetSupported("CustomFunctions", 1.4)) {
       return { enabled: false };
     }
 
@@ -92,26 +80,22 @@ export async function getCustomFunctionEngineStatusSafe(): Promise<
   // Helpers:
 
   async function getEngineStatus(): Promise<ICustomFunctionEngineStatus> {
-    if (Office.context.requirements.isSetSupported('CustomFunctions', 1.6)) {
+    if (Office.context.requirements.isSetSupported("CustomFunctions", 1.6)) {
       const status = await (Excel as any).CustomFunctionManager.getStatus();
       return {
         enabled: status.enabled,
         nativeRuntime: status.nativeRuntime,
       };
     } else {
-      return tryExcelRun(
-        async (context): Promise<ICustomFunctionEngineStatus> => {
-          const manager = (Excel as any).CustomFunctionManager.newObject(context).load(
-            'status',
-          );
-          await context.sync();
+      return tryExcelRun(async (context): Promise<ICustomFunctionEngineStatus> => {
+        const manager = (Excel as any).CustomFunctionManager.newObject(context).load("status");
+        await context.sync();
 
-          return {
-            enabled: manager.status.enabled,
-            nativeRuntime: manager.status.nativeRuntime,
-          };
-        },
-      );
+        return {
+          enabled: manager.status.enabled,
+          nativeRuntime: manager.status.nativeRuntime,
+        };
+      });
     }
   }
 
@@ -120,7 +104,7 @@ export async function getCustomFunctionEngineStatusSafe(): Promise<
   ) {
     while (true) {
       try {
-        return Excel.run(async context => await callback(context));
+        return Excel.run(async (context) => await callback(context));
       } catch (e) {
         const isInCellEditMode =
           e instanceof OfficeExtension.Error &&
@@ -137,12 +121,10 @@ export async function getCustomFunctionEngineStatusSafe(): Promise<
 }
 
 export function getScriptLabTopLevelNamespace() {
-  return 'ScriptLab' + (getCurrentEnv() === 'local' ? 'Dev' : '');
+  return "ScriptLab";
 }
 
-export function getCustomFunctionsInfoForRegistration(
-  solutions: ISolution[],
-): {
+export function getCustomFunctionsInfoForRegistration(solutions: ISolution[]): {
   parseResults: Array<ICustomFunctionParseResult<IFunction>>;
   code: string;
   options: object;
@@ -150,7 +132,7 @@ export function getCustomFunctionsInfoForRegistration(
   const parseResults: Array<ICustomFunctionParseResult<IFunction>> = [];
   const code: string[] = [decodeURIComponent(consoleMonkeypatch.trim())];
 
-  solutions.forEach(solution => {
+  solutions.forEach((solution) => {
     if (solution.name.length === 0) {
       return;
     }
@@ -169,7 +151,7 @@ export function getCustomFunctionsInfoForRegistration(
       fileContent,
     });
 
-    let hasErrors = functions.some(func => func.status === 'error');
+    let hasErrors = functions.some((func) => func.status === "error");
 
     let snippetCode: string;
     if (!hasErrors) {
@@ -178,7 +160,7 @@ export function getCustomFunctionsInfoForRegistration(
         code.push(
           wrapCustomFunctionSnippetCode(
             snippetCode,
-            functions.map(func => ({
+            functions.map((func) => ({
               fullId: func.metadata.id,
               fullDisplayName: func.metadata.name,
               javascriptFunctionName: func.javascriptFunctionName,
@@ -186,23 +168,23 @@ export function getCustomFunctionsInfoForRegistration(
           ),
         );
       } catch (e) {
-        functions.forEach(f => {
-          f.status = 'error';
+        functions.forEach((f) => {
+          f.status = "error";
           f.errors = f.errors || [];
-          f.errors.unshift('Snippet compiler error');
+          f.errors.unshift("Snippet compiler error");
         });
         hasErrors = true;
       }
     }
 
-    functions.forEach(func => parseResults.push(func));
+    functions.forEach((func) => parseResults.push(func));
   });
 
   const options = {
     allowCustomDataForDataTypeAny: getAllowCustomDataForDataTypeAny(),
   };
 
-  return { parseResults: parseResults, code: code.join('\n\n'), options: options };
+  return { parseResults: parseResults, code: code.join("\n\n"), options: options };
 }
 
 // helpers
@@ -215,16 +197,16 @@ function wrapCustomFunctionSnippetCode(
     javascriptFunctionName: string;
   }>,
 ): string {
-  const newlineAndIndents = '\n        ';
+  const newlineAndIndents = "\n        ";
 
   const almostReady = stripSpaces(`
     (function () {
       try {
         // TODO external code
         ${code
-          .split('\n')
-          .map(line => newlineAndIndents + line)
-          .join('')}
+          .split("\n")
+          .map((line) => newlineAndIndents + line)
+          .join("")}
         ${generateFunctionAssignments(true /*success*/)}
       } catch (e) {
         ${generateFunctionAssignments(false /*success*/)}
@@ -233,14 +215,14 @@ function wrapCustomFunctionSnippetCode(
   `);
 
   return almostReady
-    .split('\n')
-    .map(line => line.trimRight())
-    .join('\n');
+    .split("\n")
+    .map((line) => line.trimRight())
+    .join("\n");
 
   // Helper
   function generateFunctionAssignments(success: boolean) {
     return functions
-      .map(item => {
+      .map((item) => {
         return `CustomFunctions.associate("${item.fullId}", ${getRightSide()});`;
 
         function getRightSide() {
@@ -254,4 +236,4 @@ function wrapCustomFunctionSnippetCode(
 }
 
 export const filterCustomFunctions = (solutions: ISolution[]): ISolution[] =>
-  solutions.filter(solution => solution.options.isCustomFunctionsSolution);
+  solutions.filter((solution) => solution.options.isCustomFunctionsSolution);

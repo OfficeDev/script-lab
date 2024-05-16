@@ -1,32 +1,33 @@
-import React from 'react';
-import queryString from 'query-string';
+import React from "react";
+import queryString from "query-string";
 
-import {
-  hideSplashScreen,
-  invokeGlobalErrorHandler,
-} from 'common/lib/utilities/splash.screen';
-import { isInternetExplorer, generateRandomToken } from 'common/lib/utilities/misc';
-import { MessageBar, MessageBarType } from 'office-ui-fabric-react/lib/MessageBar';
-import Theme from 'common/lib/components/Theme';
-import { HostType } from '@microsoft/office-js-helpers';
-import { generateGithubLoginUrl, getProfileInfo } from '../Editor/services/github';
-import IEError from './components/IEError';
-import SomethingWentWrong from './components/SomethingWentWrong';
-import TokenSuccessPage from './components/TokenSuccessPage';
-import Dialog, { DialogType } from 'office-ui-fabric-react/lib/Dialog';
-import { RunOnLoad } from 'common/lib/components/PageSwitcher/utilities/RunOnLoad';
-import { currentServerUrl } from 'common/lib/environment';
+import { hideSplashScreen, invokeGlobalErrorHandler } from "common/build/utilities/splash.screen";
+import { isInternetExplorer, generateRandomToken } from "common/build/utilities/misc";
+import { MessageBar, MessageBarType } from "office-ui-fabric-react/lib/MessageBar";
+import Theme from "common/build/components/Theme";
+import { HostType } from "common/build/helpers/officeJsHost";
+import { generateGithubLoginUrl, getProfileInfo } from "../Editor/services/github";
+import IEError from "./components/IEError";
+import SomethingWentWrong from "./components/SomethingWentWrong";
+import TokenSuccessPage from "./components/TokenSuccessPage";
+import Dialog, { DialogType } from "office-ui-fabric-react/lib/Dialog";
+import { RunOnLoad } from "common/build/components/PageSwitcher/utilities/RunOnLoad";
+import { currentServerUrl } from "common/build/environment";
 
 import {
   bufferToHexString,
   hexStringToBuffer,
   unicodeStringToBuffer,
-} from 'common/lib/utilities/array.buffer';
+} from "common/build/utilities/array.buffer";
+import {
+  IServerAuthRequest,
+  IServerAuthResponse,
+} from "common/src/interfaces/server.communication";
 
 const AUTH_PAGE_SESSION_STORAGE_KEYS = {
-  auth_completed: 'auth_completed',
-  auth_key: 'auth_key',
-  auth_state: 'auth_state',
+  auth_completed: "auth_completed",
+  auth_key: "auth_key",
+  auth_state: "auth_state",
 };
 
 interface IProps {}
@@ -70,7 +71,7 @@ class AuthPage extends React.Component<IProps, IState> {
       // If landed on the page and have a "key" query parameter, the window
       // might be re-used for a new auth flow.  So just in case,
       // clear the session storage, and then store the key parameter
-      Object.values(AUTH_PAGE_SESSION_STORAGE_KEYS).forEach(keyName =>
+      Object.values(AUTH_PAGE_SESSION_STORAGE_KEYS).forEach((keyName) =>
         sessionStorage.removeItem(keyName),
       );
 
@@ -84,8 +85,8 @@ class AuthPage extends React.Component<IProps, IState> {
     if (sessionStorage.getItem(AUTH_PAGE_SESSION_STORAGE_KEYS.auth_completed)) {
       error =
         "You've already authenticated once on this page. " +
-        'If you need to re-authenticate, please close this page, go back to the code editor, ' +
-        'and retrieve a new sign-in URL to open in a new page.';
+        "If you need to re-authenticate, please close this page, go back to the code editor, " +
+        "and retrieve a new sign-in URL to open in a new page.";
     }
 
     this.state = {
@@ -97,10 +98,7 @@ class AuthPage extends React.Component<IProps, IState> {
   }
 
   render() {
-    const {
-      component,
-      showUI,
-    }: { component: React.ReactElement<any>; showUI: boolean } = (() => {
+    const { component, showUI }: { component: React.ReactElement<any>; showUI: boolean } = (() => {
       if (this.state.error) {
         return {
           component: <SomethingWentWrong additionalInfo={this.state.error} />,
@@ -126,7 +124,7 @@ class AuthPage extends React.Component<IProps, IState> {
         const state = sessionStorage.getItem(AUTH_PAGE_SESSION_STORAGE_KEYS.auth_state);
         if (!this.state.publicKeyString || !state || state !== this.params.state) {
           console.error(
-            'Something went wrong: have code and state on the URL query string, ' +
+            "Something went wrong: have code and state on the URL query string, " +
               "but don't seem to have it in session storage!",
           );
           return {
@@ -145,14 +143,14 @@ class AuthPage extends React.Component<IProps, IState> {
         // Before navigating away, kick off a process to ensure that the key is
         // actually valid (e.g., that it wasn't accidentally cut off during copy-paste)
         reconstructPublicKey(this.state.publicKeyString)
-          .then(_ => {
+          .then((_) => {
             const random = generateRandomToken();
 
             sessionStorage.setItem(AUTH_PAGE_SESSION_STORAGE_KEYS.auth_state, random);
 
             window.location.href = generateGithubLoginUrl(random);
           })
-          .catch(e => {
+          .catch((e) => {
             this.setState({
               error:
                 `The "key" parameter in the URL appears to be incomplete. ` +
@@ -167,9 +165,8 @@ class AuthPage extends React.Component<IProps, IState> {
         return {
           component: (
             <MessageBar messageBarType={MessageBarType.severeWarning}>
-              This page must be opened from a link that contains a key parameter in the
-              URL. Please go back to the sign-in dialog in the code editor, and be sure to
-              copy the full URL.
+              This page must be opened from a link that contains a key parameter in the URL. Please
+              go back to the sign-in dialog in the code editor, and be sure to copy the full URL.
             </MessageBar>
           ),
           showUI: true,
@@ -183,7 +180,7 @@ class AuthPage extends React.Component<IProps, IState> {
         };
       }
 
-      console.error('Something went wrong -- fell through the other cases');
+      console.error("Something went wrong -- fell through the other cases");
       return {
         component: <SomethingWentWrong />,
         showUI: true,
@@ -201,7 +198,7 @@ class AuthPage extends React.Component<IProps, IState> {
           minWidth="350px"
           dialogContentProps={{
             type: DialogType.normal,
-            title: 'Script Lab – Sign in with GitHub',
+            title: "Script Lab – Sign in with GitHub",
           }}
           modalProps={{
             isBlocking: true,
@@ -220,10 +217,10 @@ class AuthPage extends React.Component<IProps, IState> {
         state: sessionStorage.getItem(AUTH_PAGE_SESSION_STORAGE_KEYS.auth_state),
       };
 
-      const response = await fetch(currentServerUrl + '/auth', {
-        method: 'POST',
+      const response = await fetch(currentServerUrl + "/auth", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(input),
       });
@@ -256,18 +253,15 @@ class AuthPage extends React.Component<IProps, IState> {
       //   (see https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/12782429/)
       const encryptedArrayBuffer = await crypto.subtle.encrypt(
         {
-          name: 'RSA-OAEP',
-          hash: { name: 'SHA-256' } /* See note above for why it's needed */,
+          name: "RSA-OAEP",
+          hash: { name: "SHA-256" } /* See note above for why it's needed */,
         } as any,
         publicKey,
         unicodeStringToBuffer(token),
       );
       const encodedToken = bufferToHexString(encryptedArrayBuffer);
       this.setState({ encodedToken, username, profilePicUrl, fullName });
-      window.sessionStorage.setItem(
-        AUTH_PAGE_SESSION_STORAGE_KEYS.auth_completed,
-        'true',
-      );
+      window.sessionStorage.setItem(AUTH_PAGE_SESSION_STORAGE_KEYS.auth_completed, "true");
     } catch (e) {
       invokeGlobalErrorHandler(e);
     }
@@ -286,11 +280,11 @@ function reconstructPublicKey(numericString: string): Promise<CryptoKey> {
       // Note: can use "crypto" directly here because by the time get to this code,
       // don't need to worry about IE11.
       const value = await crypto.subtle.importKey(
-        'spki',
+        "spki",
         hexStringToBuffer(numericString),
-        { name: 'RSA-OAEP', hash: { name: 'SHA-256' } },
+        { name: "RSA-OAEP", hash: { name: "SHA-256" } },
         false,
-        ['encrypt'],
+        ["encrypt"],
       );
       return resolve(value);
     } catch (reason) {

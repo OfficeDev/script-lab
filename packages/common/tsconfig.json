@@ -8,12 +8,12 @@
     ],
     "lib": [
       "dom",
-      "es2015"
+      "es2020"
     ],
     "skipLibCheck": true,
     "esModuleInterop": true,
     "strict": true,
-    "outDir": "lib",
+    "outDir": "build",
     "declaration": true,
     "allowJs": false,
     "checkJs": false,
@@ -29,7 +29,7 @@
   "exclude": [
     "node_modules",
     "**/node_modules/**/*",
-    "build",
+    "./build/**/*",
     "scripts",
     "acceptance-tests",
     "webpack",

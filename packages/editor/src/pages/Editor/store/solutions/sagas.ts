@@ -1,20 +1,20 @@
-import { put, takeEvery, call, select } from 'redux-saga/effects';
-import { getType, ActionType } from 'typesafe-actions';
+import { put, takeEvery, call, select } from "redux-saga/effects";
+import { getType, ActionType } from "typesafe-actions";
 
-import { SCRIPT_FILE_NAME } from 'common/lib/utilities/solution';
-import { messageBar, solutions, editor } from '../actions';
-import { fetchYaml } from '../../services/general';
-import selectors from '../selectors';
-import { convertSnippetToSolution } from '../../../../utils';
+import { SCRIPT_FILE_NAME } from "common/build/utilities/solution";
+import { messageBar, solutions, editor } from "../actions";
+import { fetchYaml } from "../../services/general";
+import selectors from "../selectors";
+import { convertSnippetToSolution } from "../../../../utils";
 import {
   isTypeScriptCustomFunctionScript,
   isPythonCustomFunctionScript,
-} from '../../../../utils/custom-functions';
-import { getBoilerplate } from '../../../../newSolutionData';
-import { NULL_SOLUTION_ID, NULL_FILE_ID } from '../../../../constants';
-import { deleteSolutionFromStorage } from '../localStorage';
-import { formatTypeScriptFile } from '../editor/utilities';
-import { currentOfficeJsRawSnippetsBaseRepoUrl } from 'common/lib/environment';
+} from "../../../../utils/custom-functions";
+import { getBoilerplate } from "../../../../newSolutionData";
+import { NULL_SOLUTION_ID, NULL_FILE_ID } from "../../../../constants";
+import { deleteSolutionFromStorage } from "../localStorage";
+import { formatTypeScriptFile } from "../editor/utilities";
+import { currentOfficeJsRawSnippetsBaseRepoUrl } from "common/build/environment";
 
 export default function* solutionsWatcher() {
   yield takeEvery(getType(solutions.edit), onSolutionOpenOrFileEditSaga);
@@ -41,11 +41,8 @@ function* onSolutionOpenOrFileEditSaga(
 
     case getType(solutions.edit):
       if (action.payload.fileId) {
-        const file: IFile = yield select(
-          selectors.solutions.getFile,
-          action.payload.fileId,
-        );
-        if (file.language === 'typescript' || file.language === 'python') {
+        const file: IFile = yield select(selectors.solutions.getFile, action.payload.fileId);
+        if (file.language === "typescript" || file.language === "python") {
           solutionId = action.payload.id;
           break;
         } else {
@@ -64,7 +61,7 @@ function* onSolutionOpenOrFileEditSaga(
     return;
   }
 
-  const file = solution.files.find(file => file.name === SCRIPT_FILE_NAME);
+  const file = solution.files.find((file) => file.name === SCRIPT_FILE_NAME);
   if (!file) {
     return;
   }
@@ -88,15 +85,11 @@ export function* getDefaultSaga() {
   }
 }
 
-function* handleGetDefaultSuccessSaga(
-  action: ActionType<typeof solutions.getDefault.success>,
-) {
+function* handleGetDefaultSuccessSaga(action: ActionType<typeof solutions.getDefault.success>) {
   yield call(createSolutionSaga, action.payload.solution);
 }
 
-function* handleGetDefaultFailureSaga(
-  action: ActionType<typeof solutions.getDefault.success>,
-) {
+function* handleGetDefaultFailureSaga(action: ActionType<typeof solutions.getDefault.success>) {
   const host: string = yield select(selectors.host.get);
   const solution = getBoilerplate(host);
   yield call(createSolutionSaga, solution);
@@ -107,21 +100,19 @@ export function* createSolutionSaga(solution: ISolution) {
   // after testing it a few times, it runs anywhere from 4ms to 100ms
   let newSolution = solution;
   const tabWidth = yield select(selectors.settings.getTabSize);
-  const script = solution.files.find(file => file.name === SCRIPT_FILE_NAME);
+  const script = solution.files.find((file) => file.name === SCRIPT_FILE_NAME);
   if (script) {
     const newContent = yield call(formatTypeScriptFile, script.content, { tabWidth });
     newSolution = {
       ...solution,
       files: [
         { ...script, content: newContent },
-        ...solution.files.filter(file => file.name !== SCRIPT_FILE_NAME),
+        ...solution.files.filter((file) => file.name !== SCRIPT_FILE_NAME),
       ],
     };
   }
   yield put(solutions.add(newSolution));
-  yield put(
-    editor.openFile({ solutionId: newSolution.id, fileId: newSolution.files[0].id }),
-  );
+  yield put(editor.openFile({ solutionId: newSolution.id, fileId: newSolution.files[0].id }));
 }
 
 function* removeSolutionSaga(action: ActionType<typeof solutions.remove>) {
@@ -155,7 +146,10 @@ export function* openLastOpenedOrBackstageSaga() {
     yield put(editor.openBackstage());
   } else {
     yield put(
-      editor.openFile({ solutionId: solutions[0].id, fileId: solutions[0].files[0].id }),
+      editor.openFile({
+        solutionId: solutions[0].id,
+        fileId: solutions[0].files[0].id,
+      }),
     );
   }
 }
@@ -168,14 +162,15 @@ export function* open2ndToLastOpenedOrBackstageSaga() {
     yield put(editor.openBackstage());
   } else {
     yield put(
-      editor.openFile({ solutionId: solutions[1].id, fileId: solutions[1].files[0].id }),
+      editor.openFile({
+        solutionId: solutions[1].id,
+        fileId: solutions[1].files[0].id,
+      }),
     );
   }
 }
 
-function* checkIfIsCustomFunctionSaga(
-  action: ActionType<typeof solutions.scriptNeedsParsing>,
-) {
+function* checkIfIsCustomFunctionSaga(action: ActionType<typeof solutions.scriptNeedsParsing>) {
   const { solution, file } = action.payload;
 
   // For now, assuming that if it's Python, it must be a CF.

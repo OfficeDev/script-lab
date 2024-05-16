@@ -1,16 +1,12 @@
-import React from 'react';
+import React from "react";
 
-import SummaryItem from './SummaryItem';
-import {
-  CustomFunctionsDescription,
-  SummaryItemsContainer,
-  LoadingContainer,
-} from './styles';
+import SummaryItem from "./SummaryItem";
+import { CustomFunctionsDescription, SummaryItemsContainer, LoadingContainer } from "./styles";
 
-import { Spinner, SpinnerSize } from 'office-ui-fabric-react/lib/Spinner';
-import { MessageBar, MessageBarType } from 'office-ui-fabric-react/lib/MessageBar';
-import { DefaultButton } from 'office-ui-fabric-react/lib/Button';
-import { invokeGlobalErrorHandler } from 'common/lib/utilities/splash.screen';
+import { Spinner, SpinnerSize } from "office-ui-fabric-react/lib/Spinner";
+import { MessageBar, MessageBarType } from "office-ui-fabric-react/lib/MessageBar";
+import { DefaultButton } from "office-ui-fabric-react/lib/Button";
+import { invokeGlobalErrorHandler } from "common/build/utilities/splash.screen";
 
 export interface IProps {
   items: Array<ICustomFunctionParseResult<null>> | null;
@@ -50,9 +46,9 @@ export class Summary extends React.Component<IProps, {}> {
     return (
       <div>
         <CustomFunctionsDescription>
-          {items.filter(item => item.status === 'error').length > 0
-            ? 'Some of your functions are invalid and cannot be declared. Review and fix the issues.'
-            : 'The following functions have been registered successfully.'}
+          {items.filter((item) => item.status === "error").length > 0
+            ? "Some of your functions are invalid and cannot be declared. Review and fix the issues."
+            : "The following functions have been registered successfully."}
         </CustomFunctionsDescription>
         <SummaryItemsContainer>
           {items.map((item, index) => (

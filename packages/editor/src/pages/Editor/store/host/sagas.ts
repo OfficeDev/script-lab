@@ -1,8 +1,8 @@
-import { put, takeEvery, call } from 'redux-saga/effects';
-import { getType } from 'typesafe-actions';
+import { put, takeEvery, call } from "redux-saga/effects";
+import { getType } from "typesafe-actions";
 
-import { host, gists, samples } from '../actions';
-import { openLastOpenedOrBackstageSaga } from '../solutions/sagas';
+import { host, gists, samples } from "../actions";
+import { openLastOpenedOrBackstageSaga } from "../solutions/sagas";
 
 export default function* hostWatcher() {
   yield takeEvery(getType(host.change), hostChangedSaga);

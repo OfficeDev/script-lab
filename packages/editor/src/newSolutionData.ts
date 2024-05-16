@@ -1,11 +1,11 @@
-import createGUID from 'uuid';
-import { LIBRARIES_FILE_NAME, SCRIPT_FILE_NAME } from 'common/lib/utilities/solution';
+import createGUID from "uuid";
+import { LIBRARIES_FILE_NAME, SCRIPT_FILE_NAME } from "common/build/utilities/solution";
 
 export const getBoilerplateFiles = (timestamp: number): IFile[] =>
   [
     {
       name: SCRIPT_FILE_NAME,
-      language: 'TypeScript',
+      language: "TypeScript",
       content: `$("#run").click(() => tryCatch(run));
 
 async function run() {
@@ -25,18 +25,18 @@ async function tryCatch(callback) {
 `,
     },
     {
-      name: 'index.html',
-      language: 'HTML',
+      name: "index.html",
+      language: "HTML",
       content: `<p class="ms-font-m">Executes a simple code snippet.</p>
 <button id="run" class="ms-Button">
     <span class="ms-Button-label">Run code</span>
 </button>
 `,
     },
-    { name: 'index.css', language: 'CSS', content: '' },
+    { name: "index.css", language: "CSS", content: "" },
     {
       name: LIBRARIES_FILE_NAME,
-      language: 'libraries',
+      language: "libraries",
       content: `https://appsforoffice.microsoft.com/lib/1/hosted/office.js
 https://appsforoffice.microsoft.com/lib/1/hosted/office.d.ts
 
@@ -46,13 +46,10 @@ office-ui-fabric-js@1.4.0/dist/css/fabric.components.min.css
 core-js@2.4.1/client/core.min.js
 @types/core-js
 
-@microsoft/office-js-helpers@0.7.4/dist/office.helpers.min.js
-@microsoft/office-js-helpers@0.7.4/dist/office.helpers.d.ts
-
 jquery@3.1.1
 @types/jquery`,
     },
-  ].map(file => ({
+  ].map((file) => ({
     ...file,
     id: createGUID(),
     dateCreated: timestamp,

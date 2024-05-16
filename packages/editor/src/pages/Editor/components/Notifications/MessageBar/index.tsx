@@ -1,17 +1,17 @@
-import React from 'react';
-import { MessageBar as FabricMessageBar } from 'office-ui-fabric-react/lib/MessageBar';
-import { Link } from 'office-ui-fabric-react/lib/Link';
-import { IState as IMessageBarState } from '../../../store/messageBar/reducer';
+import React from "react";
+import { MessageBar as FabricMessageBar } from "office-ui-fabric-react/lib/MessageBar";
+import { Link } from "office-ui-fabric-react/lib/Link";
+import { IState as IMessageBarState } from "../../../store/messageBar/reducer";
 
-import { connect } from 'react-redux'; // Note, avoid the temptation to include '@types/react-redux', it will break compile-time!
-import { messageBar } from '../../../store/actions';
-import { getMessageBarStyle } from './helpers';
-import { IState as IReduxState } from '../../../store/reducer';
+import { connect } from "react-redux"; // Note, avoid the temptation to include '@types/react-redux', it will break compile-time!
+import { messageBar } from "../../../store/actions";
+import { getMessageBarStyle } from "./helpers";
+import { IState as IReduxState } from "../../../store/reducer";
 
-import './animations.css';
-import { DefaultButton } from 'office-ui-fabric-react/lib/Button';
-import selectors from '../../../store/selectors';
-import { Dispatch } from 'redux';
+import "./animations.css";
+import { DefaultButton } from "office-ui-fabric-react/lib/Button";
+import selectors from "../../../store/selectors";
+import { Dispatch } from "redux";
 
 interface IPropsFromRedux {
   messageBarProps: IMessageBarState;
@@ -37,13 +37,8 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps: IProps) => ({
 
 export interface IProps extends IPropsFromRedux, IActionsFromRedux {}
 
-export const MessageBar = ({
-  messageBarProps,
-  screenWidth,
-  buttonOnClick,
-  dismiss,
-}: IProps) => (
-  <div className={`message-bar ${messageBarProps.isVisible ? 'active' : ''}`}>
+export const MessageBar = ({ messageBarProps, screenWidth, buttonOnClick, dismiss }: IProps) => (
+  <div className={`message-bar ${messageBarProps.isVisible ? "active" : ""}`}>
     {messageBarProps.isVisible ? (
       <FabricMessageBar
         dismissButtonAriaLabel="Close"
@@ -58,9 +53,7 @@ export const MessageBar = ({
                 {messageBarProps.button.text}
               </DefaultButton>
             </div>
-          ) : (
-            undefined
-          )
+          ) : undefined
         }
       >
         {messageBarProps.text}
@@ -82,7 +75,7 @@ export const MessageBar = ({
    via ownProps and therefore dispatch that action upon clicking
    the button. This allows for the action to dispatch to also
    be set via the MessageBar reducer. */
-const mapEmptyToProps = dispatch => ({});
+const mapEmptyToProps = (dispatch) => ({});
 
 export default connect(
   mapStateToProps,

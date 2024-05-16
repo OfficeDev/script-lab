@@ -1,9 +1,9 @@
-interface IServerAuthRequest {
+export interface IServerAuthRequest {
   code: string;
   state: string;
 }
 
-interface IServerAuthResponse {
+export interface IServerAuthResponse {
   access_token?: string;
   error?: string;
 }

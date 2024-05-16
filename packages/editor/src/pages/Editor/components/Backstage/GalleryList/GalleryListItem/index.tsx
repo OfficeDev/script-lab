@@ -1,6 +1,6 @@
-import React from 'react';
-import { Wrapper, ActiveWrapper, Title, Description } from './styles';
-import { composeSolutionId } from 'common/lib/utilities/string';
+import React from "react";
+import { Wrapper, ActiveWrapper, Title, Description } from "./styles";
+import { composeSolutionId } from "common/build/utilities/string";
 
 export interface IGalleryListItem {
   key: string;
@@ -11,19 +11,13 @@ export interface IGalleryListItem {
   index: number;
 }
 
-const GalleryListItem = ({
-  title,
-  description,
-  isActive,
-  onClick,
-  index,
-}: IGalleryListItem) => {
+const GalleryListItem = ({ title, description, isActive, onClick, index }: IGalleryListItem) => {
   const ItemWrapper = isActive ? ActiveWrapper : Wrapper;
   return (
     <ItemWrapper
       data-is-focusable="true"
       onClick={onClick}
-      aria-label={index + '. ' + title}
+      aria-label={index + ". " + title}
       id={composeSolutionId(title)}
     >
       <Title>{title}</Title>

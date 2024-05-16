@@ -22,8 +22,7 @@
   },
   "include": [
     "./src/**/*",
-    "../common/src/interfaces/*"
-  ],
+    "../common/src/interfaces/*" ],
   "exclude": [
     "node_modules",
     "build",

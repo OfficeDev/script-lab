@@ -1,13 +1,13 @@
-import React from 'react';
+import React from "react";
 
-import { TextField } from 'office-ui-fabric-react/lib/TextField';
-import { getJsonMetadataString } from '../App/utilities';
-import { getAllowCustomDataForDataTypeAny } from '../../../../utils/custom-functions';
+import { TextField } from "office-ui-fabric-react/lib/TextField";
+import { getJsonMetadataString } from "../App/utilities";
+import { getAllowCustomDataForDataTypeAny } from "../../../../utils/custom-functions";
 export interface IProps {
   items: Array<ICustomFunctionParseResult<null>> | null;
 }
 
-const height100Percent = { height: '100%' };
+const height100Percent = { height: "100%" };
 
 export const Metadata = ({ items }: IProps) => (
   <TextField
@@ -17,7 +17,7 @@ export const Metadata = ({ items }: IProps) => (
     value={getJsonMetadataString(items, {
       allowCustomDataForDataTypeAny: getAllowCustomDataForDataTypeAny(),
     })}
-    style={{ fontFamily: 'Consolas, monaco, monospace' }}
+    style={{ fontFamily: "Consolas, monaco, monospace" }}
     styles={{
       root: height100Percent,
       wrapper: { ...height100Percent, border: 0 },

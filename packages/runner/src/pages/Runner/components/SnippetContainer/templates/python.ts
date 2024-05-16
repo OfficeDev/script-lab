@@ -1,8 +1,5 @@
-import { RUNNER_TO_EDITOR_HEARTBEAT_REQUESTS } from 'common/lib/constants';
-import {
-  METHODS_TO_EXPOSE_ON_IFRAME,
-  METHODS_EXPOSED_ON_RUNNER_OUTER_FRAME,
-} from '../IFrame';
+import { RUNNER_TO_EDITOR_HEARTBEAT_REQUESTS } from "common/build/constants";
+import { METHODS_TO_EXPOSE_ON_IFRAME, METHODS_EXPOSED_ON_RUNNER_OUTER_FRAME } from "../IFrame";
 
 export interface IProps {
   script: string;
@@ -120,9 +117,7 @@ export default ({ script }: IProps) => `<!DOCTYPE html>
 
     var pythonConfig;
     window.${METHODS_TO_EXPOSE_ON_IFRAME.onMessageFromHeartbeat} = function(message) {
-      if (message.type === "${
-        RUNNER_TO_EDITOR_HEARTBEAT_REQUESTS.GET_PYTHON_CONFIG_IF_ANY
-      }") {
+      if (message.type === "${RUNNER_TO_EDITOR_HEARTBEAT_REQUESTS.GET_PYTHON_CONFIG_IF_ANY}") {
         document.getElementById('please-wait').style.display = 'none';
         pythonConfig = message.contents;
         document.getElementById(pythonConfig ? 'main' : 'python-not-configured').style.display = '';
@@ -130,8 +125,8 @@ export default ({ script }: IProps) => `<!DOCTYPE html>
     };
 
     window.${METHODS_TO_EXPOSE_ON_IFRAME.sendMessageFromRunnerToEditor}("${
-  RUNNER_TO_EDITOR_HEARTBEAT_REQUESTS.GET_PYTHON_CONFIG_IF_ANY
-}");
+      RUNNER_TO_EDITOR_HEARTBEAT_REQUESTS.GET_PYTHON_CONFIG_IF_ANY
+    }");
   </script>
 </body>
 

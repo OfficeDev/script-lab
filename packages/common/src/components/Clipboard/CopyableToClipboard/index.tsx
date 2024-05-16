@@ -1,6 +1,6 @@
-import React from 'react';
-import Clipboard from 'clipboard';
-import { invokeGlobalErrorHandler } from '../../../utilities/splash.screen';
+import React from "react";
+import Clipboard from "clipboard";
+import { invokeGlobalErrorHandler } from "../../../utilities/splash.screen";
 
 interface IProps {
   /** A function that will be invoked to get the text. */
@@ -51,7 +51,7 @@ class CopyableToClipboard extends React.Component<IProps, IState> {
     super(props);
 
     if (!this.props.globallyUniqueSelector) {
-      this.idIfAny = 'export-to-clipboard-' + CopyableToClipboard.nextGlobalId++;
+      this.idIfAny = "export-to-clipboard-" + CopyableToClipboard.nextGlobalId++;
     }
   }
 
@@ -61,8 +61,8 @@ class CopyableToClipboard extends React.Component<IProps, IState> {
       text: this.props.textGetter,
     });
 
-    this.clipboard.on('success', this.props.onSuccess);
-    this.clipboard.on('error', this.props.onError);
+    this.clipboard.on("success", this.props.onSuccess);
+    this.clipboard.on("error", this.props.onError);
   }
 
   componentWillUnmount() {

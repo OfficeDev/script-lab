@@ -1,10 +1,10 @@
-import reducer, { IState } from '../reducer';
-import { solutions as solutionsActions } from '../../actions';
+import reducer, { IState } from "../reducer";
+import { solutions as solutionsActions } from "../../actions";
 
 export const getExampleFile = (i: number) => ({
   id: `${i}`,
   name: `index${i}.ts`,
-  language: 'TypeScript',
+  language: "TypeScript",
   dateCreated: i,
   dateLastModified: 2 * i,
   dateLastOpened: 3 * i,
@@ -14,7 +14,7 @@ export const getExampleFile = (i: number) => ({
 export const getExampleSolution = (i: number): ISolution => ({
   id: `${i}`,
   name: `Example Solution ${i}`,
-  host: 'WEB',
+  host: "WEB",
   dateCreated: i,
   dateLastModified: 2 * i,
   dateLastOpened: 3 * i,
@@ -31,7 +31,7 @@ export const getStateWith = (indicies: number[]) =>
       return {
         metadata: {
           ...state.metadata,
-          [ex.id]: { ...ex, files: ex.files.map(file => file.id) },
+          [ex.id]: { ...ex, files: ex.files.map((file) => file.id) },
         },
         files: {
           ...state.files,
@@ -45,30 +45,27 @@ export const getStateWith = (indicies: number[]) =>
     },
   );
 
-describe('solutions reducer', () => {
-  test('add solution to empty state', () => {
+describe("solutions reducer", () => {
+  test("add solution to empty state", () => {
+    expect(reducer(getStateWith([]), solutionsActions.add(getExampleSolution(1)))).toEqual(
+      getStateWith([1]),
+    );
+  });
+
+  test("add solution to non-empty state", () => {
+    expect(reducer(getStateWith([1]), solutionsActions.add(getExampleSolution(2)))).toEqual(
+      getStateWith([1, 2]),
+    );
+  });
+
+  test("remove solution", () => {
     expect(
-      reducer(getStateWith([]), solutionsActions.add(getExampleSolution(1))),
+      reducer(getStateWith([1, 2]), solutionsActions.deleteFromState(getExampleSolution(2))),
     ).toEqual(getStateWith([1]));
   });
 
-  test('add solution to non-empty state', () => {
-    expect(
-      reducer(getStateWith([1]), solutionsActions.add(getExampleSolution(2))),
-    ).toEqual(getStateWith([1, 2]));
-  });
-
-  test('remove solution', () => {
-    expect(
-      reducer(
-        getStateWith([1, 2]),
-        solutionsActions.deleteFromState(getExampleSolution(2)),
-      ),
-    ).toEqual(getStateWith([1]));
-  });
-
-  test('edit solution', () => {
-    const newName = 'My New Name';
+  test("edit solution", () => {
+    const newName = "My New Name";
     const actionToDispatch = solutionsActions.edit({
       id: getExampleSolution(1).id,
       solution: {
@@ -83,8 +80,8 @@ describe('solutions reducer', () => {
     expect(reducer(getStateWith([1, 2]), actionToDispatch)).toEqual(expectedState);
   });
 
-  test('edit a file', () => {
-    const newContent = '// hello world, how are you?';
+  test("edit a file", () => {
+    const newContent = "// hello world, how are you?";
     const solution = getExampleSolution(1);
     const file = solution.files[0];
     const actionToDispatch = solutionsActions.edit({

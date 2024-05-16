@@ -1,11 +1,11 @@
-import { getType } from 'typesafe-actions';
+import { getType } from "typesafe-actions";
 
 import {
   gists as gistActions,
   IGistsAction,
   github as githubActions,
   IGithubAction,
-} from '../actions';
+} from "../actions";
 
 export interface IState {
   [id: string]: ISharedGistMetadata;

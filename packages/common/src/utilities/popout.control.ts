@@ -1,12 +1,12 @@
-import queryString from 'query-string';
-import { Utilities, HostType, PlatformType } from '@microsoft/office-js-helpers';
-import { currentEditorUrl } from '../environment';
-import { invokeGlobalErrorHandler } from './splash.screen';
-import { ScriptLabError } from './error';
+import queryString from "query-string";
+import { Utilities, HostType, PlatformType } from "../helpers/officeJsHost";
+import { currentEditorUrl } from "../environment";
+import { invokeGlobalErrorHandler } from "./splash.screen";
+import { ScriptLabError } from "./error";
 
-const IS_DIALOG_QUERY_PARAMETER = 'isDialog';
+const IS_DIALOG_QUERY_PARAMETER = "isDialog";
 
-export function shouldShowPopoutControl(context: 'editor' | 'runner'): boolean {
+export function shouldShowPopoutControl(context: "editor" | "runner"): boolean {
   // If already is popped out in a dialog, don't show the popout control
   if (isPoppedOut()) {
     return false;
@@ -37,7 +37,7 @@ export function shouldShowPopoutControl(context: 'editor' | 'runner'): boolean {
   // which is ONLY Office Online.  And note that we're only enabling it from the editor,
   // since allowing popping out from both can lead to strange behaviors (multiple dialogs
   // if you open it from both Editor + Runner, and a reloading of the "runner" pane)
-  return context === 'editor' && Utilities.platform === PlatformType.OFFICE_ONLINE;
+  return context === "editor" && Utilities.platform === PlatformType.OFFICE_ONLINE;
 }
 
 export function openPopoutCodeEditor(
@@ -57,7 +57,7 @@ export function openPopoutCodeEditor(
         console.error(result);
         invokeGlobalErrorHandler(
           new ScriptLabError(
-            'Could not open a standalone code editor window: ' + result.error.message,
+            "Could not open a standalone code editor window: " + result.error.message,
           ),
         );
       }
@@ -75,5 +75,5 @@ function getPopoutEditorUrl() {
   // Now re-add it:
   queryParams[IS_DIALOG_QUERY_PARAMETER] = 1;
 
-  return currentEditorUrl + '?' + queryString.stringify(queryParams);
+  return `${currentEditorUrl}/index.html?${queryString.stringify(queryParams)}`;
 }

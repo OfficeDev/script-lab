@@ -1,33 +1,25 @@
-import queryString from 'query-string';
-import { ICommandBarItemProps } from 'office-ui-fabric-react/lib/CommandBar';
-import { MessageBarType } from 'office-ui-fabric-react/lib/components/MessageBar';
-import { IState } from '../reducer';
+import queryString from "query-string";
+import { ICommandBarItemProps } from "office-ui-fabric-react/lib/CommandBar";
+import { MessageBarType } from "office-ui-fabric-react/lib/components/MessageBar";
+import { IState } from "../reducer";
 
-import { NULL_SOLUTION_ID, SETTINGS_SOLUTION_ID } from '../../../../constants';
+import { NULL_SOLUTION_ID, SETTINGS_SOLUTION_ID } from "../../../../constants";
 
 // selectors
-import { createSelector } from 'reselect';
+import { createSelector } from "reselect";
 import {
   getActiveSolution,
   getIsActiveSolutionCF,
   getIsActiveSolutionTrusted,
-} from '../editor/selectors';
-import { getIsLoggingInOrOut, getIsLoggedIn } from '../github/selectors';
-import { getIsTaskPaneWidth } from '../screen/selectors';
-import { getIsRunnableOnThisHost } from '../host/selectors';
-import { shouldShowPopoutControl } from 'common/lib/utilities/popout.control';
+} from "../editor/selectors";
+import { getIsLoggingInOrOut, getIsLoggedIn } from "../github/selectors";
+import { getIsTaskPaneWidth } from "../screen/selectors";
+import { getIsRunnableOnThisHost } from "../host/selectors";
+import { shouldShowPopoutControl } from "common/build/utilities/popout.control";
 
 // actions
-import {
-  dialog,
-  editor,
-  gists,
-  github,
-  messageBar,
-  misc,
-  solutions,
-  settings,
-} from '../actions';
+import { dialog, editor, gists, github, messageBar, misc, solutions, settings } from "../actions";
+import { enableGitHub } from "common/build/constants";
 
 const actions = { dialog, editor, gists, github, messageBar, misc, solutions, settings };
 
@@ -35,23 +27,21 @@ export interface IHeaderItem extends ICommandBarItemProps {
   actionCreator?: () => { type: string; payload?: any };
 }
 
-export const getMode: (
-  state: IState,
-) => 'normal' | 'settings' | 'null-solution' = createSelector(
+export const getMode: (state: IState) => "normal" | "settings" | "null-solution" = createSelector(
   [getActiveSolution],
-  activeSolution => {
+  (activeSolution) => {
     switch (activeSolution.id) {
       case NULL_SOLUTION_ID:
-        return 'null-solution';
+        return "null-solution";
       case SETTINGS_SOLUTION_ID:
-        return 'settings';
+        return "settings";
       default:
-        return 'normal';
+        return "normal";
     }
   },
 );
 
-const shouldSplitRunButtonSessionStorageKey = 'should_split_run_button';
+const shouldSplitRunButtonSessionStorageKey = "should_split_run_button";
 
 const queryParams: { commands: number } = queryString.parse(window.location.search);
 
@@ -67,12 +57,7 @@ const getShouldSplitRunButton = () =>
   !!sessionStorage.getItem(shouldSplitRunButtonSessionStorageKey);
 
 const getRunButton = createSelector(
-  [
-    getActiveSolution,
-    getIsRunnableOnThisHost,
-    getIsActiveSolutionCF,
-    getIsActiveSolutionTrusted,
-  ],
+  [getActiveSolution, getIsRunnableOnThisHost, getIsActiveSolutionCF, getIsActiveSolutionTrusted],
   (
     solution: ISolution,
     isRunnableOnThisHost: boolean,
@@ -81,9 +66,9 @@ const getRunButton = createSelector(
   ) => {
     const youMustTrustBeforeRunMessageBarAction = actions.messageBar.show({
       style: MessageBarType.error,
-      text: 'You must trust the snippet before you can run it.',
+      text: "You must trust the snippet before you can run it.",
       button: {
-        text: 'Trust',
+        text: "Trust",
         action: actions.solutions.updateOptions({
           id: solution.id,
           options: { isUntrusted: false },
@@ -97,48 +82,48 @@ const getRunButton = createSelector(
     } else if (isCustomFunctionsView) {
       return [
         {
-          key: 'register-cf',
-          text: 'Register',
-          iconProps: { iconName: 'Play' },
+          key: "register-cf",
+          text: "Register",
+          iconProps: { iconName: "Play" },
           actionCreator: actions.misc.goToCustomFunctionsDashboard,
         },
       ];
     } else {
       return [
         {
-          key: 'run',
-          ariaLabel: 'Run',
-          text: 'Run',
-          iconProps: { iconName: 'Play' },
+          key: "run",
+          ariaLabel: "Run",
+          text: "Run",
+          iconProps: { iconName: "Play" },
           ...(getShouldSplitRunButton()
             ? {
                 // is in add-in
                 subMenuProps: {
                   items: [
                     {
-                      key: 'run-in-this-pane',
-                      text: 'Run in this pane',
-                      ariaLabel: 'Run in this pane',
-                      iconProps: { iconName: 'Play' },
+                      key: "run-in-this-pane",
+                      text: "Run in this pane",
+                      ariaLabel: "Run in this pane",
+                      iconProps: { iconName: "Play" },
                       actionCreator: isTrusted
                         ? actions.editor.navigateToRun
                         : () => youMustTrustBeforeRunMessageBarAction,
                     },
                     {
-                      key: 'run-side-by-side',
-                      text: 'Run side-by-side',
-                      ariaLabel: 'Run side-by-side',
-                      iconProps: { iconName: 'OpenPaneMirrored' },
+                      key: "run-side-by-side",
+                      text: "Run side-by-side",
+                      ariaLabel: "Run side-by-side",
+                      iconProps: { iconName: "OpenPaneMirrored" },
                       actionCreator: isTrusted
                         ? () =>
                             actions.dialog.show({
-                              title: 'Run side-by-side with editor',
+                              title: "Run side-by-side with editor",
                               subText: `To run the snippet side-by-side with the editor, choose "Run" in the Ribbon.
   Running side-by-side offers both a quicker refresh, and the added advantage of keeping your position and undo-history in the editor.`,
                               buttons: [
                                 {
-                                  key: 'got-it-button',
-                                  text: 'Got it',
+                                  key: "got-it-button",
+                                  text: "Got it",
                                   isPrimary: true,
                                   action: actions.dialog.dismiss(),
                                 },
@@ -162,18 +147,18 @@ const getRunButton = createSelector(
 );
 
 const showLoginToGithubDialog = actions.dialog.show({
-  title: 'Please sign in to GitHub',
-  subText: 'In order to use the gist functionality, you must first sign in to GitHub.',
+  title: "Please sign in to GitHub",
+  subText: "In order to use the gist functionality, you must first sign in to GitHub.",
   buttons: [
     {
-      key: 'sign-in',
-      text: 'Sign in',
+      key: "sign-in",
+      text: "Sign in",
       action: actions.github.showLoginDialog(),
       isPrimary: true,
     },
     {
-      key: 'cancel',
-      text: 'Cancel',
+      key: "cancel",
+      text: "Cancel",
       action: dialog.dismiss(),
       isPrimary: false,
     },
@@ -184,126 +169,146 @@ export const getItems = createSelector(
   [getMode, getActiveSolution, getIsTaskPaneWidth, getIsLoggedIn, getRunButton],
   (mode, activeSolution, iconOnly, isLoggedIn, runButton): IHeaderItem[] => {
     const titleStyles = {
-      style: { paddingRight: iconOnly ? '0' : '3rem' },
-      iconProps: iconOnly ? { iconName: 'OfficeAddinsLogo' } : {},
+      style: { paddingRight: iconOnly ? "0" : "3rem" },
+      iconProps: iconOnly ? { iconName: "OfficeAddinsLogo" } : {},
       iconOnly,
     };
 
     switch (mode) {
-      case 'null-solution':
+      case "null-solution":
         return [];
-      case 'settings':
+      case "settings":
         return [
           {
-            key: 'back',
-            ariaLabel: 'Back',
+            key: "back",
+            ariaLabel: "Back",
             iconOnly: true,
-            iconProps: { iconName: 'Back' },
+            iconProps: { iconName: "Back" },
             actionCreator: actions.settings.close,
           },
           {
-            key: 'settings-title',
+            key: "settings-title",
             text: activeSolution.name,
             ...titleStyles,
           },
         ];
-      case 'normal':
+      case "normal":
         const solutionId = activeSolution.id;
         return [
           {
-            key: 'nav',
-            text: 'Backstage',
-            ariaLabel: 'Main Menu',
+            key: "nav",
+            text: "Backstage",
+            ariaLabel: "Main Menu",
             iconOnly: true,
-            iconProps: { iconName: 'GlobalNavButton' },
+            iconProps: { iconName: "GlobalNavButton" },
             actionCreator: actions.editor.openBackstage,
           },
           {
-            key: 'solution-name',
-            ariaLabel: 'Rename',
+            key: "solution-name",
+            ariaLabel: "Rename",
             text: activeSolution.name,
             ...titleStyles,
           },
           ...runButton,
           {
-            key: 'delete',
-            text: 'Delete',
-            ariaLabel: 'Delete',
-            iconProps: { iconName: 'Delete' },
+            key: "delete",
+            text: "Delete",
+            ariaLabel: "Delete",
+            iconProps: { iconName: "Delete" },
             iconOnly,
             actionCreator: () =>
               actions.dialog.show({
-                title: 'Delete Snippet?',
+                title: "Delete Snippet?",
                 subText: `Are you sure you want to delete '${activeSolution.name}'?`,
                 buttons: [
                   {
-                    key: 'yes-button',
+                    key: "yes-button",
                     isPrimary: true,
-                    text: 'Yes',
+                    text: "Yes",
                     action: actions.solutions.remove(activeSolution),
                   },
                   {
-                    key: 'no-button',
+                    key: "no-button",
                     isPrimary: false,
-                    text: 'No',
+                    text: "No",
                     action: actions.dialog.dismiss(),
                   },
                 ],
               }),
           },
-          {
-            key: 'share',
-            text: 'Share',
-            ariaLabel: 'Share',
-            iconProps: { iconName: 'Share' },
-            iconOnly,
-            subMenuProps: {
-              items: [
-                {
-                  hidden: !(
-                    activeSolution.source &&
-                    activeSolution.source.origin === 'gist' &&
-                    isLoggedIn
-                  ),
-                  key: 'update-gist',
-                  ariaLabel: 'Update existing gist',
-                  text: 'Update existing gist',
-                  iconProps: { iconName: 'Save' },
-                  actionCreator: () => actions.gists.update.request({ solutionId }),
+          !enableGitHub()
+            ? {
+                key: "export-to-clipboard",
+                text: "Copy to clipboard",
+                ariaLabel: "Copy to clipboard",
+                iconProps: { iconName: "ClipboardSolid" },
+                className: "export-snippet-to-clipboard",
+              }
+            : {
+                key: "share",
+                text: "Share",
+                ariaLabel: "Share",
+                iconProps: { iconName: "Share" },
+                iconOnly,
+                subMenuProps: {
+                  items: [
+                    {
+                      hidden:
+                        !enableGitHub() &&
+                        !(
+                          activeSolution.source &&
+                          activeSolution.source.origin === "gist" &&
+                          isLoggedIn
+                        ),
+                      key: "update-gist",
+                      ariaLabel: "Update existing gist",
+                      text: "Update existing gist",
+                      iconProps: { iconName: "Save" },
+                      actionCreator: () => actions.gists.update.request({ solutionId }),
+                    },
+                    {
+                      hidden: !enableGitHub(),
+                      key: "new-public-gist",
+                      text: "New public gist",
+                      ariaLabel: "New public gist",
+                      iconProps: { iconName: "PageCheckedIn" },
+                      actionCreator: isLoggedIn
+                        ? () =>
+                            actions.gists.create.request({
+                              solutionId,
+                              isPublic: true,
+                            })
+                        : () => showLoginToGithubDialog,
+                    },
+                    {
+                      hidden: !enableGitHub(),
+                      key: "new-secret-gist",
+                      text: "New secret gist",
+                      ariaLabel: "New secret gist",
+                      iconProps: { iconName: "ProtectedDocument" },
+                      actionCreator: isLoggedIn
+                        ? () =>
+                            actions.gists.create.request({
+                              solutionId,
+                              isPublic: false,
+                            })
+                        : () => showLoginToGithubDialog,
+                    },
+                    {
+                      key: "export-to-clipboard",
+                      text: "Copy to clipboard",
+                      ariaLabel: "Copy to clipboard",
+                      iconProps: { iconName: "ClipboardSolid" },
+                      className: "export-snippet-to-clipboard",
+                    },
+                  ]
+                    .filter((option) => !option.hidden)
+                    .map((option) => {
+                      const { hidden, ...rest } = option;
+                      return rest;
+                    }),
                 },
-                {
-                  key: 'new-public-gist',
-                  text: 'New public gist',
-                  ariaLabel: 'New public gist',
-                  iconProps: { iconName: 'PageCheckedIn' },
-                  actionCreator: isLoggedIn
-                    ? () => actions.gists.create.request({ solutionId, isPublic: true })
-                    : () => showLoginToGithubDialog,
-                },
-                {
-                  key: 'new-secret-gist',
-                  text: 'New secret gist',
-                  ariaLabel: 'New secret gist',
-                  iconProps: { iconName: 'ProtectedDocument' },
-                  actionCreator: isLoggedIn
-                    ? () => actions.gists.create.request({ solutionId, isPublic: false })
-                    : () => showLoginToGithubDialog,
-                },
-                {
-                  key: 'export-to-clipboard',
-                  text: 'Copy to clipboard',
-                  ariaLabel: 'Copy to clipboard',
-                  iconProps: { iconName: 'ClipboardSolid' },
-                  className: 'export-snippet-to-clipboard',
-                },
-              ]
-                .filter(option => !option.hidden)
-                .map(option => {
-                  const { hidden, ...rest } = option;
-                  return rest;
-                }),
-            },
-          },
+              },
         ];
       default:
         throw new Error(`Unknown mode: ${mode}`);
@@ -315,42 +320,44 @@ export const getFarItems = createSelector(
   [getMode, getIsLoggedIn, getIsLoggingInOrOut],
   (mode, isLoggedIn, isLoggingInOrOut): IHeaderItem[] => {
     switch (mode) {
-      case 'null-solution':
-      case 'settings':
+      case "null-solution":
+      case "settings":
         return [];
-      case 'normal':
+      case "normal":
         return [
-          {
-            key: 'account',
-            text: isLoggedIn ? 'Log out' : 'Log in',
-            ariaLabel: isLoggedIn ? 'Logout' : 'Login',
-            subMenuProps: isLoggedIn
-              ? {
-                  items: [
-                    {
-                      key: 'logout',
-                      text: 'Logout',
-                      actionCreator: actions.github.logout,
-                    },
-                  ],
-                }
-              : undefined,
-            iconOnly: true,
-            actionCreator: isLoggingInOrOut
-              ? undefined /* do nothing if in the transitional state */
-              : actions.github.showLoginDialog,
-          },
-          shouldShowPopoutControl('editor')
+          enableGitHub()
             ? {
-                key: 'pop-out',
-                text: 'Pop out editor',
-                ariaLabel: 'Pop out editor',
+                key: "account",
+                text: isLoggedIn ? "Log out" : "Log in",
+                ariaLabel: isLoggedIn ? "Logout" : "Login",
+                subMenuProps: isLoggedIn
+                  ? {
+                      items: [
+                        {
+                          key: "logout",
+                          text: "Logout",
+                          actionCreator: actions.github.logout,
+                        },
+                      ],
+                    }
+                  : undefined,
                 iconOnly: true,
-                iconProps: { iconName: 'OpenInNewWindow' },
+                actionCreator: isLoggingInOrOut
+                  ? undefined /* do nothing if in the transitional state */
+                  : actions.github.showLoginDialog,
+              }
+            : null,
+          shouldShowPopoutControl("editor")
+            ? {
+                key: "pop-out",
+                text: "Pop out editor",
+                ariaLabel: "Pop out editor",
+                iconOnly: true,
+                iconProps: { iconName: "OpenInNewWindow" },
                 actionCreator: actions.misc.popOutEditor,
               }
             : null,
-        ].filter(item => item != null);
+        ].filter((item) => item != null);
       default:
         throw new Error(`Unknown mode: ${mode}`);
     }

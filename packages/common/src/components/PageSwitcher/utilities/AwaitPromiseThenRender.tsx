@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { invokeGlobalErrorHandler } from '../../../utilities/splash.screen';
+import React, { Component } from "react";
+import { invokeGlobalErrorHandler } from "../../../utilities/splash.screen";
 
 interface IProps {
   promise: Promise<any>;
@@ -16,7 +16,7 @@ export class AwaitPromiseThenRender extends Component<IProps> {
     super(props);
     props.promise
       .then(() => this.setState({ promiseHasResolved: true }))
-      .catch(e => invokeGlobalErrorHandler(e));
+      .catch((e) => invokeGlobalErrorHandler(e));
   }
 
   render() {

@@ -1,20 +1,20 @@
-import { put, takeEvery, select, call, all } from 'redux-saga/effects';
-import { getType, ActionType } from 'typesafe-actions';
-import selectors from '../selectors';
-import { editor, settings, screen, misc, solutions, messageBar } from '../actions';
-import { NULL_SOLUTION_ID } from '../../../../constants';
-import { hideSplashScreen } from 'common/lib/utilities/splash.screen';
-import { currentRunnerUrl } from 'common/lib/environment';
-import { findScript, findLibraries } from 'common/lib/utilities/solution';
+import { put, takeEvery, select, call, all } from "redux-saga/effects";
+import { getType, ActionType } from "typesafe-actions";
+import selectors from "../selectors";
+import { editor, settings, screen, misc, solutions, messageBar } from "../actions";
+import { NULL_SOLUTION_ID } from "../../../../constants";
+import { hideSplashScreen } from "common/build/utilities/splash.screen";
+import { currentRunnerUrl } from "common/build/environment";
+import { findScript, findLibraries } from "common/build/utilities/solution";
 import {
   registerLibrariesMonacoLanguage,
   enablePrettierInMonaco,
   parseTripleSlashRefs,
   doesMonacoExist,
   fetchLibraryContent,
-} from './utilities';
-import * as log from 'common/lib/utilities/log';
-const logger = log.getLogger('Editor');
+} from "./utilities";
+import * as log from "common/build/utilities/log";
+const logger = log.getLogger("Editor");
 
 let monacoEditor: monaco.editor.IStandaloneCodeEditor;
 
@@ -27,10 +27,7 @@ export default function* editorWatcher() {
   yield takeEvery(getType(misc.hideLoadingSplashScreen), hideLoadingSplashScreenSaga);
   yield takeEvery(getType(editor.applyMonacoOptions), applyMonacoOptionsSaga);
   yield takeEvery(getType(settings.edit.success), applyMonacoOptionsSaga);
-  yield takeEvery(
-    getType(editor.shouldUpdateIntellisense),
-    makeAddIntellisenseRequestSaga,
-  );
+  yield takeEvery(getType(editor.shouldUpdateIntellisense), makeAddIntellisenseRequestSaga);
   yield takeEvery(getType(editor.setIntellisenseFiles.request), setIntellisenseFilesSaga);
   yield takeEvery(getType(screen.updateSize), resizeEditorSaga);
   yield takeEvery(getType(messageBar.dismiss), resizeEditorSaga);
@@ -45,7 +42,7 @@ export function* onEditorOpenFileSaga(action: ActionType<typeof editor.openFile>
   // eslint-disable-next-line prefer-const
   let { solutionId, fileId } = action.payload;
   if (!solutionId) {
-    if (!currentOpenSolution.files.find(file => file.id === fileId)) {
+    if (!currentOpenSolution.files.find((file) => file.id === fileId)) {
       throw new Error(`The file id ${fileId} does not exist in current open solution.`);
     } else {
       solutionId = currentOpenSolution.id;
@@ -78,7 +75,7 @@ function* onFileOpenSaga(action: ActionType<typeof editor.newFileOpened>) {
     yield put(editor.applyMonacoOptions());
   }
 
-  if (action.payload.file.language === 'typescript') {
+  if (action.payload.file.language === "typescript") {
     yield put(editor.shouldUpdateIntellisense());
   }
 
@@ -102,20 +99,6 @@ function* initializeMonacoSaga(action: ActionType<typeof editor.onMount>) {
   }
 
   registerLibrariesMonacoLanguage();
-
-  monacoEditor.addAction({
-    id: 'trigger-suggest',
-    label: 'Trigger suggestion',
-    keybindings: [monaco.KeyCode.F2],
-    contextMenuGroupId: 'navigation',
-    contextMenuOrder: 0 /* put at top of context menu */,
-    run: () =>
-      monacoEditor.trigger(
-        'editor' /* source, unused */,
-        'editor.action.triggerSuggest',
-        {},
-      ),
-  });
 
   yield put(editor.applyMonacoOptions());
   yield put(misc.hideLoadingSplashScreen());
@@ -147,7 +130,7 @@ function* makeAddIntellisenseRequestSaga() {
   if (!script) {
     return;
   }
-  if (script.language !== 'typescript') {
+  if (script.language !== "typescript") {
     return;
   }
 
@@ -157,23 +140,22 @@ function* makeAddIntellisenseRequestSaga() {
   }
 
   const host = yield select(selectors.host.get);
-  const defaultEverPresentLibs =
-    host === 'EXCEL' ? ['@types/custom-functions-runtime'] : [];
+  const defaultEverPresentLibs = host === "EXCEL" ? ["@types/custom-functions-runtime"] : [];
 
-  const entries = [...defaultEverPresentLibs, ...libraries.content.split('\n')];
+  const entries = [...defaultEverPresentLibs, ...libraries.content.split("\n")];
 
   let pendingUrls: string[] = entries
     .map((library: string) => {
       library = library.trim();
 
-      if (library.startsWith('//') || library.startsWith('#')) {
+      if (library.startsWith("//") || library.startsWith("#")) {
         return null;
       }
 
       if (/^@types/.test(library)) {
         return `https://unpkg.com/${library}/index.d.ts`;
       } else if (/^dt~/.test(library)) {
-        const libName = library.split('dt~')[1];
+        const libName = library.split("dt~")[1];
         return `https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/master/types/${libName}/index.d.ts`;
       } else if (/\.d\.ts$/i.test(library)) {
         if (/^https?:/i.test(library)) {
@@ -185,7 +167,7 @@ function* makeAddIntellisenseRequestSaga() {
 
       return null;
     })
-    .filter(url => url);
+    .filter((url) => url);
 
   const validUrls = [];
 
@@ -201,10 +183,7 @@ function* makeAddIntellisenseRequestSaga() {
             logger.info(`Fetched IntelliSense for ${url}`);
             const followUpFetches = parseTripleSlashRefs(url, content);
             if (followUpFetches.length > 0) {
-              logger.info(
-                'Need to follow up with IntelliSense fetch for ',
-                followUpFetches,
-              );
+              logger.info("Need to follow up with IntelliSense fetch for ", followUpFetches);
               pendingUrls = [...pendingUrls, ...followUpFetches];
             }
           } else {
@@ -216,24 +195,22 @@ function* makeAddIntellisenseRequestSaga() {
   }
 
   logger.info(
-    ['Ready to give URLS to Monaco: ', ...validUrls.map(url => ' - ' + url)].join('\n'),
+    ["Ready to give URLS to Monaco: ", ...validUrls.map((url) => " - " + url)].join("\n"),
   );
 
   yield put(editor.setIntellisenseFiles.request({ urls: validUrls }));
 }
 
-function* setIntellisenseFilesSaga(
-  action: ActionType<typeof editor.setIntellisenseFiles.request>,
-) {
+function* setIntellisenseFilesSaga(action: ActionType<typeof editor.setIntellisenseFiles.request>) {
   const existingIntellisenseFiles = yield select(selectors.editor.getIntellisenseFiles);
   const existingUrls = Object.keys(existingIntellisenseFiles);
   const currentUrls = action.payload.urls;
 
-  const urlsToDispose = existingUrls.filter(url => !currentUrls.includes(url));
-  urlsToDispose.forEach(url => existingIntellisenseFiles[url].dispose());
+  const urlsToDispose = existingUrls.filter((url) => !currentUrls.includes(url));
+  urlsToDispose.forEach((url) => existingIntellisenseFiles[url].dispose());
   yield put(editor.removeIntellisenseFiles(urlsToDispose));
 
-  const urlsToFetch = currentUrls.filter(url => !existingUrls.includes(url));
+  const urlsToFetch = currentUrls.filter((url) => !existingUrls.includes(url));
   const newIntellisenseFiles = yield call(() =>
     Promise.all(
       [...new Set(urlsToFetch)] // to uniquify values
@@ -250,7 +227,7 @@ function* setIntellisenseFilesSaga(
             }
           }),
         )
-        .filter(x => x !== null),
+        .filter((x) => x !== null),
     ),
   );
   yield put(
@@ -273,13 +250,13 @@ function* applyFormattingSaga() {
   const isAutoFormatEnabled = yield select(selectors.settings.getIsAutoFormatEnabled);
   if (monacoEditor && isAutoFormatEnabled) {
     monacoEditor.trigger(
-      'editor' /* source, unused */,
-      'editor.action.formatDocument',
-      '' /* payload, unused */,
+      "editor" /* source, unused */,
+      "editor.action.formatDocument",
+      "" /* payload, unused */,
     );
   }
 }
 
 function* navigateToRunSaga() {
-  yield (window.location.href = `${currentRunnerUrl}?backButton=true`);
+  yield (window.location.href = `${currentRunnerUrl}/index.html?backButton=true`);
 }

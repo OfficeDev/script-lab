@@ -6,7 +6,6 @@
     "query-string": "Restricing query-string to version 5.1.1 because later versions (6+) started targeting ES6 rather than ES5, making it not work for the precompile scripts. See more at https://stackoverflow.com/a/49985749/678505"
   },
   "dependencies": {
-    "@microsoft/office-js-helpers": "^1.0.2",
     "clipboard": "^2.0.1",
     "color": "^3.0.0",
     "core-js": "^2.6.5",
@@ -19,15 +18,14 @@
     "react": "^16.5.0",
     "react-dom": "^16.5.0",
     "react-inspector": "^2.3.1",
-    "react-router-dom": "^4.3.1",
+    "react-router-dom": "^5.3.4",
     "styled-components": "^4.1.1",
-    "typescript": "^3.2.4"
+    "typescript": "^4.9.5",
+    "xregexp": "^5.1.1"
   },
   "scripts": {
-    "postinstall": "npm run build:package",
-    "build": "npm run build:package",
-    "build:package": "tsc",
-    "cibuild": "tsc --outDir build",
+    "postinstall": "npm run build",
+    "build": "tsc",
     "start": "tsc --watch",
     "lint": "eslint -c .eslintrc.js --ext .ts,.tsx ./src",
     "test": "jest --env=jsdom",
@@ -35,16 +33,18 @@
     "test:watch": "jest --env=jsdom --watch"
   },
   "devDependencies": {
-    "@types/office-js": "^0.0.148",
     "@types/clipboard": "^2.0.1",
     "@types/color": "^3.0.0",
     "@types/jest": "^26.0.14",
     "@types/lodash": "^4.14.118",
     "@types/loglevel": "^1.5.3",
     "@types/node": "^16.11.7",
+    "@types/office-js": "^0.0.148",
     "@types/react": "^16.4.14",
     "@types/react-dom": "^16.0.7",
+    "@types/react-router-dom": "5.3.3",
     "@types/styled-components": "^4.1.0",
+    "@types/xregexp": "^4.4.0",
     "@typescript-eslint/eslint-plugin": "^5.52.0",
     "@typescript-eslint/parser": "^5.52.0",
     "eslint": "^8.34.0",
@@ -57,11 +57,7 @@
   "browserslist": [
     ">0.2%",
     "not dead",
-    "not ie <= 11",
+    "not ie",
     "not op_mini all"
-  ],
-  "overrides": {
-    "@types/babel__traverse": "7.0.3",
-    "htmlparser2": "7.0.0"
-  }
+  ]
 }

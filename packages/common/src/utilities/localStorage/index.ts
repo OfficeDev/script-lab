@@ -1,34 +1,27 @@
-import isEqual from 'lodash/isEqual';
-import { localStorageKeys } from '../../constants';
-import ensureFreshLocalStorage from '../ensure.fresh.local.storage';
+import isEqual from "lodash/isEqual";
+import { localStorageKeys } from "../../constants";
 
-export const GITHUB_KEY = 'github';
-export const SOLUTION_ROOT = 'solution#';
-export const CF_LOGS_ROOT = 'cf_logs#';
-export const DEBUG_KEY = 'debug';
+export const GITHUB_KEY = "github";
+export const SOLUTION_ROOT = "solution#";
+export const CF_LOGS_ROOT = "cf_logs#";
+export const DEBUG_KEY = "debug";
 
 // custom functions
 export const getIsCustomFunctionRunnerAlive = (): boolean => {
-  ensureFreshLocalStorage();
-
   const lastHeartbeat = localStorage.getItem(
-    localStorageKeys.editor.customFunctionsLastHeartbeatTimestamp,
+    localStorageKeys.customFunctionsLastHeartbeatTimestamp,
   );
   return lastHeartbeat ? +lastHeartbeat > 3000 : false;
 };
 
 export const getCustomFunctionCodeLastUpdated = (): number => {
-  ensureFreshLocalStorage();
-
   const lastUpdated = localStorage.getItem(
-    localStorageKeys.editor.customFunctionsLastUpdatedCodeTimestamp,
+    localStorageKeys.customFunctionsLastUpdatedCodeTimestamp,
   );
   return lastUpdated ? +lastUpdated : 0;
 };
 
 export const getCustomFunctionLogsFromLocalStorage = (): ILogData[] => {
-  ensureFreshLocalStorage();
-
   const logs = getAllItemsWithRoot<ILogData>(CF_LOGS_ROOT);
   removeAllItemsWithRoot(CF_LOGS_ROOT);
   return logs;
@@ -36,18 +29,14 @@ export const getCustomFunctionLogsFromLocalStorage = (): ILogData[] => {
 
 export function setCustomFunctionsLastRegisteredTimestamp(timestamp: number) {
   localStorage.setItem(
-    localStorageKeys.editor.customFunctionsLastRegisteredTimestamp,
+    localStorageKeys.customFunctionsLastRegisteredTimestamp,
     timestamp.toString(),
   );
 }
 
 export function getCustomFunctionsLastRegisteredTimestamp() {
-  ensureFreshLocalStorage();
-
   return JSON.parse(
-    localStorage.getItem(
-      localStorageKeys.editor.customFunctionsLastRegisteredTimestamp,
-    ) || '0',
+    localStorage.getItem(localStorageKeys.customFunctionsLastRegisteredTimestamp) || "0",
   );
 }
 
@@ -57,11 +46,11 @@ export function writeIfChanged<T>(
   getKey: ((selectionResult: any) => string) | string,
   currentState: T,
   lastState: T | undefined,
-  root = '',
+  root = "",
 ) {
   const current = selector(currentState);
   const last = lastState ? selector(lastState) : null;
-  const key = typeof getKey === 'string' ? getKey : getKey(current);
+  const key = typeof getKey === "string" ? getKey : getKey(current);
   if (current && (!last || !isEqual(current, last))) {
     writeItem(root, key, current);
   }
@@ -72,7 +61,7 @@ export function writeItem(root: string, id: string, object: any) {
 }
 
 export function readItem(root: string, id: string) {
-  return JSON.parse(localStorage.getItem(`${root}${id}`) || 'null');
+  return JSON.parse(localStorage.getItem(`${root}${id}`) || "null");
 }
 
 export function deleteItem(root: string, id: string) {
@@ -91,16 +80,15 @@ export function getAllLocalStorageKeys(): string[] {
 }
 
 export function getAllLocalStorageKeysWithRoot(root: string): string[] {
-  return getAllLocalStorageKeys().filter(key => key.startsWith(root));
+  return getAllLocalStorageKeys().filter((key) => key.startsWith(root));
 }
 
 export function getAllItemsWithRoot<T>(root: string): T[] {
-  ensureFreshLocalStorage();
   return getAllLocalStorageKeysWithRoot(root)
-    .map(key => localStorage.getItem(key))
-    .map(item => JSON.parse(item));
+    .map((key) => localStorage.getItem(key))
+    .map((item) => JSON.parse(item));
 }
 
 export function removeAllItemsWithRoot(root: string) {
-  getAllLocalStorageKeysWithRoot(root).forEach(key => localStorage.removeItem(key));
+  getAllLocalStorageKeysWithRoot(root).forEach((key) => localStorage.removeItem(key));
 }

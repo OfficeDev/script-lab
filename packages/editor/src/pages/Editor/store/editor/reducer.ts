@@ -1,7 +1,7 @@
-import { combineReducers } from 'redux';
-import { getType } from 'typesafe-actions';
-import { editor, IEditorAction } from '../actions';
-import omit from 'lodash/omit';
+import { combineReducers } from "redux";
+import { getType } from "typesafe-actions";
+import { editor, IEditorAction } from "../actions";
+import omit from "lodash/omit";
 
 type IIsVisibleState = boolean;
 
@@ -59,10 +59,7 @@ interface IIntellisenseFilesState {
   [url: string]: monaco.IDisposable;
 }
 
-const intellisenseFiles = (
-  state: IIntellisenseFilesState = {},
-  action: IEditorAction,
-) => {
+const intellisenseFiles = (state: IIntellisenseFilesState = {}, action: IEditorAction) => {
   switch (action.type) {
     case getType(editor.setIntellisenseFiles.success):
       return { ...state, ...action.payload };

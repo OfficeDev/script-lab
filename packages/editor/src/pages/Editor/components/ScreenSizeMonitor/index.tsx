@@ -1,8 +1,8 @@
-import React from 'react';
+import React from "react";
 
-import { connect } from 'react-redux'; // Note, avoid the temptation to include '@types/react-redux', it will break compile-time!
-import actions, { IRootAction } from '../../store/actions';
-import { Dispatch } from 'redux';
+import { connect } from "react-redux"; // Note, avoid the temptation to include '@types/react-redux', it will break compile-time!
+import actions, { IRootAction } from "../../store/actions";
+import { Dispatch } from "redux";
 
 interface IActionsFromRedux {
   updateSize: (width: number, height: number) => void;
@@ -18,11 +18,11 @@ interface IProps extends IActionsFromRedux {}
 export class ScreenSizeMonitor extends React.Component<IProps> {
   componentDidMount() {
     this.handleResize();
-    window.addEventListener('resize', this.handleResize);
+    window.addEventListener("resize", this.handleResize);
   }
 
   componentWillUnmount() {
-    window.removeEventListener('resize', this.handleResize);
+    window.removeEventListener("resize", this.handleResize);
   }
 
   handleResize = () => this.props.updateSize(window.innerWidth, window.innerHeight);

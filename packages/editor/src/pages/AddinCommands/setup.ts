@@ -1,6 +1,9 @@
-import { Utilities, HostType, PlatformType } from '@microsoft/office-js-helpers';
-import safeExternalUrls from 'common/lib/safe.external.urls';
-import { hideSplashScreen } from 'common/lib/utilities/splash.screen';
+import { currentEditorUrl } from "common/build/environment";
+import { Utilities, HostType, PlatformType } from "common/build/helpers/officeJsHost";
+import { safeExternalUrls } from "common/build/safeExternalUrls";
+import { hideSplashScreen } from "common/build/utilities/splash.screen";
+
+const codeUrl = `${currentEditorUrl}/index.html?mode=${Utilities.host}`;
 
 export default function setup() {
   // SUPER IMPORTANT NOTE:  The add-in commands code doesn't do a redirect to localhost
@@ -8,12 +11,12 @@ export default function setup() {
   //   This is controlled by `skipRedirect: true` in `packages/editor/src/pages/index.tsx`.
   //   If you need to change this logic and test locally, sideload the localhost version.
 
-  registerCommand('launchCode', event => {
+  registerCommand("launchCode", (event) => {
     if (isOutlookOnline()) {
       hideSplashScreen();
-      return launchInStandaloneWindow(codeUrl, event);
+      launchDialog(codeUrl, event, { displayInIframe: false, width: 60, height: 60 });
     } else {
-      return launchInDialog(codeUrl, event, {
+      return launchDialog(codeUrl, event, {
         width: 75,
         height: 75,
         displayInIframe: false,
@@ -21,41 +24,31 @@ export default function setup() {
     }
   });
 
-  registerCommand('launchTutorial', event => {
-    if (isOutlookOnline()) {
-      hideSplashScreen();
-      return launchInStandaloneWindow(tutorialUrl, event);
-    } else {
-      return launchInDialog(tutorialUrl, event, { width: 35, height: 45 });
-    }
-  });
-
-  registerCommand('launchHelp', event =>
-    launchInStandaloneWindow(safeExternalUrls.playground_help, event),
+  registerCommand("launchHelp", (event) =>
+    launchInStandaloneWindow(safeExternalUrls.tutorial, event),
   );
 
-  registerCommand('launchAsk', event =>
-    launchInStandaloneWindow(safeExternalUrls.ask, event),
-  );
+  registerCommand("launchAsk", (event) => launchInStandaloneWindow(safeExternalUrls.ask, event));
 
-  registerCommand('launchApiDocs', event => {
-    if (Office.context.requirements.isSetSupported('ExcelApi')) {
-      return launchInStandaloneWindow(safeExternalUrls.excel_api, event);
-    } else if (Office.context.requirements.isSetSupported('WordApi')) {
-      return launchInStandaloneWindow(safeExternalUrls.word_api, event);
-    } else if (Office.context.requirements.isSetSupported('OneNoteApi')) {
-      return launchInStandaloneWindow(safeExternalUrls.onenote_api, event);
+  registerCommand("launchApiDocs", (event) => {
+    let url = safeExternalUrls.generic_api;
+
+    if (Office.context.requirements.isSetSupported("ExcelApi")) {
+      url = safeExternalUrls.excel_api;
+    } else if (Office.context.requirements.isSetSupported("WordApi")) {
+      url = safeExternalUrls.word_api;
+    } else if (Office.context.requirements.isSetSupported("OneNoteApi")) {
+      url = safeExternalUrls.onenote_api;
+    } else if (Utilities.host === HostType.POWERPOINT) {
+      url = safeExternalUrls.powepoint_api;
+    } else if (Utilities.host === HostType.PROJECT) {
+      url = safeExternalUrls.project_api;
+    } else if (Utilities.host === HostType.OUTLOOK) {
+      url = safeExternalUrls.outlook_api;
     } else {
-      if (Utilities.host === HostType.POWERPOINT) {
-        return launchInStandaloneWindow(safeExternalUrls.powepoint_api, event);
-      } else if (Utilities.host === HostType.PROJECT) {
-        return launchInStandaloneWindow(safeExternalUrls.project_api, event);
-      } else if (Utilities.host === HostType.OUTLOOK) {
-        return launchInStandaloneWindow(safeExternalUrls.outlook_api, event);
-      } else {
-        return launchInStandaloneWindow(safeExternalUrls.generic_api, event);
-      }
+      url = safeExternalUrls.generic_api;
     }
+    return launchInStandaloneWindow(url, event);
   });
 
   // Now that the functions are registered, call Office.onReady()
@@ -71,22 +64,29 @@ function registerCommand(
   (window as any)[manifestName] = callback;
 }
 
-const tutorialUrl = `${window.location.origin}/tutorial.html`;
-const codeUrl = `${window.location.origin}/?mode=${Utilities.host}`;
-
-function launchInDialog(
+function launchDialog(
   url: string,
   event?: any,
   options?: { width?: number; height?: number; displayInIframe?: boolean },
-  onSuccessCallback?: (dialog: Office.Dialog) => void,
 ): void {
+  const onSuccessCallback: (dialog: Office.Dialog) => void = (dialog: Office.Dialog) => {
+    dialog.addEventHandler(
+      Office.EventType.DialogMessageReceived,
+      (result: { message: string }) => {
+        if (result.message === "close") {
+          dialog.close();
+        }
+      },
+    );
+  };
+
   options = options || {};
   options.width = options.width || 60;
   options.height = options.height || 60;
-  if (typeof options.displayInIframe === 'undefined') {
+  if (typeof options.displayInIframe === "undefined") {
     options.displayInIframe = true;
   }
-  Office.context.ui.displayDialogAsync(url, options, result => {
+  Office.context.ui.displayDialogAsync(url, options, (result) => {
     if (Utilities.host === HostType.OUTLOOK) {
       if (result.status === Office.AsyncResultStatus.Failed) {
         event.completed();
@@ -108,59 +108,20 @@ function launchInDialog(
   }
 }
 
-function launchDialogNavigation(
-  url: string,
-  event: any,
-  options?: { width?: number; height?: number; displayInIframe?: boolean },
-  onSuccessCallback?: (dialog: Office.Dialog) => void,
-): void {
-  launchInDialog(
-    // Checks to see if the host is Outlook Online and the url is the codeUrl or editorUrl
-    // and sets url appropriately
-    isOutlookOnlinePopoutUrl(url)
-      ? url
-      : `${window.location.origin}/#/external-page?destination=${encodeURIComponent(
-          url,
-        )}`,
-    event,
-    options,
-    onSuccessCallback,
-  );
-}
-
+// Launch a page that will direct the user to click a button to launch the actual page.
+// This method of indirection is required because:
+// * At least on desktop, it looks like you can't do "window.open" out of the invisible runner
+// * In the browser, a direct call to "window.open" would trigger a popup blocker
 function launchInStandaloneWindow(url: string, event: any): void {
-  // Launch a page that will direct the user to click a button to launch the actual page.
-  // This method of indirection is required because:
-  // * At least on desktop, it looks like you can't do "window.open" out of the invisible runner
-  // * In the browser, a direct call to "window.open" would trigger a popup blocker
-  launchDialogNavigation(
+  const dialogUrl = `${currentEditorUrl}/index.html#/external-page?destination=${encodeURIComponent(
     url,
-    event,
-    // Checks to see if the host is Outlook Online and the url is the codeUrl or editorUrl
-    // and sets options appropriately
-    isOutlookOnlinePopoutUrl(url)
-      ? { displayInIframe: false, width: 60, height: 60 }
-      : { displayInIframe: true, width: 30, height: 30 },
-    (dialog: Office.Dialog) => {
-      dialog.addEventHandler(
-        Office.EventType.DialogMessageReceived,
-        (result: { message: string }) => {
-          if (result.message === 'close') {
-            dialog.close();
-          }
-        },
-      );
-    },
-  );
+  )}`;
+
+  const dialogOptions = { displayInIframe: true, width: 30, height: 30 };
+
+  launchDialog(dialogUrl, event, dialogOptions);
 }
 
 function isOutlookOnline(): boolean {
-  return (
-    Utilities.host === HostType.OUTLOOK &&
-    Utilities.platform === PlatformType.OFFICE_ONLINE
-  );
-}
-
-function isOutlookOnlinePopoutUrl(url: string): boolean {
-  return isOutlookOnline() && (url === codeUrl || url === tutorialUrl);
+  return Utilities.host === HostType.OUTLOOK && Utilities.platform === PlatformType.OFFICE_ONLINE;
 }

@@ -1,19 +1,19 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
-import Header from './Header';
-import FileSwitcherPivot from './FileSwitcherPivot';
-import Editor from './Editor';
-import Footer from './Footer';
+import Header from "./Header";
+import FileSwitcherPivot from "./FileSwitcherPivot";
+import Editor from "./Editor";
+import Footer from "./Footer";
 
-import Notifications from '../Notifications';
+import Notifications from "../Notifications";
 
-import { ContentWrapper } from './styles';
-import { NULL_SOLUTION, NULL_FILE } from '../../../../constants';
+import { ContentWrapper } from "./styles";
+import { NULL_SOLUTION, NULL_FILE } from "../../../../constants";
 
-import { connect } from 'react-redux'; // Note, avoid the temptation to include '@types/react-redux', it will break compile-time!
-import { IState as IReduxState } from '../../store/reducer';
-import selectors from '../../store/selectors';
-import HeaderFooterLayout from 'common/lib/components/HeaderFooterLayout';
+import { connect } from "react-redux"; // Note, avoid the temptation to include '@types/react-redux', it will break compile-time!
+import { IState as IReduxState } from "../../store/reducer";
+import selectors from "../../store/selectors";
+import HeaderFooterLayout from "common/build/components/HeaderFooterLayout";
 
 interface IPropsFromRedux {
   isVisible: boolean;
@@ -51,8 +51,8 @@ class IDE extends Component<IProps> {
         footer={<Footer />}
         wrapperStyle={
           isVisible && hasLoaded
-            ? { visibility: 'visible' }
-            : { visibility: 'hidden', opacity: hasLoaded ? 1 : 0 }
+            ? { visibility: "visible" }
+            : { visibility: "hidden", opacity: hasLoaded ? 1 : 0 }
         }
       >
         <>

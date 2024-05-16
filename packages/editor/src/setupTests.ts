@@ -1,10 +1,12 @@
-import 'common/lib/polyfills';
-import { HYPHENATED_PACKAGE_VERSIONS } from 'common/lib/package-versions';
+import "common/build/polyfills";
+import { HYPHENATED_PACKAGE_VERSIONS } from "common/build/package-versions";
 
-(window as any).require = require(`../public/external/monaco-editor-${HYPHENATED_PACKAGE_VERSIONS['monaco-editor']}/vs/loader`);
+(window as any).require = require(
+  `../public/external/monaco-editor-${HYPHENATED_PACKAGE_VERSIONS["monaco-editor"]}/vs/loader`,
+);
 
 // this is basically: afterEach(cleanup)
-import 'react-testing-library/cleanup-after-each';
+import "react-testing-library/cleanup-after-each";
 
 // TODO: figure out why this doesn't work
 // (having this commented out causes fabric to throw warnings for having uninitialized icons)

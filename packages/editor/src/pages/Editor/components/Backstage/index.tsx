@@ -1,27 +1,27 @@
-import React, { Component } from 'react';
-import { BackstageWrapper, ContentContainer, LoadingContainer } from './styles';
-import debounce from 'lodash/debounce';
+import React, { Component } from "react";
+import { BackstageWrapper, ContentContainer, LoadingContainer } from "./styles";
+import debounce from "lodash/debounce";
 
-import { Spinner, SpinnerSize } from 'office-ui-fabric-react/lib/Spinner';
+import { Spinner, SpinnerSize } from "office-ui-fabric-react/lib/Spinner";
 
-import Menu from './Menu';
-import MySolutions from './MySolutions';
-import Samples from './Samples';
-import ImportSolution from './ImportSolution';
+import Menu from "./Menu";
+import MySolutions from "./MySolutions";
+import Samples from "./Samples";
+import { ImportSolution } from "./ImportSolution";
 
-import ConflictResolutionDialog from './ConflictResolutionDialog/ConflictResolutionDialog';
-import { ConflictResolutionOptions } from '../../../../interfaces/enums';
+import ConflictResolutionDialog from "./ConflictResolutionDialog/ConflictResolutionDialog";
+import { ConflictResolutionOptions } from "../../../../interfaces/enums";
 
-import { connect } from 'react-redux'; // Note, avoid the temptation to include '@types/react-redux', it will break compile-time!
-import { Dispatch } from 'redux';
-import { IRootAction } from '../../store/actions';
-import selectors from '../../store/selectors';
-import { editor, solutions, samples, gists, github } from '../../store/actions';
-import { IState as IReduxState } from '../../store/reducer';
-import Only from 'common/lib/components/Only';
+import { connect } from "react-redux"; // Note, avoid the temptation to include '@types/react-redux', it will break compile-time!
+import { Dispatch } from "redux";
+import { IRootAction } from "../../store/actions";
+import selectors from "../../store/selectors";
+import { editor, solutions, samples, gists, github } from "../../store/actions";
+import { IState as IReduxState } from "../../store/reducer";
+import Only from "common/build/components/Only";
 
 interface IBackstageItem {
-  'data-testid'?: string;
+  "data-testid"?: string;
   key: string;
   icon: string;
   label?: string;
@@ -94,14 +94,14 @@ export class Backstage extends Component<IProps, IState> {
 
   state = {
     isLoading: false,
-    selectedKey: this.props.solutions.length > 0 ? 'my-solutions' : 'samples',
+    selectedKey: this.props.solutions.length > 0 ? "my-solutions" : "samples",
     conflictingGist: null,
     existingSolutionsConflicting: null,
     width: 0,
   };
 
   componentDidMount() {
-    this.resizeListener = window.addEventListener('resize', debounce(this.setWidth, 100));
+    this.resizeListener = window.addEventListener("resize", debounce(this.setWidth, 100));
     this.setWidth();
   }
 
@@ -116,11 +116,11 @@ export class Backstage extends Component<IProps, IState> {
   };
 
   componentWillUnmount() {
-    this.setState({ selectedKey: 'my-solutions', isLoading: false });
+    this.setState({ selectedKey: "my-solutions", isLoading: false });
   }
 
   openSolution = (solutionId: string) => {
-    const solution = this.props.solutions.find(solution => solution.id === solutionId);
+    const solution = this.props.solutions.find((solution) => solution.id === solutionId);
     this.props.openSolution(solutionId, solution!.files[0].id);
     this.setState({ isLoading: true });
   };
@@ -134,7 +134,7 @@ export class Backstage extends Component<IProps, IState> {
     const { solutions, openGist } = this.props;
     const { id, url } = gistMeta;
     const existingSolutions = solutions.filter(
-      s => s.source && s.source.origin === 'gist' && s.source.id === id,
+      (s) => s.source && s.source.origin === "gist" && s.source.id === id,
     );
 
     if (existingSolutions.length > 0) {
@@ -167,30 +167,30 @@ export class Backstage extends Component<IProps, IState> {
     const showBack = this.props.solutions.length !== 0;
     const originalItems: IBackstageItem[] = [
       {
-        'data-testid': 'back',
-        key: 'back',
-        ariaLabel: 'Code',
-        label: 'Code',
-        icon: showBack ? 'GlobalNavButton' : '',
+        "data-testid": "back",
+        key: "back",
+        ariaLabel: "Code",
+        label: "Code",
+        icon: showBack ? "GlobalNavButton" : "",
         isHidden: !showBack,
         onClick: showBack ? this.props.goBack : () => {},
       },
       {
-        'data-testid': 'new',
-        key: 'new',
-        ariaLabel: 'New snippet',
-        label: 'New Snippet',
-        icon: 'Add',
+        "data-testid": "new",
+        key: "new",
+        ariaLabel: "New snippet",
+        label: "New Snippet",
+        icon: "Add",
         onClick: () => {
           this.props.createNewSolution();
         },
       },
       {
-        'data-testid': 'my-solutions',
-        key: 'my-solutions',
-        ariaLabel: 'My Snippets',
-        label: 'My Snippets',
-        icon: 'DocumentSet',
+        "data-testid": "my-solutions",
+        key: "my-solutions",
+        ariaLabel: "My Snippets",
+        label: "My Snippets",
+        icon: "DocumentSet",
         content: (
           <MySolutions
             solutions={this.props.solutions}
@@ -204,24 +204,21 @@ export class Backstage extends Component<IProps, IState> {
         ),
       },
       {
-        'data-testid': 'samples',
-        key: 'samples',
-        ariaLabel: 'Samples',
-        label: 'Samples',
-        icon: 'Dictionary',
+        "data-testid": "samples",
+        key: "samples",
+        ariaLabel: "Samples",
+        label: "Samples",
+        icon: "Dictionary",
         content: (
-          <Samples
-            openSample={this.openSample}
-            samplesByGroup={this.props.samplesByGroup}
-          />
+          <Samples openSample={this.openSample} samplesByGroup={this.props.samplesByGroup} />
         ),
       },
       {
-        'data-testid': 'import',
-        key: 'import',
-        ariaLabel: 'Import',
-        label: 'Import',
-        icon: 'Download',
+        "data-testid": "import",
+        key: "import",
+        ariaLabel: "Import",
+        label: "Import",
+        icon: "Download",
         content: <ImportSolution importGist={this.props.importGist} />,
       },
     ];
@@ -231,21 +228,12 @@ export class Backstage extends Component<IProps, IState> {
       ...item,
     }));
 
-    const {
-      selectedKey,
-      conflictingGist,
-      existingSolutionsConflicting,
-      width,
-    } = this.state;
-    const activeItem = items.find(item => item.key === selectedKey);
+    const { selectedKey, conflictingGist, existingSolutionsConflicting, width } = this.state;
+    const activeItem = items.find((item) => item.key === selectedKey);
     return (
       <div ref={this.containerDomNode}>
         <BackstageWrapper>
-          <Menu
-            isCompact={width <= 500}
-            selectedKey={this.state.selectedKey}
-            items={items}
-          />
+          <Menu isCompact={width <= 500} selectedKey={this.state.selectedKey} items={items} />
           <ContentContainer>
             {activeItem && activeItem.content}
             <Only when={this.state.isLoading}>

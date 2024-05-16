@@ -1,17 +1,17 @@
 module.exports = {
   presets: [
     [
-      '@babel/preset-env',
+      "@babel/preset-env",
       {
         loose: true,
         targets: {
-          browsers: ['ie >= 11'],
+          browsers: [">0.25%", "not IE", "not op_mini all", "not dead"],
         },
-        exclude: ['proposal-dynamic-import'],
+        exclude: ["proposal-dynamic-import"],
       },
     ],
-    '@babel/preset-react',
-    '@babel/preset-typescript',
+    "@babel/preset-react",
+    "@babel/preset-typescript",
   ],
-  plugins: ['babel-plugin-macros', 'syntax-jsx'],
+  plugins: ["babel-plugin-macros", "syntax-jsx"],
 };

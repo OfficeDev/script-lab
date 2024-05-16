@@ -6,9 +6,9 @@ export function getFakeStringLong(text: string) {
   return getFakeStringHelper(text, (currentLetter, uppercaseIt) => {
     const regexLettersToElongate = /[AOE]/i;
     if (regexLettersToElongate.test(currentLetter)) {
-      return currentLetter[uppercaseIt ? 'toUpperCase' : 'toLowerCase']().repeat(2);
+      return currentLetter[uppercaseIt ? "toUpperCase" : "toLowerCase"]().repeat(2);
     } else {
-      return '';
+      return "";
     }
   });
 }
@@ -19,7 +19,7 @@ function getFakeStringHelper(
   text: string,
   letterAddingCallback?: (currentLetter: string, uppercaseIt: boolean) => string,
 ) {
-  let result = '';
+  let result = "";
   const regexAnythingUntilWords = /^([^a-zA-Z\-]*)([a-zA-Z\-]+)(.*)$/;
   while (text.length > 0) {
     const match = regexAnythingUntilWords.exec(text);
@@ -28,7 +28,7 @@ function getFakeStringHelper(
       text = match[3];
     } else {
       result += text;
-      text = '';
+      text = "";
     }
   }
 
@@ -38,13 +38,12 @@ function getFakeStringHelper(
   function processWord(word: string) {
     const regexUppercase = /[A-Z]/;
 
-    let processedWord = '';
+    let processedWord = "";
     for (let i = 0; i < word.length; i++) {
       const originalLetter = word[i];
       const correspondingLetter = word.substr(word.length - 1 - i, 1);
-      const newLetter = correspondingLetter[
-        regexUppercase.test(originalLetter) ? 'toUpperCase' : 'toLowerCase'
-      ]();
+      const newLetter =
+        correspondingLetter[regexUppercase.test(originalLetter) ? "toUpperCase" : "toLowerCase"]();
       processedWord += newLetter;
     }
 
@@ -61,8 +60,7 @@ function getFakeStringHelper(
             regexUppercase.test(processedWord.substr(i + 1, 1));
         }
         const lettersToAdd = letterAddingCallback(currentLetter, nextLetterUppercase);
-        processedWord =
-          processedWord.substr(0, i + 1) + lettersToAdd + processedWord.substr(i + 1);
+        processedWord = processedWord.substr(0, i + 1) + lettersToAdd + processedWord.substr(i + 1);
         i = i + 1 + lettersToAdd.length;
       }
     }

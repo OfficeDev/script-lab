@@ -1,9 +1,10 @@
-import React from 'react';
+import React from "react";
 
-import { HashRouter, Route, Switch } from 'react-router-dom';
-import { AwaitPromiseThenRender } from './utilities/AwaitPromiseThenRender';
-import { addScriptTags } from '../../utilities/script-loader';
-import { redirectIfNeeded } from '../../utilities/environment.redirector';
+import { HashRouter, Route, Switch } from "react-router-dom";
+import { AwaitPromiseThenRender } from "./utilities/AwaitPromiseThenRender";
+import { addScriptTags } from "../../utilities/script-loader";
+import { redirectIfNeeded } from "../../utilities/environment.redirector";
+import { enableRedirect } from "../../constants";
 
 export interface IPageLoadingSpec {
   component: React.ComponentType;
@@ -31,23 +32,35 @@ interface IProps {
   defaultPath: string;
 }
 
-const PageSwitcher = ({ pages, defaultPath }: IProps) => (
-  <HashRouter>
-    <Switch>
-      {/* Render a route for each page */}
-      {Object.keys(pages).map(path => (
-        <Route
-          exact
-          path={path}
-          component={renderPageAfterPrerequisites(pages[path])}
-          key={path}
-        />
-      ))}
-      {/* Falling back on the default component for an unknown route */}
-      <Route component={renderPageAfterPrerequisites(pages[defaultPath])} />
-    </Switch>
-  </HashRouter>
-);
+const PageSwitcher = ({ pages, defaultPath }: IProps) => {
+  // Force override to disable redirect for all pages.
+  const redirectDisabled = !enableRedirect();
+
+  const defaultPage = pages[defaultPath];
+  if (redirectDisabled) {
+    defaultPage.skipRedirect = true;
+  }
+
+  return (
+    <HashRouter>
+      <Switch>
+        {/* Render a route for each page */}
+        {Object.keys(pages).map((path) => {
+          const page = pages[path];
+          if (redirectDisabled) {
+            page.skipRedirect = true;
+          }
+
+          return (
+            <Route exact path={path} component={renderPageAfterPrerequisites(page)} key={path} />
+          );
+        })}
+        {/* Falling back on the default component for an unknown route */}
+        <Route component={renderPageAfterPrerequisites(defaultPage)} />
+      </Switch>
+    </HashRouter>
+  );
+};
 
 export default PageSwitcher;
 

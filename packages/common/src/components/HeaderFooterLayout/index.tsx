@@ -1,5 +1,5 @@
-import React from 'react';
-import { Layout, ContentWrapper } from './styles';
+import React from "react";
+import { Layout, ContentWrapper } from "./styles";
 
 export interface IProps {
   header: React.ReactElement<any>;
@@ -16,7 +16,7 @@ const HeaderFooterLayout = ({
   fullscreen,
   children,
 }: IProps) => {
-  const fullscreenStyles = fullscreen ? { height: '100vh' } : {};
+  const fullscreenStyles = fullscreen ? { height: "100vh" } : {};
   const style = { ...wrapperStyle, ...fullscreenStyles };
 
   return (

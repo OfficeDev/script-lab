@@ -1,21 +1,19 @@
-import React, { Component } from 'react';
-import { currentEditorUrl } from 'common/lib/environment';
+import React, { Component } from "react";
+import { currentEditorUrl, sameOrigin, getOrigin } from "common/build/environment";
 import {
   RUNNER_TO_EDITOR_HEARTBEAT_REQUESTS,
   EDITOR_HEARTBEAT_TO_RUNNER_RESPONSES,
   IEditorHeartbeatToRunnerResponse,
-} from 'common/lib/constants';
-import { ScriptLabError } from 'common/lib/utilities/error';
+} from "common/build/constants";
+import { ScriptLabError } from "common/build/utilities/error";
 
 const LOCAL_STORAGE_POLLING_INTERVAL = 300; // ms
-const heartbeatEditorUrl = `${currentEditorUrl}/#/heartbeat`;
+const heartbeatEditorUrl = `${currentEditorUrl}/index.html#/heartbeat`;
 
 export interface IProps {
   host: string;
   onReceiveNewActiveSolution: (solution: ISolution | null) => void;
-  onReceivedMessageToPassToUserSnippet: (
-    message: IEditorHeartbeatToRunnerResponse,
-  ) => void;
+  onReceivedMessageToPassToUserSnippet: (message: IEditorHeartbeatToRunnerResponse) => void;
 }
 
 interface IState {
@@ -42,7 +40,8 @@ class Heartbeat extends Component<IProps, IState> {
 
   sendMessage = (message: string) => {
     if (this.node.current) {
-      this.node.current.contentWindow.postMessage(message, currentEditorUrl);
+      const editorOrigin = getOrigin(currentEditorUrl);
+      this.node.current.contentWindow.postMessage(message, editorOrigin);
     }
   };
 
@@ -53,7 +52,7 @@ class Heartbeat extends Component<IProps, IState> {
   };
 
   private onWindowMessage = ({ origin, data }) => {
-    if (origin !== currentEditorUrl) {
+    if (!sameOrigin(origin, currentEditorUrl)) {
       return;
     }
 
@@ -90,7 +89,7 @@ class Heartbeat extends Component<IProps, IState> {
       if (appropriateResponse) {
         appropriateResponse();
       } else {
-        throw new ScriptLabError('Invalid heartbeat message received', data);
+        throw new ScriptLabError("Invalid heartbeat message received", data);
       }
     } catch (err) {
       console.error(err);
@@ -100,7 +99,7 @@ class Heartbeat extends Component<IProps, IState> {
   render() {
     return (
       <iframe
-        style={{ display: 'none' }}
+        style={{ display: "none" }}
         title="heartbeat"
         src={heartbeatEditorUrl}
         ref={this.node}

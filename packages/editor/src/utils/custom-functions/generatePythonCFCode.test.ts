@@ -1,11 +1,11 @@
-import YAML from 'js-yaml';
+import YAML from "js-yaml";
 
-import generatePythonCFCode from './generatePythonCFCode';
-import { stripSpaces } from 'common/lib/utilities/string';
-import { convertSnippetToSolution } from '..';
+import generatePythonCFCode from "./generatePythonCFCode";
+import { stripSpaces } from "common/build/utilities/string";
+import { convertSnippetToSolution } from "..";
 
 const basicCF = convertSnippetToSolution(
-  YAML.safeLoad(
+  YAML.load(
     stripSpaces(`
   name: Test Snippet Name
   description: A basic Custom Function, written in Python
@@ -23,7 +23,7 @@ const basicCF = convertSnippetToSolution(
 );
 
 const moreComplicatedCF = convertSnippetToSolution(
-  YAML.safeLoad(
+  YAML.load(
     stripSpaces(`
   name: More Complicated
   description: A more complicated snippet
@@ -49,8 +49,8 @@ const moreComplicatedCF = convertSnippetToSolution(
   ) as ISnippet,
 );
 
-describe('primitives', () => {
-  it('basic', () =>
+describe("primitives", () => {
+  it("basic", () =>
     expect(generatePythonCFCode([basicCF], { clearOnRegister: true })).toEqual(
       stripSpaces(`
         import customfunctionmanager
@@ -69,10 +69,8 @@ describe('primitives', () => {
       `),
     ));
 
-  it('simple and more complicated combined', () =>
-    expect(
-      generatePythonCFCode([basicCF, moreComplicatedCF], { clearOnRegister: true }),
-    ).toEqual(
+  it("simple and more complicated combined", () =>
+    expect(generatePythonCFCode([basicCF, moreComplicatedCF], { clearOnRegister: true })).toEqual(
       stripSpaces(`
         import customfunctionmanager
         customfunctionmanager.clear()

@@ -27,12 +27,6 @@
         "description": "JavaScript library for DOM operations."
     },
     {
-        "label": "@microsoft/office-js-helpers",
-        "value": "@microsoft/office-js-helpers/dist/office.helpers.min.js",
-        "typings": "@microsoft/office-js-helpers/dist/office.helpers.d.ts",
-        "description": "An open-source collection of helpers for developing Office Add-ins."
-    },
-    {
         "label": "core-js",
         "value": "core-js/client/core.min.js",
         "typings": "@types/core-js",

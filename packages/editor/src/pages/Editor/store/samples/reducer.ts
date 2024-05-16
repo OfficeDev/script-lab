@@ -1,5 +1,5 @@
-import { samples as sampleActions, ISamplesAction } from '../actions';
-import { getType } from 'typesafe-actions';
+import { samples as sampleActions, ISamplesAction } from "../actions";
+import { getType } from "typesafe-actions";
 
 export interface IState {
   [id: string]: ISampleMetadata;

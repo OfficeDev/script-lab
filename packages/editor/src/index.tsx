@@ -1,31 +1,29 @@
-import 'common/lib/polyfills';
-import { invokeGlobalErrorHandler } from 'common/lib/utilities/splash.screen';
+import "common/build/polyfills";
+import { invokeGlobalErrorHandler } from "common/build/utilities/splash.screen";
 
-import './index.css';
+import "./index.css";
 
 ///////////////////////////////////////
 
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { unregister } from './registerServiceWorker';
-import queryString from 'query-string';
+import React from "react";
+import ReactDOM from "react-dom";
+import { unregister } from "./registerServiceWorker";
+import queryString from "query-string";
 
-import Pages from './pages';
-import AuthPage from './pages/Auth';
+import Pages from "./pages";
+import AuthPage from "./pages/Auth";
 
-window.onerror = error => invokeGlobalErrorHandler(error);
+window.onerror = (error) => invokeGlobalErrorHandler(error);
 
-(async () => {
-  try {
-    const rootElement = document.getElementById('root') as HTMLElement;
+try {
+  const rootElement = document.getElementById("root") as HTMLElement;
 
-    ReactDOM.render(getReactElementBasedOnQueryParams(), rootElement);
+  ReactDOM.render(getReactElementBasedOnQueryParams(), rootElement);
 
-    unregister(); // need more testing to determine if this can be removed. seems to help with the caching of the html file issues
-  } catch (e) {
-    invokeGlobalErrorHandler(e);
-  }
-})();
+  unregister(); // need more testing to determine if this can be removed. seems to help with the caching of the html file issues
+} catch (e) {
+  invokeGlobalErrorHandler(e);
+}
 
 ///////////////////////////////////////
 
@@ -46,11 +44,11 @@ function getReactElementBasedOnQueryParams() {
     // Add a keyboard listener to [try to] intercept "ctrl+save", since we auto-save anyway
     // and since the browser/host "save as" dialog would be unwanted here
     document.addEventListener(
-      'keydown',
-      e => {
+      "keydown",
+      (e) => {
         if (
           e.keyCode === 83 /*s key*/ &&
-          (navigator.platform.match('Mac') ? e.metaKey : e.ctrlKey)
+          (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)
         ) {
           e.preventDefault();
         }

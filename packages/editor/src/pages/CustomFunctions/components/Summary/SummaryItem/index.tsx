@@ -1,8 +1,8 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
-import { setIconOptions } from 'office-ui-fabric-react/lib/Styling';
-import { Icon } from 'office-ui-fabric-react/lib/Icon';
+import { setIconOptions } from "office-ui-fabric-react/lib/Styling";
+import { Icon } from "office-ui-fabric-react/lib/Icon";
 
 // Suppress icon warnings.
 setIconOptions({
@@ -13,8 +13,8 @@ const Wrapper = styled.div`
   position: relative;
   padding: 0rem 1.8rem;
 
-  border-top: 0.5px solid ${props => props.theme.neutralLight};
-  border-bottom: 0.5px solid ${props => props.theme.neutralLight};
+  border-top: 0.5px solid ${(props) => props.theme.neutralLight};
+  border-bottom: 0.5px solid ${(props) => props.theme.neutralLight};
 `;
 
 const FunctionNameWrapper = styled.div`
@@ -25,9 +25,9 @@ const FunctionNameWrapper = styled.div`
   line-height: 4.25rem;
 `;
 
-const FunctionName = styled.h4.attrs({ className: 'ms-font-s' })``;
+const FunctionName = styled.h4.attrs({ className: "ms-font-s" })``;
 
-const AdditionalInfo = styled.div.attrs({ className: 'ms-font-xs' })`
+const AdditionalInfo = styled.div.attrs({ className: "ms-font-xs" })`
   color: red;
   margin-top: 0.8rem;
 `;
@@ -40,12 +40,12 @@ const AdditionalInfoContainer = styled.div`
   }
 `;
 
-const SnippetName = styled.div.attrs({ className: 'ms-font-s' })`
+const SnippetName = styled.div.attrs({ className: "ms-font-s" })`
   position: absolute;
   bottom: 0.2rem;
   right: 0.5rem;
 
-  color: ${props => props.theme.neutralSecondaryLight};
+  color: ${(props) => props.theme.neutralSecondaryLight};
 
   font-variant: small-caps;
   white-space: nowrap;
@@ -57,10 +57,10 @@ const SummaryItem = ({
   errors: additionalInfo,
 }: ICustomFunctionParseResult<null>) => {
   const { iconName, color } = {
-    good: { iconName: 'Completed', color: '#107C10' },
-    skipped: { iconName: 'Warning', color: '#F0C784' },
-    error: { iconName: 'ErrorBadge', color: 'red' },
-    untrusted: { iconName: 'ReportHacked', color: 'gray' },
+    good: { iconName: "Completed", color: "#107C10" },
+    skipped: { iconName: "Warning", color: "#F0C784" },
+    error: { iconName: "ErrorBadge", color: "red" },
+    untrusted: { iconName: "ReportHacked", color: "gray" },
   }[status];
 
   return (
@@ -69,17 +69,17 @@ const SummaryItem = ({
         <Icon
           iconName={iconName}
           styles={{
-            root: { marginRight: '0.5rem', color },
+            root: { marginRight: "0.5rem", color },
           }}
         />
         <FunctionName>
-          {nonCapitalizedFullName.substr(nonCapitalizedFullName.indexOf('.') + 1)}
+          {nonCapitalizedFullName.substr(nonCapitalizedFullName.indexOf(".") + 1)}
           (...)
         </FunctionName>
       </FunctionNameWrapper>
       {additionalInfo && (
         <AdditionalInfoContainer>
-          {additionalInfo.map(info => (
+          {additionalInfo.map((info) => (
             <AdditionalInfo key={info}>{info}</AdditionalInfo>
           ))}
         </AdditionalInfoContainer>

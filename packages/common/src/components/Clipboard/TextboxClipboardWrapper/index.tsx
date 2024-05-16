@@ -1,8 +1,8 @@
-import React from 'react';
-import { TextField, ITextField } from 'office-ui-fabric-react/lib/TextField';
+import React from "react";
+import { TextField, ITextField } from "office-ui-fabric-react/lib/TextField";
 
-import { Wrapper } from './styles';
-import CopyToClipboardIconButton from '../CopyToClipboardIconButton';
+import { Wrapper } from "./styles";
+import CopyToClipboardIconButton from "../CopyToClipboardIconButton";
 
 interface IProps {
   text: string;

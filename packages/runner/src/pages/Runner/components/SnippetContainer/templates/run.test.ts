@@ -1,15 +1,15 @@
-import run, { IProps } from './run';
-import { METHODS_EXPOSED_ON_RUNNER_OUTER_FRAME } from '../IFrame';
+import run, { IProps } from "./run";
+import { METHODS_EXPOSED_ON_RUNNER_OUTER_FRAME } from "../IFrame";
 
-describe('template', () => {
-  it('should render proper runner html', () => {
+describe("template", () => {
+  it("should render proper runner html", () => {
     expect(
       run({
-        linkReferences: ['url1', 'url2', 'url3'],
-        scriptReferences: ['url4', 'url5', 'url6'],
-        inlineScript: 'example inline script',
-        html: '<div>hello world</div>',
-        inlineStyles: 'body { color: blue }',
+        linkReferences: ["url1", "url2", "url3"],
+        scriptReferences: ["url4", "url5", "url6"],
+        inlineScript: "example inline script",
+        html: "<div>hello world</div>",
+        inlineStyles: "body { color: blue }",
       }),
     ).toEqual(`<!DOCTYPE html>
 <html>

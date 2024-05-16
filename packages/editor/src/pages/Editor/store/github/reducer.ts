@@ -1,7 +1,7 @@
-import { combineReducers } from 'redux';
-import { github, IGithubAction, gists, IGistsAction } from '../actions';
-import { getType } from 'typesafe-actions';
-import { IGithubProcessedLoginInfo } from './actions';
+import { combineReducers } from "redux";
+import { github, IGithubAction, gists, IGistsAction } from "../actions";
+import { getType } from "typesafe-actions";
+import { IGithubProcessedLoginInfo } from "./actions";
 
 type IGithubLoginInfoState = IGithubProcessedLoginInfo | null;
 const loginInfo = (

@@ -1,15 +1,15 @@
-import React from 'react';
-import Header from 'common/lib/components/Header';
-import HeaderFooterLayout from 'common/lib/components/HeaderFooterLayout';
-import PivotBar, { IPivotBarItem } from 'common/lib/components/PivotBar';
-import Only from 'common/lib/components/Only';
+import React from "react";
+import Header from "common/build/components/Header";
+import HeaderFooterLayout from "common/build/components/HeaderFooterLayout";
+import PivotBar, { IPivotBarItem } from "common/build/components/PivotBar";
+import Only from "common/build/components/Only";
 
-import { MessageBar, MessageBarType } from 'office-ui-fabric-react/lib/MessageBar';
-import { DefaultButton } from 'office-ui-fabric-react/lib/Button';
-import { Icon } from 'office-ui-fabric-react/lib/Icon';
-import Welcome from '../Welcome';
-import { ColumnFlexContainer } from './styles';
-import { currentEditorUrl } from 'common/lib/environment';
+import { MessageBar, MessageBarType } from "office-ui-fabric-react/lib/MessageBar";
+import { DefaultButton } from "office-ui-fabric-react/lib/Button";
+import { Icon } from "office-ui-fabric-react/lib/Icon";
+import Welcome from "../Welcome";
+import { ColumnFlexContainer } from "./styles";
+import { currentEditorUrl } from "common/build/environment";
 
 interface IProps {
   isStandalone: boolean;
@@ -29,8 +29,7 @@ interface IState {
 
 class Dashboard extends React.Component<IProps, IState> {
   state: IState = {
-    selectedKey:
-      Object.keys(this.props.items).length > 0 ? Object.keys(this.props.items)[0] : '',
+    selectedKey: Object.keys(this.props.items).length > 0 ? Object.keys(this.props.items)[0] : "",
   };
 
   setSelectedKey = (selectedKey: string) => this.setState({ selectedKey });
@@ -42,9 +41,9 @@ class Dashboard extends React.Component<IProps, IState> {
     const { hasAny, items, isStandalone, shouldPromptRefresh } = this.props;
 
     const goBackItem = {
-      key: 'go-back',
+      key: "go-back",
       iconOnly: true,
-      iconProps: { iconName: 'Back' },
+      iconProps: { iconName: "Back" },
       onClick: isStandalone
         ? null
         : () => {
@@ -55,14 +54,14 @@ class Dashboard extends React.Component<IProps, IState> {
             // And can't do a href-setting followed by a reload because on the Edge browser,
             //   it seems to cause the outer Office Online window to get redirected
             //   to the editor page (bug https://github.com/OfficeDev/script-lab/issues/691).
-            window.location.href = currentEditorUrl + '/redirect-to-editor.html';
+            window.location.href = `${currentEditorUrl}/redirect-to-editor.html`;
           },
     };
 
     const titleItem = {
-      key: 'title',
-      text: 'Custom Functions (Preview)',
-      onRenderIcon: () => <Icon iconName="Refresh" style={{ padding: '.4rem' }} />,
+      key: "title",
+      text: "Custom Functions (Preview)",
+      onRenderIcon: () => <Icon iconName="Refresh" style={{ padding: ".4rem" }} />,
       onClick: this.reload,
     };
 
@@ -104,8 +103,7 @@ class Dashboard extends React.Component<IProps, IState> {
                 </div>
               }
             >
-              You have made changes to your Custom Functions. Would you like to
-              re-register?
+              You have made changes to your Custom Functions. Would you like to re-register?
             </MessageBar>
           ) : null}
 

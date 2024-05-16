@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const Wrapper = styled.div`
   width: 100%;
@@ -12,7 +12,7 @@ export const NoLogsPlaceholderContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: ${props => props.theme.neutralPrimary};
+  color: ${(props) => props.theme.neutralPrimary};
 
   height: 100%;
   width: 100%;
@@ -23,17 +23,17 @@ export const NoLogsPlaceholder = styled.div`
   max-width: 90%;
 `;
 
-export const RunnerLastUpdatedWrapper = styled.div.attrs({ className: 'ms-font-m' })`
+export const RunnerLastUpdatedWrapper = styled.div.attrs({ className: "ms-font-m" })`
   padding: 0rem 1.6rem;
   height: 2.8rem;
   line-height: 2.8rem;
-  background: ${props => props.theme.neutralLighter};
+  background: ${(props) => props.theme.neutralLighter};
   overflow: hidden;
   overflow-wrap: normal;
 `;
 
 export const HeaderWrapper = styled.div`
-  background: ${props => props.theme.neutralLight};
+  background: ${(props) => props.theme.neutralLight};
   height: 3.2rem;
   display: flex;
   justify-content: space-between;
@@ -64,8 +64,8 @@ export const LogEntry = styled.li`
   padding-left: 1rem;
   font-family: monospace;
   box-sizing: border-box;
-  border-top: 0.5px solid ${props => props.theme.neutralLight};
-  border-bottom: 0.5px solid ${props => props.theme.neutralLight};
+  border-top: 0.5px solid ${(props) => props.theme.neutralLight};
+  border-bottom: 0.5px solid ${(props) => props.theme.neutralLight};
 `;
 
 export const LogText = styled.pre`
@@ -86,8 +86,8 @@ export const ObjectInspectorLogEntry = styled.div<{ backgroundColor: string }>`
   padding: 0.9rem;
   padding-left: 1rem;
   box-sizing: border-box;
-  border-top: 0.5px solid ${props => props.theme.neutralLight};
-  border-bottom: 0.5px solid ${props => props.theme.neutralLight};
+  border-top: 0.5px solid ${(props) => props.theme.neutralLight};
+  border-bottom: 0.5px solid ${(props) => props.theme.neutralLight};
 
   & > li {
     margin-left: 1rem;
@@ -95,6 +95,6 @@ export const ObjectInspectorLogEntry = styled.div<{ backgroundColor: string }>`
   }
 
   & * {
-    background: ${props => props.backgroundColor};
+    background: ${(props) => props.backgroundColor};
   }
 `;

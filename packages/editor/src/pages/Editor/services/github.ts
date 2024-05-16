@@ -1,10 +1,10 @@
-import queryString from 'query-string';
-import { request as generalRequest, IResponseOrError } from './general';
-import { githubAppClientId } from 'common/lib/environment';
-import { GITHUB_KEY } from 'common/lib/utilities/localStorage';
-import { IGithubProcessedLoginInfo } from '../store/github/actions';
+import queryString from "query-string";
+import { request as generalRequest, IResponseOrError } from "./general";
+import { githubAppClientId } from "common/build/environment";
+import { GITHUB_KEY } from "common/build/utilities/localStorage";
+import { IGithubProcessedLoginInfo } from "../store/github/actions";
 
-const baseApiUrl = 'https://api.github.com';
+const baseApiUrl = "https://api.github.com";
 
 interface IRequest {
   method: string;
@@ -21,12 +21,12 @@ export interface IGithubProfileResponse {
 
 export function generateGithubLoginUrl(randomTokenForState: string) {
   return (
-    'https://github.com/login/oauth/authorize' +
-    '?' +
+    "https://github.com/login/oauth/authorize" +
+    "?" +
     queryString.stringify({
       client_id: githubAppClientId,
       redirect_uri: window.location.origin,
-      scope: 'gist',
+      scope: "gist",
       state: randomTokenForState,
     })
   );
@@ -59,7 +59,7 @@ export async function request<T>({
         return { response: response as any };
       } else {
         aggregate = [...aggregate, ...(response as any)];
-        nextUrl = getNextLinkIfAny(headers.get('Link'));
+        nextUrl = getNextLinkIfAny(headers.get("Link"));
       }
     }
 
@@ -71,8 +71,8 @@ export async function request<T>({
 
 export const getProfileInfo = (token: string): Promise<IGithubProcessedLoginInfo> =>
   request<IGithubProfileResponse>({
-    method: 'GET',
-    path: 'user',
+    method: "GET",
+    path: "user",
     token,
     isArrayResponse: false,
   }).then(({ response, error }) => {
@@ -92,7 +92,7 @@ export const logout = () => {
   localStorage.removeItem(GITHUB_KEY);
 
   // Also remove the old office-js-helpers key that stored the auth token
-  localStorage.removeItem('OAuth2Tokens');
+  localStorage.removeItem("OAuth2Tokens");
 };
 
 function getNextLinkIfAny(linkText: string): string | null {

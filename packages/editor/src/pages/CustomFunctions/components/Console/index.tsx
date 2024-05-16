@@ -1,13 +1,13 @@
-import React from 'react';
-import CommonConsole from 'common/lib/components/Console';
+import React from "react";
+import CommonConsole from "common/build/components/Console";
 
-import { Wrapper, NoLogsPlaceholderContainer, NoLogsPlaceholder } from './styles';
+import { Wrapper, NoLogsPlaceholderContainer, NoLogsPlaceholder } from "./styles";
 
 export enum ConsoleLogTypes {
-  Info = 'info',
-  Log = 'log',
-  Warn = 'warn',
-  Error = 'error',
+  Info = "info",
+  Log = "log",
+  Warn = "warn",
+  Error = "error",
 }
 
 interface IProps {
@@ -26,16 +26,16 @@ class Console extends React.Component<IProps> {
         ) : (
           <NoLogsPlaceholderContainer>
             <NoLogsPlaceholder>
-              There are no logs to display. Use{' '}
+              There are no logs to display. Use{" "}
               <pre
                 style={{
-                  fontFamily: 'Consolas, monaco, monospace',
-                  fontWeight: 'bold',
-                  display: 'inline',
+                  fontFamily: "Consolas, monaco, monospace",
+                  fontWeight: "bold",
+                  display: "inline",
                 }}
               >
                 console.log()
-              </pre>{' '}
+              </pre>{" "}
               inside your functions to display logs here.
             </NoLogsPlaceholder>
           </NoLogsPlaceholderContainer>

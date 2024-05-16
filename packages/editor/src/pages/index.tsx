@@ -1,18 +1,18 @@
-import React from 'react';
+import React from "react";
 
-import PageSwitcher, { IPageLoadingSpec } from 'common/lib/components/PageSwitcher';
-import { PATHS } from '../constants';
+import PageSwitcher, { IPageLoadingSpec } from "common/build/components/PageSwitcher";
+import { PATHS } from "../constants";
 
-import Auth from './Auth';
-import AddinCommands from './AddinCommands';
-import CustomFunctions from './CustomFunctions';
-import CustomFunctionsHeartbeat from './CustomFunctionsHeartbeat';
-import CustomFunctionsRun from './CustomFunctionsRun';
-import Editor from './Editor';
-import External from './External';
-import Heartbeat from './Heartbeat';
-import Run from './Run';
-import { SCRIPT_URLS } from 'common/lib/constants';
+import Auth from "./Auth";
+import AddinCommands from "./AddinCommands";
+import CustomFunctions from "./CustomFunctions";
+import CustomFunctionsHeartbeat from "./CustomFunctionsHeartbeat";
+import CustomFunctionsRun from "./CustomFunctionsRun";
+import Editor from "./Editor";
+import External from "./External";
+import Heartbeat from "./Heartbeat";
+import Run from "./Run";
+import { SCRIPT_URLS } from "common/build/constants";
 
 // Note: To add a page you must add the path for the page in
 // src/constants.ts add it into the structure below:

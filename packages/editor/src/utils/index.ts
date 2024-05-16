@@ -1,22 +1,18 @@
-import createGUID from 'uuid';
-import {
-  LIBRARIES_FILE_NAME,
-  SCRIPT_FILE_NAME,
-  findScript,
-} from 'common/lib/utilities/solution';
-import { getBoilerplateFiles } from '../newSolutionData';
-import { languageMapLowercased } from 'common/lib/languageMap';
+import createGUID from "uuid";
+import { LIBRARIES_FILE_NAME, SCRIPT_FILE_NAME, findScript } from "common/build/utilities/solution";
+import { getBoilerplateFiles } from "../newSolutionData";
+import { languageMapLowercased } from "common/build/languageMap";
 
 export function setUpMomentJsDurationDefaults(momentInstance: {
   relativeTimeThreshold(threshold: string, limit: number): boolean;
 }) {
-  momentInstance.relativeTimeThreshold('s', 40);
+  momentInstance.relativeTimeThreshold("s", 40);
   // Note, per documentation, "ss" must be set after "s"
-  momentInstance.relativeTimeThreshold('ss', 1);
-  momentInstance.relativeTimeThreshold('m', 40);
-  momentInstance.relativeTimeThreshold('h', 20);
-  momentInstance.relativeTimeThreshold('d', 25);
-  momentInstance.relativeTimeThreshold('M', 10);
+  momentInstance.relativeTimeThreshold("ss", 1);
+  momentInstance.relativeTimeThreshold("m", 40);
+  momentInstance.relativeTimeThreshold("h", 20);
+  momentInstance.relativeTimeThreshold("d", 25);
+  momentInstance.relativeTimeThreshold("M", 10);
 }
 
 const createFile = (name, { content, language }): IFile => ({
@@ -36,13 +32,11 @@ export const convertSnippetToSolution = (snippet: ISnippet): ISolution => {
 
   const files = Object.entries({
     [SCRIPT_FILE_NAME]: script,
-    'index.html': template,
-    'index.css': style,
-    [LIBRARIES_FILE_NAME]: { content: libraries, language: 'libraries' },
+    "index.html": template,
+    "index.css": style,
+    [LIBRARIES_FILE_NAME]: { content: libraries, language: "libraries" },
   }).map(([fileName, file]) =>
-    file
-      ? createFile(fileName, file)
-      : defaultFiles.find(file => file.name === fileName)!,
+    file ? createFile(fileName, file) : defaultFiles.find((file) => file.name === fileName)!,
   ) as IFile[];
 
   const solution = {
@@ -67,12 +61,17 @@ export const convertSolutionToSnippet = (solution: ISolution): ISnippet => {
 
   const snippetFiles =
     mainScriptFile.language === languageMapLowercased.python
-      ? { script: { content: mainScriptFile.content, language: mainScriptFile.language } }
+      ? {
+          script: {
+            content: mainScriptFile.content,
+            language: mainScriptFile.language,
+          },
+        }
       : Object.entries({
-          script: file => file.name === SCRIPT_FILE_NAME,
-          template: file => file.name === 'index.html',
-          style: file => file.name === 'index.css',
-          libraries: file => file.name === LIBRARIES_FILE_NAME,
+          script: (file) => file.name === SCRIPT_FILE_NAME,
+          template: (file) => file.name === "index.html",
+          style: (file) => file.name === "index.css",
+          libraries: (file) => file.name === LIBRARIES_FILE_NAME,
         })
           .map(([fileName, fileSelector]) => [fileName, files.find(fileSelector)])
           .filter(([fileName, file]) => file !== undefined)
@@ -83,7 +82,7 @@ export const convertSolutionToSnippet = (solution: ISolution): ISnippet => {
               ...obj,
               [name]:
                 f.name === LIBRARIES_FILE_NAME
-                  ? f.content || ''
+                  ? f.content || ""
                   : { content: f.content, language: f.language },
             };
           }, {});

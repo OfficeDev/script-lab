@@ -1,17 +1,17 @@
-import React from 'react';
-import { withTheme } from 'styled-components';
+import React from "react";
+import { withTheme } from "styled-components";
 
-import merge from 'lodash/merge';
+import merge from "lodash/merge";
 
-import { Customizer } from 'office-ui-fabric-react/lib/Utilities';
+import { Customizer } from "office-ui-fabric-react/lib/Utilities";
 import {
   CommandBar,
   ICommandBarProps,
   ICommandBarItemProps,
-} from 'office-ui-fabric-react/lib/CommandBar';
+} from "office-ui-fabric-react/lib/CommandBar";
 
-import { getCommandBarFabricTheme } from '../../theme';
-import { Wrapper } from './styles';
+import { getCommandBarFabricTheme } from "../../theme";
+import { Wrapper } from "./styles";
 
 export type IProps = ICommandBarProps;
 
@@ -31,7 +31,7 @@ const Footer = (props: IPrivateProps) => {
         root: {
           paddingLeft: 0,
           paddingRight: 0,
-          height: '2rem',
+          height: "2rem",
         },
       },
     },
@@ -46,13 +46,10 @@ const Footer = (props: IPrivateProps) => {
   );
 };
 
-function normalizeItems(
-  items: ICommandBarItemProps[],
-  theme: ITheme,
-): ICommandBarItemProps[] {
+function normalizeItems(items: ICommandBarItemProps[], theme: ITheme): ICommandBarItemProps[] {
   return items
     .filter(({ hidden }) => !hidden)
-    .map(item =>
+    .map((item) =>
       merge(item, {
         ...(item.subMenuProps
           ? {
@@ -67,17 +64,17 @@ function normalizeItems(
                 },
                 items:
                   item.subMenuProps !== undefined && item.subMenuProps.items
-                    ? item.subMenuProps.items.map(subItem =>
+                    ? item.subMenuProps.items.map((subItem) =>
                         merge(subItem, {
                           itemProps: {
                             styles: {
                               root: {
                                 background: theme.primary,
                                 selectors: {
-                                  ':hover': {
+                                  ":hover": {
                                     background: theme.primaryDark,
                                   },
-                                  ':active': {
+                                  ":active": {
                                     background: theme.primaryDarker,
                                   },
                                 },
@@ -94,11 +91,11 @@ function normalizeItems(
             }
           : {}),
 
-        style: { fontSize: '1.2rem' },
+        style: { fontSize: "1.2rem" },
         iconProps: item.iconProps
           ? {
               style: {
-                fontSize: '1.4rem',
+                fontSize: "1.4rem",
                 ...(item.iconProps.style ? item.iconProps.style : {}),
               },
               ...item.iconProps,

@@ -1,17 +1,17 @@
 // React
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
 // common
-import CommonFooter from 'common/lib/components/Footer';
+import CommonFooter from "common/build/components/Footer";
 
 // redux
-import { connect } from 'react-redux'; // Note, avoid the temptation to include '@types/react-redux', it will break compile-time!
-import { Dispatch } from 'redux';
-import { IState as IReduxState } from '../../../store/reducer';
-import { selectors } from '../../../store';
-import { IHeaderItem } from '../../../store/header/selectors';
+import { connect } from "react-redux"; // Note, avoid the temptation to include '@types/react-redux', it will break compile-time!
+import { Dispatch } from "redux";
+import { IState as IReduxState } from "../../../store/reducer";
+import { selectors } from "../../../store";
+import { IHeaderItem } from "../../../store/header/selectors";
 
-import { convertActionCreatorToOnClick } from '../Header';
+import { convertActionCreatorToOnClick } from "../Header";
 
 interface IProps {
   items: IHeaderItem[];

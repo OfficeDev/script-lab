@@ -1,25 +1,25 @@
-import React from 'react';
+import React from "react";
 
-import IFrame from './IFrame';
-import Only from 'common/lib/components/Only';
+import IFrame from "./IFrame";
+import Only from "common/build/components/Only";
 
-import runTemplate from './templates/run';
-import errorTemplate from './templates/error';
-import noSnippetTemplate from './templates/noSnippet';
-import pythonTemplate from './templates/python';
+import runTemplate from "./templates/run";
+import errorTemplate from "./templates/error";
+import noSnippetTemplate from "./templates/noSnippet";
+import pythonTemplate from "./templates/python";
 
-import * as constants from '../../../../constants';
-import { ProgressIndicator } from 'office-ui-fabric-react/lib/ProgressIndicator';
-import { compileTypeScript, SyntaxError } from './utilities';
-import untrusted from './templates/untrusted';
-import { Utilities, HostType } from '@microsoft/office-js-helpers';
-import processLibraries from 'common/lib/utilities/process.libraries';
-import { sanitizeObject } from './templates/sanitizer';
-import { findScript, findLibraries } from 'common/lib/utilities/solution';
-import { IEditorHeartbeatToRunnerResponse } from 'common/lib/constants';
-import { languageMapLowercased } from 'common/lib/languageMap';
+import * as constants from "../../../../constants";
+import { ProgressIndicator } from "office-ui-fabric-react/lib/ProgressIndicator";
+import { compileTypeScript, SyntaxError } from "./utilities";
+import untrusted from "./templates/untrusted";
+import { Utilities, HostType } from "common/build/helpers/officeJsHost";
+import processLibraries from "common/build/utilities/process.libraries";
+import { sanitizeObject } from "./templates/sanitizer";
+import { findScript, findLibraries } from "common/build/utilities/solution";
+import { IEditorHeartbeatToRunnerResponse } from "common/build/constants";
+import { languageMapLowercased } from "common/build/languageMap";
 
-const SHOW_PROGRESS_BAR_DURATION = 750 /* ms */;
+const SHOW_PROGRESS_BAR_DURATION = 750; /* ms */
 
 export interface IProps {
   solution?: ISolution | null;
@@ -66,39 +66,33 @@ class Snippet extends React.Component<IProps, IState> {
     if (this.shouldUpdate(prevProps.solution, this.props.solution)) {
       const lastRendered = Date.now();
 
-      this.setState(
-        { isIFrameMounted: false, isLoading: true, isShowingProgressBar: true },
-        () => {
-          const content = this.getContent(this.props);
+      this.setState({ isIFrameMounted: false, isLoading: true, isShowingProgressBar: true }, () => {
+        const content = this.getContent(this.props);
 
-          if (this.props.onRender) {
-            this.props.onRender({ lastRendered, hasContent: content.length > 0 });
-          }
+        if (this.props.onRender) {
+          this.props.onRender({ lastRendered, hasContent: content.length > 0 });
+        }
 
-          return this.setState({
-            content,
-            lastRendered,
-            isLoading: true,
-            isIFrameMounted: true,
-          });
-        },
-      );
+        return this.setState({
+          content,
+          lastRendered,
+          isLoading: true,
+          isIFrameMounted: true,
+        });
+      });
     }
   }
 
   completeLoad = () => {
     this.setState({ isLoading: false });
-    setTimeout(
-      () => this.setState({ isShowingProgressBar: false }),
-      SHOW_PROGRESS_BAR_DURATION,
-    );
+    setTimeout(() => this.setState({ isShowingProgressBar: false }), SHOW_PROGRESS_BAR_DURATION);
   };
 
   componentWillUnmount() {}
 
   getContent = ({ solution }: IProps): string => {
     if (solution === undefined) {
-      return '';
+      return "";
     }
 
     if (solution === null) {
@@ -120,7 +114,7 @@ class Snippet extends React.Component<IProps, IState> {
         Utilities.host === HostType.OUTLOOK &&
         (script.language === languageMapLowercased.typescript ||
           script.language === languageMapLowercased.javascript) &&
-        script.content.indexOf('Office.EventType.ItemChanged') === -1
+        script.content.indexOf("Office.EventType.ItemChanged") === -1
       ) {
         script.content = script.content + constants.itemChangedEventHandler.content;
       }
@@ -131,13 +125,14 @@ class Snippet extends React.Component<IProps, IState> {
       //    We had issue https://github.com/OfficeDev/script-lab/issues/399,
       //    where the invalid HTML cause the script tag to be entirely skipped,
       //    when we didn't do this validation
-      const html = (new DOMParser().parseFromString(
-        solution.files.find(file => file.name === 'index.html')!.content,
-        'text/html',
-      ).firstChild.childNodes[1] as HTMLElement).innerHTML;
+      const html = (
+        new DOMParser().parseFromString(
+          solution.files.find((file) => file.name === "index.html")!.content,
+          "text/html",
+        ).firstChild.childNodes[1] as HTMLElement
+      ).innerHTML;
 
-      const inlineStyles = solution.files.find(file => file.name === 'index.css')!
-        .content;
+      const inlineStyles = solution.files.find((file) => file.name === "index.css")!.content;
 
       const inlineScript = compileTypeScript(script.content);
 
@@ -157,7 +152,7 @@ class Snippet extends React.Component<IProps, IState> {
     } catch (error) {
       return errorTemplate({
         ...sanitizeObject({
-          title: error instanceof SyntaxError ? 'Syntax Error' : 'Unknown Error',
+          title: error instanceof SyntaxError ? "Syntax Error" : "Unknown Error",
           details: (error as { message: string }).message,
         }),
         usePreBlock: true,
@@ -171,23 +166,23 @@ class Snippet extends React.Component<IProps, IState> {
         <Only when={this.state.isShowingProgressBar}>
           <ProgressIndicator
             styles={{
-              itemProgress: { padding: '1px', height: '5px', zIndex: 1000 },
+              itemProgress: { padding: "1px", height: "5px", zIndex: 1000 },
               root: {
-                height: '10px',
-                width: '100%',
-                position: 'absolute',
+                height: "10px",
+                width: "100%",
+                position: "absolute",
               },
               progressTrack: {
-                height: '5px',
+                height: "5px",
               },
               progressBar: {
-                height: '5px',
+                height: "5px",
               },
             }}
           />
         </Only>
 
-        <div style={{ display: this.state.isLoading ? 'none' : 'block', height: '100%' }}>
+        <div style={{ display: this.state.isLoading ? "none" : "block", height: "100%" }}>
           {this.state.isIFrameMounted && (
             <IFrame
               ref={this.iframeRef}

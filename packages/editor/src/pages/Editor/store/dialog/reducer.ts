@@ -1,6 +1,6 @@
-import actions, { IDialogAction } from '../actions';
-import { getType } from 'typesafe-actions';
-import { DialogType } from 'office-ui-fabric-react/lib/Dialog';
+import actions, { IDialogAction } from "../actions";
+import { getType } from "typesafe-actions";
+import { DialogType } from "office-ui-fabric-react/lib/Dialog";
 
 export interface IState {
   isVisible: boolean;
@@ -19,8 +19,8 @@ export interface IState {
 const defaultState: IState = {
   isVisible: false,
   style: DialogType.largeHeader,
-  title: '',
-  subText: '',
+  title: "",
+  subText: "",
   isBlocking: false,
   buttons: [],
 };

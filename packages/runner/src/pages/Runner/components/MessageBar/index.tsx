@@ -1,12 +1,12 @@
-import React from 'react';
-import { PrimaryButton } from 'office-ui-fabric-react/lib/Button';
+import React from "react";
+import { PrimaryButton } from "office-ui-fabric-react/lib/Button";
 
 import {
   MessageBar as FabricMessageBar,
   MessageBarType,
-} from 'office-ui-fabric-react/lib/MessageBar';
+} from "office-ui-fabric-react/lib/MessageBar";
 
-import './animations.css';
+import "./animations.css";
 
 export interface IProps {
   isVisible: boolean;
@@ -17,7 +17,7 @@ export interface IProps {
 }
 
 const MessageBar = ({ isVisible, message, accept, acceptMessage, dismiss }: IProps) => (
-  <div className={`message-bar ${isVisible ? 'active' : ''}`}>
+  <div className={`message-bar ${isVisible ? "active" : ""}`}>
     <FabricMessageBar
       dismissButtonAriaLabel="Close"
       messageBarType={MessageBarType.info}

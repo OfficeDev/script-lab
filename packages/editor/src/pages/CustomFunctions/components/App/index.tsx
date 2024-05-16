@@ -1,30 +1,30 @@
-import React, { Component } from 'react';
-import queryString from 'query-string';
-import { IFunction } from 'custom-functions-metadata';
+import React, { Component } from "react";
+import queryString from "query-string";
+import type { IFunction } from "common/build/custom-functions/parseTree";
 import {
   getCustomFunctionsInfoForRegistration,
   registerCustomFunctions,
   getCustomFunctionEngineStatusSafe,
   filterCustomFunctions,
-} from './utilities';
+} from "./utilities";
 import {
   getCustomFunctionCodeLastUpdated as getCFCodeLastModified,
   getCustomFunctionLogsFromLocalStorage,
-} from 'common/lib/utilities/localStorage';
-import { getLogsFromAsyncStorage } from './utilities/logs';
-import { loadAllSolutionsAndFiles } from '../../../Editor/store/localStorage';
+} from "common/build/utilities/localStorage";
+import { getLogsFromAsyncStorage } from "./utilities/logs";
+import { loadAllSolutionsAndFiles } from "../../../Editor/store/localStorage";
 import {
   invokeGlobalErrorHandler,
   hideSplashScreen,
   showSplashScreen,
-} from 'common/lib/utilities/splash.screen';
-import { ScriptLabError } from 'common/lib/utilities/error';
-import { JupyterNotebook, PythonCodeHelper } from 'common/lib/utilities/Jupyter';
-import * as log from 'common/lib/utilities/log';
-import { findScript } from 'common/lib/utilities/solution';
-import generatePythonCFCode from '../../../../utils/custom-functions/generatePythonCFCode';
-import { getUserSettings } from '../../../../utils/userSettings';
-import { getPythonConfigIfAny } from '../../../../utils/python';
+} from "common/build/utilities/splash.screen";
+import { ScriptLabError } from "common/build/utilities/error";
+import { JupyterNotebook, PythonCodeHelper } from "common/build/utilities/Jupyter";
+import * as log from "common/build/utilities/log";
+import { findScript } from "common/build/utilities/solution";
+import generatePythonCFCode from "../../../../utils/custom-functions/generatePythonCFCode";
+import { getUserSettings } from "../../../../utils/userSettings";
+import { getPythonConfigIfAny } from "../../../../utils/python";
 
 interface IState {
   runnerLastUpdated: number;
@@ -56,8 +56,7 @@ const AppHOC = (UI: React.ComponentType<IPropsToUI>) =>
       this.state = {
         runnerLastUpdated: Date.now(),
         customFunctionsSolutionLastModified: getCFCodeLastModified(),
-        isStandalone: !queryString.parse(window.location.href.split('?').slice(-1)[0])
-          .backButton,
+        isStandalone: !queryString.parse(window.location.href.split("?").slice(-1)[0]).backButton,
         logs: [],
       };
     }
@@ -110,10 +109,7 @@ const AppHOC = (UI: React.ComponentType<IPropsToUI>) =>
         (window as any).Office &&
         (window as any).Office.context &&
         (window as any).Office.context.requirements &&
-        (window as any).Office.context.requirements.isSetSupported(
-          'CustomFunctions',
-          1.4,
-        );
+        (window as any).Office.context.requirements.isSetSupported("CustomFunctions", 1.4);
 
       const logs: ILogData[] = isUsingAsyncStorage
         ? await getLogsFromAsyncStorage()
@@ -136,10 +132,8 @@ export default AppHOC;
 function getCustomFunctionsSolutions(): ISolution[] {
   const { solutions: allSolutions, files: allFiles } = loadAllSolutionsAndFiles();
 
-  const solutions = Object.values(allSolutions).map(solution => {
-    const files = Object.values(allFiles).filter(file =>
-      solution.files.includes(file.id),
-    );
+  const solutions = Object.values(allSolutions).map((solution) => {
+    const files = Object.values(allFiles).filter((file) => solution.files.includes(file.id));
 
     return { ...solution, files };
   });
@@ -147,17 +141,15 @@ function getCustomFunctionsSolutions(): ISolution[] {
   return filterCustomFunctions(solutions);
 }
 
-async function getRegistrationResult(
-  cfSolutions: ISolution[],
-): Promise<{
+async function getRegistrationResult(cfSolutions: ISolution[]): Promise<{
   parseResults: Array<ICustomFunctionParseResult<IFunction>>;
   code: string;
   options?: object;
 }> {
   const pythonCFs = cfSolutions
-    .map(solution => ({ solution, script: findScript(solution) }))
-    .filter(({ script }) => script.language === 'python')
-    .map(pair => pair.solution);
+    .map((solution) => ({ solution, script: findScript(solution) }))
+    .filter(({ script }) => script.language === "python")
+    .map((pair) => pair.solution);
 
   if (pythonCFs.length > 0) {
     return getRegistrationResultPython(pythonCFs);
@@ -166,9 +158,7 @@ async function getRegistrationResult(
   }
 }
 
-async function getRegistrationResultPython(
-  pythonCFs: ISolution[],
-): Promise<{
+async function getRegistrationResultPython(pythonCFs: ISolution[]): Promise<{
   parseResults: Array<ICustomFunctionParseResult<IFunction>>;
   code: string;
 }> {
@@ -183,7 +173,7 @@ async function getRegistrationResultPython(
     );
   }
 
-  const clearOnRegister: boolean = getUserSettings()['jupyter.clearOnRegister'] || false;
+  const clearOnRegister: boolean = getUserSettings()["jupyter.clearOnRegister"] || false;
 
   const notebook = new JupyterNotebook(
     { baseUrl: config.url, token: config.token },
@@ -197,7 +187,7 @@ async function getRegistrationResultPython(
   try {
     const code = generatePythonCFCode(pythonCFs, { clearOnRegister });
 
-    if (log.isLoggerEnabled('Jupyter', log.levels.INFO)) {
+    if (log.isLoggerEnabled("Jupyter", log.levels.INFO)) {
       console.log(code);
     }
 
@@ -205,29 +195,27 @@ async function getRegistrationResultPython(
       PythonCodeHelper.parseFromPythonLiteral(await notebook.executeCode(code)),
     );
 
-    const parseResults = result.functions.map(
-      (metadata): ICustomFunctionParseResult<IFunction> => {
-        return {
-          javascriptFunctionName: null,
-          nonCapitalizedFullName: metadata.name,
-          metadata: { ...metadata, name: metadata.name.toUpperCase() },
-          status: 'good', // Note: assuming success only
-        };
-      },
-    );
+    const parseResults = result.functions.map((metadata): ICustomFunctionParseResult<IFunction> => {
+      return {
+        javascriptFunctionName: null,
+        nonCapitalizedFullName: metadata.name,
+        metadata: { ...metadata, name: metadata.name.toUpperCase() },
+        status: "good", // Note: assuming success only
+      };
+    });
 
     return {
-      code: '',
+      code: "",
       parseResults,
     };
   } catch (e) {
     invokeGlobalErrorHandler(
       new ScriptLabError(
-        'Could not connect to Jupyter notebook. ' +
+        "Could not connect to Jupyter notebook. " +
           `Please ensure that you've entered the correct Jupyter settings and that Jupyter is running`,
         e,
       ),
     );
-    return { code: '', parseResults: [] };
+    return { code: "", parseResults: [] };
   }
 }

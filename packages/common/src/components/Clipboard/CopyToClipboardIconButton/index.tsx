@@ -1,7 +1,7 @@
-import React from 'react';
-import { IconButton } from 'office-ui-fabric-react/lib/Button';
+import React from "react";
+import { IconButton } from "office-ui-fabric-react/lib/Button";
 
-import CopyableToClipboard from '../CopyableToClipboard';
+import CopyableToClipboard from "../CopyableToClipboard";
 
 interface IProps {
   textGetter: () => string;
@@ -12,7 +12,7 @@ interface IState {
   isJustAfterCopy?: boolean;
 }
 
-const COLOR_ON_SUCCESS = '#007500';
+const COLOR_ON_SUCCESS = "#007500";
 const DURATION_AFTER_SUCCESS_BEFORE_RESETTING_TO_REGULAR_COLOR = 750;
 
 class CopyToClipboardIconButton extends React.Component<IProps, IState> {
@@ -34,7 +34,7 @@ class CopyToClipboardIconButton extends React.Component<IProps, IState> {
               : {}
           }
           style={this.props.iconHeight ? { height: this.props.iconHeight } : {}}
-          iconProps={{ iconName: this.state.isJustAfterCopy ? 'CheckMark' : 'Copy' }}
+          iconProps={{ iconName: this.state.isJustAfterCopy ? "CheckMark" : "Copy" }}
           title="Copy to clipboard"
         />
       </CopyableToClipboard>

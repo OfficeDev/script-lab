@@ -1,6 +1,5 @@
 export const PACKAGE_VERSIONS = {
-  'monaco-editor': '0.18.1' /* the latest version that supports IE11 */,
-  '@microsoft/office-js': '1.1.11-adhoc.28',
+  "monaco-editor": "0.18.1" /* the latest version that supports IE11 */,
 };
 
 export const HYPHENATED_PACKAGE_VERSIONS: typeof PACKAGE_VERSIONS = (() => {
@@ -12,5 +11,5 @@ export const HYPHENATED_PACKAGE_VERSIONS: typeof PACKAGE_VERSIONS = (() => {
 })();
 
 export function hyphenate(versionString: string) {
-  return versionString.replace(/\./g, '-');
+  return versionString.replace(/\./g, "-");
 }

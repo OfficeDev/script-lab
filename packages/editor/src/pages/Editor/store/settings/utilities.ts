@@ -1,4 +1,4 @@
-import YAML from 'js-yaml';
+import YAML from "js-yaml";
 
 import {
   SETTINGS_SOLUTION_ID,
@@ -6,56 +6,56 @@ import {
   DEFAULT_SETTINGS_FILE_ID,
   SETTINGS_JSON_LANGUAGE,
   ABOUT_FILE_ID,
-} from '../../../../constants';
+} from "../../../../constants";
 
-import { environmentDisplayName } from 'common/lib/environment';
+import { environmentDisplayName } from "common/build/environment";
 
 export const defaultSettings: ISettings = {
-  'editor.theme': 'dark',
-  'editor.fontFamily': 'Menlo',
-  'editor.fontSize': 14,
-  'editor.minimap': false,
-  'editor.tabSize': 2,
-  'editor.prettier': true,
-  'editor.prettier.autoFormat': true,
-  'editor.folding': true,
-  'editor.wordWrap': 'bounded',
+  "editor.theme": "dark",
+  "editor.fontFamily": "Menlo",
+  "editor.fontSize": 14,
+  "editor.minimap": false,
+  "editor.tabSize": 2,
+  "editor.prettier": true,
+  "editor.prettier.autoFormat": true,
+  "editor.folding": true,
+  "editor.wordWrap": "bounded",
 };
 
 export const invisibleDefaultSettings: { [key: string]: any } = {
-  'jupyter.url': '',
-  'jupyter.token': '',
-  'jupyter.notebook': '',
-  'jupyter.clearOnRegister': '',
-  'experimental.customFunctions.allowRepeatingParameters': '',
-  customFunctionsRuntimeUrl: '',
+  "jupyter.url": "",
+  "jupyter.token": "",
+  "jupyter.notebook": "",
+  "jupyter.clearOnRegister": "",
+  "experimental.customFunctions.allowRepeatingParameters": "",
+  customFunctionsRuntimeUrl: "",
   allowCustomDataForDataTypeAny: true,
 };
 
 export const allowedSettings = {
-  'editor.theme': ['dark', 'light', 'high-contrast'],
-  'editor.fontFamily': ['Menlo', 'Consolas', 'Courier New', 'Source Code Pro'],
-  'editor.wordWrap': ['bounded', 'on', 'off'],
-  'editor.tabSize': [2, 4],
+  "editor.theme": ["dark", "light", "high-contrast"],
+  "editor.fontFamily": ["Menlo", "Consolas", "Courier New", "Source Code Pro"],
+  "editor.wordWrap": ["bounded", "on", "off"],
+  "editor.tabSize": [2, 4],
 };
 
 const getTabSize = (userSettings: Partial<ISettings>): number =>
-  userSettings && userSettings['editor.tabSize']
-    ? userSettings['editor.tabSize']!
-    : defaultSettings['editor.tabSize'];
+  userSettings && userSettings["editor.tabSize"]
+    ? userSettings["editor.tabSize"]!
+    : defaultSettings["editor.tabSize"];
 
 const getDefaultSettingsContent = (userSettings: Partial<ISettings>): string => {
   const tabSize = getTabSize(userSettings);
-  return YAML.safeDump(defaultSettings, { indent: tabSize });
+  return YAML.dump(defaultSettings, { indent: tabSize });
 };
 
 const getUserSettingsContent = (userSettings: Partial<ISettings>): string => {
   if (Object.keys(userSettings).length === 0) {
-    return '';
+    return "";
   }
 
   const tabSize = getTabSize(userSettings);
-  return YAML.safeDump(userSettings, { indent: tabSize });
+  return YAML.dump(userSettings, { indent: tabSize });
 };
 
 const getAboutContent = (): string => {
@@ -63,18 +63,15 @@ const getAboutContent = (): string => {
   const lastUpdated = process.env.REACT_APP_LAST_UPDATED;
   return [
     `Last Updated: ${lastUpdated}`,
-    `Commit: https://github.com/OfficeDev/script-lab-react/commits/${commit}`,
+    `Commit: ${commit}`,
     `Environment: ${environmentDisplayName}`,
-  ].join('\n');
+  ].join("\n");
 };
 
-const getSettingsFiles = (
-  timestamp: number,
-  userSettings: Partial<ISettings>,
-): IFile[] => [
+const getSettingsFiles = (timestamp: number, userSettings: Partial<ISettings>): IFile[] => [
   {
     id: USER_SETTINGS_FILE_ID,
-    name: 'User Settings',
+    name: "User Settings",
     dateCreated: timestamp,
     dateLastModified: timestamp,
     dateLastOpened: timestamp,
@@ -83,7 +80,7 @@ const getSettingsFiles = (
   },
   {
     id: DEFAULT_SETTINGS_FILE_ID,
-    name: 'Default Settings',
+    name: "Default Settings",
     dateCreated: timestamp,
     dateLastModified: timestamp,
     dateLastOpened: timestamp,
@@ -92,27 +89,24 @@ const getSettingsFiles = (
   },
   {
     id: ABOUT_FILE_ID,
-    name: 'About',
+    name: "About",
     dateCreated: timestamp,
     dateLastModified: timestamp,
     dateLastOpened: timestamp,
-    language: 'plaintext',
+    language: "plaintext",
     content: getAboutContent(),
   },
 ];
 
-const getSettingsSolution = (
-  files: IFile[],
-  timestamp: number,
-): ISolutionWithFileIds => ({
+const getSettingsSolution = (files: IFile[], timestamp: number): ISolutionWithFileIds => ({
   id: SETTINGS_SOLUTION_ID,
-  name: 'Settings',
+  name: "Settings",
   options: {},
   dateCreated: timestamp,
   dateLastModified: timestamp,
   dateLastOpened: timestamp,
-  host: 'ALL',
-  files: files.map(f => f.id),
+  host: "ALL",
+  files: files.map((f) => f.id),
 });
 
 export const getSettingsSolutionAndFiles = (
