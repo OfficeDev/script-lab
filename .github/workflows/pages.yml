@@ -1,0 +1,47 @@
+# Publish to GitHub pages
+
+# https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site#creating-a-custom-github-actions-workflow-to-publish-your-site
+
+name: Pages
+
+on:
+  # main branch CI
+  push:
+    branches:
+      - 'main'
+
+  # Manual
+  workflow_dispatch:
+
+# Only allow one pages workflow to run at a time
+concurrency: 
+  group: ${{ github.workflow }}
+
+jobs:
+
+  build:
+    uses: ./.github/workflows/build.yml
+    with:
+      upload: true
+
+  # Deploy job
+  deploy:
+    # Add a dependency to the build job
+    needs: build
+
+    # Grant GITHUB_TOKEN the permissions required to make a Pages deployment
+    permissions:
+      pages: write      # to deploy to Pages
+      id-token: write   # to verify the deployment originates from an appropriate source
+
+    # Deploy to the github-pages environment
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1
