@@ -1,0 +1,90 @@
+# Build Job to be used between main and pages workflows
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: Build
+
+on:
+  # Reusable Workflow
+  workflow_call:
+    inputs:
+      # Run end to end tests
+      test:
+        required: false
+        type: boolean
+        default: false
+
+      # Upload built files as static artifact
+      upload:
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  build:
+    timeout-minutes: 10
+    # Match Development Operating System
+    runs-on: ubuntu-latest
+    steps:
+      # Setup
+      - uses: actions/checkout@v3
+
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          # Match Development Node Version
+          node-version: '20.x'
+
+      # Tool Versions
+      - name: Node Version
+        run: node --version
+
+      - name: NPM Version
+        run: npm --version
+
+      # Package Setup
+      - name: clean install
+        run: npm ci
+
+      # 'npm run build' broken into separate steps
+      # - name: clean
+      #   run: npm run clean
+
+      # - name: style
+      #   run: npm run style-check
+
+      # - name: spell-check
+      #   run: npm run spell-check --if-present
+
+      # - name: lint
+      #   run: npm run lint
+
+      # - name: compile
+      #   run: npm run compile
+
+      - name: build
+        run: npm run build
+
+      # - name: Upload static files as artifact
+      #   if: inputs.upload
+      #   uses: actions/upload-pages-artifact@v1
+      #   with:
+      #     path: dist/
+
+      - name: Upload static files as artifact
+        if: inputs.upload
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: packages/editor/build/
+    ## end to end tests
+    # - name: Install Playwright Browsers
+    #   if: inputs.test
+    #   run: npm run playwright-install
+    # - name: Run Playwright tests
+    #   if: inputs.test
+    #   run: npm run playwright-test
+    # - uses: actions/upload-artifact@v3
+    #   if: inputs.test
+    #   with:
+    #     name: playwright-report
+    #     path: playwright-report/
+    #     retention-days: 30

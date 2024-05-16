@@ -1,0 +1,27 @@
+# Main workflow to keep branches clean
+
+name: Main
+
+on:
+
+  push:
+    branches:
+      # main branch CI
+      - 'main'
+      # Any branch
+      - '*'
+
+  # Run on pull request
+  pull_request:
+    types: [ opened, synchronize ]
+
+# Cancel current workflow if there is already one running
+concurrency: 
+  group: ${{ github.workflow }} ${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    uses: ./.github/workflows/build.yml
+    with:
+      test: true
