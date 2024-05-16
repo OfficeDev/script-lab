@@ -66,7 +66,7 @@ export const environmentDisplayNames: SwitchableEnvironments = (() => {
     local: "localhost",
 
     target: "Target",
-    
+
     temp: "Temp",
 
     cdnPreview: "CDN Preview",
