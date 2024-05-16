@@ -126,7 +126,10 @@ export class JupyterNotebook {
   };
   private m_connected: boolean;
 
-  constructor(private m_conn: JupyterConnectionInfo, private m_path: string) {
+  constructor(
+    private m_conn: JupyterConnectionInfo,
+    private m_path: string,
+  ) {
     this.m_executePromiseMap = {};
   }
 

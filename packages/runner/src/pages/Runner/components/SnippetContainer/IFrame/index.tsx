@@ -125,9 +125,8 @@ class IFrame extends React.Component<IProps, IState> {
       (namespace) => (iframe[namespace] = window[namespace]),
     );
 
-    (iframe as any)[
-      METHODS_TO_EXPOSE_ON_IFRAME.sendMessageFromRunnerToEditor
-    ] = this.props.sendMessageFromRunnerToEditor;
+    (iframe as any)[METHODS_TO_EXPOSE_ON_IFRAME.sendMessageFromRunnerToEditor] =
+      this.props.sendMessageFromRunnerToEditor;
   };
 }
 

@@ -125,8 +125,8 @@ export default ({ script }: IProps) => `<!DOCTYPE html>
     };
 
     window.${METHODS_TO_EXPOSE_ON_IFRAME.sendMessageFromRunnerToEditor}("${
-  RUNNER_TO_EDITOR_HEARTBEAT_REQUESTS.GET_PYTHON_CONFIG_IF_ANY
-}");
+      RUNNER_TO_EDITOR_HEARTBEAT_REQUESTS.GET_PYTHON_CONFIG_IF_ANY
+    }");
   </script>
 </body>
 

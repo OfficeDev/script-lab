@@ -53,9 +53,7 @@ export const MessageBar = ({ messageBarProps, screenWidth, buttonOnClick, dismis
                 {messageBarProps.button.text}
               </DefaultButton>
             </div>
-          ) : (
-            undefined
-          )
+          ) : undefined
         }
       >
         {messageBarProps.text}

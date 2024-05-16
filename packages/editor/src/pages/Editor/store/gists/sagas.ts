@@ -42,12 +42,14 @@ export function* fetchAllGistMetadataSaga() {
   const {
     response,
     error,
-  }: IResponseOrError<Array<{
-    files: Array<{ filename: string }>;
-    id: string;
-    description: string;
-    public: boolean;
-  }>> = yield call(github.request, {
+  }: IResponseOrError<
+    Array<{
+      files: Array<{ filename: string }>;
+      id: string;
+      description: string;
+      public: boolean;
+    }>
+  > = yield call(github.request, {
     method: "GET",
     path: "gists?per_page=100",
     token,
@@ -65,9 +67,10 @@ export function* fetchAllGistMetadataSaga() {
         const { files, id, description } = gist;
         const file: { filename: string; raw_url: string } = files[Object.keys(files)[0]];
 
-        const result = /^(.*)\.(EXCEL|WORD|POWERPOINT|ACCESS|PROJECT|OUTLOOK|ONENOTE|WEB)\.yaml$/.exec(
-          file.filename,
-        );
+        const result =
+          /^(.*)\.(EXCEL|WORD|POWERPOINT|ACCESS|PROJECT|OUTLOOK|ONENOTE|WEB)\.yaml$/.exec(
+            file.filename,
+          );
 
         const { title, host } =
           result !== null

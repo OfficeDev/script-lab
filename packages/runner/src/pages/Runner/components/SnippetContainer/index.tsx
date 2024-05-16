@@ -125,10 +125,12 @@ class Snippet extends React.Component<IProps, IState> {
       //    We had issue https://github.com/OfficeDev/script-lab/issues/399,
       //    where the invalid HTML cause the script tag to be entirely skipped,
       //    when we didn't do this validation
-      const html = (new DOMParser().parseFromString(
-        solution.files.find((file) => file.name === "index.html")!.content,
-        "text/html",
-      ).firstChild.childNodes[1] as HTMLElement).innerHTML;
+      const html = (
+        new DOMParser().parseFromString(
+          solution.files.find((file) => file.name === "index.html")!.content,
+          "text/html",
+        ).firstChild.childNodes[1] as HTMLElement
+      ).innerHTML;
 
       const inlineStyles = solution.files.find((file) => file.name === "index.css")!.content;
 

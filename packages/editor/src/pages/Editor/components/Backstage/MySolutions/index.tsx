@@ -69,14 +69,8 @@ class MySolutions extends React.Component<IProps> {
   };
 
   render() {
-    const {
-      solutions,
-      openSolution,
-      activeSolution,
-      gistMetadata,
-      openGist,
-      isSignedIn,
-    } = this.props;
+    const { solutions, openSolution, activeSolution, gistMetadata, openGist, isSignedIn } =
+      this.props;
 
     return (
       <Content title="My Snippets" description="Choose a snippet that you have saved">

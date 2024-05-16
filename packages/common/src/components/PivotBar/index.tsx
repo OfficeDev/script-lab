@@ -32,15 +32,8 @@ class PivotBar extends React.Component<IProps> {
   };
 
   render() {
-    const {
-      items,
-      selectedKey,
-      theme,
-      backgroundColor,
-      selectedColor,
-      hideUnderline,
-      testId,
-    } = this.props;
+    const { items, selectedKey, theme, backgroundColor, selectedColor, hideUnderline, testId } =
+      this.props;
 
     return (
       <PivotBarWrapper>

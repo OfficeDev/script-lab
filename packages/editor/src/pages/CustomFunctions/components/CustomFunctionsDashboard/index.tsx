@@ -22,14 +22,8 @@ export class CustomFunctionsDashboard extends React.Component<IProps> {
   }
 
   render() {
-    const {
-      customFunctionsSummaryItems,
-      isStandalone,
-      engineStatus,
-      logs,
-      clearLogs,
-      error,
-    } = this.props;
+    const { customFunctionsSummaryItems, isStandalone, engineStatus, logs, clearLogs, error } =
+      this.props;
 
     if (!engineStatus) {
       return null;

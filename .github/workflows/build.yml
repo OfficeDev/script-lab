@@ -46,11 +46,11 @@ jobs:
         run: npm ci
 
       # 'npm run build' broken into separate steps
-      # - name: clean
-      #   run: npm run clean
+      - name: clean
+        run: npm run clean
 
-      # - name: style
-      #   run: npm run style-check
+      - name: style
+        run: npm run style-check
 
       # - name: spell-check
       #   run: npm run spell-check --if-present
@@ -63,6 +63,8 @@ jobs:
 
       - name: build
         run: npm run build
+        env:
+          CI: false
 
       # - name: Upload static files as artifact
       #   if: inputs.upload

@@ -42,9 +42,8 @@ function getFakeStringHelper(
     for (let i = 0; i < word.length; i++) {
       const originalLetter = word[i];
       const correspondingLetter = word.substr(word.length - 1 - i, 1);
-      const newLetter = correspondingLetter[
-        regexUppercase.test(originalLetter) ? "toUpperCase" : "toLowerCase"
-      ]();
+      const newLetter =
+        correspondingLetter[regexUppercase.test(originalLetter) ? "toUpperCase" : "toLowerCase"]();
       processedWord += newLetter;
     }
 

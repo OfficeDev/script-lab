@@ -23,10 +23,7 @@ function getManifestPrefix(data) {
     return acc.replace(`(${name})`, "").replace(`[${name}]`, "");
   }, prefix);
 
-  prefix = prefix
-    .trim()
-    .split(" ")
-    .join("-");
+  prefix = prefix.trim().split(" ").join("-");
   return prefix;
 }
 

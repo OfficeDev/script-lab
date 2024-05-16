@@ -2,7 +2,11 @@
  * Custom error type
  */
 abstract class CustomError extends Error {
-  constructor(public name: string, public message: string, public innerError?: Error) {
+  constructor(
+    public name: string,
+    public message: string,
+    public innerError?: Error,
+  ) {
     super(message);
     if ((Error as any).captureStackTrace) {
       (Error as any).captureStackTrace(this, this.constructor);

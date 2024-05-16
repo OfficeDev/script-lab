@@ -254,9 +254,7 @@ export function loadAllSolutionsAndFiles(): {
   return { solutions, files };
 }
 
-function normalizeSolutions(solutions: {
-  [id: string]: ISolutionWithFileIds;
-}): {
+function normalizeSolutions(solutions: { [id: string]: ISolutionWithFileIds }): {
   [id: string]: ISolutionWithFileIds;
 } {
   const defaults = getBoilerplate("");

@@ -23,17 +23,12 @@ const SAMPLE_DIR = "./src/utils/custom-functions/samples";
 // For the error test-cases (when you expect the file to throw), name the file error.testname.ts.
 // (filename must start with `error.`)
 
-function parseSampleFile(
-  fileName: string,
-): {
+function parseSampleFile(fileName: string): {
   description: string;
   code: string;
   meta: string;
 } {
-  const lines = fs
-    .readFileSync(`${SAMPLE_DIR}/${fileName}`)
-    .toString()
-    .split("\n");
+  const lines = fs.readFileSync(`${SAMPLE_DIR}/${fileName}`).toString().split("\n");
   const description = lines[0].slice(3);
   const content = lines.slice(1).join("\n");
 

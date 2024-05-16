@@ -1,4 +1,4 @@
-document.getElementById("go").onclick = function() {
+document.getElementById("go").onclick = function () {
   var html = atob(ENCODED_HTML_TO_REPLACE).replace(
     /MONACO_BASE_URL/g,
     document.getElementById("monaco-base-url").value,

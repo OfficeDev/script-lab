@@ -313,9 +313,7 @@ function possiblyMassageObject(object: any): any {
   return object;
 }
 
-function getDataForClientResult(
-  result: OfficeExtension.ClientResult<any>,
-): {
+function getDataForClientResult(result: OfficeExtension.ClientResult<any>): {
   value: any;
 } {
   let value: any;
