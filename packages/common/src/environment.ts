@@ -17,6 +17,8 @@ interface SwitchableEnvironments {
 
   target: string;
 
+  temp: string;
+
   /**
    * Public SDF
    * https://res-sdf.cdn.office.net/script-lab/
@@ -42,6 +44,8 @@ export const editorUrls: SwitchableEnvironments = {
 
   target: `${targetDomain}/script-lab/edit`,
 
+  temp: `https://script-lab.azureedge.net`,
+
   cdnPreview: "https://script-lab.sdf.cdn.office.net/script-lab/7dttl",
   cdnProduction: "https://script-lab.public.cdn.office.net/script-lab/7dttl",
 };
@@ -50,6 +54,8 @@ const runnerUrls: SwitchableEnvironments = {
   local: "https://localhost:3200", // script-lab-runner/7dttl (for simulate)
 
   target: `${targetDomain}/script-lab/run`,
+
+  temp: `https://script-lab.azureedge.net`,
 
   cdnPreview: "https://script-lab-runner.sdf.cdn.office.net/script-lab-runner/7dttl",
   cdnProduction: "https://script-lab-runner.public.cdn.office.net/script-lab-runner/7dttl",
@@ -60,6 +66,8 @@ export const environmentDisplayNames: SwitchableEnvironments = (() => {
     local: "localhost",
 
     target: "Target",
+
+    temp: "Temp",
 
     cdnPreview: "CDN Preview",
     cdnProduction: "CDN Production",
