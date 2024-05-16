@@ -23,7 +23,7 @@ jobs:
   build:
     timeout-minutes: 10
     # Match Development Operating System
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
       # Setup
       - uses: actions/checkout@v3
@@ -32,7 +32,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           # Match Development Node Version
-          node-version: '20.x'
+          node-version: "20.x"
 
       # Tool Versions
       - name: Node Version
