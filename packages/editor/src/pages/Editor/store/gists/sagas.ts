@@ -1,17 +1,17 @@
-import { put, takeEvery, call, select } from 'redux-saga/effects';
-import { getType, ActionType } from 'typesafe-actions';
-import YAML from 'js-yaml';
+import { put, takeEvery, call, select } from "redux-saga/effects";
+import { getType, ActionType } from "typesafe-actions";
+import YAML from "js-yaml";
 
-import * as github from '../../services/github';
-import { fetchYaml, IResponseOrError } from '../../services/general';
-import { gists, editor, solutions } from '../actions';
-import selectors from '../selectors';
+import * as github from "../../services/github";
+import { fetchYaml, IResponseOrError } from "../../services/general";
+import { gists, editor, solutions } from "../actions";
+import selectors from "../selectors";
 
-import { convertSnippetToSolution, convertSolutionToSnippet } from '../../../../utils';
-import { ConflictResolutionOptions } from '../../../../interfaces/enums';
+import { convertSnippetToSolution, convertSolutionToSnippet } from "../../../../utils";
+import { ConflictResolutionOptions } from "../../../../interfaces/enums";
 
-import { createSolutionSaga } from '../solutions/sagas';
-import { checkForUnsupportedAPIsIfRelevant } from './utilities';
+import { createSolutionSaga } from "../solutions/sagas";
+import { checkForUnsupportedAPIsIfRelevant } from "./utilities";
 
 export default function* gistsWatcher() {
   yield takeEvery(getType(gists.fetchMetadata.request), fetchAllGistMetadataSaga);
@@ -48,8 +48,8 @@ export function* fetchAllGistMetadataSaga() {
     description: string;
     public: boolean;
   }>> = yield call(github.request, {
-    method: 'GET',
-    path: 'gists?per_page=100',
+    method: "GET",
+    path: "gists?per_page=100",
     token,
     isArrayResponse: true,
   });
@@ -61,7 +61,7 @@ export function* fetchAllGistMetadataSaga() {
           Object.keys(files).length === 1 &&
           /^(.*)\.yaml$/.test(files[Object.keys(files)[0]].filename),
       )
-      .map(gist => {
+      .map((gist) => {
         const { files, id, description } = gist;
         const file: { filename: string; raw_url: string } = files[Object.keys(files)[0]];
 
@@ -72,7 +72,10 @@ export function* fetchAllGistMetadataSaga() {
         const { title, host } =
           result !== null
             ? { title: result[1], host: result[2] }
-            : { title: file.filename.replace('.yaml', ''), host: currentHost };
+            : {
+                title: file.filename.replace(".yaml", ""),
+                host: currentHost,
+              };
         // in the else case of the condition above, it is a legacy Script Lab gist that wasn't saved with a host,
         // so it is assuming it is for the current host so that it will be visible
 
@@ -91,22 +94,22 @@ export function* fetchAllGistMetadataSaga() {
     yield put(gists.fetchMetadata.success(gistsMetadata));
   } else {
     yield put(
-      gists.fetchMetadata.failure({ shouldLogUserOut: error.message === 'Unauthorized' }),
+      gists.fetchMetadata.failure({
+        shouldLogUserOut: error.message === "Unauthorized",
+      }),
     );
   }
 }
 
-function* onFetchGistMetadataSuccessSaga(
-  action: ActionType<typeof gists.fetchMetadata.success>,
-) {
+function* onFetchGistMetadataSuccessSaga(action: ActionType<typeof gists.fetchMetadata.success>) {
   /* This saga gets executed whenever fetchGistMetadata.success is dispatched
      The code below goes through the resulting metadata and ensures that no local
      solution is still pointing to a non-existing gist. */
-  const metadataIds = action.payload.map(metadata => metadata.id);
+  const metadataIds = action.payload.map((metadata) => metadata.id);
   const allSolutions: ISolution[] = yield select(selectors.solutions.getAll);
 
   const solutionsToClean = allSolutions.filter(
-    solution => solution.source && !metadataIds.includes(solution.source.id),
+    (solution) => solution.source && !metadataIds.includes(solution.source.id),
   );
 
   for (const solution of solutionsToClean) {
@@ -114,9 +117,7 @@ function* onFetchGistMetadataSuccessSaga(
   }
 }
 
-function* onFetchGistMetadataFailureSaga(
-  action: ActionType<typeof gists.fetchMetadata.failure>,
-) {
+function* onFetchGistMetadataFailureSaga(action: ActionType<typeof gists.fetchMetadata.failure>) {
   if (action.payload.shouldLogUserOut) {
     yield github.logout();
   }
@@ -128,7 +129,10 @@ function* getGistSaga(action: ActionType<typeof gists.get.request>) {
       case ConflictResolutionOptions.Open:
         const solution = action.payload.conflictResolution.existingSolution;
         yield put(
-          editor.openFile({ solutionId: solution.id, fileId: solution.files[0].id }),
+          editor.openFile({
+            solutionId: solution.id,
+            fileId: solution.files[0].id,
+          }),
         );
         return;
 
@@ -156,7 +160,7 @@ function* openGistHelper(rawUrl: string, gistId: string) {
     const solution = convertSnippetToSolution(content);
     solution.source = {
       id: gistId,
-      origin: 'gist',
+      origin: "gist",
     };
     yield put(gists.get.success({ solution }));
   } else {
@@ -174,16 +178,13 @@ function* createGistSaga(action: ActionType<typeof gists.create.request>) {
     return;
   }
 
-  const solution: ISolution = yield select(
-    selectors.solutions.get,
-    action.payload.solutionId,
-  );
+  const solution: ISolution = yield select(selectors.solutions.get, action.payload.solutionId);
 
-  const snippet = YAML.safeDump(convertSolutionToSnippet(solution));
+  const snippet = YAML.dump(convertSolutionToSnippet(solution));
 
   const { response, error } = yield call(github.request, {
-    method: 'POST',
-    path: 'gists',
+    method: "POST",
+    path: "gists",
     isArrayResponse: false,
     token,
     jsonPayload: JSON.stringify({
@@ -210,7 +211,7 @@ function* handleCreateGistSuccessSaga(action: ActionType<typeof gists.create.suc
   yield put(
     solutions.edit({
       id: solution.id,
-      solution: { source: { id: action.payload.gist.id, origin: 'gist' } },
+      solution: { source: { id: action.payload.gist.id, origin: "gist" } },
     }),
   );
 }
@@ -222,14 +223,14 @@ function* updateGistSaga(action: ActionType<typeof gists.update.request>) {
   }
 
   const solution = yield select(selectors.solutions.get, action.payload.solutionId);
-  const snippet = YAML.safeDump(convertSolutionToSnippet(solution));
+  const snippet = YAML.dump(convertSolutionToSnippet(solution));
   const gistId = solution.source.id;
 
   if (!gistId) {
-    yield put(gists.update.failure(new Error('No gistId for this solution.')));
+    yield put(gists.update.failure(new Error("No gistId for this solution.")));
   } else {
     const { response, error } = yield call(github.request, {
-      method: 'PATCH',
+      method: "PATCH",
       path: `gists/${gistId}`,
       isArrayResponse: false,
       token,
@@ -262,7 +263,7 @@ function* importSnippetSaga(action: ActionType<typeof gists.importSnippet.reques
         return;
       }
       const { response, error } = yield call(github.request, {
-        method: 'GET',
+        method: "GET",
         path: `gists/${action.payload.gistId}`,
         token,
         isArrayResponse: false,
@@ -270,14 +271,14 @@ function* importSnippetSaga(action: ActionType<typeof gists.importSnippet.reques
       if (response) {
         const gistFiles = response.files;
         login = response.owner.login;
-        snippet = YAML.safeLoad(gistFiles[Object.keys(gistFiles)[0]].content);
+        snippet = YAML.load(gistFiles[Object.keys(gistFiles)[0]].content);
       } else {
         throw error;
       }
     } else if (action.payload.gist) {
-      snippet = YAML.safeLoad(action.payload.gist);
+      snippet = YAML.load(action.payload.gist);
     } else {
-      throw new Error('Either a gistId or gist must be specified');
+      throw new Error("Either a gistId or gist must be specified");
     }
 
     const solution = convertSnippetToSolution(snippet);
@@ -299,8 +300,6 @@ function* importSnippetSaga(action: ActionType<typeof gists.importSnippet.reques
   }
 }
 
-function* handleImportSnippetSuccessSaga(
-  action: ActionType<typeof gists.importSnippet.success>,
-) {
+function* handleImportSnippetSuccessSaga(action: ActionType<typeof gists.importSnippet.success>) {
   yield call(createSolutionSaga, action.payload.solution);
 }

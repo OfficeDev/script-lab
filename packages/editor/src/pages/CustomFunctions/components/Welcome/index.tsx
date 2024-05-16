@@ -1,5 +1,5 @@
-import React from 'react';
-import { DefaultButton } from 'office-ui-fabric-react/lib/Button';
+import React from "react";
+import { DefaultButton } from "office-ui-fabric-react/lib/Button";
 import {
   CenteredContent,
   WelcomeTitle,
@@ -10,7 +10,7 @@ import {
   List,
   ListItem,
   CodeBlock,
-} from './styles';
+} from "./styles";
 
 interface IProps {
   isRefreshEnabled: boolean;
@@ -21,9 +21,7 @@ const refresh = () => window.location.reload();
 export const Welcome = ({ isRefreshEnabled }: IProps) => (
   <CenteredContent>
     <WelcomeTitle>Welcome</WelcomeTitle>
-    <WelcomeSubTitle>
-      Discover what custom functions can do for you today!
-    </WelcomeSubTitle>
+    <WelcomeSubTitle>Discover what custom functions can do for you today!</WelcomeSubTitle>
     <Separator />
     <Instructions>
       <InstructionsDescription>
@@ -34,10 +32,10 @@ export const Welcome = ({ isRefreshEnabled }: IProps) => (
         <ListItem>
           Copy the following script and paste it into the editor.
           <CodeBlock>
-            <pre>{'/** @CustomFunction */'}</pre>
-            <pre>function add10(x: number): number {'{'}</pre>
+            <pre>{"/** @CustomFunction */"}</pre>
+            <pre>function add10(x: number): number {"{"}</pre>
             <pre> return x + 10;</pre>
-            <pre>{'}'}</pre>
+            <pre>{"}"}</pre>
           </CodeBlock>
         </ListItem>
         <ListItem>
@@ -50,8 +48,8 @@ export const Welcome = ({ isRefreshEnabled }: IProps) => (
         onClick={refresh}
         text="Refresh"
         style={{
-          display: 'block',
-          margin: '0 auto',
+          display: "block",
+          margin: "0 auto",
         }}
       />
     </Instructions>

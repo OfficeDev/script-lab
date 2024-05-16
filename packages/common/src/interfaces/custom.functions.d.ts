@@ -18,7 +18,7 @@ interface ICustomFunctionParseResult<T> {
   metadata: T;
 }
 
-type CustomFunctionsRegistrationStatus = 'good' | 'skipped' | 'error' | 'untrusted';
+type CustomFunctionsRegistrationStatus = "good" | "skipped" | "error" | "untrusted";
 
 /** The interface used by Excel to register custom functions (CustomFunctionManager.register(...)).
  * Be sure to pass "IFunction" from the "custom-functions-metadata" package as the "T" argument.
@@ -33,18 +33,17 @@ interface ICustomFunctionEngineStatus {
 }
 
 interface ICustomFunctionsHeartbeatMessage {
-  type: 'metadata' | 'refresh' | 'log';
+  type: "metadata" | "refresh" | "log";
   payload?: any;
 }
 
-interface ICustomFunctionsHeartbeatGetMetadataMessage
-  extends ICustomFunctionsHeartbeatMessage {
-  type: 'metadata';
+interface ICustomFunctionsHeartbeatGetMetadataMessage extends ICustomFunctionsHeartbeatMessage {
+  type: "metadata";
   payload: ICustomFunctionsHeartbeatMetadata[];
 }
 
 interface ICustomFunctionsHeartbeatLogMessage extends ICustomFunctionsHeartbeatMessage {
-  type: 'log';
+  type: "log";
   payload: ILogData;
 }
 

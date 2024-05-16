@@ -7,50 +7,39 @@
   ],
   "scripts": {
     "clean": "ts-node --project scripts/tsconfig.json scripts/clean.ts",
-    "build:common": "npm run build:package --workspace=common",
-    "postinstall": "npm run clean && npx office-addin-dev-certs install && npm run postinstall:iterate",
+    "dev-certs": "npx office-addin-dev-certs install",
+    "postinstall": "npm run clean && npm run postinstall:iterate",
     "postinstall:iterate": "npm run postinstall --workspace=common && npm run postinstall --workspace=editor && npm run postinstall --workspace=runner",
-    "pre-ci": "ts-node --project scripts/tsconfig.json scripts/pre-ci.ts",
-    "build": "cd packages/editor && npm run build && cd ../server && npm run build",
-    "style-check": "npm run prettier",
-    "style": "npm run prettier:write",
-    "prettier": "prettier --list-different \"./**/*.@(ts|tsx|js|jsx|html)\"",
-    "prettier:write": "prettier --write \"./**/*.@(ts|tsx|js|jsx|html)\"",
-    "deploy": "jest --config scripts/deploy/jest.config.js && ts-node --project scripts/tsconfig.json scripts/deploy/index.ts",
+    "build": "cd packages/common && npm run build && cd ../editor && npm run build && cd ../runner && npm run build",
+    "style-check": "prettier --config ./config/prettier.json  --check \"@(packages|src|test|scripts)/**/*.@(ts|tsx|js|md|html|css|json)\"",
+    "style": "prettier --config ./config/prettier.json  --write \"@(packages|src|test|scripts|import)/**/*.@(ts|tsx|js|md|html|css|json)\"",
     "common": "npm run start --workspace=common",
     "editor": "npm run start --workspace=editor",
     "runner": "npm run start --workspace=runner",
-    "server": "npm run start --workspace=server",
-    "start": "npm-run-all --parallel common editor runner server",
+    "start": "npm-run-all --parallel common editor runner",
     "common:test": "npm run test --workspace=common",
     "editor:test": "npm run test --workspace=editor",
     "runner:test": "npm run test --workspace=runner",
-    "server:test": "npm run test --workspace=server",
-    "test": "npm-run-all --parallel common:test editor:test runner:test server:test",
-    "tscAll": "ts-node scripts/compile.all.ts",
-    "generate:github": "ts-node --project scripts/tsconfig.json scripts/generate.github.auth.ts",
-    "terminate:windows": "taskkill /f /im node.exe"
+    "test": "npm-run-all --parallel common:test editor:test runner:test",
+    "manifest": "npm run make-manifest && npm run check-manifest",
+    "make-manifest": "ts-node --project scripts/tsconfig.json scripts/make-manifest.ts",
+    "check-manifest": "npm run check-manifest-local && npm run check-manifest-internal && npm run check-manifest-production && npm run check-manifest-local-outlook && npm run check-manifest-internal-outlook && npm run check-manifest-production-outlook",
+    "check-manifest-local": "npx office-addin-manifest validate manifests/localhost.xml",
+    "check-manifest-local-outlook": "npx office-addin-manifest validate manifests/localhost.outlook.xml",
+    "check-manifest-internal": "npx office-addin-manifest validate manifests/internal.xml",
+    "check-manifest-internal-outlook": "npx office-addin-manifest validate manifests/internal.outlook.xml",
+    "check-manifest-production": "npx office-addin-manifest validate manifests/production.xml",
+    "check-manifest-production-outlook": "npx office-addin-manifest validate manifests/production.outlook.xml",
+    "share": "node ./scripts/manifests-to-share.js",
+    "end-node": "taskkill /f /im node.exe"
   },
   "devDependencies": {
     "@types/fs-extra": "^5.0.4",
-    "@types/inquirer": "^0.0.43",
     "common": "0.0.1",
-    "fs-extra": "^7.0.1",
-    "inquirer": "^6.2.1",
     "npm-run-all": "^4.1.3",
     "office-addin-dev-certs": "^1.11.6",
-    "prettier": "^1.15.2",
+    "prettier": "^3.2.5",
     "shelljs": "^0.8.5",
-    "ts-node": "^7.0.1"
-  },
-  "resolutions": {
-    "htmlparser2": "7.0.0"
-  },
-  "overrides": {
-    "@types/express": {
-      "@types/express-serve-static-core": "4.17.18"
-    },
-    "@types/babel__traverse": "7.0.3",
-    "htmlparser2": "7.0.0"
+    "ts-node": "10.9.2"
   }
 }

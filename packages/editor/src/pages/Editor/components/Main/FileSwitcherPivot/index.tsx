@@ -1,19 +1,19 @@
-import React from 'react';
-import { connect } from 'react-redux'; // Note, avoid the temptation to include '@types/react-redux', it will break compile-time!
+import React from "react";
+import { connect } from "react-redux"; // Note, avoid the temptation to include '@types/react-redux', it will break compile-time!
 
-import PivotBar from 'common/lib/components/PivotBar';
+import PivotBar from "common/build/components/PivotBar";
 
-import { LIBRARIES_FILE_NAME, SCRIPT_FILE_NAME } from 'common/lib/utilities/solution';
-import { actions, selectors } from '../../../store';
-import { IState as IReduxState } from '../../../store/reducer';
-import { IRootAction } from '../../../store/actions';
-import { Dispatch } from 'redux';
+import { LIBRARIES_FILE_NAME, SCRIPT_FILE_NAME } from "common/build/utilities/solution";
+import { actions, selectors } from "../../../store";
+import { IState as IReduxState } from "../../../store/reducer";
+import { IRootAction } from "../../../store/actions";
+import { Dispatch } from "redux";
 
 const FILE_NAME_MAP = {
-  [SCRIPT_FILE_NAME]: 'Script',
-  'index.html': 'HTML',
-  'index.css': 'CSS',
-  [LIBRARIES_FILE_NAME]: 'Libraries',
+  [SCRIPT_FILE_NAME]: "Script",
+  "index.html": "HTML",
+  "index.css": "CSS",
+  [LIBRARIES_FILE_NAME]: "Libraries",
 };
 
 interface IPropsFromRedux {
@@ -49,7 +49,7 @@ const FileSwitcherPivot = ({
 }: IProps) => (
   <PivotBar
     items={files
-      .filter(file => {
+      .filter((file) => {
         if (isSolutionPython) {
           // For Python, only show the script file and nothing else (since don't support HTML/CSS/Libraries)
           return file.name === SCRIPT_FILE_NAME;
@@ -60,7 +60,7 @@ const FileSwitcherPivot = ({
           return true;
         }
       })
-      .map(file => ({
+      .map((file) => ({
         key: file.id,
         text: FILE_NAME_MAP[file.name] || file.name,
       }))}

@@ -7,7 +7,7 @@ export default function processLibraries(
   let officeJs: string | null = null;
 
   if (libraries) {
-    libraries.split('\n').forEach(processLibrary);
+    libraries.split("\n").forEach(processLibrary);
   }
 
   if (!isInsideOffice) {
@@ -23,7 +23,7 @@ export default function processLibraries(
 
     text = text.trim();
 
-    if (text === '' || text.startsWith('#') || text.startsWith('//')) {
+    if (text === "" || text.startsWith("#") || text.startsWith("//")) {
       return null;
     }
 

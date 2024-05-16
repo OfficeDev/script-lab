@@ -1,5 +1,5 @@
-import React from 'react';
-import { ContentWrapper, ContentTitle, ContentDescription } from './styles';
+import React from "react";
+import { ContentWrapper, ContentTitle, ContentDescription } from "./styles";
 
 export interface IProps {
   title: string;

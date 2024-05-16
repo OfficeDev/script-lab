@@ -1,11 +1,11 @@
-import { IState } from './reducer';
-import selectors from './selectors';
+import { IState } from "./reducer";
+import selectors from "./selectors";
 
 export const saveState = (state: IState) => {
   const isWeb = selectors.host.getIsWeb();
   if (isWeb) {
     const host = selectors.host.get(state);
-    sessionStorage.setItem('host', host);
+    sessionStorage.setItem("host", host);
   }
 };
 export const loadState = (): Partial<IState> => {
@@ -13,7 +13,7 @@ export const loadState = (): Partial<IState> => {
   let host;
 
   if (isWeb) {
-    host = sessionStorage.getItem('host') || undefined;
+    host = sessionStorage.getItem("host") || undefined;
   }
 
   return { host };

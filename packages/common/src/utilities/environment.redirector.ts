@@ -1,9 +1,9 @@
-import queryString from 'query-string';
-import { localStorageKeys } from '../constants';
-import { editorUrls, currentEditorUrl } from '../environment';
-import ensureFreshLocalStorage from './ensure.fresh.local.storage';
-import { showSplashScreen } from './splash.screen';
-import { ScriptLabError } from './error';
+import queryString from "query-string";
+import { localStorageKeys } from "../constants";
+import { editorUrls, currentEditorUrl, getOrigin } from "../environment";
+import { showSplashScreen } from "./splash.screen";
+import { ScriptLabError } from "./error";
+import { JSDocUnknownTag } from "typescript";
 
 /** Time threshold for kicking in a "click to cancel" UI on redirects */
 const AMOUNT_OF_TIME_BETWEEN_SUSPICIOUS_LOCALHOST_REDIRECTS = 20000;
@@ -23,23 +23,27 @@ const AMOUNT_OF_TIME_TO_WAIT_ON_CLICK_TO_CANCEL = 4000;
  *    redirecting, OR a promise that will *NEVER* resolve
  *    (getting terminated by the page loading to a different page)
  */
-export async function redirectIfNeeded({
-  isCancelable,
-}: {
-  isCancelable: boolean;
-}): Promise<void> {
+export async function redirectIfNeeded({ isCancelable }: { isCancelable: boolean }): Promise<void> {
+  // something broken in redirector?
+  // should we get rid of redirector? Seems unnecessary?
+  console.log("redirectIfNeeded");
+  debugger;
   try {
     const params = queryString.parse(window.location.search) as {
       originEnvironment?: string;
       targetEnvironment?: string;
     };
 
-    const originUrl = (params.originEnvironment || '').trim();
-    const targetUrl = (params.targetEnvironment || '').trim();
+    const originUrl = (params.originEnvironment || "").trim();
+    const targetUrl = (params.targetEnvironment || "").trim();
+    console.log(`
+originUrl ${originUrl}
+targetUrl ${targetUrl}
+    `);
 
     const urlsAreOk = isAllowedUrl(originUrl) && isAllowedUrl(targetUrl);
     if (!urlsAreOk) {
-      throw new Error('Invalid query parameters for target or origin environments');
+      throw new Error("Invalid query parameters for target or origin environments");
     }
 
     // If there is a target environment specified, set it in local storage
@@ -47,39 +51,31 @@ export async function redirectIfNeeded({
       // The exception: clear the redirect key if already on the target (i.e.,
       // the user has returned back to the root site)
       if (window.location.href.toLowerCase().indexOf(targetUrl) === 0) {
-        window.localStorage.removeItem(localStorageKeys.editor.redirectEnvironmentUrl);
+        window.localStorage.removeItem(localStorageKeys.redirectEnvironmentUrl);
         return;
       }
 
+      // SET Redirect URL
       // If hasn't quit above, then set the redirect URL into storage
-      window.localStorage.setItem(
-        localStorageKeys.editor.redirectEnvironmentUrl,
-        targetUrl,
-      );
+      window.localStorage.setItem(localStorageKeys.redirectEnvironmentUrl, targetUrl);
 
       // Also make sure that if redirecting to localStorage, remember this
       // and offer this option from prod again in the future (without forcing
       // always going through alpha first)
       if (targetUrl === editorUrls.local) {
-        window.localStorage.setItem(
-          localStorageKeys.editor.shouldShowLocalhostRedirectOption,
-          '1',
-        );
+        window.localStorage.setItem(localStorageKeys.shouldShowLocalhostRedirectOption, "1");
       }
     }
 
     // Store the root site origin, if provided
     if (originUrl.length > 0) {
       window.localStorage.setItem(
-        localStorageKeys.editor.originEnvironmentUrl,
+        localStorageKeys.originEnvironmentUrl,
         decodeURIComponent(originUrl).toLowerCase(),
       );
     }
 
-    ensureFreshLocalStorage();
-    const redirectUrl = window.localStorage.getItem(
-      localStorageKeys.editor.redirectEnvironmentUrl,
-    );
+    const redirectUrl = window.localStorage.getItem(localStorageKeys.redirectEnvironmentUrl);
 
     if (redirectUrl) {
       const newQueryParams = queryString.parse(window.location.search) as {
@@ -89,6 +85,7 @@ export async function redirectIfNeeded({
       };
       newQueryParams.originEnvironment = window.location.origin;
 
+      // localhost only
       const keepGoingWithRedirect = await considerIfReallyWantToRedirect({
         redirectUrl,
         isCancelable,
@@ -101,17 +98,27 @@ export async function redirectIfNeeded({
         setLastEnvironmentRedirectTimestamp();
       }
 
-      const finalUrlComponents: string[] = [
-        redirectUrl,
-        window.location.pathname,
-        Object.keys(newQueryParams).length > 0
-          ? '?' + queryString.stringify(newQueryParams)
-          : '',
-        window.location.hash,
-      ];
-      window.location.replace(finalUrlComponents.join(''));
+      // The final url to redirect to
+      const pathname = window.location.pathname;
+      const search =
+        Object.keys(newQueryParams).length > 0 ? "?" + queryString.stringify(newQueryParams) : "";
+      const hash = window.location.hash;
+      const finalUrlComponents: string[] = [redirectUrl, pathname, search, hash];
 
-      return new Promise(_resolve => () => {
+      // How does this work out?
+      console.log(`
+redirectUrl ${redirectUrl}
+pathname ${pathname}
+search ${search}
+hash ${hash}
+      `);
+
+      const finalUrl = finalUrlComponents.join("");
+
+      // This navigates to the URL
+      window.location.replace(finalUrl);
+
+      return new Promise((_resolve) => () => {
         /* don't ever call "resolve", waiting indefinitely until the page navigates away */
       });
     }
@@ -119,33 +126,34 @@ export async function redirectIfNeeded({
     // If reached here, environment is already configured. No need to redirect anywhere.
     return;
   } catch (e) {
-    throw new ScriptLabError('Error redirecting to a different environment.', e);
+    throw new ScriptLabError("Error redirecting to a different environment.", e as Error);
   }
 }
 
+// This is what actually triggers the redirection?
+// What is the difference between target and origin?
 export async function redirectEditorToOtherEnvironment(configName: string) {
+  console.log("redirectEditorToOtherEnvironment");
+  debugger;
+
   const targetEnvironment = editorUrls[configName];
 
-  ensureFreshLocalStorage();
-  const originEnvironment = window.localStorage.getItem(
-    localStorageKeys.editor.originEnvironmentUrl,
-  );
+  const originEnvironment = window.localStorage.getItem(localStorageKeys.originEnvironmentUrl);
 
-  showSplashScreen('Re-loading Script Lab...');
+  showSplashScreen("Re-loading Script Lab...");
   setLastEnvironmentRedirectTimestamp();
 
+  // Can I swap to only the origin?
   // Add query string parameters to default editor URL
   if (originEnvironment) {
     window.location.href = `${originEnvironment}?targetEnvironment=${encodeURIComponent(
       targetEnvironment,
     )}`;
   } else {
-    window.localStorage.setItem(
-      localStorageKeys.editor.redirectEnvironmentUrl,
-      targetEnvironment,
-    );
+    // SET Redirect URL
+    window.localStorage.setItem(localStorageKeys.redirectEnvironmentUrl, targetEnvironment);
     window.location.href = `${targetEnvironment}?originEnvironment=${encodeURIComponent(
-      currentEditorUrl,
+      getOrigin(currentEditorUrl),
     )}`;
   }
 }
@@ -165,9 +173,9 @@ async function considerIfReallyWantToRedirect({
   // To work around it, if on main domain and redirecting to localhost,
   //   check whether recently failed. If failed, give the user a few seconds
   //   to decide if want to try again, versus to cancel the redirect.
-  if (isCancelable && redirectUrl.startsWith('https://localhost')) {
+  if (isCancelable && redirectUrl.startsWith("https://localhost")) {
     if (checkIfLastRedirectWasRecent()) {
-      const keepGoing = await new Promise<boolean>(async resolve => {
+      const keepGoing = await new Promise<boolean>(async (resolve) => {
         const timeout = setTimeout(() => {
           resolve(true); // If haven't clicked cancel yet, resolve to true
         }, AMOUNT_OF_TIME_TO_WAIT_ON_CLICK_TO_CANCEL);
@@ -176,9 +184,7 @@ async function considerIfReallyWantToRedirect({
           `Redirecting to "${redirectUrl}" in a few seconds. Click now to cancel.`,
           () => {
             clearTimeout(timeout);
-            window.localStorage.removeItem(
-              localStorageKeys.editor.redirectEnvironmentUrl,
-            );
+            window.localStorage.removeItem(localStorageKeys.redirectEnvironmentUrl);
             resolve(false);
           },
         );
@@ -213,7 +219,7 @@ function isAllowedUrl(url: string) {
 
 function checkIfLastRedirectWasRecent(): boolean {
   const timeSinceLastRedirectAttempt = Number(
-    window.localStorage.getItem(localStorageKeys.editor.lastEnvironmentRedirectTimestamp),
+    window.localStorage.getItem(localStorageKeys.lastEnvironmentRedirectTimestamp),
   );
   const diff = Date.now() - timeSinceLastRedirectAttempt;
   return diff < AMOUNT_OF_TIME_BETWEEN_SUSPICIOUS_LOCALHOST_REDIRECTS;
@@ -221,7 +227,7 @@ function checkIfLastRedirectWasRecent(): boolean {
 
 function setLastEnvironmentRedirectTimestamp() {
   window.localStorage.setItem(
-    localStorageKeys.editor.lastEnvironmentRedirectTimestamp,
+    localStorageKeys.lastEnvironmentRedirectTimestamp,
     Date.now().toString(),
   );
 }

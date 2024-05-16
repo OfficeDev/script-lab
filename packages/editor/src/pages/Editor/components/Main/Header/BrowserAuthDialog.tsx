@@ -1,25 +1,25 @@
-import React from 'react';
-import { connect } from 'react-redux'; // Note, avoid the temptation to include '@types/react-redux', it will break compile-time!
-import { hideSplashScreen } from 'common/lib/utilities/splash.screen';
-import Dialog, { DialogType, DialogFooter } from 'office-ui-fabric-react/lib/Dialog';
-import { PrimaryButton, DefaultButton } from 'office-ui-fabric-react/lib/Button';
-import { TextField } from 'office-ui-fabric-react/lib/TextField';
-import { Label } from 'office-ui-fabric-react/lib/Label';
+import React from "react";
+import { connect } from "react-redux"; // Note, avoid the temptation to include '@types/react-redux', it will break compile-time!
+import { hideSplashScreen } from "common/build/utilities/splash.screen";
+import Dialog, { DialogType, DialogFooter } from "office-ui-fabric-react/lib/Dialog";
+import { PrimaryButton, DefaultButton } from "office-ui-fabric-react/lib/Button";
+import { TextField } from "office-ui-fabric-react/lib/TextField";
+import { Label } from "office-ui-fabric-react/lib/Label";
 
-import TextboxClipboardWrapper from 'common/lib/components/Clipboard/TextboxClipboardWrapper';
-import { currentEditorUrl } from 'common/lib/environment';
+import TextboxClipboardWrapper from "common/build/components/Clipboard/TextboxClipboardWrapper";
+import { currentEditorUrl } from "common/build/environment";
 import {
   bufferToHexString,
   hexStringToBuffer,
   bufferToUnicodeString,
-} from 'common/lib/utilities/array.buffer';
+} from "common/build/utilities/array.buffer";
 
-import { actions } from '../../../store';
-import { IGithubProcessedLoginInfo } from '../../../store/github/actions';
-import { getProfileInfo } from '../../../services/github';
+import { actions } from "../../../store";
+import { IGithubProcessedLoginInfo } from "../../../store/github/actions";
+import { getProfileInfo } from "../../../services/github";
 
-import { createStructuredSelector } from 'reselect';
-import selectors from '../../../store/selectors';
+import { createStructuredSelector } from "reselect";
+import selectors from "../../../store/selectors";
 
 interface IProps {
   isOpen: boolean;
@@ -56,7 +56,7 @@ class BrowserAuthDialog extends React.Component<IProps, IState> {
         onDismiss={this.props.cancel}
         dialogContentProps={{
           type: DialogType.normal,
-          title: 'Action required',
+          title: "Action required",
         }}
         modalProps={{
           isBlocking: true,
@@ -67,17 +67,14 @@ class BrowserAuthDialog extends React.Component<IProps, IState> {
       >
         {!this.state.authUrl ? (
           <Label>
-            Please wait while we prepare the authentication dialog. This may take a few
-            seconds...
+            Please wait while we prepare the authentication dialog. This may take a few seconds...
           </Label>
         ) : (
           <>
-            <Label>
-              To log in with GitHub, please open the following URL in a browser window:
-            </Label>
+            <Label>To log in with GitHub, please open the following URL in a browser window:</Label>
             <TextboxClipboardWrapper text={this.state.authUrl} />
 
-            <Label styles={{ root: { marginTop: '1.5rem' } }}>
+            <Label styles={{ root: { marginTop: "1.5rem" } }}>
               After completing the authentication flow, paste in the resulting token:
             </Label>
             <TextField
@@ -87,7 +84,7 @@ class BrowserAuthDialog extends React.Component<IProps, IState> {
               iconProps={
                 this.state.decodedToken
                   ? {
-                      iconName: 'Checkmark',
+                      iconName: "Checkmark",
                     }
                   : {}
               }
@@ -115,27 +112,24 @@ class BrowserAuthDialog extends React.Component<IProps, IState> {
         const pair = await promisifyCryptoAction<CryptoKeyPair>(
           crypto.subtle.generateKey(
             {
-              name: 'RSA-OAEP',
+              name: "RSA-OAEP",
               modulusLength: 2048,
               publicExponent: new Uint8Array([0x01, 0x00, 0x01]),
-              hash: { name: 'SHA-256' },
+              hash: { name: "SHA-256" },
             },
             true,
-            ['encrypt', 'decrypt'],
+            ["encrypt", "decrypt"],
           ),
         );
 
         this.privateKey = pair.privateKey;
 
         this.setState({
-          authUrl:
-            currentEditorUrl +
-            '/#/auth?key=' +
-            bufferToHexString(
-              await promisifyCryptoAction<ArrayBuffer>(
-                crypto.subtle.exportKey('spki', pair.publicKey),
-              ),
+          authUrl: `${currentEditorUrl}/index.html#/auth?key=${bufferToHexString(
+            await promisifyCryptoAction<ArrayBuffer>(
+              crypto.subtle.exportKey("spki", pair.publicKey),
             ),
+          )}`,
         });
       } catch (error) {
         this.setState({ errorMessage: error.toString() });
@@ -174,8 +168,8 @@ class BrowserAuthDialog extends React.Component<IProps, IState> {
         const decryptedArrayBuffer = await promisifyCryptoAction<ArrayBuffer>(
           crypto.subtle.decrypt(
             {
-              name: 'RSA-OAEP',
-              hash: { name: 'SHA-256' },
+              name: "RSA-OAEP",
+              hash: { name: "SHA-256" },
             } as any /* note: hash is necessary for msCrypto */,
             this.privateKey,
             hexStringToBuffer(newValue),
@@ -192,7 +186,7 @@ class BrowserAuthDialog extends React.Component<IProps, IState> {
   };
 
   onEnterKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       this.onOk();
     }
   };
@@ -207,18 +201,15 @@ export default connect(
 
 ///////////////////////////////////////
 
-function promisifyCryptoAction<T>(
-  operation: IOncompleteOnerror<T> | PromiseLike<T>,
-): Promise<T> {
+function promisifyCryptoAction<T>(operation: IOncompleteOnerror<T> | PromiseLike<T>): Promise<T> {
   return new Promise((resolve, reject) => {
     if ((window as any).msCrypto) {
-      (operation as IOncompleteOnerror<T>).onerror = error => reject(error);
-      (operation as IOncompleteOnerror<T>).oncomplete = event =>
-        resolve(event.target.result);
+      (operation as IOncompleteOnerror<T>).onerror = (error) => reject(error);
+      (operation as IOncompleteOnerror<T>).oncomplete = (event) => resolve(event.target.result);
     } else {
       (operation as PromiseLike<T>).then(
-        result => resolve(result),
-        error => reject(error),
+        (result) => resolve(result),
+        (error) => reject(error),
       );
     }
   });

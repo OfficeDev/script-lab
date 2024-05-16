@@ -1,17 +1,17 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
-import Only from 'common/lib/components/Only';
+import Only from "common/build/components/Only";
 
-import { Dialog, DialogType, DialogFooter } from 'office-ui-fabric-react/lib/Dialog';
-import { TextField } from 'office-ui-fabric-react/lib/TextField';
-import { PrimaryButton, DefaultButton } from 'office-ui-fabric-react/lib/Button';
-import { Label } from 'office-ui-fabric-react/lib/Label';
-import { Link } from 'office-ui-fabric-react/lib/Link';
+import { Dialog, DialogType, DialogFooter } from "office-ui-fabric-react/lib/Dialog";
+import { TextField } from "office-ui-fabric-react/lib/TextField";
+import { PrimaryButton, DefaultButton } from "office-ui-fabric-react/lib/Button";
+import { Label } from "office-ui-fabric-react/lib/Label";
+import { Link } from "office-ui-fabric-react/lib/Link";
 
-import { connect } from 'react-redux'; // Note, avoid the temptation to include '@types/react-redux', it will break compile-time!
-import { IState as IReduxState } from '../../../store/reducer';
-import { actions, selectors } from '../../../store';
+import { connect } from "react-redux"; // Note, avoid the temptation to include '@types/react-redux', it will break compile-time!
+import { IState as IReduxState } from "../../../store/reducer";
+import { actions, selectors } from "../../../store";
 
 const DialogBodyWrapper = styled.div`
   & > * {
@@ -37,14 +37,14 @@ interface IState {
 class SolutionSettings extends React.Component<ISolutionSettings, IState> {
   state = {
     name: this.props.solution.name,
-    description: this.props.solution.description || '',
+    description: this.props.solution.description || "",
   };
 
   componentDidUpdate(prevProps: ISolutionSettings) {
     if (this.props.isOpen === true && prevProps.isOpen === false) {
       this.setState({
         name: this.props.solution.name,
-        description: this.props.solution.description || '',
+        description: this.props.solution.description || "",
       });
     }
   }
@@ -56,7 +56,7 @@ class SolutionSettings extends React.Component<ISolutionSettings, IState> {
       <Dialog
         hidden={!isOpen}
         onDismiss={closeSolutionSettings}
-        dialogContentProps={{ type: DialogType.largeHeader, title: 'Info' }}
+        dialogContentProps={{ type: DialogType.largeHeader, title: "Info" }}
         modalProps={{ isBlocking: false }}
       >
         <DialogBodyWrapper>
@@ -74,7 +74,7 @@ class SolutionSettings extends React.Component<ISolutionSettings, IState> {
             onChange={this.updateSolutionDescription}
             value={description}
           />
-          <Only when={solution.source && solution.source.origin === 'gist'}>
+          <Only when={solution.source && solution.source.origin === "gist"}>
             <div>
               <Label>Gist URL</Label>
               <Link
@@ -92,7 +92,7 @@ class SolutionSettings extends React.Component<ISolutionSettings, IState> {
             text="Cancel"
             secondaryText="Cancels the update to snippet settings"
             onClick={closeSolutionSettings}
-          />{' '}
+          />{" "}
           <PrimaryButton
             data-testid="update"
             text="Update"
@@ -125,10 +125,8 @@ class SolutionSettings extends React.Component<ISolutionSettings, IState> {
 
 export default connect(
   (state: IReduxState) => ({ solution: selectors.editor.getActiveSolution(state) }),
-  dispatch => ({
-    editSolutionMetadata: (
-      solutionId: string,
-      solution: Partial<IEditableSolutionProperties>,
-    ) => dispatch(actions.solutions.edit({ id: solutionId, solution })),
+  (dispatch) => ({
+    editSolutionMetadata: (solutionId: string, solution: Partial<IEditableSolutionProperties>) =>
+      dispatch(actions.solutions.edit({ id: solutionId, solution })),
   }),
 )(SolutionSettings);

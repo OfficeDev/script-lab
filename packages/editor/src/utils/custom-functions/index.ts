@@ -1,7 +1,8 @@
-import ts from 'typescript';
-import { parseTree, IFunction } from 'custom-functions-metadata';
-import { strictType } from 'common/lib/utilities/misc';
-import { getUserSettings } from '../userSettings';
+import ts from "typescript";
+import type { IFunction } from "common/build/custom-functions/parseTree";
+import { parseTree } from "common/build/custom-functions/parseTree";
+import { strictType } from "common/build/utilities/misc";
+import { getUserSettings } from "../userSettings";
 
 export function isTypeScriptCustomFunctionScript(content: string) {
   // Start by doing a quick match for a custom functions regex.
@@ -19,7 +20,7 @@ export function isTypeScriptCustomFunctionScript(content: string) {
     return false;
   }
 
-  const parseResult = parseTree(content, '' /* name, unused */);
+  const parseResult = parseTree(content, "" /* name, unused */);
   return parseResult.functions.length > 0;
 }
 
@@ -54,10 +55,10 @@ export const PythonCFSnippetRegex = /(@\w+\.customfunction\s*\(\s*")(.*)(".*)/;
 const snippetNameRegex = /[^0-9A-Za-z_ ]/g;
 export function transformSolutionNameToCFNamespace(snippetName: string) {
   return snippetName
-    .replace(snippetNameRegex, '')
-    .split(' ')
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join('');
+    .replace(snippetNameRegex, "")
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join("");
 }
 
 /**
@@ -84,18 +85,18 @@ export function parseMetadata({
     compilerOptions: {
       target: ts.ScriptTarget.ES5,
       allowJs: true,
-      lib: ['dom', 'es2015'],
+      lib: ["dom", "es2015"],
     },
   });
 
   if (result.diagnostics!.length > 0) {
     return [
       {
-        javascriptFunctionName: 'compileError',
-        nonCapitalizedFullName: namespace + '.CompileError',
-        status: 'error',
+        javascriptFunctionName: "compileError",
+        nonCapitalizedFullName: namespace + ".CompileError",
+        status: "error",
         errors: [
-          'Could not compile the snippet. Please go back to the code editor to fix any syntax errors.',
+          "Could not compile the snippet. Please go back to the code editor to fix any syntax errors.",
         ],
         metadata: null,
       },
@@ -105,7 +106,7 @@ export function parseMetadata({
   const parseTreeResult = parseTree(fileContent, solution.name);
   // Just in case, ensure that the result is consistent:
   if (parseTreeResult.functions.length !== parseTreeResult.extras.length) {
-    throw new Error('Internal error while parsing custom function snippets.');
+    throw new Error("Internal error while parsing custom function snippets.");
   }
 
   const functions = parseTreeResult.functions.map((metadata, index) => {
@@ -121,27 +122,23 @@ export function parseMetadata({
     //   whatever casing it's in.
     const nonCapitalizedFullName =
       namespace +
-      '.' +
+      "." +
       (javascriptFunctionName.toUpperCase() === metadata.name.toUpperCase()
         ? javascriptFunctionName
         : metadata.name);
 
     // Massage the metadata a bit to reflect the sub-namespace for the snippet
-    metadata.name = namespace.toUpperCase() + '.' + metadata.name;
-    metadata.id = namespace.toUpperCase() + '.' + metadata.id;
+    metadata.name = namespace.toUpperCase() + "." + metadata.name;
+    metadata.id = namespace.toUpperCase() + "." + metadata.id;
 
     return strictType<ICustomFunctionParseResult<IFunction>>({
       javascriptFunctionName,
       nonCapitalizedFullName,
       status:
-        extras.errors.length > 0
-          ? 'error'
-          : solution.options.isUntrusted
-          ? 'untrusted'
-          : 'good',
+        extras.errors.length > 0 ? "error" : solution.options.isUntrusted ? "untrusted" : "good",
       errors: [
         ...(solution.options.isUntrusted
-          ? ['You must trust the snippet before its functions can be registered']
+          ? ["You must trust the snippet before its functions can be registered"]
           : []),
         ...extras.errors,
       ],
@@ -156,10 +153,8 @@ export function parseMetadata({
         index !== otherIndex &&
         func.javascriptFunctionName === otherFunc.javascriptFunctionName
       ) {
-        func.status = 'error';
-        func.errors = [
-          `Duplicate implementation for function "${func.javascriptFunctionName}"`,
-        ];
+        func.status = "error";
+        func.errors = [`Duplicate implementation for function "${func.javascriptFunctionName}"`];
       }
     });
   });
@@ -173,18 +168,18 @@ export function parseMetadata({
         index !== otherIndex &&
         func.metadata.name.toUpperCase() === otherFunc.metadata.name.toUpperCase()
       ) {
-        func.status = 'error';
+        func.status = "error";
         func.errors = [`Duplicate function names "${func.metadata.name}"`];
       }
     });
   });
 
   // If any functions have an error in them, then change out any other "good" ones into "skipped"
-  if (functions.find(func => func.status === 'error')) {
-    functions.forEach(func => {
-      if (func.status === 'good') {
-        func.status = 'skipped';
-        func.errors = ['Skipping due to errors in other functions in the same snippet.'];
+  if (functions.find((func) => func.status === "error")) {
+    functions.forEach((func) => {
+      if (func.status === "good") {
+        func.status = "skipped";
+        func.errors = ["Skipping due to errors in other functions in the same snippet."];
       }
     });
   }
@@ -195,11 +190,11 @@ export function parseMetadata({
 export function getCustomFunctionsRuntimeUrl(): string {
   const userSettings = getUserSettings();
 
-  return userSettings['customFunctionsRuntimeUrl'];
+  return userSettings["customFunctionsRuntimeUrl"];
 }
 
 export function getAllowCustomDataForDataTypeAny(): boolean {
   const userSettings = getUserSettings();
 
-  return userSettings['allowCustomDataForDatTypeAny'] ?? true;
+  return userSettings["allowCustomDataForDatTypeAny"] ?? true;
 }

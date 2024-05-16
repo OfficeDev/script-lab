@@ -1,9 +1,9 @@
-import { getUserSettings } from './userSettings';
+import { getUserSettings } from "./userSettings";
 
 export function getPythonConfigIfAny(): IPythonConfig | null {
   const userSettings = getUserSettings();
-  const allJupyterSettings = ['jupyter.url', 'jupyter.token', 'jupyter.notebook'].map(
-    settingName => userSettings[settingName],
+  const allJupyterSettings = ["jupyter.url", "jupyter.token", "jupyter.notebook"].map(
+    (settingName) => userSettings[settingName],
   );
 
   const countOfFilledOutSettings = allJupyterSettings.filter(

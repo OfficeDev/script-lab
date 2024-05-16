@@ -1,7 +1,7 @@
-import 'core-js/fn/array/find';
+import "core-js/fn/array/find";
 
-import { currentRunnerUrl } from 'common/lib/environment';
-import { CF_HEARTBEAT_POLLING_INTERVAL } from 'common/lib/constants';
+import { currentRunnerUrl, sameOrigin, getOrigin } from "common/build/environment";
+import { CF_HEARTBEAT_POLLING_INTERVAL } from "common/build/constants";
 
 import {
   getCustomFunctionsLastRegisteredTimestamp,
@@ -10,18 +10,18 @@ import {
   readItem,
   writeItem,
   CF_LOGS_ROOT,
-} from 'common/lib/utilities/localStorage';
-import compileScript from 'common/lib/utilities/compile.script';
-import processLibraries from 'common/lib/utilities/process.libraries';
+} from "common/build/utilities/localStorage";
+import compileScript from "common/build/utilities/compile.script";
+import processLibraries from "common/build/utilities/process.libraries";
 import {
   parseMetadata,
   transformSolutionNameToCFNamespace,
   getCustomFunctionsRuntimeUrl,
-} from '../../utils/custom-functions';
-import { IFunction } from 'custom-functions-metadata';
-import { strictType } from 'common/lib/utilities/misc';
-import { findScript } from 'common/lib/utilities/solution';
-import { getPythonConfigIfAny } from '../../utils/python';
+} from "../../utils/custom-functions";
+import type { IFunction } from "common/build/custom-functions/parseTree";
+import { strictType } from "common/build/utilities/misc";
+import { findScript } from "common/build/utilities/solution";
+import { getPythonConfigIfAny } from "../../utils/python";
 
 export default function setup() {
   // ========================= REFRESH =================================//
@@ -29,7 +29,7 @@ export default function setup() {
     if (checkShouldUpdate()) {
       // if changes in the custom functions solutions are detected,
       // send the runner a {type: 'refresh'}
-      sendMessageToRunner({ type: 'refresh' });
+      sendMessageToRunner({ type: "refresh" });
     }
   }, CF_HEARTBEAT_POLLING_INTERVAL);
 
@@ -39,8 +39,8 @@ export default function setup() {
   }
 
   // ========================= LOGS =================================//
-  window.onmessage = event => {
-    if (event.origin !== currentRunnerUrl) {
+  window.onmessage = (event) => {
+    if (!sameOrigin(event.origin, currentRunnerUrl)) {
       // console.error(`Ignoring message from an invalid origin "${event.origin}"`);
       return;
     }
@@ -48,7 +48,7 @@ export default function setup() {
     const message: ICustomFunctionsHeartbeatMessage = JSON.parse(event.data);
 
     switch (message.type) {
-      case 'log':
+      case "log":
         addLog(message as ICustomFunctionsHeartbeatLogMessage);
         break;
       default:
@@ -57,12 +57,13 @@ export default function setup() {
   };
 
   // ========================= METADATA  =================================//
-  sendMessageToRunner({ type: 'metadata', payload: getMetadata() });
+  sendMessageToRunner({ type: "metadata", payload: getMetadata() });
 }
 
 // ========================= HELPERS  ==================================//
 function sendMessageToRunner(message: ICustomFunctionsHeartbeatMessage) {
-  window.parent.postMessage(JSON.stringify(message), currentRunnerUrl);
+  const runnerOrigin = getOrigin(currentRunnerUrl);
+  window.parent.postMessage(JSON.stringify(message), runnerOrigin);
 }
 
 function getMetadata(): ICustomFunctionsIframeRunnerOnLoadPayload {
@@ -75,7 +76,7 @@ function getMetadata(): ICustomFunctionsIframeRunnerOnLoadPayload {
     python: [] as ISolution[],
   };
 
-  allTrustedCFSolutions.forEach(solution => {
+  allTrustedCFSolutions.forEach((solution) => {
     const scriptFile = findScript(solution);
     const groupToPushTo: ISolution[] = cfSolutionsGroupedByLanguage[scriptFile.language];
     if (!groupToPushTo) {
@@ -95,7 +96,7 @@ function getMetadata(): ICustomFunctionsIframeRunnerOnLoadPayload {
           const script = scriptFile.content;
 
           const libraries = solution.files.find(
-            (file: IFile) => file.name === 'libraries.txt',
+            (file: IFile) => file.name === "libraries.txt",
           )!.content;
 
           const metadata: Array<ICustomFunctionParseResult<IFunction>> = parseMetadata({
@@ -104,14 +105,14 @@ function getMetadata(): ICustomFunctionsIframeRunnerOnLoadPayload {
             fileContent: script,
           });
 
-          if (metadata.some(item => item.status !== 'good')) {
+          if (metadata.some((item) => item.status !== "good")) {
             return null;
           }
 
           return strictType<ICustomFunctionsIframeRunnerTypeScriptMetadata>({
             solutionId: solution.id,
             namespace: namespace,
-            functions: metadata.map(item => ({
+            functions: metadata.map((item) => ({
               fullId: item.metadata.id,
               fullDisplayName: item.metadata.name,
               javascriptFunctionName: item.javascriptFunctionName,
@@ -128,10 +129,9 @@ function getMetadata(): ICustomFunctionsIframeRunnerOnLoadPayload {
           return null;
         }
       })
-      .filter(x => x !== null),
+      .filter((x) => x !== null),
 
-    pythonConfig:
-      cfSolutionsGroupedByLanguage.python.length === 0 ? null : getPythonConfigIfAny(),
+    pythonConfig: cfSolutionsGroupedByLanguage.python.length === 0 ? null : getPythonConfigIfAny(),
 
     customFunctionsRuntimeUrl: getCustomFunctionsRuntimeUrl(),
   };
@@ -139,9 +139,9 @@ function getMetadata(): ICustomFunctionsIframeRunnerOnLoadPayload {
 
 function loadAllCFSolutions(): ISolution[] {
   return getAllLocalStorageKeys()
-    .filter(key => key.indexOf(SOLUTION_ROOT) === 0)
-    .map(key => key.replace(SOLUTION_ROOT, ''))
-    .map(id => readItem(SOLUTION_ROOT, id) as ISolution)
+    .filter((key) => key.indexOf(SOLUTION_ROOT) === 0)
+    .map((key) => key.replace(SOLUTION_ROOT, ""))
+    .map((id) => readItem(SOLUTION_ROOT, id) as ISolution)
     .filter((solution: ISolution) => solution.options.isCustomFunctionsSolution);
 }
 

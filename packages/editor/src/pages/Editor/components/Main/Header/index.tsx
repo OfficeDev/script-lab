@@ -1,32 +1,32 @@
 // general 3rd party
-import Clipboard from 'clipboard';
-import YAML from 'js-yaml';
+import Clipboard from "clipboard";
+import YAML from "js-yaml";
 
 // general 1st party
-import { convertSolutionToSnippet } from '../../../../../utils';
+import { convertSolutionToSnippet } from "../../../../../utils";
 
 // React
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
 // office-ui-fabric-react
-import { MessageBarType } from 'office-ui-fabric-react/lib/components/MessageBar';
-import { Spinner, SpinnerSize } from 'office-ui-fabric-react/lib/Spinner';
-import { PersonaSize, PersonaCoin } from 'office-ui-fabric-react/lib/Persona';
+import { MessageBarType } from "office-ui-fabric-react/lib/components/MessageBar";
+import { Spinner, SpinnerSize } from "office-ui-fabric-react/lib/Spinner";
+import { PersonaSize, PersonaCoin } from "office-ui-fabric-react/lib/Persona";
 
 // common
-import CommonHeader from 'common/lib/components/Header';
-import { ThemeContext } from 'common/lib/components/Theme';
-import CopyableToClipboard from 'common/lib/components/Clipboard/CopyableToClipboard';
+import CommonHeader from "common/build/components/Header";
+import { ThemeContext } from "common/build/components/Theme";
+import CopyableToClipboard from "common/build/components/Clipboard/CopyableToClipboard";
 
 // local
-import SolutionSettings from './SolutionSettings';
+import SolutionSettings from "./SolutionSettings";
 
 // redux
-import { connect } from 'react-redux'; // Note, avoid the temptation to include '@types/react-redux', it will break compile-time!
-import { Dispatch } from 'redux';
-import { IState as IReduxState } from '../../../store/reducer';
-import { actions, selectors } from '../../../store';
-import { IHeaderItem } from '../../../store/header/selectors';
+import { connect } from "react-redux"; // Note, avoid the temptation to include '@types/react-redux', it will break compile-time!
+import { Dispatch } from "redux";
+import { IState as IReduxState } from "../../../store/reducer";
+import { actions, selectors } from "../../../store";
+import { IHeaderItem } from "../../../store/header/selectors";
 
 export const convertActionCreatorToOnClick = (
   item: IHeaderItem,
@@ -40,7 +40,7 @@ export const convertActionCreatorToOnClick = (
         ...item.subMenuProps,
         items:
           item.subMenuProps.items !== undefined
-            ? item.subMenuProps.items.map(subItem => ({
+            ? item.subMenuProps.items.map((subItem) => ({
                 ...subItem,
                 onClick: subItem.actionCreator
                   ? () => dispatch(subItem.actionCreator())
@@ -72,8 +72,7 @@ class Header extends Component<IProps, IState> {
   clipboard: Clipboard;
   state: IState = {};
 
-  getSnippetYAML = () =>
-    YAML.safeDump(convertSolutionToSnippet(this.props.activeSolution));
+  getSnippetYAML = () => YAML.dump(convertSolutionToSnippet(this.props.activeSolution));
 
   showSolutionSettings = () => this.setState({ isSolutionSettingsVisible: true });
   hideSolutionSettings = () => this.setState({ isSolutionSettingsVisible: false });
@@ -96,19 +95,19 @@ class Header extends Component<IProps, IState> {
 
     return {
       account: () => (
-        <div style={{ width: '28px', overflow: 'hidden' }}>
+        <div style={{ width: "28px", overflow: "hidden" }}>
           {isLoggingInOrOut ? (
             <Spinner size={SpinnerSize.medium} />
           ) : (
             <ThemeContext.Consumer>
-              {theme => (
+              {(theme) => (
                 <PersonaCoin
                   imageUrl={profilePicUrl}
                   size={PersonaSize.size28}
                   initialsColor="white"
                   styles={{
                     initials: {
-                      color: (theme && theme.primary) || 'black',
+                      color: (theme && theme.primary) || "black",
                     },
                   }}
                 />
@@ -141,7 +140,7 @@ class Header extends Component<IProps, IState> {
         <CommonHeader
           items={items.map((item: IHeaderItem) => {
             const renderedItem = this.renderItem(item);
-            if (item.key === 'solution-name') {
+            if (item.key === "solution-name") {
               return {
                 ...renderedItem,
                 onClick: this.showSolutionSettings,
@@ -172,11 +171,11 @@ export default connect(
   (dispatch: Dispatch) => ({
     dispatch,
     notifyClipboardCopySuccess: () =>
-      dispatch(actions.messageBar.show({ text: 'Snippet copied to clipboard.' })),
+      dispatch(actions.messageBar.show({ text: "Snippet copied to clipboard." })),
     notifyClipboardCopyFailure: () =>
       dispatch(
         actions.messageBar.show({
-          text: 'Snippet failed to copy to clipboard.',
+          text: "Snippet failed to copy to clipboard.",
           style: MessageBarType.error,
         }),
       ),

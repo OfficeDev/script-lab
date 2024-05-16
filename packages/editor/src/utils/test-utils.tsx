@@ -1,17 +1,17 @@
-import React, { ReactElement } from 'react';
-import { render } from 'react-testing-library';
-import { Provider } from 'react-redux';
+import React, { ReactElement } from "react";
+import { render } from "react-testing-library";
+import { Provider } from "react-redux";
 
-import Theme from 'common/lib/components/Theme';
-import configureStore from '../pages/Editor/store/configureStore';
-import { IState } from '../pages/Editor/store/reducer';
+import Theme from "common/build/components/Theme";
+import configureStore from "../pages/Editor/store/configureStore";
+import { IState } from "../pages/Editor/store/reducer";
 
-export const renderWithTheme = node => {
-  return render(<Theme host={'EXCEL'}>{node}</Theme>);
+export const renderWithTheme = (node) => {
+  return render(<Theme host={"EXCEL"}>{node}</Theme>);
 };
 
 // re-export everything
-export * from 'react-testing-library';
+export * from "react-testing-library";
 
 export const renderWithRedux = (
   ui: ReactElement<any>,

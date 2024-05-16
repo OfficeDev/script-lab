@@ -1,4 +1,4 @@
-import * as log from '../log';
+import * as log from "../log";
 
 declare namespace OfficeExtension {
   interface HttpRequestInfo {
@@ -77,14 +77,14 @@ interface JupyterWebSocketMessageExecuteReplyContent {
 }
 
 enum JupyterWebSocketMessageExecuteReplyContentStatus {
-  ok = 'ok',
-  error = 'error',
+  ok = "ok",
+  error = "error",
 }
 
 enum JupyterWebSocketMessageType {
-  execute_result = 'execute_result',
-  stream = 'stream',
-  execute_reply = 'execute_reply',
+  execute_result = "execute_result",
+  stream = "stream",
+  execute_reply = "execute_reply",
 }
 /*
 var msg =
@@ -131,70 +131,70 @@ export class JupyterNotebook {
   }
 
   private connect(): Promise<void> {
-    const url = Util.combineUrl(this.m_conn.baseUrl, 'api/sessions');
+    const url = Util.combineUrl(this.m_conn.baseUrl, "api/sessions");
     const sessionCreationInfo = {
       path: this.m_path,
-      type: 'notebook',
-      name: '',
+      type: "notebook",
+      name: "",
       kernel: {
         id: null,
-        name: 'python3',
+        name: "python3",
       },
     };
 
     return fetch(url, {
       headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'token ' + this.m_conn.token,
+        "Content-Type": "application/json",
+        Authorization: "token " + this.m_conn.token,
       },
-      method: 'POST',
-      cache: 'no-cache',
+      method: "POST",
+      cache: "no-cache",
       body: JSON.stringify(sessionCreationInfo),
     })
-      .then(response => response.json())
-      .then(returnData => {
+      .then((response) => response.json())
+      .then((returnData) => {
         this.m_sessionId = returnData.id;
         this.m_kernelId = returnData.kernel.id;
         this.m_channelSessionId = Util.uuid();
 
         let wsUrl: string;
-        if (this.m_conn.baseUrl.substr(0, 'http://'.length) === 'http://') {
-          wsUrl = 'ws://' + this.m_conn.baseUrl.substr('http://'.length);
-        } else if (this.m_conn.baseUrl.substr(0, 'https://'.length) === 'https://') {
-          wsUrl = 'wss://' + this.m_conn.baseUrl.substr('https://'.length);
+        if (this.m_conn.baseUrl.substr(0, "http://".length) === "http://") {
+          wsUrl = "ws://" + this.m_conn.baseUrl.substr("http://".length);
+        } else if (this.m_conn.baseUrl.substr(0, "https://".length) === "https://") {
+          wsUrl = "wss://" + this.m_conn.baseUrl.substr("https://".length);
         }
 
         wsUrl = Util.combineUrl(
           wsUrl,
-          'api/kernels/' +
+          "api/kernels/" +
             this.m_kernelId +
-            '/channels?token=' +
+            "/channels?token=" +
             this.m_conn.token +
-            '&session_id=' +
+            "&session_id=" +
             this.m_channelSessionId,
         );
-        Util.log('WebSocket url:' + wsUrl);
-        return new Promise<void>(resolve => {
+        Util.log("WebSocket url:" + wsUrl);
+        return new Promise<void>((resolve) => {
           this.m_ws = new WebSocket(wsUrl);
           this.m_ws.onopen = () => {
-            Util.log('onopen');
+            Util.log("onopen");
             resolve();
           };
           this.m_ws.onmessage = (e: MessageEvent) => {
-            Util.log('onmessage');
-            if (typeof e.data === 'string') {
+            Util.log("onmessage");
+            if (typeof e.data === "string") {
               Util.log(e.data);
               const msg: JupyterWebSocketMessage = JSON.parse(e.data);
               this.handleWebSocketMessage(msg);
             } else {
-              Util.log('unknown message');
+              Util.log("unknown message");
             }
           };
           this.m_ws.onclose = () => {
-            Util.log('onclose');
+            Util.log("onclose");
           };
           this.m_ws.onerror = () => {
-            Util.log('onerror');
+            Util.log("onerror");
           };
         });
       });
@@ -219,7 +219,7 @@ export class JupyterNotebook {
       };
 
       const p = new Promise<string>((resolve, reject) => {
-        const msgId = this.sendShellMessage('execute_request', content, null);
+        const msgId = this.sendShellMessage("execute_request", content, null);
         this.m_executePromiseMap[msgId] = { resolve: resolve, reject: reject };
       });
 
@@ -228,9 +228,9 @@ export class JupyterNotebook {
   }
 
   private sendShellMessage(msgType: string, content: any, metadata: any): string {
-    const msg = this.buildMessage('shell', msgType, content, metadata);
+    const msg = this.buildMessage("shell", msgType, content, metadata);
     const stringMessage = JSON.stringify(msg);
-    Util.log('sending:' + stringMessage);
+    Util.log("sending:" + stringMessage);
     this.m_ws.send(stringMessage);
     return msg.msg_id;
   }
@@ -245,10 +245,10 @@ export class JupyterNotebook {
     const msg = {
       header: {
         msg_id: msgId,
-        username: 'username',
+        username: "username",
         session: this.m_channelSessionId,
         msg_type: msgType,
-        version: '5.2',
+        version: "5.2",
       },
       msg_id: msgId,
       msg_type: msgType,
@@ -263,14 +263,14 @@ export class JupyterNotebook {
 
   private handleWebSocketMessage(msg: JupyterWebSocketMessage) {
     switch (msg.channel) {
-      case 'shell':
+      case "shell":
         return this.handleShellReply(msg);
-      case 'iopub':
+      case "iopub":
         return this.handleIopubMessage(msg);
-      case 'stdin':
+      case "stdin":
         return this.handleInputRequest(msg);
       default:
-        console.error('unrecognized message channel', msg.channel, msg);
+        console.error("unrecognized message channel", msg.channel, msg);
     }
   }
 
@@ -283,12 +283,10 @@ export class JupyterNotebook {
         delete this.m_executePromiseMap[parentMsgId];
         if (content.status == JupyterWebSocketMessageExecuteReplyContentStatus.ok) {
           p.resolve(null);
-        } else if (
-          content.status == JupyterWebSocketMessageExecuteReplyContentStatus.error
-        ) {
-          p.reject(content.ename + ':' + content.evalue);
+        } else if (content.status == JupyterWebSocketMessageExecuteReplyContentStatus.error) {
+          p.reject(content.ename + ":" + content.evalue);
         } else {
-          console.error('unrecognized message status', content.status);
+          console.error("unrecognized message status", content.status);
         }
       }
     }
@@ -297,20 +295,20 @@ export class JupyterNotebook {
   private handleIopubMessage(msg: JupyterWebSocketMessage) {
     if (msg.msg_type === JupyterWebSocketMessageType.execute_result) {
       const content: JuypterWebSocketMessageExecuteResultContent = msg.content;
-      const text = content.data['text/plain'];
+      const text = content.data["text/plain"];
       const parentMsgId = msg.parent_header.msg_id;
       const p = this.m_executePromiseMap[parentMsgId];
-      Util.log('ExecuteResult=' + text);
+      Util.log("ExecuteResult=" + text);
       if (p) {
         delete this.m_executePromiseMap[parentMsgId];
         p.resolve(text);
       }
     } else if (msg.msg_type == JupyterWebSocketMessageType.stream) {
       const content: JupyterWebSocketMessageStreamResultContent = msg.content;
-      if (content.name === 'stdout') {
+      if (content.name === "stdout") {
         let text = content.text;
         if (!Util.isNullOrEmptyString(text)) {
-          text = text.replace('\\n', '');
+          text = text.replace("\\n", "");
         }
 
         Util.logConsole(text);
@@ -320,9 +318,9 @@ export class JupyterNotebook {
 
   private handleInputRequest(msg: JupyterWebSocketMessage) {
     const content: JupyterWebSocketMessageInputRequestContent = msg.content;
-    const officeApiPrefix = '[Office-Api]';
+    const officeApiPrefix = "[Office-Api]";
     if (
-      typeof content.prompt === 'string' &&
+      typeof content.prompt === "string" &&
       content.prompt.substr(0, officeApiPrefix.length) === officeApiPrefix
     ) {
       const requestInfoStr = content.prompt.substr(officeApiPrefix.length);
@@ -331,14 +329,14 @@ export class JupyterNotebook {
         (responseInfo: OfficeExtension.HttpResponseInfo) => {
           const responseInfoStr = JSON.stringify(responseInfo);
           const respMsg = this.buildMessage(
-            'stdin',
-            'input_reply',
+            "stdin",
+            "input_reply",
             { value: responseInfoStr },
             null,
           );
           respMsg.parent_header = msg.header;
           const strRespMsg = JSON.stringify(respMsg);
-          Util.log('sending:' + strRespMsg);
+          Util.log("sending:" + strRespMsg);
           this.m_ws.send(strRespMsg);
         },
       );
@@ -349,26 +347,26 @@ export class JupyterNotebook {
 export class PythonCodeHelper {
   static buildFunctionInvokeStatement(functionName: string, parameters: any[]): string {
     let ret = functionName;
-    ret += '(';
+    ret += "(";
     if (parameters) {
       for (let i = 0; i < parameters.length; i++) {
         if (i !== 0) {
-          ret += ', ';
+          ret += ", ";
         }
         ret += PythonCodeHelper.buildLiteral(parameters[i]);
       }
     }
-    ret += ')';
+    ret += ")";
 
     return ret;
   }
 
   static parseFromPythonLiteral(text: string): any {
-    if (text === 'True') {
+    if (text === "True") {
       return true;
-    } else if (text === 'False') {
+    } else if (text === "False") {
       return false;
-    } else if (text === 'None') {
+    } else if (text === "None") {
       return null;
     } else if (text.charAt(0) == "'") {
       return text.substr(1, text.length - 2);
@@ -378,42 +376,42 @@ export class PythonCodeHelper {
   }
 
   private static buildLiteral(value: any): string {
-    if (typeof value === 'undefined' || value === null) {
-      return 'None';
+    if (typeof value === "undefined" || value === null) {
+      return "None";
     }
 
-    if (typeof value === 'boolean') {
+    if (typeof value === "boolean") {
       if (value) {
-        return 'True';
+        return "True";
       } else {
-        return 'False';
+        return "False";
       }
     }
 
-    if (typeof value === 'number') {
+    if (typeof value === "number") {
       return JSON.stringify(value);
     }
 
-    if (typeof value === 'string') {
+    if (typeof value === "string") {
       // TODO: The Python string is different from JSON string
       // It uses \xhh instead of \uxxxx
       return JSON.stringify(value);
     }
 
     if (Array.isArray(value)) {
-      let ret = '[';
+      let ret = "[";
       for (let i = 0; i < value.length; i++) {
         if (i !== 0) {
-          ret = ret + ',';
+          ret = ret + ",";
         }
 
         ret = ret + PythonCodeHelper.buildLiteral(value[i]);
       }
 
-      return ret + ']';
+      return ret + "]";
     }
 
-    return 'None';
+    return "None";
   }
 }
 
@@ -423,19 +421,19 @@ export class Util {
       return parent;
     }
 
-    if (parent.substr(parent.length - 1) === '/') {
+    if (parent.substr(parent.length - 1) === "/") {
       parent = parent.substr(0, parent.length - 1);
     }
 
-    if (child.charAt(0) == '/') {
+    if (child.charAt(0) == "/") {
       child = child.substr(1);
     }
 
-    return parent + '/' + child;
+    return parent + "/" + child;
   }
 
   static isNullOrEmptyString(str: string): boolean {
-    if (typeof str === 'undefined' || str === null) {
+    if (typeof str === "undefined" || str === null) {
       return true;
     }
 
@@ -447,24 +445,24 @@ export class Util {
      * http://www.ietf.org/rfc/rfc4122.txt
      */
     const s = [];
-    const hexDigits = '0123456789abcdef';
+    const hexDigits = "0123456789abcdef";
     for (let i = 0; i < 32; i++) {
       s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
     }
-    s[12] = '4'; // bits 12-15 of the time_hi_and_version field to 0010
+    s[12] = "4"; // bits 12-15 of the time_hi_and_version field to 0010
     s[16] = hexDigits.substr((s[16] & 0x3) | 0x8, 1); // bits 6-7 of the clock_seq_hi_and_reserved to 01
 
-    const uuid = s.join('');
+    const uuid = s.join("");
     return uuid;
   }
 
   static log(text: string): void {
-    const logger = log.getLogger('Jupyter');
+    const logger = log.getLogger("Jupyter");
     logger.info(text);
   }
 
   static logResult(text: string): void {
-    const logger = log.getLogger('Jupyter');
+    const logger = log.getLogger("Jupyter");
     logger.info(text);
   }
 

@@ -1,12 +1,7 @@
-import React from 'react';
-import { withTheme } from 'styled-components';
-import {
-  Pivot,
-  PivotItem,
-  PivotLinkFormat,
-  PivotLinkSize,
-} from 'office-ui-fabric-react/lib/Pivot';
-import { PivotBarWrapper } from './styles';
+import React from "react";
+import { withTheme } from "styled-components";
+import { Pivot, PivotItem, PivotLinkFormat, PivotLinkSize } from "office-ui-fabric-react/lib/Pivot";
+import { PivotBarWrapper } from "./styles";
 
 export interface IPivotBarItem {
   key: string;
@@ -60,23 +55,23 @@ class PivotBar extends React.Component<IProps> {
             link: {
               backgroundColor: backgroundColor || theme.primaryDarker,
               selectors: {
-                ':hover': { backgroundColor: 'rgba(0, 0, 0, 0.1)' },
-                ':active': { backgroundColor: selectedColor || theme.primaryDarkest },
+                ":hover": { backgroundColor: "rgba(0, 0, 0, 0.1)" },
+                ":active": { backgroundColor: selectedColor || theme.primaryDarkest },
               },
             },
             linkIsSelected: {
               backgroundColor: selectedColor || theme.primaryDarkest,
               selectors: {
-                ':before': {
+                ":before": {
                   borderBottom: `${hideUnderline ? 0 : 2}px solid ${theme.white}`,
                 },
               },
             },
-            linkContent: { color: theme.white, fontWeight: '400' },
-            icon: { fontSize: '1.6rem' },
+            linkContent: { color: theme.white, fontWeight: "400" },
+            icon: { fontSize: "1.6rem" },
           }}
         >
-          {items.map(item => (
+          {items.map((item) => (
             <PivotItem
               key={item.key}
               itemKey={item.key}

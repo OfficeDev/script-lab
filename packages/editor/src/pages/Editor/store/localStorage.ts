@@ -1,17 +1,16 @@
-import flatten from 'lodash/flatten';
+import flatten from "lodash/flatten";
 
-import { IState as IGitHubState } from './github/reducer';
-import { IState } from './reducer';
-import selectors from './selectors';
-import { convertSnippetToSolution } from '../../../utils';
-import { localStorageKeys } from 'common/lib/constants';
-import { SETTINGS_SOLUTION_ID, NULL_SOLUTION_ID } from '../../../constants';
-import { getSettingsSolutionAndFiles } from './settings/utilities';
-import { verifySettings } from './settings/sagas';
-import { getBoilerplate } from '../../../newSolutionData';
-import ensureFreshLocalStorage from 'common/lib/utilities/ensure.fresh.local.storage';
-import { getProfileInfo } from '../services/github';
-import { HostType } from '@microsoft/office-js-helpers';
+import { IState as IGitHubState } from "./github/reducer";
+import { IState } from "./reducer";
+import selectors from "./selectors";
+import { convertSnippetToSolution } from "../../../utils";
+import { localStorageKeys } from "common/build/constants";
+import { SETTINGS_SOLUTION_ID, NULL_SOLUTION_ID } from "../../../constants";
+import { getSettingsSolutionAndFiles } from "./settings/utilities";
+import { verifySettings } from "./settings/sagas";
+import { getBoilerplate } from "../../../newSolutionData";
+import { getProfileInfo } from "../services/github";
+import { HostType } from "common/build/helpers/officeJsHost";
 
 import {
   SOLUTION_ROOT,
@@ -21,11 +20,8 @@ import {
   readItem,
   deleteItem,
   getAllLocalStorageKeys,
-} from 'common/lib/utilities/localStorage';
-import {
-  USER_SETTINGS_LOCAL_STORAGE_KEY,
-  getUserSettings,
-} from '../../../utils/userSettings';
+} from "common/build/utilities/localStorage";
+import { USER_SETTINGS_LOCAL_STORAGE_KEY, getUserSettings } from "../../../utils/userSettings";
 
 interface IStoredGitHubState {
   token: string | null;
@@ -37,20 +33,18 @@ let lastSavedState: IState;
 
 export async function loadState(): Promise<Partial<IState>> {
   try {
-    ensureFreshLocalStorage();
-
     let { solutions, files } = loadAllSolutionsAndFiles();
 
     const userSettings = getUserSettings();
     const verifiedUserSettings = verifySettings(userSettings);
     const settingsSolAndFiles = getSettingsSolutionAndFiles(verifiedUserSettings);
-    solutions = { ...solutions, [SETTINGS_SOLUTION_ID]: settingsSolAndFiles.solution };
+    solutions = {
+      ...solutions,
+      [SETTINGS_SOLUTION_ID]: settingsSolAndFiles.solution,
+    };
     files = {
       ...files,
-      ...settingsSolAndFiles.files.reduce(
-        (all, file) => ({ ...all, [file.id]: file }),
-        {},
-      ),
+      ...settingsSolAndFiles.files.reduce((all, file) => ({ ...all, [file.id]: file }), {}),
     };
 
     const settingsState = {
@@ -60,7 +54,11 @@ export async function loadState(): Promise<Partial<IState>> {
 
     const github = await loadGitHubInfo();
 
-    return { solutions: { metadata: solutions, files }, settings: settingsState, github };
+    return {
+      solutions: { metadata: solutions, files },
+      settings: settingsState,
+      github,
+    };
   } catch (err) {
     console.error(err);
     const settings = getSettingsSolutionAndFiles();
@@ -78,7 +76,7 @@ export const saveState = (state: IState) => {
   // save solution
   if (selectors.editor.getActiveSolution(state).id !== NULL_SOLUTION_ID) {
     writeIfChanged(
-      state => selectors.editor.getActiveSolution(state, { withHiddenFiles: true }),
+      (state) => selectors.editor.getActiveSolution(state, { withHiddenFiles: true }),
       (solution: ISolution) => solution.id,
       state,
       lastSavedState,
@@ -112,23 +110,23 @@ export const saveState = (state: IState) => {
   });
   if (isRealSolution(activeSolution)) {
     writeIfChanged(
-      state => selectors.editor.getActiveSolution(state, { withHiddenFiles: true }),
+      (state) => selectors.editor.getActiveSolution(state, { withHiddenFiles: true }),
       (solution: ISolution) => `activeSolution_${solution.host}`,
       state,
       lastSavedState,
     );
   } else {
-    localStorage.setItem(`activeSolution_${host}`, 'null');
+    localStorage.setItem(`activeSolution_${host}`, "null");
   }
 
   const currentTimestamp = Number(
-    localStorage.getItem(localStorageKeys.editor.customFunctionsLastUpdatedCodeTimestamp),
+    localStorage.getItem(localStorageKeys.customFunctionsLastUpdatedCodeTimestamp),
   );
 
   // this is to fix a bug that prevents the CF dashboard from overwriting the timestamp with it's cached timestamp from boot
   if (selectors.solutions.getCustomFunctionsLastModifiedDate(state) >= currentTimestamp) {
     localStorage.setItem(
-      localStorageKeys.editor.customFunctionsLastUpdatedCodeTimestamp,
+      localStorageKeys.customFunctionsLastUpdatedCodeTimestamp,
       selectors.solutions.getCustomFunctionsLastModifiedDate(state).toString(),
     );
   }
@@ -151,11 +149,11 @@ async function loadGitHubInfo(): Promise<IGitHubState> {
     };
   }
 
-  const tokenStorage = localStorage.getItem('OAuth2Tokens');
+  const tokenStorage = localStorage.getItem("OAuth2Tokens");
   // Migration of old Script Lab tokens
   if (tokenStorage) {
     const parsedTokenStorage = JSON.parse(tokenStorage);
-    if (parsedTokenStorage && 'GitHub' in parsedTokenStorage) {
+    if (parsedTokenStorage && "GitHub" in parsedTokenStorage) {
       const token: string = parsedTokenStorage.GitHub.access_token;
       if (token) {
         const profileInfo = await getProfileInfo(token);
@@ -187,16 +185,14 @@ export function loadAllSolutionsAndFiles(): {
   let files: { [id: string]: IFile } = {};
 
   // checking for newest storage format
-  const solutionKeys = getAllLocalStorageKeys().filter(key =>
-    key.startsWith(SOLUTION_ROOT),
-  );
+  const solutionKeys = getAllLocalStorageKeys().filter((key) => key.startsWith(SOLUTION_ROOT));
   if (solutionKeys.length > 0) {
     solutionKeys
-      .map(key => key.replace(SOLUTION_ROOT, ''))
-      .map(id => loadSolution(id))
-      .forEach(solution => {
+      .map((key) => key.replace(SOLUTION_ROOT, ""))
+      .map((id) => loadSolution(id))
+      .forEach((solution) => {
         // add files
-        solution.files.forEach(file => {
+        solution.files.forEach((file) => {
           files[file.id] = file;
         });
         // add solution with file-ids
@@ -210,16 +206,16 @@ export function loadAllSolutionsAndFiles(): {
   } else {
     // No solutions detected in above format, attempting to look for older (circa Nov 2018) format
     // parsing for the load
-    solutions = JSON.parse(localStorage.getItem('solutions') || '{}');
-    files = JSON.parse(localStorage.getItem('files') || '{}');
+    solutions = JSON.parse(localStorage.getItem("solutions") || "{}");
+    files = JSON.parse(localStorage.getItem("files") || "{}");
 
     if (Object.keys(solutions).length === 0) {
       // the above format was not found
       // checking for Script Lab 2017 format snippets
 
-      loadLegacyScriptLabSnippets().forEach(solution => {
+      loadLegacyScriptLabSnippets().forEach((solution) => {
         // add files
-        solution.files.forEach(file => {
+        solution.files.forEach((file) => {
           files[file.id] = file;
         });
         // add solution with file-ids
@@ -234,24 +230,24 @@ export function loadAllSolutionsAndFiles(): {
 
     // writing those back for subsequent loads
     Object.keys(solutions)
-      .map(key => solutions[key])
-      .map(solution => ({
+      .map((key) => solutions[key])
+      .map((solution) => ({
         ...solution,
-        files: solution.files.map(fileId => files[fileId]),
+        files: solution.files.map((fileId) => files[fileId]),
       }))
-      .map(solution => writeItem(SOLUTION_ROOT, solution.id, solution));
+      .map((solution) => writeItem(SOLUTION_ROOT, solution.id, solution));
   }
 
   // removing legacy format after successful write of the data in the new format
-  localStorage.removeItem('solutions');
-  localStorage.removeItem('files');
+  localStorage.removeItem("solutions");
+  localStorage.removeItem("files");
 
   // SL2017
   Object.keys(HostType)
-    .map(key => HostType[key])
-    .forEach(host => localStorage.removeItem(`playground_${host}_snippets`));
+    .map((key) => HostType[key])
+    .forEach((host) => localStorage.removeItem(`playground_${host}_snippets`));
 
-  ['playground_log', 'playground_settings', 'playground_trusted_snippets'].forEach(key =>
+  ["playground_log", "playground_settings", "playground_trusted_snippets"].forEach((key) =>
     localStorage.removeItem(key),
   );
 
@@ -260,11 +256,13 @@ export function loadAllSolutionsAndFiles(): {
 
 function normalizeSolutions(solutions: {
   [id: string]: ISolutionWithFileIds;
-}): { [id: string]: ISolutionWithFileIds } {
-  const defaults = getBoilerplate('');
+}): {
+  [id: string]: ISolutionWithFileIds;
+} {
+  const defaults = getBoilerplate("");
   return Object.keys(solutions)
-    .filter(id => id !== NULL_SOLUTION_ID)
-    .map(key => solutions[key])
+    .filter((id) => id !== NULL_SOLUTION_ID)
+    .map((key) => solutions[key])
     .reduce(
       (newSolutions, solution) => ({
         ...newSolutions,
@@ -276,7 +274,7 @@ function normalizeSolutions(solutions: {
 
 function loadSolution(id: string): ISolution {
   const solution: ISolution = readItem(SOLUTION_ROOT, id);
-  const defaults = getBoilerplate('');
+  const defaults = getBoilerplate("");
   if (!solution.dateLastOpened) {
     solution.dateLastOpened = solution.dateLastModified;
   }
@@ -295,14 +293,12 @@ function loadSolution(id: string): ISolution {
 function loadLegacyScriptLabSnippets(): ISolution[] {
   return flatten(
     Object.keys(HostType)
-      .map(key => HostType[key])
-      .map(host => {
-        const snippets = JSON.parse(
-          localStorage.getItem(`playground_${host}_snippets`) || '{}',
-        );
+      .map((key) => HostType[key])
+      .map((host) => {
+        const snippets = JSON.parse(localStorage.getItem(`playground_${host}_snippets`) || "{}");
         return Object.keys(snippets)
-          .map(id => snippets[id])
-          .map(snippet => convertSnippetToSolution(snippet));
+          .map((id) => snippets[id])
+          .map((snippet) => convertSnippetToSolution(snippet));
       }),
   );
 }

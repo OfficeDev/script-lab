@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const Wrapper = styled.div`
   flex: 1;
@@ -12,7 +12,7 @@ export const NoLogsPlaceholderContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: ${props => props.theme.neutralPrimary};
+  color: ${(props) => props.theme.neutralPrimary};
 
   height: 100%;
   width: 100%;

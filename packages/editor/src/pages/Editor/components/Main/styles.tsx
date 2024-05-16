@@ -1,8 +1,8 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
-const scriptLabSplashScreenTransitionDuration:
-  | string
-  | null = window.localStorage.getItem('SCRIPT_LAB_SPLASH_SCREEN_TRANSITION');
+const scriptLabSplashScreenTransitionDuration: string | null = window.localStorage.getItem(
+  "SCRIPT_LAB_SPLASH_SCREEN_TRANSITION",
+);
 
 export const Layout = styled.div`
   height: 100vh;
@@ -14,7 +14,7 @@ export const Layout = styled.div`
 
   ${scriptLabSplashScreenTransitionDuration
     ? `transition: visibility 0s, opacity ${scriptLabSplashScreenTransitionDuration}s cubic-bezier(0.25, 0.46, 0.45, 0.94);`
-    : ''}
+    : ""}
 `;
 
 export const ContentWrapper = styled.div`
@@ -24,5 +24,5 @@ export const ContentWrapper = styled.div`
 
   overflow: hidden;
 
-  background: ${props => props.theme.neutralDark};
+  background: ${(props) => props.theme.neutralDark};
 `;

@@ -1,16 +1,17 @@
-import React from 'react';
-import { SearchBox } from 'office-ui-fabric-react/lib/SearchBox';
-import { DefaultButton } from 'office-ui-fabric-react/lib/Button';
-import { Label } from 'office-ui-fabric-react/lib/Label';
-import { MessageBar, MessageBarType } from 'office-ui-fabric-react/lib/MessageBar';
+import React from "react";
+import { SearchBox } from "office-ui-fabric-react/lib/SearchBox";
+import { DefaultButton } from "office-ui-fabric-react/lib/Button";
+import { Label } from "office-ui-fabric-react/lib/Label";
+import { MessageBar, MessageBarType } from "office-ui-fabric-react/lib/MessageBar";
 
-import Only from 'common/lib/components/Only';
-import { matchesSearch, composeSolutionId } from 'common/lib/utilities/string';
+import Only from "common/build/components/Only";
+import { matchesSearch, composeSolutionId } from "common/build/utilities/string";
 
-import Content from '../Content';
-import GalleryList from '../GalleryList';
+import Content from "../Content";
+import GalleryList from "../GalleryList";
+import { enableGitHub } from "common/build/constants";
 
-const localStorageKeyHasDismissedWarning = 'has_dismissed_local_storage_warning';
+const localStorageKeyHasDismissedWarning = "has_dismissed_local_storage_warning";
 
 interface IProps {
   solutions: ISolution[];
@@ -29,10 +30,8 @@ interface IState {
 
 class MySolutions extends React.Component<IProps> {
   state: IState = {
-    filterQueryLowercase: '',
-    localStorageWarningIsVisible: !localStorage.getItem(
-      localStorageKeyHasDismissedWarning,
-    ),
+    filterQueryLowercase: "",
+    localStorageWarningIsVisible: !localStorage.getItem(localStorageKeyHasDismissedWarning),
   };
 
   setFilterQuery = (filterQuery: string) =>
@@ -40,7 +39,7 @@ class MySolutions extends React.Component<IProps> {
 
   hideLocalStorageWarning = () => {
     this.setState({ localStorageWarningIsVisible: false }, () =>
-      localStorage.setItem(localStorageKeyHasDismissedWarning, 'true'),
+      localStorage.setItem(localStorageKeyHasDismissedWarning, "true"),
     );
   };
 
@@ -49,7 +48,7 @@ class MySolutions extends React.Component<IProps> {
     for (const solution of this.props.solutions) {
       if (
         matchesSearch(filterQuery, [
-          process.env.NODE_ENV === 'production'
+          process.env.NODE_ENV === "production"
             ? null
             : solution.id /* For Cypress test framework, need to include the solution ID so can search based on it */,
           solution.name,
@@ -98,15 +97,15 @@ class MySolutions extends React.Component<IProps> {
                 dismissButtonAriaLabel="Close"
                 onDismiss={this.hideLocalStorageWarning}
               >
-                Snippets you create get erased if you clear your browser cache. To save
-                snippets permanently, export them as gists from the Share menu.
+                Snippets you create get erased if you clear your browser cache. To save snippets
+                permanently, export them from the Share menu.
               </MessageBar>
             </Only>
           }
           items={solutions
-            .filter(solution =>
+            .filter((solution) =>
               matchesSearch(this.state.filterQueryLowercase, [
-                process.env.NODE_ENV === 'production'
+                process.env.NODE_ENV === "production"
                   ? null
                   : solution.id /* For Cypress test framework, need to include the solution ID so can search based on it */,
                 solution.name,
@@ -128,15 +127,12 @@ class MySolutions extends React.Component<IProps> {
         2) You have 1 or more gists.
         For signed in case but with empty gists, omit this section.
         */}
-        {(!isSignedIn || gistMetadata.length > 0) && (
+        {enableGitHub() && (!isSignedIn || gistMetadata.length > 0) && (
           <GalleryList
             title="My shared gists on GitHub"
             items={gistMetadata
               .filter((meta: ISharedGistMetadata) =>
-                matchesSearch(this.state.filterQueryLowercase, [
-                  meta.title,
-                  meta.description,
-                ]),
+                matchesSearch(this.state.filterQueryLowercase, [meta.title, meta.description]),
               )
               .map((gist, index) => ({
                 key: gist.id,
@@ -147,8 +143,8 @@ class MySolutions extends React.Component<IProps> {
               }))}
           />
         )}
-        {!isSignedIn && (
-          <div style={{ margin: '1rem', marginLeft: '2rem' }}>
+        {enableGitHub() && !isSignedIn && (
+          <div style={{ margin: "1rem", marginLeft: "2rem" }}>
             <Label>You must be logged in to see your gists</Label>
             <DefaultButton
               text="Sign In"

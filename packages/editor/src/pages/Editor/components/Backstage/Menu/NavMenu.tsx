@@ -1,8 +1,8 @@
-import React from 'react';
-import { withTheme } from 'styled-components';
-import { Nav, INavStyleProps, INavStyles } from 'office-ui-fabric-react/lib/Nav';
-import { getFocusStyle, mergeStyles } from 'office-ui-fabric-react/lib/Styling';
-import IMenuItem from './IMenuItem';
+import React from "react";
+import { withTheme } from "styled-components";
+import { Nav, INavStyleProps, INavStyles } from "office-ui-fabric-react/lib/Nav";
+import { getFocusStyle, mergeStyles } from "office-ui-fabric-react/lib/Styling";
+import IMenuItem from "./IMenuItem";
 
 export interface IProps {
   items: IMenuItem[];
@@ -16,23 +16,16 @@ class NavMenu extends React.Component<IProps> {
     const { isSelected } = props;
 
     return {
-      root: { width: '22rem', height: '100vh', background: theme.primary },
+      root: { width: "22rem", height: "100vh", background: theme.primary },
       link: mergeStyles(
-        getFocusStyle(
-          props.theme,
-          undefined,
-          undefined,
-          undefined,
-          theme.white,
-          undefined,
-        ),
+        getFocusStyle(props.theme, undefined, undefined, undefined, theme.white, undefined),
         {
           backgroundColor: theme.primary,
           color: `${theme.white} !important`,
-          height: '7rem',
-          paddingLeft: '2rem',
+          height: "7rem",
+          paddingLeft: "2rem",
           selectors: {
-            '.ms-Nav-compositeLink:hover &': {
+            ".ms-Nav-compositeLink:hover &": {
               backgroundColor: theme.primaryDark,
             },
           },
@@ -40,10 +33,10 @@ class NavMenu extends React.Component<IProps> {
         isSelected && {
           backgroundColor: theme.primaryDark,
           selectors: {
-            '&:after': {
+            "&:after": {
               borderLeft: `2px solid ${theme.white}`,
               content: '""',
-              position: 'absolute',
+              position: "absolute",
               top: 0,
               right: 0,
               bottom: 0,
@@ -63,9 +56,9 @@ class NavMenu extends React.Component<IProps> {
         selectedKey={selectedKey}
         groups={[
           {
-            links: items.map(item => ({
-              'data-testid': item['data-testid'],
-              name: item.label || '',
+            links: items.map((item) => ({
+              "data-testid": item["data-testid"],
+              name: item.label || "",
               key: item.key,
               icon: item.icon,
               iconProps: {
@@ -73,14 +66,14 @@ class NavMenu extends React.Component<IProps> {
                 styles: {
                   root: {
                     color: `${theme.white} !important`,
-                    marginRight: '1rem',
+                    marginRight: "1rem",
                   },
                 },
               },
-              style: { visibility: item.isHidden ? 'hidden' : 'visible' },
+              style: { visibility: item.isHidden ? "hidden" : "visible" },
               ariaLabel: item.ariaLabel,
               onClick: item.onClick,
-              url: '',
+              url: "",
             })),
           },
         ]}

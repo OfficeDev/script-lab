@@ -1,7 +1,7 @@
-import { IState } from '../reducer';
-import { createSelector } from 'reselect';
-import { Utilities, HostType, PlatformType } from '@microsoft/office-js-helpers';
-import { isPoppedOut } from 'common/lib/utilities/popout.control';
+import { IState } from "../reducer";
+import { createSelector } from "reselect";
+import { Utilities, HostType, PlatformType } from "common/build/helpers/officeJsHost";
+import { isPoppedOut } from "common/build/utilities/popout.control";
 
 const getHostsMatch = (state: IState): boolean => state.host === Utilities.host;
 

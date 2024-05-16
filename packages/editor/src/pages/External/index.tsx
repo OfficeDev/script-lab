@@ -1,10 +1,10 @@
-import React from 'react';
-import { PrimaryButton } from 'office-ui-fabric-react/lib/Button';
-import styled from 'styled-components';
+import React from "react";
+import { PrimaryButton } from "office-ui-fabric-react/lib/Button";
+import styled from "styled-components";
 
-import safeExternalUrls from 'common/lib/safe.external.urls';
+import { safeExternalUrls } from "common/build/safeExternalUrls";
 
-import { hideSplashScreen } from 'common/lib/utilities/splash.screen';
+import { hideSplashScreen } from "common/build/utilities/splash.screen";
 
 const External = (): React.ReactElement<any> | null => {
   // Note: using just an indexOf of whatever follows "#/external-page?destination="
@@ -16,7 +16,7 @@ const External = (): React.ReactElement<any> | null => {
   //    This means that the final URL ends up with two "?" on the URL,
   //    which -- though weird -- seems to work just fine.
   const href = window.location.href;
-  const searchFor = '#/external-page?destination=';
+  const searchFor = "#/external-page?destination=";
   const indexOf = href.indexOf(searchFor);
   if (indexOf < 0) {
     // This should never happen.  If it does, just quit and leave a blank progress spinner.
@@ -31,11 +31,11 @@ const External = (): React.ReactElement<any> | null => {
     return (
       <Wrapper>
         <PrimaryButton
-          style={{ margin: 'auto' }}
+          style={{ margin: "auto" }}
           text="Open link in new window"
           onClick={() => {
             window.open(destination);
-            Office.context.ui.messageParent('close');
+            Office.context.ui.messageParent("close");
           }}
         />
       </Wrapper>

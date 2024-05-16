@@ -1,8 +1,8 @@
-import React from 'react';
-import { withTheme } from 'styled-components';
+import React from "react";
+import { withTheme } from "styled-components";
 
-import { Checkbox } from 'office-ui-fabric-react/lib/Checkbox';
-import { IconButton } from 'office-ui-fabric-react/lib/Button';
+import { Checkbox } from "office-ui-fabric-react/lib/Checkbox";
+import { IconButton } from "office-ui-fabric-react/lib/Button";
 
 import {
   Wrapper,
@@ -11,13 +11,13 @@ import {
   HeaderWrapper,
   NoLogsPlaceholder,
   NoLogsPlaceholderContainer,
-} from './styles';
-import HeaderFooterLayout from '../HeaderFooterLayout';
+} from "./styles";
+import HeaderFooterLayout from "../HeaderFooterLayout";
 
-import CopyToClipboardIconButton from '../Clipboard/CopyToClipboardIconButton';
-import Only from '../Only';
-import { stringifyPlusPlusOrErrorMessage } from '../../utilities/string';
-import LogItem from './LogItem';
+import CopyToClipboardIconButton from "../Clipboard/CopyToClipboardIconButton";
+import Only from "../Only";
+import { stringifyPlusPlusOrErrorMessage } from "../../utilities/string";
+import LogItem from "./LogItem";
 
 const MAX_LOGS_SHOWN = 100;
 
@@ -57,17 +57,17 @@ class Console extends React.Component<IPrivateProps, IState> {
 
   getTextToCopy = () =>
     this.props.logs
-      .map(item => {
-        let prefix = '';
-        if (item.severity === 'warn') {
-          prefix = '[WARNING]: ';
-        } else if (item.severity === 'error') {
-          prefix = '[ERROR]: ';
+      .map((item) => {
+        let prefix = "";
+        if (item.severity === "warn") {
+          prefix = "[WARNING]: ";
+        } else if (item.severity === "error") {
+          prefix = "[ERROR]: ";
         }
 
         return prefix + stringifyPlusPlusOrErrorMessage(item.message);
       })
-      .join('\n\n');
+      .join("\n\n");
 
   scrollToBottom() {
     if (this.state.shouldScrollToBottom && this.lastLog.current) {
@@ -103,9 +103,9 @@ class Console extends React.Component<IPrivateProps, IState> {
                 </CheckboxWrapper>
 
                 <IconButton
-                  iconProps={{ iconName: 'Clear' }}
-                  style={{ height: '3.2rem' }}
-                  styles={{ iconHovered: { color: '#b22222' } }}
+                  iconProps={{ iconName: "Clear" }}
+                  style={{ height: "3.2rem" }}
+                  styles={{ iconHovered: { color: "#b22222" } }}
                   title="Clear"
                   onClick={clearLogs}
                 />
@@ -119,16 +119,16 @@ class Console extends React.Component<IPrivateProps, IState> {
           {logItems.length === 0 ? (
             <NoLogsPlaceholderContainer>
               <NoLogsPlaceholder>
-                There are no logs to display. Use{' '}
+                There are no logs to display. Use{" "}
                 <pre
                   style={{
-                    fontFamily: 'Consolas, monaco, monospace',
-                    fontWeight: 'bold',
-                    display: 'inline',
+                    fontFamily: "Consolas, monaco, monospace",
+                    fontWeight: "bold",
+                    display: "inline",
                   }}
                 >
                   console.log()
-                </pre>{' '}
+                </pre>{" "}
                 to display logs here.
               </NoLogsPlaceholder>
             </NoLogsPlaceholderContainer>

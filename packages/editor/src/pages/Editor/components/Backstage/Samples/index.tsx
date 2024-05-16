@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
-import Only from 'common/lib/components/Only';
+import Only from "common/build/components/Only";
 
-import Content from '../Content';
-import GalleryList from '../GalleryList';
-import { SearchBox } from 'office-ui-fabric-react/lib/components/SearchBox';
-import { matchesSearch, composeSolutionId } from 'common/lib/utilities/string';
+import Content from "../Content";
+import GalleryList from "../GalleryList";
+import { SearchBox } from "office-ui-fabric-react/lib/components/SearchBox";
+import { matchesSearch, composeSolutionId } from "common/build/utilities/string";
 
 interface IProps {
   samplesByGroup: ISampleMetadataByGroup;
@@ -17,7 +17,7 @@ interface IState {
 }
 
 class Samples extends Component<IProps, IState> {
-  state: IState = { filterQueryLowercase: '' };
+  state: IState = { filterQueryLowercase: "" };
 
   setFilterQuery = (filterQuery: string) =>
     this.setState({ filterQueryLowercase: filterQuery.toLowerCase() });
@@ -48,7 +48,7 @@ class Samples extends Component<IProps, IState> {
     const { samplesByGroup, openSample } = this.props;
 
     const filteredSamplesByGroup =
-      this.state.filterQueryLowercase !== ''
+      this.state.filterQueryLowercase !== ""
         ? Object.keys(samplesByGroup).reduce(
             (all, group) => ({
               ...all,
@@ -65,10 +65,7 @@ class Samples extends Component<IProps, IState> {
         : samplesByGroup;
 
     return (
-      <Content
-        title="Samples"
-        description="Choose one of the samples below to get started."
-      >
+      <Content title="Samples" description="Choose one of the samples below to get started.">
         <Only when={samplesByGroup !== null && Object.keys(samplesByGroup).length > 0}>
           <>
             <SearchBox
@@ -78,7 +75,7 @@ class Samples extends Component<IProps, IState> {
               onSearch={this.focusOnFirstResult}
             />
             {Object.keys(filteredSamplesByGroup)
-              .map(group =>
+              .map((group) =>
                 filteredSamplesByGroup[group].length > 0 ? (
                   <GalleryList
                     key={group}

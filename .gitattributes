@@ -1,0 +1,23 @@
+* text=auto
+.gitattributes text
+*.css text eol=lf
+*.html text eol=lf
+*.js text eol=lf
+*.json text eol=lf
+*.kql text eol=lf
+*.lock text eol=lf
+*.md text eol=lf
+*.ts text eol=lf
+*.tsx text eol=lf
+*.txt text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+.npmrc text eol=lf
+
+*.cs text eol=crlf
+*.sln text eol=crlf
+*.csproj text eol=crlf
+
+
+*.png binary
+*.jpg binary

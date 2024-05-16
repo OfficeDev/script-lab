@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const BackstageWrapper = styled.div`
   display: flex;
@@ -6,7 +6,7 @@ export const BackstageWrapper = styled.div`
 
   position: absolute;
   top: 0;
-  background-color: ${props => props.theme.white};
+  background-color: ${(props) => props.theme.white};
   height: 100vh;
   width: 100%;
 
@@ -24,11 +24,11 @@ export const ContentWrapper = styled.div`
   overflow-y: auto;
 `;
 
-export const ContentTitle = styled.h1.attrs({ className: 'ms-font-xxl' })`
+export const ContentTitle = styled.h1.attrs({ className: "ms-font-xxl" })`
   margin-bottom: 2rem;
 `;
 
-export const ContentDescription = styled.h2.attrs({ className: 'ms-font-l' })`
+export const ContentDescription = styled.h2.attrs({ className: "ms-font-l" })`
   margin-top: 1.5rem;
   margin-bottom: 1.5rem;
 `;

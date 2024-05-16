@@ -25,7 +25,7 @@ interface ISolutionOptions {
 
 interface ISourceInformation {
   id: string;
-  origin: 'gist';
+  origin: "gist";
 }
 
 interface IFile extends IEditableFileProperties, ITimestamps {

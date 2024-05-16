@@ -1,11 +1,11 @@
 export function bufferToHexString(buffer: ArrayBuffer | Uint8Array) {
   return Array.from(buffer instanceof Uint8Array ? buffer : new Uint8Array(buffer))
-    .map(value => /* pad with, at most, two 0s */ ('00' + value.toString(16)).slice(-2))
-    .join('');
+    .map((value) => /* pad with, at most, two 0s */ ("00" + value.toString(16)).slice(-2))
+    .join("");
 }
 
 export function hexStringToBuffer(input: string) {
-  const numbers = input.match(/.{1,2}/g).map(item => parseInt(item, 16));
+  const numbers = input.match(/.{1,2}/g).map((item) => parseInt(item, 16));
   const buffer = new ArrayBuffer(numbers.length);
   const uint8array = new Uint8Array(buffer);
   numbers.forEach((num, index) => (uint8array[index] = num));

@@ -1,28 +1,22 @@
-import { takeEvery, put, select } from 'redux-saga/effects';
-import { getType, ActionType } from 'typesafe-actions';
-import { actions, selectors } from '../../store';
+import { takeEvery, put, select } from "redux-saga/effects";
+import { getType, ActionType } from "typesafe-actions";
+import { actions, selectors } from "../../store";
 import {
   getCurrentEnv,
   environmentDisplayNames,
   currentRunnerUrl,
   currentEditorUrl,
-} from 'common/lib/environment';
-import { showSplashScreen } from 'common/lib/utilities/splash.screen';
-import { openPopoutCodeEditor } from 'common/lib/utilities/popout.control';
-import { redirectEditorToOtherEnvironment } from 'common/lib/utilities/environment.redirector';
+} from "common/build/environment";
+import { showSplashScreen } from "common/build/utilities/splash.screen";
+import { openPopoutCodeEditor } from "common/build/utilities/popout.control";
+import { redirectEditorToOtherEnvironment } from "common/build/utilities/environment.redirector";
 
 export default function* miscWatcher() {
   yield takeEvery(getType(actions.misc.initialize), onInitializeSaga);
   yield takeEvery(getType(actions.misc.switchEnvironment), onSwitchEnvironmentSaga);
-  yield takeEvery(
-    getType(actions.misc.confirmSwitchEnvironment),
-    onConfirmSwitchEnvironmentSaga,
-  );
+  yield takeEvery(getType(actions.misc.confirmSwitchEnvironment), onConfirmSwitchEnvironmentSaga);
   yield takeEvery(getType(actions.misc.popOutEditor), onPopOutEditorSaga);
-  yield takeEvery(
-    getType(actions.misc.goToCustomFunctionsDashboard),
-    onGoToCustomFunctionsSaga,
-  );
+  yield takeEvery(getType(actions.misc.goToCustomFunctionsDashboard), onGoToCustomFunctionsSaga);
 }
 
 function* onInitializeSaga() {
@@ -30,9 +24,7 @@ function* onInitializeSaga() {
   yield put(actions.host.change(currentHost));
 }
 
-function* onSwitchEnvironmentSaga(
-  action: ActionType<typeof actions.misc.switchEnvironment>,
-) {
+function* onSwitchEnvironmentSaga(action: ActionType<typeof actions.misc.switchEnvironment>) {
   const newEnvironment = action.payload;
   const currentEnvironment = getCurrentEnv();
 
@@ -41,20 +33,20 @@ function* onSwitchEnvironmentSaga(
     const newEnvPretty = environmentDisplayNames[newEnvironment];
     const title = `Switch from ${currentEnvPretty} to ${newEnvPretty}?`;
     const subText =
-      'You are about to change your Script Lab environment and will not have access ' +
-      'to your saved local snippets until you return to this environment. ' +
-      'Are you sure you want to proceed?';
+      "You are about to change your Script Lab environment and will not have access " +
+      "to your saved local snippets until you return to this environment. " +
+      "Are you sure you want to proceed?";
 
     const buttons = [
       {
-        key: 'ok-button',
-        text: 'OK',
+        key: "ok-button",
+        text: "OK",
         isPrimary: true,
         action: actions.misc.confirmSwitchEnvironment(newEnvironment),
       },
       {
-        key: 'cancel-button',
-        text: 'Cancel',
+        key: "cancel-button",
+        text: "Cancel",
         isPrimary: false,
         action: actions.dialog.hide(),
       },
@@ -72,7 +64,7 @@ function* onConfirmSwitchEnvironmentSaga(
 }
 
 function* onPopOutEditorSaga() {
-  yield showSplashScreen('Navigating to the runner. Please wait...');
+  yield showSplashScreen("Navigating to the runner. Please wait...");
 
   openPopoutCodeEditor({
     onSuccess: () => (window.location.href = currentRunnerUrl),
@@ -90,6 +82,5 @@ function* onGoToCustomFunctionsSaga() {
   // And can't do a href-setting followed by a reload because on the Edge browser,
   //   it seems to cause the outer Office Online window to get redirected
   //   to the editor page (bug https://github.com/OfficeDev/script-lab/issues/691).
-  yield (window.location.href =
-    currentEditorUrl + '/custom-functions-with-back-button.html');
+  yield (window.location.href = `${currentEditorUrl}/custom-functions-with-back-button.html`);
 }

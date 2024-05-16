@@ -1,26 +1,26 @@
-import React from 'react';
-import styled from 'styled-components';
-import { Utilities, HostType } from '@microsoft/office-js-helpers';
-import queryString from 'query-string';
-import cloneDeep from 'lodash/cloneDeep';
+import React from "react";
+import styled from "styled-components";
+import { Utilities, HostType } from "common/build/helpers/officeJsHost";
+import queryString from "query-string";
+import cloneDeep from "lodash/cloneDeep";
 
-import Theme from 'common/lib/components/Theme';
-import Console from 'common/lib/components/Console';
-import HeaderFooterLayout from 'common/lib/components/HeaderFooterLayout';
-import { SCRIPT_URLS, IEditorHeartbeatToRunnerResponse } from 'common/lib/constants';
-import { OFFICE_JS_URL_QUERY_PARAMETER_KEY } from 'common/lib/utilities/script-loader/constants';
+import Theme from "common/build/components/Theme";
+import Console from "common/build/components/Console";
+import HeaderFooterLayout from "common/build/components/HeaderFooterLayout";
+import { SCRIPT_URLS, IEditorHeartbeatToRunnerResponse } from "common/build/constants";
+import { OFFICE_JS_URL_QUERY_PARAMETER_KEY } from "common/build/utilities/script-loader/constants";
 
-import Heartbeat from './Heartbeat';
-import Header from './Header';
-import Footer from './Footer';
-import Only from 'common/lib/components/Only';
+import Heartbeat from "./Heartbeat";
+import Header from "./Header";
+import Footer from "./Footer";
+import Only from "common/build/components/Only";
 
-import SnippetContainer from '../SnippetContainer';
-import { currentEditorUrl } from 'common/lib/environment';
-import processLibraries from 'common/lib/utilities/process.libraries';
-import { showSplashScreen, hideSplashScreen } from 'common/lib/utilities/splash.screen';
-import { openPopoutCodeEditor } from 'common/lib/utilities/popout.control';
-import { SILENT_SNIPPET_SWITCHING } from '../../../../constants';
+import SnippetContainer from "../SnippetContainer";
+import { currentEditorUrl } from "common/build/environment";
+import processLibraries from "common/build/utilities/process.libraries";
+import { showSplashScreen, hideSplashScreen } from "common/build/utilities/splash.screen";
+import { openPopoutCodeEditor } from "common/build/utilities/popout.control";
+import { SILENT_SNIPPET_SWITCHING } from "../../../../constants";
 
 const AppWrapper = styled.div`
   height: 100vh;
@@ -72,7 +72,7 @@ export class App extends React.Component<{}, IState> {
   }
 
   monkeypatchConsole = () => {
-    ['info', 'warn', 'error', 'log'].forEach(method => {
+    ["info", "warn", "error", "log"].forEach((method) => {
       const oldMethod = window.console[method];
       window.console[method] = (...args: any[]) => {
         try {
@@ -83,7 +83,7 @@ export class App extends React.Component<{}, IState> {
           // Silently ignore.  We'll still get notified via the UI anyway!
         }
 
-        args.forEach(object =>
+        args.forEach((object) =>
           /* Note, the setTimeout is critical to make sure the UI doesn't freeze! */
           setTimeout(
             () =>
@@ -134,9 +134,7 @@ export class App extends React.Component<{}, IState> {
     this.setState({ solution, logs: [] });
   };
 
-  onReceivedMessageToPassToUserSnippet = (
-    message: IEditorHeartbeatToRunnerResponse,
-  ): void => {
+  onReceivedMessageToPassToUserSnippet = (message: IEditorHeartbeatToRunnerResponse): void => {
     this.snippetContainerRef.current.passMessageThroughToIframe(message);
   };
 
@@ -146,9 +144,7 @@ export class App extends React.Component<{}, IState> {
         solution: { ...this.state.solution, dateLastModified: Date.now() },
         logs: [],
       });
-      informSnippetSwitch(
-        `Your snippet '${this.state.solution.name}' has been reloaded.`,
-      );
+      informSnippetSwitch(`Your snippet '${this.state.solution.name}' has been reloaded.`);
     }
   };
 
@@ -184,7 +180,7 @@ export class App extends React.Component<{}, IState> {
       <Theme host={this.state.solution ? this.state.solution.host : Utilities.host}>
         <AppWrapper>
           <HeaderFooterLayout
-            wrapperStyle={{ flex: '6', minHeight: '30rem' }}
+            wrapperStyle={{ flex: "6", minHeight: "30rem" }}
             header={
               <Header
                 solution={this.state.solution}
@@ -192,7 +188,7 @@ export class App extends React.Component<{}, IState> {
                 hardRefresh={this.reloadPage}
                 goBack={
                   queryString.parse(window.location.search).backButton
-                    ? () => (window.location.href = currentEditorUrl)
+                    ? () => (window.location.href = `${currentEditorUrl}/index.html`)
                     : undefined
                 }
                 openCode={this.openCode}
@@ -218,7 +214,7 @@ export class App extends React.Component<{}, IState> {
           </HeaderFooterLayout>
           <Only when={this.state.isConsoleOpen}>
             <Console
-              style={{ flex: '4', minHeight: '5rem' }}
+              style={{ flex: "4", minHeight: "5rem" }}
               logs={this.state.logs}
               clearLogs={this.clearLogs}
             />
@@ -241,13 +237,10 @@ export class App extends React.Component<{}, IState> {
   // and thus will get invoked with an object-based click-event parameter
   // rather than a string, messing up the reload.
   private reloadPageWithDifferentOfficeJsUrl(newOfficeJsUrl: string | null) {
-    const currentQueryParams: { [key: string]: any } = queryString.parse(
-      window.location.search,
-    );
+    const currentQueryParams: { [key: string]: any } = queryString.parse(window.location.search);
 
     const isDifferentOfficeJs =
-      newOfficeJsUrl &&
-      newOfficeJsUrl !== currentQueryParams[OFFICE_JS_URL_QUERY_PARAMETER_KEY];
+      newOfficeJsUrl && newOfficeJsUrl !== currentQueryParams[OFFICE_JS_URL_QUERY_PARAMETER_KEY];
 
     if (isDifferentOfficeJs) {
       const newParams = {
@@ -263,7 +256,7 @@ export class App extends React.Component<{}, IState> {
   }
 
   private respondToOfficeJsMismatchIfAny(solution: ISolution) {
-    const librariesFile = solution.files.find(file => file.name === 'libraries.txt');
+    const librariesFile = solution.files.find((file) => file.name === "libraries.txt");
     if (!librariesFile || !librariesFile.content) {
       return;
     }
@@ -288,7 +281,7 @@ export class App extends React.Component<{}, IState> {
       // straight to an office.js beta snippet, don't change out the title, keep as is
       // so that the load appears continuous).
       if (this.hasRenderedContent) {
-        showSplashScreen('Re-loading office.js, please wait...');
+        showSplashScreen("Re-loading office.js, please wait...");
       }
 
       this.isTransitioningAwayFromPage = true;
@@ -310,7 +303,8 @@ function possiblyMassageObject(object: any): any {
   //    (circular references and etc.)
   // Whereas fixing it for ClientResult is easy-to-fix, and has more visible results:
   if (
-    typeof OfficeExtension !== 'undefined' &&
+    typeof OfficeExtension !== "undefined" &&
+    typeof OfficeExtension.ClientResult !== "undefined" &&
     object instanceof OfficeExtension.ClientResult
   ) {
     return getDataForClientResult(object);
@@ -321,12 +315,14 @@ function possiblyMassageObject(object: any): any {
 
 function getDataForClientResult(
   result: OfficeExtension.ClientResult<any>,
-): { value: any } {
+): {
+  value: any;
+} {
   let value: any;
   try {
     value = cloneDeep(result.value);
   } catch (e) {
-    value = '<Could not read the value. You must first call `context.sync()`.';
+    value = "<Could not read the value. You must first call `context.sync()`.";
   }
 
   return { value: value };

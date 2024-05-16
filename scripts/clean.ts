@@ -1,8 +1,13 @@
-import path from 'path';
-import fs from 'fs-extra';
+import path from "path";
+import fs from "fs";
 
-(() => {
-  const root = path.resolve(__dirname, '../');
+// remove build directories
 
-  fs.removeSync(path.join(root, 'packages/common/lib'));
-})();
+const root = path.resolve(__dirname, "../");
+const packages = path.join(root, "packages");
+fs.readdirSync(packages).forEach((name) => {
+  const target = path.join(packages, name, "build");
+  if (fs.existsSync(target)) {
+    fs.rmSync(target, { recursive: true });
+  }
+});

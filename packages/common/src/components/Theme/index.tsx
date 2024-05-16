@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import { ThemeProvider } from 'styled-components';
-import { initializeIcons } from 'office-ui-fabric-react/lib-commonjs/Icons';
-import { getTheme, setupFabricTheme } from '../../theme';
-import { DEFAULT_HOST } from '../../constants';
+import React, { Component } from "react";
+import { ThemeProvider } from "styled-components";
+import { initializeIcons } from "office-ui-fabric-react/lib-commonjs/Icons";
+import { getTheme, setupFabricTheme } from "../../theme";
+import { DEFAULT_HOST } from "../../constants";
 
 interface IProps {
   host: string;

@@ -1,46 +1,41 @@
-import { officeNamespacesForCustomFunctionsIframe } from '../../constants';
-import { currentEditorUrl } from 'common/lib/environment';
-import { generateLogString, stringifyPlusPlus } from 'common/lib/utilities/string';
+import { officeNamespacesForCustomFunctionsIframe } from "../../constants";
+import { currentEditorUrl, getOrigin, sameOrigin } from "common/build/environment";
+import { generateLogString, stringifyPlusPlus } from "common/build/utilities/string";
 
-import generateCustomFunctionIframe from './run.customFunctions';
-import { initializeJupyter } from './jupyterRunner';
-import { SCRIPT_URLS } from 'common/lib/constants';
-import { addScriptTag } from 'common/lib/utilities/script-loader';
+import { generateCustomFunctionIframe } from "./run.customFunctions";
+import { SCRIPT_URLS } from "common/build/constants";
+import { addScriptTag } from "common/build/utilities/script-loader";
 
 const HEARTBEAT_URL = `${currentEditorUrl}/custom-functions-heartbeat.html`;
 const VERBOSE_MODE = false;
 
 export const METHODS_EXPOSED_ON_CF_RUNNER_OUTER_FRAME = {
-  scriptRunnerOnLoad: 'scriptRunnerOnLoad',
-  scriptRunnerOnLoadComplete: 'scriptRunnerOnLoadComplete',
+  scriptRunnerOnLoad: "scriptRunnerOnLoad",
+  scriptRunnerOnLoadComplete: "scriptRunnerOnLoadComplete",
 };
 
 export default () => {
-  window.document.title = 'Script Lab - Custom Functions runner';
+  window.document.title = "Script Lab - Custom Functions runner";
 
   const ScriptLabCustomFunctionsDictionary = {};
   (window as any).ScriptLabCustomFunctionsDictionary = ScriptLabCustomFunctionsDictionary;
 
   // set up heartbeat listener
   window.onmessage = async ({ origin, data }) => {
-    if (origin !== currentEditorUrl) {
-      // console.error(`Unexpected message from ${origin}: ${data}`);
+    if (!sameOrigin(origin, currentEditorUrl)) {
+      //console.error(`Unexpected message from ${origin}. Message must be from origin: ${allowedOrigin}\n${data}`);
       return;
     }
 
     const { type, payload }: ICustomFunctionsHeartbeatMessage = JSON.parse(data);
     switch (type) {
-      case 'metadata': {
+      case "metadata": {
         const initialPayload = payload as ICustomFunctionsIframeRunnerOnLoadPayload;
         const scriptUrl = getScriptUrl(initialPayload);
 
         await addScriptTag(scriptUrl).then(() => {
           (CustomFunctions as any).delayInitialization();
         });
-
-        if (initialPayload.pythonConfig) {
-          initializeJupyter(initialPayload.pythonConfig);
-        }
 
         await initializeRunnableSnippets(initialPayload);
         for (const key in ScriptLabCustomFunctionsDictionary) {
@@ -51,7 +46,7 @@ export default () => {
 
         break;
       }
-      case 'refresh':
+      case "refresh":
         window.location.reload();
         break;
       default:
@@ -60,28 +55,24 @@ export default () => {
   };
 
   addHeartbeat();
-  overwriteConsole('[SYSTEM]', window);
+  overwriteConsole("[SYSTEM]", window);
 
-  logIfExtraLoggingEnabled('Done preparing snippets');
+  logIfExtraLoggingEnabled("Done preparing snippets");
 
-  logIfExtraLoggingEnabled(
-    'Custom functions runner is ready to evaluate your functions!',
-  );
+  logIfExtraLoggingEnabled("Custom functions runner is ready to evaluate your functions!");
 };
 /// ////////////////////////////////////
 
 let heartbeat: HTMLIFrameElement;
 function addHeartbeat() {
-  heartbeat = document.createElement('iframe');
-  heartbeat.style.display = 'none';
+  heartbeat = document.createElement("iframe");
+  heartbeat.style.display = "none";
   heartbeat.src = HEARTBEAT_URL;
   document.body.appendChild(heartbeat);
 }
 
-async function initializeRunnableSnippets(
-  fullPayload: ICustomFunctionsIframeRunnerOnLoadPayload,
-) {
-  return new Promise<void>(resolve =>
+async function initializeRunnableSnippets(fullPayload: ICustomFunctionsIframeRunnerOnLoadPayload) {
+  return new Promise<void>((resolve) =>
     tryCatch(() => {
       let successfulRegistrationsCount = 0;
 
@@ -91,7 +82,7 @@ async function initializeRunnableSnippets(
       ) =>
         tryCatch(() => {
           const snippetMetadata = fullPayload.typescriptMetadata.find(
-            item => item.solutionId === id,
+            (item) => item.solutionId === id,
           )!;
           overwriteConsole(snippetMetadata.namespace, contentWindow);
           contentWindow.onerror = (...args) => console.error(args);
@@ -100,22 +91,20 @@ async function initializeRunnableSnippets(
             `Snippet for namespace "${snippetMetadata.namespace}" beginning to load.`,
           );
 
-          officeNamespacesForCustomFunctionsIframe.forEach(namespace => {
+          officeNamespacesForCustomFunctionsIframe.forEach((namespace) => {
             (contentWindow as any)[namespace] = (window as any)[namespace];
           });
         });
 
-      window[
-        METHODS_EXPOSED_ON_CF_RUNNER_OUTER_FRAME.scriptRunnerOnLoadComplete
-      ] = () => {
+      window[METHODS_EXPOSED_ON_CF_RUNNER_OUTER_FRAME.scriptRunnerOnLoadComplete] = () => {
         if (++successfulRegistrationsCount === fullPayload.typescriptMetadata.length) {
           resolve();
         }
       };
 
-      fullPayload.typescriptMetadata.forEach(customFuncData => {
-        const iframe = document.createElement('iframe');
-        iframe.src = 'about:blank';
+      fullPayload.typescriptMetadata.forEach((customFuncData) => {
+        const iframe = document.createElement("iframe");
+        iframe.src = "about:blank";
         document.head.insertBefore(iframe, null);
 
         const contentWindow = iframe.contentWindow;
@@ -140,22 +129,17 @@ function logIfExtraLoggingEnabled(message: string) {
   if (VERBOSE_MODE) {
     tryToSendLog({
       message: message,
-      severity: 'info',
-      source: '[SYSTEM]',
+      severity: "info",
+      source: "[SYSTEM]",
     });
   }
 }
 
-function overwriteConsole(
-  source: '[SYSTEM]' | string,
-  windowObject: Window & typeof globalThis,
-) {
-  const logTypes: ConsoleLogTypes[] = ['log', 'info', 'warn', 'error'];
+function overwriteConsole(source: "[SYSTEM]" | string, windowObject: Window & typeof globalThis) {
+  const logTypes: ConsoleLogTypes[] = ["log", "info", "warn", "error"];
   logTypes.forEach(
-    methodName =>
-      ((windowObject.console as any)[methodName] = consoleMsgTypeImplementation(
-        methodName,
-      )),
+    (methodName) =>
+      ((windowObject.console as any)[methodName] = consoleMsgTypeImplementation(methodName)),
   );
 
   function consoleMsgTypeImplementation(severityType: ConsoleLogTypes) {
@@ -175,16 +159,17 @@ let logCounter = 0;
 function tryToSendLog(data: { source: string; severity: string; message: string }) {
   try {
     if (heartbeat && heartbeat.contentWindow) {
+      const heartbeatOrigin = getOrigin(HEARTBEAT_URL);
       heartbeat.contentWindow.postMessage(
         JSON.stringify({
-          type: 'log',
+          type: "log",
           payload: {
             id: logCounter++,
             message: data.message,
             severity: data.severity,
           },
         }),
-        HEARTBEAT_URL,
+        heartbeatOrigin,
       );
     }
   } catch (e) {
@@ -203,16 +188,12 @@ async function tryCatch(func: () => any) {
 function handleError(error: Error | any) {
   tryToSendLog({
     message: stringifyPlusPlus(error),
-    severity: 'error',
-    source: '[SYSTEM]',
+    severity: "error",
+    source: "[SYSTEM]",
   });
 }
 
 function getScriptUrl(initialPayload: ICustomFunctionsIframeRunnerOnLoadPayload) {
-  if (initialPayload.pythonConfig) {
-    return SCRIPT_URLS.CUSTOM_FUNCTIONS_RUNNER_WITH_JUPYTER_SUPPORT;
-  }
-
   if (initialPayload.customFunctionsRuntimeUrl) {
     return initialPayload.customFunctionsRuntimeUrl;
   }

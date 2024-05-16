@@ -1,5 +1,5 @@
-import { createAction } from 'typesafe-actions';
-import { DialogType } from 'office-ui-fabric-react/lib/Dialog';
+import { createAction } from "typesafe-actions";
+import { DialogType } from "office-ui-fabric-react/lib/Dialog";
 
 interface IShowDialogProps {
   title: string;
@@ -13,7 +13,7 @@ interface IShowDialogProps {
   style?: DialogType;
   isBlocking?: boolean;
 }
-export const show = createAction('DIALOG_SHOW', resolve => {
+export const show = createAction("DIALOG_SHOW", (resolve) => {
   return ({
     title,
     subText,
@@ -23,8 +23,8 @@ export const show = createAction('DIALOG_SHOW', resolve => {
   }: IShowDialogProps) => resolve({ title, subText, buttons, style, isBlocking });
 });
 
-export const dismiss = createAction('DIALOG_DISMISS');
+export const dismiss = createAction("DIALOG_DISMISS");
 
 // private usage for reducer to make it so the dialog disappears nicely then has it's info reset
-export const hide = createAction('DIALOG_HIDE');
-export const reset = createAction('DIALOG_RESET');
+export const hide = createAction("DIALOG_HIDE");
+export const reset = createAction("DIALOG_RESET");

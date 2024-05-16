@@ -1,13 +1,13 @@
-import { bufferToHexString } from './array.buffer';
+import { bufferToHexString } from "./array.buffer";
 
 export function isInternetExplorer(): boolean {
   // From https://stackoverflow.com/a/19868056/678505
-  return 'ActiveXObject' in window;
+  return "ActiveXObject" in window;
 }
 
 export function generateRandomToken(bits = 128): string {
   if (bits % 8 !== 0) {
-    throw new Error('generateRandomToken - bits must be in multiples of 8');
+    throw new Error("generateRandomToken - bits must be in multiples of 8");
   }
 
   const buffer = new Uint8Array(bits / 8);
@@ -26,5 +26,5 @@ export function generateRandomToken(bits = 128): string {
 export const strictType = <T>(x: T) => x;
 
 export function pause(ms: number) {
-  return new Promise(r => setTimeout(r, ms));
+  return new Promise((r) => setTimeout(r, ms));
 }

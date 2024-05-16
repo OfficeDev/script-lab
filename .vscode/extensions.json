@@ -1,13 +1,13 @@
 {
-  // See http://go.microsoft.com/fwlink/?LinkId=827846
-  // for the documentation about the extensions.json format
   "recommendations": [
-    // Extension identifier format: ${publisher}.${name}
-    "esbenp.prettier-vscode",
-    "vscode-icons-team.vscode-icons",
-    "wayou.vscode-todo-highlight",
-    "streetsidesoftware.code-spell-checker",
-    "styled-components.vscode-styled-components",
-    "dbaeumer.vscode-eslint"
+      "esbenp.prettier-vscode",
+      "dbaeumer.vscode-eslint",
+      "davidanson.vscode-markdownlint",
+      "bierner.github-markdown-preview",
+      "streetsidesoftware.code-spell-checker",
+      // Additional extensions
+      "wayou.vscode-todo-highlight",
+      "styled-components.vscode-styled-components",
+      "vscode-icons-team.vscode-icons",
   ]
 }

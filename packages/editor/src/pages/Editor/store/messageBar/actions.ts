@@ -1,8 +1,8 @@
-import { createAction } from 'typesafe-actions';
-import { MessageBarType } from 'office-ui-fabric-react/lib/MessageBar';
-import { IState as IMessageBarState, IShowMessageBarParams } from './reducer';
+import { createAction } from "typesafe-actions";
+import { MessageBarType } from "office-ui-fabric-react/lib/MessageBar";
+import { IState as IMessageBarState, IShowMessageBarParams } from "./reducer";
 
-export const show = createAction('MESSAGE_BAR_SHOW', resolve => {
+export const show = createAction("MESSAGE_BAR_SHOW", (resolve) => {
   return (props: IShowMessageBarParams) => {
     const fullParams: IMessageBarState = {
       isVisible: true,
@@ -13,4 +13,4 @@ export const show = createAction('MESSAGE_BAR_SHOW', resolve => {
     return resolve(fullParams);
   };
 });
-export const dismiss = createAction('MESSAGE_BAR_HIDE');
+export const dismiss = createAction("MESSAGE_BAR_HIDE");

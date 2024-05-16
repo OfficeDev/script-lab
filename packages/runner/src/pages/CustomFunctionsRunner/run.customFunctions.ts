@@ -1,11 +1,11 @@
-import { METHODS_EXPOSED_ON_CF_RUNNER_OUTER_FRAME } from './setup';
+import { METHODS_EXPOSED_ON_CF_RUNNER_OUTER_FRAME } from "./setup";
 
-export default ({
+export function generateCustomFunctionIframe({
   solutionId,
   functions,
   code,
   jsLibs,
-}: ICustomFunctionsIframeRunnerTypeScriptMetadata) => {
+}: ICustomFunctionsIframeRunnerTypeScriptMetadata) {
   const resultingHtml = `<!DOCTYPE html>
 <html>
 
@@ -28,29 +28,25 @@ export default ({
     }(window, "${solutionId}");
   </script>
 
-  ${jsLibs
-    .map(src => `<script crossorigin="anonymous" src="${src}"></script>`)
-    .join('\n  ')}
+  ${jsLibs.map((src) => `<script crossorigin="anonymous" src="${src}"></script>`).join("\n  ")}
 
   <script>
     ${code}
 
     ${functions
       .map(
-        func =>
+        (func) =>
           `ScriptLabCustomFunctionsDictionary["${func.fullId}"] = ${func.javascriptFunctionName};`,
       )
-      .join('\n  ')}
+      .join("\n  ")}
 
-    window.parent.${
-      METHODS_EXPOSED_ON_CF_RUNNER_OUTER_FRAME.scriptRunnerOnLoadComplete
-    }();
+    window.parent.${METHODS_EXPOSED_ON_CF_RUNNER_OUTER_FRAME.scriptRunnerOnLoadComplete}();
   </script>
 </body>
 
 </html>`;
 
   return resultingHtml;
-};
+}
 
 // cspell:ignore crossorigin

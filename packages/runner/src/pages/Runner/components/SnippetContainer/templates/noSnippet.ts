@@ -1,4 +1,4 @@
-import { METHODS_EXPOSED_ON_RUNNER_OUTER_FRAME } from '../IFrame';
+import { METHODS_EXPOSED_ON_RUNNER_OUTER_FRAME } from "../IFrame";
 
 // prettier-ignore
 export default () => `<!DOCTYPE html>

@@ -1,25 +1,25 @@
-import { SCRIPT_URLS } from 'common/lib/constants';
-import { addScriptTags } from 'common/lib/utilities/script-loader';
+import { SCRIPT_URLS } from "common/build/constants";
+import { addScriptTags } from "common/build/utilities/script-loader";
 
-import React, { Component } from 'react';
-import App from './components/App';
+import React, { Component } from "react";
+import App from "./components/App";
 
 // redux
-import { Store } from 'redux';
-import { Provider } from 'react-redux';
-import configureStore from './store/configureStore';
+import { Store } from "redux";
+import { Provider } from "react-redux";
+import configureStore from "./store/configureStore";
 import {
   loadState as loadStateFromLocalStorage,
   saveState as saveStateToLocalStorage,
-} from './store/localStorage';
+} from "./store/localStorage";
 import {
   loadState as loadStateFromSessionStorage,
   saveState as saveStateToSessionStorage,
-} from './store/sessionStorage';
+} from "./store/sessionStorage";
 
-import throttle from 'lodash/throttle';
-import { ScriptLabError } from 'common/lib/utilities/error';
-import { invokeGlobalErrorHandler } from 'common/lib/utilities/splash.screen';
+import throttle from "lodash/throttle";
+import { ScriptLabError } from "common/build/utilities/error";
+import { invokeGlobalErrorHandler } from "common/build/utilities/splash.screen";
 
 interface IState {
   hasLoadedScripts: boolean;
@@ -34,7 +34,7 @@ class Editor extends Component<{}, IState> {
     addScriptTags([SCRIPT_URLS.MONACO_LOADER])
       .then(() => ensureProperOfficeBuildIfRelevant())
       .then(() => loadStateFromLocalStorage())
-      .then(localStorageState => {
+      .then((localStorageState) => {
         const store = configureStore({
           initialState: {
             ...localStorageState,
@@ -83,7 +83,7 @@ async function ensureProperOfficeBuildIfRelevant() {
           //   for *running* the snippets.  However, still showing it in the editor,
           //   since want the developer to get onto the path of success (go update) as soon as possible.
           new ScriptLabError(
-            'Office Update Required',
+            "Office Update Required",
             `Your Office version is missing important updates, and Script Lab snippets ` +
               `won't be able to run until you install those updates. ` +
               `To install, please follow the instructions at ` +
@@ -98,16 +98,10 @@ async function ensureProperOfficeBuildIfRelevant() {
 
   function isO16orHigher(): boolean {
     const hasVersion =
-      Office &&
-      Office.context &&
-      Office.context.diagnostics &&
-      Office.context.diagnostics.version;
+      Office && Office.context && Office.context.diagnostics && Office.context.diagnostics.version;
     if (hasVersion) {
       const versionString = Office.context.diagnostics.version;
-      const num = Number.parseInt(
-        versionString.substr(0, versionString.indexOf('.')),
-        10,
-      );
+      const num = Number.parseInt(versionString.substr(0, versionString.indexOf(".")), 10);
       return num >= 16;
     }
 

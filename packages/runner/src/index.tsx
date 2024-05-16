@@ -1,20 +1,20 @@
-import 'common/lib/polyfills';
-import { invokeGlobalErrorHandler } from 'common/lib/utilities/splash.screen';
+import "common/build/polyfills";
+import { invokeGlobalErrorHandler } from "common/build/utilities/splash.screen";
 
-import './index.css';
+import "./index.css";
 
 /// ////////////////////////////////////
 
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from "react";
+import ReactDOM from "react-dom";
 
-import Pages from './pages';
+import Pages from "./pages";
 
-window.onerror = error => invokeGlobalErrorHandler(error);
+window.onerror = (error) => invokeGlobalErrorHandler(error);
 
 (async () => {
   try {
-    ReactDOM.render(<Pages />, document.getElementById('root'));
+    ReactDOM.render(<Pages />, document.getElementById("root"));
   } catch (e) {
     invokeGlobalErrorHandler(e);
   }

@@ -1,12 +1,9 @@
-import { ScriptLabError } from '../error';
-import isPrimitive from 'is-primitive';
+import { ScriptLabError } from "../error";
+import isPrimitive from "is-primitive";
 
-const UNABLE_TO_DISPLAY_OBJECT_DEFAULT_MESSAGE = '<Unable to display object>';
+const UNABLE_TO_DISPLAY_OBJECT_DEFAULT_MESSAGE = "<Unable to display object>";
 
-export function matchesSearch(
-  queryLowercase: string,
-  texts: Array<string | null>,
-): boolean {
+export function matchesSearch(queryLowercase: string, texts: Array<string | null>): boolean {
   if (queryLowercase.length === 0) {
     return true;
   }
@@ -23,11 +20,11 @@ export function matchesSearch(
 }
 
 export function stripSpaces(text: string) {
-  const lines: string[] = text.split('\n');
+  const lines: string[] = text.split("\n");
 
   // Replace each tab with 4 spaces.
   for (let i = 0; i < lines.length; i++) {
-    lines[i].replace('\t', '    ');
+    lines[i].replace("\t", "    ");
   }
 
   let isZeroLengthLine = true;
@@ -36,7 +33,7 @@ export function stripSpaces(text: string) {
   // Remove zero length lines from the beginning of the snippet.
   do {
     const currentLine: string = lines[arrayPosition];
-    if (currentLine.trim() === '') {
+    if (currentLine.trim() === "") {
       lines.splice(arrayPosition, 1);
     } else {
       isZeroLengthLine = false;
@@ -49,7 +46,7 @@ export function stripSpaces(text: string) {
   // Remove zero length lines from the end of the snippet.
   do {
     const currentLine: string = lines[arrayPosition];
-    if (currentLine.trim() === '') {
+    if (currentLine.trim() === "") {
       lines.splice(arrayPosition, 1);
       arrayPosition--;
     } else {
@@ -61,7 +58,7 @@ export function stripSpaces(text: string) {
   let shortestIndentSize = 1024;
   for (const line of lines) {
     const currentLine: string = line;
-    if (currentLine.trim() !== '') {
+    if (currentLine.trim() !== "") {
       const spaces: number = line.search(/\S/);
       if (spaces < shortestIndentSize) {
         shortestIndentSize = spaces;
@@ -77,10 +74,10 @@ export function stripSpaces(text: string) {
   }
 
   // Convert the array back into a string and return it.
-  let finalSetOfLines = '';
+  let finalSetOfLines = "";
   for (let i = 0; i < lines.length; i++) {
     if (i < lines.length - 1) {
-      finalSetOfLines += lines[i] + '\n';
+      finalSetOfLines += lines[i] + "\n";
     } else {
       finalSetOfLines += lines[i];
     }
@@ -100,38 +97,38 @@ export function stringifyPlusPlus(
   options = { ...defaultOptions, ...options };
 
   if (object === null) {
-    return 'null';
+    return "null";
   }
 
-  if (typeof object === 'undefined') {
-    return 'undefined';
+  if (typeof object === "undefined") {
+    return "undefined";
   }
 
   // Don't JSON.stringify strings, because might not want quotes in the output
-  if (typeof object === 'string') {
+  if (typeof object === "string") {
     return options.quoteStrings ? `"${object}"` : object;
   }
 
   if (Array.isArray(object)) {
     if (isEachObjectAPrimitiveType(object)) {
       return (
-        '[' +
+        "[" +
         object
-          .map(item => stringifyPlusPlus(item, { ...options, quoteStrings: true }))
-          .join(', ') +
-        ']'
+          .map((item) => stringifyPlusPlus(item, { ...options, quoteStrings: true }))
+          .join(", ") +
+        "]"
       );
     } else {
       return (
-        '[' +
-        '\n' +
+        "[" +
+        "\n" +
         indentAll(
           object
-            .map(item => stringifyPlusPlus(item, { ...options, quoteStrings: true }))
-            .join(',' + '\n'),
+            .map((item) => stringifyPlusPlus(item, { ...options, quoteStrings: true }))
+            .join("," + "\n"),
         ) +
-        '\n' +
-        ']'
+        "\n" +
+        "]"
       );
     }
   }
@@ -139,8 +136,8 @@ export function stringifyPlusPlus(
   if (object instanceof Error) {
     try {
       return (
-        (object instanceof ScriptLabError ? object.message + ':' : 'Error:') +
-        '\n' +
+        (object instanceof ScriptLabError ? object.message + ":" : "Error:") +
+        "\n" +
         jsonStringify(object)
       );
     } catch (e) {
@@ -148,7 +145,7 @@ export function stringifyPlusPlus(
     }
   }
 
-  if (object.toString() !== '[object Object]') {
+  if (object.toString() !== "[object Object]") {
     return object.toString();
   }
 
@@ -162,13 +159,13 @@ export function stringifyPlusPlus(
     const candidateString = JSON.stringify(
       object,
       (key, value) => {
-        if (object instanceof Error && options.skipErrorStack && key === 'stack') {
+        if (object instanceof Error && options.skipErrorStack && key === "stack") {
           return undefined;
         }
-        if (object instanceof ScriptLabError && key === 'options') {
+        if (object instanceof ScriptLabError && key === "options") {
           return undefined;
         }
-        if (value && typeof value === 'object' && !Array.isArray(value)) {
+        if (value && typeof value === "object" && !Array.isArray(value)) {
           return getStringifiableSnapshot(value);
         }
         return value;
@@ -215,7 +212,7 @@ export function stringifyPlusPlus(
 
       function tryAddName(name: string) {
         const hasOwnProperty = Object.prototype.hasOwnProperty;
-        if (name.indexOf(' ') < 0 && !hasOwnProperty.call(snapshot, name)) {
+        if (name.indexOf(" ") < 0 && !hasOwnProperty.call(snapshot, name)) {
           Object.defineProperty(snapshot, name, {
             configurable: true,
             enumerable: true,
@@ -228,9 +225,9 @@ export function stringifyPlusPlus(
 
   function indentAll(text: string): string {
     return text
-      .split('\n')
-      .map(line => new Array(4).fill(' ').join('') + line)
-      .join('\n');
+      .split("\n")
+      .map((line) => new Array(4).fill(" ").join("") + line)
+      .join("\n");
   }
 
   function isEachObjectAPrimitiveType(objects: any[]): boolean {
@@ -256,16 +253,16 @@ export function generateLogString(
   args: any[],
   severityType: ConsoleLogTypes,
 ): { severity: ConsoleLogTypes; message: string } {
-  let message = '';
+  let message = "";
   let isSuccessfulMsg = true;
-  args.forEach(element => {
+  args.forEach((element) => {
     try {
       message += stringifyPlusPlus(element);
     } catch (e) {
       isSuccessfulMsg = false;
       message += UNABLE_TO_DISPLAY_OBJECT_DEFAULT_MESSAGE;
     }
-    message += '\n';
+    message += "\n";
   });
 
   if (message.length > 0) {
@@ -274,10 +271,10 @@ export function generateLogString(
 
   return {
     message,
-    severity: isSuccessfulMsg ? severityType : 'error',
+    severity: isSuccessfulMsg ? severityType : "error",
   };
 }
 
 export function composeSolutionId(solutionName: string) {
-  return 'solution-id-' + solutionName;
+  return "solution-id-" + solutionName;
 }

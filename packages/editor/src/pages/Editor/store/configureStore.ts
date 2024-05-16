@@ -1,32 +1,32 @@
 // redux
-import { createStore, applyMiddleware } from 'redux';
-import rootReducer, { IState } from './reducer';
-import { composeWithDevTools } from 'redux-devtools-extension';
+import { createStore, applyMiddleware } from "redux";
+import rootReducer, { IState } from "./reducer";
+import { composeWithDevTools } from "redux-devtools-extension";
 
 // saga
-import createSagaMiddleware from 'redux-saga';
-import rootSaga from './sagas';
-import { invokeGlobalErrorHandler } from 'common/lib/utilities/splash.screen';
-import { ScriptLabError } from 'common/lib/utilities/error';
+import createSagaMiddleware from "redux-saga";
+import rootSaga from "./sagas";
+import { invokeGlobalErrorHandler } from "common/build/utilities/splash.screen";
+import { ScriptLabError } from "common/build/utilities/error";
 
-const addDevLoggingToDispatch = store => {
+const addDevLoggingToDispatch = (store) => {
   const rawDispatch = store.dispatch;
   if (!console.group) {
     return rawDispatch;
   }
-  return action => {
+  return (action) => {
     if (!action) {
       invokeGlobalErrorHandler(
-        new ScriptLabError('[Dev only] Unexpected error, action is undefined!'),
+        new ScriptLabError("[Dev only] Unexpected error, action is undefined!"),
       );
-      console.log('Previous state', store.getState());
+      console.log("Previous state", store.getState());
     }
 
     console.group(action.type);
-    console.log('%c prev state', 'color: gray', store.getState());
-    console.log('%c action', 'color: blue', action);
+    console.log("%c prev state", "color: gray", store.getState());
+    console.log("%c action", "color: blue", action);
     const returnValue = rawDispatch(action);
-    console.log('%c next state', 'color: green', store.getState());
+    console.log("%c next state", "color: green", store.getState());
     console.groupEnd();
     return returnValue;
   };
@@ -43,7 +43,7 @@ const configureStore = ({ initialState = {} }: IConfigureStoreProps) => {
   // NOTE: editor/reducer will need to be updated as it currently is hardcoded to depend on window.location.hash
   // const history = supportsHistory() ? createBrowserHistory() : createHashHistory()
   const sagaMiddleware = createSagaMiddleware({
-    onError: e => invokeGlobalErrorHandler(e),
+    onError: (e) => invokeGlobalErrorHandler(e),
   });
 
   const store = createStore(
@@ -53,7 +53,7 @@ const configureStore = ({ initialState = {} }: IConfigureStoreProps) => {
   );
   sagaMiddleware.run(rootSaga);
 
-  if (process.env.NODE_ENV !== 'production') {
+  if (process.env.NODE_ENV !== "production") {
     store.dispatch = addDevLoggingToDispatch(store);
   }
 

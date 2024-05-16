@@ -1,8 +1,8 @@
-import { IState } from '../reducer';
+import { IState } from "../reducer";
 
 export const getMetadataByGroup = (state: IState): ISampleMetadataByGroup =>
   Object.values(state.samples || {})
-    .filter(sample => sample.host === state.host)
+    .filter((sample) => sample.host === state.host)
     .reduce(
       (byGroup, sample) => ({
         ...byGroup,

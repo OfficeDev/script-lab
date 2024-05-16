@@ -1,5 +1,5 @@
-import React from 'react';
-import { CenteringContainer, BallContainer, Ball } from './styles';
+import React from "react";
+import { CenteringContainer, BallContainer, Ball } from "./styles";
 
 export interface IProps {
   numBalls: number;

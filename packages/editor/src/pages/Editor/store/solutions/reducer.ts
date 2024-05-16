@@ -1,7 +1,7 @@
-import { combineReducers } from 'redux';
-import { getType } from 'typesafe-actions';
+import { combineReducers } from "redux";
+import { getType } from "typesafe-actions";
 
-import { solutions as solutionActions, ISolutionsAction } from '../actions';
+import { solutions as solutionActions, ISolutionsAction } from "../actions";
 
 function normalizeSolutionName(
   state: IMetadataState,
@@ -19,11 +19,11 @@ function normalizeSolutionName(
   const currentHost = host || state[id].host;
 
   const allNames = Object.values(state)
-    .filter(s => s.host === currentHost && s.id !== id)
-    .map(s => s.name);
+    .filter((s) => s.host === currentHost && s.id !== id)
+    .map((s) => s.name);
 
   if (allNames.includes(name)) {
-    name = name.replace(/\(\d+\)$/gm, '').trim();
+    name = name.replace(/\(\d+\)$/gm, "").trim();
     let suffix = 1;
     while (allNames.includes(`${name} (${suffix})`)) {
       suffix++;
@@ -37,10 +37,7 @@ interface IMetadataState {
   [id: string]: ISolutionWithFileIds;
 }
 
-const metadata = (
-  state: IMetadataState = {},
-  action: ISolutionsAction,
-): IMetadataState => {
+const metadata = (state: IMetadataState = {}, action: ISolutionsAction): IMetadataState => {
   switch (action.type) {
     case getType(solutionActions.add):
       return {
@@ -53,7 +50,7 @@ const metadata = (
             action.payload.name,
             action.payload.host,
           ),
-          files: action.payload.files.map(file => file.id),
+          files: action.payload.files.map((file) => file.id),
         },
       };
 
@@ -144,9 +141,9 @@ const files = (state: IFilesState = {}, action: ISolutionsAction): IFilesState =
       };
 
     case getType(solutionActions.deleteFromState):
-      const fileIdsToRemove = action.payload.files.map(file => file.id);
+      const fileIdsToRemove = action.payload.files.map((file) => file.id);
       return Object.keys(state)
-        .map(k => state[k])
+        .map((k) => state[k])
         .reduce((newState, f) => {
           if (!fileIdsToRemove.includes(f.id)) {
             newState[f.id] = f;

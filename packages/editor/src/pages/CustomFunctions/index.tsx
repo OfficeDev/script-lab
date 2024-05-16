@@ -1,9 +1,9 @@
-import React from 'react';
+import React from "react";
 
-import App from './components/App';
-import CustomFunctionsDashboard from './components/CustomFunctionsDashboard';
-import Theme from 'common/lib/components/Theme';
-import { Utilities } from '@microsoft/office-js-helpers';
+import App from "./components/App";
+import CustomFunctionsDashboard from "./components/CustomFunctionsDashboard";
+import Theme from "common/build/components/Theme";
+import { Utilities } from "common/build/helpers/officeJsHost";
 
 const CFD = App(CustomFunctionsDashboard);
 

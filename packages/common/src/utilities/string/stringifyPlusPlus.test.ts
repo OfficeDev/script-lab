@@ -1,20 +1,19 @@
-import { stringifyPlusPlus, stripSpaces } from '.';
-import { ScriptLabError } from '../error';
+import { stringifyPlusPlus, stripSpaces } from ".";
+import { ScriptLabError } from "../error";
 
-describe('primitives', () => {
-  it('basic', () => expect(stringifyPlusPlus('Hello World')).toEqual('Hello World'));
+describe("primitives", () => {
+  it("basic", () => expect(stringifyPlusPlus("Hello World")).toEqual("Hello World"));
 
-  it('number', () => expect(stringifyPlusPlus(5.0)).toEqual('5'));
+  it("number", () => expect(stringifyPlusPlus(5.0)).toEqual("5"));
 
-  it('boolean', () => expect(stringifyPlusPlus(!!5)).toEqual('true'));
+  it("boolean", () => expect(stringifyPlusPlus(!!5)).toEqual("true"));
 });
 
-describe('arrays', () => {
-  it('1D array of primitives', () =>
-    expect(stringifyPlusPlus(['Hi', 5])).toEqual(`["Hi", 5]`));
-  it('Empty 1D array', () => expect(stringifyPlusPlus([])).toEqual(`[]`));
-  it('1D array with nested array', () =>
-    expect(stringifyPlusPlus(['Nested', [1, 2]])).toEqual(
+describe("arrays", () => {
+  it("1D array of primitives", () => expect(stringifyPlusPlus(["Hi", 5])).toEqual(`["Hi", 5]`));
+  it("Empty 1D array", () => expect(stringifyPlusPlus([])).toEqual(`[]`));
+  it("1D array with nested array", () =>
+    expect(stringifyPlusPlus(["Nested", [1, 2]])).toEqual(
       stripSpaces(`
         [
             "Nested",
@@ -23,12 +22,12 @@ describe('arrays', () => {
       `),
     ));
 
-  it('2D array', () =>
+  it("2D array", () =>
     expect(
       stringifyPlusPlus([
-        ['Product', 'Price'],
-        ['Hammer', 17.99],
-        ['Saw', 234.1],
+        ["Product", "Price"],
+        ["Hammer", 17.99],
+        ["Saw", 234.1],
       ]),
     ).toEqual(
       stripSpaces(`
@@ -41,13 +40,11 @@ describe('arrays', () => {
     ));
 });
 
-describe('objects', () => {
-  it('empty object', () => expect(stringifyPlusPlus({})).toEqual(`{}`));
+describe("objects", () => {
+  it("empty object", () => expect(stringifyPlusPlus({})).toEqual(`{}`));
 
-  it('simple', () =>
-    expect(
-      stringifyPlusPlus({ type: 'thing', value: 'great', num: 2, happy: true }),
-    ).toEqual(
+  it("simple", () =>
+    expect(stringifyPlusPlus({ type: "thing", value: "great", num: 2, happy: true })).toEqual(
       stripSpaces(`
         {
             "type": "thing",
@@ -58,12 +55,12 @@ describe('objects', () => {
       `),
     ));
 
-  it('nested', () =>
+  it("nested", () =>
     expect(
       stringifyPlusPlus({
-        a: 'hi',
+        a: "hi",
         b: {
-          c: 'interesting',
+          c: "interesting",
           d: 5,
           e: {},
         },
@@ -82,9 +79,9 @@ describe('objects', () => {
     ));
 });
 
-describe('errors', () => {
-  it('simple', () =>
-    expect(stringifyPlusPlus(new Error('Test error'), { skipErrorStack: true })).toEqual(
+describe("errors", () => {
+  it("simple", () =>
+    expect(stringifyPlusPlus(new Error("Test error"), { skipErrorStack: true })).toEqual(
       stripSpaces(`
         Error:
         {
@@ -93,9 +90,9 @@ describe('errors', () => {
       `),
     ));
 
-  it('ScriptLabError with string', () =>
+  it("ScriptLabError with string", () =>
     expect(
-      stringifyPlusPlus(new ScriptLabError('Test error', 'Something'), {
+      stringifyPlusPlus(new ScriptLabError("Test error", "Something"), {
         skipErrorStack: true,
       }),
     ).toEqual(
@@ -109,9 +106,9 @@ describe('errors', () => {
       `),
     ));
 
-  it('ScriptLabError with inner error object', () =>
+  it("ScriptLabError with inner error object", () =>
     expect(
-      stringifyPlusPlus(new ScriptLabError('Test error', new Error('Inner')), {
+      stringifyPlusPlus(new ScriptLabError("Test error", new Error("Inner")), {
         skipErrorStack: true,
       }),
     ).toEqual(

@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import { Dialog, DialogType, DialogFooter } from 'office-ui-fabric-react/lib/Dialog';
-import { PrimaryButton, DefaultButton } from 'office-ui-fabric-react/lib/Button';
-import { ChoiceGroup, IChoiceGroupOption } from 'office-ui-fabric-react/lib/ChoiceGroup';
-import { Dropdown, IDropdown } from 'office-ui-fabric-react/lib/Dropdown';
+import React, { Component } from "react";
+import { Dialog, DialogType, DialogFooter } from "office-ui-fabric-react/lib/Dialog";
+import { PrimaryButton, DefaultButton } from "office-ui-fabric-react/lib/Button";
+import { ChoiceGroup, IChoiceGroupOption } from "office-ui-fabric-react/lib/ChoiceGroup";
+import { Dropdown, IDropdown } from "office-ui-fabric-react/lib/Dropdown";
 
-import { ConflictResolutionOptions } from '../../../../../interfaces/enums';
+import { ConflictResolutionOptions } from "../../../../../interfaces/enums";
 
 interface IGistConflictDialog {
   conflictingGist: ISharedGistMetadata;
@@ -86,13 +86,13 @@ class ConflictResolutionDialog extends Component<IGistConflictDialog, IState> {
         onDismiss={this.closeDialog}
         dialogContentProps={{
           type: DialogType.largeHeader,
-          title: 'Update Existing?',
+          title: "Update Existing?",
           subText:
-            'You already have a version of this gist locally. Would you like to open the existing snippet, overwrite it, or create a new copy of the gist?',
+            "You already have a version of this gist locally. Would you like to open the existing snippet, overwrite it, or create a new copy of the gist?",
         }}
         modalProps={{
           isBlocking: true,
-          containerClassName: 'ms-dialogMainOverride',
+          containerClassName: "ms-dialogMainOverride",
           isDarkOverlay: true,
         }}
       >
@@ -100,15 +100,15 @@ class ConflictResolutionDialog extends Component<IGistConflictDialog, IState> {
           options={[
             {
               key: ConflictResolutionOptions.CreateCopy,
-              text: 'Make a New Copy',
+              text: "Make a New Copy",
             },
             {
               key: ConflictResolutionOptions.Open,
-              text: 'Open Existing Snippet',
+              text: "Open Existing Snippet",
             },
             {
               key: ConflictResolutionOptions.Overwrite,
-              text: 'Overwrite Existing Snippet',
+              text: "Overwrite Existing Snippet",
             },
           ]}
           selectedKey={selectedChoiceOption}
@@ -117,7 +117,7 @@ class ConflictResolutionDialog extends Component<IGistConflictDialog, IState> {
         {existingSolutions.length > 1 && (
           <div
             style={{
-              marginTop: '1.2rem',
+              marginTop: "1.2rem",
             }}
           >
             <Dropdown
@@ -125,7 +125,7 @@ class ConflictResolutionDialog extends Component<IGistConflictDialog, IState> {
               label="Select Existing Snippet:"
               id="select-solution"
               ariaLabel="Snippet Selector"
-              options={existingSolutions.map(sol => ({
+              options={existingSolutions.map((sol) => ({
                 key: sol.id,
                 text: sol.name,
                 title: sol.description,

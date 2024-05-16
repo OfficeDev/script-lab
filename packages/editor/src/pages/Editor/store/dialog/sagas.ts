@@ -1,8 +1,8 @@
-import { put, takeEvery } from 'redux-saga/effects';
-import { getType } from 'typesafe-actions';
-import { pause } from 'common/lib/utilities/misc';
+import { put, takeEvery } from "redux-saga/effects";
+import { getType } from "typesafe-actions";
+import { pause } from "common/build/utilities/misc";
 
-import { dialog } from '../actions';
+import { dialog } from "../actions";
 
 export default function* dialogWatcher() {
   yield takeEvery(getType(dialog.dismiss), onDialogDismissSaga);

@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
     "module": "commonjs",
-    "target": "es5",
-    "lib": ["es6", "dom", "es2017"],
+    "target": "ES2020",
+    "lib": ["es6", "dom", "es2020"],
     "sourceMap": true,
     "importHelpers": true, // importing helper functions from tslib
     "noEmitHelpers": true, // disable emitting inline helper functions

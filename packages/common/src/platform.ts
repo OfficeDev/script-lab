@@ -1,10 +1,10 @@
 export enum PlatformType {
-  PC = 'PC',
-  OfficeOnline = 'OfficeOnline',
-  Mac = 'Mac',
-  iOS = 'iOS',
-  Android = 'Android',
-  Universal = 'Universal',
+  PC = "PC",
+  OfficeOnline = "OfficeOnline",
+  Mac = "Mac",
+  iOS = "iOS",
+  Android = "Android",
+  Universal = "Universal",
 }
 
 export function getPlatform(): PlatformType {

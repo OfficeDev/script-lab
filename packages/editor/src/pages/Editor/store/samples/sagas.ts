@@ -1,27 +1,23 @@
-import { put, takeEvery, call, select } from 'redux-saga/effects';
-import { getType, ActionType } from 'typesafe-actions';
+import { put, takeEvery, call, select } from "redux-saga/effects";
+import { getType, ActionType } from "typesafe-actions";
 
-import selectors from '../selectors';
-import { samples } from '../actions';
-import { fetchYaml } from '../../services/general';
-import { convertSnippetToSolution } from '../../../../utils';
-import { createSolutionSaga } from '../solutions/sagas';
-import { currentOfficeJsRawSnippetsBaseRepoUrl } from 'common/lib/environment';
+import selectors from "../selectors";
+import { samples } from "../actions";
+import { fetchYaml } from "../../services/general";
+import { convertSnippetToSolution } from "../../../../utils";
+import { createSolutionSaga } from "../solutions/sagas";
+import { currentOfficeJsRawSnippetsBaseRepoUrl } from "common/build/environment";
 
 function* fetchAllSamplesMetadataSaga() {
   const host: string = yield select(selectors.host.get);
   const folderName =
-    currentOfficeJsRawSnippetsBaseRepoUrl.indexOf('prod') >= 0
-      ? 'playlists-prod'
-      : 'playlists';
+    currentOfficeJsRawSnippetsBaseRepoUrl.indexOf("prod") >= 0 ? "playlists-prod" : "playlists";
   const { content, error } = yield call(
     fetchYaml,
     `${currentOfficeJsRawSnippetsBaseRepoUrl}/${folderName}/${host.toLowerCase()}.yaml`,
   );
   if (content) {
-    yield put(
-      samples.fetchMetadata.success(content.map(sample => ({ ...sample, host }))),
-    );
+    yield put(samples.fetchMetadata.success(content.map((sample) => ({ ...sample, host }))));
   } else {
     yield put(samples.fetchMetadata.failure(error));
   }

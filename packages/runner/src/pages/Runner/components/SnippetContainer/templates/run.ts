@@ -1,4 +1,4 @@
-import { METHODS_EXPOSED_ON_RUNNER_OUTER_FRAME } from '../IFrame';
+import { METHODS_EXPOSED_ON_RUNNER_OUTER_FRAME } from "../IFrame";
 
 // cspell:ignore crossorigin
 

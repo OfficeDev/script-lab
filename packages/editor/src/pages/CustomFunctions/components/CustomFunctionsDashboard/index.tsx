@@ -1,14 +1,14 @@
-import React from 'react';
+import React from "react";
 
-import Dashboard from '../Dashboard';
+import Dashboard from "../Dashboard";
 
-import Summary from '../Summary';
-import Metadata from '../Metadata';
-import Console from '../Console';
+import Summary from "../Summary";
+import Metadata from "../Metadata";
+import Console from "../Console";
 
-import ComingSoon from '../ComingSoon';
+import ComingSoon from "../ComingSoon";
 
-import { IPropsToUI as IProps } from '../App';
+import { IPropsToUI as IProps } from "../App";
 
 export class CustomFunctionsDashboard extends React.Component<IProps> {
   private logFetchInterval: any;

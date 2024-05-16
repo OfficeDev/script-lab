@@ -1,4 +1,4 @@
-type ConsoleLogTypes = 'log' | 'info' | 'warn' | 'error';
+type ConsoleLogTypes = "log" | "info" | "warn" | "error";
 
 /**
  * An interface for log data.

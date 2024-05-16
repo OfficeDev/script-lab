@@ -1,5 +1,5 @@
-import prettier from 'prettier/standalone';
-import librariesIntellisenseJSON from './librariesIntellisense';
+import prettier from "prettier/standalone";
+import librariesIntellisenseJSON from "./librariesIntellisense";
 
 export function doesMonacoExist() {
   return !!(window as any).monaco;
@@ -19,21 +19,21 @@ export function registerLibrariesMonacoLanguage() {
     return;
   }
 
-  monaco.languages.register({ id: 'libraries' });
-  monaco.languages.setMonarchTokensProvider('libraries', {
+  monaco.languages.register({ id: "libraries" });
+  monaco.languages.setMonarchTokensProvider("libraries", {
     tokenizer: {
       root: [
-        { regex: REGEX.STARTS_WITH_COMMENT, action: { token: 'comment' } },
-        { regex: REGEX.ENDS_WITH_CSS, action: { token: 'number' } },
-        { regex: REGEX.STARTS_WITH_TYPINGS, action: { token: 'string' } },
-        { regex: REGEX.ENDS_WITH_DTS, action: { token: 'string' } },
-        { regex: REGEX.GLOBAL, action: { token: 'keyword' } },
+        { regex: REGEX.STARTS_WITH_COMMENT, action: { token: "comment" } },
+        { regex: REGEX.ENDS_WITH_CSS, action: { token: "number" } },
+        { regex: REGEX.STARTS_WITH_TYPINGS, action: { token: "string" } },
+        { regex: REGEX.ENDS_WITH_DTS, action: { token: "string" } },
+        { regex: REGEX.GLOBAL, action: { token: "keyword" } },
       ],
     },
-    tokenPostfix: '',
+    tokenPostfix: "",
   });
 
-  monaco.languages.registerCompletionItemProvider('libraries', {
+  monaco.languages.registerCompletionItemProvider("libraries", {
     provideCompletionItems: (model, position) => {
       const currentLine = model.getValueInRange({
         startLineNumber: position.lineNumber,
@@ -46,23 +46,23 @@ export function registerLibrariesMonacoLanguage() {
         return { suggestions: [] };
       }
 
-      if (currentLine === '') {
+      if (currentLine === "") {
         return {
-          suggestions: librariesIntellisenseJSON.map(library => {
-            let insertText = '';
+          suggestions: librariesIntellisenseJSON.map((library) => {
+            let insertText = "";
 
             if (Array.isArray(library.value)) {
-              insertText += library.value.join('\n');
+              insertText += library.value.join("\n");
             } else {
-              insertText += library.value || '';
-              insertText += '\n';
+              insertText += library.value || "";
+              insertText += "\n";
             }
 
             if (Array.isArray(library.typings)) {
-              insertText += (library.typings as string[]).join('\n');
+              insertText += (library.typings as string[]).join("\n");
             } else {
-              insertText += library.typings || '';
-              insertText += '\n';
+              insertText += library.typings || "";
+              insertText += "\n";
             }
 
             const suggestion: monaco.languages.CompletionItem = {
@@ -89,20 +89,16 @@ export interface IPrettierSettings {
 }
 
 export function enablePrettierInMonaco(prettierSettings: IPrettierSettings) {
-  import('prettier/parser-typescript').then(prettierTypeScript => {
+  import("prettier/parser-typescript").then((prettierTypeScript) => {
     /* Adds Prettier Formatting to Monaco for TypeScript */
     const prettierTypeScriptFormatter: monaco.languages.DocumentFormattingEditProvider = {
-      provideDocumentFormattingEdits: (
+      provideDocumentFormattingEdits: async (
         document: monaco.editor.ITextModel,
         _options: monaco.languages.FormattingOptions,
         _token: monaco.CancellationToken,
-      ): monaco.languages.TextEdit[] => {
+      ): Promise<monaco.languages.TextEdit[]> => {
         const text = document.getValue();
-        const formatted = runTypeScriptPrettier(
-          prettierTypeScript,
-          text,
-          prettierSettings,
-        );
+        const formatted = await runTypeScriptPrettier(prettierTypeScript, text, prettierSettings);
 
         return [
           {
@@ -114,7 +110,7 @@ export function enablePrettierInMonaco(prettierSettings: IPrettierSettings) {
     };
 
     monaco.languages.registerDocumentFormattingEditProvider(
-      'typescript',
+      "typescript",
       prettierTypeScriptFormatter,
     );
   });
@@ -124,7 +120,7 @@ export async function formatTypeScriptFile(
   content: string,
   prettierSettings: IPrettierSettings,
 ): Promise<string> {
-  return import('prettier/parser-typescript').then(prettierTypeScript => {
+  return import("prettier/parser-typescript").then((prettierTypeScript) => {
     return runTypeScriptPrettier(prettierTypeScript, content, prettierSettings);
   });
 }
@@ -136,10 +132,10 @@ function runTypeScriptPrettier(
 ) {
   try {
     return prettier.format(content, {
-      parser: 'typescript',
+      parser: "typescript",
       plugins: [prettierTS],
       tabWidth: prettierSettings.tabWidth,
-      arrowParens: 'always',
+      arrowParens: "always",
       printWidth: 120,
     });
   } catch (e) {
@@ -158,8 +154,8 @@ export function parseTripleSlashRefs(url: string, content: string) {
   }
   let copyContent = content;
 
-  const splitUrl = url.split('/');
-  const baseUrl = splitUrl.slice(0, splitUrl.length - 1).join('/');
+  const splitUrl = url.split("/");
+  const baseUrl = splitUrl.slice(0, splitUrl.length - 1).join("/");
 
   const additionalUrls: string[] = [];
 
@@ -168,7 +164,7 @@ export function parseTripleSlashRefs(url: string, content: string) {
 
     const newUrl = `${baseUrl}/${path}`;
     additionalUrls.push(newUrl);
-    copyContent = copyContent.replace(ref, '');
+    copyContent = copyContent.replace(ref, "");
 
     match = REGEX.TRIPLE_SLASH_REF.exec(copyContent);
     REGEX.TRIPLE_SLASH_REF.lastIndex = 0;

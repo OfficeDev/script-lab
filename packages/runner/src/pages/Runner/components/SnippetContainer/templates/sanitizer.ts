@@ -1,4 +1,4 @@
-import sanitize from 'sanitize-html';
+import sanitize from "sanitize-html";
 
 export function sanitizeObject<T>(obj: T): T {
   return Object.keys(obj).reduce(

@@ -9,9 +9,9 @@ import {
   ISolutionsAction,
   ISettingsAction,
   IEditorAction,
-} from '../actions';
-import { getType } from 'typesafe-actions';
-import { MessageBarType } from 'office-ui-fabric-react/lib/MessageBar';
+} from "../actions";
+import { getType } from "typesafe-actions";
+import { MessageBarType } from "office-ui-fabric-react/lib/MessageBar";
 
 export interface IState {
   isVisible: boolean;
@@ -43,27 +43,22 @@ export interface IShowMessageBarParams {
 const defaultState: IState = {
   isVisible: false,
   style: MessageBarType.info,
-  text: '',
+  text: "",
   link: null,
 };
 
 const messageBarReducer = (
   state: IState = defaultState,
-  action:
-    | IGistsAction
-    | IMessageBarAction
-    | ISolutionsAction
-    | ISettingsAction
-    | IEditorAction,
+  action: IGistsAction | IMessageBarAction | ISolutionsAction | ISettingsAction | IEditorAction,
 ): IState => {
   switch (action.type) {
     case getType(gists.create.success):
       return {
         isVisible: true,
         style: MessageBarType.success,
-        text: 'Your gist has been published.',
+        text: "Your gist has been published.",
         link: {
-          text: 'View on GitHub',
+          text: "View on GitHub",
           url: `https://gist.github.com/${action.payload.gist.id}`,
         },
       };
@@ -80,9 +75,9 @@ const messageBarReducer = (
       return {
         isVisible: true,
         style: MessageBarType.success,
-        text: 'Your gist has been updated.',
+        text: "Your gist has been updated.",
         link: {
-          text: 'View on GitHub',
+          text: "View on GitHub",
           url: `https://gist.github.com/${action.payload.gist.id}`,
         },
       };
@@ -111,10 +106,10 @@ const messageBarReducer = (
         return {
           isVisible: true,
           style: MessageBarType.warning,
-          text: 'Would you like to trust this snippet?',
+          text: "Would you like to trust this snippet?",
           link: null,
           button: {
-            text: 'Trust',
+            text: "Trust",
             action: solutions.updateOptions({
               id: action.payload.id,
               options: { isUntrusted: false },

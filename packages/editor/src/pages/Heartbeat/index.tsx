@@ -1,17 +1,16 @@
-import { useEffect } from 'react';
-import { currentRunnerUrl } from 'common/lib/environment';
-import ensureFreshLocalStorage from 'common/lib/utilities/ensure.fresh.local.storage';
+import { useEffect } from "react";
+import { currentRunnerUrl, sameOrigin } from "common/build/environment";
 
-import * as log from 'common/lib/utilities/log';
+import * as log from "common/build/utilities/log";
 import {
   RUNNER_TO_EDITOR_HEARTBEAT_REQUESTS,
   EDITOR_HEARTBEAT_TO_RUNNER_RESPONSES,
   IEditorHeartbeatToRunnerResponse,
-} from 'common/lib/constants';
-import { strictType } from 'common/lib/utilities/misc';
-import { getPythonConfigIfAny } from '../../utils/python';
+} from "common/build/constants";
+import { strictType } from "common/build/utilities/misc";
+import { getPythonConfigIfAny } from "../../utils/python";
 
-const logger = log.getLogger('heartbeat');
+const logger = log.getLogger("heartbeat");
 
 const Heartbeat = () => {
   useEffect(() => {
@@ -25,16 +24,14 @@ export default Heartbeat;
 
 async function onMessage(event: { data: string; origin: string }) {
   logger.info(event);
-  if (event.origin !== currentRunnerUrl) {
+  if (!sameOrigin(event.origin, currentRunnerUrl)) {
     console.error(`Could not read snippet data: invalid origin "${event.origin}"`);
     return;
   }
 
-  ensureFreshLocalStorage();
-
   if (event.data.indexOf(RUNNER_TO_EDITOR_HEARTBEAT_REQUESTS.GET_ACTIVE_SOLUTION) === 0) {
-    const host = event.data.split('/')[1];
-    const solution = localStorage.getItem('activeSolution_' + host);
+    const host = event.data.split("/")[1];
+    const solution = localStorage.getItem("activeSolution_" + host);
     sendMessageBackToRunner(
       event.origin,
       EDITOR_HEARTBEAT_TO_RUNNER_RESPONSES.ACTIVE_SOLUTION,
