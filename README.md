@@ -28,15 +28,15 @@ Script lab is a tool for anyone who wants to learn about writing Office Add-ins 
 Script Lab has three main features:
 
 - **Code** in a pane beside your spreadsheet.
-  - IntelliSense is there while you type so you can easily discover and use the Office JavaScript objects and methods. Script Lab uses the Monaco editor, the same tech that powers VS Code, so it's beautiful and lightweight.
-  - Samples are pre-installed with Script Lab, so you don't have to start from scratch
-  - Your can use any TypeScript features like arrow functions, template strings, and async/await (i.e., a good chunk of ES6 and ES7 features). But it's not only script: your snippets can also use HTML, CSS, and references to external libraries and data on the web.
+    - IntelliSense is there while you type so you can easily discover and use the Office JavaScript objects and methods. Script Lab uses the Monaco editor, the same tech that powers VS Code, so it's beautiful and lightweight.
+    - Samples are pre-installed with Script Lab, so you don't have to start from scratch
+    - Your can use any TypeScript features like arrow functions, template strings, and async/await (i.e., a good chunk of ES6 and ES7 features). But it's not only script: your snippets can also use HTML, CSS, and references to external libraries and data on the web.
 - **Run** the code in another pane beside the editor.
-  - Execution can include logic, API calls to Office, UI in the pane, and even output to a console.
-  - Every time you make a code change you can refresh the editor and run the new version in seconds.
+    - Execution can include logic, API calls to Office, UI in the pane, and even output to a console.
+    - Every time you make a code change you can refresh the editor and run the new version in seconds.
 - **Share** your snippets.
-  - If you create a snippet you'd like to share, you can copy it to your clipboard, save it as a GitHub gist. Then send the gist link to someone else to use on their computer.
-  - The Import feature lets you load other people's snippets.
+    - If you create a snippet you'd like to share, you can copy it to your clipboard, save it as a GitHub gist. Then send the gist link to someone else to use on their computer.
+    - The Import feature lets you load other people's snippets.
 
 Script Lab works in Office 2013 or later on Windows, Office on the web, or Office on Mac.
 
@@ -65,6 +65,14 @@ Script Lab is built around sharing. If someone gives you a URL to a GitHub Gist,
 ![Import tab within the "Hamburger" menu showing a text box to import a URL, GitHub gist ID, or snippet YAML](.github/images/import-snippet.jpg)
 
 Conversely, to share _your_ snippet with someone, choose the "Copy to clipboard" button with the open snippet. You can share as a public [GitHub Gist](https://help.github.com/articles/about-gists/), or you can paste the snippet from the clipboard, and share it from there.
+
+### Size restrictions
+
+Script Lab is designed for you to play with small code samples. Generally, a snippet should be at most a few hundred lines and a few thousand characters.
+
+Your snippet can use hard-coded data. A small amount of data (say, a few hundred characters) is OK to hard code in Script Lab. However, for larger pieces of data, we recommend that you store those externally then load them at runtime with a command like `fetch`.
+
+Keep your snippets and hard-coded data small since storing several large snippets could exceed Script Lab's storage and cause issues when loading Script Lab.
 
 ## Report a bug, or suggest a feature
 
