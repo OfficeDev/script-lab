@@ -166,7 +166,7 @@
     <Hosts>
       <Host xsi:type="MailHost">
         <DesktopFormFactor>
-	<SupportsSharedFolders>true</SupportsSharedFolders>
+          <SupportsSharedFolders>true</SupportsSharedFolders>
           <FunctionFile resid="PG.Functions.Url" />
           <ExtensionPoint xsi:type="MessageComposeCommandSurface">
             <OfficeTab id="TabPlaygroundCompose">
@@ -201,6 +201,8 @@
                   <Action xsi:type="ShowTaskpane">
                     <SourceLocation resid="PG.Run.Url" />
                     <SupportsPinning>true</SupportsPinning>
+                    <SupportsNoItemContext>true</SupportsNoItemContext>
+                    <SupportsMultiSelect>true</SupportsMultiSelect>
                   </Action>
                 </Control>
                 <Control xsi:type="Button" id="PG.TutorialCommand.Compose">
@@ -299,6 +301,8 @@
                   <Action xsi:type="ShowTaskpane">
                     <SourceLocation resid="PG.Run.Url" />
                     <SupportsPinning>true</SupportsPinning>
+                    <SupportsNoItemContext>true</SupportsNoItemContext>
+                    <SupportsMultiSelect>true</SupportsMultiSelect>
                   </Action>
                 </Control>
                 <Control xsi:type="Button" id="PG.TutorialCommand.Read">
@@ -397,6 +401,8 @@
                   <Action xsi:type="ShowTaskpane">
                     <SourceLocation resid="PG.Run.Url" />
                     <SupportsPinning>true</SupportsPinning>
+                    <SupportsNoItemContext>true</SupportsNoItemContext>
+                    <SupportsMultiSelect>true</SupportsMultiSelect>
                   </Action>
                 </Control>
                 <Control xsi:type="Button" id="PG.TutorialCommand.AppointmentAttendee">
@@ -495,6 +501,8 @@
                   <Action xsi:type="ShowTaskpane">
                     <SourceLocation resid="PG.Run.Url" />
                     <SupportsPinning>true</SupportsPinning>
+                    <SupportsNoItemContext>true</SupportsNoItemContext>
+                    <SupportsMultiSelect>true</SupportsMultiSelect>
                   </Action>
                 </Control>
                 <Control xsi:type="Button" id="PG.TutorialCommand.AppointmentOrganizer">
