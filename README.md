@@ -2,6 +2,9 @@
 
 Experiment with the Office JavaScript API without leaving Excel, Outlook, Word, or PowerPoint!
 
+> [!IMPORTANT]
+> This repo has been archived because the codebase has moved to a Microsoft-internal source. However, the Script Lab tool is still available.
+
 **Get [Script Lab](https://appsource.microsoft.com/product/office/WA104380862) in Excel, Word, and PowerPoint, or [Script Lab for Outlook](https://appsource.microsoft.com/product/office/WA200001603), free from Microsoft AppSource**.
 
 [Read the blog post](https://devblogs.microsoft.com/microsoft365dev/update-on-the-future-of-the-script-lab-office-add-in/) on the future of Script Lab.
